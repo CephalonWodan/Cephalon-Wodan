@@ -22,7 +22,7 @@ const arcane2 = document.getElementById("arcane-slot-2");
 // 4. Récupération des données depuis l'API
 Promise.all([
   fetch("https://api.warframestat.us/mods").then(r => r.json()),
-  fetch("https://api.warframestat.us/arcanes").then(r => r.json())
+  fetch("data/arcanes.json").then(r => r.json())
 ])
 .then(([mods, arcanes]) => {
   console.log("API mods renvoyé", mods.length, "et arcanes", arcanes.length);
