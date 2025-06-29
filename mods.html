@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Configurer les mods</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <h1>Configurer les mods de ta Warframe</h1>
+
+  <section>
+    <h2 id="warframe-name">Nom de la Warframe</h2>
+    <p id="warframe-description">Description de la Warframe</p>
+  </section>
+
+  <section>
+    <h3>Mods</h3>
+    <div id="mod-list"></div>
+  </section>
+
+  <section>
+    <h3>Arcanes</h3>
+    <label>Arcane 1 :
+      <select id="arcane-slot-1"></select>
+    </label>
+    <label>Arcane 2 :
+      <select id="arcane-slot-2"></select>
+    </label>
+  </section>
+
+  <section>
+    <button id="save-config">Sauvegarder la configuration</button>
+  </section>
+
+  <script src="js/mods.js"></script>
+</body>
+</html>

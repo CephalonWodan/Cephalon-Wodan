@@ -1,0 +1,15 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 1em;
+  background-color: #0b0c10;
+  color: #c5c6c7;
+}
+h1, h2, h3 {
+  color: #66fcf1;
+}
+.mod-item {
+  background: #1f2833;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  border-radius: 5px;
+}
