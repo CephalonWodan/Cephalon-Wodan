@@ -1,3 +1,4 @@
+console.log("mods.js chargé");
 const warframe = JSON.parse(localStorage.getItem("selectedWarframe"));
 if (!warframe) {
   alert("Aucune Warframe sélectionnée. Retour à l'accueil.");
@@ -17,6 +18,12 @@ Promise.all([
   fetch("https://api.warframestat.us/mods").then(r => r.json()),
   fetch("https://api.warframestat.us/arcanes").then(r => r.json())
 ])
+  Promise.all([...])
+  .then(([mods, arcanes]) => {
+    console.log("API mods renvoyé", mods.length, "et arcanes", arcanes.length);
+    ...
+  })
+
 .then(([mods, arcanes]) => {
   const warframeMods = mods.filter(mod =>
     mod.compatName === "Warframe" || mod.type === "Warframe"
