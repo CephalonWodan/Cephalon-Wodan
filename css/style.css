@@ -116,3 +116,45 @@ button#save-config:hover {
   font-size: 1em;
 }
 
+/* Pour les Warframes dans index.html */
+.mod-item {
+  position: relative;
+  background: #1f2833;
+  margin: 0.5em 0;
+  padding: 0.5em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.mod-item:hover {
+  background-color: #45a29e;
+  color: #0b0c10;
+}
+
+/* Tooltip Warframe */
+.tooltip-text {
+  visibility: hidden;
+  width: 360px;
+  background: linear-gradient(135deg, #45a29e, #66fcf1);
+  color: #0b0c10;
+  text-align: left;
+  border-radius: 8px;
+  padding: 12px;
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  box-shadow: 0 8px 15px rgba(102, 252, 241, 0.5);
+  font-size: 0.9em;
+  pointer-events: none;
+}
+
+.mod-item:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
