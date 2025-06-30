@@ -6,7 +6,8 @@
     "rarity": "Peu commun",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette2.wikia.nocookie.net/warframe/images/9/96/Arcane_Acceleration_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Acceleration"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Acceleration",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "égide",
@@ -15,7 +16,8 @@
     "rarity": "Rare",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette3.wikia.nocookie.net/warframe/images/b/b6/Arcane_Aegis_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Aegis"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Aegis",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "agilité",
@@ -24,7 +26,8 @@
     "rarity": "Peu commun",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette3.wikia.nocookie.net/warframe/images/7/78/Arcane_Agility_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Agility"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Agility",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "arachne",
@@ -33,7 +36,8 @@
     "rarity": "Peu commun",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette2.wikia.nocookie.net/warframe/images/c/c1/Arcane_Arachne_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Arachne"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Arachne",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "vengeance",
@@ -42,7 +46,8 @@
     "rarity": "Peu commun",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette2.wikia.nocookie.net/warframe/images/8/88/Arcane_Avenger_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Avenger"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Avenger",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "éveil",
@@ -51,7 +56,8 @@
     "rarity": "Commun",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette2.wikia.nocookie.net/warframe/images/f/fa/Arcane_Awakening_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Awakening"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Awakening",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "barrière",
@@ -60,7 +66,8 @@
     "rarity": "Rare",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette3.wikia.nocookie.net/warframe/images/c/c7/Arcane_Barrier_LQ.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Barrier"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Barrier",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "conséquence",
@@ -69,7 +76,8 @@
     "rarity": "Peu commun",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette1.wikia.nocookie.net/warframe/images/8/82/Arcane_Consequence_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Consequence"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Consequence",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "déviation",
@@ -78,7 +86,8 @@
     "rarity": "Rare",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette2.wikia.nocookie.net/warframe/images/b/b1/Arcane_Deflection_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Deflection"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Deflection",
+    "type": "Warframe Arcane"
   },
   {
     "regex": "énergétique",
@@ -87,6 +96,7 @@
     "rarity": "Rare",
     "location": "Changeant, vérifiez la table de drop",
     "thumbnail": "https://vignette3.wikia.nocookie.net/warframe/images/e/e3/Arcane_Energize_160.png",
-    "info": "http://warframe.wikia.com/wiki/Arcane_Energize"
+    "info": "http://warframe.wikia.com/wiki/Arcane_Energize",
+    "type": "Warframe Arcane"
   }
 ]
