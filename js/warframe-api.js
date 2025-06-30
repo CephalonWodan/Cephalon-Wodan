@@ -1,47 +1,44 @@
-console.log("Chargement de warframe-api.js");
+console.log("warframe-api.js chargé");
 
-const warframeList = document.getElementById("warframe-list");
-const warframeSearch = document.getElementById("warframe-search");
-
-let allWarframes = [];
-
-function displayWarframes(filterText = "") {
-  warframeList.innerHTML = "";
-  const filtered = allWarframes.filter(wf => 
-    wf.name.toLowerCase().includes(filterText.toLowerCase())
-  );
-
-  if (filtered.length === 0) {
-    warframeList.textContent = "Aucune Warframe trouvée.";
-    return;
-  }
-
-  filtered.forEach(wf => {
-    const div = document.createElement("div");
-    div.className = "mod-item";
-    div.textContent = wf.name;
-    div.title = wf.description || "Pas de description disponible";
-
-  div.addEventListener("click", () => {
-  localStorage.setItem("selectedWarframe", JSON.stringify(wf));
-  window.location.href = "mods.html";  // redirige direct
-});
-
-    warframeList.appendChild(div);
-  });
-}
+const warframeListDiv = document.getElementById("warframe-list");
+const warframeSearchInput = document.getElementById("warframe-search");
 
 fetch("https://api.warframestat.us/warframes")
   .then(response => response.json())
-  .then(warframes => {
-    allWarframes = warframes;
-    displayWarframes();
+  .then(data => {
+    // Filtrage : ne garder que les Warframes standards (pas d'Archwing/Necramech)
+    let warframes = data.filter(wf => 
+      wf.type === "Warframe" && 
+      !["Bonewidow", "Voidrig"].includes(wf.name)
+    );
+
+    // Affichage initial
+    displayWarframes(warframes);
+
+    // Recherche dynamique
+    warframeSearchInput.addEventListener("input", () => {
+      const query = warframeSearchInput.value.toLowerCase();
+      const filtered = warframes.filter(wf => wf.name.toLowerCase().includes(query));
+      displayWarframes(filtered);
+    });
   })
   .catch(err => {
-    warframeList.textContent = "Erreur lors du chargement des Warframes.";
+    warframeListDiv.innerText = "Erreur de chargement des Warframes.";
     console.error(err);
   });
 
-warframeSearch.addEventListener("input", () => {
-  displayWarframes(warframeSearch.value);
-});
+function displayWarframes(warframes) {
+  warframeListDiv.innerHTML = "";
+  warframes.forEach(wf => {
+    const card = document.createElement("div");
+    card.className = "mod-item"; // réutilise le style mod-item
+    card.textContent = wf.name;
+    card.addEventListener("click", () => {
+      if (confirm(`Configurer ${wf.name} ?`)) {
+        localStorage.setItem("selectedWarframe", JSON.stringify(wf));
+        window.location.href = "mods.html";
+      }
+    });
+    warframeListDiv.appendChild(card);
+  });
+}
