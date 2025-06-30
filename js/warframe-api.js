@@ -22,12 +22,10 @@ function displayWarframes(filterText = "") {
     div.textContent = wf.name;
     div.title = wf.description || "Pas de description disponible";
 
-    div.addEventListener("click", () => {
-      localStorage.setItem("selectedWarframe", JSON.stringify(wf));
-      alert(`Warframe sélectionnée : ${wf.name}`);
-      // Optionnel : rediriger vers config mod
-      // window.location.href = "mods.html";
-    });
+  div.addEventListener("click", () => {
+  localStorage.setItem("selectedWarframe", JSON.stringify(wf));
+  window.location.href = "mods.html";  // redirige direct
+});
 
     warframeList.appendChild(div);
   });
