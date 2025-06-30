@@ -31,14 +31,35 @@ function displayWarframes(warframes) {
   warframeListDiv.innerHTML = "";
   warframes.forEach(wf => {
     const card = document.createElement("div");
-    card.className = "mod-item"; // réutilise le style mod-item
+    card.className = "mod-item";
     card.textContent = wf.name;
+
+    // 🧠 Tooltip contenant les infos complètes
+    const tooltip = document.createElement("div");
+    tooltip.className = "tooltip-text";
+    tooltip.innerHTML = `
+      <strong>${wf.name}</strong><br>
+      <em>${wf.description || "Pas de description."}</em><br><br>
+      <img src="https://cdn.warframestat.us/img/${encodeURIComponent(wf.name)}.png" alt="${wf.name}" style="width:100px;float:right;margin-left:10px;border-radius:8px;">
+      <ul style="padding-left: 1em; list-style-type: disc;">
+        <li><strong>Armure:</strong> ${wf.armor}</li>
+        <li><strong>Énergie:</strong> ${wf.power}</li>
+        <li><strong>Vie:</strong> ${wf.health}</li>
+        <li><strong>Bouclier:</strong> ${wf.shield}</li>
+        <li><strong>Vitesse:</strong> ${wf.sprintSpeed}</li>
+      </ul>
+    `;
+
+    card.appendChild(tooltip);
+
+    // ▶️ Redirection au clic
     card.addEventListener("click", () => {
       if (confirm(`Configurer ${wf.name} ?`)) {
         localStorage.setItem("selectedWarframe", JSON.stringify(wf));
         window.location.href = "mods.html";
       }
     });
+
     warframeListDiv.appendChild(card);
   });
 }
