@@ -45,6 +45,7 @@ function displayMods(mods, filterText = "") {
         <input type="checkbox" name="mod" value="${mod.name}">
         ${mod.name} <small>(${version})</small> (${mod.polarity || "–"})
       </label>
+      <span class="tooltip-text">${mod.description || "Pas de description disponible."}</span>
     `;
     modContainer.appendChild(div);
   });
