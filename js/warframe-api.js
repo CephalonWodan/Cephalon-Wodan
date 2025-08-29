@@ -44,20 +44,26 @@ function displayWarframes(warframes) {
 
       const imgURL = wf.imageName
   ? `https://cdn.warframestat.us/img/${wf.imageName}`
-  : ""; 
+  : null;
 
-      tooltip.innerHTML = `
-        <strong>${wf.name}</strong><br>
-        <em>${wf.description || "Pas de description disponible."}</em><br><br>
-        <img src="${imgURL}" alt="${wf.name}" style="width:100px; float:right; margin-left:10px; border-radius:8px;" onerror="this.style.display='none'">
-        <ul style="padding-left: 1em; list-style-type: disc;">
-          <li><strong>Armure:</strong> ${wf.armor}</li>
-          <li><strong>Énergie:</strong> ${wf.power}</li>
-          <li><strong>Vie:</strong> ${wf.health}</li>
-          <li><strong>Bouclier:</strong> ${wf.shield}</li>
-          <li><strong>Vitesse:</strong> ${wf.sprintSpeed}</li>
-        </ul>
-      `;
+tooltip.innerHTML = `
+  <strong>${wf.name}</strong><br>
+  <em>${wf.description || "Pas de description disponible."}</em><br><br>
+
+  ${imgURL
+    ? `<img src="${imgURL}" alt="${wf.name}"
+           style="width:100px; float:right; margin-left:10px; border-radius:8px;"
+           onerror="this.style.display='none'">`
+    : `<div class="muted">Aucune image</div>`}
+
+  <ul style="padding-left: 1em; list-style-type: disc;">
+    <li><strong>Armure:</strong> ${wf.armor}</li>
+    <li><strong>Énergie:</strong> ${wf.power}</li>
+    <li><strong>Vie:</strong> ${wf.health}</li>
+    <li><strong>Bouclier:</strong> ${wf.shield}</li>
+    <li><strong>Vitesse:</strong> ${wf.sprintSpeed}</li>
+  </ul>
+`;
 
       card.appendChild(tooltip);
 
