@@ -42,7 +42,9 @@ function displayWarframes(warframes) {
       const tooltip = document.createElement("div");
       tooltip.className = "tooltip-text";
 
-      const imgURL = `https://cdn.warframestat.us/img/${encodeURIComponent(wf.name)}.png`;
+      const imgURL = wf.imageName
+  ? `https://cdn.warframestat.us/img/${wf.imageName}`
+  : ""; 
 
       tooltip.innerHTML = `
         <strong>${wf.name}</strong><br>
