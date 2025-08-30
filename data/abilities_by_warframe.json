@@ -1,0 +1,462 @@
+{
+  "Nyx": [
+    "Absorb",
+    "Chaos",
+    "Mind Control",
+    "Psychic Bolts"
+  ],
+  "Hildryn": [
+    "Aegis Storm",
+    "Balefire",
+    "Haven",
+    "Pillage"
+  ],
+  "Zephyr": [
+    "Airburst",
+    "Tail Wind",
+    "Tornado",
+    "Turbulence"
+  ],
+  "Octavia": [
+    "Amp",
+    "Mallet",
+    "Metronome",
+    "Resonator"
+  ],
+  "Nova": [
+    "Antimatter Drop",
+    "Molecular Prime",
+    "Null Star",
+    "Wormhole"
+  ],
+  "Yareli": [
+    "Aquablades",
+    "Merulina",
+    "Riptide",
+    "Sea Snares"
+  ],
+  "Itzal": [
+    "Arch Line",
+    "Cosmic Crush",
+    "Fighter Escort",
+    "Penumbra"
+  ],
+  "Gyre": [
+    "Arcsphere",
+    "Cathode Grace",
+    "Coil Horizon",
+    "Rotorswell"
+  ],
+  "Ivara": [
+    "Artemis Bow",
+    "Navigator",
+    "Prowl",
+    "Quiver"
+  ],
+  "Atomicycle": [
+    "Atomi-Barrage",
+    "Atomi-Bomb",
+    "Atomi-Boost",
+    "Atomi-Shadow"
+  ],
+  "Frost": [
+    "Avalanche",
+    "Freeze",
+    "Ice Wave",
+    "Snow Globe"
+  ],
+  "Styanax": [
+    "Axios Javelin",
+    "Final Stand",
+    "Rally Point",
+    "Tharros Strike"
+  ],
+  "Mesa": [
+    "Ballistic Battery",
+    "Peacemaker",
+    "Shatter Shield",
+    "Shooting Gallery"
+  ],
+  "Limbo": [
+    "Banish",
+    "Cataclysm",
+    "Rift Surge",
+    "Stasis"
+  ],
+  "Vauban": [
+    "Bastille",
+    "Minelayer",
+    "Photon Strike",
+    "Tesla Nervos"
+  ],
+  "Amesha": [
+    "Benevolent Decoy",
+    "Vengeful Rush",
+    "Warding Grace",
+    "Watchful Swarm"
+  ],
+  "Ash": [
+    "Blade Storm",
+    "Shuriken",
+    "Smoke Screen",
+    "Teleport"
+  ],
+  "Protea": [
+    "Blaze Artillery",
+    "Dispensary",
+    "Grenade Fan",
+    "Temporal Anchor"
+  ],
+  "Nezha": [
+    "Blazing Chakram",
+    "Divine Spears",
+    "Fire Walker",
+    "Warding Halo"
+  ],
+  "Trinity": [
+    "Blessing",
+    "Energy Vampire",
+    "Link",
+    "Well of Life"
+  ],
+  "Garuda": [
+    "Blood Altar",
+    "Bloodletting",
+    "Dread Mirror",
+    "Seeking Talons"
+  ],
+  "Elytron": [
+    "Bloomer",
+    "Core Vent",
+    "Thumper",
+    "Warhead"
+  ],
+  "Wisp": [
+    "Breach Surge",
+    "Reservoirs",
+    "Sol Gate",
+    "Wil-O-Wisp"
+  ],
+  "Koumei": [
+    "Bunraku",
+    "Kumihimo",
+    "Omamori",
+    "Omikuji"
+  ],
+  "Lavos": [
+    "Catalyze",
+    "Ophidian Bite",
+    "Transmutation Probe",
+    "Vial Rush"
+  ],
+  "Wukong": [
+    "Celestial Twin",
+    "Cloud Walker",
+    "Defy",
+    "Primal Fury"
+  ],
+  "Qorvex": [
+    "Chyrinka Pillar",
+    "Containment Wall",
+    "Crucible Blast",
+    "Disometric Guard"
+  ],
+  "Kullervo": [
+    "Collective Curse",
+    "Recompense",
+    "Storm of Ukko",
+    "Wrathful Advance"
+  ],
+  "Harrow": [
+    "Condemn",
+    "Covenant",
+    "Penance",
+    "Thurible"
+  ],
+  "Sevagoth's Shadow": [
+    "Consume",
+    "Death's Harvest",
+    "Embrace",
+    "Reunite"
+  ],
+  "Mag": [
+    "Crush",
+    "Magnetize",
+    "Polarize",
+    "Pull"
+  ],
+  "Citrine": [
+    "Crystallize",
+    "Fractured Blast",
+    "Preserving Shell",
+    "Prismatic Gem"
+  ],
+  "Revenant": [
+    "Danse Macabre",
+    "Enthrall",
+    "Mesmer Skin",
+    "Reave"
+  ],
+  "Dante": [
+    "Dark Verse",
+    "Final Verse",
+    "Light Verse",
+    "Noctua"
+  ],
+  "Loki": [
+    "Decoy",
+    "Invisibility",
+    "Radial Disarm",
+    "Switch Teleport"
+  ],
+  "Nekros": [
+    "Desecrate",
+    "Shadows of the Dead",
+    "Soul Punch",
+    "Terrify"
+  ],
+  "Inaros": [
+    "Desiccation",
+    "Sandstorm",
+    "Scarab Shell",
+    "Scarab Swarm"
+  ],
+  "Baruuk": [
+    "Desolate Hands",
+    "Elude",
+    "Lull",
+    "Serene Storm"
+  ],
+  "Odonata": [
+    "Disarray",
+    "Energy Shell",
+    "Repel",
+    "Seeking Fire"
+  ],
+  "Volt": [
+    "Discharge",
+    "Electric Shield",
+    "Shock",
+    "Speed"
+  ],
+  "Dagath": [
+    "Doom",
+    "Grave Spirit",
+    "Rakhali's Cavalry",
+    "Wyrd Scythes"
+  ],
+  "Mirage": [
+    "Eclipse",
+    "Hall of Mirrors",
+    "Prism",
+    "Sleight of Hand"
+  ],
+  "Chroma": [
+    "Effigy",
+    "Elemental Ward",
+    "Spectral Scream",
+    "Vex Armor"
+  ],
+  "Helminth": [
+    "Empower",
+    "Energized Munitions",
+    "Expedite Suffering",
+    "Golden Instinct",
+    "Hideous Resistance",
+    "Infested Mobility",
+    "Marked For Death",
+    "Master's Summons",
+    "Parasitic Armor",
+    "Perspicacity",
+    "Rebuild Shields",
+    "Sickening Pulse",
+    "Voracious Metastasis"
+  ],
+  "Khora": [
+    "Ensnare",
+    "Strangledome",
+    "Venari",
+    "Whipclaw"
+  ],
+  "Excalibur": [
+    "Exalted Blade",
+    "Radial Blind",
+    "Radial Javelin",
+    "Slash Dash"
+  ],
+  "Bonewidow": [
+    "Exalted Ironbride",
+    "Firing Line",
+    "Maiden's Kiss",
+    "Meathook",
+    "Shield Maiden"
+  ],
+  "Sevagoth": [
+    "Exalted Shadow",
+    "Gloom",
+    "Reap",
+    "Sow"
+  ],
+  "Temple": [
+    "Exalted Solo",
+    "Overdrive",
+    "Pyrotechnics",
+    "Ripper's Wail"
+  ],
+  "Cyte-09": [
+    "Evade",
+    "Neutralize",
+    "Resupply",
+    "Seek"
+  ],
+  "Voruna": [
+    "Fangs of Raksh",
+    "Lycath's Hunt",
+    "Shroud of Dynar",
+    "Ulfrun's Descent"
+  ],
+  "Grendel": [
+    "Feast",
+    "Nourish",
+    "Pulverize",
+    "Regurgitate"
+  ],
+  "Ember": [
+    "Fire Blast",
+    "Fireball",
+    "Immolation",
+    "Inferno"
+  ],
+  "Caliban": [
+    "Fusion Strike",
+    "Lethal Progeny",
+    "Razor Gyre",
+    "Sentient Wrath"
+  ],
+  "Jade": [
+    "Glory on High",
+    "Light's Judgment",
+    "Ophanim Eyes",
+    "Symphony of Mercy"
+  ],
+  "Xaku": [
+    "Grasp of Lohk",
+    "The Lost",
+    "The Vast Untime",
+    "Xata's Whisper"
+  ],
+  "Voidrig": [
+    "Gravemines",
+    "Guard Mode",
+    "Necraweb",
+    "Storm Shroud"
+  ],
+  "Drifter": [
+    "Guiding Hand",
+    "Restorative (Duviri)",
+    "Restorative",
+    "Smoke Screen (Drifter)",
+    "Smoke Screen (Duviri)",
+    "Summon Kaithe",
+    "Target Radar",
+    "Transference Surge"
+  ],
+  "Oberon": [
+    "Hallowed Ground",
+    "Reckoning",
+    "Renewal",
+    "Smite"
+  ],
+  "Kaithe": [
+    "Hoof Stomp",
+    "Steadfast Dismount"
+  ],
+  "Valkyr": [
+    "Hysteria",
+    "Paralysis",
+    "Rip Line",
+    "Warcry"
+  ],
+  "Rhino": [
+    "Iron Skin",
+    "Rhino Charge",
+    "Rhino Stomp",
+    "Roar"
+  ],
+  "Gauss": [
+    "Kinetic Plating",
+    "Mach Rush",
+    "Redline",
+    "Thermal Sunder"
+  ],
+  "Atlas": [
+    "Landslide",
+    "Petrify",
+    "Rumblers",
+    "Tectonics"
+  ],
+  "Titania": [
+    "Lantern",
+    "Razorwing",
+    "Spellbind",
+    "Tribute"
+  ],
+  "Nidus": [
+    "Larva",
+    "Parasitic Link",
+    "Ravenous",
+    "Virulence"
+  ],
+  "Stalker": [
+    "Marked",
+    "Punishment",
+    "Smoke Screen (Stalker)",
+    "Teleport (Stalker)"
+  ],
+  "Gara": [
+    "Mass Vitrify",
+    "Shattered Lash",
+    "Spectrorage",
+    "Splinter Storm"
+  ],
+  "Equinox": [
+    "Mend & Maim",
+    "Metamorphosis",
+    "Pacify & Provoke",
+    "Rest & Rage"
+  ],
+  "Oraxia": [
+    "Mercy's Kiss",
+    "Silken Stride",
+    "Webbed Embrace",
+    "Widow's Brood"
+  ],
+  "Saryn": [
+    "Miasma",
+    "Molt",
+    "Spores",
+    "Toxic Lash"
+  ],
+  "Railjack": [
+    "Phoenix Blaze"
+  ],
+  "Hydroid": [
+    "Plunder",
+    "Tempest Barrage",
+    "Tentacle Swarm",
+    "Tidal Surge",
+    "Undertow"
+  ],
+  "Excalibur Umbra": [
+    "Radial Howl"
+  ],
+  "Banshee": [
+    "Silence",
+    "Sonar",
+    "Sonic Boom",
+    "Sound Quake"
+  ],
+  "Operator": [
+    "Transference"
+  ]
+}
