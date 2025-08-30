@@ -118,6 +118,7 @@ h1, h2, h3 {
    - reste dans le viewport
    - pas de débordement aux bords
 ============================= */
+
 .tooltip-text{
   position: fixed;              /* suit le viewport */
   top: 0; left: 0;              /* sera repositionnée en JS */
@@ -156,6 +157,9 @@ h1, h2, h3 {
 /* On désactive l’ancien affichage automatique au :hover
    (la tooltip est gérée par JS pour rester lisible aux bords). */
 .mod-item:hover .tooltip-text{ display: none; }
+
+/* le contenu modèle caché à l’intérieur des cartes */
+.tooltip-template { display: none !important; }
 
 /* =============================
    Bouton de sauvegarde / CTA
