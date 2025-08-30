@@ -74,7 +74,6 @@ function render(items, getAbilities) {
 
     const tooltip = document.createElement("div");
     tooltip.className = "tooltip-template";
-
     const imgURL = wf.imageName
       ? `https://cdn.warframestat.us/img/${wf.imageName}`
       : null;
