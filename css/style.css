@@ -1,116 +1,199 @@
-/* === Style Global === */
+/* =============================
+   Thème & base
+============================= */
+:root{
+  --bg: #0b0c10;
+  --panel: #1f2833;
+  --text: #c5c6c7;
+  --text-strong: #f8f8f8;
+  --acc: #66fcf1;
+  --acc-2: #45a29e;
+  --shadow: 0 8px 15px rgba(102, 252, 241, 0.45);
+  --radius: 8px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  padding: 1em;
-  background-color: #0b0c10;
-  color: #c5c6c7;
   margin: 0;
+  padding: 1em;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.4;
 }
 
 h1, h2, h3 {
-  color: #66fcf1;
-  margin-top: 0;
+  color: var(--acc);
+  margin: 0 0 .6em 0;
 }
 
-/* === Recherches === */
+/* petites classes utiles */
+.muted { opacity: .7; }
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px,1px,1px,1px);
+}
+
+/* =============================
+   Champs de recherche
+============================= */
 #mod-search,
-#warframe-search {
+#warframe-search{
   width: 100%;
-  padding: 0.5em;
-  margin-bottom: 1em;
-  border-radius: 5px;
-  border: none;
+  padding: .6em .75em;
+  margin: 0 0 1em 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text-strong);
   font-size: 1em;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
 
-/* === Mod Item & Warframe Item === */
-.mod-item {
-  position: relative;
-  background: #1f2833;
-  margin: 0.5em 0;
-  padding: 0.5em;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+#mod-search:focus,
+#warframe-search:focus{
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px rgba(102,252,241,.25);
 }
 
-.mod-item:hover {
-  background-color: #45a29e;
-  color: #0b0c10;
-}
-
-/* Label dans chaque item */
-.mod-item label {
+/* =============================
+   Items (Warframes / Mods)
+============================= */
+#warframe-list, #mod-list{
   display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .35rem;
+}
+
+.mod-item{
+  position: relative;           /* pour focus ring */
+  display: inline-flex;
   align-items: center;
-  gap: 0.5em;
+  gap: .5em;
+
+  padding: .45em .6em;
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,.06);
+  cursor: pointer;
+
+  transition: background-color .25s ease, color .25s ease, transform .06s ease;
   user-select: none;
 }
 
-/* === Tooltip Générique === */
-.tooltip-text {
-  visibility: hidden;
-  width: 360px;
-  background: #1f2833; /* fond sombre */
-  color: #f8f8f8;       /* texte clair */
+.mod-item:hover{
+  background: var(--acc-2);
+  color: #0b0c10;
+}
+
+.mod-item:active{
+  transform: translateY(1px);
+}
+
+.mod-item:focus{
+  outline: none;
+}
+
+.mod-item:focus-visible{
+  box-shadow: 0 0 0 3px rgba(102,252,241,.3);
+}
+
+/* label interne éventuel */
+.mod-item label{
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+}
+
+/* =============================
+   Tooltip "smart" (pilotée en JS)
+   - reste dans le viewport
+   - pas de débordement aux bords
+============================= */
+.tooltip-text{
+  position: fixed;              /* suit le viewport */
+  top: 0; left: 0;              /* sera repositionnée en JS */
+  display: none;                /* montré/caché en JS */
+  z-index: 9999;
+
+  max-width: min(420px, calc(100vw - 24px));
+  background: var(--panel);
+  color: var(--text-strong);
   text-align: left;
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 12px;
-  position: absolute;
-  z-index: 10;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  box-shadow: 0 8px 15px rgba(102, 252, 241, 0.5);
-  font-size: 0.9em;
-  pointer-events: none;
-  font-weight: 600;
+  box-shadow: var(--shadow);
+  font-size: .92em;
   line-height: 1.3;
-  box-sizing: border-box;
+  pointer-events: none;         /* ne bloque pas la souris */
 }
 
-/* Flèche de la tooltip */
-.tooltip-text::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  margin-left: -7px;
-  transform: translateY(-100%);
-  border-width: 7px;
-  border-style: solid;
-  border-color: transparent transparent #1f2833 transparent;
+/* contenu interne de la tooltip */
+.tooltip-text img{
+  width: 100px;
+  float: right;
+  margin-left: 10px;
+  border-radius: 8px;
 }
 
-/* Affichage de la tooltip au survol */
-.mod-item:hover .tooltip-text {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
+.tooltip-text ul{
+  margin: .35em 0 0 0;
+  padding-left: 1.1em;
 }
 
-/* === Section Bouton de sauvegarde === */
-.save-button-section {
+.tooltip-text li{
+  margin: .15em 0;
+}
+
+/* On désactive l’ancien affichage automatique au :hover
+   (la tooltip est gérée par JS pour rester lisible aux bords). */
+.mod-item:hover .tooltip-text{ display: none; }
+
+/* =============================
+   Bouton de sauvegarde / CTA
+============================= */
+.save-button-section{
   margin-top: 2em;
   text-align: center;
 }
 
-button#save-config {
+button#save-config{
   display: inline-block;
   margin-top: 1em;
-  background-color: #45a29e;
+  padding: .7em 1.5em;
+
+  background: var(--acc-2);
   color: #0b0c10;
   border: none;
-  padding: 0.7em 1.5em;
-  font-size: 1.1em;
+  border-radius: var(--radius);
+  font-size: 1.05em;
   font-weight: bold;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color .25s ease, transform .06s ease;
 }
 
-button#save-config:hover {
-  background-color: #66fcf1;
+button#save-config:hover{
+  background: var(--acc);
+}
+
+button#save-config:active{
+  transform: translateY(1px);
+}
+
+/* =============================
+   Responsive
+============================= */
+@media (max-width: 560px){
+  body{ padding: .75em; }
+  #warframe-list, #mod-list{ gap: .3rem; }
+  .mod-item{ padding: .4em .55em; }
+  .tooltip-text{ max-width: calc(100vw - 16px); }
 }
