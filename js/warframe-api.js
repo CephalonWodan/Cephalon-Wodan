@@ -73,7 +73,7 @@ function render(items, getAbilities) {
     card.textContent = wf.name;
 
     const tooltip = document.createElement("div");
-    tooltip.className = "tooltip-text";
+    tooltip.className = "tooltip-template";
 
     const imgURL = wf.imageName
       ? `https://cdn.warframestat.us/img/${wf.imageName}`
