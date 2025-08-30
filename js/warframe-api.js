@@ -2,7 +2,7 @@
 console.log("warframe-api.js chargé (amélioré)");
 
 const API_URL = "https://api.warframestat.us/warframes";
-const ABILITIES_URL = "/data/abilities_by_warframe.json"; // ← mets ton JSON ici
+const ABILITIES_URL = "data/abilities_by_warframe.json"; // ← mets ton JSON ici
 const EXCLUDED = new Set(["Bonewidow", "Voidrig"]);
 
 const listEl = document.getElementById("warframe-list");
