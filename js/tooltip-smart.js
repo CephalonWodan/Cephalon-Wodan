@@ -1,34 +1,129 @@
-function attachSmartTooltip(card, tip){
-  const PAD = 14;
+// js/tooltip-smart.js
+console.log("[tooltip] smart tooltip chargé");
 
-  function show(e){
-    tip.style.display = "block";
-    tip.style.visibility = "hidden";
-    requestAnimationFrame(() => { position(e); tip.style.visibility = "visible"; });
+(function () {
+  // Un seul élément flottant pour toutes les cartes
+  const floatTip = document.createElement("div");
+  floatTip.className = "tooltip-text";     // stylée par ton CSS fourni
+  floatTip.style.display = "none";         // contrôlé en JS
+  floatTip.setAttribute("role", "tooltip");
+  floatTip.setAttribute("aria-hidden", "true");
+  document.body.appendChild(floatTip);
+
+  let currentHost = null; // .mod-item actuellement survolé/focus
+
+  const PADDING = 8;   // marge écran
+  const OFFSET  = 14;  // décalage curseur/élément
+
+  function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+
+  function positionAtMouse(ev) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // position candidate
+    let x = ev.clientX + OFFSET;
+    let y = ev.clientY + OFFSET;
+
+    // mesurer la tooltip
+    floatTip.style.left = "0px";
+    floatTip.style.top  = "0px";
+    floatTip.style.display = "block";
+    const w = floatTip.offsetWidth;
+    const h = floatTip.offsetHeight;
+
+    // si ça dépasse à droite, on met à gauche du curseur
+    if (x + w + PADDING > vw) x = ev.clientX - w - OFFSET;
+    // si ça dépasse en bas, on met au-dessus du curseur
+    if (y + h + PADDING > vh) y = ev.clientY - h - OFFSET;
+
+    // clamp aux bords
+    x = clamp(x, PADDING, vw - w - PADDING);
+    y = clamp(y, PADDING, vh - h - PADDING);
+
+    floatTip.style.left = x + "px";
+    floatTip.style.top  = y + "px";
   }
-  function position(e){
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const w  = tip.offsetWidth,   h  = tip.offsetHeight;
 
-    let x = e.clientX + PAD;      // par défaut: à droite / en dessous
-    let y = e.clientY + PAD;
+  function positionNearRect(hostEl) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const r = hostEl.getBoundingClientRect();
 
-    if (x + w > vw - PAD) x = e.clientX - w - PAD; // flip à gauche si besoin
-    if (x < PAD)          x = PAD;                 // clamp gauche
-    if (y + h > vh - PAD) y = vh - h - PAD;        // clamp bas
-    if (y < PAD)          y = PAD;                 // clamp haut
+    floatTip.style.display = "block";
+    const w = floatTip.offsetWidth;
+    const h = floatTip.offsetHeight;
 
-    tip.style.left = x + "px";
-    tip.style.top  = y + "px";
+    // par défaut, à droite de l’élément
+    let x = r.right + OFFSET;
+    let y = r.top + (r.height - h) / 2;
+
+    // fallback si pas de place à droite
+    if (x + w + PADDING > vw) x = r.left - w - OFFSET;
+
+    // clamp vertical
+    y = clamp(y, PADDING, vh - h - PADDING);
+
+    floatTip.style.left = clamp(x, PADDING, vw - w - PADDING) + "px";
+    floatTip.style.top  = y + "px";
   }
-  function hide(){ tip.style.display = "none"; }
 
-  card.addEventListener("mouseenter", show);
-  card.addEventListener("mousemove", position);
-  card.addEventListener("mouseleave", hide);
+  function showFromHost(hostEl) {
+    currentHost = hostEl;
+    // on prend le HTML depuis .tooltip-template (ou .tooltip-text si tu n’as pas encore renommé)
+    const tpl = hostEl.querySelector(".tooltip-template, .tooltip-text");
+    if (!tpl) return;
+    floatTip.innerHTML = tpl.innerHTML;
+    floatTip.style.display = "block";
+    floatTip.setAttribute("aria-hidden", "false");
+  }
 
-  // accessibilité clavier
-  card.setAttribute("tabindex", "0");
-  card.addEventListener("focus",  (e) => { const r = card.getBoundingClientRect(); show({clientX:r.right, clientY:r.top}); });
-  card.addEventListener("blur", hide);
-}
+  function hideTip() {
+    currentHost = null;
+    floatTip.style.display = "none";
+    floatTip.setAttribute("aria-hidden", "true");
+  }
+
+  // Délégation: fonctionne même si la liste change dynamiquement
+  const lists = [
+    document.getElementById("warframe-list"),
+    document.getElementById("mod-list"),
+  ].filter(Boolean);
+
+  lists.forEach(list => {
+    list.addEventListener("mouseover", (e) => {
+      const host = e.target.closest(".mod-item");
+      if (!host || !list.contains(host)) return;
+      showFromHost(host);
+      positionAtMouse(e);
+    });
+
+    list.addEventListener("mousemove", (e) => {
+      if (!currentHost) return;
+      positionAtMouse(e);
+    });
+
+    list.addEventListener("mouseleave", () => {
+      hideTip();
+    });
+
+    // Accessibilité clavier
+    list.addEventListener("focusin", (e) => {
+      const host = e.target.closest(".mod-item");
+      if (!host) return;
+      showFromHost(host);
+      // s’assure que l’item est focalisable
+      if (host.tabIndex < 0) host.tabIndex = 0;
+      positionNearRect(host);
+    });
+
+    list.addEventListener("focusout", (e) => {
+      const host = e.target.closest(".mod-item");
+      if (host === currentHost) hideTip();
+    });
+  });
+
+  // Si clic/touch en dehors -> on masque
+  document.addEventListener("scroll", () => { if (currentHost) hideTip(); }, true);
+  window.addEventListener("resize", () => { if (currentHost) hideTip(); });
+})();
