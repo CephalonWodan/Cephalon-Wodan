@@ -14,9 +14,7 @@
 
 * { box-sizing: border-box; }
 
-html, body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
   margin: 0;
@@ -32,7 +30,7 @@ h1, h2, h3 {
   margin: 0 0 .6em 0;
 }
 
-/* petites classes utiles */
+/* utilitaires */
 .muted { opacity: .7; }
 .sr-only {
   position: absolute !important;
@@ -40,7 +38,94 @@ h1, h2, h3 {
   overflow: hidden; clip: rect(1px,1px,1px,1px);
 }
 
-/* Fiche pouvoirs */
+/* =============================
+   Recherche
+============================= */
+#warframe-search{
+  width: 100%;
+  padding: .6em .75em;
+  margin: 0 0 1em 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text-strong);
+  font-size: 1em;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+#warframe-search:focus{
+  border-color: var(--acc);
+  box-shadow: 0 0 0 3px rgba(102,252,241,.25);
+}
+
+/* =============================
+   Liste / cartes
+============================= */
+#warframe-list{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem .35rem;
+}
+
+.mod-item{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  padding: .45em .6em;
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,.06);
+  cursor: pointer;
+  transition: background-color .25s ease, color .25s ease, transform .06s ease;
+  user-select: none;
+}
+.mod-item:hover{
+  background: var(--acc-2);
+  color: #0b0c10;
+}
+.mod-item:active{ transform: translateY(1px); }
+.mod-item:focus{ outline: none; }
+.mod-item:focus-visible{ box-shadow: 0 0 0 3px rgba(102,252,241,.3); }
+
+/* Contenu modèle de tooltip (restent cachés dans la carte) */
+.tooltip-template { display: none !important; }
+
+/* =============================
+   Tooltip flottante (pilotée JS)
+============================= */
+.tooltip-text{
+  position: fixed;
+  top: 0; left: 0;
+  display: none;
+  z-index: 9999;
+  max-width: min(420px, calc(100vw - 24px));
+  background: var(--panel);
+  color: var(--text-strong);
+  text-align: left;
+  border-radius: var(--radius);
+  padding: 12px;
+  box-shadow: var(--shadow);
+  font-size: .92em;
+  line-height: 1.3;
+  pointer-events: none;
+}
+.tooltip-text img{
+  width: 100px;
+  float: right;
+  margin-left: 10px;
+  border-radius: 8px;
+}
+.tooltip-text ul{
+  margin: .35em 0 0 0;
+  padding-left: 1.1em;
+}
+.tooltip-text li{ margin: .15em 0; }
+
+/* =============================
+   Fiche pouvoirs
+============================= */
 .abilities-title{ margin:.6em 0 .3em; color: var(--acc); }
 .abilities{ display:grid; gap:.5em; }
 .ability{
@@ -59,180 +144,11 @@ h1, h2, h3 {
 .ability .desc{ margin:.35em 0 0; font-size:.92em; line-height:1.25; }
 
 /* =============================
-   Champs de recherche
-============================= */
-#mod-search,
-#warframe-search{
-  width: 100%;
-  padding: .6em .75em;
-  margin: 0 0 1em 0;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  background: var(--panel);
-  color: var(--text-strong);
-  font-size: 1em;
-  outline: none;
-  transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-#mod-search:focus,
-#warframe-search:focus{
-  border-color: var(--acc);
-  box-shadow: 0 0 0 3px rgba(102,252,241,.25);
-}
-
-/* =============================
-   Items (Warframes / Mods)
-============================= */
-#warframe-list, #mod-list{
-  display: flex;
-  flex-wrap: wrap;
-  gap: .35rem .35rem;
-}
-
-.mod-item{
-  position: relative;           /* pour focus ring */
-  display: inline-flex;
-  align-items: center;
-  gap: .5em;
-
-  padding: .45em .6em;
-  border-radius: var(--radius);
-  background: var(--panel);
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,.06);
-  cursor: pointer;
-
-  transition: background-color .25s ease, color .25s ease, transform .06s ease;
-  user-select: none;
-}
-
-.mod-item:hover{
-  background: var(--acc-2);
-  color: #0b0c10;
-}
-
-.mod-item:active{
-  transform: translateY(1px);
-}
-
-.mod-item:focus{
-  outline: none;
-}
-
-.mod-item:focus-visible{
-  box-shadow: 0 0 0 3px rgba(102,252,241,.3);
-}
-
-/* label interne éventuel */
-.mod-item label{
-  display: inline-flex;
-  align-items: center;
-  gap: .5em;
-}
-
-/* =============================
-   Tooltip "smart" (pilotée en JS)
-   - reste dans le viewport
-   - pas de débordement aux bords
-============================= */
-
-.tooltip-text{
-  position: fixed;              /* suit le viewport */
-  top: 0; left: 0;              /* sera repositionnée en JS */
-  display: none;                /* montré/caché en JS */
-  z-index: 9999;
-
-  max-width: min(420px, calc(100vw - 24px));
-  background: var(--panel);
-  color: var(--text-strong);
-  text-align: left;
-  border-radius: var(--radius);
-  padding: 12px;
-  box-shadow: var(--shadow);
-  font-size: .92em;
-  line-height: 1.3;
-  pointer-events: none;         /* ne bloque pas la souris */
-}
-
-/* contenu interne de la tooltip */
-.tooltip-text img{
-  width: 100px;
-  float: right;
-  margin-left: 10px;
-  border-radius: 8px;
-}
-
-.tooltip-text ul{
-  margin: .35em 0 0 0;
-  padding-left: 1.1em;
-}
-
-.tooltip-text li{
-  margin: .15em 0;
-}
-
-/* On désactive l’ancien affichage automatique au :hover
-   (la tooltip est gérée par JS pour rester lisible aux bords). */
-.mod-item:hover .tooltip-text{ display: none; }
-
-/* le contenu modèle caché à l’intérieur des cartes */
-.tooltip-template { display: none !important; }
-
-/* =============================
-   Bouton de sauvegarde / CTA
-============================= */
-.save-button-section{
-  margin-top: 2em;
-  text-align: center;
-}
-
-button#save-config{
-  display: inline-block;
-  margin-top: 1em;
-  padding: .7em 1.5em;
-
-  background: var(--acc-2);
-  color: #0b0c10;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 1.05em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color .25s ease, transform .06s ease;
-}
-
-button#save-config:hover{
-  background: var(--acc);
-}
-
-button#save-config:active{
-  transform: translateY(1px);
-}
-
-/* =============================
    Responsive
 ============================= */
 @media (max-width: 560px){
   body{ padding: .75em; }
-  #warframe-list, #mod-list{ gap: .3rem; }
+  #warframe-list{ gap: .3rem; }
   .mod-item{ padding: .4em .55em; }
   .tooltip-text{ max-width: calc(100vw - 16px); }
-}
-/* 1) Évite que le texte passe sous l'image flottante de la tooltip */
-.tooltip-text::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-/* 2) Césure douce si un très long mot déborde (noms d’abilités exotiques) */
-.tooltip-text, .ability .desc {
-  word-break: break-word;
-  hyphens: auto;
-}
-
-/* 3) Accessibilité : réduit les animations si l’utilisateur l’a demandé */
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
 }
