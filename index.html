@@ -3,41 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <title>Warframe Loadout Builder</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <h1>Choisis ta Warframe</h1>
 
-  <!-- Barre de recherche -->
-  <label for="warframe-search">Rechercher une Warframe :</label>
+  <label for="warframe-search" class="sr-only">Rechercher une Warframe :</label>
   <input type="text" id="warframe-search" placeholder="Nom de la Warframe..." />
 
   <div id="warframe-list">Chargement...</div>
 
-<script src="js/abilities.js" defer></script>
-<script src="js/warframe-api.js" defer></script>
-<script src="js/tooltip-smart.js" defer></script>
-  <script>
-(function () {
-  const box = document.createElement('div');
-  Object.assign(box.style, {
-    position:'fixed',bottom:'10px',left:'10px',maxWidth:'50ch',
-    background:'#1f2833',color:'#f8f8f8',padding:'8px 10px',
-    border:'1px solid rgba(255,255,255,.15)',borderRadius:'8px',
-    font:'12px/1.4 monospace',zIndex:99999,boxShadow:'0 8px 15px rgba(102,252,241,.3)'
-  });
-  box.textContent = 'Debug: JS chargé.';
-  document.body.appendChild(box);
-
-  window.addEventListener('error', e => {
-    box.textContent = 'Erreur JS: ' + (e.message || '(inconnue)');
-  });
-  window.addEventListener('unhandledrejection', e => {
-    box.textContent = 'Promise rejetée: ' + (e.reason && e.reason.message ? e.reason.message : e.reason);
-  });
-})();
-</script>
-
+  <!-- Scripts (déferrez pour charger après le HTML) -->
+  <script src="js/abilities.js" defer></script>
+  <script src="js/warframe-api.js" defer></script>
+  <script src="js/tooltip-smart.js" defer></script>
 </body>
 </html>
