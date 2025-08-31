@@ -14,7 +14,296 @@
       --accentSoft: #6495ED; /* ex: CornflowerBlue */
     }
 
+    /* mêmes petits helpers que ton pr<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Aperçu – Warframes (Classic)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ===== Palette (modifie ces 2 lignes si tu veux changer les couleurs) ===== */
+    :root{
+      --accent: #4169E1;     /* ex: RoyalBlue */
+      --accentSoft: #6495ED; /* ex: CornflowerBlue */
+    }
+
     /* mêmes petits helpers que ton preview */
+    .chip{
+      display:inline-flex; align-items:center; gap:.25rem;
+      padding:.125rem .5rem; border-radius:9999px;
+      font-size:.75rem; font-weight:500; border-width:1px; border-style:solid;
+    }
+    .stat{
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:.75rem 1.25rem; border-radius:0.75rem;
+      background:var(--accent); border:1px solid #e5e7eb; color:#fff;
+    }
+    .pill{
+      display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:.5rem .75rem; border-radius:0.75rem;
+      background:var(--accentSoft); border:1px solid #e5e7eb; color:#fff;
+    }
+    .btn-tab{
+      padding:.375rem .75rem; border-radius:.5rem; border:1px solid #e5e7eb;
+      background:#fff; font-size:.875rem;
+    }
+    .btn-tab.active{
+      background:#0f172a; color:#fff; border-color:#0f172a;
+    }
+    .muted{ color:#64748b; }
+    .card{
+      background:#fff; border:1px solid #e5e7eb; border-radius:1rem; box-shadow:0 1px 2px rgba(0,0,0,.04);
+    }
+  </style>
+</head>
+<body class="bg-slate-100">
+  <div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-3">Aperçu – Warframes</h1>
+
+    <div id="status" class="mb-4 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg">
+      Chargement des données…
+    </div>
+
+    <div class="flex flex-wrap gap-3 items-center mb-5">
+      <div class="relative">
+        <input id="search" type="text" placeholder="Rechercher une Warframe…" class="w-72 pl-9 pr-3 py-2 rounded-xl border border-slate-300 bg-white outline-none focus:ring-2 focus:ring-slate-300" />
+        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
+          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <select id="picker" class="w-72 py-2 px-3 rounded-xl border border-slate-300 bg-white outline-none focus:ring-2 focus:ring-slate-300"></select>
+    </div>
+
+    <div id="card" class="card p-5"></div>
+  </div>
+
+<script>
+/* =========================
+   CONFIG
+========================= */
+const WF_URL = "https://api.warframestat.us/warframes";
+const ABILITIES_URL = "./data/warframe_abilities.json";
+
+/* =========================
+   Utils & normalisation
+========================= */
+const val = (x) => (x === null || x === undefined || x === '' ? '—' : String(x));
+const byName = (a,b) => (a.name||'').localeCompare(b.name||'');
+
+// index abilities par Warframe (avec variantes Prime/Umbra)
+const ABX = { byFrame: {} };
+const norm = (s) => String(s||"").trim();
+const variantFallbacks = (name) => {
+  if(!name) return [];
+  const base = name.replace(/\s+Prime\b/i,"").trim();
+  const list = [];
+  if(name !== base) list.push(base);
+  if(name === "Excalibur Umbra") list.push("Excalibur");
+  return list;
+};
+
+// tri par SlotKey si présent
+function sortBySlot(arr){ arr.sort((x,y)=> (x.SlotKey ?? 99) - (y.SlotKey ?? 99)); return arr; }
+
+// remplace Radial Blind -> Radial Howl pour Umbra si dispo
+function massageUmbra(list){
+  if (!Array.isArray(list)) list = [];
+  const base = ABX.byFrame["Excalibur"] || [];
+  if (!base.length) return list;
+  const merged = base.map(a => ({...a}));
+  const umbraList = ABX.byFrame["Excalibur Umbra"] || [];
+  const howl = umbraList.find(x=>/Howl/i.test(x.Name || x.name));
+  if (howl) {
+    const i = merged.findIndex(x=>/Radial\s*Blind/i.test(x.Name || x.name));
+    if (i>=0) merged[i] = {...howl, SlotKey: merged[i].SlotKey ?? howl.SlotKey};
+  }
+  return merged;
+}
+
+function getAbilitiesFor(frameName){
+  const key = norm(frameName);
+  let list = ABX.byFrame[key];
+  if (!list || !list.length){
+    for (const alt of variantFallbacks(key)){
+      if (ABX.byFrame[alt]?.length){ list = ABX.byFrame[alt]; break; }
+    }
+  }
+  if (key === "Excalibur Umbra") list = massageUmbra(list);
+  return (list || []).slice();
+}
+
+// format coût robuste (essaie plusieurs clés)
+function fmtCost(a){
+  const costEnergy = a.Cost ?? a.EnergyCost ?? a.CostEnergy ?? a.energyCost;
+  const costShield = a.CostShield ?? a.ShieldCost;
+  const costTime   = a.CostTime ?? a.Duration ?? a.duration;
+  if (costShield != null) return `${costShield} Bouclier`;
+  if (costTime != null)   return `${costTime} Temps`;
+  if (costEnergy != null) return `${costEnergy} Énergie`;
+  return "—";
+}
+const cleanDesc = (s) => (s||"").replace(/\\r?\\n/g," ").replace(/<[^>]+>/g,"").trim();
+
+/* =========================
+   Rendu UI (même style que ton preview)
+========================= */
+function stat(label, v){
+  return `
+    <div class="stat">
+      <div class="text-[10px] uppercase tracking-wide text-white/80">${label}</div>
+      <div class="text-lg font-semibold">${val(v)}</div>
+    </div>`;
+}
+
+function renderCard(wf, abilityIndex=0){
+  const root = document.getElementById('card');
+  const abilities = wf.abilities || [];
+  const a = abilities[abilityIndex] || {};
+
+  const tabs = abilities.map((ab, i) =>
+    `<button class="btn-tab ${i===abilityIndex?'active':''}" data-abi="${i}">${i+1}. ${ab.Name || ab.name || '—'}</button>`
+  ).join(' ');
+
+  const html = `
+    <div class="flex flex-col md:flex-row gap-6">
+      <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
+        <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center">
+          ${wf.image ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">` : `<div class="muted">Aucune image</div>`}
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col gap-4">
+        <div class="flex items-start gap-4">
+          <div class="min-w-0 flex-1">
+            <h2 class="text-xl font-semibold">${wf.name}</h2>
+            <p class="text-slate-600 mt-2">${wf.description || ''}</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-5 gap-3">
+          ${stat('HP', wf.stats.health)}
+          ${stat('SHIELD', wf.stats.shield)}
+          ${stat('ARMOR', wf.stats.armor)}
+          ${stat('ENERGY', wf.stats.energy)}
+          ${stat('SPRINT', wf.stats.sprintSpeed)}
+        </div>
+
+        <div class="mt-2">
+          ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ''}
+
+          <div class="card p-4">
+            <div class="font-semibold">${a.Name || a.name || '—'}</div>
+            <p class="text-slate-600 mt-1">${cleanDesc(a.Description || a.description || '')}</p>
+
+            <div class="grid grid-cols-4 gap-3 mt-4">
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Coût</div><div class="mt-1 font-medium">${fmtCost(a)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Puissance</div><div class="mt-1 font-medium">${val(a.Power || a.Strength || a.strength)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Durée</div><div class="mt-1 font-medium">${val(a.Duration || a.duration)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Portée</div><div class="mt-1 font-medium">${val(a.Range || a.range)}</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  root.innerHTML = html;
+  root.querySelectorAll('[data-abi]').forEach(btn => {
+    btn.addEventListener('click', () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
+  });
+}
+
+function renderPicker(list){
+  const el = document.getElementById('picker');
+  el.innerHTML = '';
+  list.forEach((wf, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = wf.name;
+    el.appendChild(opt);
+  });
+  el.value = '0';
+}
+
+/* =========================
+   Pipeline de données
+========================= */
+function normalizeWF(rec){
+  const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
+  return {
+    name: rec.name || '',
+    description: rec.description || '',
+    image: img,
+    stats: {
+      health: rec.health ?? '—',
+      shield: rec.shield ?? '—',
+      armor: rec.armor ?? '—',
+      energy: rec.power ?? rec.energy ?? '—',
+      sprintSpeed: rec.sprintSpeed ?? '—',
+    },
+    abilities: getAbilitiesFor(rec.name), // injecte depuis le JSON local
+  };
+}
+
+async function loadAll(){
+  const status = document.getElementById('status');
+  try{
+    status.textContent = 'Chargement des Warframes…';
+    const [warframes, abiRaw] = await Promise.all([
+      fetch(WF_URL).then(r=>r.json()),
+      fetch(ABILITIES_URL).then(r=>r.json()).catch(()=>[])
+    ]);
+
+    // index abilities
+    ABX.byFrame = (Array.isArray(abiRaw) ? abiRaw : []).reduce((acc, a) => {
+      const key = norm(a.Powersuit || a.Warframe || a.Frame || a.name);
+      if (!key) return acc;
+      (acc[key] ??= []).push(a);
+      return acc;
+    }, {});
+    for (const k in ABX.byFrame) sortBySlot(ABX.byFrame[k]);
+
+    // filtre Warframes (pas archwing/necramech)
+    const list = warframes
+      .filter(wf => wf.type === 'Warframe' && !['Bonewidow','Voidrig'].includes(wf.name))
+      .map(normalizeWF)
+      .sort(byName);
+
+    window.__WF_LIST = list; // debug
+
+    status.textContent = `Dataset chargé: ${list.length} Warframes`;
+    renderPicker(list);
+    if(list.length) renderCard(list[0], 0);
+
+    // picker & search
+    document.getElementById('picker').addEventListener('change', (e) => {
+      const idx = parseInt(e.target.value, 10);
+      const q = (document.getElementById('search').value || '').trim().toLowerCase();
+      const filtered = !q ? list : list.filter(x => x.name.toLowerCase().includes(q));
+      renderCard(filtered[idx], 0);
+    });
+    document.getElementById('search').addEventListener('input', () => {
+      const q = (document.getElementById('search').value || '').trim().toLowerCase();
+      const filtered = !q ? list : list.filter(x => x.name.toLowerCase().includes(q));
+      renderPicker(filtered);
+      if(filtered.length) renderCard(filtered[0], 0);
+      status.textContent = `Affichage: ${filtered.length} résultat(s)`;
+    });
+
+  }catch(e){
+    console.error(e);
+    status.className = "mb-4 text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-lg";
+    status.textContent = "Erreur de chargement.";
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>
+eview */
     .chip{
       display:inline-flex; align-items:center; gap:.25rem;
       padding:.125rem .5rem; border-radius:9999px;
