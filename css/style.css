@@ -40,6 +40,24 @@ h1, h2, h3 {
   overflow: hidden; clip: rect(1px,1px,1px,1px);
 }
 
+/* Fiche pouvoirs */
+.abilities-title{ margin:.6em 0 .3em; color: var(--acc); }
+.abilities{ display:grid; gap:.5em; }
+.ability{
+  background: rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius: var(--radius);
+  padding:.55em .65em;
+}
+.ability-head{
+  display:flex; align-items:center; gap:.5em; justify-content:space-between;
+  font-weight:600;
+}
+.ability-head .slot{ width:1.5em; text-align:center; opacity:.7; }
+.ability-head .name{ flex:1; }
+.ability-head .cost{ opacity:.9; }
+.ability .desc{ margin:.35em 0 0; font-size:.92em; line-height:1.25; }
+
 /* =============================
    Champs de recherche
 ============================= */
@@ -200,4 +218,21 @@ button#save-config:active{
   #warframe-list, #mod-list{ gap: .3rem; }
   .mod-item{ padding: .4em .55em; }
   .tooltip-text{ max-width: calc(100vw - 16px); }
+}
+/* 1) Évite que le texte passe sous l'image flottante de la tooltip */
+.tooltip-text::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* 2) Césure douce si un très long mot déborde (noms d’abilités exotiques) */
+.tooltip-text, .ability .desc {
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* 3) Accessibilité : réduit les animations si l’utilisateur l’a demandé */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
 }
