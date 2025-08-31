@@ -8,57 +8,82 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    /* ===== Palette (modifie ces 2 lignes si tu veux changer les couleurs) ===== */
+    /* ===== Palette Warframe-like (modifie ces variables si besoin) ===== */
     :root{
-      --accent: #fff;     
-      --accentSoft: #fff; 
+      --bg: #0b0e13;            /* fond général très sombre */
+      --panel: #11161e;         /* cartes/panneaux */
+      --panel-2: #0f141b;       /* pills/inputs */
+      --ink: #d2e2f2;           /* texte principal */
+      --muted: #92a0b3;         /* texte secondaire */
+      --accent: #00e5ff;        /* cyan Lotus */
+      --accentSoft: #00bcd4;    /* cyan doux */
+      --orokin: #d6c37a;        /* or orokin */
+      --ring: 0 0 0 3px rgba(0,229,255,.25);
     }
 
-    /* mêmes petits helpers que ton preview */
+    /* helpers / composants */
     .chip{
       display:inline-flex; align-items:center; gap:.25rem;
-      padding:.125rem .5rem; border-radius:9999px;
-      font-size:.75rem; font-weight:500; border-width:1px; border-style:solid;
+      padding:.125rem .5rem; border-radius:9999px; font-size:.75rem; font-weight:500;
+      border:1px solid rgba(214,195,122,.35); color:var(--ink); background:var(--panel-2);
     }
     .stat{
       display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:.75rem 1.25rem; border-radius:0.75rem;
-      background:var(--accent); border:1px solid #e5e7eb; color:#fff;
+      padding:.75rem 1.25rem; border-radius:0.75rem; color:var(--ink);
+      background: linear-gradient(180deg, rgba(0,229,255,.08), rgba(0,229,255,.02));
+      border:1px solid rgba(0,229,255,.3);
+      box-shadow: 0 8px 22px rgba(0,229,255,.08) inset;
     }
     .pill{
       display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:.5rem .75rem; border-radius:0.75rem;
-      background:var(--accentSoft); border:1px solid #e5e7eb; color:#fff;
+      padding:.5rem .75rem; border-radius:0.75rem; color:var(--ink);
+      background: var(--panel-2);
+      border:1px solid rgba(214,195,122,.35);
     }
     .btn-tab{
-      padding:.375rem .75rem; border-radius:.5rem; border:1px solid #e5e7eb;
-      background:#fff; font-size:.875rem;
+      padding:.375rem .75rem; border-radius:.5rem; font-size:.875rem; color:var(--ink);
+      border:1px solid #1f2937; background:var(--panel);
+      transition: transform .06s ease, background .2s ease, color .2s ease, border-color .2s ease;
     }
+    .btn-tab:hover{ border-color: rgba(0,229,255,.45); }
+    .btn-tab:active{ transform: translateY(1px); }
     .btn-tab.active{
-      background:#0f172a; color:#fff; border-color:#0f172a;
+      background: var(--accent); color:#061017; border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0,229,255,.25);
     }
-    .muted{ color:#64748b; }
+    .muted{ color: var(--muted); }
     .card{
-      background:#fff; border:1px solid #e5e7eb; border-radius:1rem; box-shadow:0 1px 2px rgba(0,0,0,.04);
+      background: var(--panel); border:1px solid rgba(214,195,122,.35);
+      border-radius:1rem; box-shadow: 0 12px 30px rgba(0,229,255,.08);
+      color: var(--ink);
     }
+    /* éclaircir les textes “secondaires” dans les cartes */
+    .card .text-slate-600{ color: #a8b3c3; }
   </style>
 </head>
-<body class="bg-slate-100">
+<body class="bg-[var(--bg)] text-[var(--ink)]">
   <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-2xl font-semibold mb-3">Aperçu – Warframes</h1>
 
-    <div id="status" class="mb-4 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-lg">
+    <div id="status" class="mb-4 text-sm text-cyan-300 bg-cyan-900/30 border border-cyan-700 px-3 py-2 rounded-lg">
       Chargement des données…
     </div>
 
     <div class="flex flex-wrap gap-3 items-center mb-5">
       <div class="relative">
-        <input id="search" type="text" placeholder="Rechercher une Warframe…" class="w-72 pl-9 pr-3 py-2 rounded-xl border border-slate-300 bg-white outline-none focus:ring-2 focus:ring-slate-300" />
-        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
+        <input
+          id="search" type="text" placeholder="Rechercher une Warframe…"
+          class="w-72 pl-9 pr-3 py-2 rounded-xl border border-slate-700 bg-[var(--panel-2)] text-[var(--ink)]
+                 placeholder-[var(--muted)] outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-400" />
+        <svg class="w-4 h-4 text-cyan-400/70 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
           <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
-      <select id="picker" class="w-72 py-2 px-3 rounded-xl border border-slate-300 bg-white outline-none focus:ring-2 focus:ring-slate-300"></select>
+
+      <select
+        id="picker"
+        class="w-72 py-2 px-3 rounded-xl border border-slate-700 bg-[var(--panel-2)] text-[var(--ink)]
+               outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-400"></select>
     </div>
 
     <div id="card" class="card p-5"></div>
@@ -132,12 +157,12 @@ function fmtCost(a){
 const cleanDesc = (s) => (s||"").replace(/\\r?\\n/g," ").replace(/<[^>]+>/g,"").trim();
 
 /* =========================
-   Rendu UI (même style que ton preview)
+   Rendu UI (identique, couleurs revues)
 ========================= */
 function stat(label, v){
   return `
     <div class="stat">
-      <div class="text-[10px] uppercase tracking-wide text-white/80">${label}</div>
+      <div class="text-[10px] uppercase tracking-wide text-white/70">${label}</div>
       <div class="text-lg font-semibold">${val(v)}</div>
     </div>`;
 }
@@ -154,7 +179,7 @@ function renderCard(wf, abilityIndex=0){
   const html = `
     <div class="flex flex-col md:flex-row gap-6">
       <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
-        <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center">
+        <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border border-slate-800 flex items-center justify-center">
           ${wf.image ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">` : `<div class="muted">Aucune image</div>`}
         </div>
       </div>
@@ -163,7 +188,7 @@ function renderCard(wf, abilityIndex=0){
         <div class="flex items-start gap-4">
           <div class="min-w-0 flex-1">
             <h2 class="text-xl font-semibold">${wf.name}</h2>
-            <p class="text-slate-600 mt-2">${wf.description || ''}</p>
+            <p class="mt-2 muted">${wf.description || ''}</p>
           </div>
         </div>
 
@@ -180,13 +205,13 @@ function renderCard(wf, abilityIndex=0){
 
           <div class="card p-4">
             <div class="font-semibold">${a.Name || a.name || '—'}</div>
-            <p class="text-slate-600 mt-1">${cleanDesc(a.Description || a.description || '')}</p>
+            <p class="mt-1">${cleanDesc(a.Description || a.description || '')}</p>
 
             <div class="grid grid-cols-4 gap-3 mt-4">
-              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Coût</div><div class="mt-1 font-medium">${fmtCost(a)}</div></div>
-              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Puissance</div><div class="mt-1 font-medium">${val(a.Power || a.Strength || a.strength)}</div></div>
-              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Durée</div><div class="mt-1 font-medium">${val(a.Duration || a.duration)}</div></div>
-              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/80">Portée</div><div class="mt-1 font-medium">${val(a.Range || a.range)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/70">Coût</div><div class="mt-1 font-medium">${fmtCost(a)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/70">Puissance</div><div class="mt-1 font-medium">${val(a.Power || a.Strength || a.strength)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/70">Durée</div><div class="mt-1 font-medium">${val(a.Duration || a.duration)}</div></div>
+              <div class="pill"><div class="text-[10px] uppercase tracking-wide text-white/70">Portée</div><div class="mt-1 font-medium">${val(a.Range || a.range)}</div></div>
             </div>
           </div>
         </div>
@@ -278,7 +303,7 @@ async function loadAll(){
 
   }catch(e){
     console.error(e);
-    status.className = "mb-4 text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-lg";
+    status.className = "mb-4 text-sm text-red-300 bg-red-900/30 border border-red-700 px-3 py-2 rounded-lg";
     status.textContent = "Erreur de chargement.";
   }
 }
