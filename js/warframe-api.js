@@ -1,66 +1,33 @@
-// warframe-api.js
-console.log("warframe-api.js chargé (amélioré)");
-
-const API_URL = "https://api.warframestat.us/warframes";
-const ABILITIES_URL = "data/abilities_by_warframe.json"; // ← mets ton JSON ici
-const EXCLUDED = new Set(["Bonewidow", "Voidrig"]);
+console.log("warframe-api.js chargé");
 
 const listEl = document.getElementById("warframe-list");
 const searchEl = document.getElementById("warframe-search");
 
-// Sécurité : échappe tout texte injecté dans le HTML
-const escapeHtml = (s) =>
-  s?.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m])) ?? "";
+// charge les Warframes (API publique)
+fetch("https://api.warframestat.us/warframes")
+  .then(r => r.json())
+  .then(data => {
+    // filtre: uniquement Warframes (sans Archwings/Necramechs)
+    const warframes = data.filter(wf =>
+      String(wf.type || "").toLowerCase() === "warframe" &&
+      !["Bonewidow","Voidrig"].includes(wf.name)
+    );
 
-// Normalise un nom pour matcher le JSON (ex: "Excalibur Prime" → "Excalibur")
-const normalizeName = (name) => name.replace(/\s+Prime$/i, "").trim();
+    render(warframes);
 
-// Garde uniquement les Warframes standards
-const isStandardWarframe = (wf) =>
-  wf &&
-  typeof wf.type === "string" &&
-  wf.type.toLowerCase() === "warframe" &&
-  !EXCLUDED.has(wf.name);
-
-(async function init() {
-  try {
-    const [wfRes, abRes] = await Promise.all([
-      fetch(API_URL),
-      fetch(ABILITIES_URL).catch(() => null)
-    ]);
-
-    const wfData = await wfRes.json();
-    const abilitiesMap = abRes && abRes.ok ? await abRes.json() : null;
-
-    let warframes = wfData.filter(isStandardWarframe);
-
-    const getAbilities = (name) => {
-      if (!abilitiesMap) return null;
-      return abilitiesMap[name] || abilitiesMap[normalizeName(name)] || null;
-    };
-
-    render(warframes, getAbilities);
-
-    // Recherche avec debounce
-    let t;
+    // recherche live
     searchEl.addEventListener("input", () => {
-      clearTimeout(t);
-      t = setTimeout(() => {
-        const q = searchEl.value.trim().toLowerCase();
-        const filtered = !q
-          ? warframes
-          : warframes.filter(wf => wf.name.toLowerCase().includes(q));
-        render(filtered, getAbilities);
-      }, 150);
+      const q = searchEl.value.toLowerCase();
+      const filtered = warframes.filter(w => w.name.toLowerCase().includes(q));
+      render(filtered);
     });
-
-  } catch (err) {
-    console.error(err);
+  })
+  .catch(err => {
     listEl.textContent = "Erreur de chargement des Warframes.";
-  }
-})();
+    console.error(err);
+  });
 
-function render(items, getAbilities) {
+function render(items){
   listEl.innerHTML = "";
   const frag = document.createDocumentFragment();
 
@@ -71,45 +38,46 @@ function render(items, getAbilities) {
     card.setAttribute("aria-label", `Configurer ${wf.name}`);
     card.tabIndex = 0;
     card.textContent = wf.name;
+    card.dataset.frameName = wf.name; // pour tooltip-smart
 
-    const tooltip = document.createElement("div");
-    tooltip.className = "tooltip-template";
+    // === Modèle de contenu de tooltip (caché dans la carte)
+    const tpl = document.createElement("div");
+    tpl.className = "tooltip-template";
+
     const imgURL = wf.imageName
       ? `https://cdn.warframestat.us/img/${wf.imageName}`
       : null;
 
-    const abilities = getAbilities?.(wf.name);
-    const abilitiesHtml = abilities
-      ? `<p style="margin:.5em 0 .25em 0;"><strong>Capacités</strong></p>
-         <ol style="padding-left:1.25em;margin:0;">
-           ${abilities.map(a => `<li>${escapeHtml(a)}</li>`).join("")}
-         </ol>`
-      : "";
-tooltip.innerHTML = `
-  <strong>${wf.name}</strong><br>
-  <em>${wf.description || "Pas de description disponible."}</em><br><br>
-  ${imgURL ? `<img src="${imgURL}" alt="${wf.name}"
-      style="width:100px; float:right; margin-left:10px; border-radius:8px;"
-      onerror="this.style.display='none'">` : ``}
-  <ul style="padding-left:1em; list-style:disc;">
-    <li><strong>Armure:</strong> ${wf.armor}</li>
-    <li><strong>Énergie:</strong> ${wf.power}</li>
-    <li><strong>Vie:</strong> ${wf.health}</li>
-    <li><strong>Bouclier:</strong> ${wf.shield}</li>
-    <li><strong>Vitesse:</strong> ${wf.sprintSpeed}</li>
-  </ul>
-  <div class="abilities-box"></div>   <!-- ← ICI -->
-`;
+    tpl.innerHTML = `
+      <strong style="display:block;margin-bottom:.25em">${wf.name}</strong>
+      <em>${wf.description || "Pas de description disponible."}</em><br><br>
 
-    card.appendChild(tooltip);
+      ${imgURL
+        ? `<img src="${imgURL}" alt="${wf.name}"
+               onerror="this.style.display='none'">`
+        : `<div class="muted">Aucune image</div>`}
 
-    card.addEventListener("mouseenter", () => {
-  const box = tooltip.querySelector(".abilities-box");
-  if (box && !box.dataset.filled) {
-    window.ABILITIES?.renderInto(box, wf.name);
-    box.dataset.filled = "1";
-  }
-});
+      <ul>
+        <li><strong>Armure:</strong> ${wf.armor ?? "—"}</li>
+        <li><strong>Énergie:</strong> ${wf.power ?? "—"}</li>
+        <li><strong>Vie:</strong> ${wf.health ?? "—"}</li>
+        <li><strong>Bouclier:</strong> ${wf.shield ?? "—"}</li>
+        <li><strong>Vitesse:</strong> ${wf.sprintSpeed ?? "—"}</li>
+      </ul>
+
+      <div class="abilities-mount" style="margin-top:.6em;"></div>
+    `;
+
+    card.appendChild(tpl);
+
+    // navigation (facultatif)
+    card.addEventListener("click", () => {
+      if (confirm(`Configurer ${wf.name} ?`)) {
+        localStorage.setItem("selectedWarframe", JSON.stringify(wf));
+        // à adapter si tu as une page mods.html
+        // window.location.href = "mods.html";
+      }
+    });
 
     frag.appendChild(card);
   });
