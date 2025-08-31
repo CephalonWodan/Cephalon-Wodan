@@ -85,33 +85,31 @@ function render(items, getAbilities) {
            ${abilities.map(a => `<li>${escapeHtml(a)}</li>`).join("")}
          </ol>`
       : "";
-
-    tooltip.innerHTML = `
-      ${imgURL ? `<img src="${imgURL}" alt="${escapeHtml(wf.name)}"
-          style="width:100px; float:right; margin-left:10px; border-radius:8px;"
-          onerror="this.style.display='none'">` : ""}
-
-      <strong>${escapeHtml(wf.name)}</strong><br>
-      <em>${escapeHtml(wf.description) || "Pas de description disponible."}</em><br><br>
-
-      <ul style="padding-left:1em; list-style:disc; margin:0;">
-        <li><strong>Armure:</strong> ${wf.armor ?? "—"}</li>
-        <li><strong>Énergie:</strong> ${wf.power ?? wf.energy ?? "—"}</li>
-        <li><strong>Vie:</strong> ${wf.health ?? "—"}</li>
-        <li><strong>Bouclier:</strong> ${wf.shield ?? "—"}</li>
-        <li><strong>Vitesse:</strong> ${wf.sprintSpeed ?? "—"}</li>
-      </ul>
-
-      ${abilitiesHtml}
-      <div style="clear:both"></div>
-    `;
+tooltip.innerHTML = `
+  <strong>${wf.name}</strong><br>
+  <em>${wf.description || "Pas de description disponible."}</em><br><br>
+  ${imgURL ? `<img src="${imgURL}" alt="${wf.name}"
+      style="width:100px; float:right; margin-left:10px; border-radius:8px;"
+      onerror="this.style.display='none'">` : ``}
+  <ul style="padding-left:1em; list-style:disc;">
+    <li><strong>Armure:</strong> ${wf.armor}</li>
+    <li><strong>Énergie:</strong> ${wf.power}</li>
+    <li><strong>Vie:</strong> ${wf.health}</li>
+    <li><strong>Bouclier:</strong> ${wf.shield}</li>
+    <li><strong>Vitesse:</strong> ${wf.sprintSpeed}</li>
+  </ul>
+  <div class="abilities-box"></div>   <!-- ← ICI -->
+`;
 
     card.appendChild(tooltip);
 
-    card.addEventListener("click", () => {
-      localStorage.setItem("selectedWarframe", JSON.stringify(wf));
-      window.location.href = "mods.html";
-    });
+    card.addEventListener("mouseenter", () => {
+  const box = tooltip.querySelector(".abilities-box");
+  if (box && !box.dataset.filled) {
+    window.ABILITIES?.renderInto(box, wf.name);
+    box.dataset.filled = "1";
+  }
+});
 
     frag.appendChild(card);
   });
