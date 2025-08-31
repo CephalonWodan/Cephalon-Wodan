@@ -6,16 +6,16 @@ const ABILITIES_URL = "data/warframe_abilities.json";
 // === État interne
 const ABILITIES = { byFrame: {}, ready: null };
 
-// utils
+// utilitaire
 const norm = s => String(s || "").trim();
 
-// variantes: Prime → base ; Umbra → Excalibur aussi
+// variantes: Prime → base ; Umbra → hérite d'Excalibur
 function variantFallbacks(name){
   if (!name) return [];
   const base = name.replace(/\s+Prime\b/i, "").trim();
   const list = [];
   if (name !== base) list.push(base);
-  if (name === "Excalibur Umbra") list.push("Excalibur");
+  if (/^Excalibur Umbra$/i.test(name)) list.push("Excalibur");
   return list;
 }
 
@@ -23,6 +23,7 @@ function variantFallbacks(name){
 ABILITIES.ready = (async () => {
   try {
     const res = await fetch(ABILITIES_URL);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     ABILITIES.byFrame = data.reduce((acc, a) => {
       const key = norm(a.Powersuit || a.Warframe || a.Frame || a.name);
@@ -40,7 +41,7 @@ ABILITIES.ready = (async () => {
   }
 })();
 
-// Umbra: compléter avec base et remplacer Radial Blind -> Radial Howl si besoin
+// Umbra: compléter avec base et remplacer Radial Blind -> Radial Howl si dispo
 function massageUmbra(list){
   if (!Array.isArray(list)) list = [];
   if (list.length >= 4) return list;
@@ -68,26 +69,33 @@ function getAbilitiesFor(frameName){
   return (list || []).slice();
 }
 
-// coûts robustes (essaie plusieurs clés fréquentes)
+// coûts (tente plusieurs clés possibles)
 function fmtCost(a){
-  const name = (a.Name || a.name || "").trim();
   const costEnergy = a.Cost ?? a.EnergyCost ?? a.CostEnergy ?? a.energyCost;
   const costShield = a.CostShield ?? a.ShieldCost;
   const costTime   = a.CostTime ?? a.Duration ?? a.duration;
-
   if (costShield != null) return `${costShield} Bouclier`;
   if (costTime != null)   return `${costTime} Temps`;
   if (costEnergy != null) return `${costEnergy} Énergie`;
   return "—";
 }
+
+// garde les <br>, enlève le reste du HTML
 function cleanDesc(s){
-  return (s || "").replace(/\\r?\\n/g,"<br>").replace(/<[^>]+>/g,"").trim();
+  if (!s) return "";
+  return String(s)
+    .replace(/\r?\n/g, "<br>")
+    .replace(/<(?!br\s*\/?)[^>]+>/g, "")
+    .trim();
 }
 
 function renderAbilitiesInto(container, frameName){
   const arr = getAbilitiesFor(frameName);
   if (!container) return;
-  if (!arr.length){ container.innerHTML = `<p class="muted">Aucun pouvoir trouvé.</p>`; return; }
+  if (!arr.length){
+    container.innerHTML = `<p class="muted">Aucun pouvoir trouvé.</p>`;
+    return;
+  }
   container.innerHTML = `
     <h4 class="abilities-title">Pouvoirs</h4>
     <div class="abilities">
@@ -95,7 +103,7 @@ function renderAbilitiesInto(container, frameName){
         <div class="ability">
           <div class="ability-head">
             <span class="slot">${a.SlotKey ?? ""}</span>
-            <span class="name">${a.Name || a.name}</span>
+            <span class="name">${a.Name || a.name || ""}</span>
             <span class="cost">${fmtCost(a)}</span>
           </div>
           <p class="desc">${cleanDesc(a.Description || a.description)}</p>
