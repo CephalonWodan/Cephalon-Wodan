@@ -13700,8 +13700,8 @@
     "summary": {
       "costEnergy": 35,
       "strength": null,
-      "duration": 8,
-      "range": 10,
+      "duration": 10,
+      "range": 12,
       "affectedBy": [
         "Durée",
         "Portée",
@@ -13720,21 +13720,21 @@
       },
       {
         "label": "Range: |val1|m",
-        "filledLabel": "Range: 10m",
+        "filledLabel": "Range: 12m",
         "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 12
+        },
+        "mainNumeric": 12
+      },
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 10s",
+        "modifier": "AVATAR_ABILITY_DURATION",
         "values": {
           "Val1": 10
         },
         "mainNumeric": 10
-      },
-      {
-        "label": "Duration: |val1|s",
-        "filledLabel": "Duration: 8s",
-        "modifier": "AVATAR_ABILITY_DURATION",
-        "values": {
-          "Val1": 8
-        },
-        "mainNumeric": 8
       }
     ]
   },
