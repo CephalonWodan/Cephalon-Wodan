@@ -54,25 +54,50 @@
   border-color:var(--gold);
 }
 
-/* Pastilles statistiques */
-.stat{
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:.75rem 1.25rem; border-radius:.75rem;
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.18));
-  border:1px solid rgba(230,210,142,.45);
+/* Tokens (facultatif) */
+:root{
+  --glass-1: rgba(255,255,255,.02);
+  --glass-2: rgba(0,0,0,.18);
+  --gold-b:  rgba(230,210,142,.45);
 }
-.stat .label{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
-.stat .value{ font-size:1.125rem; font-weight:600; color:var(--ink); }
 
-/* Petites “pills” d’infos (coût / portée / durée / puissance) */
+/* Pastilles statistiques */
+.stat,
 .pill{
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:.5rem .75rem; border-radius:.75rem;
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.14));
-  border:1px solid rgba(230,210,142,.45);
+  border-radius:.75rem;
+  background:linear-gradient(180deg, var(--glass-1), var(--glass-2));
+  border:1px solid var(--gold-b);
 }
-.pill .k{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
-.pill .v{ margin-top:.2rem; font-weight:500; }
+
+.stat{ padding:.75rem 1.25rem; }
+.stat .label{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted, #9aa1a9); }
+.stat .value{ font-size:1.125rem; font-weight:600; color:var(--ink, #e8e8ea); }
+
+/* Petites “pills” d’infos (coût / portée / durée / puissance) */
+.pill{ padding:.5rem .75rem; }
+.pill .k{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted, #9aa1a9); }
+.pill .v{ margin-top:.2rem; font-weight:500; color:var(--ink, #e8e8ea); }
+
+/* Inputs */
+:is(input, select){
+  border:1px solid rgba(230,210,142,.35);
+  background:transparent; color:var(--ink, #e8e8ea);
+  border-radius:.5rem; padding:.5rem .75rem;
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+:is(input, select):focus{
+  outline:none;
+  border-color: rgba(230,210,142,.85);
+  box-shadow:0 0 0 .2rem rgba(230,210,142,.25);
+}
+:is(input, select):disabled{ opacity:.6; cursor:not-allowed; }
+:is(input, select)::placeholder{ color:var(--muted, #9aa1a9); opacity:.8; }
+
+/* Accessibilité : limite les animations si demandé */
+@media (prefers-reduced-motion: reduce){
+  * { transition:none !important; }
+}
 
 /* Inputs */
 input, select{
