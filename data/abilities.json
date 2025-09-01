@@ -5673,7 +5673,7 @@
     "path": "/Lotus/Powersuits/PowersuitAbilities/GlaiveAbility",
     "summary": {
       "costEnergy": 25,
-      "strength": 500,
+      "strength": 750,
       "duration": null,
       "range": null,
       "affectedBy": [
@@ -5693,19 +5693,19 @@
       },
       {
         "label": "Slash Damage On Hit: |val1|",
-        "filledLabel": "Slash Damage On Hit: 500",
+        "filledLabel": "Slash Damage On Hit: 750",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
-          "Val1": 500
+          "Val1": 750
         },
-        "mainNumeric": 500
+        "mainNumeric": 750
       },
       {
         "label": "Number Of Shurikens: |val1|",
-        "filledLabel": "Number Of Shurikens: 2",
+        "filledLabel": "Number Of Shurikens: 5",
         "modifier": "NONE",
         "values": {
-          "Val1": 2
+          "Val1": 5
         },
         "mainNumeric": 2
       },
@@ -5728,8 +5728,8 @@
         "mainNumeric": 60
       },
       {
-        "label": "Homing Angle: |val1|xb0",
-        "filledLabel": "Homing Angle: 90xb0",
+        "label": "Homing Angle: |val1|°",
+        "filledLabel": "Homing Angle: 90°",
         "modifier": "NONE",
         "values": {
           "Val1": 90
