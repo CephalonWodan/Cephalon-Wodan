@@ -9009,7 +9009,7 @@
     "path": "/Lotus/Powersuits/PowersuitAbilities/NinjaStormAbility",
     "summary": {
       "costEnergy": 0,
-      "strength": 2000,
+      "strength": 1500,
       "duration": null,
       "range": 50,
       "affectedBy": [
@@ -9030,12 +9030,12 @@
       },
       {
         "label": "Damage: |val1|",
-        "filledLabel": "Damage: 2000",
+        "filledLabel": "Slash Damage: 1500",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
-          "Val1": 2000
+          "Val1": 1500
         },
-        "mainNumeric": 2000
+        "mainNumeric": 1500
       },
       {
         "label": "Range: |val1|m",
@@ -14368,6 +14368,15 @@
           "Val1": 25
         },
         "mainNumeric": 25
+      },
+      {
+        "label": "Finisher Damage: |val1|%",
+        "filledLabel": "Finisher Damage: 200%",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 200
+        },
+        "mainNumeric": 200
       },
       {
         "label": "Range: |val1|m",
