@@ -86,3 +86,5 @@ input, select{
   border:1px solid rgba(230,210,142,.35);
   border-radius:1rem;
 }
+/* Masquer les 4 cases "Coût / Puissance / Durée / Portée" */
+.pill-grid { display: none !important; }
