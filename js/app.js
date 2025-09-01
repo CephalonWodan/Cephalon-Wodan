@@ -1,318 +1,294 @@
-// js/app.js
-// =====================================================
-// Aperçu Warframes — alimente la UI avec 3 JSON locaux
-// abilities.json, abilities_by_warframe.json, warframe_abilities.json
-// + la liste Warframes de l’API officielle
-// =====================================================
+// js/app.js — version 'fallback-details-1'
 
-const CFG = {
-  WF_URL: "https://api.warframestat.us/warframes",
-  ABILITIES_VALUES_URL: "data/abilities.json",            // valeurs (cost/strength/duration/range + rows)
-  ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json", // noms par Warframe (fallback/ordre)
-  ABILITIES_META_URL: "data/warframe_abilities.json",     // meta (Name, SlotKey, InternalName, Cost, Description…)
-};
+console.log("app.js chargé");
 
-// ---------- utils
-const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
-const norm = (s) => String(s || "").trim();
-const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
-const bySlot = (a, b) => (a.SlotKey ?? 99) - (b.SlotKey ?? 99);
+// ===============================
+//  Config (URLs)
+// ===============================
+const WF_URL = window.WF_URL || "https://api.warframestat.us/warframes";
+const ABILITIES_URL = window.ABILITIES_URL || "data/abilities.json?v=3";
+const MAP_URL = "data/abilities_by_warframe.json";
+const WFA_URL = "data/warframe_abilities.json";
 
-function variantFallbacks(name) {
-  if (!name) return [];
-  const base = name.replace(/\s+Prime\b/i, "").trim();
-  const list = [];
+// ===============================
+//  Helpers
+// ===============================
+const val = (x) => (x === null || x === undefined || x === '' ? '—' : String(x));
+const byName = (a,b) => (a.name||'').localeCompare(b.name||'');
+
+const norm = (s) => String(s||"").trim();
+const stripPrime = (name) => name.replace(/\s+Prime\b/i,"").trim();
+const variants = (name) => {
+  const base = stripPrime(name);
+  const list = [name];
   if (name !== base) list.push(base);
   if (name === "Excalibur Umbra") list.push("Excalibur");
   return list;
+};
+
+// ===== Abilities lookups =====
+const ABL = {
+  rowsByPath: new Map(),     // exact path -> rows[]
+  rowsByBasename: new Map(), // last segment -> rows[]
+  byFrameName: new Map(),    // frame -> [{ name, slot, internal, rows? }]
+};
+
+function basename(p){
+  const m = String(p||'').split('/');
+  return m[m.length-1] || '';
 }
 
-// ---------- boot
-(async function boot() {
-  const status = document.getElementById("status");
-  try {
-    status.textContent = "Chargement des données…";
+// try to find rows[] from an internal name/path
+function findRowsForInternal(internal){
+  if (!internal) return null;
+  if (ABL.rowsByPath.has(internal)) return ABL.rowsByPath.get(internal);
 
-    const [wfRaw, valsRaw, byWfRaw, metaRaw] = await Promise.all([
-      fetch(CFG.WF_URL).then((r) => r.json()),
-      fetch(CFG.ABILITIES_VALUES_URL).then((r) => r.json()),
-      fetch(CFG.ABILITIES_BY_WF_URL).then((r) => r.json()).catch(() => ({})),
-      fetch(CFG.ABILITIES_META_URL).then((r) => r.json()),
-    ]);
+  const base = basename(internal);
+  if (ABL.rowsByBasename.has(base)) return ABL.rowsByBasename.get(base);
+  return null;
+}
 
-    // ---- index pour abilities.json (par path)
-    const valuesByPath = new Map(valsRaw.map((x) => [x.path, x]));
+// pretty-print a single row from abilities.json
+function renderDetailRow(row){
+  const label = row.label || '';
+  let value = row.value || '';
+  value = String(value).replace(/\s*<br\s*\/?>\s*/gi, '<br>');
+  const hint = row.hint ? `<span class="muted text-xs ml-2">${row.hint}</span>` : '';
+  return `<div class="flex items-start justify-between gap-3 py-1 border-b border-white/5">
+    <div class="text-[13px]">${label}${hint}</div>
+    <div class="text-[13px] font-medium text-[var(--ink)] text-right">${value}</div>
+  </div>`;
+}
 
-    // aide: retrouver la meilleure entrée values pour un InternalName
-    function findValuesForInternal(internalName) {
-      const cands = valsRaw.filter((v) => v.path.startsWith(internalName));
-      if (!cands.length) return null;
-      // on prend la plus spécifique (path le plus long)
-      cands.sort((a, b) => b.path.length - a.path.length);
-      return cands[0];
-    }
+// fallback minimal when no rows are available
+function renderFallbackRows(abiMeta){
+  const out = [];
+  if (abiMeta.Cost != null) {
+    const typ = abiMeta.CostType || "Énergie";
+    out.push({label:"Coût", value:`${abiMeta.Cost} ${typ}`});
+  }
+  if (abiMeta.Subsumable != null) {
+    out.push({label:"Subsumable (Helminth)", value: abiMeta.Subsumable ? "Oui" : "Non"});
+  }
+  if (Array.isArray(abiMeta.Augments) && abiMeta.Augments.length){
+    out.push({label:"Augments", value: abiMeta.Augments.join(", ")});
+  }
+  if (!out.length){
+    out.push({label:"Détails", value:"(données fines manquantes dans abilities.json)"});
+  }
+  return out.map(renderDetailRow).join("");
+}
 
-    // ---- index META par Warframe
-    const metaByFrame = metaRaw.reduce((acc, m) => {
-      const k = norm(m.Powersuit);
-      if (!k) return acc;
-      (acc[k] ??= []).push(m);
-      return acc;
-    }, {});
-    for (const k in metaByFrame) metaByFrame[k].sort(bySlot);
+// small stat pill
+function stat(label, v){
+  return `
+    <div class="stat">
+      <div class="label">${label}</div>
+      <div class="value">${val(v)}</div>
+    </div>`;
+}
 
-    // ---- fallback liste noms par Warframe (si jamais une frame manque dans meta)
-    const namesByFrame = byWfRaw || {};
+// ===============================
+//  Rendering
+// ===============================
+function renderCard(wf, slotIndex=0){
+  const root = document.getElementById('card');
+  const abilities = wf.abilities || [];
+  const a = abilities[slotIndex] || {};
 
-    // ---- normalisation de la liste warframes (filtrage)
-    const list = wfRaw
-      .filter((wf) => wf.type === "Warframe" && !["Bonewidow", "Voidrig"].includes(wf.name))
-      .map((rec) => {
-        const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
-        return {
-          name: rec.name || "",
-          description: rec.description || "",
-          image: img,
-          stats: {
-            health: rec.health ?? "—",
-            shield: rec.shield ?? "—",
-            armor: rec.armor ?? "—",
-            energy: rec.power ?? rec.energy ?? "—",
-            sprintSpeed: rec.sprintSpeed ?? "—",
-          },
-        };
-      })
-      .sort(byName);
+  const tabs = abilities.map((ab, i) =>
+    `<button class="btn-tab ${i===slotIndex?'active':''}" data-abi="${i}">${i+1}. ${ab.Name || ab.name || '—'}</button>`
+  ).join(' ');
 
-    // ---- injecter les pouvoirs (onglets) par frame : on part de META; fallback sur namesByFrame
-    function abilitiesForFrame(frameName) {
-      // 1) meta → InternalName → values
-      let meta = metaByFrame[frameName];
-      if (!meta || !meta.length) {
-        // variante (Prime → base, Umbra → Excalibur)
-        for (const alt of variantFallbacks(frameName)) {
-          if (metaByFrame[alt]?.length) {
-            meta = metaByFrame[alt];
-            break;
-          }
-        }
-      }
-      // Construire la liste
-      let out = [];
-      if (meta && meta.length) {
-        out = meta.map((m) => {
-          const values = findValuesForInternal(m.InternalName) || null;
-          // summary “fallback” si manquant
-          const sum = (values && values.summary) || {};
-          const summary = {
-            costEnergy: m.Cost ?? sum.costEnergy ?? null,
-            strength: sum.strength ?? null,
-            duration: sum.duration ?? null,
-            range: sum.range ?? null,
-            affectedBy: Array.isArray(sum.affectedBy) ? sum.affectedBy : [],
-          };
-          return {
-            slot: m.SlotKey ?? null,
-            name: m.Name || m.AbilityKey || "—",
-            description: m.Description || "",
-            internal: m.InternalName,
-            summary,
-            rows: (values && values.rows) || [], // lignes “Damage/Radius/…”
-          };
-        });
-      } else {
-        // 2) fallback : juste les noms (pas d’internal → on ne pourra pas lier aux valeurs)
-        const names = namesByFrame[frameName] || [];
-        out = names.map((n, i) => ({
-          slot: i + 1,
-          name: n,
-          description: "",
-          internal: null,
-          summary: { costEnergy: null, strength: null, duration: null, range: null, affectedBy: [] },
-          rows: [],
-        }));
-      }
+  // build detail rows: try abilities.json first, else fallback
+  let rowsHTML = "";
+  let rows = findRowsForInternal(a.InternalName || a.internal || a.internalName);
+  if (rows && rows.length){
+    rowsHTML = rows.map(renderDetailRow).join("");
+  } else {
+    rowsHTML = renderFallbackRows(a);
+  }
 
-      // cas Umbra : si meta “Umbra” existe on l’utilise (il contient déjà Radial Howl, etc.)
-      // sinon rien à faire : on a déjà le fallback prime/base plus haut si besoin
-      return out.sort((a, b) => (a.slot ?? 99) - (b.slot ?? 99));
-    }
+  const html = `
+    <div class="flex flex-col md:flex-row gap-6">
+      <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
+        <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden wf-img flex items-center justify-center">
+          ${wf.image ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">` : `<div class="muted">Aucune image</div>`}
+        </div>
+      </div>
 
-    // attache la liste d’abilities à chaque wf
-    list.forEach((wf) => {
-      wf.abilities = abilitiesForFrame(wf.name);
-    });
-
-    // ---------- UI
-    const card = document.getElementById("card");
-    const search = document.getElementById("search");
-    const picker = document.getElementById("picker");
-
-    function pill(label, value) {
-      return `
-        <div class="pill">
-          <div class="text-[10px] uppercase tracking-wide muted">${label}</div>
-          <div class="mt-1 font-medium">${txt(value)}</div>
-        </div>`;
-    }
-    function statBox(label, value) {
-      return `
-        <div class="stat">
-          <div class="text-[10px] uppercase tracking-wide text-slate-200">${label}</div>
-          <div class="text-lg font-semibold">${txt(value)}</div>
-        </div>`;
-    }
-
-    function renderCard(wf, iAbility = 0) {
-      const abilities = wf.abilities || [];
-      const a = abilities[iAbility] || {};
-      const s = a.summary || {};
-
-      const tabs = abilities
-        .map(
-          (ab, i) =>
-            `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">${ab.slot ?? i + 1}. ${
-              ab.name || "—"
-            }</button>`
-        )
-        .join(" ");
-
-      const affected = (s.affectedBy || [])
-        .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${k}</span>`)
-        .join(" ");
-
-      const rowsHtml = (a.rows || [])
-        .map((r) => {
-          const label = r.filledLabel || r.label || "";
-          const main = r.mainNumeric != null ? r.mainNumeric : "";
-          return `
-            <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-              <div class="text-sm">${label}</div>
-              <div class="font-medium">${txt(main)}</div>
-            </div>`;
-        })
-        .join("");
-
-      card.innerHTML = `
-        <div class="flex flex-col md:flex-row gap-6">
-          <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
-            <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-              ${
-                wf.image
-                  ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">`
-                  : `<div class="muted">Aucune image</div>`
-              }
-            </div>
+      <div class="flex-1 flex flex-col gap-4">
+        <div class="flex items-start gap-4">
+          <div class="min-w-0 flex-1">
+            <h2 class="text-xl font-semibold">${wf.name}</h2>
+            <p class="muted mt-2">${wf.description || ''}</p>
           </div>
+        </div>
 
-          <div class="flex-1 flex flex-col gap-4">
-            <div class="flex items-start gap-4">
-              <div class="min-w-0 flex-1">
-                <h2 class="text-xl font-semibold">${wf.name}</h2>
-                <p class="mt-2 text-[var(--muted)]">${wf.description || ""}</p>
-              </div>
-            </div>
+        <div class="grid grid-cols-5 gap-3">
+          ${stat('HP', wf.stats.health)}
+          ${stat('SHIELD', wf.stats.shield)}
+          ${stat('ARMOR', wf.stats.armor)}
+          ${stat('ENERGY', wf.stats.energy)}
+          ${stat('SPRINT', wf.stats.sprintSpeed)}
+        </div>
 
-            <div class="grid grid-cols-5 gap-3">
-              ${statBox("HP", wf.stats.health)}
-              ${statBox("SHIELD", wf.stats.shield)}
-              ${statBox("ARMOR", wf.stats.armor)}
-              ${statBox("ENERGY", wf.stats.energy)}
-              ${statBox("SPRINT", wf.stats.sprintSpeed)}
-            </div>
+        <div class="mt-2">
+          ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ''}
 
-            <div class="mt-2">
-              ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ""}
+          <div class="card p-4">
+            <div class="font-semibold mb-1">${a.Name || a.name || '—'}</div>
+            <p class="muted">${(a.Description || a.description || '').replace(/\r?\n/g,' ')}</p>
 
-              <div class="card p-4 orn">
-                <div class="font-semibold">${a.name || "—"}</div>
-                <p class="mt-1 text-[var(--muted)]">${(a.description || "").replace(/\r?\n/g, " ")}</p>
-
-                <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
-                  ${pill("Coût", s.costEnergy)}
-                  ${pill("Puissance", s.strength)}
-                  ${pill("Durée", s.duration)}
-                  ${pill("Portée", s.range)}
-                </div>
-
-                ${
-                  (s.affectedBy && s.affectedBy.length)
-                    ? `<div class="mt-4 text-sm">
-                        <div class="mb-1 muted">Affecté par :</div>
-                        <div class="flex flex-wrap gap-2">${affected}</div>
-                      </div>`
-                    : ""
-                }
-
-                ${
-                  rowsHtml
-                    ? `<div class="mt-5">
-                        <div class="text-sm muted mb-2">Détails</div>
-                        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-                          ${rowsHtml}
-                        </div>
-                      </div>`
-                    : ""
-                }
-              </div>
+            <div class="mt-4 space-y-1">
+              ${rowsHTML}
             </div>
           </div>
         </div>
-      `;
+      </div>
+    </div>`;
 
-      card.querySelectorAll("[data-abi]").forEach((btn) => {
-        btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
-      });
-    }
+  root.innerHTML = html;
+  root.querySelectorAll('[data-abi]').forEach(btn => {
+    btn.addEventListener('click', () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
+  });
+}
 
-    function renderPicker(arr) {
-      picker.innerHTML = "";
-      arr.forEach((wf, i) => {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = wf.name;
-        picker.appendChild(opt);
-      });
-      picker.value = "0";
-    }
+function renderPicker(list){
+  const el = document.getElementById('picker');
+  el.innerHTML = '';
+  list.forEach((wf, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = wf.name;
+    el.appendChild(opt);
+  });
+  el.value = '0';
+}
 
-    // init UI
-    const setStatus = (msg, ok = true) => {
-      status.textContent = msg;
-      if (!ok) {
-        status.className =
-          "mb-4 text-sm px-3 py-2 rounded-lg";
-        status.style.background = "rgba(255,0,0,.08)";
-        status.style.color = "#ffd1d1";
-      }
-    };
+// ===============================
+//  Normalisation Warframes
+// ===============================
+function normalizeWF(rec){
+  const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
+  return {
+    name: rec.name || '',
+    description: rec.description || '',
+    image: img,
+    stats: {
+      health: rec.health ?? '—',
+      shield: rec.shield ?? '—',
+      armor: rec.armor ?? '—',
+      energy: rec.power ?? rec.energy ?? '—',
+      sprintSpeed: rec.sprintSpeed ?? '—',
+    },
+    abilities: [], // remplie plus tard
+  };
+}
 
-    setStatus(`Dataset chargé : ${list.length} Warframes`);
-
-    renderPicker(list);
-    if (list.length) renderCard(list[0], 0);
-
-    picker.addEventListener("change", (e) => {
-      const idx = parseInt(e.target.value, 10);
-      const q = norm(search.value).toLowerCase();
-      const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
-      if (!filtered.length) return;
-      renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
-    });
-
-    search.addEventListener("input", () => {
-      const q = norm(search.value).toLowerCase();
-      const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
-      renderPicker(filtered);
-      if (filtered.length) renderCard(filtered[0], 0);
-      setStatus(`Affichage : ${filtered.length} résultat(s)`);
-    });
-  } catch (e) {
-    console.error(e);
-    const status = document.getElementById("status");
-    status.textContent = "Erreur de chargement.";
-    status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-    status.style.background = "rgba(255,0,0,.08)";
-    status.style.color = "#ffd1d1";
+// build ability list for a frame using warframe_abilities.json (has InternalName + SlotKey)
+function getFrameAbilitiesMeta(frameName, WFAbyFrame){
+  for (const candidate of variants(frameName)){
+    if (WFAbyFrame.has(candidate)) return WFAbyFrame.get(candidate);
   }
-})();
+  return [];
+}
+
+// ===============================
+//  Boot / Data Pipeline
+// ===============================
+async function loadAll(){
+  const status = document.getElementById('status');
+  try{
+    status.textContent = 'Chargement des données…';
+
+    const [warframes, abilityRows, mapByWF, wfaRaw] = await Promise.all([
+      fetch(WF_URL).then(r=>r.json()),
+      fetch(ABILITIES_URL).then(r=>r.json()).catch(()=>[]),
+      fetch(MAP_URL).then(r=>r.json()).catch(()=> ({})),
+      fetch(WFA_URL).then(r=>r.json()).catch(()=> []),
+    ]);
+
+    // Index rows from abilities.json
+    ABL.rowsByPath.clear();
+    ABL.rowsByBasename.clear();
+
+    if (Array.isArray(abilityRows)){
+      for (const it of abilityRows){
+        const p = it.path;
+        if (!p) continue;
+        ABL.rowsByPath.set(p, it.rows || []);
+        ABL.rowsByBasename.set(basename(p), it.rows || []);
+      }
+    }
+
+    // Index warframe_abilities.json by frame
+    const WFAbyFrame = new Map(); // frame -> [{Name, SlotKey, InternalName, Cost, ...}]
+    if (Array.isArray(wfaRaw)){
+      for (const a of wfaRaw){
+        const frame = a.Powersuit || a.Warframe || a.Frame;
+        if (!frame) continue;
+        (WFAbyFrame.get(frame) ?? WFAbyFrame.set(frame, []).get(frame)).push(a);
+      }
+      for (const [k, arr] of WFAbyFrame){
+        arr.sort((x,y)=> (x.SlotKey ?? 99) - (y.SlotKey ?? 99));
+      }
+    }
+
+    // filter frames list
+    const list = warframes
+      .filter(wf => wf.type === 'Warframe' && !['Bonewidow','Voidrig'].includes(wf.name))
+      .map(normalizeWF)
+      .sort(byName);
+
+    // attach abilities per frame using WFA meta
+    for (const wf of list){
+      const metaList = getFrameAbilitiesMeta(wf.name, WFAbyFrame);
+      wf.abilities = metaList.map(x => ({
+        Name: x.Name, Description: x.Description, SlotKey: x.SlotKey,
+        InternalName: x.InternalName, Cost: x.Cost, CostType: x.CostType,
+        Subsumable: x.Subsumable, Augments: x.Augments || [],
+      }));
+    }
+
+    window.__WF_LIST = list; // debug
+
+    status.textContent = `Dataset chargé: ${list.length} Warframes`;
+    renderPicker(list);
+    if(list.length) renderCard(list[0], 0);
+
+    // picker & search
+    document.getElementById('picker').addEventListener('change', (e) => {
+      const idx = parseInt(e.target.value, 10);
+      const q = (document.getElementById('search').value || '').trim().toLowerCase();
+      const filtered = !q ? list : list.filter(x => x.name.toLowerCase().includes(q));
+      renderCard(filtered[idx], 0);
+    });
+    document.getElementById('search').addEventListener('input', () => {
+      const q = (document.getElementById('search').value || '').trim().toLowerCase();
+      const filtered = !q ? list : list.filter(x => x.name.toLowerCase().includes(q));
+      renderPicker(filtered);
+      if(filtered.length) renderCard(filtered[0], 0);
+      status.textContent = `Affichage: ${filtered.length} résultat(s)`;
+    });
+
+    // diagnostic console: list frames with missing detailed rows
+    const missing = [];
+    for (const wf of list){
+      const miss = wf.abilities.filter(a => !findRowsForInternal(a.InternalName));
+      if (miss.length === wf.abilities.length){
+        missing.push(wf.name);
+      }
+    }
+    if (missing.length){
+      console.warn("Avertissement: pas de 'abilities.json' détaillé pour:", missing.join(", "));
+    }
+
+  }catch(e){
+    console.error(e);
+    status.className = "mb-4 text-sm text-red-700 bg-red-50 border border-red-200 px-3 py-2 rounded-lg";
+    status.textContent = "Erreur de chargement.";
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadAll);
