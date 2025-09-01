@@ -5673,7 +5673,7 @@
     "path": "/Lotus/Powersuits/PowersuitAbilities/GlaiveAbility",
     "summary": {
       "costEnergy": 25,
-      "strength": 750,
+      "strength": 500,
       "duration": null,
       "range": null,
       "affectedBy": [
@@ -5707,7 +5707,7 @@
         "values": {
           "Val1": 5
         },
-        "mainNumeric": 2
+        "mainNumeric": 5
       },
       {
         "label": "Auto-Target Radius: |val1|m",
@@ -17259,6 +17259,194 @@
           "Val1": 4
         },
         "mainNumeric": 4
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyrePulseAbility",
+    "summary": {
+      "costEnergy": 25,
+      "strength": 2000,
+      "duration": 10,
+      "range": 7,
+      "affectedBy": [
+        "Force",
+        "Efficacité",
+        "Durée",
+        "Portée"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 25",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": "Electric Damage On Deployment: |val1|",
+        "filledLabel": "Electric Damage On Deployment: 2000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 2000
+        },
+        "mainNumeric": 2000
+      },
+      {
+        "label": "Electric Damage Per Second On Field: |val1| per second",
+        "filledLabel": "Electric Damage Per Second On Field: 250 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 250
+        },
+        "mainNumeric": 250
+      },
+      {
+        "label": "Impact Radius: |val1|m",
+        "filledLabel": "Impact Radius: 4m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 4
+        },
+        "mainNumeric": 4
+      },
+      {
+        "label": "Field Radius: |val1|m",
+        "filledLabel": "Field Radius: 7m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 7
+        },
+        "mainNumeric": 7
+      },
+      {
+        "label": "ArcSphere Duration: |val1|s",
+        "filledLabel": "ArcSphere Duration: 10s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Enhanced Damage Multiplier: |val1|x",
+        "filledLabel": "Enhanced Damage Multiplier: 2.0x",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2.0
+        },
+        "mainNumeric": 2.0
+      },
+      {
+        "label": "Initial enemies hit for enhanced damage: |val1|",
+        "filledLabel": "Initial enemies hit for enhanced damage: 3 enemies",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 3
+        },
+        "mainNumeric": 3
+      },
+      {
+        "label": "Active Spheres Cap: |val1|",
+        "filledLabel": "Active Spheres Cap: 3 spheres",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 3
+        },
+        "mainNumeric": 3
+      },
+      {
+        "label": "Ability Critical Chance: |val1|% to |val2|%",
+        "filledLabel": "Ability Critical Chance: 0% to 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0,
+          "Val2": 300
+        },
+        "mainNumeric": 300
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreSphereAbility",
+    "summary": {
+      "costEnergy": 50,
+      "strength": 2000,
+      "duration": 10,
+      "range": 7,
+      "affectedBy": [
+        "Force",
+        "Efficacité",
+        "Portée"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 50",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "Electric Damage On Explosion: |val1|",
+        "filledLabel": "Electric Damage On Explosion: 1250",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1250
+        },
+        "mainNumeric": 1250
+      },
+      {
+        "label": "Contact Electric Damage Per Second: |val1| per second",
+        "filledLabel": "Electric Damage Per Second On Field: 1500 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1500
+        },
+        "mainNumeric": 1500
+      },
+      {
+        "label": "Explosion Radius: |val1|m",
+        "filledLabel": "Explosion Radius: 12m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 12
+        },
+        "mainNumeric": 12
+      },
+      {
+        "label": "Sphere Lifetime: |val1|s",
+        "filledLabel": "Sphere Lifetime: 2s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Explosion Lifetime: |val1|s",
+        "filledLabel": "ArcSphere Duration: 2s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Ability Critical Chance: |val1|% to |val2|%",
+        "filledLabel": "Ability Critical Chance: 0% to 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0,
+          "Val2": 300
+        },
+        "mainNumeric": 300
       }
     ]
   }
