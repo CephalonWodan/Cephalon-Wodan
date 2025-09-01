@@ -2562,6 +2562,48 @@
     "Description": "Let out a ferocious howl that stuns nearby enemies and causes Sentients to shed any built up resistances."
   },
   {
+  "AbilityKey": "Slash Dash",
+  "Name": "Slash Dash",
+  "Powersuit": "Excalibur Umbra",
+  "SlotKey": 1,
+  "Cost": 25,
+  "CostType": "energy",
+  "Introduced": "23",
+  "Augments": "Purging Slash, Surging Dash",
+  "Subsumable": true,
+  "Weapon": "",
+  "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraSlashDashNewAbility",
+  "Description": "Dash between enemies while slashing with the Exalted Blade."
+},
+{
+  "AbilityKey": "Radial Javelin",
+  "Name": "Radial Javelin",
+  "Powersuit": "Excalibur Umbra",
+  "SlotKey": 3,
+  "Cost": 75,
+  "CostType": "energy",
+  "Introduced": "23",
+  "Augments": "Furious Javelin",
+  "Subsumable": false,
+  "Weapon": "",
+  "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraRadialJavelinAbility",
+  "Description": "Launch javelins toward enemies, dealing high damage."
+},
+{
+  "AbilityKey": "Exalted Blade",
+  "Name": "Exalted Blade",
+  "Powersuit": "Excalibur Umbra",
+  "SlotKey": 4,
+  "Cost": 25,
+  "CostType": "energy",
+  "Introduced": "23",
+  "Augments": "Chromatic Blade",
+  "Subsumable": false,
+  "Weapon": "Exalted Blade",
+  "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraSwordOfDoomAbility",
+  "Description": "Summon a sword of pure light and immense power."
+},
+  {
     "AbilityKey": "Radial Javelin",
     "Name": "Radial Javelin",
     "Powersuit": "Excalibur",
