@@ -17450,6 +17450,114 @@
       }
     ]
   },
+ {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreOverchargedAbility",
+    "summary": {
+      "costEnergy": 100,
+      "strength": 250,
+      "duration": 22,
+      "range": 4,
+      "affectedBy": [
+        "Force",
+        "Efficacité",
+        "Durée",
+        "Portée"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 100",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Electric Damage On Discharge: |val1|",
+        "filledLabel": "Electric Damage On Discharge: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Electric Damage Per Second On Field: |val1| per second",
+        "filledLabel": "Electric Damage Per Second On Field: 250 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 250
+        },
+        "mainNumeric": 250
+      },
+      {
+        "label": "Electric Field Radius: |val1|m",
+        "filledLabel": "Electric Field Radius: 4m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 4
+        },
+        "mainNumeric": 4
+      },
+      {
+        "label": "Discharge Range: |val1|m",
+        "filledLabel": "Discharge Range: 10m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Rotorswell Duration: |val1|s",
+        "filledLabel": "Rotorswell Duration: 22s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 22
+        },
+        "mainNumeric": 22
+      },
+      {
+        "label": "Move Speed Multiplier: |val1|x",
+        "filledLabel": "Move Speed Multiplier: 1.5x",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 1.5
+        },
+        "mainNumeric": 1.5
+      },
+      {
+        "label": "Discharge Chained Target: |val1|",
+        "filledLabel": "Discharge Chained Target: 5 enemies",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 5
+        },
+        "mainNumeric": 5
+      },
+      {
+        "label": "Simultaneous Discharges Cap: |val1|",
+        "filledLabel": "Active Spheres Cap: 2 discharges",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Ability Critical Chance: |val1|% to |val2|%",
+        "filledLabel": "Ability Critical Chance: 0% to 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0,
+          "Val2": 300
+        },
+        "mainNumeric": 300
+      }
+    ]
+  },
   {
     "path": "/Lotus/Powersuits/PowersuitAbilities/GyreEnergizedAbility",
     "summary": {
