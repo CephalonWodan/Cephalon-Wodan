@@ -1,56 +1,88 @@
+/* ===== Thème Warframe + liseré "or Orokin" ===== */
 :root{
-  --bg: #0b0e13;
-  --panel: #11161e;
-  --panel-2: #0f141b;
-  --ink: #d2e2f2;
-  --muted: #92a0b3;
-  --accent: #00e5ff;
-  --orokin: #d6c37a;
-  --orokin-rgb: 214,195,122;
+  --bg:#0a0f1a;              /* fond global très sombre */
+  --panel-1:#0f172a;         /* carte/panneau */
+  --panel-2:#0b1423;         /* champs / variantes */
+  --ink:#e6edf7;             /* texte principal */
+  --muted:#93a4b8;           /* texte atténué */
+  --cyan:#00e5ff;            /* accent Tenno */
+  --gold:#e6d28e;            /* or Orokin */
+  --gold-2:#f2e6b1;          /* or clair pour hover/focus */
+  --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
 }
 
-/* Bordures orokin unifiées */
-.orn{ border:1px solid rgba(var(--orokin-rgb), .45); }
+/* Utilitaires */
+.muted{ color:var(--muted); }
+
+/* Cartes / panneaux */
+.card{
+  background:var(--panel-1);
+  color:var(--ink);
+  border-radius:1rem;
+  border:1px solid rgba(230,210,142,.55);
+  box-shadow:var(--shadow);
+}
+
+/* Liseré or générique (à utiliser partout si besoin) */
+.orn{
+  border:1px solid rgba(230,210,142,.55);
+  box-shadow:0 0 0 1px rgba(230,210,142,.15) inset, var(--shadow);
+  border-radius:.75rem;
+}
+
+/* Focus ring doré pour inputs/selects */
 .focus-gold:focus{
   outline:none;
-  box-shadow:0 0 0 3px rgba(var(--orokin-rgb), .25);
-  border-color:rgba(var(--orokin-rgb), .7);
+  box-shadow:0 0 0 3px rgba(230,210,142,.3), 0 0 0 1px rgba(230,210,142,.8) inset;
+  border-color:var(--gold);
 }
 
-/* Petits helpers */
-.chip{
-  display:inline-flex; align-items:center; gap:.25rem;
-  padding:.125rem .5rem; border-radius:9999px; font-size:.75rem; font-weight:500;
-  color:var(--ink); background:var(--panel-2);
-  border:1px solid rgba(var(--orokin-rgb), .45);
+/* Boutons d’onglets (capacités) */
+.btn-tab{
+  padding:.375rem .75rem;
+  border-radius:.5rem;
+  border:1px solid rgba(230,210,142,.45);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12));
+  font-size:.875rem;
+  color:var(--ink);
+  transition:transform .05s ease, border-color .2s ease, background .2s ease;
 }
+.btn-tab:hover{ transform:translateY(1px); border-color:var(--gold-2); }
+.btn-tab.active{
+  background:linear-gradient(180deg, rgba(230,210,142,.18), rgba(230,210,142,.06));
+  color:#0b0e14;
+  border-color:var(--gold);
+}
+
+/* Pastilles statistiques */
 .stat{
   display:flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:.75rem 1.25rem; border-radius:.75rem; color:var(--ink);
-  background:linear-gradient(180deg, rgba(0,229,255,.08), rgba(0,229,255,.02));
-  border:1px solid rgba(var(--orokin-rgb), .45);
-  box-shadow:0 8px 22px rgba(0,229,255,.08) inset;
+  padding:.75rem 1.25rem; border-radius:.75rem;
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.18));
+  border:1px solid rgba(230,210,142,.45);
 }
+.stat .label{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.stat .value{ font-size:1.125rem; font-weight:600; color:var(--ink); }
+
+/* Petites “pills” d’infos (coût / portée / durée / puissance) */
 .pill{
-  display:inline-flex; flex-direction:column; align-items:center; justify-content:center;
-  padding:.5rem .75rem; border-radius:.75rem; color:var(--ink);
-  background:var(--panel-2); border:1px solid rgba(var(--orokin-rgb), .45);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:.5rem .75rem; border-radius:.75rem;
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.14));
+  border:1px solid rgba(230,210,142,.45);
 }
-.btn-tab{
-  padding:.375rem .75rem; border-radius:.5rem; font-size:.875rem; color:var(--ink);
-  background:var(--panel); border:1px solid rgba(var(--orokin-rgb), .45);
-  transition:transform .06s ease, background .2s ease, color .2s ease, border-color .2s ease;
+.pill .k{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.pill .v{ margin-top:.2rem; font-weight:500; }
+
+/* Inputs */
+input, select{
+  border:1px solid rgba(230,210,142,.35);
+  transition:border-color .2s ease, box-shadow .2s ease;
 }
-.btn-tab:hover{ border-color: rgba(var(--orokin-rgb), .7); }
-.btn-tab:active{ transform: translateY(1px); }
-.btn-tab.active{
-  background: var(--accent); color:#061017; border-color: rgba(var(--orokin-rgb), .7);
-  box-shadow: 0 0 0 3px rgba(var(--orokin-rgb), .25);
+
+/* Images */
+.wf-img{
+  background:radial-gradient(60% 60% at 50% 50%, rgba(0,229,255,.06) 0%, rgba(0,0,0,0) 70%);
+  border:1px solid rgba(230,210,142,.35);
+  border-radius:1rem;
 }
-.muted{ color: var(--muted); }
-.card{
-  background: var(--panel); border:1px solid rgba(var(--orokin-rgb), .45);
-  border-radius:1rem; box-shadow: 0 12px 30px rgba(0,229,255,.08); color: var(--ink);
-}
-/* pour le paragraphe de description qui utilisait text-slate-600 */
-.card .text-slate-600{ color:#a8b3c3; }
