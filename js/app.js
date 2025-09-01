@@ -228,7 +228,7 @@ function variantFallbacks(name) {
                 <div class="font-semibold">${a.name || "—"}</div>
                 <p class="mt-1 text-[var(--muted)]">${(a.description || "").replace(/\r?\n/g, " ")}</p>
 
-                <div class="grid grid-cols-4 gap-3 mt-4">
+                <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
                   ${pill("Coût", s.costEnergy)}
                   ${pill("Puissance", s.strength)}
                   ${pill("Durée", s.duration)}
