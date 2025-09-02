@@ -1,15 +1,31 @@
 /* css/polarities.css */
-/* Ligne d’icônes sous l’image : centrée et compacte */
+/* Bloc complet : libellé + rangée d'icônes */
+.polarity-block {
+  width: 100%;
+  margin-top: .5rem;
+}
+
+/* Libellé "Polarité :" */
+.polarity-label {
+  font-size: 12px;
+  line-height: 1.2;
+  margin-bottom: .35rem;
+  text-align: center;
+  color: var(--muted, rgba(255,255,255,.65));
+  letter-spacing: .02em;
+}
+
+/* Rangée d'icônes (centrée) */
 .polarity-row {
   display: flex;
   flex-wrap: wrap;
   gap: .4rem;
   align-items: center;
   justify-content: center;
-  margin-top: .5rem;
+  margin: 0; /* le spacing est géré par .polarity-block */
 }
 
-/* Badge contenant l’icône (utile si on veut un fond/bord) */
+/* Badge contenant l’icône */
 .polarity-badge {
   min-width: 22px;
   height: 22px;
@@ -25,7 +41,7 @@
 .polarity-badge[data-kind="Aura"] { border-style: dashed; }
 .polarity-badge[data-kind="Exilus"] { opacity: .95; }
 
-/* Taille des SVG (corrige l’erreur 20 px → 20px) */
+/* Taille des SVG */
 .polarity-badge img { width: 20px; height: 20px; display: block; }
 
 /* Inversion douce en thème sombre si l’icône est noire */
