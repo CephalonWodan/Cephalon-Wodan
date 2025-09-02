@@ -13024,6 +13024,112 @@
       }
     ]
   },
+   {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/SentientWhirlwindAbility",
+    "summary": {
+      "costEnergy": 25,
+      "strength": 500,
+      "duration": null,
+      "range": 10,
+      "affectedBy": [
+        "Force",
+        "Portée",
+        "Efficacité"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 25",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": "Tau Damage Per Second: |val1|",
+        "filledLabel": "Tau Damage Per Second: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Tau Damage Per Second To Lifted Enemies By Sentient Wrath: |val1|",
+        "filledLabel": "Tau Damage Per Second To Lifted Enemies By Sentient Wrath: 1000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1000
+        },
+        "mainNumeric": 1000
+      },
+      {
+        "label": "Radius: |val1|m",
+        "filledLabel": "Radius: 10m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": Statut Chance: |val1|%",
+        "filledLabel": "Statut Chance: 25%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": Dash Duration: |val1|s",
+        "filledLabel": "Dash Duration: 1.25s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 1.25
+        },
+        "mainNumeric": 1.25
+      },
+      {
+        "label": Bonus Speed: |val1|m/s",
+        "filledLabel": "Bonus Speed: 1.25m/s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 1.25
+        },
+        "mainNumeric": 1.25
+      },
+      {
+        "label": "Shield Regen Per Enemy: |val1|shield point",
+        "filledLabel": "Shield Regen Per Enemy: 30SP",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 30
+        },
+        "mainNumeric": 30
+      },
+      {
+        "label": "Health Regen Per Enemy: |val1|health point",
+        "filledLabel": "Health Regen Per Enemy: 30HP",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 30
+        },
+        "mainNumeric": 30
+      },
+      {
+        "label": "Energy Refund Per Enemy: |val1|%",
+        "filledLabel": "Energy Refund Per Enemy: 25%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      }
+    ]
+  },
   {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SelfBulletAttractorAbility",
     "summary": {
