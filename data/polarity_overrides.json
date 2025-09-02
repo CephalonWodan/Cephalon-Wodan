@@ -4,5 +4,11 @@
     "slots": ["Madurai","Naramon"],
     "exilus": null,
     "exilusPolarity": null
+  },
+  "Dagath": {
+    "aura": "Zenurik",
+    "slots": ["Madurai","Vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
   }
 }
