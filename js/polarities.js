@@ -73,7 +73,7 @@
 
     const label = document.createElement("div");
     label.className = "polarity-label";
-    label.textContent = "Polarité :";
+    label.textContent = "Polarity :";
 
     const row = renderPolarityRow(data);
 
