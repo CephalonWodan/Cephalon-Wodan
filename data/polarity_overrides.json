@@ -10,5 +10,11 @@
     "slots": ["Madurai","Vazarin"],
     "exilus": null,
     "exilusPolarity": null
+  },
+    "Harrow Prime": {
+    "aura": "Naramon",
+    "slots": ["Madurai","Vazarin","Naramon"],
+    "exilus": null,
+    "exilusPolarity": null
   }
 }
