@@ -13136,66 +13136,6 @@
         },
         "mainNumeric": 500
       },
-       {
-    "path": "/Lotus/Powersuits/PowersuitAbilities/SentientStompAbility",
-    "summary": {
-      "costEnergy": 50,
-      "strength": 2000,
-      "duration": 10,
-      "range": 25,
-      "affectedBy": [
-        "Force",
-        "Portée",
-        "Durée",
-        "Efficacité"
-      ]
-    },
-    "rows": [
-      {
-        "label": "Energy Cost: |val1|",
-        "filledLabel": "Energy Cost: 50",
-        "modifier": "AVATAR_ABILITY_EFFICIENCY",
-        "values": {
-          "Val1": 50
-        },
-        "mainNumeric": 50
-      },
-      {
-        "label": "Tau Damage: |val1|",
-        "filledLabel": "Tau Damage: 2000",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 2000
-        },
-        "mainNumeric": 2000
-      },
-      {
-        "label": "Damage Vulnerability: |val1|%",
-        "filledLabel": "Damage Vulnerability: 35%",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 35
-        },
-        "mainNumeric": 35
-      },
-      {
-        "label": "Range: |val1|m",
-        "filledLabel": "Range: 25m",
-        "modifier": "AVATAR_ABILITY_RANGE",
-        "values": {
-          "Val1": 25
-        },
-        "mainNumeric": 25
-      },
-      {
-        "label": "Duration: |val1|s",
-        "filledLabel": "Duration: 10s",
-        "modifier": "AVATAR_ABILITY_DURATION",
-        "values": {
-          "Val1": 10
-        },
-        "mainNumeric": 10
-      },
       {
         "label": "Tau Damage Per Second To Lifted Enemies By Sentient Wrath: |val1|",
         "filledLabel": "Tau Damage Per Second To Lifted Enemies By Sentient Wrath: 1000",
