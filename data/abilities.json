@@ -5720,8 +5720,8 @@
         "mainNumeric": 20
       },
       {
-        "label": "Fractured BlastRange: |val1|m",
-        "filledLabel": "Fusion Strike Range: 14m",
+        "label": "Fractured Blast Range: |val1|m",
+        "filledLabel": "Fractured Blast Range: 14m",
         "modifier": "AVATAR_ABILITY_RANGE",
         "values": {
           "Val1": 14
