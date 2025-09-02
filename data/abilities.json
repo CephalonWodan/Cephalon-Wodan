@@ -13167,6 +13167,131 @@
     ]
   },
    {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/SentientSummonAbility",
+    "summary": {
+      "costEnergy": 50,
+      "strength": 30,
+      "duration": 45,
+      "range": 25,
+      "affectedBy": [
+        "Force",
+        "Portée",
+        "Durée",
+        "Efficacité"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 50",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "Damage Multiplier: |val1|x",
+        "filledLabel": "Damage Multiplier: 2.5x",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 2.5
+        },
+        "mainNumeric": 2.5
+      },
+      {
+        "label": "Health Multiplier: |val1|x",
+        "filledLabel": "Damage Vulnerability: 2x",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Shield Regen Range: |val1|m",
+        "filledLabel": "Range: 25m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": "Shield Regen per second: |val1|sp",
+        "filledLabel": "Range: 25sp",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": "Sentient Rank: |val1|",
+        "filledLabel": "Sentient Rank: 30",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 30
+        },
+        "mainNumeric": 30
+      },
+      {
+        "label": "Conculyst Whirlwind Cooldown: |val1|s",
+        "filledLabel": "Conculyst Whirlwind Cooldown: 10s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Conculyst Whirlwind Duration: |val1|s",
+        "filledLabel": "Conculyst Whirlwind Duration: 6s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 6
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Ortholyst Cannon Status Chance: |val1|%",
+        "filledLabel": "Ortholyst Cannon Status Chance: 100%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Ortholyst Mortar Status Chance: |val1|%",
+        "filledLabel": "Ortholyst Cannon Status Chance: 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 300
+        },
+        "mainNumeric": 300
+      },
+      {
+        "label": "Summulyst Max Summon: |val1| Choralysts",
+        "filledLabel": "Summulyst Max Summon: 6 Choralyst",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 6
+        },
+        "mainNumeric": 6
+      },
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 45s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 45
+        },
+        "mainNumeric": 45
+      }
+    ]
+  },
+   {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SentientWhirlwindAbility",
     "summary": {
       "costEnergy": 25,
