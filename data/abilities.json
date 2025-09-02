@@ -5669,6 +5669,67 @@
       }
     ]
   },
+   {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GeodeShardsAbility",
+    "summary": {
+      "costEnergy": 25,
+      "strength": 500,
+      "duration": 0,
+      "range": 14,
+      "affectedBy": [
+        "Force",
+        "Portée",
+        "Efficacité"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 25",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": "Impact and Slash Damage: |val1|",
+        "filledLabel": "Impact and Slash Damage: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Health Orb Drop: |val1|%",
+        "filledLabel": "Health Orb Drop: 50%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "Energy Orb Drop: |val1|%",
+        "filledLabel": "Energy Orb Drop: 20%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 20
+        },
+        "mainNumeric": 20
+      },
+      {
+        "label": "Fractured BlastRange: |val1|m",
+        "filledLabel": "Fusion Strike Range: 14m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 14
+        },
+        "mainNumeric": 14
+      }
+    ]
+  },
   {
     "path": "/Lotus/Powersuits/PowersuitAbilities/GlaiveAbility",
     "summary": {
