@@ -1,0 +1,5 @@
+.polarity-badge img { width:20px; height:20px; display:block }
+@media (prefers-color-scheme: dark){
+  /* Les icônes “noires” du wiki sont prévues pour fond clair : on les inverse en sombre */
+  .polarity-badge img { filter: invert(1); }
+}
