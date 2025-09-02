@@ -2,7 +2,8 @@
 // =====================================================
 // Aperçu Warframes — alimente la UI avec 3 JSON locaux
 // abilities.json, abilities_by_warframe.json, warframe_abilities.json
-// + la liste Warframes de l’API officielle
+// + la liste Warframes de l’API officielle WFCD
+// + overrides locaux pour pallier les manques (ex. polarités Dante)
 // =====================================================
 
 const CFG = {
@@ -10,6 +11,7 @@ const CFG = {
   ABILITIES_VALUES_URL: "data/abilities.json",            // valeurs (cost/strength/duration/range + rows)
   ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json", // noms par Warframe (fallback/ordre)
   ABILITIES_META_URL: "data/warframe_abilities.json",     // meta (Name, SlotKey, InternalName, Cost, Description…)
+  POLARITY_OVERRIDES_URL: "data/polarity_overrides.json", // <-- nouveau : overrides locaux
 };
 
 // ---------- utils
@@ -27,17 +29,28 @@ function variantFallbacks(name) {
   return list;
 }
 
+// Cherche un override exact, sinon tente les variantes (Prime -> base, Umbra -> Excalibur)
+function getOverrideFor(name, overrides = {}) {
+  if (!name) return null;
+  if (overrides[name]) return overrides[name];
+  for (const alt of variantFallbacks(name)) {
+    if (overrides[alt]) return overrides[alt];
+  }
+  return null;
+}
+
 // ---------- boot
 (async function boot() {
   const status = document.getElementById("status");
   try {
     status.textContent = "Chargement des données…";
 
-    const [wfRaw, valsRaw, byWfRaw, metaRaw] = await Promise.all([
+    const [wfRaw, valsRaw, byWfRaw, metaRaw, overridesRaw] = await Promise.all([
       fetch(CFG.WF_URL).then((r) => r.json()),
       fetch(CFG.ABILITIES_VALUES_URL).then((r) => r.json()),
       fetch(CFG.ABILITIES_BY_WF_URL).then((r) => r.json()).catch(() => ({})),
       fetch(CFG.ABILITIES_META_URL).then((r) => r.json()),
+      fetch(CFG.POLARITY_OVERRIDES_URL).then((r) => r.json()).catch(() => ({})), // peut ne pas exister au début
     ]);
 
     // ---- index pour abilities.json (par path)
@@ -70,7 +83,7 @@ function variantFallbacks(name) {
       .map((rec) => {
         const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
 
-        // --- Polarités (auto choix Prime/Base depuis l'API warframestat.us)
+        // --- Polarités (première source : API WFCD)
         const isPrime = /\bPrime\b/i.test(rec.name || "");
         const slots = isPrime
           ? (rec.prime_polarities ?? rec.polarities ?? [])
@@ -78,8 +91,19 @@ function variantFallbacks(name) {
         const aura = isPrime
           ? (rec.prime_aura ?? rec.aura ?? null)
           : (rec.aura ?? null);
-        // Pas de champ exilus dans l'API -> null (le front n'affiche pas si absent)
-        const exilus = null;
+
+        // L'API n'expose pas la polarité Exilus des Warframes. On laisse optionnel côté overrides.
+        const exilus = rec.exilus ?? null; // bool/existence si tu veux l’indiquer localement
+        const exilusPolarity = rec.exilusPolarity ?? rec.exilus_polarity ?? null;
+
+        // --- Overrides locaux (deuxième source) : si présents, ils priment
+        const ov = getOverrideFor(rec.name, overridesRaw);
+        const pol = {
+          slots: ov?.slots ?? slots,
+          aura: ov?.aura ?? aura,
+          exilus: ov?.exilus ?? exilus,
+          exilusPolarity: ov?.exilusPolarity ?? exilusPolarity,
+        };
 
         return {
           name: rec.name || "",
@@ -93,7 +117,7 @@ function variantFallbacks(name) {
             sprintSpeed: rec.sprintSpeed ?? "—",
           },
           // données polarités pour l'affichage des icônes (utilisées par js/polarities.js)
-          polarities: { slots, aura, exilus },
+          polarities: pol,
         };
       })
       .sort(byName);
@@ -147,8 +171,6 @@ function variantFallbacks(name) {
         }));
       }
 
-      // cas Umbra : si meta “Umbra” existe on l’utilise (il contient déjà Radial Howl, etc.)
-      // sinon rien à faire : on a déjà le fallback prime/base plus haut si besoin
       return out.sort((a, b) => (a.slot ?? 99) - (b.slot ?? 99));
     }
 
@@ -274,7 +296,7 @@ function variantFallbacks(name) {
         </div>
       `;
 
-      // Ajout des icônes de polarités (elles seront placées sous l'image par js/polarities.js)
+      // Ajout des icônes de polarités (placées sous l'image par js/polarities.js)
       if (window.Polarities?.attach) {
         Polarities.attach(card, wf);
       }
