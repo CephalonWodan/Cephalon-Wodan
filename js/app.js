@@ -70,7 +70,7 @@ function variantFallbacks(name) {
       .map((rec) => {
         const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
 
-        // --- Polarités (auto choix Prime/Base)
+        // --- Polarités (auto choix Prime/Base depuis l'API warframestat.us)
         const isPrime = /\bPrime\b/i.test(rec.name || "");
         const slots = isPrime
           ? (rec.prime_polarities ?? rec.polarities ?? [])
@@ -78,7 +78,7 @@ function variantFallbacks(name) {
         const aura = isPrime
           ? (rec.prime_aura ?? rec.aura ?? null)
           : (rec.aura ?? null);
-        // Pas de champ exilus côté API → on laisse null (le front n'affiche pas si absent)
+        // Pas de champ exilus dans l'API -> null (le front n'affiche pas si absent)
         const exilus = null;
 
         return {
@@ -92,7 +92,7 @@ function variantFallbacks(name) {
             energy: rec.power ?? rec.energy ?? "—",
             sprintSpeed: rec.sprintSpeed ?? "—",
           },
-          // données polarités pour l'affichage des icônes
+          // données polarités pour l'affichage des icônes (utilisées par js/polarities.js)
           polarities: { slots, aura, exilus },
         };
       })
@@ -223,8 +223,6 @@ function variantFallbacks(name) {
             <div class="flex items-start gap-4">
               <div class="min-w-0 flex-1">
                 <h2 class="text-xl font-semibold">${wf.name}</h2>
-                <!-- Conteneur d'icônes de polarités -->
-                <div class="mt-2"><div class="polarity-row"></div></div>
                 <p class="mt-2 text-[var(--muted)]">${wf.description || ""}</p>
               </div>
             </div>
@@ -276,7 +274,7 @@ function variantFallbacks(name) {
         </div>
       `;
 
-      // --- Appel d'intégration des icônes de polarités
+      // Ajout des icônes de polarités (elles seront placées sous l'image par js/polarities.js)
       if (window.Polarities?.attach) {
         Polarities.attach(card, wf);
       }
