@@ -1,0 +1,7 @@
+Symboles → Noms : V→Madurai, D→Vazarin, -→Naramon, /→Zenurik, Y→Unairu, U→Umbra, P→Penjaga, O→Any.
+
+Champs Exilus :
+
+exilus: true → affiche l’icône Exilus “générique”.
+
+exilusPolarity: "V" ou "Madurai" → affiche la polarité d’Exilus.
