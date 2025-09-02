@@ -13105,6 +13105,122 @@
     ]
   },
    {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/SentientBlastAbility",
+    "summary": {
+      "costEnergy": 100,
+      "strength": 15000,
+      "duration": 15,
+      "range": 30,
+      "affectedBy": [
+        "Force",
+        "Portée",
+        "Durée",
+        "Efficacité"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 100",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Tau Damage Per Second: |val1|",
+        "filledLabel": "Tau Damage Per Second: 15000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 15000
+        },
+        "mainNumeric": 15000
+      },
+      {
+        "label": "Convergence Explosion: |val1| tau damage",
+        "filledLabel": "Convergence Explosion: 750 tau damage",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 750
+        },
+        "mainNumeric": 750
+      },
+      {
+        "label": "Enemy Detonation: |val1| tau damage",
+        "filledLabel": "Enemy Detonation: 5000 tau damage",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 5000
+        },
+        "mainNumeric": 5000
+      },
+      {
+        "label": "Fusion Strike Range: |val1|m",
+        "filledLabel": "Fusion Strike Range: 30m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 30
+        },
+        "mainNumeric": 30
+      },
+      {
+        "label": "Explosion Radius: |val1|m",
+        "filledLabel": "Explosion Radius: 2m",
+        "modifier": "AVATAR_ABILITY_Range",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Explosion Falloff: |val1|m",
+        "filledLabel": "Explosion Falloff: 1m",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 1
+        },
+        "mainNumeric": 1
+      },
+      {
+        "label": "Conculyst Damage: |val1|x",
+        "filledLabel": "Conculyst Damage: 0.5x",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0.5
+        },
+        "mainNumeric": 0.5
+      },
+      {
+        "label": "Defense Reduction: |val1|%",
+        "filledLabel": "Conculyst Whirlwind Duration: 100%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Stream Status Chance: |val1|%",
+        "filledLabel": "Stream Status Chance: 20%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 20
+        },
+        "mainNumeric": 20
+      },
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 15s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 15
+        },
+        "mainNumeric": 15
+      }
+    ]
+  },
+   {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SentientStompAbility",
     "summary": {
       "costEnergy": 50,
