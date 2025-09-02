@@ -1,5 +1,34 @@
-.polarity-badge img { width:20px; height:20px; display:block }
-@media (prefers-color-scheme: dark){
-  /* Les icônes “noires” du wiki sont prévues pour fond clair : on les inverse en sombre */
+/* css/polarities.css */
+/* Ligne d’icônes sous l’image : centrée et compacte */
+.polarity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: .5rem;
+}
+
+/* Badge contenant l’icône (utile si on veut un fond/bord) */
+.polarity-badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 .25rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.04);
+}
+
+/* Variantes visuelles */
+.polarity-badge[data-kind="Aura"] { border-style: dashed; }
+.polarity-badge[data-kind="Exilus"] { opacity: .95; }
+
+/* Taille des SVG (corrige l’erreur 20 px → 20px) */
+.polarity-badge img { width: 20px; height: 20px; display: block; }
+
+/* Inversion douce en thème sombre si l’icône est noire */
+@media (prefers-color-scheme: dark) {
   .polarity-badge img { filter: invert(1); }
 }
