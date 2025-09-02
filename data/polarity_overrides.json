@@ -16,5 +16,11 @@
     "slots": ["Madurai","Vazarin","Naramon"],
     "exilus": null,
     "exilusPolarity": null
+  },
+    "Hildryn Prime": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Vazarin","Naramon"],
+    "exilus": true,
+    "exilusPolarity":"Vazarin"
   }
 }
