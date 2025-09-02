@@ -22,5 +22,23 @@
     "slots": ["Vazarin","Vazarin","Naramon"],
     "exilus": true,
     "exilusPolarity":"Vazarin"
+  },
+    "Qorvex": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Naramon"],
+    "exilus": null,
+    "exilusPolarity":null
+  },
+    "Temple": {
+    "aura": "Naramon",
+    "slots": ["Madurai","Vazarin"],
+    "exilus": null,
+    "exilusPolarity":null
+  },
+    "Voruna": {
+    "aura": "Vazarin",
+    "slots": ["Madurai","Vazarin"],
+    "exilus": null,
+    "exilusPolarity":null
   }
 }
