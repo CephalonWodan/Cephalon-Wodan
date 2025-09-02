@@ -13236,12 +13236,12 @@
       },
       {
         "label": "Bonus Speed: |val1|m/s",
-        "filledLabel": "Bonus Speed: 1.25m/s",
+        "filledLabel": "Bonus Speed: 24m/s",
         "modifier": "NONE",
         "values": {
-          "Val1": 1.25
+          "Val1": 24
         },
-        "mainNumeric": 1.25
+        "mainNumeric": 24
       },
       {
         "label": "Shield Regen Per Enemy: |val1|shield point",
