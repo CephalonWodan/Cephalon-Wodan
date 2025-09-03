@@ -1,30 +1,37 @@
 // js/app_common.js
-// Charge les données, gère la Warframe courante & les onglets (liens vers pages)
+// Charge les datasets communs + prépare la Warframe courante + liens d'onglets (pages)
 
 const CFG = {
-  WF_URL: "https://api.warframestat.us/warframes",
+  WF_URL: "https://api.warframestat.us/warframes?language=fr",
   ABILITIES_VALUES_URL: "data/abilities.json",
   ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json",
   ABILITIES_META_URL: "data/warframe_abilities.json",
-  MODS_BY_WF_URL: "data/mods_by_warframe.json",
+  // 🔗 Mods depuis l’API officielle (gros JSON)
+  ALL_MODS_URL: "https://api.warframestat.us/mods/?language=fr",
+
+  // Ces fichiers restent optionnels pour d’autres pages (shards, weapons…)
   ARCANES_BY_WF_URL: "data/arcanes_by_warframe.json",
   SHARDS_BY_WF_URL: "data/archon_shards_by_warframe.json",
   WEAPONS_BY_WF_URL: "data/weapons_by_warframe.json",
 };
 
-const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
+const txt  = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 const norm = (s) => String(s || "").trim();
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 const bySlot = (a, b) => (a.SlotKey ?? 99) - (b.SlotKey ?? 99);
 
 function variantFallbacks(name) {
   if (!name) return [];
-  const base = name.replace(/\s+Prime\b/i, "").trim();
+  const base = name.replace(/\s+Prime\b/i, "").replace(/\s+Umbra\b/i, "").trim();
   const list = [];
   if (name !== base) list.push(base);
-  if (name === "Excalibur Umbra") list.push("Excalibur");
+  if (/^Excalibur Umbra$/i.test(name)) list.push("Excalibur");
   return list;
 }
+function baseFrame(name) {
+  return (name || "").replace(/\s+Prime\b/i, "").replace(/\s+Umbra\b/i, "").trim();
+}
+
 function getQuery(name, def = "") {
   const u = new URL(location.href);
   return u.searchParams.get(name) || def;
@@ -34,7 +41,6 @@ function setQuery(nextFrame) {
   u.searchParams.set("frame", nextFrame);
   location.href = u.toString();
 }
-
 function pageFor(key) {
   switch (key) {
     case "apt": return "index.html";
@@ -44,6 +50,36 @@ function pageFor(key) {
     case "weapons": return "weapons.html";
     default: return "index.html";
   }
+}
+
+// ------- Détection / helpers MODS (depuis l’API)
+function isWarframeMod(m) {
+  const t = m.type || "";
+  const u = m.uniqueName || "";
+  return /warframe/i.test(t) || /\/Mods\/Warframe\//i.test(u);
+}
+function isAura(m) {
+  const t = m.type || "";
+  const u = m.uniqueName || "";
+  return /aura/i.test(t) || /\/Mods\/Auras?\//i.test(u);
+}
+function isExilus(m) {
+  // warframe-items expose souvent isUtility pour Exilus
+  if (m.isUtility === true) return true;
+  // fallback : certains objets portent un tag/description exilus
+  if (Array.isArray(m.tags) && m.tags.some(x => /exilus/i.test(x))) return true;
+  if (/exilus/i.test(m.description || "")) return true;
+  return false;
+}
+function isAugmentForFrame(m, frameName) {
+  const compat = norm(m.compatName);
+  if (compat && baseFrame(compat).toLowerCase() === baseFrame(frameName).toLowerCase()) return true;
+  // Quelques anciens enregistrements n’ont pas compatName : heuristique
+  if (/augment/i.test(m.description || "")) {
+    const b = baseFrame(frameName);
+    if (b && new RegExp(`\\b${b}\\b`, "i").test(m.description || "")) return true;
+  }
+  return false;
 }
 
 async function loadAll() {
@@ -58,7 +94,8 @@ async function loadAll() {
     fetch(CFG.ABILITIES_VALUES_URL).then(r=>r.json()),
     fetch(CFG.ABILITIES_BY_WF_URL).then(r=>r.json()).catch(()=> ({})),
     fetch(CFG.ABILITIES_META_URL).then(r=>r.json()),
-    fetch(CFG.MODS_BY_WF_URL).then(r=>r.json()).catch(()=> ({})),
+    // ⚠️ gros payload (plusieurs Mo)
+    fetch(CFG.ALL_MODS_URL).then(r=>r.json()).catch(()=> []),
     fetch(CFG.ARCANES_BY_WF_URL).then(r=>r.json()).catch(()=> ({})),
     fetch(CFG.SHARDS_BY_WF_URL).then(r=>r.json()).catch(()=> ({})),
     fetch(CFG.WEAPONS_BY_WF_URL).then(r=>r.json()).catch(()=> ({})),
@@ -86,9 +123,9 @@ async function loadAll() {
           sprintSpeed: rec.sprintSpeed ?? "—",
         },
         polarities: { slots, aura, exilus, exilusPolarity },
-        mods: (modsRaw || {})[rec.name] || [],
+        // placeholders pour autres pages
         arcanes: (arcanesRaw || {})[rec.name] || [],
-        shards: (shardsRaw || {})[rec.name] || [],
+        shards:  (shardsRaw  || {})[rec.name] || [],
         weapons: (weaponsRaw || {})[rec.name] || [],
       };
     })
@@ -105,14 +142,12 @@ async function loadAll() {
 
   // index pour abilities.json
   const vals = valsRaw;
-
   function findValuesForInternal(internalName) {
     const cands = vals.filter((v) => v.path.startsWith(internalName));
     if (!cands.length) return null;
     cands.sort((a, b) => b.path.length - a.path.length);
     return cands[0];
   }
-
   function abilitiesForFrame(frameName) {
     let meta = metaByFrame[frameName];
     if (!meta?.length) {
@@ -151,7 +186,23 @@ async function loadAll() {
     }).sort((a, b) => (a.slot ?? 99) - (b.slot ?? 99));
   }
 
-  return { list, abilitiesForFrame };
+  // ------- Prépare un index rapide des MODS pour la page mods.html
+  const allMods = Array.isArray(modsRaw) ? modsRaw : [];
+  function modsForFrame(frameName) {
+    const base = baseFrame(frameName);
+    const augments = allMods.filter(m => isWarframeMod(m) && isAugmentForFrame(m, base));
+    const auras    = allMods.filter(m => isAura(m));
+    const exilus   = allMods.filter(m => isWarframeMod(m) && isExilus(m) && !isAugmentForFrame(m, base));
+    const generals = allMods.filter(m =>
+      isWarframeMod(m) &&
+      !isAura(m) &&
+      !isExilus(m) &&
+      !isAugmentForFrame(m, base)
+    );
+    return { augments, auras, exilus, generals };
+  }
+
+  return { list, abilitiesForFrame, modsForFrame, allMods };
 }
 
 function renderVtabs(frameName, activeKey) {
@@ -159,11 +210,11 @@ function renderVtabs(frameName, activeKey) {
   if (!host) return;
   const enc = encodeURIComponent(frameName);
   const tabs = [
-    { key:"apt", label:"Aptitudes"   , href:`${pageFor("apt")}?frame=${enc}` },
-    { key:"mods", label:"MOD"        , href:`${pageFor("mods")}?frame=${enc}` },
-    { key:"arcanes", label:"Arcanes" , href:`${pageFor("arcanes")}?frame=${enc}` },
-    { key:"shards", label:"Archon Shards", href:`${pageFor("shards")}?frame=${enc}` },
-    { key:"weapons", label:"Weapons" , href:`${pageFor("weapons")}?frame=${enc}` },
+    { key:"apt",     label:"Aptitudes"    , href:`${pageFor("apt")}?frame=${enc}` },
+    { key:"mods",    label:"MODs"         , href:`${pageFor("mods")}?frame=${enc}` },
+    { key:"arcanes", label:"Arcanes"      , href:`${pageFor("arcanes")}?frame=${enc}` },
+    { key:"shards",  label:"Archon Shards", href:`${pageFor("shards")}?frame=${enc}` },
+    { key:"weapons", label:"Weapons"      , href:`${pageFor("weapons")}?frame=${enc}` },
   ];
   host.innerHTML = `
     <div class="vtab-col">
@@ -179,9 +230,8 @@ function setupPicker(list, activeKey, currentName) {
   const search = document.getElementById("search");
   const status = document.getElementById("status");
 
-  // options
   picker.innerHTML = "";
-  list.forEach((wf, i) => {
+  list.forEach((wf) => {
     const opt = document.createElement("option");
     opt.value = wf.name;
     opt.textContent = wf.name;
@@ -189,12 +239,8 @@ function setupPicker(list, activeKey, currentName) {
   });
   picker.value = currentName;
 
-  // change -> navigue vers même page avec ?frame=
-  picker.addEventListener("change", (e) => {
-    setQuery(e.target.value);
-  });
+  picker.addEventListener("change", (e) => setQuery(e.target.value));
 
-  // recherche -> filtre la liste + remet le picker
   search.addEventListener("input", () => {
     const q = norm(search.value).toLowerCase();
     const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
@@ -212,7 +258,7 @@ function setupPicker(list, activeKey, currentName) {
 window.WFApp = {
   txt, norm,
   init: async (activeKey, renderFn) => {
-    const { list, abilitiesForFrame } = await loadAll();
+    const { list, abilitiesForFrame, modsForFrame, allMods } = await loadAll();
     const status = document.getElementById("status");
     status.textContent = `Dataset chargé : ${list.length} Warframes`;
 
@@ -222,7 +268,6 @@ window.WFApp = {
     renderVtabs(current.name, activeKey);
     setupPicker(list, activeKey, current.name);
 
-    // callback page spécifique
-    await renderFn({ list, current, abilitiesForFrame });
+    await renderFn({ list, current, abilitiesForFrame, modsForFrame, allMods });
   }
 };
