@@ -2,45 +2,102 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Warframes – Archon Shards</title>
+  <title>Archon Shards — Warframe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thème + styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/vertical-tabs.css" />
+  <link rel="stylesheet" href="css/shards.css?v=1" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
+  <!-- NAV -->
   <div id="site-nav"></div>
-  <div class="max-w-6xl mx-auto p-6">
-    <h1 class="text-2xl font-semibold mb-3">Warframes – Archon Shards</h1>
 
-    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
-         style="background:rgba(0,229,255,.08); color:#bfefff;">
-      Chargement des données…
-    </div>
-
-    <div class="flex flex-wrap gap-3 items-center mb-5">
-      <div class="relative">
-        <input id="search" type="text" placeholder="Rechercher une Warframe…"
-               class="w-72 pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                      placeholder:text-[var(--muted)] outline-none orn focus-gold" />
-        <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
-          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+  <div class="max-w-7xl mx-auto p-6">
+    <div class="flex items-end justify-between flex-wrap gap-3">
+      <div>
+        <h1 class="text-2xl font-semibold">Archon Shards</h1>
+        <div id="status" class="mt-2 text-sm px-3 py-2 rounded-lg orn"
+             style="background:rgba(0,229,255,.08); color:#bfefff;">
+          Loading shards…
+        </div>
       </div>
 
-      <select id="picker"
-              class="w-72 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                     outline-none orn focus-gold"></select>
+      <div class="w-full lg:w-auto">
+        <div class="flex gap-3 flex-col sm:flex-row">
+          <div class="relative sm:w-[360px]">
+            <input id="q" type="text" placeholder="Search shards (name, description)…"
+                   class="w-full pl-10 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                          placeholder:text-[var(--muted)] outline-none orn focus-gold" />
+            <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2"
+                 viewBox="0 0 24 24" fill="none">
+              <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <select id="sort"
+                  class="sm:w-[220px] py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                         outline-none orn focus-gold">
+            <option value="name">Sort: Name (A→Z)</option>
+            <option value="color">Sort: Color</option>
+            <option value="tau">Sort: Tauforged first</option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <div id="panel-wrapper" class="flex gap-4">
-      <aside id="vtabs" class="hidden md:block w-[180px] shrink-0"></aside>
-      <div id="card" class="card p-5 flex-1"></div>
+    <!-- Filtres -->
+    <div class="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <aside class="lg:col-span-3">
+        <div class="sticky top-4 space-y-4">
+          <div class="card p-4 orn">
+            <div class="font-semibold mb-2">Colors</div>
+            <div id="f-colors" class="grid grid-cols-2 gap-2 text-sm"></div>
+          </div>
+
+          <div class="card p-4 orn">
+            <div class="font-semibold mb-2">Tauforged</div>
+            <label class="flex items-center gap-2 cursor-pointer text-sm">
+              <input id="only-tau" type="checkbox" class="accent-[var(--ink)]">
+              <span>Show tauforged only</span>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <button id="reset" class="btn-tab">Reset</button>
+            <div id="count" class="text-sm muted"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="lg:col-span-9">
+        <div id="active-filters" class="flex flex-wrap gap-2 mb-3"></div>
+
+        <div id="results" class="grid gap-4"></div>
+
+        <div id="pager" class="flex items-center justify-between mt-5">
+          <button id="prev" class="btn-tab">← Prev</button>
+          <div id="pageinfo" class="text-sm muted"></div>
+          <button id="next" class="btn-tab">Next →</button>
+        </div>
+      </main>
     </div>
   </div>
 
-  <script src="js/app_common.js?v=1" defer></script>
-  <script src="js/app_shards.js?v=1" defer></script>
+  <!-- Lightbox image (si vignettes wiki lisibles) -->
+  <div id="lightbox" class="hidden">
+    <div class="lb-backdrop"></div>
+    <div class="lb-content">
+      <img id="lb-img" alt="" />
+      <div id="lb-caption" class="lb-caption"></div>
+      <button id="lb-close" class="lb-close" aria-label="Close">✕</button>
+    </div>
+  </div>
+
+  <!-- JS -->
   <script src="js/site_nav.js" defer></script>
+  <script src="js/shards.js?v=1" defer></script>
 </body>
 </html>
