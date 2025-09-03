@@ -1,7 +1,7 @@
 // js/polarities.js
 // Affiche sous l'image :
 //  - "Aura polarity :" + icône + texte (ex: Madurai)
-//  - "Polarity :"      + icônes des autres slots (+ Exilus si fourni)
+//  - "Polarities :"      + icônes des autres slots (+ Exilus si fourni)
 // Expose window.Polarities.attach(cardEl, wf)
 
 (() => {
