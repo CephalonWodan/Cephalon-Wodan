@@ -1,7 +1,8 @@
 // js/app.js
 // =====================================================
-// Aperçu Warframes — 3 colonnes :
-//   [Image + Polarities] | [Onglets VERTICAUX] | [Grand encadré de contenu]
+// Disposition : 2 colonnes DOM indépendantes
+//  - #vtabs : barre d’onglets VERTICAUX (à gauche du grand encadré)
+//  - #card  : contenu (image + stats + sections)
 // Sections : Aptitudes / MOD / Arcanes / Archon Shards / Weapons
 // =====================================================
 
@@ -36,6 +37,11 @@ function variantFallbacks(name) {
 // ---------- boot
 (async function boot() {
   const status = document.getElementById("status");
+  const card = document.getElementById("card");
+  const vtabs = document.getElementById("vtabs");
+  const search = document.getElementById("search");
+  const picker = document.getElementById("picker");
+
   try {
     status.textContent = "Chargement des données…";
 
@@ -99,7 +105,6 @@ function variantFallbacks(name) {
         const slots = isPrime ? (rec.prime_polarities ?? rec.polarities ?? []) : (rec.polarities ?? []);
         const aura  = isPrime ? (rec.prime_aura ?? rec.aura ?? null) : (rec.aura ?? null);
 
-        // Exilus côté API : pas de polarité ; tu peux le compléter via données locales
         const exilus = rec.exilus ?? null;
         const exilusPolarity = rec.exilusPolarity ?? rec.exilus_polarity ?? null;
 
@@ -177,11 +182,7 @@ function variantFallbacks(name) {
     });
 
     // ---------- UI helpers
-    const card = document.getElementById("card");
-    const search = document.getElementById("search");
-    const picker = document.getElementById("picker");
 
-    // barre latérale (onglets)
     const sectionTabs = [
       { key: "apt",     label: "Aptitudes" },
       { key: "mods",    label: "MOD" },
@@ -205,7 +206,7 @@ function variantFallbacks(name) {
         </div>`;
     }
 
-    // Rendu sections secondaires (Mods / Arcanes / Shards / Weapons)
+    // Rendu listes secondaires
     function renderModsList(mods) {
       if (!mods || !mods.length) {
         return `<div class="muted">Aucun mod défini pour cette Warframe. Ajoute <code>data/mods_by_warframe.json</code>.</div>`;
@@ -262,62 +263,54 @@ function variantFallbacks(name) {
       return `<ul class="divide-y divide-[rgba(255,255,255,.06)]">${items}</ul>`;
     }
 
-    function renderSectionSidebar(activeKey) {
-      // Colonne VERTICALE à gauche du grand encadré (collée à sa bordure)
-      return `
-        <aside class="hidden md:block w-[180px] shrink-0">
-          <div class="vtab-col">
-            ${sectionTabs.map(t =>
-              `<button class="btn-tab ${t.key === activeKey ? "active" : ""} vtab" data-top="${t.key}">
-                ${t.label}
-              </button>`
-            ).join("")}
-          </div>
-        </aside>
-
-        <!-- Sur mobile, on met une rangée horizontale au-dessus du contenu -->
-        <div class="md:hidden">
-          <div class="flex flex-wrap gap-2 mb-2">
-            ${sectionTabs.map(t =>
-              `<button class="btn-tab ${t.key === activeKey ? "active" : ""}" data-top="${t.key}">${t.label}</button>`
-            ).join("")}
-          </div>
+    // ===== Barre d’onglets VERTICAUX (à gauche du card) =====================
+    function renderLeftTabs(wf, activeKey) {
+      vtabs.innerHTML = `
+        <div class="vtab-col">
+          ${sectionTabs.map(t =>
+            `<button class="btn-tab ${t.key === activeKey ? "active" : ""} vtab" data-top="${t.key}">
+               ${t.label}
+             </button>`
+          ).join("")}
         </div>
       `;
+      // listeners
+      vtabs.querySelectorAll("[data-top]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const key = String(btn.dataset.top);
+          renderCard(wf, 0, key); // change de section, reset aptitude 1
+        });
+      });
     }
 
-    // ---------- Rendu d'une Warframe
+    // ---------- Rendu d'une Warframe (dans #card)
     function renderCard(wf, iAbility = 0, activeTop = "apt") {
       const abilities = wf.abilities || [];
       const a = abilities[iAbility] || {};
       const s = a.summary || {};
 
-      const tabsApt = abilities
-        .map(
-          (ab, i) =>
-            `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">${ab.slot ?? i + 1}. ${
-              ab.name || "—"
-            }</button>`
-        )
-        .join(" ");
+      // tabs de sous-aptitudes
+      const tabsApt = abilities.map((ab, i) =>
+        `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">
+           ${ab.slot ?? i + 1}. ${ab.name || "—"}
+         </button>`
+      ).join(" ");
 
       const affected = (s.affectedBy || [])
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${k}</span>`)
         .join(" ");
 
-      const rowsHtml = (a.rows || [])
-        .map((r) => {
-          const label = r.filledLabel || r.label || "";
-          const main = r.mainNumeric != null ? r.mainNumeric : "";
-          return `
-            <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-              <div class="text-sm">${label}</div>
-              <div class="font-medium">${txt(main)}</div>
-            </div>`;
-        })
-        .join("");
+      const rowsHtml = (a.rows || []).map((r) => {
+        const label = r.filledLabel || r.label || "";
+        const main = r.mainNumeric != null ? r.mainNumeric : "";
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
+            <div class="text-sm">${label}</div>
+            <div class="font-medium">${txt(main)}</div>
+          </div>`;
+      }).join("");
 
-      // ----- contenu principal selon l'onglet
+      // contenu principal selon l’onglet
       let mainContent = "";
       if (activeTop === "apt") {
         mainContent = `
@@ -333,25 +326,21 @@ function variantFallbacks(name) {
               ${pill("Portée", s.range)}
             </div>
 
-            ${
-              (s.affectedBy && s.affectedBy.length)
+            ${ (s.affectedBy && s.affectedBy.length)
                 ? `<div class="mt-4 text-sm">
-                    <div class="mb-1 muted">Affecté par :</div>
-                    <div class="flex flex-wrap gap-2">${affected}</div>
-                  </div>`
-                : ""
-            }
+                     <div class="mb-1 muted">Affecté par :</div>
+                     <div class="flex flex-wrap gap-2">${affected}</div>
+                   </div>`
+                : "" }
 
-            ${
-              rowsHtml
+            ${ rowsHtml
                 ? `<div class="mt-5">
-                    <div class="text-sm muted mb-2">Détails</div>
-                    <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-                      ${rowsHtml}
-                    </div>
-                  </div>`
-                : ""
-            }
+                     <div class="text-sm muted mb-2">Détails</div>
+                     <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
+                       ${rowsHtml}
+                     </div>
+                   </div>`
+                : "" }
           </div>`;
       } else if (activeTop === "mods") {
         mainContent = `
@@ -379,25 +368,29 @@ function variantFallbacks(name) {
           </div>`;
       }
 
-      // === 3 COLONNES ======================================================
+      // rendu du panel (image + texte + contenu)
       card.innerHTML = `
-        <div class="flex flex-col gap-6 md:flex-row">
-          <!-- Colonne 1 : Image + polarities -->
+        <div class="flex flex-col md:flex-row gap-6">
+          <!-- Colonne image + polarités -->
           <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
             <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-              ${
-                wf.image
+              ${ wf.image
                   ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">`
-                  : `<div class="muted">Aucune image</div>`
-              }
+                  : `<div class="muted">Aucune image</div>` }
             </div>
           </div>
 
-          <!-- Colonne 2 : Barre d'onglets VERTICALE (collée à gauche du grand encadré) -->
-          ${renderSectionSidebar(activeTop)}
-
-          <!-- Colonne 3 : Grand encadré -->
+          <!-- Colonne contenu -->
           <div class="flex-1 flex flex-col gap-4">
+            <!-- Sur mobile, on montre des onglets horizontaux au-dessus du contenu -->
+            <div class="md:hidden">
+              <div class="flex flex-wrap gap-2 mb-2">
+                ${sectionTabs.map(t =>
+                  `<button class="btn-tab ${t.key === activeTop ? "active" : ""}" data-top="${t.key}">${t.label}</button>`
+                ).join("")}
+              </div>
+            </div>
+
             <div class="flex items-start gap-4">
               <div class="min-w-0 flex-1">
                 <h2 class="text-xl font-semibold">${wf.name}</h2>
@@ -418,30 +411,34 @@ function variantFallbacks(name) {
         </div>
       `;
 
-      // Icônes de polarités sous l'image
+      // Polarités sous l'image
       if (window.Polarities?.attach) {
         Polarities.attach(card, wf);
       }
 
-      // Listeners — switch section
+      // Listeners : onglets horizontaux (mobile)
       card.querySelectorAll("[data-top]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const key = String(btn.dataset.top);
-          renderCard(wf, 0, key); // reset 1ère aptitude
+          renderCard(wf, 0, key);
         });
       });
 
-      // Listeners — switch aptitude (si section "apt")
+      // Listeners : sous-onglets d’aptitudes
       if (activeTop === "apt") {
         card.querySelectorAll("[data-abi]").forEach((btn) => {
-          btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10), "apt"));
+          btn.addEventListener("click", () =>
+            renderCard(wf, parseInt(btn.dataset.abi, 10), "apt")
+          );
         });
       }
+
+      // Mets à jour la barre VERTICALE à gauche
+      renderLeftTabs(wf, activeTop);
     }
 
     // ---------- Picker & recherche
     function renderPicker(arr) {
-      const picker = document.getElementById("picker");
       picker.innerHTML = "";
       arr.forEach((wf, i) => {
         const opt = document.createElement("option");
@@ -465,16 +462,16 @@ function variantFallbacks(name) {
     renderPicker(list);
     if (list.length) renderCard(list[0], 0, "apt");
 
-    document.getElementById("picker").addEventListener("change", (e) => {
+    picker.addEventListener("change", (e) => {
       const idx = parseInt(e.target.value, 10);
-      const q = norm(document.getElementById("search").value).toLowerCase();
+      const q = norm(search.value).toLowerCase();
       const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
       if (!filtered.length) return;
       renderCard(filtered[Math.min(idx, filtered.length - 1)], 0, "apt");
     });
 
-    document.getElementById("search").addEventListener("input", () => {
-      const q = norm(document.getElementById("search").value).toLowerCase();
+    search.addEventListener("input", () => {
+      const q = norm(search.value).toLowerCase();
       const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
       renderPicker(filtered);
       if (filtered.length) renderCard(filtered[0], 0, "apt");
