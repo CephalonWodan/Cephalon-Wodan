@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Warframes – Arcanes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/theme.css?v=1" />
+  <link rel="stylesheet" href="css/vertical-tabs.css" />
+</head>
+<body class="bg-[var(--bg)] text-[var(--ink)]">
+  <div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-3">Warframes – Arcanes</h1>
+
+    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
+         style="background:rgba(0,229,255,.08); color:#bfefff;">
+      Chargement des données…
+    </div>
+
+    <div class="flex flex-wrap gap-3 items-center mb-5">
+      <div class="relative">
+        <input id="search" type="text" placeholder="Rechercher une Warframe…"
+               class="w-72 pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                      placeholder:text-[var(--muted)] outline-none orn focus-gold" />
+        <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
+          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <select id="picker"
+              class="w-72 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                     outline-none orn focus-gold"></select>
+    </div>
+
+    <div id="panel-wrapper" class="flex gap-4">
+      <aside id="vtabs" class="hidden md:block w-[180px] shrink-0"></aside>
+      <div id="card" class="card p-5 flex-1"></div>
+    </div>
+  </div>
+
+  <script src="js/app_common.js?v=1" defer></script>
+  <script src="js/app_arcanes.js?v=1" defer></script>
+</body>
+</html>
