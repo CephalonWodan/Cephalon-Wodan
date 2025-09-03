@@ -9,14 +9,20 @@
 
 /* ===== Aura ===== */
 .aura-block { width: 100%; }
-.aura-label {
-  font-size: 12px;
+
+/* ⬇️ REND LES LIBELLÉS PLUS VISIBLES ICI */
+.aura-label,
+.polarity-label {
+  font-size: 16px;              /* avant: 12px */
   line-height: 1.2;
   text-align: center;
-  color: var(--muted, rgba(255,255,255,.65));
-  letter-spacing: .02em;
-  margin-bottom: .3rem;
+  font-weight: 600;              /* ajout: gras */
+  text-transform: uppercase;     /* ajout: majuscules discrètes */
+  letter-spacing: .06em;         /* avant: .02em */
+  color: rgba(255,255,255,.92);  /* avant: var(--muted, …) */
+  margin-bottom: .35rem;
 }
+
 .aura-row {
   display: inline-flex;
   align-items: center;
@@ -26,23 +32,17 @@
 }
 .aura-text {
   font-size: 13px;
-  opacity: .9;
+  opacity: .95;                 /* avant: .9 */
 }
 
 /* ===== Slots / autres polarités ===== */
 .polarity-block { width: 100%; }
-.polarity-label {
-  font-size: 12px;
-  line-height: 1.2;
-  text-align: center;
-  color: var(--muted, rgba(255,255,255,.65));
-  letter-spacing: .02em;
-  margin-bottom: .3rem;
-}
+/* (la classe .polarity-label est stylée en commun ci-dessus) */
+
 .polarity-row {
   display: flex;
   flex-wrap: wrap;
-  gap: .4rem;
+  gap: .45rem;                  /* avant: .4rem (un poil plus d’air) */
   align-items: center;
   justify-content: center;
 }
@@ -52,11 +52,11 @@
   min-width: 22px;
   height: 22px;
   padding: 0 .25rem;
-  border: 1px solid rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.16);  /* avant: .12 -> contraste léger ↑ */
   border-radius: 8px;
   display: grid;
   place-items: center;
-  background: rgba(255,255,255,.04);
+  background: rgba(255,255,255,.05);        /* avant: .04 */
 }
 .polarity-badge[data-kind="Aura"],
 .polarity-badge[data-kind="Exilus"] { border-style: dashed; }
