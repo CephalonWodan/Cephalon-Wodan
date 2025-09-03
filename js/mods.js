@@ -1,11 +1,5 @@
-// js/mods.js — Mods EN, wiki-image first, fusion des doublons pour garder la description
-//
-// - Images: priorité aux miniatures du wiki (wikiaThumbnail/wikiathumbnail/wikiThumbnail) en HD,
-//   fallback sur CDN WarframeStat (thumbnail/image) uniquement si le wiki manque.
-// - Déduplication PAR NOM avec FUSION des champs: on récupère la meilleure description, image, etc.
-// - Exclusions par défaut: Focus Way, Rivens, "Set Mod" stub (désactivables).
-// - Filtres: type, rarity, polarity + recherche ; Tri: name/rarity/drain/type/polarity.
-// - Icônes de polarité: tes SVG (img/polarities/*_Pol.svg).
+// js/mods.js — Mods EN, images WIKI only (+heuristique), effets via description OU levelStats,
+// fusion des doublons, exclusions demandées, filtres/tri identiques.
 
 const ENDPOINTS = [
   "https://api.warframestat.us/mods?language=en",
@@ -34,7 +28,6 @@ const POL_ICON = (p) => {
   const file = map[key] || "Any_Pol.svg";
   return `img/polarities/${file}`;
 };
-
 function canonPolarity(p){
   const s = norm(p).toLowerCase();
   if (!s) return "Any";
@@ -46,15 +39,10 @@ function canonPolarity(p){
   return aliases[s] || (s.charAt(0).toUpperCase()+s.slice(1));
 }
 
-/* ---------- IMAGES : WIKI FIRST ---------- */
-function wikiThumbRaw(m){
-  return m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || "";
-}
-function cdnThumbRaw(m){
-  return m.thumbnail || m.image || "";
-}
+/* ---------------- Images : WIKI only (+ heuristique), pas de CDN ---------------- */
+function wikiThumbRaw(m){ return m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || ""; }
 function normalizeUrl(u){ return !u ? "" : (u.startsWith("//") ? "https:" + u : u); }
-function upscaleThumb(url, size=600){
+function upscaleThumb(url, size=720){
   if (!url) return "";
   let out = normalizeUrl(url);
   out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
@@ -65,63 +53,119 @@ function upscaleThumb(url, size=600){
   }
   return out;
 }
-function bestThumbHD(m, size=600){
-  // Wiki en premier, sinon CDN
-  const wiki = wikiThumbRaw(m);
-  if (wiki) return upscaleThumb(wiki, size);
-  const cdn = cdnThumbRaw(m);
-  if (cdn)  return upscaleThumb(cdn, size);
-  return "";
-}
-function hasWikiThumb(m){ return !!wikiThumbRaw(m); }
-function hasAnyThumb(m){ return !!(wikiThumbRaw(m) || cdnThumbRaw(m)); }
 
-/* ---------- EXCLUSIONS PAR DÉFAUT ---------- */
+// Heuristique : "Primed Redirection" → "https://wiki.warframe.com/images/PrimedRedirectionMod.png"
+function nameToWikiCandidates(name){
+  const base = norm(name).replace(/[’'`´]/g, "").replace(/[^\p{L}\p{N}\s-]/gu, " ").replace(/\s+/g, " ").trim();
+  if (!base) return [];
+  const words = base.split(" ");
+  const CamelNoSpace = words.map(w => w.charAt(0).toUpperCase()+w.slice(1)).join("");
+  const Underscore   = words.map(w => w.charAt(0).toUpperCase()+w.slice(1)).join("_");
+  return [
+    `${CamelNoSpace}Mod.png`,
+    `${Underscore}Mod.png`,
+  ];
+}
+function guessWikiUrl(name){ // première candidate
+  const files = nameToWikiCandidates(name);
+  if (!files.length) return "";
+  return `https://wiki.warframe.com/images/${encodeURIComponent(files[0])}`;
+}
+function bestWikiImage(m){
+  const raw = wikiThumbRaw(m);
+  if (raw) return upscaleThumb(raw, 720);
+  // pas de miniature fournie → heuristique à partir du nom
+  const guess = guessWikiUrl(m.name || "");
+  return guess || "";
+}
+// placeholder data-URL (carte neutre)
+const MOD_PLACEHOLDER = (() => {
+  const svg =
+    `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#0b1220"/>
+          <stop offset="100%" stop-color="#101a2e"/>
+        </linearGradient>
+      </defs>
+      <rect width="600" height="360" fill="url(#g)"/>
+      <rect x="12" y="12" width="576" height="336" rx="24" ry="24"
+            fill="none" stroke="#3d4b63" stroke-width="3"/>
+      <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">
+        Mod image unavailable
+      </text>
+    </svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+})();
+
+/* ---------------- Effets : description OU stats du rang max ---------------- */
+function effectsFromLevelStats(m){
+  const ls = Array.isArray(m.levelStats) ? m.levelStats : null;
+  if (!ls || !ls.length) return [];
+  // rang max : fusionLimit (si présent) sinon la dernière entrée
+  let pick = ls[ls.length - 1];
+  if (Number.isFinite(m.fusionLimit)) {
+    const candidate = ls.find(x => x?.level === m.fusionLimit);
+    if (candidate) pick = candidate;
+  }
+  const stats = Array.isArray(pick?.stats) ? pick.stats : [];
+  return stats.map(s => norm(s)).filter(Boolean);
+}
+function effectsFromDescription(m){
+  const d = norm(m.description);
+  if (!d) return [];
+  return d.split(/\n|•|;|·/g).map(x => norm(x)).filter(Boolean);
+}
+function getEffects(m){
+  const fromDesc = effectsFromDescription(m);
+  if (fromDesc.length) return Array.from(new Set(fromDesc));
+  const fromStats = effectsFromLevelStats(m);
+  return Array.from(new Set(fromStats));
+}
+
+/* ---------------- Exclusions par défaut ---------------- */
 function shouldExcludeDefault(m){
   const name = norm(m.name);
   const type = norm(m.type);
   const uniq = norm(m.uniqueName);
-
   const isFocus = /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
   const isRiven = /riven/i.test(name) || /riven/i.test(type);
   const isSetStub = /set\s*mod/i.test(type) || /^set\s*mod$/i.test(name);
   const emptyish = !(m.description && m.description.trim().length) && !Array.isArray(m.levelStats);
-
   return (isFocus || isRiven || (isSetStub && emptyish));
 }
 
-/* ---------- QUALITÉ / RARETÉ ---------- */
+/* ---------------- Rareté / Qualité ---------------- */
 function rarityKey(r){
   const s = norm(r).toUpperCase();
   if (/PRIMED/.test(s)) return "PRIMED";
-  return s; // COMMON / UNCOMMON / RARE / LEGENDARY …
+  return s; // COMMON/UNCOMMON/RARE/LEGENDARY…
 }
 function rarityOrder(r){
   const map = { COMMON:1, UNCOMMON:2, RARE:3, LEGENDARY:4, PRIMED:5 };
   return map[rarityKey(r)] || 0;
 }
-function descLen(m){ return (norm(m.description).length || 0); }
+function descScore(m){ return Math.min(500, (norm(m.description).length || 0) + getEffects(m).join(" ").length); }
 function qualityForPrimary(m){
-  // Favorise wiki-image + description longue
+  // favorise une vraie image wiki + du contenu (desc/stats)
   let s = 0;
-  if (hasWikiThumb(m)) s += 2000;
-  else if (hasAnyThumb(m)) s += 1000;
-  s += Math.min(500, descLen(m));
+  if (wikiThumbRaw(m)) s += 2000;
+  s += descScore(m);
   s += (m.fusionLimit || 0);
   return s;
 }
 
-/* ---------- FUSION DES DOUBLONS PAR NOM ---------- */
+/* ---------------- Fusion des doublons PAR NOM ---------------- */
 function mergeGroup(items){
-  // Item “primaire” = meilleure image (wiki) + description la plus riche
   const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
 
-  const bestDesc = items.slice().sort((a,b)=> descLen(b)-descLen(a))[0];
+  // Description : on privilégie celle qui a le plus d'infos (desc + stats)
+  const bestText = items.slice().sort((a,b)=> descScore(b) - descScore(a))[0];
 
-  // image: wiki > cdn > vide
-  const imageHolder = items.find(hasWikiThumb) || items.find(hasAnyThumb) || primary;
+  // Image : wiki miniature prioritaire ; sinon heuristique par nom
+  const img = bestWikiImage(primary) || bestWikiImage(bestText);
+  const mergedEffects = getEffects(bestText).length ? getEffects(bestText) : getEffects(primary);
 
-  // champs fusionnés (on prend le premier non vide le plus pertinent)
   function pick(...arr){ return arr.find(v => v != null && String(v).trim() !== "") ?? ""; }
   function pickMaxInt(...arr){
     let best = null;
@@ -136,7 +180,6 @@ function mergeGroup(items){
   function pickPolarity(...arr){
     const vals = arr.map(canonPolarity).filter(Boolean);
     if (!vals.length) return "Any";
-    // priorité à autre chose que Any
     return vals.sort((a,b)=>{
       const aAny = a==="Any", bAny=b==="Any";
       if (aAny && !bAny) return 1;
@@ -146,34 +189,28 @@ function mergeGroup(items){
   }
 
   const merged = {
-    // de base
     name: pick(primary.name),
-    uniqueName: pick(primary.uniqueName, bestDesc.uniqueName),
-    description: pick(bestDesc.description, primary.description),
+    uniqueName: pick(primary.uniqueName, bestText.uniqueName),
+    description: pick(bestText.description, primary.description),
+    effectsLines: mergedEffects, // <-- on stocke directement les effets prêts à afficher
 
-    // identité/compat
-    type: pick(primary.type, bestDesc.type),
-    compatibility: pick(primary.compatibility, primary.compatName, bestDesc.compatibility, bestDesc.compatName),
+    type: pick(primary.type, bestText.type),
+    compatibility: pick(primary.compatibility, primary.compatName, bestText.compatibility, bestText.compatName),
 
-    // chiffres
-    baseDrain: pickMaxInt(primary.baseDrain, bestDesc.baseDrain),
-    fusionLimit: pickMaxInt(primary.fusionLimit, bestDesc.fusionLimit),
+    baseDrain: pickMaxInt(primary.baseDrain, bestText.baseDrain),
+    fusionLimit: pickMaxInt(primary.fusionLimit, bestText.fusionLimit),
 
-    // rarity/polarity
-    rarity: pickRarity(primary.rarity, primary.rarityString, bestDesc.rarity, bestDesc.rarityString),
-    polarity: pickPolarity(primary.polarity, primary.polarityName, bestDesc.polarity, bestDesc.polarityName),
+    rarity: pickRarity(primary.rarity, primary.rarityString, bestText.rarity, bestText.rarityString),
+    polarity: pickPolarity(primary.polarity, primary.polarityName, bestText.polarity, bestText.polarityName),
 
-    // set éventuel
-    set: pick(primary.set, bestDesc.set),
+    set: pick(primary.set, bestText.set),
 
-    // image (wiki prioritaire)
-    wikiaThumbnail: wikiThumbRaw(imageHolder) || "",
-    thumbnail: cdnThumbRaw(imageHolder) || "",
+    // image finale (wiki/guess) — on ne garde PAS le CDN
+    wikiImage: img,
   };
 
   return merged;
 }
-
 function mergeByName(arr){
   const groups = new Map();
   for (const m of arr) {
@@ -182,13 +219,11 @@ function mergeByName(arr){
     (groups.get(k) ?? groups.set(k, []).get(k)).push(m);
   }
   const out = [];
-  for (const [,items] of groups) {
-    out.push(mergeGroup(items));
-  }
+  for (const [,items] of groups) out.push(mergeGroup(items));
   return out;
 }
 
-/* ---------- UI helpers ---------- */
+/* ---------------- UI helpers ---------------- */
 function badgeRarity(r){
   const k = rarityKey(r);
   return k ? `<span class="badge rar-${k}">${k}</span>` : "";
@@ -201,18 +236,18 @@ function polChip(p){
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function modCard(m){
-  const img = bestThumbHD(m, 720); // grand pour être bien lisible
+  const img = m.wikiImage || guessWikiUrl(m.name || "") || MOD_PLACEHOLDER;
   const pol = canonPolarity(m.polarity || "");
   const rar = rarityKey(m.rarity || "");
   const compat = m.compatibility || m.type || "";
-
-  const desc = norm(m.description);
-  const lines = desc ? desc.split(/\n|•|;|·/g).map(s => norm(s)).filter(Boolean) : [];
+  const lines = Array.isArray(m.effectsLines) && m.effectsLines.length
+    ? m.effectsLines
+    : effectsFromDescription(m).length ? effectsFromDescription(m) : effectsFromLevelStats(m);
 
   return `
   <div class="mod-card">
     <div class="mod-cover">
-      ${ img ? `<img src="${img}" alt="${escapeHtml(m.name)}">` : "" }
+      <img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" loading="lazy" decoding="async">
     </div>
     <div class="mod-body">
       <div class="flex items-start justify-between gap-3">
@@ -243,7 +278,7 @@ function modCard(m){
   </div>`;
 }
 
-/* ---------- Filtres & tri ---------- */
+/* ---------------- Filtres & tri ---------------- */
 function buildTypeOptions(arr){
   const set = new Set();
   for (const m of arr) {
@@ -281,9 +316,17 @@ function applyFilters(){
 
   let arr = state.all.slice();
 
-  // exclusions par défaut (désactivables)
   arr = arr.filter(m => {
-    const ex = shouldExcludeDefault(m);
+    const ex = (() => {
+      const name = norm(m.name);
+      const type = norm(m.type);
+      const uniq = norm(m.uniqueName);
+      const isFocus = /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
+      const isRiven = /riven/i.test(name) || /riven/i.test(type);
+      const isSetStub = /set\s*mod/i.test(type) || /^set\s*mod$/i.test(name);
+      const emptyish = !(m.description && m.description.trim().length) && !(m.effectsLines && m.effectsLines.length);
+      return (isFocus || isRiven || (isSetStub && emptyish));
+    })();
     if (!ex) return true;
     if (/riven/i.test(m.name) || /riven/i.test(m.type)) return state.incRiven;
     if (/focus/i.test(m.type) || /\/focus\//i.test(m.uniqueName) || /focus/i.test(m.name)) return state.incFocus;
@@ -298,13 +341,12 @@ function applyFilters(){
   if (q) {
     arr = arr.filter(m => {
       const hay = [
-        m.name, m.description, m.type, m.compatibility, m.uniqueName
+        m.name, m.description, (m.effectsLines||[]).join(" "), m.type, m.compatibility, m.uniqueName
       ].map(norm).join(" ").toLowerCase();
       return hay.includes(q);
     });
   }
 
-  // tri
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b)=>{
     if (sort === "rarity")   return rarityOrder(a.rarity) - rarityOrder(b.rarity) || (a.name||"").localeCompare(b.name||"");
@@ -338,9 +380,14 @@ function render(){
   const grid = $("#results");
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(modCard).join("");
+
+  // si une image guessed 404, fallback placeholder
+  grid.querySelectorAll(".mod-cover img").forEach(img=>{
+    img.addEventListener("error", ()=>{ img.src = MOD_PLACEHOLDER; }, { once:true });
+  });
 }
 
-/* ---------- Fetch + boot ---------- */
+/* ---------------- Fetch + boot ---------------- */
 async function fetchMods(){
   const errors = [];
   for (const url of ENDPOINTS) {
@@ -358,7 +405,6 @@ async function fetchMods(){
 (async function boot(){
   const status = $("#status");
   try {
-    // skeleton
     $("#results").innerHTML = Array.from({length:6}).map(()=>`
       <div class="mod-card">
         <div class="mod-cover" style="height:300px;background:rgba(255,255,255,.04)"></div>
@@ -371,22 +417,17 @@ async function fetchMods(){
     `).join("");
 
     const raw = await fetchMods();
-
-    // fusion par nom (image wiki prioritaire + meilleure description)
-    const merged = mergeByName(raw);
-
+    const merged = mergeByName(raw); // wiki-only + effets complétés
     state.all = merged;
 
     buildTypeOptions(state.all);
 
-    // init UI
     $("#q").value = "";
     $("#sort").value = "name";
     $("#inc-riven").checked = false;
     $("#inc-focus").checked = false;
     $("#inc-setstub").checked = false;
 
-    // listeners
     $("#q").addEventListener("input", applyFilters);
     $("#sort").addEventListener("change", applyFilters);
     $("#f-type").addEventListener("change", applyFilters);
@@ -409,7 +450,7 @@ async function fetchMods(){
     $("#prev").addEventListener("click", ()=>{ state.page--; render(); });
     $("#next").addEventListener("click", ()=>{ state.page++; render(); });
 
-    status.textContent = `Mods loaded: ${state.all.length} (EN, wiki images first)`;
+    status.textContent = `Mods loaded: ${state.all.length} (EN, wiki-only images + merged effects)`;
     applyFilters();
   } catch (e) {
     console.error("[mods] error:", e);
