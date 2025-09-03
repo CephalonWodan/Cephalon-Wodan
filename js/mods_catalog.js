@@ -1,11 +1,16 @@
 // js/mods_catalog.js — EN data + grande image (wikiaThumbnail prioritaire) + lightbox
 // + Exclusions: Focus Ways, "Mod Set Mods" (hub), Riven Mods
+// + Déduplication: 1 seul mod par nom (préférence wikiaThumbnail)
 const API = "https://api.warframestat.us/mods/?language=en";
 const CDN = (img) => img ? `https://cdn.warframestat.us/img/${img}` : null;
 function MOD_THUMB(m) {
-  const wik = m.wikiaThumbnail || m.wikiathumbnail || null; // compat noms de champ
+  const wik = m.wikiaThumbnail || m.wikiathumbnail || null; // compat
   if (wik && /^https?:\/\//i.test(wik)) return wik;
   return CDN(m.imageName);
+}
+function HAS_WIKIA_THUMB(m){
+  const wik = m.wikiaThumbnail || m.wikiathumbnail || null;
+  return !!(wik && /^https?:\/\//i.test(wik));
 }
 
 const state = {
@@ -91,7 +96,6 @@ function isRivenMod(m){
   const url  = (m.wikiaUrl || m.wikiaurl || "").toLowerCase();
   const desc = (m.description||"").toLowerCase();
 
-  // Noms usuels : "Rifle Riven Mod", "Kitgun Riven Mod", "Veiled Riven Mod", etc.
   if (name.includes("riven mod")) return true;
   if (/\briven\b/.test(type)) return true;
   if (uniq.includes("/riven/") || uniq.includes("/rivens/")) return true;
@@ -102,6 +106,36 @@ function isRivenMod(m){
 }
 function isExcluded(m){
   return isFocusWayItem(m) || isSetModsHub(m) || isRivenMod(m);
+}
+
+/* --------- Déduplication par nom (préférence wikiaThumbnail) --------- */
+function qualityScore(m){
+  // Score simple pour choisir la “meilleure” variante
+  let s = 0;
+  if (HAS_WIKIA_THUMB(m)) s += 1000;
+  if (m.description) s += Math.min(200, m.description.length);
+  if (m.fusionLimit != null) s += 5 * m.fusionLimit;
+  if (m.polarity) s += 3;
+  const rarScore = {Legendary:4, Rare:3, Uncommon:2, Common:1}[m.rarity] || 0;
+  s += rarScore;
+  return s;
+}
+function dedupeByName(arr){
+  const groups = new Map();
+  for (const m of arr) {
+    const k = norm(m.name).toLowerCase();
+    if (!k) continue;
+    if (!groups.has(k)) groups.set(k, []);
+    groups.get(k).push(m);
+  }
+  const out = [];
+  for (const [, items] of groups) {
+    if (items.length === 1) { out.push(items[0]); continue; }
+    const withThumb = items.filter(HAS_WIKIA_THUMB);
+    const cand = (withThumb.length ? withThumb : items).sort((a,b)=> qualityScore(b)-qualityScore(a))[0];
+    out.push(cand);
+  }
+  return out;
 }
 
 /* --------- UI helpers --------- */
@@ -228,10 +262,9 @@ function renderActiveChips(){
 function applyFilters(){
   const q = state.q = norm($("#q").value).toLowerCase();
 
-  // On repart toujours de la source nettoyée (state.all)
+  // On repart de la source “propre” (exclue + dédupliquée)
   let arr = state.all.slice();
 
-  // filtres
   if (state.cats.size) arr = arr.filter(m => state.cats.has(categoryOf(m)));
   if (state.pols.size) arr = arr.filter(m => state.pols.has(m.polarity || ""));
   if (state.rars.size) arr = arr.filter(m => state.rars.has(m.rarity || ""));
@@ -243,7 +276,6 @@ function applyFilters(){
     });
   }
 
-  // tri
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b) => {
     if (sort === "rarity") return rarityOrder(a.rarity)-rarityOrder(b.rarity) || (a.name||"").localeCompare(b.name||"");
@@ -347,10 +379,12 @@ function closeLightbox(){
     const mods = await fetch(API).then(r => r.json());
     const raw = Array.isArray(mods) ? mods : [];
 
-    // ⛔ Exclure Focus Ways + hub "Mod Set Mods" + Rivens
-    state.all = raw.filter(m => !isExcluded(m));
+    // 1) ⛔ exclusions
+    const filtered = raw.filter(m => !isExcluded(m));
+    // 2) 🔁 déduplication (1 entrée par nom, préférence wikiaThumbnail)
+    state.all = dedupeByName(filtered);
 
-    status.textContent = `Mods loaded: ${state.all.length} (EN, filtered)`;
+    status.textContent = `Mods loaded: ${state.all.length} (EN, filtered + dedup by name)`;
 
     // Filtres
     renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
@@ -390,7 +424,7 @@ function closeLightbox(){
     console.error(e);
     status.textContent = "Error while loading mods.";
     status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
-    status.style.background = "rgba(255,0,0,.08)";
+    status.style.background = "rgba(255,255,255,.08)";
     status.style.color = "#ffd1d1";
   }
 })();
