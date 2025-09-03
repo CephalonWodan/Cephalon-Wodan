@@ -1,5 +1,9 @@
-// js/mods.js — Mods EN, images WIKI only (+heuristique), effets via description OU levelStats,
-// fusion des doublons, exclusions demandées, filtres/tri identiques.
+// js/mods.js — Mods EN
+// - Images WIKI uniquement (miniature wiki + heuristique par nom), jamais le CDN
+// - Effets garantis : on lit d'abord levelStats[].stats (rang max), sinon description
+// - Fusion des doublons par nom (conserve meilleure image & texte)
+// - Exclusions par défaut: Focus Way, Riven, “Set Mod” stub (désactivables)
+// - Filtres/tri: type, rarity, polarity, recherche
 
 const ENDPOINTS = [
   "https://api.warframestat.us/mods?language=en",
@@ -7,26 +11,21 @@ const ENDPOINTS = [
   "https://api.warframestat.us/mods/",
 ];
 
-const $  = (sel) => document.querySelector(sel);
-const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-const norm = (s) => String(s || "").trim();
+const $  = (s) => document.querySelector(s);
+const $$ = (s) => Array.from(document.querySelectorAll(s));
+const norm = (v) => String(v || "").trim();
 
+/* ---------------- Polarity icons (tes SVG locaux) ---------------- */
 const POL_ICON = (p) => {
   const map = {
-    Madurai: "Madurai_Pol.svg",
-    Vazarin: "Vazarin_Pol.svg",
-    Naramon: "Naramon_Pol.svg",
-    Zenurik: "Zenurik_Pol.svg",
-    Unairu:  "Unairu_Pol.svg",
-    Umbra:   "Umbra_Pol.svg",
-    Penjaga: "Penjaga_Pol.svg",
-    Any:     "Any_Pol.svg",
-    None:    "Any_Pol.svg",
-    "":      "Any_Pol.svg",
+    Madurai: "Madurai_Pol.svg", Vazarin: "Vazarin_Pol.svg",
+    Naramon: "Naramon_Pol.svg", Zenurik: "Zenurik_Pol.svg",
+    Unairu:  "Unairu_Pol.svg",  Umbra:   "Umbra_Pol.svg",
+    Penjaga: "Penjaga_Pol.svg", Any:     "Any_Pol.svg",
+    None:    "Any_Pol.svg",      "":      "Any_Pol.svg",
   };
   const key = canonPolarity(p);
-  const file = map[key] || "Any_Pol.svg";
-  return `img/polarities/${file}`;
+  return `img/polarities/${map[key] || "Any_Pol.svg"}`;
 };
 function canonPolarity(p){
   const s = norm(p).toLowerCase();
@@ -53,60 +52,40 @@ function upscaleThumb(url, size=720){
   }
   return out;
 }
-
-// Heuristique : "Primed Redirection" → "https://wiki.warframe.com/images/PrimedRedirectionMod.png"
-function nameToWikiCandidates(name){
-  const base = norm(name).replace(/[’'`´]/g, "").replace(/[^\p{L}\p{N}\s-]/gu, " ").replace(/\s+/g, " ").trim();
-  if (!base) return [];
+// “Primed Redirection” → /images/PrimedRedirectionMod.png
+function guessWikiUrl(name){
+  const base = norm(name).replace(/[’'`´]/g,"").replace(/[^\p{L}\p{N}\s-]/gu," ").replace(/\s+/g," ").trim();
+  if (!base) return "";
   const words = base.split(" ");
-  const CamelNoSpace = words.map(w => w.charAt(0).toUpperCase()+w.slice(1)).join("");
-  const Underscore   = words.map(w => w.charAt(0).toUpperCase()+w.slice(1)).join("_");
-  return [
-    `${CamelNoSpace}Mod.png`,
-    `${Underscore}Mod.png`,
-  ];
+  const Camel = words.map(w => w.charAt(0).toUpperCase()+w.slice(1)).join("");
+  return `https://wiki.warframe.com/images/${encodeURIComponent(Camel + "Mod.png")}`;
 }
-function guessWikiUrl(name){ // première candidate
-  const files = nameToWikiCandidates(name);
-  if (!files.length) return "";
-  return `https://wiki.warframe.com/images/${encodeURIComponent(files[0])}`;
+function bestWikiImageUrl(m){
+  const wiki = wikiThumbRaw(m);
+  return wiki ? upscaleThumb(wiki, 720) : guessWikiUrl(m.name || "");
 }
-function bestWikiImage(m){
-  const raw = wikiThumbRaw(m);
-  if (raw) return upscaleThumb(raw, 720);
-  // pas de miniature fournie → heuristique à partir du nom
-  const guess = guessWikiUrl(m.name || "");
-  return guess || "";
-}
-// placeholder data-URL (carte neutre)
+// Placeholder propre si l’image wiki est introuvable
 const MOD_PLACEHOLDER = (() => {
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
-      <defs>
-        <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0b1220"/>
-          <stop offset="100%" stop-color="#101a2e"/>
-        </linearGradient>
-      </defs>
+      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
+      </linearGradient></defs>
       <rect width="600" height="360" fill="url(#g)"/>
-      <rect x="12" y="12" width="576" height="336" rx="24" ry="24"
-            fill="none" stroke="#3d4b63" stroke-width="3"/>
-      <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">
-        Mod image unavailable
-      </text>
+      <rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
+      <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Mod image unavailable</text>
     </svg>`;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 })();
 
-/* ---------------- Effets : description OU stats du rang max ---------------- */
+/* ---------------- Effets : levelStats (rang max) → description ---------------- */
 function effectsFromLevelStats(m){
   const ls = Array.isArray(m.levelStats) ? m.levelStats : null;
   if (!ls || !ls.length) return [];
-  // rang max : fusionLimit (si présent) sinon la dernière entrée
   let pick = ls[ls.length - 1];
   if (Number.isFinite(m.fusionLimit)) {
-    const candidate = ls.find(x => x?.level === m.fusionLimit);
-    if (candidate) pick = candidate;
+    const cand = ls.find(x => x?.level === m.fusionLimit);
+    if (cand) pick = cand;
   }
   const stats = Array.isArray(pick?.stats) ? pick.stats : [];
   return stats.map(s => norm(s)).filter(Boolean);
@@ -116,18 +95,17 @@ function effectsFromDescription(m){
   if (!d) return [];
   return d.split(/\n|•|;|·/g).map(x => norm(x)).filter(Boolean);
 }
-function getEffects(m){
-  const fromDesc = effectsFromDescription(m);
-  if (fromDesc.length) return Array.from(new Set(fromDesc));
+function makeEffects(m){
+  // PRIORITÉ ABSOLUE aux stats du rang max : c’est ce que les joueurs veulent voir
   const fromStats = effectsFromLevelStats(m);
-  return Array.from(new Set(fromStats));
+  if (fromStats.length) return Array.from(new Set(fromStats));
+  const fromDesc = effectsFromDescription(m);
+  return Array.from(new Set(fromDesc));
 }
 
 /* ---------------- Exclusions par défaut ---------------- */
 function shouldExcludeDefault(m){
-  const name = norm(m.name);
-  const type = norm(m.type);
-  const uniq = norm(m.uniqueName);
+  const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
   const isFocus = /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
   const isRiven = /riven/i.test(name) || /riven/i.test(type);
   const isSetStub = /set\s*mod/i.test(type) || /^set\s*mod$/i.test(name);
@@ -136,113 +114,66 @@ function shouldExcludeDefault(m){
 }
 
 /* ---------------- Rareté / Qualité ---------------- */
-function rarityKey(r){
-  const s = norm(r).toUpperCase();
-  if (/PRIMED/.test(s)) return "PRIMED";
-  return s; // COMMON/UNCOMMON/RARE/LEGENDARY…
-}
-function rarityOrder(r){
-  const map = { COMMON:1, UNCOMMON:2, RARE:3, LEGENDARY:4, PRIMED:5 };
-  return map[rarityKey(r)] || 0;
-}
-function descScore(m){ return Math.min(500, (norm(m.description).length || 0) + getEffects(m).join(" ").length); }
-function qualityForPrimary(m){
-  // favorise une vraie image wiki + du contenu (desc/stats)
-  let s = 0;
-  if (wikiThumbRaw(m)) s += 2000;
-  s += descScore(m);
-  s += (m.fusionLimit || 0);
-  return s;
-}
+function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
+function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
+function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
+function qualityForPrimary(m){ return (wikiThumbRaw(m) ? 2000 : 0) + descScore(m) + (m.fusionLimit || 0); }
 
 /* ---------------- Fusion des doublons PAR NOM ---------------- */
 function mergeGroup(items){
   const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
+  const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
 
-  // Description : on privilégie celle qui a le plus d'infos (desc + stats)
-  const bestText = items.slice().sort((a,b)=> descScore(b) - descScore(a))[0];
-
-  // Image : wiki miniature prioritaire ; sinon heuristique par nom
-  const img = bestWikiImage(primary) || bestWikiImage(bestText);
-  const mergedEffects = getEffects(bestText).length ? getEffects(bestText) : getEffects(primary);
+  const effects = makeEffects(bestTxt).length ? makeEffects(bestTxt) : makeEffects(primary);
+  const wikiImg = bestWikiImageUrl(primary) || bestWikiImageUrl(bestTxt);
 
   function pick(...arr){ return arr.find(v => v != null && String(v).trim() !== "") ?? ""; }
-  function pickMaxInt(...arr){
-    let best = null;
-    for (const v of arr) if (Number.isFinite(v)) best = (best==null? v : Math.max(best, v));
-    return best;
-  }
-  function pickRarity(...arr){
-    const vals = arr.filter(Boolean);
-    if (!vals.length) return "";
-    return vals.sort((a,b)=> rarityOrder(b)-rarityOrder(a))[0];
-  }
+  function pickMaxInt(...arr){ let best=null; for (const v of arr) if (Number.isFinite(v)) best = best==null?v:Math.max(best,v); return best; }
+  function pickRarity(...arr){ const vals = arr.filter(Boolean); if (!vals.length) return ""; return vals.sort((a,b)=>rarityOrder(b)-rarityOrder(a))[0]; }
   function pickPolarity(...arr){
     const vals = arr.map(canonPolarity).filter(Boolean);
     if (!vals.length) return "Any";
-    return vals.sort((a,b)=>{
-      const aAny = a==="Any", bAny=b==="Any";
-      if (aAny && !bAny) return 1;
-      if (!aAny && bAny) return -1;
-      return a.localeCompare(b);
-    })[0];
+    return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
   }
 
-  const merged = {
-    name: pick(primary.name),
-    uniqueName: pick(primary.uniqueName, bestText.uniqueName),
-    description: pick(bestText.description, primary.description),
-    effectsLines: mergedEffects, // <-- on stocke directement les effets prêts à afficher
+  return {
+    name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
+    description: pick(bestTxt.description, primary.description),
+    effectsLines: effects,
 
-    type: pick(primary.type, bestText.type),
-    compatibility: pick(primary.compatibility, primary.compatName, bestText.compatibility, bestText.compatName),
+    type: pick(primary.type, bestTxt.type),
+    compatibility: pick(primary.compatibility, primary.compatName, bestTxt.compatibility, bestTxt.compatName),
 
-    baseDrain: pickMaxInt(primary.baseDrain, bestText.baseDrain),
-    fusionLimit: pickMaxInt(primary.fusionLimit, bestText.fusionLimit),
+    baseDrain: pickMaxInt(primary.baseDrain, bestTxt.baseDrain),
+    fusionLimit: pickMaxInt(primary.fusionLimit, bestTxt.fusionLimit),
 
-    rarity: pickRarity(primary.rarity, primary.rarityString, bestText.rarity, bestText.rarityString),
-    polarity: pickPolarity(primary.polarity, primary.polarityName, bestText.polarity, bestText.polarityName),
+    rarity: pickRarity(primary.rarity, primary.rarityString, bestTxt.rarity, bestTxt.rarityString),
+    polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
 
-    set: pick(primary.set, bestText.set),
-
-    // image finale (wiki/guess) — on ne garde PAS le CDN
-    wikiImage: img,
+    set: pick(primary.set, bestTxt.set),
+    wikiImage: wikiImg,
   };
-
-  return merged;
 }
 function mergeByName(arr){
   const groups = new Map();
   for (const m of arr) {
-    const k = norm(m.name).toLowerCase();
-    if (!k) continue;
+    const k = norm(m.name).toLowerCase(); if (!k) continue;
     (groups.get(k) ?? groups.set(k, []).get(k)).push(m);
   }
-  const out = [];
-  for (const [,items] of groups) out.push(mergeGroup(items));
-  return out;
+  return Array.from(groups.values()).map(mergeGroup);
 }
 
 /* ---------------- UI helpers ---------------- */
-function badgeRarity(r){
-  const k = rarityKey(r);
-  return k ? `<span class="badge rar-${k}">${k}</span>` : "";
-}
-function polChip(p){
-  const src = POL_ICON(p);
-  const txt = canonPolarity(p);
-  return `<span class="chip"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
-}
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function badgeRarity(r){ const k = rarityKey(r); return k ? `<span class="badge rar-${k}">${k}</span>` : ""; }
+function polChip(p){ const src = POL_ICON(p), txt = canonPolarity(p); return `<span class="chip"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`; }
 
 function modCard(m){
   const img = m.wikiImage || guessWikiUrl(m.name || "") || MOD_PLACEHOLDER;
   const pol = canonPolarity(m.polarity || "");
   const rar = rarityKey(m.rarity || "");
   const compat = m.compatibility || m.type || "";
-  const lines = Array.isArray(m.effectsLines) && m.effectsLines.length
-    ? m.effectsLines
-    : effectsFromDescription(m).length ? effectsFromDescription(m) : effectsFromLevelStats(m);
+  const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
   return `
   <div class="mod-card">
@@ -267,13 +198,16 @@ function modCard(m){
         ${ m.set ? `<div class="k">Set</div><div class="v">${escapeHtml(m.set)}</div>` : "" }
       </div>
 
-      ${ lines.length ? `
-        <div class="mt-2">
-          <div class="text-sm muted mb-1">Effects</div>
-          <div class="kv">
-            ${lines.map(b => `<div class="k">•</div><div class="v">${escapeHtml(b)}</div>`).join("")}
-          </div>
-        </div>` : "" }
+      <div class="mt-2">
+        <div class="text-sm muted mb-1">Effects</div>
+        <div class="kv">
+          ${
+            lines.length
+            ? lines.map(t => `<div class="k">•</div><div class="v">${escapeHtml(t)}</div>`).join("")
+            : `<div class="k">•</div><div class="v">No effect data in API</div>`
+          }
+        </div>
+      </div>
     </div>
   </div>`;
 }
@@ -281,28 +215,16 @@ function modCard(m){
 /* ---------------- Filtres & tri ---------------- */
 function buildTypeOptions(arr){
   const set = new Set();
-  for (const m of arr) {
-    const t = norm(m.type || m.compatibility);
-    if (t) set.add(t);
-  }
+  for (const m of arr) { const t = norm(m.type || m.compatibility); if (t) set.add(t); }
   const sel = $("#f-type");
-  const opts = ["", ...Array.from(set).sort((a,b)=>a.localeCompare(b))];
-  sel.innerHTML = opts.map(v => `<option value="${escapeHtml(v)}">${v || "All"}</option>`).join("");
+  sel.innerHTML = ["", ...Array.from(set).sort((a,b)=>a.localeCompare(b))]
+    .map(v => `<option value="${escapeHtml(v)}">${v || "All"}</option>`).join("");
 }
 
 const state = {
-  all: [],
-  filtered: [],
-  page: 1,
-  perPage: 24,
-  q: "",
-  sort: "name",
-  fType: "",
-  fRarity: "",
-  fPol: "",
-  incRiven: false,
-  incFocus: false,
-  incSetStub: false,
+  all: [], filtered: [], page: 1, perPage: 24,
+  q: "", sort: "name", fType: "", fRarity: "", fPol: "",
+  incRiven: false, incFocus: false, incSetStub: false,
 };
 
 function applyFilters(){
@@ -316,22 +238,17 @@ function applyFilters(){
 
   let arr = state.all.slice();
 
+  // Exclusions par défaut (désactivables)
   arr = arr.filter(m => {
-    const ex = (() => {
-      const name = norm(m.name);
-      const type = norm(m.type);
-      const uniq = norm(m.uniqueName);
-      const isFocus = /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
-      const isRiven = /riven/i.test(name) || /riven/i.test(type);
-      const isSetStub = /set\s*mod/i.test(type) || /^set\s*mod$/i.test(name);
-      const emptyish = !(m.description && m.description.trim().length) && !(m.effectsLines && m.effectsLines.length);
-      return (isFocus || isRiven || (isSetStub && emptyish));
-    })();
-    if (!ex) return true;
-    if (/riven/i.test(m.name) || /riven/i.test(m.type)) return state.incRiven;
-    if (/focus/i.test(m.type) || /\/focus\//i.test(m.uniqueName) || /focus/i.test(m.name)) return state.incFocus;
-    if ((/set\s*mod/i.test(m.type) || /^set\s*mod$/i.test(m.name))) return state.incSetStub;
-    return false;
+    const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
+    const isFocus = /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
+    const isRiven = /riven/i.test(name) || /riven/i.test(type);
+    const isSetStub = /set\s*mod/i.test(type) || /^set\s*mod$/i.test(name);
+    const emptyish = !(m.description && m.description.trim().length) && !(m.effectsLines && m.effectsLines.length);
+    if (isRiven && !state.incRiven) return false;
+    if (isFocus && !state.incFocus) return false;
+    if (isSetStub && emptyish && !state.incSetStub) return false;
+    return true;
   });
 
   if (state.fType)   arr = arr.filter(m => norm(m.type || m.compatibility) === state.fType);
@@ -340,9 +257,8 @@ function applyFilters(){
 
   if (q) {
     arr = arr.filter(m => {
-      const hay = [
-        m.name, m.description, (m.effectsLines||[]).join(" "), m.type, m.compatibility, m.uniqueName
-      ].map(norm).join(" ").toLowerCase();
+      const hay = [m.name, m.description, (m.effectsLines||[]).join(" "), m.type, m.compatibility, m.uniqueName]
+        .map(norm).join(" ").toLowerCase();
       return hay.includes(q);
     });
   }
@@ -381,7 +297,7 @@ function render(){
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(modCard).join("");
 
-  // si une image guessed 404, fallback placeholder
+  // fallback placeholder si l’URL wiki devinée 404
   grid.querySelectorAll(".mod-cover img").forEach(img=>{
     img.addEventListener("error", ()=>{ img.src = MOD_PLACEHOLDER; }, { once:true });
   });
@@ -405,6 +321,7 @@ async function fetchMods(){
 (async function boot(){
   const status = $("#status");
   try {
+    // Skeleton
     $("#results").innerHTML = Array.from({length:6}).map(()=>`
       <div class="mod-card">
         <div class="mod-cover" style="height:300px;background:rgba(255,255,255,.04)"></div>
@@ -417,17 +334,17 @@ async function fetchMods(){
     `).join("");
 
     const raw = await fetchMods();
-    const merged = mergeByName(raw); // wiki-only + effets complétés
-    state.all = merged;
+
+    // Fusion par nom + calcul “effectsLines” garanti
+    state.all = mergeByName(raw);
 
     buildTypeOptions(state.all);
 
-    $("#q").value = "";
-    $("#sort").value = "name";
-    $("#inc-riven").checked = false;
-    $("#inc-focus").checked = false;
-    $("#inc-setstub").checked = false;
+    // init UI
+    $("#q").value = ""; $("#sort").value = "name";
+    $("#inc-riven").checked = false; $("#inc-focus").checked = false; $("#inc-setstub").checked = false;
 
+    // listeners
     $("#q").addEventListener("input", applyFilters);
     $("#sort").addEventListener("change", applyFilters);
     $("#f-type").addEventListener("change", applyFilters);
@@ -437,20 +354,15 @@ async function fetchMods(){
     $("#inc-focus").addEventListener("change", applyFilters);
     $("#inc-setstub").addEventListener("change", applyFilters);
     $("#reset").addEventListener("click", ()=>{
-      $("#q").value = "";
-      $("#sort").value = "name";
-      $("#f-type").value = "";
-      $("#f-rarity").value = "";
-      $("#f-polarity").value = "";
-      $("#inc-riven").checked = false;
-      $("#inc-focus").checked = false;
-      $("#inc-setstub").checked = false;
+      $("#q").value = ""; $("#sort").value = "name";
+      $("#f-type").value = ""; $("#f-rarity").value = ""; $("#f-polarity").value = "";
+      $("#inc-riven").checked = false; $("#inc-focus").checked = false; $("#inc-setstub").checked = false;
       applyFilters();
     });
     $("#prev").addEventListener("click", ()=>{ state.page--; render(); });
     $("#next").addEventListener("click", ()=>{ state.page++; render(); });
 
-    status.textContent = `Mods loaded: ${state.all.length} (EN, wiki-only images + merged effects)`;
+    status.textContent = `Mods loaded: ${state.all.length} (EN, wiki images + max-rank effects)`;
     applyFilters();
   } catch (e) {
     console.error("[mods] error:", e);
