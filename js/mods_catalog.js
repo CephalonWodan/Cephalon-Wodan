@@ -1,122 +1,44 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <title>Catalogue des Mods — Warframe</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Thème + styles -->
-  <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/mods_catalog.css?v=1" />
-</head>
-<body class="bg-[var(--bg)] text-[var(--ink)]">
-  <div class="max-w-7xl mx-auto p-6">
-    <div class="flex items-end justify-between flex-wrap gap-3">
-      <div>
-        <h1 class="text-2xl font-semibold">Catalogue des Mods</h1>
-        <div id="status" class="mt-2 text-sm px-3 py-2 rounded-lg orn"
-             style="background:rgba(0,229,255,.08); color:#bfefff;">
-          Chargement des mods…
-        </div>
-      </div>
+/* css/mods_catalog.css */
 
-      <!-- Barre d’actions principale -->
-      <div class="w-full lg:w-auto">
-        <div class="flex gap-3 flex-col sm:flex-row">
-          <div class="relative sm:w-[360px]">
-            <input id="q" type="text" placeholder="Rechercher : nom, description, compatibilité…"
-                   class="w-full pl-10 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                          placeholder:text-[var(--muted)] outline-none orn focus-gold" />
-            <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2"
-                 viewBox="0 0 24 24" fill="none">
-              <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
+/* Cartes plus “premium” avec halo doux au hover */
+.mod-card {
+  border: 1px solid rgba(255,255,255,.08);
+  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  border-radius: 16px;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.mod-card:hover {
+  box-shadow: 0 6px 28px rgba(212,175,55,.12);
+  transform: translateY(-1px);
+}
 
-          <select id="sort"
-                  class="sm:w-[220px] py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                         outline-none orn focus-gold">
-            <option value="name">Tri : Nom (A→Z)</option>
-            <option value="rarity">Tri : Rareté</option>
-            <option value="polarity">Tri : Polarité</option>
-            <option value="drain">Tri : Rang max</option>
-            <option value="compat">Tri : Compatibilité</option>
-            <option value="category">Tri : Catégorie</option>
-          </select>
+/* Image holder */
+.mod-thumb {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px;
+}
 
-          <div class="flex items-center gap-2">
-            <button id="view-cards" class="btn-tab active">Cartes</button>
-            <button id="view-table" class="btn-tab">Tableau</button>
-          </div>
-        </div>
-      </div>
-    </div>
+/* Clamp description sur 2 lignes */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-    <!-- Layout 2 colonnes -->
-    <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-      <!-- Sidebar filtres -->
-      <aside class="lg:col-span-3">
-        <div class="sticky top-4 space-y-4">
-          <div class="card p-4 orn">
-            <div class="font-semibold mb-2">Catégories</div>
-            <div id="f-cat" class="grid grid-cols-2 gap-2 text-sm"></div>
-          </div>
+/* Badges */
+.badge {
+  display:inline-flex; align-items:center; gap:.375rem;
+  border:1px solid rgba(255,255,255,.12);
+  padding:.2rem .5rem; border-radius:999px; font-size:.75rem;
+}
+.badge.gold {
+  border-color:#D4AF37; color:#D4AF37; background:rgba(212,175,55,.06);
+}
 
-          <div class="card p-4 orn">
-            <div class="font-semibold mb-2">Polarités</div>
-            <div id="f-pol" class="grid grid-cols-2 gap-2 text-sm"></div>
-          </div>
+/* Tableau : cellules */
+table th, table td { border-bottom: 1px solid rgba(255,255,255,.06); }
 
-          <div class="card p-4 orn">
-            <div class="font-semibold mb-2">Rareté</div>
-            <div id="f-rar" class="grid grid-cols-2 gap-2 text-sm"></div>
-          </div>
-
-          <div class="flex items-center justify-between">
-            <button id="reset" class="btn-tab">Réinitialiser</button>
-            <div id="count" class="text-sm muted"></div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Contenu -->
-      <main class="lg:col-span-9">
-        <!-- Filtres actifs -->
-        <div id="active-filters" class="flex flex-wrap gap-2 mb-3"></div>
-
-        <!-- Grille cartes -->
-        <div id="results" class="grid gap-3"></div>
-
-        <!-- Tableau -->
-        <div id="table-wrap" class="hidden overflow-x-auto rounded-xl border border-[rgba(255,255,255,.08)]">
-          <table class="w-full text-sm table-fixed">
-            <thead class="bg-[rgba(255,255,255,.04)]">
-              <tr>
-                <th class="p-2 w-16">Icône</th>
-                <th class="p-2">Nom</th>
-                <th class="p-2">Catégorie</th>
-                <th class="p-2">Compat.</th>
-                <th class="p-2">Polarité</th>
-                <th class="p-2">Rareté</th>
-                <th class="p-2">Rang max</th>
-              </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-          </table>
-        </div>
-
-        <!-- Pagination -->
-        <div id="pager" class="flex items-center justify-between mt-4">
-          <button id="prev" class="btn-tab">← Précédent</button>
-          <div id="pageinfo" class="text-sm muted"></div>
-          <button id="next" class="btn-tab">Suivant →</button>
-        </div>
-      </main>
-    </div>
-  </div>
-
-  <script src="js/mods_catalog.js?v=2" defer></script>
-</body>
-</html>
+/* Bouton actif */
+.btn-tab.active { border-color:#D4AF37; color:#D4AF37; }
