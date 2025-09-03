@@ -1,21 +1,19 @@
 (() => {
   "use strict";
 
-  // ------- Config / utils -------
+  /* ================== Utils & Config ================== */
   const ENDPOINTS = [
     "https://api.warframestat.us/mods?language=en",
     "https://api.warframestat.us/mods/?language=en",
     "https://api.warframestat.us/mods/",
   ];
-
   const $  = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
-  const norm   = (v) => String(v || "").trim();
+  const norm = (v) => String(v || "").trim();
   const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
-  const escapeHtml = (s) =>
-    String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // ------- Polarity (icônes locales) -------
+  /* ================== Polarity (icônes locales) ================== */
   const POL_ICON = (p) => {
     const map = {
       Madurai: "Madurai_Pol.svg", Vazarin: "Vazarin_Pol.svg",
@@ -38,7 +36,7 @@
     return aliases[s] || ucFirst(s);
   }
 
-  // ------- Images wiki only (+ heuristique) -------
+  /* ================== Images wiki (vérifiées) ================== */
   function wikiThumbRaw(m){ return m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || ""; }
   function normalizeUrl(u){ return !u ? "" : (u.startsWith("//") ? "https:" + u : u); }
   function upscaleThumb(url, size=720){
@@ -51,15 +49,11 @@
     }
     return out;
   }
-  function guessWikiUrl(name){
-    const base = norm(name).replace(/[’'`´]/g,"").replace(/[^\p{L}\p{N}\s-]/gu," ").replace(/\s+/g," ").trim();
-    if (!base) return "";
-    const camel = base.split(" ").map(w => ucFirst(w)).join("");
-    return `https://wiki.warframe.com/images/${encodeURIComponent(camel + "Mod.png")}`;
-  }
-  function bestWikiImageUrl(m){
-    const wiki = wikiThumbRaw(m);
-    return wiki ? upscaleThumb(wiki, 720) : guessWikiUrl(m.name || "");
+  // Pas d’heuristique ici : on considère “non vérifié” s’il n’y a pas de miniature wiki
+  function verifiedWikiImage(m){
+    const raw = wikiThumbRaw(m);
+    if (!raw) return { url: "", verified: false };
+    return { url: upscaleThumb(raw, 720), verified: true };
   }
   const MOD_PLACEHOLDER = (() => {
     const svg =
@@ -69,12 +63,12 @@
         </linearGradient></defs>
         <rect width="600" height="360" fill="url(#g)"/>
         <rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
-        <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Mod image unavailable</text>
+        <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text>
       </svg>`;
     return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
   })();
 
-  // ------- Effets garantis -------
+  /* ================== Effets ================== */
   function effectsFromLevelStats(m){
     const ls = Array.isArray(m.levelStats) ? m.levelStats : null;
     if (!ls || !ls.length) return [];
@@ -98,7 +92,7 @@
     return Array.from(new Set(desc));
   }
 
-  // ------- Exclusions par défaut -------
+  /* ================== Exclusions par défaut ================== */
   function isFocus(m){
     const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
     return /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
@@ -110,19 +104,22 @@
     return stub && emptyish;
   }
 
-  // ------- Rareté / Qualité -------
+  /* ================== Rareté / Qualité ================== */
   function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
   function qualityForPrimary(m){ return (wikiThumbRaw(m) ? 2000 : 0) + descScore(m) + (m.fusionLimit || 0); }
 
-  // ------- Fusion des doublons PAR NOM -------
+  /* ================== Fusion des doublons PAR NOM ================== */
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
 
     const effects = makeEffects(bestTxt).length ? makeEffects(bestTxt) : makeEffects(primary);
-    const wikiImg = bestWikiImageUrl(primary) || bestWikiImageUrl(bestTxt);
+    const imgPrim  = verifiedWikiImage(primary);
+    const imgBest  = verifiedWikiImage(bestTxt);
+    const img      = imgPrim.url || imgBest.url;
+    const verified = imgPrim.verified || imgBest.verified;
 
     function pick(...arr){ return arr.find(v => v != null && String(v).trim() !== "") ?? ""; }
     function pickMaxInt(...arr){ let best=null; for (const v of arr) if (Number.isFinite(v)) best = best==null?v:Math.max(best,v); return best; }
@@ -144,7 +141,10 @@
       rarity: pickRarity(primary.rarity, primary.rarityString, bestTxt.rarity, bestTxt.rarityString),
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
-      wikiImage: wikiImg,
+
+      // image vérifiée (ou vide)
+      wikiImage: img,
+      imgVerified: !!verified,
     };
   }
   function mergeByName(arr){
@@ -156,34 +156,36 @@
     return Array.from(groups.values()).map(mergeGroup);
   }
 
-  // ------- State (UNIQUE) -------
+  /* ================== STATE (unique) ================== */
   const STATE = {
     all: [], filtered: [], page: 1, perPage: 24,
     q: "", sort: "name",
     fCats: new Set(), fPols: new Set(), fRars: new Set(),
+    onlyVerified: true, // <-- par défaut : ON
     view: "cards",
   };
 
-  // ------- UI helpers -------
+  /* ================== UI helpers ================== */
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
   function polChip(p){ const src = POL_ICON(p), txt = canonPolarity(p); return `<span class="chip"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`; }
 
   function modCard(m){
-    const img = m.wikiImage || guessWikiUrl(m.name || "") || MOD_PLACEHOLDER;
+    // si pas vérifié et checkbox active, on n’arrive jamais ici (filtré en amont)
+    const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
     const cat = m.type || "";
+    const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
     const chips = [
       cat && badge(cat),
       compat && badge(compat),
       pol && polChip(pol),
       rar && badge(rar, `rar-${rar}`),
-      Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : ""
+      Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "",
+      (!m.imgVerified) ? badge("Unreleased","gold") : ""
     ].filter(Boolean).join(" ");
-
-    const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
     return `
     <div class="mod-card">
@@ -205,13 +207,13 @@
   }
 
   function tableRow(m){
-    const img = m.wikiImage || guessWikiUrl(m.name || "") || MOD_PLACEHOLDER;
+    const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
     return `
       <tr class="border-t border-[rgba(255,255,255,.06)]">
         <td class="p-2"><img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" class="w-20 h-12 object-contain"></td>
-        <td class="p-2">${escapeHtml(m.name)}</td>
+        <td class="p-2">${escapeHtml(m.name)} ${!m.imgVerified ? '<span class="badge gold ml-1">Unreleased</span>' : ''}</td>
         <td class="p-2">${escapeHtml(m.type || "")}</td>
         <td class="p-2">${escapeHtml(m.compatibility || "")}</td>
         <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${pol}" class="inline w-5 h-5 align-[-2px]"> ${pol}` : ""}</td>
@@ -220,7 +222,7 @@
       </tr>`;
   }
 
-  // ------- Filtres (sidebar) -------
+  /* ================== Filtres (sidebar) ================== */
   function buildFiltersFromData(arr){
     const cats = new Set(), pols = new Set(), rars = new Set();
     for (const m of arr) {
@@ -265,6 +267,12 @@
         STATE.page = 1; applyFilters();
       });
     });
+
+    // Qualité (déjà checked par défaut dans HTML)
+    $("#f-verified").addEventListener("change", ()=>{
+      STATE.onlyVerified = $("#f-verified").checked;
+      STATE.page = 1; applyFilters();
+    });
   }
 
   function renderActiveChips(){
@@ -274,6 +282,7 @@
     if (STATE.fCats.size) chips.push({k:"cats", label:`Cat: ${[...STATE.fCats].join(", ")}`});
     if (STATE.fPols.size) chips.push({k:"pols", label:`Pol: ${[...STATE.fPols].join(", ")}`});
     if (STATE.fRars.size) chips.push({k:"rars", label:`Rarity: ${[...STATE.fRars].join(", ")}`});
+    if (STATE.onlyVerified) chips.push({k:"verified", label:`Verified wiki image`});
     wrap.innerHTML = chips.length
       ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
       : "";
@@ -284,13 +293,14 @@
         if (k==="cats") STATE.fCats.clear();
         if (k==="pols") STATE.fPols.clear();
         if (k==="rars") STATE.fRars.clear();
+        if (k==="verified") { STATE.onlyVerified = false; $("#f-verified").checked = false; }
         $$("#f-cat input, #f-pol input, #f-rar input").forEach(cb=> cb.checked=false);
         STATE.page = 1; applyFilters();
       });
     });
   }
 
-  // ------- Tri/filtrage/rendu -------
+  /* ================== Tri/filtrage/rendu ================== */
   function applyFilters(){
     const q = STATE.q = norm($("#q").value).toLowerCase();
     let arr = STATE.all.slice();
@@ -298,7 +308,12 @@
     // Exclusions par défaut
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
 
-    // Filtres
+    // Only verified wiki images (par défaut ON)
+    if (STATE.onlyVerified) {
+      arr = arr.filter(m => m.imgVerified === true);
+    }
+
+    // Filtres explicites
     if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(m.type || ""));
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
@@ -356,7 +371,7 @@
       $("#results").className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
       $("#results").innerHTML = slice.map(modCard).join("");
 
-      // Lightbox + fallback 404
+      // Lightbox (le placeholder peut s’ouvrir aussi)
       $("#results").querySelectorAll(".mod-cover").forEach(a=>{
         const img = a.querySelector("img");
         img.addEventListener("error", ()=>{ img.src = MOD_PLACEHOLDER; }, { once:true });
@@ -368,7 +383,7 @@
     }
   }
 
-  // ------- Lightbox -------
+  /* ================== Lightbox ================== */
   function openLightbox(url, caption=""){
     if (!url) return;
     $("#lb-img").src = url;
@@ -390,7 +405,7 @@
     document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
   })();
 
-  // ------- Fetch + boot -------
+  /* ================== Fetch + boot ================== */
   async function fetchMods(){
     const errors = [];
     for (const url of ENDPOINTS) {
@@ -429,6 +444,8 @@
       $("#sort").value = "name";
       $("#view-cards").classList.add("active");
       $("#view-table").classList.remove("active");
+      $("#f-verified").checked = true; // par sécurité
+      STATE.onlyVerified = true;
 
       // Listeners
       $("#q").addEventListener("input", ()=>{ STATE.q = $("#q").value; STATE.page=1; applyFilters(); });
@@ -440,12 +457,13 @@
         STATE.sort="name"; $("#sort").value="name";
         STATE.fCats.clear(); STATE.fPols.clear(); STATE.fRars.clear();
         $$("#f-cat input, #f-pol input, #f-rar input").forEach(cb=> cb.checked=false);
+        $("#f-verified").checked = true; STATE.onlyVerified = true;
         STATE.page=1; applyFilters();
       });
       $("#prev").addEventListener("click", ()=>{ STATE.page--; render(); });
       $("#next").addEventListener("click", ()=>{ STATE.page++; render(); });
 
-      status.textContent = `Mods loaded: ${STATE.all.length} (EN, wiki images + max-rank effects)`;
+      status.textContent = `Mods loaded: ${STATE.all.length} (EN, verified wiki images only by default)`;
       applyFilters();
     }).catch(e=>{
       console.error("[mods] error:", e);
