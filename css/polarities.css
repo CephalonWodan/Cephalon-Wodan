@@ -97,7 +97,7 @@
 
 /* ↓↓↓ Ajout : descend légèrement les icônes sous le libellé "Polarities" uniquement */
 .polarity-label + .polarity-row[data-zone="others"] {
-  margin-top: 6px; /* ajuste à 8px/10px si tu veux plus d’espace */
+  margin-top: 10px; /* ajuste à 8px/10px si tu veux plus d’espace */
 }
 
 /* (Optionnel) si tu utilises encore .polarity-title quelque part */
