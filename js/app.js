@@ -220,10 +220,10 @@ async function fetchWarframesWithFailover() {
 
             <!-- Polarités sous l'image -->
             <div class="w-full">
-              <div class="muted text-xs mb-1">Aura polarity</div>
-              <div class="polarity-row" data-zone="aura"></div>
-              <div class="muted text-xs mt-3 mb-1">Polarities</div>
-              <div class="polarity-row" data-zone="others"></div>
+              <div class="aura-label">Aura polarity</div>
+            <div class="polarity-row" data-zone="aura"></div>
+            <div class="polarity-label mt-3">Polarities</div>
+            <div class="polarity-row" data-zone="others"></div>
             </div>
           </div>
 
