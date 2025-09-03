@@ -13,6 +13,23 @@
   const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+  // ---- Category denylist (cachée du panneau "Categories")
+  const CATEGORY_DENY = [
+    "Focus Way",
+    "Mod Set Mod",
+    "Arch-Gun Riven Mod",
+    "Companion Weapon Riven Mod",
+    "Kitgun Riven Mod",
+    "Melee Riven Mod",
+    "Pistol Riven Mod",
+    "Rifle Riven Mod",
+    "Shotgun Riven Mod",
+    "Zaw Riven Mod",
+  ];
+  const normTypeName = (s) => norm(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
+  const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
+
   /* ================== Polarity (icônes locales) ================== */
   const POL_ICON = (p) => {
     const map = {
@@ -49,24 +66,16 @@
     }
     return out;
   }
-  // Pas d’heuristique ici : on considère “non vérifié” s’il n’y a pas de miniature wiki
+  // Pas d’heuristique : “vérifié” == miniature wiki fournie par l’API
   function verifiedWikiImage(m){
     const raw = wikiThumbRaw(m);
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-  const MOD_PLACEHOLDER = (() => {
-    const svg =
-      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
-        </linearGradient></defs>
-        <rect width="600" height="360" fill="url(#g)"/>
-        <rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
-        <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text>
-      </svg>`;
-    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-  })();
+  // Placeholder compact (une seule ligne → pas d’erreur de saut de ligne)
+  const MOD_PLACEHOLDER =
+    'data:image/svg+xml;utf8,' +
+    encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
   /* ================== Effets ================== */
   function effectsFromLevelStats(m){
@@ -142,7 +151,6 @@
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
 
-      // image vérifiée (ou vide)
       wikiImage: img,
       imgVerified: !!verified,
     };
@@ -161,7 +169,7 @@
     all: [], filtered: [], page: 1, perPage: 24,
     q: "", sort: "name",
     fCats: new Set(), fPols: new Set(), fRars: new Set(),
-    onlyVerified: true, // <-- par défaut : ON
+    onlyVerified: true, // par défaut : ON
     view: "cards",
   };
 
@@ -170,7 +178,6 @@
   function polChip(p){ const src = POL_ICON(p), txt = canonPolarity(p); return `<span class="chip"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`; }
 
   function modCard(m){
-    // si pas vérifié et checkbox active, on n’arrive jamais ici (filtré en amont)
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
@@ -225,11 +232,15 @@
   /* ================== Filtres (sidebar) ================== */
   function buildFiltersFromData(arr){
     const cats = new Set(), pols = new Set(), rars = new Set();
+
     for (const m of arr) {
-      if (norm(m.type)) cats.add(m.type);
+      if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
+      const t = m.type || "";
+      if (t && !isDeniedType(t)) cats.add(t);
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
+
     const catList = Array.from(cats).sort((a,b)=>a.localeCompare(b));
     const polList = Array.from(pols).sort((a,b)=>a.localeCompare(b));
     const rarList = Array.from(rars).sort((a,b)=>rarityOrder(a)-rarityOrder(b));
@@ -248,7 +259,6 @@
       <label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}"><span>${escapeHtml(v)}</span></label>
     `).join("");
 
-    // listeners
     $("#f-cat").querySelectorAll("input[type=checkbox]").forEach(cb=>{
       cb.addEventListener("change", ()=>{
         if (cb.checked) STATE.fCats.add(cb.value); else STATE.fCats.delete(cb.value);
@@ -268,7 +278,6 @@
       });
     });
 
-    // Qualité (déjà checked par défaut dans HTML)
     $("#f-verified").addEventListener("change", ()=>{
       STATE.onlyVerified = $("#f-verified").checked;
       STATE.page = 1; applyFilters();
@@ -305,20 +314,13 @@
     const q = STATE.q = norm($("#q").value).toLowerCase();
     let arr = STATE.all.slice();
 
-    // Exclusions par défaut
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
+    if (STATE.onlyVerified) arr = arr.filter(m => m.imgVerified === true);
 
-    // Only verified wiki images (par défaut ON)
-    if (STATE.onlyVerified) {
-      arr = arr.filter(m => m.imgVerified === true);
-    }
-
-    // Filtres explicites
     if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(m.type || ""));
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
 
-    // Recherche
     if (q) {
       arr = arr.filter(m => {
         const hay = [
@@ -329,12 +331,11 @@
       });
     }
 
-    // Tri
     const sort = STATE.sort = $("#sort").value;
     arr.sort((a,b)=>{
       if (sort === "rarity")   return rarityOrder(a.rarity) - rarityOrder(b.rarity) || (a.name||"").localeCompare(b.name||"");
       if (sort === "polarity") return canonPolarity(a.polarity||"").localeCompare(canonPolarity(b.polarity||"")) || (a.name||"").localeCompare(b.name||"");
-      if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||""); // "Max Rank"
+      if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||"");
       if (sort === "compat")   return (a.compatibility||"").localeCompare(b.compatibility||"") || (a.name||"").localeCompare(b.name||"");
       if (sort === "category") return (a.type||"").localeCompare(b.type||"") || (a.name||"").localeCompare(b.name||"");
       return (a.name||"").localeCompare(b.name||"");
@@ -371,7 +372,6 @@
       $("#results").className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
       $("#results").innerHTML = slice.map(modCard).join("");
 
-      // Lightbox (le placeholder peut s’ouvrir aussi)
       $("#results").querySelectorAll(".mod-cover").forEach(a=>{
         const img = a.querySelector("img");
         img.addEventListener("error", ()=>{ img.src = MOD_PLACEHOLDER; }, { once:true });
@@ -416,14 +416,13 @@
         if (Array.isArray(data) && data.length) return data;
       } catch (e) { errors.push(`${url} → ${e.message||e}`); }
     }
-    console.warn("[mods] endpoints empty/failed:", errors);
+    console.warn("[mods] endpoints empty/failed]:", errors);
     return [];
   }
 
   (function boot(){
     const status = $("#status");
 
-    // skeleton
     $("#results").innerHTML = Array.from({length:6}).map(()=>`
       <div class="mod-card">
         <div class="mod-cover" style="height:300px;background:rgba(255,255,255,.04)"></div>
@@ -439,15 +438,13 @@
       STATE.all = mergeByName(raw);
       buildFiltersFromData(STATE.all);
 
-      // UI init
       $("#q").value = "";
       $("#sort").value = "name";
       $("#view-cards").classList.add("active");
       $("#view-table").classList.remove("active");
-      $("#f-verified").checked = true; // par sécurité
+      $("#f-verified").checked = true;
       STATE.onlyVerified = true;
 
-      // Listeners
       $("#q").addEventListener("input", ()=>{ STATE.q = $("#q").value; STATE.page=1; applyFilters(); });
       $("#sort").addEventListener("change", ()=>{ STATE.page=1; applyFilters(); });
       $("#view-cards").addEventListener("click", ()=>{ STATE.view="cards"; $("#view-cards").classList.add("active"); $("#view-table").classList.remove("active"); render(); });
