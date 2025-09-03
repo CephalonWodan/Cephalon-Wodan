@@ -36,12 +36,12 @@
   width: 56px;
   height: 2px;
   margin: .35rem auto 0;
-  background: var(--accent-gold);          /* ← change cette valeur si tu veux une autre couleur */
+  background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);          /* ← change cette valeur si tu veux une autre couleur */
   border-radius: 2px;
 }
 
 /* Variante dégradé (optionnelle) : remplace la ligne "background:" ci-dessus par ceci
-   background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);
+   background: var(--accent-gold); 
 */
 
 .aura-row {
