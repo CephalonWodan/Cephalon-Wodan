@@ -1,8 +1,11 @@
-// js/shards.js — Archon Shards (robuste)
-// - Essaie plusieurs endpoints WarframeStat (casse/param/langue)
-// - Supporte réponse Array OU Objet ({ archonShards: [...] })
-// - Fallback local si l'API renvoie 0 résultat (toujours une page utile)
-// - Le reste (UI, filtres, tri, lightbox, URL sync) est inchangé
+// js/shards.js — Archon Shards (effets API, sans lien wiki)
+//
+// Ce script :
+// - essaie plusieurs endpoints WarframeStat (casse/param/langue)
+// - accepte un tableau OU un objet (ex: { ACC_BLUE: { value: "Azure", upgradeTypes: {...} }, ... })
+// - extrait proprement les effets : m.effects | m.bonuses | m.stats | m.upgradeTypes (objets/arrays/strings)
+// - N'AFFICHE PAS de lien wiki (retiré sur demande)
+// - garde recherche, tris, filtres couleur + tau, pagination, lightbox, URL sync
 
 const ENDPOINTS = [
   "https://api.warframestat.us/archonshards?language=en",
@@ -53,19 +56,6 @@ function getThumb(m){
   const wik = m.wikiaThumbnail || m.wikiathumbnail;
   return wik && /^https?:\/\//i.test(wik) ? wik : "";
 }
-function getWikiUrl(m){
-  const u = m.wikiaUrl || m.wikiaurl || m.wikiUrl || m.wikiurl;
-  return u && /^https?:\/\//i.test(u) ? u : "";
-}
-
-function extractBonuses(m){
-  if (Array.isArray(m.effects)) return m.effects;
-  if (Array.isArray(m.bonuses)) return m.bonuses;
-  if (Array.isArray(m.stats))   return m.stats;
-  const d = norm(m.description);
-  if (!d) return [];
-  return d.split(/\n|•|;|·/g).map(x=>norm(x)).filter(Boolean);
-}
 
 function qualityScore(m){
   let s = 0;
@@ -74,6 +64,63 @@ function qualityScore(m){
   if (parseTau(m.name||"")) s += 5;
   return s;
 }
+
+/* ------ Extraction des effets depuis différentes formes possibles ------ */
+function extractEffectsFromUpgradeTypes(upgradeTypes){
+  // upgradeTypes peut être:
+  // - un objet { path: { value: "+150% Health" } | "+150% Health" }
+  // - un tableau de strings/objets
+  const out = [];
+  if (!upgradeTypes) return out;
+
+  if (Array.isArray(upgradeTypes)) {
+    for (const it of upgradeTypes) {
+      if (!it) continue;
+      if (typeof it === "string") out.push(norm(it));
+      else if (typeof it.value === "string") out.push(norm(it.value));
+      else if (typeof it.description === "string") out.push(norm(it.description));
+    }
+    return out.filter(Boolean);
+  }
+
+  if (typeof upgradeTypes === "object") {
+    for (const k of Object.keys(upgradeTypes)) {
+      const v = upgradeTypes[k];
+      if (!v) continue;
+      if (typeof v === "string") out.push(norm(v));
+      else if (typeof v.value === "string") out.push(norm(v.value));
+      else if (typeof v.desc === "string") out.push(norm(v.desc));
+      else if (typeof v.description === "string") out.push(norm(v.description));
+    }
+  }
+  return out.filter(Boolean);
+}
+
+function extractEffects(m){
+  // priorité: upgradeTypes si présent (ton exemple)
+  const ut = m.upgradeTypes || m.upgrades || m.values;
+  const fromUT = extractEffectsFromUpgradeTypes(ut);
+  if (fromUT.length) return uniq(fromUT);
+
+  // sinon: effects / bonuses / stats (certains dumps WarframeStat les ont)
+  const pools = [m.effects, m.bonuses, m.stats];
+  const list = [];
+  for (const p of pools) {
+    if (Array.isArray(p)) list.push(...p.map(x => norm(x)).filter(Boolean));
+    else if (typeof p === "string") list.push(norm(p));
+  }
+
+  // dernier recours: description éclatée en lignes/puces
+  if (!list.length && m.description) {
+    list.push(...String(m.description).split(/\n|•|;|·/g).map(norm).filter(Boolean));
+  }
+
+  return uniq(list);
+}
+
+function uniq(arr){ return Array.from(new Set((arr||[]).map(x=>String(x)))).filter(Boolean); }
+
+/* ------------ Dédoublonnage ------------ */
 function dedupeByName(arr){
   const groups = new Map();
   for (const m of arr) {
@@ -91,19 +138,21 @@ function dedupeByName(arr){
   return out;
 }
 
+/* ------------ UI ------------ */
 function colorChip(color){
   const hex = COLOR_MAP[color] || "#888888";
   return `<span class="color-chip"><span class="color-dot" style="background:${hex}"></span>${color}</span>`;
 }
 function badge(text){ return `<span class="badge">${text}</span>`; }
 function badgeGold(text){ return `<span class="badge gold">${text}</span>`; }
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function shardCard(m){
   const color = parseColor(m.name||"");
   const tau = parseTau(m.name||"");
   const img = getThumb(m);
-  const bonuses = extractBonuses(m);
-  const wiki = getWikiUrl(m);
+  const effects = extractEffects(m);
+
   const metaRight = [
     tau ? badgeGold("Tauforged") : "",
     color !== "Unknown" ? colorChip(color) : "",
@@ -125,23 +174,21 @@ function shardCard(m){
 
       ${ m.description ? `<div class="desc mt-1">${escapeHtml(m.description)}</div>` : "" }
 
-      ${ bonuses.length ? `
+      ${ effects.length ? `
         <div class="mt-2">
-          <div class="text-sm muted mb-1">Bonuses</div>
+          <div class="text-sm muted mb-1">Effects</div>
           <div class="kv">
-            ${bonuses.map(b => `<div class="k">•</div><div class="v">${escapeHtml(b)}</div>`).join("")}
+            ${effects.map(b => `<div class="k">•</div><div class="v">${escapeHtml(b)}</div>`).join("")}
           </div>
         </div>` : "" }
 
       <div class="card-actions">
         ${ img ? `<a href="#" class="btn-view" data-full="${img}" data-name="${escapeHtml(m.name||"Archon Shard")}">View</a>` : "" }
-        ${ wiki ? `<a href="${wiki}" target="_blank" rel="noopener">Wiki</a>` : "" }
+        <!-- Wiki link intentionally removed -->
       </div>
     </div>
   </div>`;
 }
-
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 /* ------------ URL sync ------------ */
 function parseQuery(){
@@ -228,7 +275,10 @@ function applyFilters(){
   if (state.onlyTau) arr = arr.filter(m => parseTau(m.name||""));
   if (q) {
     arr = arr.filter(m => {
-      const hay = [m.name, m.description, m.type, m.uniqueName, (extractBonuses(m)||[]).join(" ")].map(norm).join(" ").toLowerCase();
+      const hay = [
+        m.name, m.description, m.type, m.uniqueName,
+        (extractEffects(m)||[]).join(" ")
+      ].map(norm).join(" ").toLowerCase();
       return hay.includes(q);
     });
   }
@@ -236,7 +286,7 @@ function applyFilters(){
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b)=>{
     if (sort === "color") return parseColor(a.name||"").localeCompare(parseColor(b.name||"")) || (a.name||"").localeCompare(b.name||"");
-    if (sort === "tau")   return (parseTau(b.name||"") ? -1:1) - (parseTau(a.name||"") ? -1:1) || (a.name||"").localeCompare(b.name||"");
+    if (sort === "tau")   return (parseTau(b.name||"") - parseTau(a.name||"")) || (a.name||"").localeCompare(b.name||"");
     return (a.name||"").localeCompare(b.name||"");
   });
 
@@ -297,7 +347,7 @@ function closeLightbox(){
   document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
 })();
 
-/* ------------ API fetch (robuste) + fallback ------------ */
+/* ------------ API fetch (robuste) + normalisation ------------ */
 async function fetchShardsFromEndpoints() {
   const errors = [];
   for (const url of ENDPOINTS) {
@@ -305,18 +355,46 @@ async function fetchShardsFromEndpoints() {
       const r = await fetch(url, { cache: "no-store" });
       if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
       const data = await r.json();
-      // data peut être [] OU { archonShards:[...] } OU { shards:[...] }
-      let arr = [];
-      if (Array.isArray(data)) arr = data;
-      else if (Array.isArray(data?.archonShards)) arr = data.archonShards;
-      else if (Array.isArray(data?.shards)) arr = data.shards;
 
-      if (arr && arr.length) {
-        console.info("[shards] Loaded", arr.length, "from", url);
-        return { list: arr, source: url };
-      } else {
-        errors.push(`${url} → empty array`);
+      // 1) Réponse tableau direct
+      if (Array.isArray(data) && data.length) {
+        console.info("[shards] Loaded", data.length, "from", url);
+        return { list: data, source: url };
       }
+
+      // 2) Réponse objet avec clés ACC_* (ex: ACC_BLUE)
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        const keys = Object.keys(data).filter(k => /^ACC_/i.test(k));
+        if (keys.length) {
+          const converted = [];
+          for (const k of keys) {
+            const node = data[k] || {};
+            const color = node.value || node.name || k.replace(/^ACC_/i, "");
+            const name = `${capitalize(color)} Archon Shard`;
+            converted.push({
+              name,
+              type: `${capitalize(color)} Shard`,
+              upgradeTypes: node.upgradeTypes || node.upgrades || node.values || null,
+              description: node.description || "",
+              wikiaThumbnail: "",
+            });
+          }
+          if (converted.length) {
+            console.info("[shards] Converted ACC_* object →", converted.length, "items (", url, ")");
+            return { list: converted, source: url };
+          }
+        }
+
+        // 3) D'autres enveloppes possibles (archonShards / shards)
+        if (Array.isArray(data.archonShards) && data.archonShards.length) {
+          return { list: data.archonShards, source: url };
+        }
+        if (Array.isArray(data.shards) && data.shards.length) {
+          return { list: data.shards, source: url };
+        }
+      }
+
+      errors.push(`${url} → empty/unknown shape`);
     } catch (e) {
       errors.push(`${url} → ${e.message || e}`);
     }
@@ -325,27 +403,7 @@ async function fetchShardsFromEndpoints() {
   return { list: [], source: null, errors };
 }
 
-// fallback minimal (noms + description sommaire, pas de thumb)
-const FALLBACK_SHARDS = (() => {
-  const base = [
-    ["Crimson Archon Shard", "Crimson", "Offense-focused shard (e.g. ability strength, melee crit, etc.)."],
-    ["Amber Archon Shard",   "Amber",   "Utility-focused shard (e.g. casting speed, efficiency, parkour)."],
-    ["Azure Archon Shard",   "Azure",   "Defense-focused shard (e.g. health, shield, energy on orb)."],
-    ["Emerald Archon Shard", "Emerald", "Fusion color (utility/parkour/loot interactions)."],
-    ["Violet Archon Shard",  "Violet",  "Fusion color (ability damage vs. Electricity, etc.)."],
-    ["Topaz Archon Shard",   "Topaz",   "Fusion color (gun/melee hybrid benefits)."],
-  ];
-  const tau = base.map(([n,c,d]) => [`Tauforged ${n}`, c, d.replace(" (", " (Tau, ")]);
-  const all = base.concat(tau);
-  return all.map(([name, color, description]) => ({
-    name,
-    type: `${color} Shard`,
-    description,
-    effects: [],
-    wikiaThumbnail: "", // pas d'image sûre en fallback
-    wikiaUrl: "https://warframe.fandom.com/wiki/Archon_Shard"
-  }));
-})();
+function capitalize(s){ s=String(s||""); return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase(); }
 
 /* ------------ Boot ------------ */
 (async function boot(){
@@ -364,17 +422,9 @@ const FALLBACK_SHARDS = (() => {
     `).join("");
 
     const { list: apiList, source } = await fetchShardsFromEndpoints();
-    let raw = Array.isArray(apiList) ? apiList : [];
+    const raw = Array.isArray(apiList) ? apiList : [];
 
-    // Si l'API est vide, fallback (jamais 0 item)
-    let usedFallback = false;
-    if (!raw.length) {
-      usedFallback = true;
-      raw = FALLBACK_SHARDS;
-    }
-
-    const cleaned = dedupeByName(raw);
-    state.all = cleaned;
+    state.all = dedupeByName(raw);
 
     // URL → state
     parseQuery();
@@ -402,13 +452,7 @@ const FALLBACK_SHARDS = (() => {
     $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
 
     // First render
-    if (usedFallback) {
-      status.textContent = `Shards loaded: ${state.all.length} (fallback dataset — API empty)`;
-      status.style.background = "rgba(212,175,55,.10)";
-      status.style.color = "#ffdca7";
-    } else {
-      status.textContent = `Shards loaded: ${state.all.length} (from ${source?.replace(/^https?:\/\//,'') || 'API'})`;
-    }
+    status.textContent = `Shards loaded: ${state.all.length}${source ? ` (from ${source.replace(/^https?:\/\//,'')})` : ""}`;
     applyFilters();
   } catch (e) {
     console.error("[shards] error:", e);
