@@ -1,6 +1,15 @@
-// js/mods_catalog.js — Catalogue élégant + filtres + tri + double vue
-const API = "https://api.warframestat.us/mods/?language=fr";
+// js/mods_catalog.js — EN data + priorité à wikiaThumbnail, fallback CDN
+// Source API (EN): https://api.warframestat.us/mods/?language=en
+const API = "https://api.warframestat.us/mods/?language=en";
 const CDN = (img) => img ? `https://cdn.warframestat.us/img/${img}` : null;
+
+// Renvoie l’URL d’image à utiliser : d’abord wikiaThumbnail (plus explicite), sinon CDN imageName
+function MOD_THUMB(m) {
+  // champs possibles côté WFCD/WarframeStat.us
+  const wik = m.wikiaThumbnail || m.wikiathumbnail || m.wikiathumbnail || null;
+  if (wik && /^https?:\/\//i.test(wik)) return wik;
+  return CDN(m.imageName);
+}
 
 const state = {
   all: [],
@@ -19,7 +28,6 @@ const state = {
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const norm = (s) => String(s || "").trim();
-const txt  = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 
 /* ------------ Détection catégories ----------- */
 function isAura(m){ const t=m.type||"",u=m.uniqueName||""; return /aura/i.test(t)||/\/Mods\/Auras?\//i.test(u); }
@@ -48,7 +56,7 @@ function categoryOf(m){
   if (isWeaponType(m,"melee"))       return "Melee";
   if (isCompanion(m))                return "Companion";
   if (isArchwing(m))                 return "Archwing";
-  if (isNecramech(m))                return "Necramech";
+  if (isNecramech(m))               return "Necramech";
   return "Other";
 }
 
@@ -60,14 +68,14 @@ function polarityOrder(p){ return ({Madurai:1,Vazarin:2,Naramon:3,Zenurik:4,Unai
 function categoryLabel(key){
   return ({
     Aura:"Aura", WarframeAugment:"Warframe (Augment)", WarframeExilus:"Warframe (Exilus)", Warframe:"Warframe",
-    Primary:"Primaire", Secondary:"Secondaire", Melee:"Mêlée", Companion:"Compagnon",
-    Archwing:"Archwing", Necramech:"Necramech", Other:"Autre"
+    Primary:"Primary", Secondary:"Secondary", Melee:"Melee", Companion:"Companion",
+    Archwing:"Archwing", Necramech:"Necramech", Other:"Other"
   })[key] || key;
 }
 
 /* ------------ Cards ------------- */
 function modCard(m){
-  const img = CDN(m.imageName);
+  const img = MOD_THUMB(m);
   const right = [
     m.compatName ? badgeGold(m.compatName) : "",
     m.polarity   ? badgeGold(m.polarity)   : "",
@@ -79,7 +87,7 @@ function modCard(m){
   <div class="mod-card p-3 flex gap-3">
     <div class="mod-thumb w-[64px] h-[64px] flex items-center justify-center overflow-hidden">
       ${ img ? `<img src="${img}" alt="${m.name||"Mod"}" class="w-full h-full object-contain">`
-              : `<div class="text-[10px] muted text-center px-1">Pas<br> d’icône</div>` }
+              : `<div class="text-[10px] muted text-center px-1">No<br> icon</div>` }
     </div>
     <div class="min-w-0 flex-1">
       <div class="flex items-start justify-between gap-3">
@@ -96,7 +104,7 @@ function modCard(m){
 
 /* ------------ Table row ------------- */
 function tableRow(m){
-  const img = CDN(m.imageName);
+  const img = MOD_THUMB(m);
   return `
   <tr>
     <td class="p-2">
@@ -145,10 +153,10 @@ function renderFilterGroup(hostId, values, selectedSet, labelFn = (x)=>x){
 function renderActiveChips(){
   const wrap = $("#active-filters");
   const chips = [];
-  if (state.q) chips.push({k:"q", v:state.q, label:`Texte: "${state.q}"`});
-  if (state.cats.size) chips.push({k:"cats", v:[...state.cats], label:`Cat: ${[...state.cats].map(categoryLabel).join(", ")}`});
-  if (state.pols.size) chips.push({k:"pols", v:[...state.pols], label:`Pol: ${[...state.pols].join(", ")}`});
-  if (state.rars.size) chips.push({k:"rars", v:[...state.rars], label:`Rareté: ${[...state.rars].join(", ")}`});
+  if (state.q) chips.push({k:"q", label:`Texte: "${state.q}"`});
+  if (state.cats.size) chips.push({k:"cats", label:`Cat: ${[...state.cats].map(categoryLabel).join(", ")}`});
+  if (state.pols.size) chips.push({k:"pols", label:`Pol: ${[...state.pols].join(", ")}`});
+  if (state.rars.size) chips.push({k:"rars", label:`Rareté: ${[...state.rars].join(", ")}`});
 
   if (!chips.length) { wrap.innerHTML = ""; return; }
 
@@ -181,7 +189,7 @@ function applyFilters(){
 
   // filtres
   if (state.cats.size) arr = arr.filter(m => state.cats.has(categoryOf(m)));
-  if (state.pols.size) arr = arr.filter(m => state.pols.has(m.polarity || "")); // "" ne matche rien
+  if (state.pols.size) arr = arr.filter(m => state.pols.has(m.polarity || ""));
   if (state.rars.size) arr = arr.filter(m => state.rars.has(m.rarity || ""));
 
   if (q) {
@@ -235,7 +243,6 @@ function render(){
   } else {
     tableWrap.classList.add("hidden");
     grid.classList.remove("hidden");
-    // grille responsive
     grid.className = "grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
     grid.innerHTML = slice.map(modCard).join("");
   }
@@ -245,11 +252,9 @@ function render(){
 (async function boot(){
   const status = $("#status");
   try {
-    // Pré-remplir depuis l’URL (optionnel)
-    const url = new URL(location.href);
-    $("#q").value = url.searchParams.get("q") || "";
+    $("#q").value = new URL(location.href).searchParams.get("q") || "";
 
-    // Skeleton rapide
+    // Skeleton
     $("#results").innerHTML = Array.from({length:8}).map(()=>`
       <div class="mod-card p-3 animate-pulse flex gap-3">
         <div class="mod-thumb w-[64px] h-[64px]"></div>
@@ -263,30 +268,27 @@ function render(){
 
     const mods = await fetch(API).then(r => r.json());
     state.all = Array.isArray(mods) ? mods : [];
-    status.textContent = `Mods chargés : ${state.all.length}`;
+    status.textContent = `Mods chargés : ${state.all.length} (EN)`;
 
-    // Render filtres (checkbox)
-    renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
-    renderFilterGroup("#f-pol", ALL_POLS, state.pols, (x)=>x);
-    renderFilterGroup("#f-rar", ALL_RARS, state.rars, (x)=>x);
+    // Rendu filtres
+    renderFilterGroup("#f-cat", ["Aura","WarframeAugment","WarframeExilus","Warframe","Primary","Secondary","Melee","Companion","Archwing","Necramech","Other"], state.cats, categoryLabel);
+    renderFilterGroup("#f-pol", ["Madurai","Vazarin","Naramon","Zenurik","Unairu","Penjaga"], state.pols, (x)=>x);
+    renderFilterGroup("#f-rar", ["Common","Uncommon","Rare","Legendary"], state.rars, (x)=>x);
 
     // Listeners
     $("#q").addEventListener("input", applyFilters);
     $("#sort").addEventListener("change", applyFilters);
-
     $("#prev").addEventListener("click", ()=>{ state.page--; render(); });
     $("#next").addEventListener("click", ()=>{ state.page++; render(); });
-
     $("#reset").addEventListener("click", ()=>{
       state.q = ""; $("#q").value = "";
       state.cats.clear(); state.pols.clear(); state.rars.clear();
       $("#sort").value = "name";
-      renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
-      renderFilterGroup("#f-pol", ALL_POLS, state.pols, (x)=>x);
-      renderFilterGroup("#f-rar", ALL_RARS, state.rars, (x)=>x);
+      renderFilterGroup("#f-cat", ["Aura","WarframeAugment","WarframeExilus","Warframe","Primary","Secondary","Melee","Companion","Archwing","Necramech","Other"], state.cats, categoryLabel);
+      renderFilterGroup("#f-pol", ["Madurai","Vazarin","Naramon","Zenurik","Unairu","Penjaga"], state.pols, (x)=>x);
+      renderFilterGroup("#f-rar", ["Common","Uncommon","Rare","Legendary"], state.rars, (x)=>x);
       applyFilters();
     });
-
     $("#view-cards").addEventListener("click", ()=>{
       state.view = "cards";
       $("#view-cards").classList.add("active");
