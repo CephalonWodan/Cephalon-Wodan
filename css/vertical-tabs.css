@@ -1,0 +1,26 @@
+/* css/vertical-tabs.css */
+/* Colonne d’onglets verticaux collée à gauche du grand encadré */
+
+.vtab-col {
+  position: sticky;   /* reste visible quand on scrolle dans le panel */
+  top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding-right: .25rem;
+  border-right: 1px solid rgba(255,255,255,.08); /* "filet" séparateur optionnel */
+}
+
+/* Boutons onglets en mode colonne */
+.vtab-col .vtab {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+/* Si tu veux les rendre plus massifs façon "tuiles", décommente :
+.vtab-col .vtab {
+  padding: .6rem .8rem;
+  border-radius: .8rem;
+}
+*/
