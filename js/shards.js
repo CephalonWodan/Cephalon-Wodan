@@ -1,10 +1,15 @@
-// js/shards.js — Archon Shards (v3)
-// - Bigger images (260px), link to Wiki, lightbox
-// - Filters (color, tau), search, sort
-// - Dedupe by name (prefer with wiki thumbnail)
-// - URL sync (q, colors, tau, sort, page)
+// js/shards.js — Archon Shards (robuste)
+// - Essaie plusieurs endpoints WarframeStat (casse/param/langue)
+// - Supporte réponse Array OU Objet ({ archonShards: [...] })
+// - Fallback local si l'API renvoie 0 résultat (toujours une page utile)
+// - Le reste (UI, filtres, tri, lightbox, URL sync) est inchangé
 
-const API = "https://api.warframestat.us/archonshards/?language=en";
+const ENDPOINTS = [
+  "https://api.warframestat.us/archonshards?language=en",
+  "https://api.warframestat.us/archonShards?language=en",
+  "https://api.warframestat.us/archonshards/",
+  "https://api.warframestat.us/archonShards/",
+];
 
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -27,6 +32,7 @@ const state = {
   onlyTau: false,
 };
 
+/* ------------ Helpers ------------ */
 function parseColor(name=""){
   const n = name.toLowerCase();
   if (n.includes("crimson")) return "Crimson";
@@ -85,7 +91,6 @@ function dedupeByName(arr){
   return out;
 }
 
-/* ---------- UI helpers ---------- */
 function colorChip(color){
   const hex = COLOR_MAP[color] || "#888888";
   return `<span class="color-chip"><span class="color-dot" style="background:${hex}"></span>${color}</span>`;
@@ -138,7 +143,7 @@ function shardCard(m){
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ---------- Filters & URL sync ---------- */
+/* ------------ URL sync ------------ */
 function parseQuery(){
   const p = new URLSearchParams(location.search);
   state.q = norm(p.get("q") || "");
@@ -160,6 +165,7 @@ function writeQuery(){
   history.replaceState(null, "", url);
 }
 
+/* ------------ Filtres/UI ------------ */
 function renderColorFilters(){
   const host = $("#f-colors");
   host.innerHTML = COLORS.map(c => {
@@ -182,7 +188,6 @@ function renderColorFilters(){
     });
   });
 }
-
 function renderActiveChips(){
   const wrap = $("#active-filters");
   const chips = [];
@@ -204,8 +209,6 @@ function renderActiveChips(){
     });
   });
 }
-
-/* ---------- Color stats ---------- */
 function renderColorStats(arr){
   const host = $("#color-stats");
   const counts = Object.fromEntries(COLORS.map(c => [c, 0]));
@@ -216,7 +219,7 @@ function renderColorStats(arr){
   }).join("");
 }
 
-/* ---------- Filter/apply/render ---------- */
+/* ------------ Filter/apply/render ------------ */
 function applyFilters(){
   const q = state.q = norm($("#q").value).toLowerCase();
   let arr = state.all.slice();
@@ -233,7 +236,7 @@ function applyFilters(){
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b)=>{
     if (sort === "color") return parseColor(a.name||"").localeCompare(parseColor(b.name||"")) || (a.name||"").localeCompare(b.name||"");
-    if (sort === "tau")   return (parseTau(b.name||"") - parseTau(a.name||"")) || (a.name||"").localeCompare(b.name||"");
+    if (sort === "tau")   return (parseTau(b.name||"") ? -1:1) - (parseTau(a.name||"") ? -1:1) || (a.name||"").localeCompare(b.name||"");
     return (a.name||"").localeCompare(b.name||"");
   });
 
@@ -262,7 +265,6 @@ function render(){
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(shardCard).join("");
 
-  // View buttons + cover click → lightbox
   grid.querySelectorAll(".btn-view, .shard-cover").forEach(a=>{
     a.addEventListener("click", (ev)=>{
       ev.preventDefault();
@@ -274,7 +276,7 @@ function render(){
   });
 }
 
-/* ---------- Lightbox ---------- */
+/* ------------ Lightbox ------------ */
 function openLightbox(url, caption=""){
   $("#lb-img").src = url;
   $("#lb-img").alt = caption;
@@ -295,7 +297,57 @@ function closeLightbox(){
   document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
 })();
 
-/* ---------- Boot ---------- */
+/* ------------ API fetch (robuste) + fallback ------------ */
+async function fetchShardsFromEndpoints() {
+  const errors = [];
+  for (const url of ENDPOINTS) {
+    try {
+      const r = await fetch(url, { cache: "no-store" });
+      if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
+      const data = await r.json();
+      // data peut être [] OU { archonShards:[...] } OU { shards:[...] }
+      let arr = [];
+      if (Array.isArray(data)) arr = data;
+      else if (Array.isArray(data?.archonShards)) arr = data.archonShards;
+      else if (Array.isArray(data?.shards)) arr = data.shards;
+
+      if (arr && arr.length) {
+        console.info("[shards] Loaded", arr.length, "from", url);
+        return { list: arr, source: url };
+      } else {
+        errors.push(`${url} → empty array`);
+      }
+    } catch (e) {
+      errors.push(`${url} → ${e.message || e}`);
+    }
+  }
+  console.warn("[shards] All endpoints failed/empty:", errors);
+  return { list: [], source: null, errors };
+}
+
+// fallback minimal (noms + description sommaire, pas de thumb)
+const FALLBACK_SHARDS = (() => {
+  const base = [
+    ["Crimson Archon Shard", "Crimson", "Offense-focused shard (e.g. ability strength, melee crit, etc.)."],
+    ["Amber Archon Shard",   "Amber",   "Utility-focused shard (e.g. casting speed, efficiency, parkour)."],
+    ["Azure Archon Shard",   "Azure",   "Defense-focused shard (e.g. health, shield, energy on orb)."],
+    ["Emerald Archon Shard", "Emerald", "Fusion color (utility/parkour/loot interactions)."],
+    ["Violet Archon Shard",  "Violet",  "Fusion color (ability damage vs. Electricity, etc.)."],
+    ["Topaz Archon Shard",   "Topaz",   "Fusion color (gun/melee hybrid benefits)."],
+  ];
+  const tau = base.map(([n,c,d]) => [`Tauforged ${n}`, c, d.replace(" (", " (Tau, ")]);
+  const all = base.concat(tau);
+  return all.map(([name, color, description]) => ({
+    name,
+    type: `${color} Shard`,
+    description,
+    effects: [],
+    wikiaThumbnail: "", // pas d'image sûre en fallback
+    wikiaUrl: "https://warframe.fandom.com/wiki/Archon_Shard"
+  }));
+})();
+
+/* ------------ Boot ------------ */
 (async function boot(){
   const status = $("#status");
   try {
@@ -311,11 +363,17 @@ function closeLightbox(){
       </div>
     `).join("");
 
-    // Fetch
-    const data = await fetch(API).then(r => r.json());
-    const raw = Array.isArray(data) ? data : [];
-    const cleaned = dedupeByName(raw);
+    const { list: apiList, source } = await fetchShardsFromEndpoints();
+    let raw = Array.isArray(apiList) ? apiList : [];
 
+    // Si l'API est vide, fallback (jamais 0 item)
+    let usedFallback = false;
+    if (!raw.length) {
+      usedFallback = true;
+      raw = FALLBACK_SHARDS;
+    }
+
+    const cleaned = dedupeByName(raw);
     state.all = cleaned;
 
     // URL → state
@@ -344,7 +402,13 @@ function closeLightbox(){
     $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
 
     // First render
-    status.textContent = `Shards loaded: ${state.all.length} (EN)`;
+    if (usedFallback) {
+      status.textContent = `Shards loaded: ${state.all.length} (fallback dataset — API empty)`;
+      status.style.background = "rgba(212,175,55,.10)";
+      status.style.color = "#ffdca7";
+    } else {
+      status.textContent = `Shards loaded: ${state.all.length} (from ${source?.replace(/^https?:\/\//,'') || 'API'})`;
+    }
     applyFilters();
   } catch (e) {
     console.error("[shards] error:", e);
