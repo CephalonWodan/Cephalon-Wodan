@@ -2,19 +2,23 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Aperçu – Warframes (Aptitudes)</title>
+  <title>Aperçu – Warframes (Classic)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thème -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/polarities.css" />
-  <link rel="stylesheet" href="css/vertical-tabs.css" />
+  <link rel="stylesheet" href="css/polarities.css">
+  <link rel="stylesheet" href="css/vertical-tabs.css">
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
+  <!-- NAV -->
+  <div id="site-nav"></div>
+
   <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-2xl font-semibold mb-3">Aperçu – Warframes</h1>
 
-    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
-         style="background:rgba(0,229,255,.08); color:#bfefff;">
+    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn" style="background:rgba(0,229,255,.08); color:#bfefff;">
       Chargement des données…
     </div>
 
@@ -33,16 +37,12 @@
                      outline-none orn focus-gold"></select>
     </div>
 
-    <!-- Barre d’onglets (liens) à GAUCHE + grand encadré -->
-    <div id="panel-wrapper" class="flex gap-4">
-      <aside id="vtabs" class="hidden md:block w-[180px] shrink-0"></aside>
-      <div id="card" class="card p-5 flex-1"></div>
-    </div>
+    <div id="card" class="card p-5"></div>
   </div>
 
   <!-- JS -->
+  <script src="js/site_nav.js" defer></script>
   <script src="js/polarities.js" defer></script>
-  <script src="js/app_common.js?v=1" defer></script>
-  <script src="js/app_apt.js?v=1" defer></script>
+  <script src="js/app.js?v=1" defer></script>
 </body>
 </html>
