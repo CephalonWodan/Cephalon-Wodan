@@ -6,16 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Ton thème custom (après Tailwind) -->
+  <!-- Styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/polarities.css">
-  <link rel="stylesheet" href="css/vertical-tabs.css">
+  <link rel="stylesheet" href="css/polarities.css" />
+  <link rel="stylesheet" href="css/vertical-tabs.css" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
   <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-2xl font-semibold mb-3">Aperçu – Warframes</h1>
 
-    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn" style="background:rgba(0,229,255,.08); color:#bfefff;">
+    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
+         style="background:rgba(0,229,255,.08); color:#bfefff;">
       Chargement des données…
     </div>
 
@@ -34,11 +35,18 @@
                      outline-none orn focus-gold"></select>
     </div>
 
-    <div id="card" class="card p-5"></div>
+    <!-- ====== MISE EN PAGE : Onglets à gauche + Grand encadré à droite ====== -->
+    <div id="panel-wrapper" class="flex gap-4">
+      <!-- Colonne d'onglets VERTICAUX à gauche du grand encadré -->
+      <aside id="vtabs" class="hidden md:block w-[180px] shrink-0"></aside>
+
+      <!-- Grand encadré (rendu dynamique) -->
+      <div id="card" class="card p-5 flex-1"></div>
+    </div>
   </div>
 
-  <!-- Ton JS -->
-<script src="js/polarities.js" defer></script>
-<script src="js/app.js?v=1" defer></script>
+  <!-- JS -->
+  <script src="js/polarities.js" defer></script>
+  <script src="js/app.js?v=2" defer></script>
 </body>
 </html>
