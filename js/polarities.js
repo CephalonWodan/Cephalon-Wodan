@@ -1,23 +1,24 @@
 // js/polarities.js
-// Injecte les polarités (Aura + slots) en utilisant les SVG officiels du repo : img/polarities/*.svg
-// Sources : API WarframeStat (EN) + data/polarity_overrides.json (optionnel)
-// S'accroche à l'évènement "wf:card-rendered" émis par app.js.
+// Injecte les polarités (Aura + slots) avec les SVG du repo: img/polarities/*.svg
+// Sources: WarframeStat (EN) + data/polarity_overrides.json (optionnel)
+// Écoute l'évènement "wf:card-rendered" émis par app.js.
 
 (function () {
   const API = "https://api.warframestat.us/warframes/?language=en";
-  const OVERRIDES_URL = "data/polarity_overrides.json"; // optionnel, généré par ton script
-  const ICON_BASE = "img/polarities";                   // dossier d'icônes dans ton repo
+  const OVERRIDES_URL = "data/polarity_overrides.json"; // optionnel
+  // Base absolue vers /img/polarities/ (gère le sous-chemin GitHub Pages)
+  const ICON_BASE = new URL("img/polarities/", document.baseURI).href;
 
   const state = {
     apiIndex: null,   // Map nameVariant(lower) -> api record
-    overrides: {},    // { "FrameName": { aura: "Madurai", slots: ["Vazarin", ...] } }
+    overrides: {},
     ready: false,
   };
 
   const $ = (sel, root = document) => root.querySelector(sel);
   const norm = (s) => String(s || "").trim();
 
-  // ---------- Variantes de nom (Prime/Umbra -> base)
+  /* -------- Noms & variantes -------- */
   function variantKeys(name) {
     const n = norm(name);
     if (!n) return [];
@@ -27,7 +28,7 @@
     return Array.from(new Set(out.map(x => x.toLowerCase())));
   }
 
-  // ---------- Chargement API + overrides (avec cache)
+  /* -------- Chargement API & overrides -------- */
   async function ensureApiIndex() {
     if (state.apiIndex) return state.apiIndex;
     const data = await fetch(API).then(r => r.json()).catch(() => []);
@@ -45,61 +46,67 @@
     try {
       const r = await fetch(OVERRIDES_URL);
       if (r.ok) state.overrides = await r.json();
-    } catch (_) {} // 404 ok
+    } catch (_) {} // 404 OK
     state.ready = true;
     return state.overrides;
   }
 
-  // ---------- Canonicalisation + mapping fichier
-  // Noms canoniques -> fichier SVG attendu. Si tes fichiers ont d’autres noms, adapte ce mapping.
-  const FILE_MAP = {
-    Madurai: "madurai.svg",
-    Vazarin: "vazarin.svg",
-    Naramon: "naramon.svg",
-    Zenurik: "zenurik.svg",
-    Unairu: "unairu.svg",
-    Umbra: "umbra.svg",
-    Penjaga: "penjaga.svg",
-    Universal: "universal.svg" // si présent dans ton dossier
+  /* -------- Canonicalisation + mapping -------- */
+  const CANON = {
+    madurai: "Madurai",
+    vazarin: "Vazarin",
+    naramon: "Naramon",
+    zenurik: "Zenurik",
+    unairu:  "Unairu",
+    umbra:   "Umbra",
+    penjaga: "Penjaga",
+    universal: "Universal"
   };
-  const POL_CANON = Object.fromEntries(Object.keys(FILE_MAP).map(k => [k.toLowerCase(), k]));
-
   function canonPol(p) {
     if (!p) return null;
     const k = String(p).toLowerCase().replace(/[^a-z]/g, "");
-    return POL_CANON[k] || (p[0].toUpperCase() + p.slice(1));
-  }
-  function iconPath(polName) {
-    const file = FILE_MAP[polName] || `${polName.toLowerCase()}.svg`;
-    return `${ICON_BASE}/${file}`;
+    return CANON[k] || (p[0].toUpperCase() + p.slice(1));
   }
 
-  // ---------- Merge API + overrides
+  // Génère une liste de fichiers candidats: lower, Capitalized, UPPER
+  function fileCandidates(polName) {
+    const base = String(polName || "").trim();
+    if (!base) return [];
+    const lower = base.toLowerCase();
+    const cap = base[0].toUpperCase() + base.slice(1).toLowerCase();
+    const upper = base.toUpperCase();
+    return [`${lower}.svg`, `${cap}.svg`, `${upper}.svg`];
+  }
+
+  function iconUrlCandidates(polName) {
+    return fileCandidates(polName).map(f => ICON_BASE + f);
+  }
+
+  /* -------- Merge API + overrides -------- */
   function mergePolarities(apiRec, override) {
-    const auraApi = apiRec?.auraPolarity || apiRec?.aura || null;
+    const auraApi  = apiRec?.auraPolarity || apiRec?.aura || null;
     const slotsApi = Array.isArray(apiRec?.polarities) ? apiRec.polarities : [];
-    const aura = override?.aura || auraApi || null;
+    const aura  = override?.aura  || auraApi  || null;
     const slots = (Array.isArray(override?.slots) && override.slots.length) ? override.slots : slotsApi;
     return { aura, slots };
   }
 
-  // ---------- Rendu DOM (utilise <img> sur les SVG du repo)
-  // style inline “doré” pour rester cohérent, au cas où ta CSS ne le cible pas
+  /* -------- Création d'icône (avec essais multiples) -------- */
   const WRAP_STYLE = "display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(212,175,55,.55);background:rgba(212,175,55,.06);";
+
   function fallbackSVG(pol) {
-    // Fallback minimal si une icône manque (rare) : pastille dorée avec initiale
     const letter = (pol || "?").slice(0, 1);
-    const svg = `
+    const wrap = document.createElement("span");
+    wrap.setAttribute("style", WRAP_STYLE);
+    wrap.innerHTML = `
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
         <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.06)"></circle>
         <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(212,175,55,.8)" stroke-width="1.5"></circle>
         <text x="12" y="16" text-anchor="middle" font-size="11" fill="#D4AF37" font-family="system-ui,Segoe UI,Roboto">${letter}</text>
       </svg>`;
-    const wrap = document.createElement("span");
-    wrap.setAttribute("style", WRAP_STYLE);
-    wrap.innerHTML = svg;
     return wrap;
   }
+
   function createIcon(polName) {
     const wrap = document.createElement("span");
     wrap.className = "pol-icon";
@@ -112,13 +119,26 @@
     img.width = 22;
     img.height = 22;
     img.alt = polName;
-    img.src = iconPath(polName);
 
-    img.addEventListener("error", () => {
-      // Remplace par un fallback discret si le fichier est introuvable
-      wrap.replaceChildren(fallbackSVG(polName));
-    });
+    const tries = iconUrlCandidates(polName);
+    let i = 0;
 
+    function tryNext() {
+      if (i >= tries.length) {
+        console.warn(`[polarities] Icon not found for "${polName}" in`, tries);
+        wrap.replaceChildren(fallbackSVG(polName));
+        return;
+      }
+      const url = tries[i++];
+      img.src = url;
+    }
+
+    img.addEventListener("error", tryNext, { once: false });
+    img.addEventListener("load", () => {
+      // succès -> garder cette source
+    }, { once: true });
+
+    tryNext();
     wrap.appendChild(img);
     return wrap;
   }
@@ -131,7 +151,7 @@
     list.forEach(p => host.appendChild(createIcon(p)));
   }
 
-  // ---------- Handler principal
+  /* -------- Handler principal -------- */
   async function onCardRendered(e) {
     try {
       const wf = e?.detail?.wf || {};
@@ -148,7 +168,6 @@
       const ovr = state.overrides[name] || null;
       const { aura, slots } = mergePolarities(rec, ovr);
 
-      // Injecte dans la carte affichée
       const card = document.getElementById("card");
       if (!card) return;
       renderRow(card.querySelector('.polarity-row[data-zone="aura"]'), aura ? [aura] : []);
