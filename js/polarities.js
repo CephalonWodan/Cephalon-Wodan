@@ -92,6 +92,18 @@
       </svg>`;
     return span;
   }
+  
+  /* Filet doré sous les libellés */
+.aura-label::after,
+.polarity-label::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin: .35rem auto 0;
+  background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);
+  border-radius: 2px;
+}
 
   function iconFor(polName, isAura=false) {
     const file = FILES[polName];
