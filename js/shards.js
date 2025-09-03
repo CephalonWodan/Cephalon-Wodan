@@ -1,17 +1,4 @@
-// js/shards.js — Archon Shards (local images first + effets API, sans lien wiki)
-//
-// Utilise en priorité /img/shards/:
-//   AmberArchonShard.png
-//   AzureArchonShard.png
-//   CrimsonArchonShard.png
-//   EmeraldArchonShard.png
-//   TopazArchonShard.png
-//   VioletArchonShard.png
-// …et les variantes tauforged : TauforgedAmberArchonShard.png, etc.
-//
-// Fallbacks : wiki thumbnail (HD) → pastille colorée si rien.
-//
-// Conserve: recherche, tris, filtres couleur + tau, pagination, lightbox, URL sync.
+// js/shards.js — Archon Shards (images locales d'abord + effets API, sans lien wiki, sans bouton View)
 
 const ENDPOINTS = [
   "https://api.warframestat.us/archonshards?language=en",
@@ -56,13 +43,11 @@ function parseColor(name=""){
 function parseTau(name=""){ return /tauforged/i.test(name); }
 
 /* ------------ Images: local → wiki → dot ------------ */
-// Local filename from color + tau
 function localShardPath(color, tau){
   if (!color || color === "Unknown") return "";
   const base = tau ? `Tauforged${color}ArchonShard.png` : `${color}ArchonShard.png`;
   return LOCAL_DIR + base;
 }
-
 // Wiki helpers
 function rawWikiThumb(m){
   return (
@@ -71,25 +56,17 @@ function rawWikiThumb(m){
     m.image          || m.icon      || ""
   );
 }
-function normalizeUrl(u){
-  if (!u) return "";
-  if (u.startsWith("//")) return "https:" + u;
-  return u;
-}
+function normalizeUrl(u){ return !u ? "" : (u.startsWith("//") ? "https:" + u : u); }
 function upscaleWikiThumb(url, size=512){
   if (!url) return "";
   let out = normalizeUrl(url);
   out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
   if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
-    out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs='') => {
-      const delim = slash ? "" : "/";
-      return `/latest${delim}scale-to-width-down/${size}${qs || ""}`;
-    });
+    out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs='') => `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
   }
   return out;
 }
-
-// Color-dot fallback data URL
+// Color-dot fallback
 function colorDotDataUrl(color, tau){
   const hex = COLOR_MAP[color] || "#888";
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
@@ -102,13 +79,11 @@ function colorDotDataUrl(color, tau){
   </svg>`;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
-
-// Compose sources for a shard (primary/local + fallbacks)
 function getShardImageSources(m){
   const color = parseColor(m.name||"");
   const tau   = parseTau(m.name||"");
   const localGrid = localShardPath(color, tau);
-  const localFull = localGrid; // tes PNG sont assez grands pour la lightbox
+  const localFull = localGrid;
 
   const wikiRaw = rawWikiThumb(m);
   const wikiGrid = wikiRaw ? upscaleWikiThumb(wikiRaw, 384)  : "";
@@ -213,8 +188,6 @@ function shardCard(m){
     color !== "Unknown" ? colorChip(color) : "",
   ].filter(Boolean).join(" ");
 
-  // On pose d'abord la source locale (data-primary). On met src sur la locale;
-  // et data-fallback pour la wiki/dot. Un gestionnaire 'error' fixera la fallback.
   const primary = localGrid || wikiGrid || dot;
   const fallback = (localGrid ? (wikiGrid || dot) : dot);
   const fullPrimary = localFull || wikiFull || dot;
@@ -225,7 +198,8 @@ function shardCard(m){
     <a href="#" class="shard-cover"
        data-full="${escapeHtml(fullFallback)}"
        data-full-primary="${escapeHtml(fullPrimary)}"
-       data-full-fallback="${escapeHtml(fullFallback)}">
+       data-full-fallback="${escapeHtml(fullFallback)}"
+       data-name="${escapeHtml(m.name||"Archon Shard")}">
       <img
         src="${escapeHtml(primary)}"
         alt="${escapeHtml(m.name||"Archon Shard")}"
@@ -250,12 +224,6 @@ function shardCard(m){
             ${effects.map(b => `<div class="k">•</div><div class="v">${escapeHtml(b)}</div>`).join("")}
           </div>
         </div>` : "" }
-
-      <div class="card-actions">
-        ${ `<a href="#" class="btn-view"
-               data-full-primary="${escapeHtml(fullPrimary)}"
-               data-full-fallback="${escapeHtml(fullFallback)}">View</a>` }
-      </div>
     </div>
   </div>`;
 }
@@ -385,43 +353,25 @@ function render(){
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(shardCard).join("");
 
-  // Accroche lightbox + gestion des images locales manquantes (fallbacks)
+  // Gestion cover/lightbox + fallback image locale→wiki→dot
   grid.querySelectorAll(".shard-cover").forEach(a=>{
     const img = a.querySelector("img");
-    const fullPrimary = a.getAttribute("data-full-primary");
+    const fullPrimary  = a.getAttribute("data-full-primary");
     const fullFallback = a.getAttribute("data-full-fallback");
 
     if (img) {
-      // si la locale charge => on met le full sur la locale
-      img.addEventListener("load", () => {
-        a.dataset.full = fullPrimary;
-      }, { once: true });
-
-      // si la locale 404 => switcher sur fallback (wiki/dot) ET pour la lightbox aussi
+      img.addEventListener("load", () => { a.dataset.full = fullPrimary; }, { once:true });
       img.addEventListener("error", () => {
         const fb = img.getAttribute("data-fallback");
         if (fb) img.src = fb;
         a.dataset.full = fullFallback;
-      }, { once: true });
+      }, { once:true });
     }
 
     a.addEventListener("click", (ev)=>{
       ev.preventDefault();
       const url = a.dataset.full || fullPrimary || fullFallback;
       const nm  = a.getAttribute("data-name") || "";
-      if (!url) return;
-      openLightbox(url, nm);
-    });
-  });
-
-  // Bouton "View"
-  grid.querySelectorAll(".btn-view").forEach(btn=>{
-    btn.addEventListener("click", (ev)=>{
-      ev.preventDefault();
-      const card = btn.closest(".shard-card");
-      const cov  = card?.querySelector(".shard-cover");
-      const url  = cov?.dataset.full || btn.getAttribute("data-full-primary") || btn.getAttribute("data-full-fallback");
-      const nm   = cov?.getAttribute("data-name") || "";
       if (!url) return;
       openLightbox(url, nm);
     });
@@ -458,13 +408,8 @@ async function fetchShardsFromEndpoints() {
       if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
       const data = await r.json();
 
-      // 1) Réponse tableau direct
-      if (Array.isArray(data) && data.length) {
-        console.info("[shards] Loaded", data.length, "from", url);
-        return { list: data, source: url };
-      }
+      if (Array.isArray(data) && data.length) return { list: data, source: url };
 
-      // 2) Réponse objet avec clés ACC_* (ex: ACC_BLUE)
       if (data && typeof data === "object" && !Array.isArray(data)) {
         const keys = Object.keys(data).filter(k => /^ACC_/i.test(k));
         if (keys.length) {
@@ -481,30 +426,16 @@ async function fetchShardsFromEndpoints() {
               wikiaThumbnail: normalizeUrl(node.thumbnail || node.wikiaThumbnail || node.wikiathumbnail || ""),
             });
           }
-          if (converted.length) {
-            console.info("[shards] Converted ACC_* object →", converted.length, "items (", url, ")");
-            return { list: converted, source: url };
-          }
+          if (converted.length) return { list: converted, source: url };
         }
-
-        // 3) D'autres enveloppes possibles (archonShards / shards)
-        if (Array.isArray(data.archonShards) && data.archonShards.length) {
-          return { list: data.archonShards, source: url };
-        }
-        if (Array.isArray(data.shards) && data.shards.length) {
-          return { list: data.shards, source: url };
-        }
+        if (Array.isArray(data.archonShards) && data.archonShards.length) return { list: data.archonShards, source: url };
+        if (Array.isArray(data.shards) && data.shards.length)           return { list: data.shards, source: url };
       }
-
-      errors.push(`${url} → empty/unknown shape`);
-    } catch (e) {
-      errors.push(`${url} → ${e.message || e}`);
-    }
+    } catch (e) { errors.push(`${url} → ${e.message || e}`); }
   }
-  console.warn("[shards] All endpoints failed/empty]:", errors);
+  console.warn("[shards] All endpoints failed/empty:", errors);
   return { list: [], source: null, errors };
 }
-
 function capitalize(s){ s=String(s||""); return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase(); }
 
 /* ------------ Boot ------------ */
@@ -525,19 +456,14 @@ function capitalize(s){ s=String(s||""); return s.charAt(0).toUpperCase()+s.slic
 
     const { list: apiList, source } = await fetchShardsFromEndpoints();
     const raw = Array.isArray(apiList) ? apiList : [];
-
     state.all = dedupeByName(raw);
 
-    // URL → state
     parseQuery();
-
-    // UI init (from state)
     $("#q").value = state.q;
     $("#sort").value = state.sort;
     $("#only-tau").checked = state.onlyTau;
     renderColorFilters();
 
-    // Listeners
     $("#q").addEventListener("input", ()=>{ state.page=1; applyFilters(); writeQuery(); });
     $("#sort").addEventListener("change", ()=>{ state.page=1; applyFilters(); writeQuery(); });
     $("#only-tau").addEventListener("change", ()=>{ state.onlyTau = $("#only-tau").checked; state.page=1; applyFilters(); writeQuery(); });
@@ -553,7 +479,6 @@ function capitalize(s){ s=String(s||""); return s.charAt(0).toUpperCase()+s.slic
     $("#prev").addEventListener("click", ()=>{ state.page--; render(); writeQuery(); });
     $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
 
-    // First render
     status.textContent = `Shards loaded: ${state.all.length}${source ? ` (from ${source.replace(/^https?:\/\//,'')})` : ""}`;
     applyFilters();
   } catch (e) {
