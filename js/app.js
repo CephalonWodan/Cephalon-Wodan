@@ -1,8 +1,10 @@
 // js/app.js
 // =====================================================
-// Aperçu Warframes — alimente la UI avec 3 JSON locaux
+// Aperçu Warframes — données API + 3 JSON locaux
 // abilities.json, abilities_by_warframe.json, warframe_abilities.json
-// + la liste Warframes de l’API officielle (failover EN -> FR)
+// - Pas de dépendance à #vtabs
+// - Pas de fetch des fichiers *_by_warframe.json absents
+// - Failover API EN -> FR + messages d'erreur clairs
 // =====================================================
 
 const CFG = {
@@ -10,9 +12,9 @@ const CFG = {
     "https://api.warframestat.us/warframes/?language=en",
     "https://api.warframestat.us/warframes/?language=fr",
   ],
-  ABILITIES_VALUES_URL: "data/abilities.json",            // valeurs (cost/strength/duration/range + rows)
-  ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json", // noms par Warframe (fallback/ordre)
-  ABILITIES_META_URL: "data/warframe_abilities.json",     // meta (Name, SlotKey, InternalName, Cost, Description…)
+  ABILITIES_VALUES_URL: "data/abilities.json",
+  ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json", // optionnel
+  ABILITIES_META_URL: "data/warframe_abilities.json",
 };
 
 // ---------- utils
@@ -31,16 +33,12 @@ function variantFallbacks(name) {
   return list;
 }
 
-// Petit helper fetch avec message contextualisé
 async function fetchJson(url, what) {
   const r = await fetch(url);
-  if (!r.ok) {
-    throw new Error(`${what} — HTTP ${r.status} @ ${url}`);
-  }
+  if (!r.ok) throw new Error(`${what} — HTTP ${r.status} @ ${url}`);
   return r.json();
 }
 
-// Essaie plusieurs URLs pour l’API WarframeStat
 async function fetchWarframesWithFailover() {
   const errors = [];
   for (const url of CFG.WF_URLS) {
@@ -49,16 +47,14 @@ async function fetchWarframesWithFailover() {
       if (Array.isArray(data) && data.length) {
         console.info(`[app] Warframes chargées via ${url} (${data.length})`);
         return data;
-      } else {
-        errors.push(`Réponse vide @ ${url}`);
       }
+      errors.push(`Réponse vide @ ${url}`);
     } catch (e) {
       console.error(e);
       errors.push(e.message || String(e));
     }
   }
-  const msg = `Impossible de charger la liste des Warframes.\n${errors.join("\n")}`;
-  throw new Error(msg);
+  throw new Error(`Impossible de charger la liste des Warframes.\n${errors.join("\n")}`);
 }
 
 // ---------- boot
@@ -72,31 +68,16 @@ async function fetchWarframesWithFailover() {
       status.style.color = "#bfefff";
     }
 
-    // Charge en parallèle (avec messages d’erreur parlants)
+    // Charge en parallèle (with graceful fallback pour abilities_by_warframe.json)
     const [wfRaw, valsRaw, byWfRaw, metaRaw] = await Promise.all([
-      (async () => {
-        try { return await fetchWarframesWithFailover(); }
-        catch (e) { throw new Error(e.message); }
-      })(),
-      (async () => {
-        try { return await fetchJson(CFG.ABILITIES_VALUES_URL, "abilities.json"); }
-        catch (e) { throw new Error(`abilities.json introuvable ? ${e.message}`); }
-      })(),
-      (async () => {
-        // ce JSON est optionnel dans ton code original
-        try { return await fetchJson(CFG.ABILITIES_BY_WF_URL, "abilities_by_warframe.json"); }
-        catch { return {}; }
-      })(),
-      (async () => {
-        try { return await fetchJson(CFG.ABILITIES_META_URL, "warframe_abilities.json"); }
-        catch (e) { throw new Error(`warframe_abilities.json introuvable ? ${e.message}`); }
-      })(),
+      fetchWarframesWithFailover(),
+      fetchJson(CFG.ABILITIES_VALUES_URL, "abilities.json"),
+      fetch(CFG.ABILITIES_BY_WF_URL).then(r => r.ok ? r.json() : (console.warn("[app] abilities_by_warframe.json absent (OK)"), {})).catch(()=> ({})),
+      fetchJson(CFG.ABILITIES_META_URL, "warframe_abilities.json"),
     ]);
 
-    // ---- index pour abilities.json (par path)
+    // ---- index values par path
     const valuesByPath = new Map(valsRaw.map((x) => [x.path, x]));
-
-    // aide: retrouver la meilleure entrée values pour un InternalName
     function findValuesForInternal(internalName) {
       const cands = valsRaw.filter((v) => v.path.startsWith(internalName));
       if (!cands.length) return null;
@@ -113,10 +94,10 @@ async function fetchWarframesWithFailover() {
     }, {});
     for (const k in metaByFrame) metaByFrame[k].sort(bySlot);
 
-    // ---- fallback liste noms par Warframe (si jamais une frame manque dans meta)
+    // ---- fallback liste noms par Warframe
     const namesByFrame = byWfRaw || {};
 
-    // ---- normalisation de la liste warframes (filtrage)
+    // ---- normalise la liste Warframes
     const list = (wfRaw || [])
       .filter((wf) => wf && wf.type === "Warframe" && !["Bonewidow", "Voidrig"].includes(wf.name))
       .map((rec) => {
@@ -136,15 +117,11 @@ async function fetchWarframesWithFailover() {
       })
       .sort(byName);
 
-    // ---- injecter les pouvoirs (onglets) par frame : on part de META; fallback sur namesByFrame
     function abilitiesForFrame(frameName) {
       let meta = metaByFrame[frameName];
       if (!meta || !meta.length) {
         for (const alt of variantFallbacks(frameName)) {
-          if (metaByFrame[alt]?.length) {
-            meta = metaByFrame[alt];
-            break;
-          }
+          if (metaByFrame[alt]?.length) { meta = metaByFrame[alt]; break; }
         }
       }
       let out = [];
@@ -154,9 +131,9 @@ async function fetchWarframesWithFailover() {
           const sum = (values && values.summary) || {};
           const summary = {
             costEnergy: m.Cost ?? sum.costEnergy ?? null,
-            strength: sum.strength ?? null,
-            duration: sum.duration ?? null,
-            range: sum.range ?? null,
+            strength:   sum.strength ?? null,
+            duration:   sum.duration ?? null,
+            range:      sum.range ?? null,
             affectedBy: Array.isArray(sum.affectedBy) ? sum.affectedBy : [],
           };
           return {
@@ -182,10 +159,8 @@ async function fetchWarframesWithFailover() {
       return out.sort((a, b) => (a.slot ?? 99) - (b.slot ?? 99));
     }
 
-    // attache la liste d’abilities à chaque wf
-    list.forEach((wf) => {
-      wf.abilities = abilitiesForFrame(wf.name);
-    });
+    // Attache abilities à chaque wf
+    list.forEach((wf) => { wf.abilities = abilitiesForFrame(wf.name); });
 
     // ---------- UI
     const card = $("#card");
@@ -212,34 +187,29 @@ async function fetchWarframesWithFailover() {
       const a = abilities[iAbility] || {};
       const s = a.summary || {};
 
-      const tabs = abilities
-        .map(
-          (ab, i) =>
-            `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">${ab.slot ?? i + 1}. ${
-              ab.name || "—"
-            }</button>`
-        )
-        .join(" ");
+      const tabs = abilities.map((ab, i) =>
+        `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">
+          ${ab.slot ?? i + 1}. ${ab.name || "—"}
+        </button>`
+      ).join(" ");
 
       const affected = (s.affectedBy || [])
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${k}</span>`)
         .join(" ");
 
-      const rowsHtml = (a.rows || [])
-        .map((r) => {
-          const label = r.filledLabel || r.label || "";
-          const main = r.mainNumeric != null ? r.mainNumeric : "";
-          return `
-            <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-              <div class="text-sm">${label}</div>
-              <div class="font-medium">${txt(main)}</div>
-            </div>`;
-        })
-        .join("");
+      const rowsHtml = (a.rows || []).map((r) => {
+        const label = r.filledLabel || r.label || "";
+        const main = r.mainNumeric != null ? r.mainNumeric : "";
+        return `
+          <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
+            <div class="text-sm">${label}</div>
+            <div class="font-medium">${txt(main)}</div>
+          </div>`;
+      }).join("");
 
       card.innerHTML = `
         <div class="flex flex-col md:flex-row gap-6">
-          <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
+          <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
             <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
               ${
                 wf.image
@@ -248,7 +218,7 @@ async function fetchWarframesWithFailover() {
               }
             </div>
 
-            <!-- Zone polarités (si ton polarities.js l’injecte ici, il trouvera .polarity-row) -->
+            <!-- Polarités sous l'image -->
             <div class="w-full">
               <div class="muted text-xs mb-1">Aura polarity</div>
               <div class="polarity-row" data-zone="aura"></div>
@@ -312,12 +282,12 @@ async function fetchWarframesWithFailover() {
         </div>
       `;
 
-      // tabs (abilities)
+      // Changement d'ability
       card.querySelectorAll("[data-abi]").forEach((btn) => {
         btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
       });
 
-      // Laisse ton script polarities.js remplir .polarity-row si présent
+      // Notifier polarities.js qu'une carte est prête
       document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
     }
 
@@ -374,7 +344,6 @@ async function fetchWarframesWithFailover() {
     });
   } catch (e) {
     console.error("[app] ERREUR BOOT :", e);
-    const status = $("#status");
     if (status) {
       status.textContent = `Erreur de chargement : ${e.message || e}`;
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
