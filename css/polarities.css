@@ -1,31 +1,53 @@
 /* css/polarities.css */
-/* Bloc complet : libellé + rangée d'icônes */
-.polarity-block {
+/* Wrapper global sous l'image */
+.polarity-wrap {
   width: 100%;
-  margin-top: .5rem;
+  margin-top: .6rem;
+  display: grid;
+  gap: .55rem; /* espace entre Aura et Slots */
 }
 
-/* Libellé "Polarity :" */
-.polarity-label {
-  font-size: 16px;
+/* ===== Aura ===== */
+.aura-block { width: 100%; }
+.aura-label {
+  font-size: 12px;
   line-height: 1.2;
-  margin-bottom: .35rem;
   text-align: center;
   color: var(--muted, rgba(255,255,255,.65));
   letter-spacing: .02em;
+  margin-bottom: .3rem;
+}
+.aura-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  width: 100%;
+}
+.aura-text {
+  font-size: 13px;
+  opacity: .9;
 }
 
-/* Rangée d'icônes (centrée) */
+/* ===== Slots / autres polarités ===== */
+.polarity-block { width: 100%; }
+.polarity-label {
+  font-size: 12px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--muted, rgba(255,255,255,.65));
+  letter-spacing: .02em;
+  margin-bottom: .3rem;
+}
 .polarity-row {
   display: flex;
   flex-wrap: wrap;
   gap: .4rem;
   align-items: center;
   justify-content: center;
-  margin: 0; /* le spacing est géré par .polarity-block */
 }
 
-/* Badge contenant l’icône */
+/* Badges (icônes SVG) communs */
 .polarity-badge {
   min-width: 22px;
   height: 22px;
@@ -36,13 +58,14 @@
   place-items: center;
   background: rgba(255,255,255,.04);
 }
+.polarity-badge[data-kind="Aura"],
+.polarity-badge[data-kind="Exilus"] { border-style: dashed; }
 
-/* Variantes visuelles */
-.polarity-badge[data-kind="Aura"] { border-style: dashed; }
-.polarity-badge[data-kind="Exilus"] { opacity: .95; }
-
-/* Taille des SVG */
-.polarity-badge img { width: 20px; height: 20px; display: block; }
+.polarity-badge img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
 
 /* Inversion douce en thème sombre si l’icône est noire */
 @media (prefers-color-scheme: dark) {
