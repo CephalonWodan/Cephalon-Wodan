@@ -1,13 +1,18 @@
 // js/polarities.js
-// Injecte les polarités (Aura + slots) avec les SVG du repo: img/polarities/*.svg
+// Injecte les polarités (Aura + slots) avec tes icônes locales: img/polarities/*.{svg,png,webp}
 // Sources: WarframeStat (EN) + data/polarity_overrides.json (optionnel)
-// Écoute l'évènement "wf:card-rendered" émis par app.js.
+// S'accroche à l'évènement "wf:card-rendered" émis par app.js.
 
 (function () {
   const API = "https://api.warframestat.us/warframes/?language=en";
   const OVERRIDES_URL = "data/polarity_overrides.json"; // optionnel
-  // Base absolue vers /img/polarities/ (gère le sous-chemin GitHub Pages)
+  // Base absolue vers le dossier d'icônes (OK sur GitHub Pages)
   const ICON_BASE = new URL("img/polarities/", document.baseURI).href;
+
+  // (optionnel) Permettre un mapping externe: window.POL_ICON_MAP = { "Zenurik": "zenurik_icon.svg", ... }
+  const EXTERNAL_MAP = (typeof window !== "undefined" && window.POL_ICON_MAP) ? window.POL_ICON_MAP : null;
+  // (optionnel) debug console
+  const DEBUG = (typeof window !== "undefined" && window.POL_DEBUG) ? true : false;
 
   const state = {
     apiIndex: null,   // Map nameVariant(lower) -> api record
@@ -18,7 +23,7 @@
   const $ = (sel, root = document) => root.querySelector(sel);
   const norm = (s) => String(s || "").trim();
 
-  /* -------- Noms & variantes -------- */
+  /* -------- Variantes de nom de Warframe -------- */
   function variantKeys(name) {
     const n = norm(name);
     if (!n) return [];
@@ -28,7 +33,7 @@
     return Array.from(new Set(out.map(x => x.toLowerCase())));
   }
 
-  /* -------- Chargement API & overrides -------- */
+  /* -------- API & overrides -------- */
   async function ensureApiIndex() {
     if (state.apiIndex) return state.apiIndex;
     const data = await fetch(API).then(r => r.json()).catch(() => []);
@@ -46,12 +51,12 @@
     try {
       const r = await fetch(OVERRIDES_URL);
       if (r.ok) state.overrides = await r.json();
-    } catch (_) {} // 404 OK
+    } catch (_) {} // 404 ok
     state.ready = true;
     return state.overrides;
   }
 
-  /* -------- Canonicalisation + mapping -------- */
+  /* -------- Canonicalisation des polarités -------- */
   const CANON = {
     madurai: "Madurai",
     vazarin: "Vazarin",
@@ -68,18 +73,39 @@
     return CANON[k] || (p[0].toUpperCase() + p.slice(1));
   }
 
-  // Génère une liste de fichiers candidats: lower, Capitalized, UPPER
-  function fileCandidates(polName) {
-    const base = String(polName || "").trim();
-    if (!base) return [];
+  /* -------- Résolution du fichier d’icône -------- */
+  // Extensions testées
+  const EXTS = [".svg", ".png", ".webp"];
+
+  // Génère des variantes de nom de fichier pour être tolérant (casse / préfixes usuels)
+  function nameVariants(base) {
     const lower = base.toLowerCase();
-    const cap = base[0].toUpperCase() + base.slice(1).toLowerCase();
+    const cap   = base[0].toUpperCase() + base.slice(1).toLowerCase();
     const upper = base.toUpperCase();
-    return [`${lower}.svg`, `${cap}.svg`, `${upper}.svg`];
+
+    // quelques patterns vus fréquemment
+    const stems = [
+      lower, cap, upper,
+      `polarity-${lower}`, `${lower}-polarity`,
+      `icon-${lower}`, `${lower}-icon`,
+      `wf-${lower}`, `slot-${lower}`
+    ];
+
+    // si EXTERNAL_MAP fournit un nom exact, on le met en tête
+    if (EXTERNAL_MAP && EXTERNAL_MAP[base]) {
+      const forced = String(EXTERNAL_MAP[base]).replace(/^\/+/, "");
+      return [forced];
+    }
+    return Array.from(new Set(stems));
   }
 
   function iconUrlCandidates(polName) {
-    return fileCandidates(polName).map(f => ICON_BASE + f);
+    const bases = nameVariants(polName);
+    const list = [];
+    for (const b of bases) {
+      for (const ext of EXTS) list.push(ICON_BASE + b + ext);
+    }
+    return list;
   }
 
   /* -------- Merge API + overrides -------- */
@@ -91,7 +117,7 @@
     return { aura, slots };
   }
 
-  /* -------- Création d'icône (avec essais multiples) -------- */
+  /* -------- Création d'icône (multi-essais) -------- */
   const WRAP_STYLE = "display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;border:1px solid rgba(212,175,55,.55);background:rgba(212,175,55,.06);";
 
   function fallbackSVG(pol) {
@@ -125,18 +151,17 @@
 
     function tryNext() {
       if (i >= tries.length) {
-        console.warn(`[polarities] Icon not found for "${polName}" in`, tries);
+        if (DEBUG) console.warn(`[polarities] Icon not found for "${polName}"`, tries);
         wrap.replaceChildren(fallbackSVG(polName));
         return;
       }
       const url = tries[i++];
       img.src = url;
+      if (DEBUG) console.debug("[polarities] try", polName, url);
     }
 
     img.addEventListener("error", tryNext, { once: false });
-    img.addEventListener("load", () => {
-      // succès -> garder cette source
-    }, { once: true });
+    img.addEventListener("load", () => { /* ok */ }, { once: true });
 
     tryNext();
     wrap.appendChild(img);
