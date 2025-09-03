@@ -1,7 +1,8 @@
 /* css/polarities.css */
-/* Accent global : change cette variable pour ajuster la couleur du filet (et dérivés) */
+/* Accent global : change cette variable pour ajuster le doré si besoin */
 :root {
-  --accent-gold: #D4AF37; /* doré DE */
+  --accent-gold: #D4AF37;                 /* doré principal */
+  --accent-gold-soft: rgba(212,175,55,.12); /* léger fond doré */
 }
 
 /* Wrapper global sous l'image */
@@ -28,7 +29,7 @@
   margin-bottom: .35rem;
 }
 
-/* Filet sous les libellés — COULEUR ICI (doré) */
+/* Filet doré sous les libellés */
 .aura-label::after,
 .polarity-label::after {
   content: "";
@@ -36,13 +37,9 @@
   width: 56px;
   height: 2px;
   margin: .35rem auto 0;
-  background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);          /* ← change cette valeur si tu veux une autre couleur */
+  background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);
   border-radius: 2px;
 }
-
-/* Variante dégradé (optionnelle) : remplace la ligne "background:" ci-dessus par ceci
-   background: var(--accent-gold); 
-*/
 
 .aura-row {
   display: inline-flex;
@@ -58,7 +55,6 @@
 
 /* ===== Slots / autres polarités ===== */
 .polarity-block { width: 100%; }
-
 .polarity-row {
   display: flex;
   flex-wrap: wrap;
@@ -67,31 +63,26 @@
   justify-content: center;
 }
 
-/* Badges (icônes SVG) */
+/* ===== Badges (icônes SVG) — DORÉ POUR TOUS ===== */
 .polarity-badge {
   min-width: 22px;
   height: 22px;
   padding: 0 .25rem;
-  border: 1px solid rgba(255,255,255,.16);
+  border: 1px solid var(--accent-gold);       /* ← bord DORÉ (tous) */
   border-radius: 8px;
   display: grid;
   place-items: center;
-  background: rgba(255,255,255,.05);
+
+  /* léger fond doré (optionnel) — décommente la ligne color-mix si ton navigateur le supporte */
+  background: var(--accent-gold-soft);
+  /* background: color-mix(in srgb, var(--accent-gold) 10%, transparent); */
 }
 
-/* On met aussi un petit accent doré sur Aura/Exilus (facultatif) */
-.polarity-badge[data-kind="Aura"],
-.polarity-badge[data-kind="Exilus"] {
-  border-style: dashed;
-  border-color: color-mix(in srgb, var(--accent-gold) 70%, #ffffff 30%);
-}
+/* On garde le style identique pour Aura/Exilus (pas de pointillés, même doré) */
+/* .polarity-badge[data-kind="Aura"],
+   .polarity-badge[data-kind="Exilus"] { }  <- volontairement vide */
 
-/* Si color-mix n'est pas supporté par le navigateur, utilise simplement : */
-/*
-.polarity-badge[data-kind="Aura"],
-.polarity-badge[data-kind="Exilus"] { border-color: var(--accent-gold); }
-*/
-
+/* Icône */
 .polarity-badge img {
   width: 20px;
   height: 20px;
