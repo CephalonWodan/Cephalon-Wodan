@@ -1,4 +1,5 @@
 // js/mods_catalog.js — EN data + grande image (wikiaThumbnail prioritaire) + lightbox
+// + Exclusions: Focus Ways & "Mod Set Mods" (hub)
 const API = "https://api.warframestat.us/mods/?language=en";
 const CDN = (img) => img ? `https://cdn.warframestat.us/img/${img}` : null;
 function MOD_THUMB(m) {
@@ -11,7 +12,7 @@ const state = {
   all: [],
   filtered: [],
   page: 1,
-  perPage: 24,        // ↓ moins d’items par page car images plus grandes
+  perPage: 24,        // images grandes → moins d’items / page
   view: "cards",      // "cards" | "table"
   q: "",
   cats: new Set(),
@@ -53,6 +54,47 @@ function categoryOf(m){
   if (isArchwing(m))                 return "Archwing";
   if (isNecramech(m))               return "Necramech";
   return "Other";
+}
+
+/* --------- EXCLUSIONS (Focus Ways & "Mod Set Mods") --------- */
+const FOCUS_SCHOOLS = ["madurai","vazarin","naramon","zenurik","unairu"];
+function isFocusWayItem(m){
+  // On filtre très agressif pour ne plus les voir :
+  const name = (m.name||"").toLowerCase();
+  const type = (m.type||"").toLowerCase();
+  const url  = (m.wikiaUrl || m.wikiaurl || "").toLowerCase();
+  const uniq = (m.uniqueName||"").toLowerCase();
+  const desc = (m.description||"").toLowerCase();
+
+  // champs qui trahissent les Focus (URL wiki, type, chemin interne, tags…)
+  if (type.includes("focus")) return true;
+  if (url.includes("/focus")) return true;
+  if (uniq.includes("/focus/")) return true;
+  if (Array.isArray(m.tags) && m.tags.some(t=> String(t).toLowerCase().includes("focus"))) return true;
+
+  // heuristique nom/description avec écoles
+  if (FOCUS_SCHOOLS.some(s => name.includes(s) || desc.includes(s))) return true;
+
+  // certains exports listent "Way" explicitement
+  if (/[^a-z]way[^a-z]/i.test(" " + name + " ")) return true;
+
+  return false;
+}
+function isSetModsHub(m){
+  const name = (m.name||"").toLowerCase();
+  const url  = (m.wikiaUrl || m.wikiaurl || "").toLowerCase();
+  const uniq = (m.uniqueName||"").toLowerCase();
+  // Entrée "hub" (pas un mod réel) — on la retire
+  if (name === "mod set mods" || name === "set mods" || /set mods/.test(name)) return true;
+  if (url.includes("/set_mods")) return true;     // page wiki agrégée
+  if (uniq.includes("/setmods")) return true;     // noms internes possibles
+  // Pas de stats/polarité/rang → souvent une page d’index
+  if (!m.rarity && !m.polarity && m.fusionLimit == null && !m.compatName && (!m.description || m.description.length < 12))
+    return true;
+  return false;
+}
+function isExcluded(m){
+  return isFocusWayItem(m) || isSetModsHub(m);
 }
 
 /* --------- UI helpers --------- */
@@ -179,7 +221,10 @@ function renderActiveChips(){
 function applyFilters(){
   const q = state.q = norm($("#q").value).toLowerCase();
 
+  // On repart toujours de la source nettoyée (state.all)
   let arr = state.all.slice();
+
+  // filtres
   if (state.cats.size) arr = arr.filter(m => state.cats.has(categoryOf(m)));
   if (state.pols.size) arr = arr.filter(m => state.pols.has(m.polarity || ""));
   if (state.rars.size) arr = arr.filter(m => state.rars.has(m.rarity || ""));
@@ -191,6 +236,7 @@ function applyFilters(){
     });
   }
 
+  // tri
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b) => {
     if (sort === "rarity") return rarityOrder(a.rarity)-rarityOrder(b.rarity) || (a.name||"").localeCompare(b.name||"");
@@ -258,10 +304,11 @@ function closeLightbox(){
   $("#lightbox").classList.add("hidden");
   $("#lb-img").src = "";
 }
-
 (function setupLightbox(){
+  const lb = document.getElementById("lightbox");
+  if (!lb) return;
   $("#lb-close").addEventListener("click", closeLightbox);
-  $("#lightbox").addEventListener("click", (e)=>{
+  lb.addEventListener("click", (e)=>{
     if (e.target.id === "lightbox" || e.target.classList.contains("lb-backdrop")) {
       closeLightbox();
     }
@@ -289,9 +336,14 @@ function closeLightbox(){
       </div>
     `).join("");
 
+    // Fetch
     const mods = await fetch(API).then(r => r.json());
-    state.all = Array.isArray(mods) ? mods : [];
-    status.textContent = `Mods loaded: ${state.all.length} (EN, large thumbnails)`;
+    const raw = Array.isArray(mods) ? mods : [];
+
+    // ⛔ Exclure Focus Ways + hub "Mod Set Mods"
+    state.all = raw.filter(m => !isExcluded(m));
+
+    status.textContent = `Mods loaded: ${state.all.length} (EN, filtered)`;
 
     // Filtres
     renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
