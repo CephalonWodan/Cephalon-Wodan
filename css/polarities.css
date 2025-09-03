@@ -72,7 +72,7 @@
   .polarity-badge img { filter: invert(1); }
 }
 
-/*===Filet décoratif===*/
+/* Filet sous les libellés — COULEUR ICI (doré) */
 .aura-label::after,
 .polarity-label::after {
   content: "";
@@ -80,7 +80,10 @@
   width: 56px;
   height: 2px;
   margin: .35rem auto 0;
-  background: rgba(255,255,255,.18);
+  background: var(--accent-gold);          /* ← change cette valeur si tu veux une autre couleur */
   border-radius: 2px;
 }
 
+/* Variante dégradé (optionnelle) : remplace la ligne "background:" ci-dessus par ceci
+   background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);
+*/
