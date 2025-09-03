@@ -1,4 +1,9 @@
-// js/shards.js — Archon Shards catalog (API EN) + dedupe + filters + graceful fields
+// js/shards.js — Archon Shards (v3)
+// - Bigger images (260px), link to Wiki, lightbox
+// - Filters (color, tau), search, sort
+// - Dedupe by name (prefer with wiki thumbnail)
+// - URL sync (q, colors, tau, sort, page)
+
 const API = "https://api.warframestat.us/archonshards/?language=en";
 
 const $  = (sel) => document.querySelector(sel);
@@ -20,34 +25,10 @@ const state = {
   sort: "name",
   colors: new Set(),
   onlyTau: false,
-  view: "cards", // cards only (table not needed ici)
 };
 
-function hasThumb(m){
-  const wik = m.wikiaThumbnail || m.wikiathumbnail;
-  return wik && /^https?:\/\//i.test(wik);
-}
-function getThumb(m){
-  const wik = m.wikiaThumbnail || m.wikiathumbnail;
-  if (wik && /^https?:\/\//i.test(wik)) return wik;
-  // fallback: SVG spot
-  const { color, tau } = parseColorTau(m);
-  const hex = COLOR_MAP[color] || "#888888";
-  const ring = tau ? 'class="shard-dot tau"' : 'class="shard-dot"';
-  // inline SVG circle
-  return `data:image/svg+xml;utf8,${encodeURIComponent(
-`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
-  <defs><radialGradient id="g" cx="50%" cy="45%" r="65%">
-    <stop offset="0%" stop-color="#fff" stop-opacity=".25"/>
-    <stop offset="100%" stop-color="${hex}"/>
-  </radialGradient></defs>
-  <circle cx="48" cy="48" r="44" fill="url(#g)" stroke="rgba(0,0,0,.35)" stroke-width="2"/>
-  ${tau ? `<circle cx="48" cy="48" r="40" fill="none" stroke="#D4AF37" stroke-width="3" />` : ``}
-</svg>` )}`;
-}
-
-function parseColor(mName=""){
-  const n = (mName||"").toLowerCase();
+function parseColor(name=""){
+  const n = name.toLowerCase();
   if (n.includes("crimson")) return "Crimson";
   if (n.includes("amber"))   return "Amber";
   if (n.includes("azure"))   return "Azure";
@@ -56,33 +37,35 @@ function parseColor(mName=""){
   if (n.includes("topaz"))   return "Topaz";
   return "Unknown";
 }
-function parseColorTau(m){
-  const name = m.name || "";
-  const tau = /tauforged/i.test(name);
-  const color = parseColor(name);
-  return { color, tau };
+function parseTau(name=""){ return /tauforged/i.test(name); }
+
+function hasThumb(m){
+  const wik = m.wikiaThumbnail || m.wikiathumbnail;
+  return wik && /^https?:\/\//i.test(wik);
+}
+function getThumb(m){
+  const wik = m.wikiaThumbnail || m.wikiathumbnail;
+  return wik && /^https?:\/\//i.test(wik) ? wik : "";
+}
+function getWikiUrl(m){
+  const u = m.wikiaUrl || m.wikiaurl || m.wikiUrl || m.wikiurl;
+  return u && /^https?:\/\//i.test(u) ? u : "";
 }
 
-// Some endpoints list “effects/bonuses” differently; we try multiple fields
 function extractBonuses(m){
-  // common possibilities
   if (Array.isArray(m.effects)) return m.effects;
   if (Array.isArray(m.bonuses)) return m.bonuses;
   if (Array.isArray(m.stats))   return m.stats;
-  // Try to split description lines
   const d = norm(m.description);
   if (!d) return [];
-  // split on •, ; or linebreaks
-  const bits = d.split(/\n|•|;|·/g).map(x=>norm(x)).filter(Boolean);
-  // keep only lines that look like bonuses (+ / % / “per …”)
-  return bits.filter(x => /[%+]|per\s/i.test(x));
+  return d.split(/\n|•|;|·/g).map(x=>norm(x)).filter(Boolean);
 }
 
 function qualityScore(m){
   let s = 0;
   if (hasThumb(m)) s += 1000;
   if (m.description) s += Math.min(200, m.description.length);
-  const { tau } = parseColorTau(m); if (tau) s += 5;
+  if (parseTau(m.name||"")) s += 5;
   return s;
 }
 function dedupeByName(arr){
@@ -102,23 +85,20 @@ function dedupeByName(arr){
   return out;
 }
 
-/* ------------ UI Helpers ------------ */
+/* ---------- UI helpers ---------- */
+function colorChip(color){
+  const hex = COLOR_MAP[color] || "#888888";
+  return `<span class="color-chip"><span class="color-dot" style="background:${hex}"></span>${color}</span>`;
+}
 function badge(text){ return `<span class="badge">${text}</span>`; }
 function badgeGold(text){ return `<span class="badge gold">${text}</span>`; }
 
-function colorChip(color){
-  const hex = COLOR_MAP[color] || "#888888";
-  return `<span class="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-md"
-    style="border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04)">
-    <span style="width:.75rem;height:.75rem;border-radius:9999px;background:${hex};display:inline-block"></span>
-    ${color}
-  </span>`;
-}
-
 function shardCard(m){
-  const { color, tau } = parseColorTau(m);
+  const color = parseColor(m.name||"");
+  const tau = parseTau(m.name||"");
   const img = getThumb(m);
   const bonuses = extractBonuses(m);
+  const wiki = getWikiUrl(m);
   const metaRight = [
     tau ? badgeGold("Tauforged") : "",
     color !== "Unknown" ? colorChip(color) : "",
@@ -126,40 +106,60 @@ function shardCard(m){
 
   return `
   <div class="shard-card">
-    <a href="#" class="shard-cover" data-full="${hasThumb(m)?img:""}" data-name="${m.name||"Archon Shard"}">
-      ${ img ? `<img src="${img}" alt="${m.name||"Archon Shard"}">` : "" }
+    <a href="#" class="shard-cover" data-full="${img}" data-name="${escapeHtml(m.name||"Archon Shard")}">
+      ${ img ? `<img src="${img}" alt="${escapeHtml(m.name||"Archon Shard")}">` : "" }
     </a>
     <div class="shard-body">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
-          <div class="title truncate">${m.name || "Archon Shard"}</div>
-          <div class="meta">${m.type ? m.type : ""}</div>
+          <div class="title truncate">${escapeHtml(m.name || "Archon Shard")}</div>
+          <div class="meta">${m.type ? escapeHtml(m.type) : ""}</div>
         </div>
         <div class="flex items-center gap-2 shrink-0">${metaRight}</div>
       </div>
 
-      ${ m.description ? `<div class="desc mt-1">${m.description}</div>` : "" }
+      ${ m.description ? `<div class="desc mt-1">${escapeHtml(m.description)}</div>` : "" }
 
       ${ bonuses.length ? `
         <div class="mt-2">
           <div class="text-sm muted mb-1">Bonuses</div>
           <div class="kv">
-            ${bonuses.map(b => `<div class="k">•</div><div class="v">${b}</div>`).join("")}
+            ${bonuses.map(b => `<div class="k">•</div><div class="v">${escapeHtml(b)}</div>`).join("")}
           </div>
         </div>` : "" }
 
-      ${ !bonuses.length && !m.description ? `
-        <details class="mt-2 text-xs">
-          <summary class="cursor-pointer muted">Raw JSON (debug)</summary>
-          <pre class="mt-1 overflow-auto">${escapeHtml(JSON.stringify(m, null, 2))}</pre>
-        </details>` : "" }
+      <div class="card-actions">
+        ${ img ? `<a href="#" class="btn-view" data-full="${img}" data-name="${escapeHtml(m.name||"Archon Shard")}">View</a>` : "" }
+        ${ wiki ? `<a href="${wiki}" target="_blank" rel="noopener">Wiki</a>` : "" }
+      </div>
     </div>
   </div>`;
 }
 
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ------------ Filters & render ------------ */
+/* ---------- Filters & URL sync ---------- */
+function parseQuery(){
+  const p = new URLSearchParams(location.search);
+  state.q = norm(p.get("q") || "");
+  state.sort = p.get("sort") || "name";
+  state.onlyTau = p.get("tau") === "1";
+  const cols = (p.get("colors") || "").split(",").map(norm).filter(Boolean);
+  state.colors = new Set(cols);
+  const page = parseInt(p.get("page")||"1",10);
+  state.page = Number.isFinite(page) && page > 0 ? page : 1;
+}
+function writeQuery(){
+  const p = new URLSearchParams();
+  if (state.q) p.set("q", state.q);
+  if (state.sort && state.sort !== "name") p.set("sort", state.sort);
+  if (state.onlyTau) p.set("tau", "1");
+  if (state.colors.size) p.set("colors", [...state.colors].join(","));
+  if (state.page > 1) p.set("page", String(state.page));
+  const url = `${location.pathname}?${p.toString()}`;
+  history.replaceState(null, "", url);
+}
+
 function renderColorFilters(){
   const host = $("#f-colors");
   host.innerHTML = COLORS.map(c => {
@@ -176,7 +176,9 @@ function renderColorFilters(){
     el.addEventListener("change", () => {
       if (el.checked) state.colors.add(c);
       else state.colors.delete(c);
+      state.page = 1;
       applyFilters();
+      writeQuery();
     });
   });
 }
@@ -184,61 +186,66 @@ function renderColorFilters(){
 function renderActiveChips(){
   const wrap = $("#active-filters");
   const chips = [];
-  if (state.q) chips.push({k:"q", label:`Text: "${state.q}"`});
+  if (state.q) chips.push({k:"q", label:`Text: "${escapeHtml(state.q)}"`});
   if (state.colors.size) chips.push({k:"colors", label:`Colors: ${[...state.colors].join(", ")}`});
   if (state.onlyTau) chips.push({k:"tau", label:`Tauforged only`});
-  if (!chips.length) { wrap.innerHTML = ""; return; }
-  wrap.innerHTML = chips.map((c, i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("");
+  wrap.innerHTML = chips.length
+    ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
+    : "";
   wrap.querySelectorAll("[data-chip]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       const [k] = btn.dataset.chip.split("|");
-      if (k==="q") state.q="";
-      if (k==="colors") state.colors.clear();
-      if (k==="tau") state.onlyTau=false;
-      $("#q").value = state.q;
-      $("#only-tau").checked = state.onlyTau;
-      renderColorFilters();
+      if (k==="q") { state.q=""; $("#q").value=""; }
+      if (k==="colors") { state.colors.clear(); renderColorFilters(); }
+      if (k==="tau") { state.onlyTau=false; $("#only-tau").checked=false; }
+      state.page = 1;
       applyFilters();
+      writeQuery();
     });
   });
 }
 
+/* ---------- Color stats ---------- */
+function renderColorStats(arr){
+  const host = $("#color-stats");
+  const counts = Object.fromEntries(COLORS.map(c => [c, 0]));
+  for (const m of arr) { const c = parseColor(m.name||""); if (counts[c]!=null) counts[c]++; }
+  host.innerHTML = COLORS.map(c=>{
+    const hex = COLOR_MAP[c];
+    return `<div class="stat"><span class="color-dot" style="background:${hex}"></span>${c}: ${counts[c]}</div>`;
+  }).join("");
+}
+
+/* ---------- Filter/apply/render ---------- */
 function applyFilters(){
   const q = state.q = norm($("#q").value).toLowerCase();
   let arr = state.all.slice();
 
-  if (state.colors.size) arr = arr.filter(m => state.colors.has(parseColorTau(m).color));
-  if (state.onlyTau) arr = arr.filter(m => parseColorTau(m).tau);
-
+  if (state.colors.size) arr = arr.filter(m => state.colors.has(parseColor(m.name||"")));
+  if (state.onlyTau) arr = arr.filter(m => parseTau(m.name||""));
   if (q) {
     arr = arr.filter(m => {
-      const hay = [m.name, m.description, m.type, m.uniqueName, (extractBonuses(m)||[]).join(" ")]
-        .map(norm).join(" ").toLowerCase();
+      const hay = [m.name, m.description, m.type, m.uniqueName, (extractBonuses(m)||[]).join(" ")].map(norm).join(" ").toLowerCase();
       return hay.includes(q);
     });
   }
 
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b)=>{
-    if (sort === "color") {
-      return parseColorTau(a).color.localeCompare(parseColorTau(b).color) || (a.name||"").localeCompare(b.name||"");
-    }
-    if (sort === "tau") {
-      const at = parseColorTau(a).tau ? 0 : 1;
-      const bt = parseColorTau(b).tau ? 0 : 1;
-      return at - bt || (a.name||"").localeCompare(b.name||"");
-    }
+    if (sort === "color") return parseColor(a.name||"").localeCompare(parseColor(b.name||"")) || (a.name||"").localeCompare(b.name||"");
+    if (sort === "tau")   return (parseTau(b.name||"") - parseTau(a.name||"")) || (a.name||"").localeCompare(b.name||"");
     return (a.name||"").localeCompare(b.name||"");
   });
 
   state.filtered = arr;
-  state.page = 1;
+  state.page = Math.min(state.page, Math.max(1, Math.ceil(arr.length / state.perPage))) || 1;
+
+  renderColorStats(state.filtered);
+  renderActiveChips();
   render();
 }
 
 function render(){
-  renderActiveChips();
-
   const total = state.filtered.length;
   $("#count").textContent = `${total} shard(s)`;
 
@@ -255,18 +262,19 @@ function render(){
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(shardCard).join("");
 
-  // Lightbox si image wiki
-  grid.querySelectorAll(".shard-cover").forEach(a=>{
+  // View buttons + cover click → lightbox
+  grid.querySelectorAll(".btn-view, .shard-cover").forEach(a=>{
     a.addEventListener("click", (ev)=>{
       ev.preventDefault();
-      const url = a.dataset.full;
+      const url = a.getAttribute("data-full");
+      const nm  = a.getAttribute("data-name") || "";
       if (!url) return;
-      openLightbox(url, a.dataset.name || "");
+      openLightbox(url, nm);
     });
   });
 }
 
-/* ------------ Lightbox ------------ */
+/* ---------- Lightbox ---------- */
 function openLightbox(url, caption=""){
   $("#lb-img").src = url;
   $("#lb-img").alt = caption;
@@ -287,14 +295,14 @@ function closeLightbox(){
   document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
 })();
 
-/* ------------ Boot ------------ */
+/* ---------- Boot ---------- */
 (async function boot(){
   const status = $("#status");
   try {
-    // skeleton
+    // Skeleton
     $("#results").innerHTML = Array.from({length:6}).map(()=>`
       <div class="shard-card">
-        <div class="shard-cover" style="height:200px;background:rgba(255,255,255,.04)"></div>
+        <div class="shard-cover" style="height:260px;background:rgba(255,255,255,.04)"></div>
         <div class="shard-body">
           <div class="h-4 rounded bg-[rgba(255,255,255,.08)] w-2/3 mb-2"></div>
           <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2 mb-1"></div>
@@ -303,34 +311,40 @@ function closeLightbox(){
       </div>
     `).join("");
 
-    // fetch
+    // Fetch
     const data = await fetch(API).then(r => r.json());
     const raw = Array.isArray(data) ? data : [];
-
-    // dedupe by name
     const cleaned = dedupeByName(raw);
 
     state.all = cleaned;
-    status.textContent = `Shards loaded: ${state.all.length} (EN)`;
 
-    // filters
+    // URL → state
+    parseQuery();
+
+    // UI init (from state)
+    $("#q").value = state.q;
+    $("#sort").value = state.sort;
+    $("#only-tau").checked = state.onlyTau;
     renderColorFilters();
 
-    // listeners
-    $("#q").addEventListener("input", applyFilters);
-    $("#sort").addEventListener("change", applyFilters);
-    $("#only-tau").addEventListener("change", () => { state.onlyTau = $("#only-tau").checked; applyFilters(); });
+    // Listeners
+    $("#q").addEventListener("input", ()=>{ state.page=1; applyFilters(); writeQuery(); });
+    $("#sort").addEventListener("change", ()=>{ state.page=1; applyFilters(); writeQuery(); });
+    $("#only-tau").addEventListener("change", ()=>{ state.onlyTau = $("#only-tau").checked; state.page=1; applyFilters(); writeQuery(); });
     $("#reset").addEventListener("click", ()=>{
       state.q=""; $("#q").value="";
       state.colors.clear(); $("#only-tau").checked=false; state.onlyTau=false;
       $("#sort").value="name";
+      state.page=1;
       renderColorFilters();
       applyFilters();
+      writeQuery();
     });
-    $("#prev").addEventListener("click", ()=>{ state.page--; render(); });
-    $("#next").addEventListener("click", ()=>{ state.page++; render(); });
+    $("#prev").addEventListener("click", ()=>{ state.page--; render(); writeQuery(); });
+    $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
 
-    // first render
+    // First render
+    status.textContent = `Shards loaded: ${state.all.length} (EN)`;
     applyFilters();
   } catch (e) {
     console.error("[shards] error:", e);
