@@ -1,25 +1,22 @@
 // js/app.js
 // =====================================================
-// Disposition : 2 colonnes DOM indépendantes
-//  - #vtabs : barre d’onglets VERTICAUX (à gauche du grand encadré)
-//  - #card  : contenu (image + stats + sections)
-// Sections : Aptitudes / MOD / Arcanes / Archon Shards / Weapons
+// Aperçu Warframes — alimente la UI avec 3 JSON locaux
+// abilities.json, abilities_by_warframe.json, warframe_abilities.json
+// + la liste Warframes de l’API officielle (failover EN -> FR)
 // =====================================================
 
 const CFG = {
-  WF_URL: "https://api.warframestat.us/warframes",
-  ABILITIES_VALUES_URL: "data/abilities.json",
-  ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json",
-  ABILITIES_META_URL: "data/warframe_abilities.json",
-
-  // Données optionnelles (si absentes → message dans l’onglet)
-  MODS_BY_WF_URL: "data/mods_by_warframe.json",
-  ARCANES_BY_WF_URL: "data/arcanes_by_warframe.json",
-  SHARDS_BY_WF_URL: "data/archon_shards_by_warframe.json",
-  WEAPONS_BY_WF_URL: "data/weapons_by_warframe.json",
+  WF_URLS: [
+    "https://api.warframestat.us/warframes/?language=en",
+    "https://api.warframestat.us/warframes/?language=fr",
+  ],
+  ABILITIES_VALUES_URL: "data/abilities.json",            // valeurs (cost/strength/duration/range + rows)
+  ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json", // noms par Warframe (fallback/ordre)
+  ABILITIES_META_URL: "data/warframe_abilities.json",     // meta (Name, SlotKey, InternalName, Cost, Description…)
 };
 
 // ---------- utils
+const $ = (sel) => document.querySelector(sel);
 const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 const norm = (s) => String(s || "").trim();
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
@@ -34,35 +31,66 @@ function variantFallbacks(name) {
   return list;
 }
 
+// Petit helper fetch avec message contextualisé
+async function fetchJson(url, what) {
+  const r = await fetch(url);
+  if (!r.ok) {
+    throw new Error(`${what} — HTTP ${r.status} @ ${url}`);
+  }
+  return r.json();
+}
+
+// Essaie plusieurs URLs pour l’API WarframeStat
+async function fetchWarframesWithFailover() {
+  const errors = [];
+  for (const url of CFG.WF_URLS) {
+    try {
+      const data = await fetchJson(url, "Warframes API");
+      if (Array.isArray(data) && data.length) {
+        console.info(`[app] Warframes chargées via ${url} (${data.length})`);
+        return data;
+      } else {
+        errors.push(`Réponse vide @ ${url}`);
+      }
+    } catch (e) {
+      console.error(e);
+      errors.push(e.message || String(e));
+    }
+  }
+  const msg = `Impossible de charger la liste des Warframes.\n${errors.join("\n")}`;
+  throw new Error(msg);
+}
+
 // ---------- boot
 (async function boot() {
-  const status = document.getElementById("status");
-  const card = document.getElementById("card");
-  const vtabs = document.getElementById("vtabs");
-  const search = document.getElementById("search");
-  const picker = document.getElementById("picker");
-
+  const status = $("#status");
   try {
-    status.textContent = "Chargement des données…";
+    if (status) {
+      status.textContent = "Chargement des données…";
+      status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
+      status.style.background = "rgba(0,229,255,.08)";
+      status.style.color = "#bfefff";
+    }
 
-    const [
-      wfRaw,
-      valsRaw,
-      byWfRaw,
-      metaRaw,
-      modsRaw,
-      arcanesRaw,
-      shardsRaw,
-      weaponsRaw
-    ] = await Promise.all([
-      fetch(CFG.WF_URL).then((r) => r.json()),
-      fetch(CFG.ABILITIES_VALUES_URL).then((r) => r.json()),
-      fetch(CFG.ABILITIES_BY_WF_URL).then((r) => r.json()).catch(() => ({})),
-      fetch(CFG.ABILITIES_META_URL).then((r) => r.json()),
-      fetch(CFG.MODS_BY_WF_URL).then((r)=>r.json()).catch(()=> ({})),
-      fetch(CFG.ARCANES_BY_WF_URL).then((r)=>r.json()).catch(()=> ({})),
-      fetch(CFG.SHARDS_BY_WF_URL).then((r)=>r.json()).catch(()=> ({})),
-      fetch(CFG.WEAPONS_BY_WF_URL).then((r)=>r.json()).catch(()=> ({})),
+    // Charge en parallèle (avec messages d’erreur parlants)
+    const [wfRaw, valsRaw, byWfRaw, metaRaw] = await Promise.all([
+      (async () => {
+        try { return await fetchWarframesWithFailover(); }
+        catch (e) { throw new Error(e.message); }
+      })(),
+      (async () => {
+        try { return await fetchJson(CFG.ABILITIES_VALUES_URL, "abilities.json"); }
+        catch (e) { throw new Error(`abilities.json introuvable ? ${e.message}`); }
+      })(),
+      (async () => {
+        // ce JSON est optionnel dans ton code original
+        try { return await fetchJson(CFG.ABILITIES_BY_WF_URL, "abilities_by_warframe.json"); }
+        catch { return {}; }
+      })(),
+      (async () => {
+        try { return await fetchJson(CFG.ABILITIES_META_URL, "warframe_abilities.json"); }
+        catch (e) { throw new Error(`warframe_abilities.json introuvable ? ${e.message}`); }
+      })(),
     ]);
 
     // ---- index pour abilities.json (par path)
@@ -88,26 +116,11 @@ function variantFallbacks(name) {
     // ---- fallback liste noms par Warframe (si jamais une frame manque dans meta)
     const namesByFrame = byWfRaw || {};
 
-    // ---- données facultatives par Warframe
-    const modsByFrame = modsRaw || {};
-    const arcanesByFrame = arcanesRaw || {};
-    const shardsByFrame = shardsRaw || {};
-    const weaponsByFrame = weaponsRaw || {};
-
     // ---- normalisation de la liste warframes (filtrage)
-    const list = wfRaw
-      .filter((wf) => wf.type === "Warframe" && !["Bonewidow", "Voidrig"].includes(wf.name))
+    const list = (wfRaw || [])
+      .filter((wf) => wf && wf.type === "Warframe" && !["Bonewidow", "Voidrig"].includes(wf.name))
       .map((rec) => {
         const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
-
-        // Polarités (API) — si "Prime" on préfère prime_*
-        const isPrime = /\bPrime\b/i.test(rec.name || "");
-        const slots = isPrime ? (rec.prime_polarities ?? rec.polarities ?? []) : (rec.polarities ?? []);
-        const aura  = isPrime ? (rec.prime_aura ?? rec.aura ?? null) : (rec.aura ?? null);
-
-        const exilus = rec.exilus ?? null;
-        const exilusPolarity = rec.exilusPolarity ?? rec.exilus_polarity ?? null;
-
         return {
           name: rec.name || "",
           description: rec.description || "",
@@ -119,18 +132,11 @@ function variantFallbacks(name) {
             energy: rec.power ?? rec.energy ?? "—",
             sprintSpeed: rec.sprintSpeed ?? "—",
           },
-          polarities: { slots, aura, exilus, exilusPolarity },
-
-          // sections (facultatives)
-          mods: modsByFrame[rec.name] || [],
-          arcanes: arcanesByFrame[rec.name] || [],
-          shards: shardsByFrame[rec.name] || [],
-          weapons: weaponsByFrame[rec.name] || []
         };
       })
       .sort(byName);
 
-    // ---- aptitudes par frame : on part de META; fallback sur namesByFrame
+    // ---- injecter les pouvoirs (onglets) par frame : on part de META; fallback sur namesByFrame
     function abilitiesForFrame(frameName) {
       let meta = metaByFrame[frameName];
       if (!meta || !meta.length) {
@@ -176,20 +182,15 @@ function variantFallbacks(name) {
       return out.sort((a, b) => (a.slot ?? 99) - (b.slot ?? 99));
     }
 
-    // attache les aptitudes à chaque wf
+    // attache la liste d’abilities à chaque wf
     list.forEach((wf) => {
       wf.abilities = abilitiesForFrame(wf.name);
     });
 
-    // ---------- UI helpers
-
-    const sectionTabs = [
-      { key: "apt",     label: "Aptitudes" },
-      { key: "mods",    label: "MOD" },
-      { key: "arcanes", label: "Arcanes" },
-      { key: "shards",  label: "Archon Shards" },
-      { key: "weapons", label: "Weapons" },
-    ];
+    // ---------- UI
+    const card = $("#card");
+    const search = $("#search");
+    const picker = $("#picker");
 
     function pill(label, value) {
       return `
@@ -206,191 +207,57 @@ function variantFallbacks(name) {
         </div>`;
     }
 
-    // Rendu listes secondaires
-    function renderModsList(mods) {
-      if (!mods || !mods.length) {
-        return `<div class="muted">Aucun mod défini pour cette Warframe. Ajoute <code>data/mods_by_warframe.json</code>.</div>`;
-      }
-      const items = mods.map((m) => {
-        if (typeof m === "string") return `<li class="py-1">${m}</li>`;
-        const pol = m.polarity ? `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${m.polarity}</span>` : "";
-        const rank = (m.rank != null) ? ` <span class="muted">R${m.rank}</span>` : "";
-        const note = m.note ? `<div class="text-[var(--muted)] text-sm">${m.note}</div>` : "";
-        return `<li class="py-1"><div class="flex items-center justify-between"><div class="font-medium">${m.name || "Mod"}</div><div class="flex gap-2 items-center">${pol}${rank}</div></div>${note}</li>`;
-      }).join("");
-      return `<ul class="divide-y divide-[rgba(255,255,255,.06)]">${items}</ul>`;
-    }
-
-    function renderArcanesList(arcs) {
-      if (!arcs || !arcs.length) {
-        return `<div class="muted">Aucun arcane défini. Ajoute <code>data/arcanes_by_warframe.json</code>.</div>`;
-      }
-      const items = arcs.map((a) => {
-        const rank = (a.rank != null) ? ` <span class="muted">R${a.rank}</span>` : "";
-        return `<li class="py-1">
-          <div class="font-medium">${a.name || "Arcane"}${rank}</div>
-          ${a.description ? `<div class="text-[var(--muted)] text-sm">${a.description}</div>` : ""}
-        </li>`;
-      }).join("");
-      return `<ul class="divide-y divide-[rgba(255,255,255,.06)]">${items}</ul>`;
-    }
-
-    function renderShardsGrid(shards) {
-      if (!shards || !shards.length) {
-        return `<div class="muted">Aucun Archon Shard défini. Ajoute <code>data/archon_shards_by_warframe.json</code>.</div>`;
-      }
-      const items = shards.map((s) => {
-        const color = s.color || "Shard";
-        const bonus = s.bonus || s.effect || "";
-        return `<div class="rounded-xl border border-[rgba(255,255,255,.08)] p-3 bg-[var(--panel-2)]">
-          <div class="font-medium">${color}</div>
-          ${bonus ? `<div class="text-[var(--muted)] text-sm mt-1">${bonus}</div>` : ""}
-        </div>`;
-      }).join("");
-      return `<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">${items}</div>`;
-    }
-
-    function renderWeaponsList(weps) {
-      if (!weps || !weps.length) {
-        return `<div class="muted">Aucune arme liée. Ajoute <code>data/weapons_by_warframe.json</code>.</div>`;
-      }
-      const items = weps.map((w) => {
-        if (typeof w === "string") return `<li class="py-1">${w}</li>`;
-        const type = w.type ? `<span class="muted">(${w.type})</span>` : "";
-        const note = w.note ? `<div class="text-[var(--muted)] text-sm">${w.note}</div>` : "";
-        return `<li class="py-1"><div class="font-medium">${w.name || "Weapon"} ${type}</div>${note}</li>`;
-      }).join("");
-      return `<ul class="divide-y divide-[rgba(255,255,255,.06)]">${items}</ul>`;
-    }
-
-    // ===== Barre d’onglets VERTICAUX (à gauche du card) =====================
-    function renderLeftTabs(wf, activeKey) {
-      vtabs.innerHTML = `
-        <div class="vtab-col">
-          ${sectionTabs.map(t =>
-            `<button class="btn-tab ${t.key === activeKey ? "active" : ""} vtab" data-top="${t.key}">
-               ${t.label}
-             </button>`
-          ).join("")}
-        </div>
-      `;
-      // listeners
-      vtabs.querySelectorAll("[data-top]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const key = String(btn.dataset.top);
-          renderCard(wf, 0, key); // change de section, reset aptitude 1
-        });
-      });
-    }
-
-    // ---------- Rendu d'une Warframe (dans #card)
-    function renderCard(wf, iAbility = 0, activeTop = "apt") {
+    function renderCard(wf, iAbility = 0) {
       const abilities = wf.abilities || [];
       const a = abilities[iAbility] || {};
       const s = a.summary || {};
 
-      // tabs de sous-aptitudes
-      const tabsApt = abilities.map((ab, i) =>
-        `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">
-           ${ab.slot ?? i + 1}. ${ab.name || "—"}
-         </button>`
-      ).join(" ");
+      const tabs = abilities
+        .map(
+          (ab, i) =>
+            `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">${ab.slot ?? i + 1}. ${
+              ab.name || "—"
+            }</button>`
+        )
+        .join(" ");
 
       const affected = (s.affectedBy || [])
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${k}</span>`)
         .join(" ");
 
-      const rowsHtml = (a.rows || []).map((r) => {
-        const label = r.filledLabel || r.label || "";
-        const main = r.mainNumeric != null ? r.mainNumeric : "";
-        return `
-          <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-            <div class="text-sm">${label}</div>
-            <div class="font-medium">${txt(main)}</div>
-          </div>`;
-      }).join("");
+      const rowsHtml = (a.rows || [])
+        .map((r) => {
+          const label = r.filledLabel || r.label || "";
+          const main = r.mainNumeric != null ? r.mainNumeric : "";
+          return `
+            <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
+              <div class="text-sm">${label}</div>
+              <div class="font-medium">${txt(main)}</div>
+            </div>`;
+        })
+        .join("");
 
-      // contenu principal selon l’onglet
-      let mainContent = "";
-      if (activeTop === "apt") {
-        mainContent = `
-          ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabsApt}</div>` : ""}
-          <div class="card p-4 orn">
-            <div class="font-semibold">${a.name || "—"}</div>
-            <p class="mt-1 text-[var(--muted)]">${(a.description || "").replace(/\r?\n/g, " ")}</p>
-
-            <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
-              ${pill("Coût", s.costEnergy)}
-              ${pill("Puissance", s.strength)}
-              ${pill("Durée", s.duration)}
-              ${pill("Portée", s.range)}
-            </div>
-
-            ${ (s.affectedBy && s.affectedBy.length)
-                ? `<div class="mt-4 text-sm">
-                     <div class="mb-1 muted">Affecté par :</div>
-                     <div class="flex flex-wrap gap-2">${affected}</div>
-                   </div>`
-                : "" }
-
-            ${ rowsHtml
-                ? `<div class="mt-5">
-                     <div class="text-sm muted mb-2">Détails</div>
-                     <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-                       ${rowsHtml}
-                     </div>
-                   </div>`
-                : "" }
-          </div>`;
-      } else if (activeTop === "mods") {
-        mainContent = `
-          <div class="card p-4 orn">
-            <div class="font-semibold">Mods</div>
-            <div class="mt-2">${renderModsList(wf.mods)}</div>
-          </div>`;
-      } else if (activeTop === "arcanes") {
-        mainContent = `
-          <div class="card p-4 orn">
-            <div class="font-semibold">Arcanes</div>
-            <div class="mt-2">${renderArcanesList(wf.arcanes)}</div>
-          </div>`;
-      } else if (activeTop === "weapons") {
-        mainContent = `
-          <div class="card p-4 orn">
-            <div class="font-semibold">Weapons</div>
-            <div class="mt-2">${renderWeaponsList(wf.weapons)}</div>
-          </div>`;
-      } else {
-        mainContent = `
-          <div class="card p-4 orn">
-            <div class="font-semibold">Archon Shards</div>
-            <div class="mt-2">${renderShardsGrid(wf.shards)}</div>
-          </div>`;
-      }
-
-      // rendu du panel (image + texte + contenu)
       card.innerHTML = `
         <div class="flex flex-col md:flex-row gap-6">
-          <!-- Colonne image + polarités -->
           <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
             <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-              ${ wf.image
+              ${
+                wf.image
                   ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">`
-                  : `<div class="muted">Aucune image</div>` }
+                  : `<div class="muted">Aucune image</div>`
+              }
+            </div>
+
+            <!-- Zone polarités (si ton polarities.js l’injecte ici, il trouvera .polarity-row) -->
+            <div class="w-full">
+              <div class="muted text-xs mb-1">Aura polarity</div>
+              <div class="polarity-row" data-zone="aura"></div>
+              <div class="muted text-xs mt-3 mb-1">Polarities</div>
+              <div class="polarity-row" data-zone="others"></div>
             </div>
           </div>
 
-          <!-- Colonne contenu -->
           <div class="flex-1 flex flex-col gap-4">
-            <!-- Sur mobile, on montre des onglets horizontaux au-dessus du contenu -->
-            <div class="md:hidden">
-              <div class="flex flex-wrap gap-2 mb-2">
-                ${sectionTabs.map(t =>
-                  `<button class="btn-tab ${t.key === activeTop ? "active" : ""}" data-top="${t.key}">${t.label}</button>`
-                ).join("")}
-              </div>
-            </div>
-
             <div class="flex items-start gap-4">
               <div class="min-w-0 flex-1">
                 <h2 class="text-xl font-semibold">${wf.name}</h2>
@@ -406,39 +273,56 @@ function variantFallbacks(name) {
               ${statBox("SPRINT", wf.stats.sprintSpeed)}
             </div>
 
-            ${mainContent}
+            <div class="mt-2">
+              ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ""}
+
+              <div class="card p-4 orn">
+                <div class="font-semibold">${a.name || "—"}</div>
+                <p class="mt-1 text-[var(--muted)]">${(a.description || "").replace(/\r?\n/g, " ")}</p>
+
+                <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
+                  ${pill("Coût", s.costEnergy)}
+                  ${pill("Puissance", s.strength)}
+                  ${pill("Durée", s.duration)}
+                  ${pill("Portée", s.range)}
+                </div>
+
+                ${
+                  (s.affectedBy && s.affectedBy.length)
+                    ? `<div class="mt-4 text-sm">
+                        <div class="mb-1 muted">Affecté par :</div>
+                        <div class="flex flex-wrap gap-2">${affected}</div>
+                      </div>`
+                    : ""
+                }
+
+                ${
+                  rowsHtml
+                    ? `<div class="mt-5">
+                        <div class="text-sm muted mb-2">Détails</div>
+                        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
+                          ${rowsHtml}
+                        </div>
+                      </div>`
+                    : ""
+                }
+              </div>
+            </div>
           </div>
         </div>
       `;
 
-      // Polarités sous l'image
-      if (window.Polarities?.attach) {
-        Polarities.attach(card, wf);
-      }
-
-      // Listeners : onglets horizontaux (mobile)
-      card.querySelectorAll("[data-top]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const key = String(btn.dataset.top);
-          renderCard(wf, 0, key);
-        });
+      // tabs (abilities)
+      card.querySelectorAll("[data-abi]").forEach((btn) => {
+        btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
       });
 
-      // Listeners : sous-onglets d’aptitudes
-      if (activeTop === "apt") {
-        card.querySelectorAll("[data-abi]").forEach((btn) => {
-          btn.addEventListener("click", () =>
-            renderCard(wf, parseInt(btn.dataset.abi, 10), "apt")
-          );
-        });
-      }
-
-      // Mets à jour la barre VERTICALE à gauche
-      renderLeftTabs(wf, activeTop);
+      // Laisse ton script polarities.js remplir .polarity-row si présent
+      document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
     }
 
-    // ---------- Picker & recherche
     function renderPicker(arr) {
+      const picker = $("#picker");
       picker.innerHTML = "";
       arr.forEach((wf, i) => {
         const opt = document.createElement("option");
@@ -450,38 +334,52 @@ function variantFallbacks(name) {
     }
 
     const setStatus = (msg, ok = true) => {
+      if (!status) return;
       status.textContent = msg;
       if (!ok) {
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
+      } else {
+        status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
+        status.style.background = "rgba(0,229,255,.08)";
+        status.style.color = "#bfefff";
       }
     };
 
+    if (!list.length) {
+      setStatus("Aucune Warframe chargée (API vide). Regarde la console pour le détail.", false);
+      console.warn("[app] wfRaw vide", { wfRaw });
+      return;
+    }
+
     setStatus(`Dataset chargé : ${list.length} Warframes`);
     renderPicker(list);
-    if (list.length) renderCard(list[0], 0, "apt");
+    renderCard(list[0], 0);
 
-    picker.addEventListener("change", (e) => {
+    $("#picker").addEventListener("change", (e) => {
       const idx = parseInt(e.target.value, 10);
-      const q = norm(search.value).toLowerCase();
+      const q = norm($("#search").value).toLowerCase();
       const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
       if (!filtered.length) return;
-      renderCard(filtered[Math.min(idx, filtered.length - 1)], 0, "apt");
+      renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
     });
 
-    search.addEventListener("input", () => {
-      const q = norm(search.value).toLowerCase();
+    $("#search").addEventListener("input", () => {
+      const q = norm($("#search").value).toLowerCase();
       const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
       renderPicker(filtered);
-      if (filtered.length) renderCard(filtered[0], 0, "apt");
+      if (filtered.length) renderCard(filtered[0], 0);
       setStatus(`Affichage : ${filtered.length} résultat(s)`);
     });
   } catch (e) {
-    console.error(e);
-    status.textContent = "Erreur de chargement.";
-    status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-    status.style.background = "rgba(255,0,0,.08)";
-    status.style.color = "#ffd1d1";
+    console.error("[app] ERREUR BOOT :", e);
+    const status = $("#status");
+    if (status) {
+      status.textContent = `Erreur de chargement : ${e.message || e}`;
+      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+      status.style.background = "rgba(255,0,0,.08)";
+      status.style.color = "#ffd1d1";
+    }
   }
 })();
