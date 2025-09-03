@@ -1,11 +1,17 @@
-// js/shards.js — Archon Shards (effets API, sans lien wiki)
+// js/shards.js — Archon Shards (local images first + effets API, sans lien wiki)
 //
-// Ce script :
-// - essaie plusieurs endpoints WarframeStat (casse/param/langue)
-// - accepte un tableau OU un objet (ex: { ACC_BLUE: { value: "Azure", upgradeTypes: {...} }, ... })
-// - extrait proprement les effets : m.effects | m.bonuses | m.stats | m.upgradeTypes (objets/arrays/strings)
-// - N'AFFICHE PAS de lien wiki (retiré sur demande)
-// - garde recherche, tris, filtres couleur + tau, pagination, lightbox, URL sync
+// Utilise en priorité /img/shards/:
+//   AmberArchonShard.png
+//   AzureArchonShard.png
+//   CrimsonArchonShard.png
+//   EmeraldArchonShard.png
+//   TopazArchonShard.png
+//   VioletArchonShard.png
+// …et les variantes tauforged : TauforgedAmberArchonShard.png, etc.
+//
+// Fallbacks : wiki thumbnail (HD) → pastille colorée si rien.
+//
+// Conserve: recherche, tris, filtres couleur + tau, pagination, lightbox, URL sync.
 
 const ENDPOINTS = [
   "https://api.warframestat.us/archonshards?language=en",
@@ -23,6 +29,7 @@ const COLOR_MAP = {
   Crimson: "#e25656", Amber: "#f6c152", Azure: "#58b3e2",
   Emerald: "#4ec88f", Violet: "#9a68e3", Topaz: "#f1a33a"
 };
+const LOCAL_DIR = new URL("img/shards/", document.baseURI).href;
 
 const state = {
   all: [],
@@ -35,9 +42,9 @@ const state = {
   onlyTau: false,
 };
 
-/* ------------ Helpers ------------ */
+/* ------------ Helpers: color/tau ------------ */
 function parseColor(name=""){
-  const n = name.toLowerCase();
+  const n = String(name).toLowerCase();
   if (n.includes("crimson")) return "Crimson";
   if (n.includes("amber"))   return "Amber";
   if (n.includes("azure"))   return "Azure";
@@ -48,28 +55,77 @@ function parseColor(name=""){
 }
 function parseTau(name=""){ return /tauforged/i.test(name); }
 
-function hasThumb(m){
-  const wik = m.wikiaThumbnail || m.wikiathumbnail;
-  return wik && /^https?:\/\//i.test(wik);
-}
-function getThumb(m){
-  const wik = m.wikiaThumbnail || m.wikiathumbnail;
-  return wik && /^https?:\/\//i.test(wik) ? wik : "";
-}
-
-function qualityScore(m){
-  let s = 0;
-  if (hasThumb(m)) s += 1000;
-  if (m.description) s += Math.min(200, m.description.length);
-  if (parseTau(m.name||"")) s += 5;
-  return s;
+/* ------------ Images: local → wiki → dot ------------ */
+// Local filename from color + tau
+function localShardPath(color, tau){
+  if (!color || color === "Unknown") return "";
+  const base = tau ? `Tauforged${color}ArchonShard.png` : `${color}ArchonShard.png`;
+  return LOCAL_DIR + base;
 }
 
-/* ------ Extraction des effets depuis différentes formes possibles ------ */
+// Wiki helpers
+function rawWikiThumb(m){
+  return (
+    m.wikiaThumbnail || m.wikiathumbnail ||
+    m.wikiThumbnail  || m.thumbnail ||
+    m.image          || m.icon      || ""
+  );
+}
+function normalizeUrl(u){
+  if (!u) return "";
+  if (u.startsWith("//")) return "https:" + u;
+  return u;
+}
+function upscaleWikiThumb(url, size=512){
+  if (!url) return "";
+  let out = normalizeUrl(url);
+  out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
+  if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
+    out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs='') => {
+      const delim = slash ? "" : "/";
+      return `/latest${delim}scale-to-width-down/${size}${qs || ""}`;
+    });
+  }
+  return out;
+}
+
+// Color-dot fallback data URL
+function colorDotDataUrl(color, tau){
+  const hex = COLOR_MAP[color] || "#888";
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+    <defs><radialGradient id="g" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#fff" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="${hex}"/>
+    </radialGradient></defs>
+    <circle cx="48" cy="48" r="44" fill="url(#g)" stroke="rgba(0,0,0,.35)" stroke-width="2"/>
+    ${tau ? `<circle cx="48" cy="48" r="40" fill="none" stroke="#D4AF37" stroke-width="3" />` : ``}
+  </svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
+
+// Compose sources for a shard (primary/local + fallbacks)
+function getShardImageSources(m){
+  const color = parseColor(m.name||"");
+  const tau   = parseTau(m.name||"");
+  const localGrid = localShardPath(color, tau);
+  const localFull = localGrid; // tes PNG sont assez grands pour la lightbox
+
+  const wikiRaw = rawWikiThumb(m);
+  const wikiGrid = wikiRaw ? upscaleWikiThumb(wikiRaw, 384)  : "";
+  const wikiFull = wikiRaw ? upscaleWikiThumb(wikiRaw, 1024) : "";
+
+  const dot = colorDotDataUrl(color, tau);
+
+  return {
+    color, tau,
+    localGrid, localFull,
+    wikiGrid, wikiFull,
+    dot
+  };
+}
+
+/* ------------ Effets (upgradeTypes/effects/bonuses) ------------ */
 function extractEffectsFromUpgradeTypes(upgradeTypes){
-  // upgradeTypes peut être:
-  // - un objet { path: { value: "+150% Health" } | "+150% Health" }
-  // - un tableau de strings/objets
   const out = [];
   if (!upgradeTypes) return out;
 
@@ -95,32 +151,33 @@ function extractEffectsFromUpgradeTypes(upgradeTypes){
   }
   return out.filter(Boolean);
 }
-
 function extractEffects(m){
-  // priorité: upgradeTypes si présent (ton exemple)
   const ut = m.upgradeTypes || m.upgrades || m.values;
   const fromUT = extractEffectsFromUpgradeTypes(ut);
   if (fromUT.length) return uniq(fromUT);
 
-  // sinon: effects / bonuses / stats (certains dumps WarframeStat les ont)
   const pools = [m.effects, m.bonuses, m.stats];
   const list = [];
   for (const p of pools) {
     if (Array.isArray(p)) list.push(...p.map(x => norm(x)).filter(Boolean));
     else if (typeof p === "string") list.push(norm(p));
   }
-
-  // dernier recours: description éclatée en lignes/puces
   if (!list.length && m.description) {
     list.push(...String(m.description).split(/\n|•|;|·/g).map(norm).filter(Boolean));
   }
-
   return uniq(list);
 }
-
 function uniq(arr){ return Array.from(new Set((arr||[]).map(x=>String(x)))).filter(Boolean); }
 
-/* ------------ Dédoublonnage ------------ */
+/* ------------ Dédoublonnage & qualité ------------ */
+function hasAnyThumb(m){ return !!rawWikiThumb(m); }
+function qualityScore(m){
+  let s = 0;
+  if (hasAnyThumb(m)) s += 1000;
+  if (m.description) s += Math.min(200, m.description.length);
+  if (parseTau(m.name||"")) s += 5;
+  return s;
+}
 function dedupeByName(arr){
   const groups = new Map();
   for (const m of arr) {
@@ -131,7 +188,7 @@ function dedupeByName(arr){
   const out = [];
   for (const [,items] of groups) {
     if (items.length === 1) { out.push(items[0]); continue; }
-    const withThumb = items.filter(hasThumb);
+    const withThumb = items.filter(hasAnyThumb);
     const cand = (withThumb.length ? withThumb : items).sort((a,b)=> qualityScore(b)-qualityScore(a))[0];
     out.push(cand);
   }
@@ -148,9 +205,7 @@ function badgeGold(text){ return `<span class="badge gold">${text}</span>`; }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 function shardCard(m){
-  const color = parseColor(m.name||"");
-  const tau = parseTau(m.name||"");
-  const img = getThumb(m);
+  const { color, tau, localGrid, localFull, wikiGrid, wikiFull, dot } = getShardImageSources(m);
   const effects = extractEffects(m);
 
   const metaRight = [
@@ -158,10 +213,24 @@ function shardCard(m){
     color !== "Unknown" ? colorChip(color) : "",
   ].filter(Boolean).join(" ");
 
+  // On pose d'abord la source locale (data-primary). On met src sur la locale;
+  // et data-fallback pour la wiki/dot. Un gestionnaire 'error' fixera la fallback.
+  const primary = localGrid || wikiGrid || dot;
+  const fallback = (localGrid ? (wikiGrid || dot) : dot);
+  const fullPrimary = localFull || wikiFull || dot;
+  const fullFallback = (localFull ? (wikiFull || dot) : dot);
+
   return `
   <div class="shard-card">
-    <a href="#" class="shard-cover" data-full="${img}" data-name="${escapeHtml(m.name||"Archon Shard")}">
-      ${ img ? `<img src="${img}" alt="${escapeHtml(m.name||"Archon Shard")}">` : "" }
+    <a href="#" class="shard-cover"
+       data-full="${escapeHtml(fullFallback)}"
+       data-full-primary="${escapeHtml(fullPrimary)}"
+       data-full-fallback="${escapeHtml(fullFallback)}">
+      <img
+        src="${escapeHtml(primary)}"
+        alt="${escapeHtml(m.name||"Archon Shard")}"
+        data-fallback="${escapeHtml(fallback)}"
+        loading="lazy" decoding="async">
     </a>
     <div class="shard-body">
       <div class="flex items-start justify-between gap-3">
@@ -183,8 +252,9 @@ function shardCard(m){
         </div>` : "" }
 
       <div class="card-actions">
-        ${ img ? `<a href="#" class="btn-view" data-full="${img}" data-name="${escapeHtml(m.name||"Archon Shard")}">View</a>` : "" }
-        <!-- Wiki link intentionally removed -->
+        ${ `<a href="#" class="btn-view"
+               data-full-primary="${escapeHtml(fullPrimary)}"
+               data-full-fallback="${escapeHtml(fullFallback)}">View</a>` }
       </div>
     </div>
   </div>`;
@@ -315,11 +385,43 @@ function render(){
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(shardCard).join("");
 
-  grid.querySelectorAll(".btn-view, .shard-cover").forEach(a=>{
+  // Accroche lightbox + gestion des images locales manquantes (fallbacks)
+  grid.querySelectorAll(".shard-cover").forEach(a=>{
+    const img = a.querySelector("img");
+    const fullPrimary = a.getAttribute("data-full-primary");
+    const fullFallback = a.getAttribute("data-full-fallback");
+
+    if (img) {
+      // si la locale charge => on met le full sur la locale
+      img.addEventListener("load", () => {
+        a.dataset.full = fullPrimary;
+      }, { once: true });
+
+      // si la locale 404 => switcher sur fallback (wiki/dot) ET pour la lightbox aussi
+      img.addEventListener("error", () => {
+        const fb = img.getAttribute("data-fallback");
+        if (fb) img.src = fb;
+        a.dataset.full = fullFallback;
+      }, { once: true });
+    }
+
     a.addEventListener("click", (ev)=>{
       ev.preventDefault();
-      const url = a.getAttribute("data-full");
+      const url = a.dataset.full || fullPrimary || fullFallback;
       const nm  = a.getAttribute("data-name") || "";
+      if (!url) return;
+      openLightbox(url, nm);
+    });
+  });
+
+  // Bouton "View"
+  grid.querySelectorAll(".btn-view").forEach(btn=>{
+    btn.addEventListener("click", (ev)=>{
+      ev.preventDefault();
+      const card = btn.closest(".shard-card");
+      const cov  = card?.querySelector(".shard-cover");
+      const url  = cov?.dataset.full || btn.getAttribute("data-full-primary") || btn.getAttribute("data-full-fallback");
+      const nm   = cov?.getAttribute("data-name") || "";
       if (!url) return;
       openLightbox(url, nm);
     });
@@ -347,7 +449,7 @@ function closeLightbox(){
   document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
 })();
 
-/* ------------ API fetch (robuste) + normalisation ------------ */
+/* ------------ API fetch + normalisation ------------ */
 async function fetchShardsFromEndpoints() {
   const errors = [];
   for (const url of ENDPOINTS) {
@@ -376,7 +478,7 @@ async function fetchShardsFromEndpoints() {
               type: `${capitalize(color)} Shard`,
               upgradeTypes: node.upgradeTypes || node.upgrades || node.values || null,
               description: node.description || "",
-              wikiaThumbnail: "",
+              wikiaThumbnail: normalizeUrl(node.thumbnail || node.wikiaThumbnail || node.wikiathumbnail || ""),
             });
           }
           if (converted.length) {
@@ -399,7 +501,7 @@ async function fetchShardsFromEndpoints() {
       errors.push(`${url} → ${e.message || e}`);
     }
   }
-  console.warn("[shards] All endpoints failed/empty:", errors);
+  console.warn("[shards] All endpoints failed/empty]:", errors);
   return { list: [], source: null, errors };
 }
 
