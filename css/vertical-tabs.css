@@ -1,26 +1,32 @@
 /* css/vertical-tabs.css */
-/* Colonne d’onglets verticaux collée à gauche du grand encadré */
+/* Colonne d’onglets verticaux placée à GAUCHE du grand encadré (#card) */
+
+#vtabs {
+  /* rien de spécial ici, la largeur est gérée dans le HTML via Tailwind */
+}
 
 .vtab-col {
-  position: sticky;   /* reste visible quand on scrolle dans le panel */
+  position: sticky;      /* reste visible pendant le scroll dans le panneau */
   top: 0.75rem;
   display: flex;
   flex-direction: column;
   gap: .5rem;
   padding-right: .25rem;
-  border-right: 1px solid rgba(255,255,255,.08); /* "filet" séparateur optionnel */
+  border-right: 1px solid rgba(255,255,255,.08); /* “filet” séparateur */
 }
 
-/* Boutons onglets en mode colonne */
+/* Boutons en colonne, plein-largeur, texte aligné à gauche */
 .vtab-col .vtab {
   display: block;
   width: 100%;
   text-align: left;
 }
 
-/* Si tu veux les rendre plus massifs façon "tuiles", décommente :
+/* Option : style “tuiles” plus massives (décommente si tu veux)
 .vtab-col .vtab {
-  padding: .6rem .8rem;
+  padding: .65rem .85rem;
   border-radius: .8rem;
 }
 */
+
+/* Sur mobile, la barre verticale disparaît (gérée par classes Tailwind .hidden md:block) */
