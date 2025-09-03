@@ -1,10 +1,8 @@
 // js/app.js
 // =====================================================
-// Aperçu Warframes — alimente la UI avec 3 JSON locaux
-// abilities.json, abilities_by_warframe.json, warframe_abilities.json
-// + la liste Warframes de l’API officielle WFCD
-// + barre d’onglets VERTICALE (à gauche du grand encadré) :
-//   Aptitudes / MOD / Arcanes / Archon Shards / Weapons
+// Aperçu Warframes — 3 colonnes :
+//   [Image + Polarities] | [Onglets VERTICAUX] | [Grand encadré de contenu]
+// Sections : Aptitudes / MOD / Arcanes / Archon Shards / Weapons
 // =====================================================
 
 const CFG = {
@@ -265,19 +263,19 @@ function variantFallbacks(name) {
     }
 
     function renderSectionSidebar(activeKey) {
-      // colonne verticale : boutons plein-largeur, alignés à gauche
+      // Colonne VERTICALE à gauche du grand encadré (collée à sa bordure)
       return `
-        <div class="hidden md:block w-[180px] shrink-0">
-          <div class="flex flex-col gap-2">
+        <aside class="hidden md:block w-[180px] shrink-0">
+          <div class="vtab-col">
             ${sectionTabs.map(t =>
-              `<button class="btn-tab ${t.key === activeKey ? "active" : ""} block w-full text-left" data-top="${t.key}">
+              `<button class="btn-tab ${t.key === activeKey ? "active" : ""} vtab" data-top="${t.key}">
                 ${t.label}
               </button>`
             ).join("")}
           </div>
-        </div>
+        </aside>
 
-        <!-- Sur mobile, on affiche une rangée horizontale au-dessus du contenu -->
+        <!-- Sur mobile, on met une rangée horizontale au-dessus du contenu -->
         <div class="md:hidden">
           <div class="flex flex-wrap gap-2 mb-2">
             ${sectionTabs.map(t =>
@@ -381,9 +379,10 @@ function variantFallbacks(name) {
           </div>`;
       }
 
+      // === 3 COLONNES ======================================================
       card.innerHTML = `
-        <div class="flex flex-col md:flex-row gap-6">
-          <!-- Colonne image + polarités -->
+        <div class="flex flex-col gap-6 md:flex-row">
+          <!-- Colonne 1 : Image + polarities -->
           <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-2">
             <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
               ${
@@ -394,7 +393,10 @@ function variantFallbacks(name) {
             </div>
           </div>
 
-          <!-- Colonne contenu -->
+          <!-- Colonne 2 : Barre d'onglets VERTICALE (collée à gauche du grand encadré) -->
+          ${renderSectionSidebar(activeTop)}
+
+          <!-- Colonne 3 : Grand encadré -->
           <div class="flex-1 flex flex-col gap-4">
             <div class="flex items-start gap-4">
               <div class="min-w-0 flex-1">
@@ -411,18 +413,12 @@ function variantFallbacks(name) {
               ${statBox("SPRINT", wf.stats.sprintSpeed)}
             </div>
 
-            <!-- Zone principale : barre latérale à gauche + contenu -->
-            <div class="flex gap-4">
-              ${renderSectionSidebar(activeTop)}
-              <div class="flex-1">
-                ${mainContent}
-              </div>
-            </div>
+            ${mainContent}
           </div>
         </div>
       `;
 
-      // Icônes de polarités (placées sous l'image par js/polarities.js)
+      // Icônes de polarités sous l'image
       if (window.Polarities?.attach) {
         Polarities.attach(card, wf);
       }
@@ -431,7 +427,7 @@ function variantFallbacks(name) {
       card.querySelectorAll("[data-top]").forEach((btn) => {
         btn.addEventListener("click", () => {
           const key = String(btn.dataset.top);
-          renderCard(wf, 0, key); // reset sur la 1ère aptitude lors d’un changement de section
+          renderCard(wf, 0, key); // reset 1ère aptitude
         });
       });
 
@@ -456,7 +452,6 @@ function variantFallbacks(name) {
       picker.value = "0";
     }
 
-    // init UI
     const setStatus = (msg, ok = true) => {
       status.textContent = msg;
       if (!ok) {
