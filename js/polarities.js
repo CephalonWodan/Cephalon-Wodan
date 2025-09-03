@@ -1,6 +1,7 @@
 // js/polarities.js
-// Affichage des polarités (icônes SVG officielles) pour les Warframes
-// Place un bloc "Polarité :" + rangée d'icônes sous l'image de la Warframe.
+// Affiche sous l'image :
+//  - "Aura polarity :" + icône + texte (ex: Madurai)
+//  - "Polarity :"      + icônes des autres slots (+ Exilus si fourni)
 // Expose window.Polarities.attach(cardEl, wf)
 
 (() => {
@@ -17,105 +18,145 @@
     Any:     "Any_Pol.svg",
   };
 
-  // Alias acceptés (caractères, noms, variantes)
+  // Alias acceptés (symboles / noms)
   const POL_ALIAS = {
     "V":"Madurai","D":"Vazarin","-":"Naramon","/":"Zenurik","Y":"Unairu","U":"Umbra","P":"Penjaga","O":"Any",
     "MADURAI":"Madurai","VAZARIN":"Vazarin","NARAMON":"Naramon","ZENURIK":"Zenurik",
-    "UNAIRU":"Unairu","UMBRA":"Umbra","PENJAGA":"Penjaga","ANY":"Any",
-    "AURA":"Aura","STANCE":"Stance","EXILUS":"Exilus","NONE":"None"
+    "UNAIRU":"Unairu","UMBRA":"Umbra","PENJAGA":"Penjaga","ANY":"Any"
   };
 
-  function normalizePol(p){
-    if(!p) return "None";
-    const k = String(p).trim().toUpperCase();
-    return POL_ALIAS[k] || p;
-  }
+  const truthy = (v) =>
+    v === true || v === 1 || v === "1" ||
+    String(v).toLowerCase() === "true" || String(v).toLowerCase() === "yes";
 
-  function polIconSrc(name){
-    return `img/polarities/${POL_SVG[name] || POL_SVG.Any}`;
-  }
+  const normalizePol = (p) => {
+    if (!p && p !== 0) return null;
+    const k = String(p).trim();
+    return POL_ALIAS[k.toUpperCase()] || k;
+  };
 
-  function makePolarityBadge(name, kind=null){
+  const polIconSrc = (name) => `img/polarities/${POL_SVG[name] || POL_SVG.Any}`;
+
+  function makePolarityBadge(name, kind = null) {
     const el = document.createElement("span");
     el.className = "polarity-badge";
     el.dataset.kind = kind || "";
     el.title = kind ? `${kind}: ${name}` : String(name);
     const img = document.createElement("img");
     img.alt = `${name} polarity`;
-    img.width = 20; img.height = 20;
+    img.width = 20;
+    img.height = 20;
     img.src = polIconSrc(name);
     el.appendChild(img);
     return el;
   }
 
-  // Rend uniquement la rangée d'icônes
-  function renderPolarityRow(data){
+  // ---------- Aura (icône + texte)
+  function renderAuraBlock(auraRaw) {
+    const auraName = normalizePol(auraRaw); // "Madurai", "Any", etc. ou null
+    const block = document.createElement("div");
+    block.className = "aura-block";
+
+    const label = document.createElement("div");
+    label.className = "aura-label";
+    label.textContent = "Aura polarity :";
+    block.appendChild(label);
+
     const row = document.createElement("div");
-    row.className = "polarity-row";
+    row.className = "aura-row";
 
-    if (data?.aura) {
-      row.appendChild(makePolarityBadge(normalizePol(data.aura), "Aura"));
-    }
-    if (data?.exilus && data.exilus !== "None") {
-      row.appendChild(makePolarityBadge(normalizePol(data.exilus), "Exilus"));
-    }
-    (data?.slots || [])
-      .map(normalizePol)
-      .forEach(p => row.appendChild(makePolarityBadge(p)));
+    if (auraName) {
+      row.appendChild(makePolarityBadge(auraName, "Aura"));
 
-    return row;
+      const txt = document.createElement("span");
+      txt.className = "aura-text";
+      txt.textContent = auraName; // ex: "Madurai"
+      row.appendChild(txt);
+    } else {
+      const none = document.createElement("span");
+      none.className = "aura-text";
+      none.textContent = "—";
+      row.appendChild(none);
+    }
+
+    block.appendChild(row);
+    return block;
   }
 
-  // Rend le bloc complet : libellé + rangée
-  function renderPolarityBlock(data){
+  // ---------- Autres polarités (slots + Exilus éventuel)
+  function renderSlotsBlock(data) {
     const block = document.createElement("div");
     block.className = "polarity-block";
 
     const label = document.createElement("div");
     label.className = "polarity-label";
     label.textContent = "Polarity :";
-
-    const row = renderPolarityRow(data);
-
     block.appendChild(label);
+
+    const row = document.createElement("div");
+    row.className = "polarity-row";
+
+    // Exilus (si renseigné)
+    if (data?.exilusPolarity) {
+      row.appendChild(makePolarityBadge(normalizePol(data.exilusPolarity), "Exilus"));
+    } else if (truthy(data?.exilus)) {
+      row.appendChild(makePolarityBadge("Exilus", "Exilus"));
+    }
+
+    // Slots "classiques"
+    (data?.slots || [])
+      .map(normalizePol)
+      .filter(Boolean)
+      .forEach((p) => row.appendChild(makePolarityBadge(p)));
+
     block.appendChild(row);
     return block;
   }
 
+  // ---------- Wrapper complet (Aura + Slots)
+  function renderPolarityWrap(data) {
+    const wrap = document.createElement("div");
+    wrap.className = "polarity-wrap";
+    wrap.appendChild(renderAuraBlock(data?.aura));
+    wrap.appendChild(renderSlotsBlock(data));
+    return wrap;
+  }
+
   /**
-   * Place la rangée sous l'image. Si déjà présent, on remplace.
-   * Fallbacks : après <h2>, avant la description, ou en haut de la carte.
+   * Place le wrapper SOUS l'image (fallbacks si besoin).
+   * Données acceptées :
+   *  - wf.polarities = { slots:[], aura:"Madurai"|..., exilus:true|false|null, exilusPolarity:"V"|... }
+   *  - ou schémas hérités (slotPolarities/auraPolarity/exilus/exilusPolarity)
    */
-  function attach(cardEl, wf){
-    // Normalisation des données passées par app.js
-    const data = Array.isArray(wf.polarities)
-      ? { slots: wf.polarities }
-      : (wf.polarities || {
-          slots: wf.slotPolarities || [],
-          aura: wf.auraPolarity || null,
-          exilus: wf.exilusPolarity || null
-        });
+  function attach(cardEl, wf) {
+    const pol = wf.polarities || {};
+    const data = {
+      slots: Array.isArray(pol) ? pol : (pol.slots ?? wf.slotPolarities ?? []),
+      aura:  Array.isArray(pol) ? null : (pol.aura ?? wf.auraPolarity ?? null),
+      exilus: Array.isArray(pol) ? null : (pol.exilus ?? wf.exilus ?? wf.hasExilus ?? null),
+      exilusPolarity: Array.isArray(pol) ? null : (pol.exilusPolarity ?? wf.exilusPolarity ?? wf.exilus_polarity ?? null),
+    };
 
-    const block = renderPolarityBlock(data);
+    const wrap = renderPolarityWrap(data);
 
-    // 1) Cible prioritaire : juste SOUS le cadre image
+    // 1) priorité : sous l'image
     const img = cardEl.querySelector('img[alt="' + String(wf.name || "").replace(/"/g, '\\"') + '"]');
-    const frameBox = img ? img.parentElement : null; // <div> qui entoure l'image
+    const frameBox = img ? img.parentElement : null; // le div qui encadre l'image
     if (frameBox) {
-      const existingBlock = cardEl.querySelector(".polarity-block");
-      if (existingBlock) existingBlock.replaceWith(block);
-      else frameBox.insertAdjacentElement("afterend", block);
+      const existing = cardEl.querySelector(".polarity-wrap");
+      if (existing) existing.replaceWith(wrap);
+      else frameBox.insertAdjacentElement("afterend", wrap);
       return;
     }
 
-    // 2) Fallbacks si on ne trouve pas le cadre
-    const existing = cardEl.querySelector(".polarity-block");
+    // 2) fallbacks
+    const existing = cardEl.querySelector(".polarity-wrap");
     const h2 = cardEl.querySelector("h2");
     const desc = cardEl.querySelector("p");
-    if (existing) existing.replaceWith(block);
-    else if (h2) h2.insertAdjacentElement("afterend", block);
-    else if (desc) desc.insertAdjacentElement("beforebegin", block);
-    else cardEl.prepend(block);
+    if (existing) existing.replaceWith(wrap);
+    else if (h2) h2.insertAdjacentElement("afterend", wrap);
+    else if (desc) desc.insertAdjacentElement("beforebegin", wrap);
+    else cardEl.prepend(wrap);
   }
 
   window.Polarities = { attach };
