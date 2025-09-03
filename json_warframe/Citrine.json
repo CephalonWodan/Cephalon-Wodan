@@ -1,0 +1,117 @@
+{
+  "name": "Citrine",
+  "sex": "Female",
+  "description": "Gaze upon the Crystal Bastion. Citrine's crystalline might supports allies on the battlefield. Combat only enhances her fractal beauty.",
+  "armor": 265,
+  "health": 500,
+  "shields": 370,
+  "energy": 180,
+  "sprintSpeed": 1.00,
+  "polarities": ["Madurai", "vazarin"],
+  "auraPolarity": "Naramon",
+  "subsumed": "Fractured Blast",
+  "abilities": [
+    {
+      "name": "Fractured Blast",
+      "description": "Exhale a deep breath of elemental destruction. Chroma's energy color determines the element.",
+      "baseValues": {
+        "fracturedBlastDamage": 500,
+        "fracturedBlastRange": 14.00,
+        "healthOrbDrop": 50.00,
+        "energyOrbDrop":20.00,
+        "cost": 25
+      },
+      "units": {
+        "fracturedBlastDamage": "slash and impact damage",
+        "fracturedBlastRange": "meters",
+        "healthOrbDrop": "percent",
+        "energyOrbDrop": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["fracturedBlastDamage", "healthOrbDrop", "energyOrbDrop"],
+        "duration": [],
+        "efficiency": ["cost"],
+        "range": ["fracturedBlastRange"]
+      },
+      "subsumable": true
+    },
+    {
+      "name": "Preserving Shell",
+      "description": "Citrine guards herself and nearby allies with a crystalline shell that gradually decays. Kills and assists increase the defensive power of the shell.",
+      "baseValues": {
+        "preservingShellDamageRedu": 40,
+        "preservingShellDamageReduPerKill": 6.00,
+        "preservingShellDamageReduPerAssist": 3.00,
+        "preservingShellDuration": 25.00,
+        "cost": 50
+      },
+      "units": {
+        "preservingShellDamageRedu": "percent",
+        "preservingShellDamageReduPerKill": "percent",
+        "preservingShellDamageReduPerAssist": "percent",
+        "preservingShellDuration": "seconds",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["preservingShellDamageRedu", "preservingShellDamageReduPerKill", "preservingShellDamageReduPerAssist"],
+        "duration": ["preservingShellDuration"],
+        "efficiency": ["cost"],
+        "range": []
+      },
+      "subsumable": false
+    },    
+    {
+      "name": "Prismatic Gem",
+      "description": "Deploy a gem that shoots prismatic beams. The gem targets enemies that are taking weapon damage from Citrine and her allies. Its beams inflict Heat, Cold, Toxin, and Electricity Status Effects. Status Chance and Status Duration increase for nearby allies.",
+      "baseValues": {
+        "prismaticGemRange": 15.00,
+        "prismaticGemDuration": 30.00,
+        "prismaticGemDamage": 1000,
+        "prismaticGemStatutChance": 100,
+        "prismaticGemStatutDuration": 100,
+        "cost": 75
+      },
+      "units": {
+        "prismaticGemRange": "meters",
+        "prismaticGemDuration": "seconds",
+        "prismaticGemDamage": "elemental damage",
+        "prismaticGemStatutChance": "percent",
+        "prismaticGemStatutDuration": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["prismaticGemDamage", "prismaticGemStatutChance"],
+        "duration": ["prismaticGemDuration", "prismaticGemStatutDuration"],
+        "efficiency": ["cost"],
+        "range": ["prismaticGemRange"]
+      },
+      "subsumable": false
+    },    
+    {
+      "name": "Crystallize",
+      "description": "Citrine summons crystal fractals. The fractals rush forward, seeking enemies. Enemies touched by the fractals are paralyzed crystalline growths. Hit the growths to deal Critical Damage.",
+      "baseValues": {
+        "crystallizeDamage": 500,
+        "crystallizeRange": 30.00,
+        "crystallizeDuration": 8.00,
+        "crystallizeCritChance": 300,
+        "cost": 100
+      },
+      "units": {
+        "crystallizeDamage": "impact damage",
+        "crystallizeRange": "meters",
+        "crystallizeDuration": "seconds",
+        "crystallizeCritChance": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["crystallizeDamage"],
+        "duration": ["crystallizeDuration"],
+        "efficiency": ["cost"],
+        "range": ["crystallizeRange"]
+      },
+      "subsumable": false
+    }
+  ]
+}

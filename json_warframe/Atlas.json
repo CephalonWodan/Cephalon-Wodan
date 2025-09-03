@@ -1,0 +1,126 @@
+{
+  "name": "Atlas",
+  "sex": "Male",
+  "description": "Enemies tremble before the brawler with fists as hard as stone. Atlas deals high damage. Command terrestrial elements that form the foundation of any battlefield.",
+  "armor": 475,
+  "health": 370,
+  "shields": 370,
+  "energy": 225,
+  "sprintSpeed": 0.90,
+  "polarities": ["Naramon", "Vazarin", "Madurai"],
+  "auraPolarity": "Madurai",
+  "subsumed": "Petrify",
+  "abilities": [
+    {
+      "name": "Landslide",
+      "description": "Bash enemies with an explosive sliding punch, repeat up to three times for a combo attack. Each hit in the three-punch combo increases the radius attack. Energy cost is reduced with each hit of Landslide. Install mods on the Landslide Fists to boost stats.",
+      "baseValues": {
+        "initialDamage": 350,
+        "dashRange": 15.00,
+        "impactRadius": 2.00,
+        "comboWindow": 1.00,
+        "cost": 25
+      },
+      "units": {
+        "initialDamage": "impact",
+        "comboWindow": "seconds",
+        "dashrange": "meters",
+        "impactRadius": "meters",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["initialDamage"],
+        "duration": ["comboWindow"],
+        "efficiency": ["cost"],
+        "range": ["dashrange", "impactRadius"],
+        "comboCount": ["cost", "initialDamage"]
+      },
+      "subsumable": false
+    },
+    {
+      "name": "Tectonics",
+      "description": "Summon a rock-wall, activate again to send the rocks crashing towards the enemy. ",
+      "baseValues": {
+        "health": 3750,
+        "rollDamage": 600,
+        "explosionDamage": 500,
+        "explosionRadius": 5.00,
+        "cost": 50
+      },
+      "units": {
+        "health": "hp",
+        "rollDamage": "impact",
+        "explosionDamage": "puncture",
+        "explosionRadius": "meters",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["health", "rollDamage", "explosionDamage" ],
+        "duration": ["invisibility"],
+        "efficiency": ["cost"],
+        "armorMultiplier": ["health"],
+        "additiveArmor": ["health"],
+        "range": ["explosionRadius"]
+      },
+      "subsumable": false
+    },    
+    {
+      "name": "Petrify",
+      "description": "Atlas' hardened gaze will fossilize foes, heal Rumblers, and create Petrified Bulwarks. When shattered, petrified enemies drop healing Rubble for Atlas.",
+      "baseValues": {
+        "petrifyDuration": 20.00,
+        "coneLenght": 14.00,
+        "cost": 75
+      },
+      "units": {
+        "petrifyDuration": "seconds",
+        "coneLenght": "meters",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": [],
+        "duration": ["petrifyDuration"],
+        "efficiency": ["cost"],
+        "range": ["coneLenght"]
+      },
+      "subsumable": true
+    },    
+    {
+      "name": "Rumblers",
+      "description": "Summon two elemental stone brawlers to the melee. Summoning petrifies enemies in close proximity to Atlas. When finished, Rumblers collapse into a pile of healing Rubble.",
+      "baseValues": {
+        "rumblerHealth": 6000,
+        "rumblerArmor": 500,
+        "rumblerDuration": 45.0,
+        "rumblerDamage": 2000,
+        "rockDamage": 500,
+        "explosionDamage": 1250,
+        "explosionRadius": 6.00,
+        "speedMultiplier": 1.00,
+        "cost": 100
+      },
+      "units": {
+        "rumblerHealth": "hp",
+        "rumblerArmor": "armor",
+        "rumblerDuration": "seconds",
+        "rumblerDamage": "impact",
+        "rockDamage": "impact",
+        "explosionDamage": "blast",
+        "explosionRadius": "meters",
+        "speedMultiplier": "multiplier",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["rumblerHealth", "rumblerArmor", "rumblerDamage", "rockDamage", "explosionDamage"],
+        "duration": ["rumblerDuration"],
+        "efficiency": ["cost"],
+        "range": ["speedMultiplier", "explosionRadius"],
+        "armorMultiplier": ["rumblerArmor"],
+        "additiveArmor": ["rumblerArmor"],
+        "healthBonus": ["rumblerHealth"],
+        "shieldBonus": ["rumblerHealth"]
+      },
+      "subsumable": false
+    }
+  ]
+}

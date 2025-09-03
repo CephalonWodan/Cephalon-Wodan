@@ -1,0 +1,119 @@
+{
+  "name": "Dagath",
+  "sex": "Female",
+  "description": "Never underestimate the power and wrath of sullen sadness. Dagath's malice deals high damage.",
+  "armor": 125,
+  "health": 666,
+  "shields": 250,
+  "energy": 225,
+  "sprintSpeed": 1.10,
+  "polarities": ["Madurai", "Vazarin"],
+  "auraPolarity": "Zenurik",
+  "subsumed": "Wyrd Scythes",
+  "abilities": [
+    {
+      "name": "Wyrd Scythes",
+      "description": "Wyrd Scythes surround Dagath and seek out nearby enemies. Those struck are slowed and suffer Viral Damage with a guaranteed Status Effect. The scythes also spread Doom and extend its duration.",
+      "baseValues": {
+        "wyrdScythesSlow": 35.00,
+        "wyrdScythesSpinDamage": 500,
+        "wyrdScythesThrowDamage": 1000,
+        "wyrdScythesslowDuration": 5.00,
+        "wyrdScythesRange": 15.00,
+        "cost": 25
+      },
+      "units": {
+        "wyrdScythesSlow": "percent",
+        "wyrdScythesSpinDamage": "viral damage",
+        "wyrdScythesThrowDamage": "viral damage",
+        "wyrdScythesslowDuration": "seconds",
+        "wyrdScythesRange": "meters",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["wyrdScythesSlow", "wyrdScythesSpinDamage", "wyrdScythesThrowDamage"],
+        "duration": ["wyrdScythesslowDuration"],
+        "efficiency": ["cost"],
+        "range": ["wyrdScythesRange"]
+      },
+      "subsumable": true
+    },
+    {
+      "name": "Doom",
+      "description": "Condemn nearby enemies to their doom. A portion of the damage Dagath deals is revisited upon them by a Wyrd Scythe. They also suffer Viral damage.",
+      "baseValues": {
+        "doomDamage": 500,
+        "doomDuration": 15.00,
+        "doomRange": 15.00,
+        "doomAngle": 40.00,
+        "doomDamageRedirection": 35.00,
+        "cost": 50
+      },
+      "units": {
+        "doomDamage": "viral damage",
+        "doomDuration": "seconds",
+        "doomRange": "meters",
+        "doomAngle": "°",
+        "doomDamageRedirection": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["doomDamage", "doomDamageRedirection"],
+        "duration": ["doomDuration"],
+        "efficiency": ["cost"],
+        "range": ["doomRange"]
+      },
+      "subsumable": false
+    },    
+    {
+      "name": "Grave Spirit",
+      "description": "Supercharge Dagath's weapons with extra Critical Damage. The effects are doubled on Doomed enemies. Escape fatal blows by briefly assuming a spectral form.",
+      "baseValues": {
+        "graveSpiritCritDamBonus": 50.00,
+        "doomCritDamBonus": 100,
+        "graveSpiritCoolDown": 25.00,
+        "timeInvulnerable": 10,
+        "dodgeChance": 100,
+        "cost": 75
+      },
+      "units": {
+        "graveSpiritCritDamBonus": "percent",
+        "doomCritDamBonus": "percent",
+        "graveSpiritCoolDown": "seconds",
+        "timeInvulnerable": "seconds",
+        "dodgeChance": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["graveSpiritCritDamBonus", "doomCritDamBonus"],
+        "duration": ["timeInvulnerable"],
+        "efficiency": ["cost"],
+        "range": []
+      },
+      "subsumable": false
+    },    
+    {
+      "name": "Rakhali's Cavalry",
+      "description": "Phantom Kaithes charge forth, inflicting Viral Damage upon all in their path. Their attack strips the defenses of Doomed enemies.",
+      "baseValues": {
+        "rakCavalryDamage": 30000,
+        "rakCavalryDuration": 3.00,
+        "rakCavalryDefReduction": 35.00,
+        "cost": 100.00
+      },
+      "units": {
+        "rakCavalryDamage": "viral damage per kaithes",
+        "rakCavalryDuration": "seconds",
+        "rakCavalryDefReduction": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["rakCavalryDamage", "rakCavalryDefReduction"],
+        "duration": ["rakCavalryDuration"],
+        "efficiency": ["cost"],
+        "range": []
+      },
+      "subsumable": false
+    }
+  ]
+}

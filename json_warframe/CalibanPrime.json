@@ -1,0 +1,143 @@
+{
+  "name": "Caliban Prime",
+  "sex": "Male",
+  "description": "Forged in celebration of the all-too-brief peace between the Orokin and Sentients, Caliban Prime is a true collaborative masterpiece. The heir of twin kingdoms arises in royal gold.",
+  "armor": 290,
+  "health": 370,
+  "shields": 740,
+  "energy": 225,
+  "sprintSpeed": 1.1,
+  "polarities": ["Vazarin", "Madurai", "Madurai"],
+  "auraPolarity": "Naramon",
+  "subsumed": "Sentient Wrath",
+  "abilities": [
+    {
+      "name": "Razor Gyre",
+      "description": "Dash forward in a spinning vortex of death. Struck enemies are inflicted with Tau Status Effect, making them more vulnerable to all other status effects. For each enemy hit, recover a portion of the energy cost, as well as health and shields. Enemies lifted by Sentient Wrath take increased damage. ",
+      "baseValues": {
+        "razorGyreDamage": 500,
+        "razorWraithDamage": 1000,
+        "healthRestore": 30,
+        "shieldRestore": 30,
+        "razorGyreRadius": 12,
+        "cost": 25
+      },
+      "units": {
+        "razorGyreDamage": "tau damage",
+        "razorWraithDamage": "tau damage",
+        "healthRestore": "hp",
+        "shieldRestore": "sp",
+        "razorGyreRadius": "meters",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["razorGyreDamage", "razorWraithDamage", "healthRestore", "shieldRestore" ],
+        "duration": [],
+        "efficiency": ["cost"],
+        "range": ["razorGyreRadius"]
+      },
+      "subsumable": false
+    },
+    {
+      "name": "Sentient Wrath",
+      "description": "Smash the ground sending out a radial wave of destruction. Those not killed by the initial blast are helplessly raised into the air, where they take amplified damage for a short time.",
+      "baseValues": {
+        "sentientWrathDamage": 2000,
+        "sentientWrathvulnerability": 35,
+        "sentientWrathDuration": 10.00,
+        "sentientWrathRange": 22.00,
+        "cost": 50
+      },
+      "units": {
+        "sentientWrathDamage": "tau damage",
+        "sentientWrathvulnerability": "percent",
+        "sentientWrathDuration": "seconds",
+        "sentientWrathRange": "meters",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["sentientWrathDamage", "sentientWrathvulnerability"],
+        "duration": ["sentientWrathDuration"],
+        "efficiency": ["cost"],
+        "range": ["sentientWrathRange"]
+      },
+      "subsumable": true
+    },    
+    {
+      "name": "Lethal Progeny",
+      "description": "Cycle through Sentient unit types, then summon them to Caliban's side. Conculysts focus on raw melee damage. Ortholysts specialize in ranged attacks and inflict Tau Status Effect. Summulysts summon their own Choralysts and provide shield protection for the squad.",
+      "baseValues": {
+        "lethalProgenyDuration": 45.00,
+        "lethalProgenyDamageMultiplier": 2.50,
+        "lethalProgenyHealthMultiplier": 2.00,
+        "sentientRank": 30,
+        "shieldRegen": 25.00,
+        "shieldRegenRange": 25.00,
+        "conculystWhirlwindCd": 10.00,
+        "conculystWhirlwindDuration": 6.00,
+        "ortholystCanonStatChance": 100,
+        "ortholystMortarStatChance": 300,
+        "summulystMaxInvoke": 6,
+        "cost": 50
+      },
+      "units": {
+        "lethalProgenyDuration": "seconds",
+        "lethalProgenyDamageMultiplier": "X",
+        "lethalProgenyHealthMultiplier": "X",
+        "sentientRank": "rank",
+        "shieldRegen": "seconds",
+        "shieldRegenRange":"meters",
+        "conculystWhirlwindCd": "seconds",
+        "conculystWhirlwindDuration": "seconds",
+        "ortholystCanonStatChance": "percent",
+        "ortholystMortarStatChance": "percent",
+        "summulystMaxInvoke": 6,
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["lethalProgenyDamageMultiplier", "lethalProgenyHealthMultiplier","sentientRank","shieldRegen"],
+        "duration": ["lethalProgenyDuration"],
+        "efficiency": ["cost"],
+        "range": ["shieldRegenRange"]
+      },
+      "subsumable": false
+    },    
+    {
+      "name": "Fusion Strike",
+      "description": "Converge three streams of raw energy upon a single point, causing a massive explosion. The streams strip armor and shields, and each enemy struck detonates on stream convergence. Summoned Conculysts can wield their own mini Fusion Strikes.",
+      "baseValues": {
+        "fusionStrikeDamage": 15000,
+        "fusionStrikeRange": 30.00,
+        "fusionStrikeDuration": 15.00,
+        "streamStatChance": 20.00,
+        "convergenceExplosionDamage": 750,
+        "enemyDetonationDamage": 5000,
+        "explosionRadius": 2.00,
+        "explosionFalloff": 1.00,
+        "conculystDamage": 0.5,
+        "defenseReduction": 50.00,
+        "cost": 100
+      },
+      "units": {
+        "fusionStrikeDamage": "tau damage",
+        "fusionStrikeRange": "meters",
+        "fusionStrikeDuration": "seconds",
+        "streamStatChance": "percent",
+        "convergenceExplosionDamage": "tau damage",
+        "enemyDetonationDamage": "tau damage",
+        "explosionRadius": "meters",
+        "explosionFalloff": "meters",
+        "conculystDamage": "X",
+        "defenseReduction": "percent",
+        "cost": "energy"
+      },
+      "scaling": {
+        "strength": ["fusionStrikeDamage", "convergenceExplosionDamage", "enemyDetonationDamage", "defenseReduction"],
+        "duration": ["fusionStrikeDuration"],
+        "efficiency": ["cost"],
+        "range": ["fusionStrikeRange", "explosionRadius"]
+      },
+      "subsumable": false
+    }
+  ]
+}
