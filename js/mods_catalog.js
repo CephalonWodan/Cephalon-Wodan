@@ -13,23 +13,6 @@
   const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // ---- Category denylist (cachée du panneau "Categories")
-  const CATEGORY_DENY = [
-    "Focus Way",
-    "Mod Set Mod",
-    "Arch-Gun Riven Mod",
-    "Companion Weapon Riven Mod",
-    "Kitgun Riven Mod",
-    "Melee Riven Mod",
-    "Pistol Riven Mod",
-    "Rifle Riven Mod",
-    "Shotgun Riven Mod",
-    "Zaw Riven Mod",
-  ];
-  const normTypeName = (s) => norm(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
-  const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
-  const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
-
   /* ================== Polarity (icônes locales) ================== */
   const POL_ICON = (p) => {
     const map = {
@@ -178,7 +161,7 @@
     all: [], filtered: [], page: 1, perPage: 24,
     q: "", sort: "name",
     fCats: new Set(), fPols: new Set(), fRars: new Set(),
-    onlyVerified: true, // par défaut : ON
+    onlyVerified: true, // <-- par défaut : ON
     view: "cards",
   };
 
@@ -187,6 +170,7 @@
   function polChip(p){ const src = POL_ICON(p), txt = canonPolarity(p); return `<span class="chip"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`; }
 
   function modCard(m){
+    // si pas vérifié et checkbox active, on n’arrive jamais ici (filtré en amont)
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
@@ -241,19 +225,11 @@
   /* ================== Filtres (sidebar) ================== */
   function buildFiltersFromData(arr){
     const cats = new Set(), pols = new Set(), rars = new Set();
-
     for (const m of arr) {
-      // on ne propose pas de catégories pour les éléments exclus
-      if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
-
-      const t = m.type || "";
-      if (!t || isDeniedType(t)) { /* skip */ }
-      else cats.add(t);
-
+      if (norm(m.type)) cats.add(m.type);
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
-
     const catList = Array.from(cats).sort((a,b)=>a.localeCompare(b));
     const polList = Array.from(pols).sort((a,b)=>a.localeCompare(b));
     const rarList = Array.from(rars).sort((a,b)=>rarityOrder(a)-rarityOrder(b));
@@ -395,6 +371,7 @@
       $("#results").className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
       $("#results").innerHTML = slice.map(modCard).join("");
 
+      // Lightbox (le placeholder peut s’ouvrir aussi)
       $("#results").querySelectorAll(".mod-cover").forEach(a=>{
         const img = a.querySelector("img");
         img.addEventListener("error", ()=>{ img.src = MOD_PLACEHOLDER; }, { once:true });
