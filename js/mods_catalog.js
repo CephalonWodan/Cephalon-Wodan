@@ -1,12 +1,8 @@
-// js/mods_catalog.js — EN data + priorité à wikiaThumbnail, fallback CDN
-// Source API (EN): https://api.warframestat.us/mods/?language=en
+// js/mods_catalog.js — EN data + grande image (wikiaThumbnail prioritaire) + lightbox
 const API = "https://api.warframestat.us/mods/?language=en";
 const CDN = (img) => img ? `https://cdn.warframestat.us/img/${img}` : null;
-
-// Renvoie l’URL d’image à utiliser : d’abord wikiaThumbnail (plus explicite), sinon CDN imageName
 function MOD_THUMB(m) {
-  // champs possibles côté WFCD/WarframeStat.us
-  const wik = m.wikiaThumbnail || m.wikiathumbnail || m.wikiathumbnail || null;
+  const wik = m.wikiaThumbnail || m.wikiathumbnail || null; // compat noms de champ
   if (wik && /^https?:\/\//i.test(wik)) return wik;
   return CDN(m.imageName);
 }
@@ -15,9 +11,8 @@ const state = {
   all: [],
   filtered: [],
   page: 1,
-  perPage: 48,
-  view: "cards", // "cards" | "table"
-  // filtres
+  perPage: 24,        // ↓ moins d’items par page car images plus grandes
+  view: "cards",      // "cards" | "table"
   q: "",
   cats: new Set(),
   pols: new Set(),
@@ -29,7 +24,7 @@ const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const norm = (s) => String(s || "").trim();
 
-/* ------------ Détection catégories ----------- */
+/* --------- Catégories --------- */
 function isAura(m){ const t=m.type||"",u=m.uniqueName||""; return /aura/i.test(t)||/\/Mods\/Auras?\//i.test(u); }
 function isWarframe(m){ const t=m.type||"",u=m.uniqueName||""; return /warframe/i.test(t)||/\/Mods\/Warframe\//i.test(u); }
 function isWeaponType(m,k){ return (m.type||"").toLowerCase().includes(k); }
@@ -60,7 +55,7 @@ function categoryOf(m){
   return "Other";
 }
 
-/* ------------ UI helpers ------------ */
+/* --------- UI helpers --------- */
 function badgeGold(text){ return `<span class="badge gold">${text}</span>`; }
 function badge(text){ return `<span class="badge">${text}</span>`; }
 function rarityOrder(r){ return {common:1,uncommon:2,rare:3,legendary:4}[String(r||"").toLowerCase()] ?? 99; }
@@ -73,7 +68,7 @@ function categoryLabel(key){
   })[key] || key;
 }
 
-/* ------------ Cards ------------- */
+/* --------- Carte mod (image large + contenu) --------- */
 function modCard(m){
   const img = MOD_THUMB(m);
   const right = [
@@ -84,12 +79,13 @@ function modCard(m){
   ].filter(Boolean).join(" ");
 
   return `
-  <div class="mod-card p-3 flex gap-3">
-    <div class="mod-thumb w-[64px] h-[64px] flex items-center justify-center overflow-hidden">
-      ${ img ? `<img src="${img}" alt="${m.name||"Mod"}" class="w-full h-full object-contain">`
-              : `<div class="text-[10px] muted text-center px-1">No<br> icon</div>` }
-    </div>
-    <div class="min-w-0 flex-1">
+  <div class="mod-card">
+    <a href="#" class="mod-cover" data-full="${img||""}" data-name="${m.name||"Mod"}">
+      ${ img
+          ? `<img src="${img}" alt="${m.name||"Mod"}">`
+          : `<div class="text-[10px] muted text-center px-2 py-10">No image</div>` }
+    </a>
+    <div class="mod-body">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
           <div class="font-semibold truncate">${m.name || "Mod"}</div>
@@ -97,18 +93,18 @@ function modCard(m){
         </div>
         <div class="flex items-center gap-2 shrink-0">${right}</div>
       </div>
-      ${ m.description ? `<div class="text-sm text-[var(--muted)] mt-1 clamp-2">${m.description}</div>` : "" }
+      ${ m.description ? `<div class="text-sm text-[var(--muted)] mt-2 clamp-3">${m.description}</div>` : "" }
     </div>
   </div>`;
 }
 
-/* ------------ Table row ------------- */
+/* --------- Table row (icone plus grande) --------- */
 function tableRow(m){
   const img = MOD_THUMB(m);
   return `
   <tr>
     <td class="p-2">
-      <div class="w-10 h-10 mod-thumb flex items-center justify-center overflow-hidden">
+      <div class="table-thumb flex items-center justify-center overflow-hidden">
         ${ img ? `<img src="${img}" alt="${m.name||"Mod"}" class="w-full h-full object-contain">` : "" }
       </div>
     </td>
@@ -121,7 +117,7 @@ function tableRow(m){
   </tr>`;
 }
 
-/* ------------ Filtres UI (checkbox) ------------- */
+/* --------- Filtres (checkbox) --------- */
 const ALL_CATS = ["Aura","WarframeAugment","WarframeExilus","Warframe","Primary","Secondary","Melee","Companion","Archwing","Necramech","Other"];
 const ALL_POLS = ["Madurai","Vazarin","Naramon","Zenurik","Unairu","Penjaga"];
 const ALL_RARS = ["Common","Uncommon","Rare","Legendary"];
@@ -138,7 +134,6 @@ function renderFilterGroup(hostId, values, selectedSet, labelFn = (x)=>x){
         <span>${labelFn(v)}</span>
       </label>`;
   }).join("");
-  // listeners
   values.forEach(v => {
     const el = $(`${hostId}-${v}`);
     el.addEventListener("change", () => {
@@ -149,19 +144,19 @@ function renderFilterGroup(hostId, values, selectedSet, labelFn = (x)=>x){
   });
 }
 
-/* ------------ Active filters chips ------------- */
+/* --------- Active chips --------- */
 function renderActiveChips(){
   const wrap = $("#active-filters");
   const chips = [];
-  if (state.q) chips.push({k:"q", label:`Texte: "${state.q}"`});
+  if (state.q) chips.push({k:"q", label:`Text: "${state.q}"`});
   if (state.cats.size) chips.push({k:"cats", label:`Cat: ${[...state.cats].map(categoryLabel).join(", ")}`});
   if (state.pols.size) chips.push({k:"pols", label:`Pol: ${[...state.pols].join(", ")}`});
-  if (state.rars.size) chips.push({k:"rars", label:`Rareté: ${[...state.rars].join(", ")}`});
+  if (state.rars.size) chips.push({k:"rars", label:`Rarity: ${[...state.rars].join(", ")}`});
 
   if (!chips.length) { wrap.innerHTML = ""; return; }
 
   wrap.innerHTML = chips.map((c, idx) =>
-    `<button class="badge gold" data-chip="${c.k}|${idx}" title="Retirer">${c.label} ✕</button>`
+    `<button class="badge gold" data-chip="${c.k}|${idx}" title="Remove">${c.label} ✕</button>`
   ).join("");
 
   wrap.querySelectorAll("[data-chip]").forEach(btn => {
@@ -171,7 +166,6 @@ function renderActiveChips(){
       if (k === "cats") state.cats.clear();
       if (k === "pols") state.pols.clear();
       if (k === "rars") state.rars.clear();
-      // Reset UI inputs
       $("#q").value = state.q;
       renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
       renderFilterGroup("#f-pol", ALL_POLS, state.pols, x=>x);
@@ -181,27 +175,22 @@ function renderActiveChips(){
   });
 }
 
-/* ------------ Logique filtres/tri/pagination ------------- */
+/* --------- Filtres/tri/pagination --------- */
 function applyFilters(){
   const q = state.q = norm($("#q").value).toLowerCase();
 
   let arr = state.all.slice();
-
-  // filtres
   if (state.cats.size) arr = arr.filter(m => state.cats.has(categoryOf(m)));
   if (state.pols.size) arr = arr.filter(m => state.pols.has(m.polarity || ""));
   if (state.rars.size) arr = arr.filter(m => state.rars.has(m.rarity || ""));
-
   if (q) {
     arr = arr.filter(m => {
-      const hay = [
-        m.name, m.description, m.type, m.compatName, m.uniqueName
-      ].map(norm).join(" ").toLowerCase();
+      const hay = [m.name, m.description, m.type, m.compatName, m.uniqueName]
+        .map(norm).join(" ").toLowerCase();
       return hay.includes(q);
     });
   }
 
-  // tri
   const sort = state.sort = $("#sort").value;
   arr.sort((a,b) => {
     if (sort === "rarity") return rarityOrder(a.rarity)-rarityOrder(b.rarity) || (a.name||"").localeCompare(b.name||"");
@@ -243,24 +232,58 @@ function render(){
   } else {
     tableWrap.classList.add("hidden");
     grid.classList.remove("hidden");
-    grid.className = "grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+    grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
     grid.innerHTML = slice.map(modCard).join("");
+
+    // Click → lightbox
+    grid.querySelectorAll(".mod-cover").forEach(a => {
+      a.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        const url = a.dataset.full;
+        if (!url) return;
+        openLightbox(url, a.dataset.name || "");
+      });
+    });
   }
 }
 
-/* ------------ Boot ------------- */
+/* --------- Lightbox --------- */
+function openLightbox(url, caption=""){
+  $("#lb-img").src = url;
+  $("#lb-img").alt = caption;
+  $("#lb-caption").textContent = caption;
+  $("#lightbox").classList.remove("hidden");
+}
+function closeLightbox(){
+  $("#lightbox").classList.add("hidden");
+  $("#lb-img").src = "";
+}
+
+(function setupLightbox(){
+  $("#lb-close").addEventListener("click", closeLightbox);
+  $("#lightbox").addEventListener("click", (e)=>{
+    if (e.target.id === "lightbox" || e.target.classList.contains("lb-backdrop")) {
+      closeLightbox();
+    }
+  });
+  document.addEventListener("keydown", (e)=>{
+    if (e.key === "Escape") closeLightbox();
+  });
+})();
+
+/* --------- Boot --------- */
 (async function boot(){
   const status = $("#status");
   try {
     $("#q").value = new URL(location.href).searchParams.get("q") || "";
 
-    // Skeleton
-    $("#results").innerHTML = Array.from({length:8}).map(()=>`
-      <div class="mod-card p-3 animate-pulse flex gap-3">
-        <div class="mod-thumb w-[64px] h-[64px]"></div>
-        <div class="flex-1 space-y-2">
-          <div class="h-4 rounded bg-[rgba(255,255,255,.08)] w-2/3"></div>
-          <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2"></div>
+    // Skeleton (image en haut)
+    $("#results").innerHTML = Array.from({length:6}).map(()=>`
+      <div class="mod-card">
+        <div class="mod-cover" style="height:180px;background:rgba(255,255,255,.04)"></div>
+        <div class="mod-body">
+          <div class="h-4 rounded bg-[rgba(255,255,255,.08)] w-2/3 mb-2"></div>
+          <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2 mb-1"></div>
           <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-5/6"></div>
         </div>
       </div>
@@ -268,12 +291,12 @@ function render(){
 
     const mods = await fetch(API).then(r => r.json());
     state.all = Array.isArray(mods) ? mods : [];
-    status.textContent = `Mods chargés : ${state.all.length} (EN)`;
+    status.textContent = `Mods loaded: ${state.all.length} (EN, large thumbnails)`;
 
-    // Rendu filtres
-    renderFilterGroup("#f-cat", ["Aura","WarframeAugment","WarframeExilus","Warframe","Primary","Secondary","Melee","Companion","Archwing","Necramech","Other"], state.cats, categoryLabel);
-    renderFilterGroup("#f-pol", ["Madurai","Vazarin","Naramon","Zenurik","Unairu","Penjaga"], state.pols, (x)=>x);
-    renderFilterGroup("#f-rar", ["Common","Uncommon","Rare","Legendary"], state.rars, (x)=>x);
+    // Filtres
+    renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
+    renderFilterGroup("#f-pol", ALL_POLS, state.pols, (x)=>x);
+    renderFilterGroup("#f-rar", ALL_RARS, state.rars, (x)=>x);
 
     // Listeners
     $("#q").addEventListener("input", applyFilters);
@@ -284,9 +307,9 @@ function render(){
       state.q = ""; $("#q").value = "";
       state.cats.clear(); state.pols.clear(); state.rars.clear();
       $("#sort").value = "name";
-      renderFilterGroup("#f-cat", ["Aura","WarframeAugment","WarframeExilus","Warframe","Primary","Secondary","Melee","Companion","Archwing","Necramech","Other"], state.cats, categoryLabel);
-      renderFilterGroup("#f-pol", ["Madurai","Vazarin","Naramon","Zenurik","Unairu","Penjaga"], state.pols, (x)=>x);
-      renderFilterGroup("#f-rar", ["Common","Uncommon","Rare","Legendary"], state.rars, (x)=>x);
+      renderFilterGroup("#f-cat", ALL_CATS, state.cats, categoryLabel);
+      renderFilterGroup("#f-pol", ALL_POLS, state.pols, (x)=>x);
+      renderFilterGroup("#f-rar", ALL_RARS, state.rars, (x)=>x);
       applyFilters();
     });
     $("#view-cards").addEventListener("click", ()=>{
@@ -306,7 +329,7 @@ function render(){
     applyFilters();
   } catch (e) {
     console.error(e);
-    status.textContent = "Erreur de chargement des mods.";
+    status.textContent = "Error while loading mods.";
     status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
     status.style.background = "rgba(255,0,0,.08)";
     status.style.color = "#ffd1d1";
