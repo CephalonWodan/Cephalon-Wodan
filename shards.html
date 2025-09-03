@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <title>Archon Shards — Warframe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind -->
+  <!-- Tailwind (ok pour GitHub Pages pour l’instant ; on pourra passer en build local ensuite) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Thème + styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/shards.css?v=1" />
+  <link rel="stylesheet" href="css/shards.css?v=3" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
   <!-- NAV -->
@@ -48,8 +48,12 @@
       </div>
     </div>
 
-    <!-- Filtres -->
-    <div class="mt-5 grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <!-- Compteurs couleurs -->
+    <div id="color-stats" class="mt-4 flex flex-wrap gap-2"></div>
+
+    <!-- Layout -->
+    <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Sidebar filtres -->
       <aside class="lg:col-span-3">
         <div class="sticky top-4 space-y-4">
           <div class="card p-4 orn">
@@ -73,10 +77,13 @@
       </aside>
 
       <main class="lg:col-span-9">
+        <!-- Filtres actifs -->
         <div id="active-filters" class="flex flex-wrap gap-2 mb-3"></div>
 
+        <!-- Grille -->
         <div id="results" class="grid gap-4"></div>
 
+        <!-- Pagination -->
         <div id="pager" class="flex items-center justify-between mt-5">
           <button id="prev" class="btn-tab">← Prev</button>
           <div id="pageinfo" class="text-sm muted"></div>
@@ -86,7 +93,7 @@
     </div>
   </div>
 
-  <!-- Lightbox image (si vignettes wiki lisibles) -->
+  <!-- Lightbox -->
   <div id="lightbox" class="hidden">
     <div class="lb-backdrop"></div>
     <div class="lb-content">
@@ -98,6 +105,6 @@
 
   <!-- JS -->
   <script src="js/site_nav.js" defer></script>
-  <script src="js/shards.js?v=1" defer></script>
+  <script src="js/shards.js?v=3" defer></script>
 </body>
 </html>
