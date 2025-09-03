@@ -1,4 +1,4 @@
-/* css/shards.css — styles légers pour les Shards (couleurs + lightbox réutilisée) */
+/* css/shards.css — Archon Shards (v3) */
 
 .badge { display:inline-flex; align-items:center; gap:.35rem; font-size:.75rem;
   padding:.15rem .5rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.14);
@@ -6,29 +6,46 @@
 }
 .badge.gold { border-color: rgba(212,175,55,.5); color:#D4AF37; background:rgba(212,175,55,.06); }
 
+.color-chip { display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem;
+  padding:.25rem .5rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.04);
+}
+.color-dot { width:.75rem; height:.75rem; border-radius:9999px; display:inline-block; }
+
+/* Stats couleurs (compteurs) */
+#color-stats .stat {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.3rem .6rem; border-radius:.6rem;
+  border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04);
+  font-size:.85rem;
+}
+
 .shard-card { border:1px solid rgba(255,255,255,.08); background:var(--panel-1);
   border-radius: 1rem; overflow: hidden; display:flex; flex-direction: column;
 }
-.shard-cover { position:relative; height: 200px; background: rgba(255,255,255,.04);
+.shard-cover { position:relative; height: 260px; background: rgba(255,255,255,.04);
   display:flex; align-items:center; justify-content:center; overflow:hidden;
 }
 .shard-cover img { width:100%; height:100%; object-fit:contain; }
 
-.shard-dot { width:74px; height:74px; border-radius:9999px; border:2px solid rgba(255,255,255,.18); }
-.shard-dot.tau { box-shadow: 0 0 0 2px rgba(212,175,55,.55), inset 0 0 0 3px rgba(0,0,0,.25); }
-
 .shard-body { padding: 12px 14px; display:flex; flex-direction:column; gap:.4rem; }
 .shard-body .title { font-weight:600; line-height:1.2; }
 .shard-body .meta { font-size:.75rem; color: var(--muted); }
-.shard-body .desc { color: var(--muted); font-size: .9rem; }
+.shard-body .desc { color: var(--muted); font-size: .92rem; }
 
 .kv { display:grid; grid-template-columns: 1fr auto; gap:.35rem .75rem; }
-.kv .k { color: var(--muted); font-size:.8rem; }
-.kv .v { font-weight:500; font-size:.9rem; }
+.kv .k { color: var(--muted); font-size:.85rem; }
+.kv .v { font-weight:500; font-size:.95rem; }
 
-.table-thumb { width:84px; height:84px; background: rgba(255,255,255,.04); border-radius:.75rem; border:1px solid rgba(255,255,255,.08); }
+/* Boutons dans la carte */
+.card-actions { display:flex; gap:.5rem; margin-top:.4rem; }
+.card-actions a {
+  font-size:.8rem; padding:.3rem .55rem; border-radius:.5rem;
+  border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04);
+}
+.card-actions a:hover { background:rgba(255,255,255,.06); }
 
-/* Lightbox (reprend ceux de mods) */
+/* Lightbox */
 #lightbox.hidden { display:none; }
 #lightbox .lb-backdrop { position:fixed; inset:0; background: rgba(0,0,0,.75); }
 #lightbox .lb-content { position:fixed; inset: 10% 5% auto 5%; background: var(--panel-1);
