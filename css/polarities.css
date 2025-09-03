@@ -71,3 +71,16 @@
 @media (prefers-color-scheme: dark) {
   .polarity-badge img { filter: invert(1); }
 }
+
+/*===Filet décoratif===*/
+.aura-label::after,
+.polarity-label::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 2px;
+  margin: .35rem auto 0;
+  background: rgba(255,255,255,.18);
+  border-radius: 2px;
+}
+
