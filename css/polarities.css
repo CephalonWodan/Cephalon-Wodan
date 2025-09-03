@@ -1,95 +1,72 @@
-/* css/polarities.css */
-/* Accent global : change cette variable pour ajuster le doré si besoin */
-:root {
-  --accent-gold: #D4AF37;                 /* doré principal */
-  --accent-gold-soft: rgba(212,175,55,.12); /* léger fond doré */
+/* css/polarities.css — visibilité renforcée des polarités */
+
+/* Rangées de polarités */
+.polarity-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .55rem .6rem;
 }
 
-/* Wrapper global sous l'image */
-.polarity-wrap {
-  width: 100%;
-  margin-top: .6rem;
-  display: grid;
-  gap: .55rem; /* espace entre Aura et Slots */
-}
-
-/* ===== Aura ===== */
-.aura-block { width: 100%; }
-
-/* Libellés plus visibles */
-.aura-label,
-.polarity-label {
-  font-size: 16px;
-  line-height: 1.2;
-  text-align: center;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  color: rgba(255,255,255,.92);
-  margin-bottom: .35rem;
-}
-
-/* Filet doré sous les libellés */
-.aura-label::after,
-.polarity-label::after {
-  content: "";
-  display: block;
-  width: 56px;
-  height: 2px;
-  margin: .35rem auto 0;
-  background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);
-  border-radius: 2px;
-}
-
-.aura-row {
+/* Pastilles d’icônes */
+.pol-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: .75rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .45rem;
-  width: 100%;
-}
-.aura-text {
-  font-size: 16px;
-  opacity: .95;
-}
 
-/* ===== Slots / autres polarités ===== */
-.polarity-block { width: 100%; }
-.polarity-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .45rem;
-  align-items: center;
-  justify-content: center;
+  /* Doré plus visible */
+  border: 2px solid rgba(212, 175, 55, .85);
+  background:
+    radial-gradient(70% 70% at 50% 35%, rgba(255,255,255,.15) 0%, rgba(212,175,55,.15) 100%),
+    rgba(212,175,55,.07);
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,.25),
+    0 2px 10px rgba(0,0,0,.28);
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
 
-/* ===== Badges (icônes SVG) — DORÉ POUR TOUS ===== */
-.polarity-badge {
-  min-width: 22px;
-  height: 22px;
-  padding: 0 .25rem;
-  border: 1px solid var(--accent-gold);       /* ← bord DORÉ (tous) */
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-
-  /* léger fond doré (optionnel) — décommente la ligne color-mix si ton navigateur le supporte */
-  background: var(--accent-gold-soft);
-  /* background: color-mix(in srgb, var(--accent-gold) 10%, transparent); */
+/* Aura : un poil plus “prestige” */
+.pol-icon.aura {
+  border-width: 2.5px;
+  background:
+    radial-gradient(70% 70% at 50% 35%, rgba(255,255,255,.18) 0%, rgba(212,175,55,.2) 100%),
+    rgba(212,175,55,.1);
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,.22),
+    0 3px 14px rgba(212,175,55,.18),
+    0 2px 12px rgba(0,0,0,.3);
 }
 
-/* On garde le style identique pour Aura/Exilus (pas de pointillés, même doré) */
-/* .polarity-badge[data-kind="Aura"],
-   .polarity-badge[data-kind="Exilus"] { }  <- volontairement vide */
+/* Effet au survol */
+.pol-icon:hover {
+  transform: translateY(-1px) scale(1.06);
+  box-shadow:
+    inset 0 0 0 2px rgba(0,0,0,.22),
+    0 4px 16px rgba(212,175,55,.24),
+    0 4px 16px rgba(0,0,0,.32);
+}
 
-/* Icône */
-.polarity-badge img {
-  width: 20px;
-  height: 20px;
+/* Taille de l’icône interne */
+.pol-icon img,
+.pol-icon svg {
+  width: 26px;
+  height: 26px;
   display: block;
 }
 
-/* Inversion douce en thème sombre si l’icône est noire */
-@media (prefers-color-scheme: dark) {
-  .polarity-badge img { filter: invert(1); }
+/* Petits écrans : un peu plus compact */
+@media (max-width: 420px) {
+  .pol-icon { width: 32px; height: 32px; border-radius: .65rem; }
+  .pol-icon img, .pol-icon svg { width: 22px; height: 22px; }
+}
+
+/* Optionnel : titrer les sections en doré si tu ajoutes la classe ci-dessous à tes labels */
+.polarity-title {
+  color: #D4AF37;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .75rem;
 }
