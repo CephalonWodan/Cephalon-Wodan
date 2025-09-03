@@ -2,43 +2,103 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Warframes – Mods</title>
+  <title>Catalogue des Mods — Warframe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Ton thème -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/vertical-tabs.css" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
-  <div class="max-w-6xl mx-auto p-6">
-    <h1 class="text-2xl font-semibold mb-3">Warframes – Mods</h1>
+  <div class="max-w-7xl mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-3">Catalogue des Mods</h1>
 
     <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
          style="background:rgba(0,229,255,.08); color:#bfefff;">
-      Chargement des données…
+      Chargement des mods…
     </div>
 
-    <div class="flex flex-wrap gap-3 items-center mb-5">
-      <div class="relative">
-        <input id="search" type="text" placeholder="Rechercher une Warframe…"
-               class="w-72 pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                      placeholder:text-[var(--muted)] outline-none orn focus-gold" />
-        <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
-          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+    <!-- Barre d’outils -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-3 mb-4">
+      <!-- Recherche -->
+      <div class="lg:col-span-2">
+        <div class="relative">
+          <input id="q" type="text" placeholder="Rechercher : nom, description, compatibilité…"
+                 class="w-full pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                        placeholder:text-[var(--muted)] outline-none orn focus-gold" />
+          <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2"
+               viewBox="0 0 24 24" fill="none">
+            <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
       </div>
 
-      <select id="picker"
-              class="w-72 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                     outline-none orn focus-gold"></select>
+      <!-- Catégorie -->
+      <div>
+        <select id="cat"
+                class="w-full py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)] outline-none orn focus-gold">
+          <option value="">Catégorie : Toutes</option>
+          <option value="Aura">Aura</option>
+          <option value="WarframeAugment">Warframe (Augment)</option>
+          <option value="WarframeExilus">Warframe (Exilus)</option>
+          <option value="Warframe">Warframe (Général)</option>
+          <option value="Primary">Arme primaire</option>
+          <option value="Secondary">Arme secondaire</option>
+          <option value="Melee">Mêlée</option>
+          <option value="Companion">Compagnon</option>
+          <option value="Archwing">Archwing</option>
+          <option value="Necramech">Necramech</option>
+          <option value="Other">Autres</option>
+        </select>
+      </div>
+
+      <!-- Polarité -->
+      <div>
+        <select id="pol"
+                class="w-full py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)] outline-none orn focus-gold">
+          <option value="">Polarité : Toutes</option>
+          <option value="Madurai">Madurai (V)</option>
+          <option value="Vazarin">Vazarin (D)</option>
+          <option value="Naramon">Naramon (–)</option>
+          <option value="Zenurik">Zenurik (=)</option>
+          <option value="Unairu">Unairu (U)</option>
+          <option value="Penjaga">Penjaga (Barre)</option>
+        </select>
+      </div>
+
+      <!-- Rareté / Tri -->
+      <div class="grid grid-cols-2 gap-3">
+        <select id="rar"
+                class="py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)] outline-none orn focus-gold">
+          <option value="">Rareté : Toutes</option>
+          <option value="Common">Commune</option>
+          <option value="Uncommon">Peu commune</option>
+          <option value="Rare">Rare</option>
+          <option value="Legendary">Légendaire</option>
+        </select>
+        <select id="sort"
+                class="py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)] outline-none orn focus-gold">
+          <option value="name">Tri : Nom (A→Z)</option>
+          <option value="rarity">Tri : Rareté</option>
+          <option value="polarity">Tri : Polarité</option>
+          <option value="drain">Tri : Rang max</option>
+          <option value="compat">Tri : Compatibilité</option>
+        </select>
+      </div>
     </div>
 
-    <div id="panel-wrapper" class="flex gap-4">
-      <aside id="vtabs" class="hidden md:block w-[180px] shrink-0"></aside>
-      <div id="card" class="card p-5 flex-1"></div>
+    <!-- Résultats -->
+    <div id="results" class="grid gap-3"></div>
+
+    <!-- Pagination -->
+    <div id="pager" class="flex items-center justify-between mt-4">
+      <button id="prev" class="btn-tab">← Précédent</button>
+      <div id="pageinfo" class="text-sm muted"></div>
+      <button id="next" class="btn-tab">Suivant →</button>
     </div>
   </div>
 
-  <script src="js/app_common.js?v=1" defer></script>
-  <script src="js/app_mods.js?v=1" defer></script>
+  <script src="js/mods_catalog.js?v=1" defer></script>
 </body>
 </html>
