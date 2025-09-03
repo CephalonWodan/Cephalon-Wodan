@@ -1,4 +1,9 @@
 /* css/polarities.css */
+/* Accent global : change cette variable pour ajuster la couleur du filet (et dérivés) */
+:root {
+  --accent-gold: #D4AF37; /* doré DE */
+}
+
 /* Wrapper global sous l'image */
 .polarity-wrap {
   width: 100%;
@@ -10,66 +15,17 @@
 /* ===== Aura ===== */
 .aura-block { width: 100%; }
 
-/* ⬇️ REND LES LIBELLÉS PLUS VISIBLES ICI */
+/* Libellés plus visibles */
 .aura-label,
 .polarity-label {
-  font-size: 16px;              /* avant: 12px */
+  font-size: 16px;
   line-height: 1.2;
   text-align: center;
-  font-weight: 600;              /* ajout: gras */
-  text-transform: uppercase;     /* ajout: majuscules discrètes */
-  letter-spacing: .06em;         /* avant: .02em */
-  color: rgba(255,255,255,.92);  /* avant: var(--muted, …) */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: rgba(255,255,255,.92);
   margin-bottom: .35rem;
-}
-
-.aura-row {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .45rem;
-  width: 100%;
-}
-.aura-text {
-  font-size: 13px;
-  opacity: .95;                 /* avant: .9 */
-}
-
-/* ===== Slots / autres polarités ===== */
-.polarity-block { width: 100%; }
-/* (la classe .polarity-label est stylée en commun ci-dessus) */
-
-.polarity-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: .45rem;                  /* avant: .4rem (un poil plus d’air) */
-  align-items: center;
-  justify-content: center;
-}
-
-/* Badges (icônes SVG) communs */
-.polarity-badge {
-  min-width: 22px;
-  height: 22px;
-  padding: 0 .25rem;
-  border: 1px solid rgba(255,255,255,.16);  /* avant: .12 -> contraste léger ↑ */
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: rgba(255,255,255,.05);        /* avant: .04 */
-}
-.polarity-badge[data-kind="Aura"],
-.polarity-badge[data-kind="Exilus"] { border-style: dashed; }
-
-.polarity-badge img {
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-
-/* Inversion douce en thème sombre si l’icône est noire */
-@media (prefers-color-scheme: dark) {
-  .polarity-badge img { filter: invert(1); }
 }
 
 /* Filet sous les libellés — COULEUR ICI (doré) */
@@ -87,3 +43,62 @@
 /* Variante dégradé (optionnelle) : remplace la ligne "background:" ci-dessus par ceci
    background: linear-gradient(90deg, transparent 0, var(--accent-gold) 20%, var(--accent-gold) 80%, transparent 100%);
 */
+
+.aura-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  width: 100%;
+}
+.aura-text {
+  font-size: 16px;
+  opacity: .95;
+}
+
+/* ===== Slots / autres polarités ===== */
+.polarity-block { width: 100%; }
+
+.polarity-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Badges (icônes SVG) */
+.polarity-badge {
+  min-width: 22px;
+  height: 22px;
+  padding: 0 .25rem;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,.05);
+}
+
+/* On met aussi un petit accent doré sur Aura/Exilus (facultatif) */
+.polarity-badge[data-kind="Aura"],
+.polarity-badge[data-kind="Exilus"] {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--accent-gold) 70%, #ffffff 30%);
+}
+
+/* Si color-mix n'est pas supporté par le navigateur, utilise simplement : */
+/*
+.polarity-badge[data-kind="Aura"],
+.polarity-badge[data-kind="Exilus"] { border-color: var(--accent-gold); }
+*/
+
+.polarity-badge img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* Inversion douce en thème sombre si l’icône est noire */
+@media (prefers-color-scheme: dark) {
+  .polarity-badge img { filter: invert(1); }
+}
