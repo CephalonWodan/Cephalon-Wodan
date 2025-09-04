@@ -2,45 +2,118 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Warframes – Arcanes</title>
+  <title>Catalogue des Arcanes — Warframe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind (ok pour GH Pages) -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thème + styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/vertical-tabs.css" />
+  <link rel="stylesheet" href="css/arcanes_catalog.css?v=1" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
+  <!-- NAV -->
   <div id="site-nav"></div>
-  <div class="max-w-6xl mx-auto p-6">
-    <h1 class="text-2xl font-semibold mb-3">Warframes – Arcanes</h1>
 
-    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
-         style="background:rgba(0,229,255,.08); color:#bfefff;">
-      Chargement des données…
-    </div>
-
-    <div class="flex flex-wrap gap-3 items-center mb-5">
-      <div class="relative">
-        <input id="search" type="text" placeholder="Rechercher une Warframe…"
-               class="w-72 pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                      placeholder:text-[var(--muted)] outline-none orn focus-gold" />
-        <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
-          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+  <div class="max-w-7xl mx-auto p-6">
+    <div class="flex items-end justify-between flex-wrap gap-3">
+      <div>
+        <h1 class="text-2xl font-semibold">Catalogue des Arcanes</h1>
+        <div id="status" class="mt-2 text-sm px-3 py-2 rounded-lg orn"
+             style="background:rgba(0,229,255,.08); color:#bfefff;">
+          Chargement des arcanes…
+        </div>
       </div>
 
-      <select id="picker"
-              class="w-72 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                     outline-none orn focus-gold"></select>
+      <!-- Barre d’actions -->
+      <div class="w-full lg:w-auto">
+        <div class="flex gap-3 flex-col sm:flex-row">
+          <div class="relative sm:w-[360px]">
+            <input id="q" type="text" placeholder="Search: name, description, criteria…"
+                   class="w-full pl-10 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                          placeholder:text-[var(--muted)] outline-none orn focus-gold" />
+            <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2"
+                 viewBox="0 0 24 24" fill="none">
+              <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <select id="sort"
+                  class="sm:w-[220px] py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                         outline-none orn focus-gold">
+            <option value="name">Sort: Name (A→Z)</option>
+            <option value="rarity">Sort: Rarity</option>
+            <option value="type">Sort: Type</option>
+            <option value="maxrank">Sort: Max Rank</option>
+          </select>
+
+          <div class="flex items-center gap-2">
+            <button id="view-cards" class="btn-tab active">Cards</button>
+            <button id="view-table" class="btn-tab">Table</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div id="panel-wrapper" class="flex gap-4">
-      <aside id="vtabs" class="hidden md:block w-[180px] shrink-0"></aside>
-      <div id="card" class="card p-5 flex-1"></div>
+    <!-- Layout 2 colonnes -->
+    <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Sidebar filtres -->
+      <aside class="lg:col-span-3">
+        <div class="sticky top-4 space-y-4">
+          <div class="card p-4 orn">
+            <div class="font-semibold mb-2">Types</div>
+            <div id="f-type" class="grid grid-cols-2 gap-2 text-sm"></div>
+          </div>
+
+          <div class="card p-4 orn">
+            <div class="font-semibold mb-2">Rarity</div>
+            <div id="f-rar" class="grid grid-cols-2 gap-2 text-sm"></div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <button id="reset" class="btn-tab">Reset</button>
+            <div id="count" class="text-sm muted"></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Contenu -->
+      <main class="lg:col-span-9">
+        <!-- Filtres actifs -->
+        <div id="active-filters" class="flex flex-wrap gap-2 mb-3"></div>
+
+        <!-- Grille cartes -->
+        <div id="results" class="grid gap-4"></div>
+
+        <!-- Tableau -->
+        <div id="table-wrap" class="hidden overflow-x-auto rounded-xl border border-[rgba(255,255,255,.08)]">
+          <table class="w-full text-sm table-fixed">
+            <thead class="bg-[rgba(255,255,255,.04)]">
+              <tr>
+                <th class="p-2">Name</th>
+                <th class="p-2">Type</th>
+                <th class="p-2">Rarity</th>
+                <th class="p-2">Max Rank</th>
+                <th class="p-2">Criteria</th>
+                <th class="p-2">Description</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div id="pager" class="flex items-center justify-between mt-5">
+          <button id="prev" class="btn-tab">← Prev</button>
+          <div id="pageinfo" class="text-sm muted"></div>
+          <button id="next" class="btn-tab">Next →</button>
+        </div>
+      </main>
     </div>
   </div>
 
-  <script src="js/app_common.js?v=1" defer></script>
-  <script src="js/app_arcanes.js?v=1" defer></script
+  <!-- JS -->
   <script src="js/site_nav.js" defer></script>
+  <script src="js/arcanes_catalog.js?v=1" defer></script>
 </body>
 </html>
