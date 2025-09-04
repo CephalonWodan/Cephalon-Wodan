@@ -1,115 +1,73 @@
 (() => {
   "use strict";
 
-// --- Text Icons: rend les balises <DT_..._COLOR> et <LINE_SEPARATOR> en badges + icônes
-const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // <- ton dossier
-const USE_ICONS = true; // on a les images, on active
+  /* ================== Text Icons (DT_* + LINE_SEPARATOR) ================== */
+  const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
+  const USE_ICONS = true;
 
-const DT = {
-  // Physiques
-  DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
-  DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
-  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
+  const DT = {
+    // Physiques
+    DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
+    DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
+    DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
 
-  // Élémentaires
-  DT_FIRE_COLOR:       { label: "Heat",       color: "#ff8a47", icon: "HeatSymbol.png" },
-  DT_FREEZE_COLOR:     { label: "Cold",       color: "#7dd3fc", icon: "ColdSymbol.png" },
-  DT_ELECTRICITY_COLOR:{ label: "Electricity",color: "#f6d05e", icon: "ElectricitySymbol.png" },
-  DT_POISON_COLOR:     { label: "Toxin",      color: "#32d296", icon: "ToxinSymbol.png" },
-  DT_TOXIN_COLOR:      { alias: "DT_POISON_COLOR" },
+    // Élémentaires
+    DT_FIRE_COLOR:        { label: "Heat",        color: "#ff8a47", icon: "HeatSymbol.png" },
+    DT_FREEZE_COLOR:      { label: "Cold",        color: "#7dd3fc", icon: "ColdSymbol.png" },
+    DT_ELECTRICITY_COLOR: { label: "Electricity", color: "#f6d05e", icon: "ElectricitySymbol.png" },
+    DT_POISON_COLOR:      { label: "Toxin",       color: "#32d296", icon: "ToxinSymbol.png" },
+    DT_TOXIN_COLOR:       { alias: "DT_POISON_COLOR" },
 
-  // Combinés
-  DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
-  DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
-  DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
-  DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
-  DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
-  DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
-  DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
+    // Combinés
+    DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
+    DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
+    DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
+    DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
+    DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
+    DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
+    DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
 
-  // “Void” / divers
-  DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
+    // Divers
+    DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
+    DT_SENTIENT_COLOR:   { label: "Sentient",   color: "#b0a6ff", icon: "SentientSymbol.png" },
+    DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
+    DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
+    DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
+  };
 
-  // Au cas où (tu as ces PNG dans ton dossier)
-  DT_SENTIENT_COLOR:   { label: "Sentient",   color: "#b0a6ff", icon: "SentientSymbol.png" },
-  DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
-  DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
-  DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
-};
+  function resolveDT(key){
+    const v = DT[String(key || "").toUpperCase()];
+    if (!v) return null;
+    return v.alias ? resolveDT(v.alias) : v;
+  }
 
-function resolveDT(key){
-  const k = key.toUpperCase();
-  const v = DT[k];
-  if (!v) return null;
-  if (v.alias) return resolveDT(v.alias);
-  return v;
-}
+  function renderTextIcons(input){
+    let s = String(input ?? "");
 
-// sécurise le HTML puis remplace les balises (gère brut <TAG> et échappé &lt;TAG&gt;)
-function renderTextIcons(input){
-  let s = String(input ?? "");
+    // Normalisation des séparateurs
+    s = s.replace(/\r\n|\r/g, "\n")
+         .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
+         .replace(/\n{2,}/g, "\n");
 
-  // Normalisation des séparateurs
-  s = s.replace(/\r\n|\r/g, "\n")
-       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-       .replace(/\n{2,}/g, "\n");
+    // Échapper le HTML (sécurité)
+    s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-  // Échapper le HTML (sécurité)
-  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+    // Balises DT_* (formes encodées &lt;...&gt; ou brutes)
+    s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
+      const def = resolveDT(key);
+      if (!def) return "";
+      const { label, color, icon } = def;
+      if (USE_ICONS && icon) {
+        const src = ICON_BASE + icon;
+        return `<span class="dt-chip" style="color:${color}">
+          <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
+        </span>`;
+      }
+      return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
+    });
 
-  // Remplacer les balises DT_* (formes encodées &lt;...&gt; ou brutes)
-  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const def = resolveDT(key);
-    if (!def) return ""; // inconnu → on supprime proprement
-    const { label, color, icon } = def;
-    if (USE_ICONS && icon) {
-      const src = ICON_BASE + icon;
-      return `<span class="dt-chip" style="color:${color}">
-        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
-      </span>`;
-    }
-    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
-  });
-
-  // Retours à la ligne → <br>
-  s = s.replace(/\n/g, "<br>");
-
-  return s;
-}
-
-
-// sécurise le HTML puis remplace les balises (gère brut <TAG> et échappé &lt;TAG&gt;)
-function renderTextIcons(input){
-  let s = String(input ?? "");
-
-  // Normalisation de séparateurs
-  s = s.replace(/\r\n|\r/g, "\n")
-       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-       .replace(/\n{2,}/g, "\n");
-
-  // Échappe le HTML pour éviter l’injection
-  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-
-  // Remplace chaque balise DT_* (forme encodée &lt;...&gt; ou brute)
-  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const def = resolveDT(key);
-    if (!def) return ""; // inconnu -> on supprime la balise “vide”
-    const { label, color, icon } = def;
-    if (USE_ICONS && icon) {
-      const src = ICON_BASE + icon;
-      return `<span class="dt-chip" style="color:${color}">
-        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
-      </span>`;
-    }
-    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
-  });
-
-  // Convertit les retours à la ligne en <br>
-  s = s.replace(/\n/g, "<br>");
-
-  return s;
-}
-
+    return s.replace(/\n/g, "<br>");
+  }
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
@@ -123,7 +81,7 @@ function renderTextIcons(input){
   const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // ---- Category denylist (exclues de la sidebar)
+  // ---- Category denylist (hors sidebar)
   const CATEGORY_DENY = [
     "Focus Way",
     "Mod Set Mod",
@@ -181,19 +139,20 @@ function renderTextIcons(input){
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
+
+  // Placeholder
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte (fix tokens API) ================== */
-  function cleanFxText(s) {
+  /* ================== Nettoyage de texte (préserve DT_*) ================== */
+  function cleanFxPreserveDT(s) {
     if (!s) return "";
     let t = String(s);
-    t = t.replace(/\\n/g, " ");
-    t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, " ");
-    t = t.replace(/<DT_[A-Z_]+(?:_COLOR)?>/g, "");
-    t = t.replace(/<[^>]*>/g, "");
+    t = t.replace(/\\n/g, "\n");
+    t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+    // Supprime toute autre balise que DT_* / LINE_SEPARATOR
+    t = t.replace(/<(?!DT_[A-Z_]+(?:_COLOR)?\b|LINE_SEPARATOR\b)[^>]*>/gi, "");
     t = t.replace(/\s{2,}/g, " ").trim();
     t = t.replace(/\.\s*\./g, ".");
     return t;
@@ -209,19 +168,21 @@ function renderTextIcons(input){
       if (cand) pick = cand;
     }
     const stats = Array.isArray(pick?.stats) ? pick.stats : [];
-    return stats.map(s => cleanFxText(norm(s))).filter(Boolean);
+    return stats
+      .map(x => cleanFxPreserveDT(norm(x)))
+      .map(x => x.replace(/\r?\n/g, " ").trim())
+      .filter(Boolean);
   }
   function effectsFromDescription(m){
     let d = norm(m.description);
     if (!d) return [];
-    d = cleanFxText(d);
-    const parts = d
+    d = cleanFxPreserveDT(d);
+    return d
       .replace(/\r?\n/g, "|")
       .replace(/[•;·]/g, "|")
       .split("|")
-      .map(x => cleanFxText(x))
+      .map(x => cleanFxPreserveDT(x))
       .filter(Boolean);
-    return parts;
   }
   function makeEffects(m){
     const stats = effectsFromLevelStats(m);
@@ -293,7 +254,7 @@ function renderTextIcons(input){
     return Array.from(groups.values()).map(mergeGroup);
   }
 
-  /* ================== STATE (unique) ================== */
+  /* ================== STATE ================== */
   const STATE = {
     all: [], filtered: [], page: 1, perPage: 24,
     q: "", sort: "name",
@@ -304,10 +265,9 @@ function renderTextIcons(input){
 
   /* ================== UI helpers ================== */
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
-  // Badge de polarité (même style qu’un badge classique)
   function polBadge(p){
     const src = POL_ICON(p), txt = canonPolarity(p);
-    return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
+    return `<span class="badge pol-badge"><img src="${src}" alt="${escapeHtml(txt)}"><span>${escapeHtml(txt)}</span></span>`;
   }
 
   function modCard(m){
@@ -342,8 +302,8 @@ function renderTextIcons(input){
         <div class="mod-effects">
           ${
             lines.length
-            ? lines.map(t => `<div class="fx">• ${escapeHtml(t)}</div>`).join("")
-            : `<div class="fx muted">No effect data in API</div>`
+              ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
+              : `<div class="fx muted">No effect data in API</div>`
           }
         </div>
       </div>
@@ -360,8 +320,8 @@ function renderTextIcons(input){
         <td class="p-2">${escapeHtml(m.name)} ${!m.imgVerified ? '<span class="badge gold ml-1">Unreleased</span>' : ''}</td>
         <td class="p-2">${escapeHtml(m.type || "")}</td>
         <td class="p-2">${escapeHtml(m.compatibility || "")}</td>
-        <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${pol}" class="inline w-5 h-5 align-[-2px]"> ${pol}` : ""}</td>
-        <td class="p-2">${rar}</td>
+        <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${escapeHtml(pol)}" class="inline w-5 h-5 align-[-2px]"> ${escapeHtml(pol)}` : ""}</td>
+        <td class="p-2">${escapeHtml(rar)}</td>
         <td class="p-2">${Number.isFinite(m.fusionLimit) ? `R${m.fusionLimit}` : "—"}</td>
       </tr>`;
   }
@@ -425,13 +385,15 @@ function renderTextIcons(input){
     const wrap = $("#active-filters");
     const chips = [];
     if (STATE.q) chips.push({k:"q", label:`"${escapeHtml(STATE.q)}"`});
-    if (STATE.fCats.size) chips.push({k:"cats", label:`Cat: ${[...STATE.fCats].join(", ")}`});
-    if (STATE.fPols.size) chips.push({k:"pols", label:`Pol: ${[...STATE.fPols].join(", ")}`});
-    if (STATE.fRars.size) chips.push({k:"rars", label:`Rarity: ${[...STATE.fRars].join(", ")}`});
+    if (STATE.fCats.size) chips.push({k:"cats", label:`Cat: ${[...STATE.fCats].map(escapeHtml).join(", ")}`});
+    if (STATE.fPols.size) chips.push({k:"pols", label:`Pol: ${[...STATE.fPols].map(escapeHtml).join(", ")}`});
+    if (STATE.fRars.size) chips.push({k:"rars", label:`Rarity: ${[...STATE.fRars].map(escapeHtml).join(", ")}`});
     if (STATE.onlyVerified) chips.push({k:"verified", label:`Verified wiki image`});
+
     wrap.innerHTML = chips.length
       ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
       : "";
+
     wrap.querySelectorAll("[data-chip]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const [k] = btn.dataset.chip.split("|");
@@ -551,15 +513,16 @@ function renderTextIcons(input){
         if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
         const data = await r.json();
         if (Array.isArray(data) && data.length) return data;
-      } catch (e) { errors.push(`${url} → ${e.message||e}`); }
+      } catch (e) { errors.push(`${url} → ${e?.message || e}`); }
     }
-    console.warn("[mods] endpoints empty/failed]:", errors);
+    console.warn("[mods] endpoints empty/failed:", errors);
     return [];
   }
 
   (function boot(){
     const status = $("#status");
 
+    // skeleton
     $("#results").innerHTML = Array.from({length:6}).map(()=>`
       <div class="mod-card">
         <div class="mod-cover" style="height:300px;background:rgba(255,255,255,.04)"></div>
@@ -575,6 +538,7 @@ function renderTextIcons(input){
       STATE.all = mergeByName(raw);
       buildFiltersFromData(STATE.all);
 
+      // defaults
       $("#q").value = "";
       $("#sort").value = "name";
       $("#view-cards").classList.add("active");
@@ -582,6 +546,7 @@ function renderTextIcons(input){
       $("#f-verified").checked = true;
       STATE.onlyVerified = true;
 
+      // listeners
       $("#q").addEventListener("input", ()=>{ STATE.q = $("#q").value; STATE.page=1; applyFilters(); });
       $("#sort").addEventListener("change", ()=>{ STATE.page=1; applyFilters(); });
       $("#view-cards").addEventListener("click", ()=>{ STATE.view="cards"; $("#view-cards").classList.add("active"); $("#view-table").classList.remove("active"); render(); });
