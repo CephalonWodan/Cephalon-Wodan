@@ -1,5 +1,5 @@
 /* css/arcanes_catalog.css */
-/* Cartes arcanes + visuels cohérents avec ton thème */
+/* Cartes arcanes + visuels + sidebar filtres */
 
 :root {
   --panel-2: rgba(255,255,255,.04);
@@ -44,11 +44,11 @@
   font-size: 12px;
 }
 
-/* description + critères */
 .desc {
   color: var(--muted);
   line-height: 1.35;
 }
+
 .kv {
   display: grid;
   grid-template-columns: 90px 1fr;
@@ -74,7 +74,20 @@
   border: 1px solid rgba(255,255,255,.18);
 }
 
-/* pagination basique (si utilisée dans ta page) */
+/* sidebar filtres (checkbox pills) */
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px;
+  padding: .2rem .6rem;
+  background: rgba(255,255,255,.03);
+}
+.filter-pill input {
+  accent-color: currentColor;
+}
+
 #pager .btn-tab {
   border: 1px solid rgba(255,255,255,.12);
   border-radius: 10px;
