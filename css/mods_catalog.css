@@ -1,98 +1,96 @@
-/* css/mods_catalog.css */
-
-/* Cartes premium + couverture grande (image en haut, lisible) */
+/* Cartes */
 .mod-card {
+  background: var(--panel-1, #0f1a2d);
   border: 1px solid rgba(255,255,255,.08);
-  background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
   border-radius: 16px;
   overflow: hidden;
-  transition: box-shadow .2s ease, transform .2s ease;
 }
-.mod-card:hover {
-  box-shadow: 0 8px 36px rgba(212,175,55,.14);
-  transform: translateY(-1px);
-}
-
-/* Couverture : on affiche la vignette wikia en GRAND (plein largeur) */
 .mod-cover {
   display: block;
-  width: 100%;
-  background: rgba(255,255,255,.04);
+  background: rgba(255,255,255,.03);
   border-bottom: 1px solid rgba(255,255,255,.06);
 }
 .mod-cover img {
-  display: block;
   width: 100%;
-  height: auto;              /* garde les proportions → lisible */
-  image-rendering: -webkit-optimize-contrast;
+  height: 300px;
+  object-fit: contain;
+  display: block;
 }
+.mod-body { padding: 12px 14px 14px; }
+.mod-title { font-weight: 600; margin-bottom: 8px; }
 
-/* Section contenu sous l’image */
-.mod-body {
-  padding: 12px;
+/* Rangée de badges + polarité à droite */
+.mod-chips {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
 }
-
-/* Clamp description sur 3 lignes */
-.clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.mod-chips .chips-left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
-
-/* Badges */
 .badge {
-  display:inline-flex; align-items:center; gap:.375rem;
-  border:1px solid rgba(255,255,255,.12);
-  padding:.2rem .5rem; border-radius:999px; font-size:.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .2rem .55rem;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 9999px;
+  font-size: 12px;
+  line-height: 1.2;
+  background: rgba(255,255,255,.03);
 }
-.badge.gold {
-  border-color:#D4AF37; color:#D4AF37; background:rgba(212,175,55,.06);
+.badge.gold { border-color: rgba(212,175,55,.5); color: #e5c979; }
+
+/* Pastille de polarité — petite et alignée à droite */
+.mod-chips .chip.pol {
+  margin-left: auto;                /* pousse à droite */
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .18rem .5rem;
+  border: 1px dashed rgba(212,175,55,.45);
+  border-radius: 9999px;
+  font-size: 12px;
+  color: #e5c979;
+  background: rgba(212,175,55,.06);
+}
+.mod-chips .chip.pol img {
+  width: 14px;                      /* plus petit */
+  height: 14px;
+  display: inline-block;
+  transform: translateY(-1px);      /* léger alignement vertical */
 }
 
-/* Tableau : agrandir l’icône (plus lisible aussi) */
-table th, table td { border-bottom: 1px solid rgba(255,255,255,.06); }
-.table-thumb {
-  width: 96px; height: 96px;
-  border: 1px solid rgba(255,255,255,.06);
-  background: rgba(255,255,255,.04);
-  border-radius: 10px;
-  overflow: hidden;
-}
+/* Liste des effets */
+.mod-effects .fx { margin: 4px 0; }
+.mod-effects .muted { color: var(--muted, #8aa0b3); }
 
-/* Bouton actif */
-.btn-tab.active { border-color:#D4AF37; color:#D4AF37; }
-
-/* -------- Lightbox -------- */
-#lightbox {
-  position: fixed; inset: 0; z-index: 70;
-}
+/* Lightbox */
+#lightbox { position: fixed; inset: 0; z-index: 50; }
 #lightbox.hidden { display: none; }
-.lb-backdrop {
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,.75);
-  backdrop-filter: blur(2px);
-}
+.lb-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.7); }
 .lb-content {
   position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center; flex-direction: column;
-  gap: 10px; padding: 20px;
+  display: grid; place-items: center;
+  padding: 24px;
 }
-#lb-img {
-  max-width: min(1200px, 95vw);
-  max-height: 86vh;
-  border-radius: 12px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.12);
-}
-.lb-caption {
-  color: #ddd; font-size: .9rem; text-align: center;
-}
+#lb-img { max-width: min(96vw,1200px); max-height: 85vh; object-fit: contain; }
+.lb-caption { margin-top: 10px; color: #cdd9e5; text-align: center; }
 .lb-close {
-  position: absolute; top: 14px; right: 14px;
-  background: rgba(0,0,0,.6);
+  position: absolute; right: 18px; top: 12px;
+  background: rgba(0,0,0,.5); color: #fff;
   border: 1px solid rgba(255,255,255,.2);
-  color: #fff; border-radius: 999px;
-  width: 36px; height: 36px; line-height: 34px; text-align: center;
+  border-radius: 8px; padding: 6px 10px; cursor: pointer;
 }
-.lb-close:hover { background: rgba(255,255,255,.12); }
+
+/* Filtres (pills) */
+.filter-pill {
+  display: flex; align-items: center; gap: .45rem;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.03);
+  padding: .25rem .5rem; border-radius: 9999px; font-size: 12px;
+}
+.filter-pill input { accent-color: var(--ink, #fff); }
