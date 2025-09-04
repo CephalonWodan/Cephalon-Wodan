@@ -1,90 +1,71 @@
 // js/arcanes_catalog.js
+// Catalogue Arcanes — filtres latéraux + images + rendu <DT_...> → icône inline
 
-// --- Text Icons: rend les balises <DT_..._COLOR> et <LINE_SEPARATOR> en badges + icônes
-const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // <- ton dossier
-const USE_ICONS = true; // on a les images, on active
+/* ================== Text Icons (DT_...) → <img> inline ================== */
+const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // ton dossier /img/symbol/
 
-const DT = {
+// Mapping minimal : chaque balise -> nom de fichier PNG (aucun label/pastille)
+const DT_ICONS = {
   // Physiques
-  DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
-  DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
-  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a",icon: "SlashSymbol.png" },
+  DT_IMPACT_COLOR:     "ImpactSymbol.png",
+  DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
+  DT_SLASH_COLOR:      "SlashSymbol.png",
 
   // Élémentaires
-  DT_FIRE_COLOR:       { label: "Heat",       color: "#ff8a47", icon: "HeatSymbol.png" },
-  DT_FREEZE_COLOR:     { label: "Cold",       color: "#7dd3fc", icon: "ColdSymbol.png" },
-  DT_ELECTRICITY_COLOR:{ label: "Electricity",color: "#f6d05e", icon: "ElectricitySymbol.png" },
-  DT_POISON_COLOR:     { label: "Toxin",      color: "#32d296", icon: "ToxinSymbol.png" },
-  DT_TOXIN_COLOR:      { alias: "DT_POISON_COLOR" },
+  DT_FIRE_COLOR:       "HeatSymbol.png",
+  DT_FREEZE_COLOR:     "ColdSymbol.png",
+  DT_ELECTRICITY_COLOR:"ElectricitySymbol.png",
+  DT_POISON_COLOR:     "ToxinSymbol.png",
+  DT_TOXIN_COLOR:      "ToxinSymbol.png",
 
   // Combinés
-  DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
-  DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
-  DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
-  DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
-  DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
-  DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
-  DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
+  DT_GAS_COLOR:        "GasSymbol.png",
+  DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
+  DT_RADIATION_COLOR:  "RadiationSymbol.png",
+  DT_VIRAL_COLOR:      "ViralSymbol.png",
+  DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
+  DT_BLAST_COLOR:      "BlastSymbol.png",
+  DT_EXPLOSION_COLOR:  "BlastSymbol.png",
 
-  // “Void” / divers
-  DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
-
-  // Divers (présents dans ton dossier)
-  DT_SENTIENT_COLOR:   { label: "Tau",   color: "#b0a6ff", icon: "SentientSymbol.png" },
-  DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
-  DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
-  DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
+  // Divers / Void
+  DT_RADIANT_COLOR:    "VoidSymbol.png",
+  DT_SENTIENT_COLOR:   "SentientSymbol.png",
+  DT_RESIST_COLOR:     "ResistSymbol.png",
+  DT_POSITIVE_COLOR:   "PositiveSymbol.png",
+  DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
 };
 
-function resolveDT(key){
-  const k = key.toUpperCase();
-  const v = DT[k];
-  if (!v) return null;
-  if (v.alias) return resolveDT(v.alias);
-  return v;
-}
-
-// sécurise le HTML puis remplace les balises (gère brut <TAG> et échappé &lt;TAG&gt;)
+// Rend un texte en remplaçant les <DT_...> par une icône inline,
+// en absorbant les espaces/retours autour pour éviter les sauts visuels.
 function renderTextIcons(input){
   let s = String(input ?? "");
 
-  // Normalisation des séparateurs
-  s = s.replace(/\r\n|\r/g, "\n")
-       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-       .replace(/\n{2,}/g, "\n");
+  // normalise les séparateurs
+  s = s.replace(/\r\n?|\r/g, "\n")
+       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
-  // Échapper le HTML (sécurité)
-  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  // échappe tout le HTML (sécurité)
+  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // Remplacer les balises DT_* (formes encodées &lt;...&gt; ou brutes)
-  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const def = resolveDT(key);
-    if (!def) return ""; // inconnu → on supprime proprement
-    const { label, color, icon } = def;
-    if (USE_ICONS && icon) {
-      const src = ICON_BASE + icon;
-      return `<span class="dt-chip" style="color:${color}">
-        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
-      </span>`;
-    }
-    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
+  // remplace les tokens (forme brute ou encodée), en “mangeant” le blanc autour
+  s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+    const file = DT_ICONS[key];
+    if (!file) return "";
+    const src = ICON_BASE + file;
+    return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
 
-  // Retours à la ligne → <br>
+  // compacte les espaces et pose les <br> pour les retours réels
+  s = s.replace(/[ \t]{2,}/g, " ");
   s = s.replace(/\n/g, "<br>");
-
-  return s;
+  return s.trim();
 }
 
-// =====================
-// Catalogue Arcanes
-// =====================
-
+/* ================== Utils / état ================== */
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const norm = (s) => String(s || "").trim();
-const escapeHtml = (s) =>
-  String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
 const STATE = {
   list: [],
@@ -93,11 +74,12 @@ const STATE = {
   perPage: 24,
   q: "",
   sort: "name",
-  types: new Set(),   // filtres actifs
-  rarities: new Set()
+  types: new Set(),
+  rarities: new Set(),
+  apiByName: new Map(),
 };
 
-// Couleurs par rareté (placeholder + puces)
+// Couleurs par rareté (pour puces / compteurs)
 const RARITY_COLORS = {
   Legendary: "#d4af37",
   Rare: "#f39c12",
@@ -115,7 +97,7 @@ const getRarity   = (m) => get(m, ["rarity", "Rarity"], "");
 const getImage    = (m) => get(m, ["image", "Image"], ""); // ex: ArcaneAcceleration.png
 const getIcon     = (m) => get(m, ["icon", "Icon"], "");   // ex: ArcaneAcceleration64x.png
 
-// ---- API arcanes (pour tenter wikiaThumbnail si dispo)
+/* ================== API arcanes (pour thumbnails wiki) ================== */
 async function loadApiArcanes() {
   try {
     const r = await fetch("https://api.warframestat.us/arcanes?language=en", { cache: "no-store" });
@@ -134,7 +116,7 @@ function mapByNameCaseInsensitive(list) {
   return m;
 }
 
-// ---- URL helpers
+/* ================== URLs images (wiki) ================== */
 function wikiImageUrl(file) {
   if (!file) return "";
   return `https://wiki.warframe.com/images/${encodeURIComponent(file)}`;
@@ -150,7 +132,7 @@ function upscaleWikiThumb(url, size = 640) {
   return out;
 }
 
-// ---- placeholder si rien
+/* ================== Placeholder pour icône manquante ================== */
 function placeholderArcane(name, rarity) {
   const hex = RARITY_COLORS[rarity] || "#888";
   const initials = (name || "Arcane").split(/\s+/).map(s => s[0]).slice(0,2).join("").toUpperCase();
@@ -168,7 +150,7 @@ function placeholderArcane(name, rarity) {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
-// ---- construit les sources d'image: Wiki(Image) -> Wiki(Icon) -> API thumb -> placeholder
+/* ================== Source d'image pour une carte ================== */
 function imageSourcesForArcane(m, apiByName) {
   const name   = getName(m);
   const rarity = getRarity(m);
@@ -188,7 +170,7 @@ function imageSourcesForArcane(m, apiByName) {
   return { primary, fallback };
 }
 
-// ---- UI helpers
+/* ================== UI helpers ================== */
 function rarityBadge(r) {
   const hex = RARITY_COLORS[r] || "rgba(255,255,255,.18)";
   return `<span class="badge" style="border-color:${hex};color:${hex}">${escapeHtml(r || "—")}</span>`;
@@ -196,7 +178,6 @@ function rarityBadge(r) {
 function typeBadge(t) { return `<span class="badge">${escapeHtml(t || "—")}</span>`; }
 function criteriaRow(c) {
   if (!c) return "";
-  // 🔁 ICI on rend les balises d’icônes dans le critère
   return `<div class="kv"><div class="k">Trigger</div><div class="v">${renderTextIcons(c)}</div></div>`;
 }
 
@@ -226,18 +207,13 @@ function cardArcane(m, apiByName) {
           </div>
         </div>
         ${crit ? `<div class="mt-2">${criteriaRow(crit)}</div>` : ""}
-        ${
-          desc
-            // 🔁 ICI on rend les balises d’icônes dans la description
-            ? `<p class="desc mt-2">${renderTextIcons(desc)}</p>`
-            : ""
-        }
+        ${desc ? `<p class="desc mt-2">${renderTextIcons(desc)}</p>` : ""}
       </div>
     </div>
   `;
 }
 
-// ---- Filtres latéraux
+/* ================== Filtres latéraux ================== */
 function renderSideFilters(distinctTypes, distinctRarities) {
   // Types
   const hostT = $("#f-type");
@@ -260,7 +236,7 @@ function renderSideFilters(distinctTypes, distinctRarities) {
     });
   });
 
-  // Rarity
+  // Rareté
   const hostR = $("#f-rarity");
   hostR.innerHTML = distinctRarities.map(r => {
     const id = `r-${r}`;
@@ -305,7 +281,7 @@ function renderActiveChips() {
   });
 }
 
-// ---- Rendu + pagination
+/* ================== Rendu + pagination ================== */
 function render() {
   const total = STATE.filtered.length;
   const pages = Math.max(1, Math.ceil(total / STATE.perPage));
@@ -330,11 +306,9 @@ function applyFilters() {
 
   let arr = STATE.list.slice();
 
-  // Filtres latéraux
-  if (STATE.types.size)   arr = arr.filter(m => STATE.types.has(getType(m)));
+  if (STATE.types.size)    arr = arr.filter(m => STATE.types.has(getType(m)));
   if (STATE.rarities.size) arr = arr.filter(m => STATE.rarities.has(getRarity(m)));
 
-  // Recherche
   if (q) {
     arr = arr.filter((m) => {
       const hay = [
@@ -344,7 +318,6 @@ function applyFilters() {
     });
   }
 
-  // Tri
   arr.sort((a, b) => {
     if (sort === "rarity") return getRarity(a).localeCompare(getRarity(b)) || getName(a).localeCompare(getName(b));
     return getName(a).localeCompare(getName(b));
@@ -355,7 +328,7 @@ function applyFilters() {
   render();
 }
 
-// ---- charge les données locales + API pour thumbnails
+/* ================== Données locales + API thumbnails ================== */
 async function loadLocalArcanes() {
   try {
     const r = await fetch("data/arcanes_list.json", { cache: "no-store" });
@@ -365,7 +338,7 @@ async function loadLocalArcanes() {
   } catch { return []; }
 }
 
-// ---- Boot
+/* ================== Boot ================== */
 (async function boot() {
   const status = $("#status");
   try {
@@ -375,13 +348,11 @@ async function loadLocalArcanes() {
     STATE.list = localList;
     STATE.apiByName = mapByNameCaseInsensitive(apiList);
 
-    // Distincts pour filtres
     const distinctTypes = Array.from(new Set(STATE.list.map(getType))).filter(Boolean).sort();
     const distinctRarities = ["Common","Uncommon","Rare","Legendary"].filter(r => STATE.list.some(m => getRarity(m) === r));
 
     renderSideFilters(distinctTypes, distinctRarities);
 
-    // Listeners
     $("#q").addEventListener("input", () => { STATE.page = 1; applyFilters(); });
     $("#sort").addEventListener("change", () => { STATE.page = 1; applyFilters(); });
     $("#reset").addEventListener("click", () => {
