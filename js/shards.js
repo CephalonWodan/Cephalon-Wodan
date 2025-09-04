@@ -46,11 +46,10 @@ function parseTau(name=""){ return /tauforged/i.test(name); }
 /* ------------ Images: local → wiki → dot ------------ */
 function localShardPath(color, tau){
   if (!color || color === "Unknown") return "";
-  // noms EXACTS comme dans ton repo (pas d'espace, bonne casse)
+  // Noms EXACTS comme dans ton repo (pas d'espace, bonne casse)
   const base = tau ? `Tauforged${color}ArchonShard.png` : `${color}ArchonShard.png`;
   return LOCAL_DIR + base;
 }
-// Wiki helpers
 function rawWikiThumb(m){
   return (
     m.wikiaThumbnail || m.wikiathumbnail ||
@@ -68,7 +67,6 @@ function upscaleWikiThumb(url, size=512){
   }
   return out;
 }
-// Color-dot fallback
 function colorDotDataUrl(color, tau){
   const hex = COLOR_MAP[color] || "#888";
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
@@ -93,15 +91,10 @@ function getShardImageSources(m){
 
   const dot = colorDotDataUrl(color, tau);
 
-  return {
-    color, tau,
-    localGrid, localFull,
-    wikiGrid, wikiFull,
-    dot
-  };
+  return { color, tau, localGrid, localFull, wikiGrid, wikiFull, dot };
 }
 
-/* ------------ Effets (upgradeTypes/effects/bonuses) ------------ */
+/* ------------ Effets ------------ */
 function extractEffectsFromUpgradeTypes(upgradeTypes){
   const out = [];
   if (!upgradeTypes) return out;
@@ -195,25 +188,29 @@ function shardCard(m){
   const fullPrimary = localFull || wikiFull || dot;
   const fullFallback = (localFull ? (wikiFull || dot) : dot);
 
+  // ----- Affichage : titre non tronqué + sous-titre seulement si utile
+  const title = escapeHtml(m.name || "Archon Shard");
+  const meta  = norm(m.type || "");
+  const showMeta = meta && !new RegExp(meta.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(title);
+
   return `
   <div class="shard-card">
     <a href="#" class="shard-cover"
        data-full="${escapeHtml(fullFallback)}"
        data-full-primary="${escapeHtml(fullPrimary)}"
        data-full-fallback="${escapeHtml(fullFallback)}"
-       data-name="${escapeHtml(m.name||"Archon Shard")}">
+       data-name="${title}">
       <img
         src="${escapeHtml(primary)}"
-        alt="${escapeHtml(m.name||"Archon Shard")}"
+        alt="${title}"
         data-fallback="${escapeHtml(fallback)}"
         loading="lazy" decoding="async">
     </a>
     <div class="shard-body">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
-          <!-- plus de troncature pour les Tauforged -->
-          <div class="title">${escapeHtml(m.name || "Archon Shard")}</div>
-          <div class="meta">${m.type ? escapeHtml(m.type) : ""}</div>
+          <div class="title">${title}</div>
+          ${ showMeta ? `<div class="meta">${escapeHtml(meta)}</div>` : "" }
         </div>
         <div class="flex items-center gap-2 shrink-0">${metaRight}</div>
       </div>
@@ -356,12 +353,11 @@ function render(){
   const start = (state.page - 1) * state.perPage;
   const slice = state.filtered.slice(start, start + state.perPage);
 
-  const grid = $("#results");
-  if (!grid) return;
+  const grid = $("#results"); if (!grid) return;
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(shardCard).join("");
 
-  // Gestion cover/lightbox + fallback image locale→wiki→dot
+  // Fallback image + lightbox
   grid.querySelectorAll(".shard-cover").forEach(a=>{
     const img = a.querySelector("img");
     const fullPrimary  = a.getAttribute("data-full-primary");
@@ -416,7 +412,7 @@ async function fetchShardsFromEndpoints() {
       if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
       const data = await r.json();
 
-      // 1) Directement un tableau
+      // 1) Déjà un tableau
       if (Array.isArray(data) && data.length) return { list: data, source: url };
 
       // 2) Objet de clés (ACC_* et/ou TAU_*)
@@ -426,7 +422,6 @@ async function fetchShardsFromEndpoints() {
           const converted = [];
           for (const k of keys) {
             const node = data[k] || {};
-            // couleur depuis value/name sinon depuis la clé
             let color = norm(node.value || node.name || "");
             color = COLORS.includes(cap(color)) ? cap(color) : (function(){
               const m = String(k).match(/(AMBER|AZURE|EMERALD|CRIMSON|VIOLET|TOPAZ)/i);
@@ -436,7 +431,7 @@ async function fetchShardsFromEndpoints() {
 
             converted.push({
               name: `${isTau ? "Tauforged " : ""}${color} Archon Shard`,
-              type: `${color} Shard`,
+              type: `${color} Shard`, // évite la redondance "Tauforged ..." en sous-titre
               upgradeTypes: node.upgradeTypes || node.upgrades || node.values || null,
               description: node.description || "",
               wikiaThumbnail: normalizeUrl(node.thumbnail || node.wikiaThumbnail || node.wikiathumbnail || "")
