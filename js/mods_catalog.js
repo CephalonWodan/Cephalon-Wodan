@@ -66,16 +66,39 @@
     }
     return out;
   }
-  // Pas d’heuristique : “vérifié” == miniature wiki fournie par l’API
   function verifiedWikiImage(m){
     const raw = wikiThumbRaw(m);
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-  // Placeholder compact (une seule ligne → pas d’erreur de saut de ligne)
+  // Placeholder compact (une seule ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
+
+  /* ================== Nettoyage de texte (fix tokens API) ================== */
+  function cleanFxText(s) {
+    if (!s) return "";
+    let t = String(s);
+
+    // 1) Remplacer les échappements littéraux "\n" par espace (pas de coupure au milieu d’une phrase)
+    t = t.replace(/\\n/g, " ");
+
+    // 2) Supprimer les séparateurs internes
+    t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, " ");
+
+    // 3) Supprimer les balises / tokens internes, ex: <DT_EXPLOSION_COLOR>, <font color=...>, etc.
+    t = t.replace(/<DT_[A-Z_]+(?:_COLOR)?>/g, "");
+    t = t.replace(/<[^>]*>/g, ""); // catch-all
+
+    // 4) Normaliser les espaces
+    t = t.replace(/\s{2,}/g, " ").trim();
+
+    // 5) Petite correction courante : "Enemies are revealed by Punch Through." (éviter . .)
+    t = t.replace(/\.\s*\./g, ".");
+
+    return t;
+  }
 
   /* ================== Effets ================== */
   function effectsFromLevelStats(m){
@@ -87,12 +110,21 @@
       if (cand) pick = cand;
     }
     const stats = Array.isArray(pick?.stats) ? pick.stats : [];
-    return stats.map(s => norm(s)).filter(Boolean);
+    return stats.map(s => cleanFxText(norm(s))).filter(Boolean);
   }
   function effectsFromDescription(m){
-    const d = norm(m.description);
+    let d = norm(m.description);
     if (!d) return [];
-    return d.split(/\n|•|;|·/g).map(x => norm(x)).filter(Boolean);
+    // nettoyage global d’abord (supprime \n, <LINE_SEPARATOR>, <DT_*>, etc.)
+    d = cleanFxText(d);
+    // on segmente sur véritables séparateurs (reste robuste même après nettoyage)
+    const parts = d
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxText(x))
+      .filter(Boolean);
+    return parts;
   }
   function makeEffects(m){
     const stats = effectsFromLevelStats(m);
