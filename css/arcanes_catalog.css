@@ -125,12 +125,26 @@
   border-radius: 10px;
   padding: .4rem .75rem;
 }
-
-/* Icônes DT_* inline (pas de pastille, juste l'image) */
+/* Icônes inline pour les <DT_*> */
 .dt-ico-inline{
   display:inline-block;
-  height: 1em;       /* suit la taille du texte */
-  width: auto;
-  vertical-align: -0.18em; /* aligne sur la ligne du texte */
-  margin: 0 .25em;   /* léger espace autour */
+  height: 1em;
+  width:auto;
+  vertical-align:-0.18em;
+  margin:0 .25em;
+}
+}
+/* Titre non tronqué, peut aller sur 2 lignes si besoin */
+.arcane-body .title{
+  font-weight: 600;
+  line-height: 1.2;
+  /* pas de .truncate ici */
+}
+
+/* Rangée de pastilles sous le titre */
+.chips-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap: .35rem;
+  margin-top: .35rem;
 }
