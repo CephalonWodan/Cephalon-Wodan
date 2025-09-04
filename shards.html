@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Archon Shards — Warframe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind -->
+  <!-- Tailwind (ok pour GitHub Pages pour l’instant ; on pourra passer en build local ensuite) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Thème + styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
@@ -23,14 +23,88 @@
           Loading shards…
         </div>
       </div>
+
+      <div class="w-full lg:w-auto">
+        <div class="flex gap-3 flex-col sm:flex-row">
+          <div class="relative sm:w-[360px]">
+            <input id="q" type="text" placeholder="Search shards (name, description)…"
+                   class="w-full pl-10 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                          placeholder:text-[var(--muted)] outline-none orn focus-gold" />
+            <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2"
+                 viewBox="0 0 24 24" fill="none">
+              <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <select id="sort"
+                  class="sm:w-[220px] py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                         outline-none orn focus-gold">
+            <option value="name">Sort: Name (A→Z)</option>
+            <option value="color">Sort: Color</option>
+            <option value="tau">Sort: Tauforged first</option>
+          </select>
+        </div>
+      </div>
     </div>
 
-    <!-- Grille des shards -->
-    <div id="shards-grid" class="mt-6 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"></div>
+    <!-- Compteurs couleurs -->
+    <div id="color-stats" class="mt-4 flex flex-wrap gap-2"></div>
+
+    <!-- Layout -->
+    <div class="mt-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Sidebar filtres -->
+      <aside class="lg:col-span-3">
+        <div class="sticky top-4 space-y-4">
+          <div class="card p-4 orn">
+            <div class="font-semibold mb-2">Colors</div>
+            <div id="f-colors" class="grid grid-cols-2 gap-2 text-sm"></div>
+          </div>
+
+          <div class="card p-4 orn">
+            <div class="font-semibold mb-2">Tauforged</div>
+            <label class="flex items-center gap-2 cursor-pointer text-sm">
+              <input id="only-tau" type="checkbox" class="accent-[var(--ink)]">
+              <span>Show tauforged only</span>
+            </label>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <button id="reset" class="btn-tab">Reset</button>
+            <div id="count" class="text-sm muted"></div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="lg:col-span-9">
+        <!-- Filtres actifs -->
+        <div id="active-filters" class="flex flex-wrap gap-2 mb-3"></div>
+
+        <!-- Grille -->
+        <div id="results" class="grid gap-4"></div>
+
+        <!-- Pagination -->
+        <div id="pager" class="flex items-center justify-between mt-5">
+          <button id="prev" class="btn-tab">← Prev</button>
+          <div id="pageinfo" class="text-sm muted"></div>
+          <button id="next" class="btn-tab">Next →</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="hidden">
+    <div class="lb-backdrop"></div>
+    <div class="lb-content">
+      <img id="lb-img" alt="" />
+      <div id="lb-caption" class="lb-caption"></div>
+      <button id="lb-close" class="lb-close" aria-label="Close">✕</button>
+    </div>
   </div>
 
   <!-- JS -->
   <script src="js/site_nav.js" defer></script>
-  <script src="js/shards.js?v=5" defer></script>
+  <script src="js/shards.js?v=3" defer></script>
 </body>
 </html>
