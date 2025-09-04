@@ -40,6 +40,16 @@ const DT_ICONS = {
 function renderTextIcons(input){
   let s = String(input ?? "");
 
+  /* ====== AJOUTER SOUS le bloc DT / renderTextIcons ====== */
+// Normalise le texte avant rendu (enlève <br>, LINE_SEPARATOR, CRLF)
+function normalizeForIcons(input) {
+  return String(input ?? "")
+    .replace(/\r\n|\r/g, "\n")
+    .replace(/<\s*br\s*\/?\s*>/gi, "\n")
+    .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
+    .replace(/\n{2,}/g, "\n");
+}
+
   // normalise les séparateurs
   s = s.replace(/\r\n?|\r/g, "\n")
        .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
@@ -178,7 +188,11 @@ function rarityBadge(r) {
 function typeBadge(t) { return `<span class="badge">${escapeHtml(t || "—")}</span>`; }
 function criteriaRow(c) {
   if (!c) return "";
-  return `<div class="kv"><div class="k">Trigger</div><div class="v">${renderTextIcons(c)}</div></div>`;
+  return `
+    <div class="kv">
+      <div class="k">TRIGGER</div>
+      <div class="v">${renderTextIcons(normalizeForIcons(c))}</div>
+    </div>`;
 }
 
 function cardArcane(m, apiByName) {
@@ -199,7 +213,7 @@ function cardArcane(m, apiByName) {
       <div class="arcane-body">
         <div class="flex items-start justify-between gap-3">
           <div class="min-w-0">
-            <div class="title truncate">${escapeHtml(name)}</div>
+            <div class="title">${escapeHtml(name)}</div>
             <div class="meta">${type ? escapeHtml(type) : ""}</div>
           </div>
           <div class="shrink-0 flex items-center gap-2">
@@ -207,7 +221,7 @@ function cardArcane(m, apiByName) {
           </div>
         </div>
         ${crit ? `<div class="mt-2">${criteriaRow(crit)}</div>` : ""}
-        ${desc ? `<p class="desc mt-2">${renderTextIcons(desc)}</p>` : ""}
+        ${desc ? `<p class="desc mt-2">${renderTextIcons(normalizeForIcons(desc))}</p>` : "" }
       </div>
     </div>
   `;
