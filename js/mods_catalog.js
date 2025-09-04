@@ -141,6 +141,9 @@
   /* ================== Fusion des doublons PAR NOM ================== */
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
+    a: {
+      /* label a for readability only */
+    }
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
 
     const effects = makeEffects(bestTxt).length ? makeEffects(bestTxt) : makeEffects(primary);
@@ -188,16 +191,15 @@
     all: [], filtered: [], page: 1, perPage: 24,
     q: "", sort: "name",
     fCats: new Set(), fPols: new Set(), fRars: new Set(),
-    onlyVerified: true, // par défaut : ON
+    onlyVerified: true,
     view: "cards",
   };
 
   /* ================== UI helpers ================== */
-  // NOTE: on marque la puce de polarité par une classe dédiée "chip pol"
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
-  function polChip(p){
+  function polBadge(p){
     const src = POL_ICON(p), txt = canonPolarity(p);
-    return `<span class="chip pol"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
+    return `<span class="badge pol"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
   }
 
   function modCard(m){
@@ -208,7 +210,6 @@
     const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
-    // On met la pastille de polarité en DERNIÈRE position
     const chipsLeft = [
       cat && badge(cat),
       compat && badge(compat),
@@ -216,7 +217,8 @@
       Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "",
       (!m.imgVerified) ? badge("Unreleased","gold") : ""
     ].filter(Boolean).join(" ");
-    const chipPol = pol ? polChip(pol) : "";
+
+    const headRight = pol ? polBadge(pol) : "";
 
     return `
     <div class="mod-card">
@@ -224,11 +226,11 @@
         <img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" loading="lazy" decoding="async">
       </a>
       <div class="mod-body">
-        <div class="mod-title">${escapeHtml(m.name)}</div>
-        <div class="mod-chips">
-          <div class="chips-left">${chipsLeft}</div>
-          ${chipPol}
+        <div class="mod-head">
+          <div class="mod-title">${escapeHtml(m.name)}</div>
+          ${headRight}
         </div>
+        <div class="mod-chips">${chipsLeft}</div>
         <div class="mod-effects">
           ${
             lines.length
