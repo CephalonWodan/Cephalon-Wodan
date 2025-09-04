@@ -10,7 +10,6 @@ const ENDPOINTS = [
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const norm = (s) => String(s || "").trim();
-const cap  = (s) => { s = String(s||""); return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase(); };
 
 const COLORS = ["Crimson","Amber","Azure","Emerald","Violet","Topaz"];
 const COLOR_MAP = {
@@ -46,10 +45,10 @@ function parseTau(name=""){ return /tauforged/i.test(name); }
 /* ------------ Images: local → wiki → dot ------------ */
 function localShardPath(color, tau){
   if (!color || color === "Unknown") return "";
-  // Noms EXACTS comme dans ton repo (pas d'espace, bonne casse)
   const base = tau ? `Tauforged${color}ArchonShard.png` : `${color}ArchonShard.png`;
   return LOCAL_DIR + base;
 }
+// Wiki helpers
 function rawWikiThumb(m){
   return (
     m.wikiaThumbnail || m.wikiathumbnail ||
@@ -67,6 +66,7 @@ function upscaleWikiThumb(url, size=512){
   }
   return out;
 }
+// Color-dot fallback
 function colorDotDataUrl(color, tau){
   const hex = COLOR_MAP[color] || "#888";
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
@@ -91,10 +91,15 @@ function getShardImageSources(m){
 
   const dot = colorDotDataUrl(color, tau);
 
-  return { color, tau, localGrid, localFull, wikiGrid, wikiFull, dot };
+  return {
+    color, tau,
+    localGrid, localFull,
+    wikiGrid, wikiFull,
+    dot
+  };
 }
 
-/* ------------ Effets ------------ */
+/* ------------ Effets (upgradeTypes/effects/bonuses) ------------ */
 function extractEffectsFromUpgradeTypes(upgradeTypes){
   const out = [];
   if (!upgradeTypes) return out;
@@ -188,29 +193,24 @@ function shardCard(m){
   const fullPrimary = localFull || wikiFull || dot;
   const fullFallback = (localFull ? (wikiFull || dot) : dot);
 
-  // ----- Affichage : titre non tronqué + sous-titre seulement si utile
-  const title = escapeHtml(m.name || "Archon Shard");
-  const meta  = norm(m.type || "");
-  const showMeta = meta && !new RegExp(meta.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(title);
-
   return `
   <div class="shard-card">
     <a href="#" class="shard-cover"
        data-full="${escapeHtml(fullFallback)}"
        data-full-primary="${escapeHtml(fullPrimary)}"
        data-full-fallback="${escapeHtml(fullFallback)}"
-       data-name="${title}">
+       data-name="${escapeHtml(m.name||"Archon Shard")}">
       <img
         src="${escapeHtml(primary)}"
-        alt="${title}"
+        alt="${escapeHtml(m.name||"Archon Shard")}"
         data-fallback="${escapeHtml(fallback)}"
         loading="lazy" decoding="async">
     </a>
     <div class="shard-body">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
-          <div class="title">${title}</div>
-          ${ showMeta ? `<div class="meta">${escapeHtml(meta)}</div>` : "" }
+          <div class="title truncate">${escapeHtml(m.name || "Archon Shard")}</div>
+          <div class="meta">${m.type ? escapeHtml(m.type) : ""}</div>
         </div>
         <div class="flex items-center gap-2 shrink-0">${metaRight}</div>
       </div>
@@ -252,7 +252,7 @@ function writeQuery(){
 
 /* ------------ Filtres/UI ------------ */
 function renderColorFilters(){
-  const host = $("#f-colors"); if (!host) return;
+  const host = $("#f-colors");
   host.innerHTML = COLORS.map(c => {
     const id = `col-${c}`;
     const checked = state.colors.has(c) ? "checked" : "";
@@ -264,7 +264,6 @@ function renderColorFilters(){
   }).join("");
   COLORS.forEach(c => {
     const el = $(`#col-${c}`);
-    if (!el) return;
     el.addEventListener("change", () => {
       if (el.checked) state.colors.add(c);
       else state.colors.delete(c);
@@ -275,7 +274,7 @@ function renderColorFilters(){
   });
 }
 function renderActiveChips(){
-  const wrap = $("#active-filters"); if (!wrap) return;
+  const wrap = $("#active-filters");
   const chips = [];
   if (state.q) chips.push({k:"q", label:`Text: "${escapeHtml(state.q)}"`});
   if (state.colors.size) chips.push({k:"colors", label:`Colors: ${[...state.colors].join(", ")}`});
@@ -286,9 +285,9 @@ function renderActiveChips(){
   wrap.querySelectorAll("[data-chip]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       const [k] = btn.dataset.chip.split("|");
-      if (k==="q") { state.q=""; const qEl=$("#q"); if(qEl) qEl.value=""; }
+      if (k==="q") { state.q=""; $("#q").value=""; }
       if (k==="colors") { state.colors.clear(); renderColorFilters(); }
-      if (k==="tau") { state.onlyTau=false; const t=$("#only-tau"); if(t) t.checked=false; }
+      if (k==="tau") { state.onlyTau=false; $("#only-tau").checked=false; }
       state.page = 1;
       applyFilters();
       writeQuery();
@@ -296,7 +295,7 @@ function renderActiveChips(){
   });
 }
 function renderColorStats(arr){
-  const host = $("#color-stats"); if (!host) return;
+  const host = $("#color-stats");
   const counts = Object.fromEntries(COLORS.map(c => [c, 0]));
   for (const m of arr) { const c = parseColor(m.name||""); if (counts[c]!=null) counts[c]++; }
   host.innerHTML = COLORS.map(c=>{
@@ -307,8 +306,7 @@ function renderColorStats(arr){
 
 /* ------------ Filter/apply/render ------------ */
 function applyFilters(){
-  const qEl = $("#q"); const sortEl = $("#sort");
-  const q = state.q = norm(qEl ? qEl.value : "").toLowerCase();
+  const q = state.q = norm($("#q").value).toLowerCase();
   let arr = state.all.slice();
 
   if (state.colors.size) arr = arr.filter(m => state.colors.has(parseColor(m.name||"")));
@@ -323,7 +321,7 @@ function applyFilters(){
     });
   }
 
-  const sort = state.sort = (sortEl ? sortEl.value : "name");
+  const sort = state.sort = $("#sort").value;
   arr.sort((a,b)=>{
     if (sort === "color") return parseColor(a.name||"").localeCompare(parseColor(b.name||"")) || (a.name||"").localeCompare(b.name||"");
     if (sort === "tau")   return (parseTau(b.name||"") - parseTau(a.name||"")) || (a.name||"").localeCompare(b.name||"");
@@ -340,24 +338,22 @@ function applyFilters(){
 
 function render(){
   const total = state.filtered.length;
-  const countEl = $("#count"); if (countEl) countEl.textContent = `${total} shard(s)`;
+  $("#count").textContent = `${total} shard(s)`;
 
   const pages = Math.max(1, Math.ceil(total / state.perPage));
   state.page = Math.min(Math.max(1, state.page), pages);
-
-  const prevEl = $("#prev"), nextEl = $("#next"), pageinfoEl = $("#pageinfo");
-  if (prevEl) prevEl.disabled = (state.page <= 1);
-  if (nextEl) nextEl.disabled = (state.page >= pages);
-  if (pageinfoEl) pageinfoEl.textContent = `Page ${state.page} / ${pages}`;
+  $("#prev").disabled = (state.page <= 1);
+  $("#next").disabled = (state.page >= pages);
+  $("#pageinfo").textContent = `Page ${state.page} / ${pages}`;
 
   const start = (state.page - 1) * state.perPage;
   const slice = state.filtered.slice(start, start + state.perPage);
 
-  const grid = $("#results"); if (!grid) return;
+  const grid = $("#results");
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3";
   grid.innerHTML = slice.map(shardCard).join("");
 
-  // Fallback image + lightbox
+  // Gestion cover/lightbox + fallback image locale→wiki→dot
   grid.querySelectorAll(".shard-cover").forEach(a=>{
     const img = a.querySelector("img");
     const fullPrimary  = a.getAttribute("data-full-primary");
@@ -384,19 +380,19 @@ function render(){
 
 /* ------------ Lightbox ------------ */
 function openLightbox(url, caption=""){
-  const img = $("#lb-img"); const capEl = $("#lb-caption");
-  if (img) { img.src = url; img.alt = caption; }
-  if (capEl) capEl.textContent = caption;
-  const lb = $("#lightbox"); if (lb) lb.classList.remove("hidden");
+  $("#lb-img").src = url;
+  $("#lb-img").alt = caption;
+  $("#lb-caption").textContent = caption;
+  $("#lightbox").classList.remove("hidden");
 }
 function closeLightbox(){
-  const lb = $("#lightbox"); if (lb) lb.classList.add("hidden");
-  const img = $("#lb-img"); if (img) img.src = "";
+  $("#lightbox").classList.add("hidden");
+  $("#lb-img").src = "";
 }
 (function setupLightbox(){
   const lb = $("#lightbox");
   if (!lb) return;
-  const close = $("#lb-close"); if (close) close.addEventListener("click", closeLightbox);
+  $("#lb-close").addEventListener("click", closeLightbox);
   lb.addEventListener("click", (e)=>{
     if (e.target.id === "lightbox" || e.target.classList.contains("lb-backdrop")) closeLightbox();
   });
@@ -412,35 +408,26 @@ async function fetchShardsFromEndpoints() {
       if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
       const data = await r.json();
 
-      // 1) Déjà un tableau
       if (Array.isArray(data) && data.length) return { list: data, source: url };
 
-      // 2) Objet de clés (ACC_* et/ou TAU_*)
-      if (data && typeof data === "object") {
-        const keys = Object.keys(data).filter(k => /^(ACC|TAU)_/i.test(k));
+      if (data && typeof data === "object" && !Array.isArray(data)) {
+        const keys = Object.keys(data).filter(k => /^ACC_/i.test(k));
         if (keys.length) {
           const converted = [];
           for (const k of keys) {
             const node = data[k] || {};
-            let color = norm(node.value || node.name || "");
-            color = COLORS.includes(cap(color)) ? cap(color) : (function(){
-              const m = String(k).match(/(AMBER|AZURE|EMERALD|CRIMSON|VIOLET|TOPAZ)/i);
-              return m ? cap(m[1]) : "Amber";
-            })();
-            const isTau = /^TAU_/i.test(k) || /tauforged/i.test(String(node.name||""));
-
+            const color = node.value || node.name || k.replace(/^ACC_/i, "");
+            const name = `${capitalize(color)} Archon Shard`;
             converted.push({
-              name: `${isTau ? "Tauforged " : ""}${color} Archon Shard`,
-              type: `${color} Shard`, // évite la redondance "Tauforged ..." en sous-titre
+              name,
+              type: `${capitalize(color)} Shard`,
               upgradeTypes: node.upgradeTypes || node.upgrades || node.values || null,
               description: node.description || "",
-              wikiaThumbnail: normalizeUrl(node.thumbnail || node.wikiaThumbnail || node.wikiathumbnail || "")
+              wikiaThumbnail: normalizeUrl(node.thumbnail || node.wikiaThumbnail || node.wikiathumbnail || ""),
             });
           }
           if (converted.length) return { list: converted, source: url };
         }
-
-        // 3) Autres enveloppes possibles
         if (Array.isArray(data.archonShards) && data.archonShards.length) return { list: data.archonShards, source: url };
         if (Array.isArray(data.shards) && data.shards.length)           return { list: data.shards, source: url };
       }
@@ -449,65 +436,56 @@ async function fetchShardsFromEndpoints() {
   console.warn("[shards] All endpoints failed/empty:", errors);
   return { list: [], source: null, errors };
 }
+function capitalize(s){ s=String(s||""); return s.charAt(0).toUpperCase()+s.slice(1).toLowerCase(); }
 
 /* ------------ Boot ------------ */
 (async function boot(){
   const status = $("#status");
   try {
     // Skeleton
-    const results = $("#results");
-    if (results) {
-      results.innerHTML = Array.from({length:6}).map(()=>`
-        <div class="shard-card">
-          <div class="shard-cover" style="height:260px;background:rgba(255,255,255,.04)"></div>
-          <div class="shard-body">
-            <div class="h-4 rounded bg-[rgba(255,255,255,.08)] w-2/3 mb-2"></div>
-            <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2 mb-1"></div>
-            <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-5/6"></div>
-          </div>
+    $("#results").innerHTML = Array.from({length:6}).map(()=>`
+      <div class="shard-card">
+        <div class="shard-cover" style="height:260px;background:rgba(255,255,255,.04)"></div>
+        <div class="shard-body">
+          <div class="h-4 rounded bg-[rgba(255,255,255,.08)] w-2/3 mb-2"></div>
+          <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2 mb-1"></div>
+          <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-5/6"></div>
         </div>
-      `).join("");
-    }
+      </div>
+    `).join("");
 
     const { list: apiList, source } = await fetchShardsFromEndpoints();
     const raw = Array.isArray(apiList) ? apiList : [];
     state.all = dedupeByName(raw);
 
     parseQuery();
-    const qEl=$("#q"), sortEl=$("#sort"), tauEl=$("#only-tau");
-    if (qEl) qEl.value = state.q;
-    if (sortEl) sortEl.value = state.sort;
-    if (tauEl) tauEl.checked = state.onlyTau;
+    $("#q").value = state.q;
+    $("#sort").value = state.sort;
+    $("#only-tau").checked = state.onlyTau;
     renderColorFilters();
 
-    if (qEl) qEl.addEventListener("input", ()=>{ state.page=1; applyFilters(); writeQuery(); });
-    if (sortEl) sortEl.addEventListener("change", ()=>{ state.page=1; applyFilters(); writeQuery(); });
-    if (tauEl) tauEl.addEventListener("change", ()=>{ state.onlyTau = tauEl.checked; state.page=1; applyFilters(); writeQuery(); });
-
-    const resetEl = $("#reset");
-    if (resetEl) resetEl.addEventListener("click", ()=>{
-      state.q=""; if (qEl) qEl.value="";
-      state.colors.clear(); if (tauEl) tauEl.checked=false; state.onlyTau=false;
-      if (sortEl) sortEl.value="name";
+    $("#q").addEventListener("input", ()=>{ state.page=1; applyFilters(); writeQuery(); });
+    $("#sort").addEventListener("change", ()=>{ state.page=1; applyFilters(); writeQuery(); });
+    $("#only-tau").addEventListener("change", ()=>{ state.onlyTau = $("#only-tau").checked; state.page=1; applyFilters(); writeQuery(); });
+    $("#reset").addEventListener("click", ()=>{
+      state.q=""; $("#q").value="";
+      state.colors.clear(); $("#only-tau").checked=false; state.onlyTau=false;
+      $("#sort").value="name";
       state.page=1;
       renderColorFilters();
       applyFilters();
       writeQuery();
     });
+    $("#prev").addEventListener("click", ()=>{ state.page--; render(); writeQuery(); });
+    $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
 
-    const prevEl=$("#prev"), nextEl=$("#next");
-    if (prevEl) prevEl.addEventListener("click", ()=>{ state.page--; render(); writeQuery(); });
-    if (nextEl) nextEl.addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
-
-    if (status) status.textContent = `Shards loaded: ${state.all.length}${source ? ` (from ${source.replace(/^https?:\/\//,'')})` : ""}`;
+    status.textContent = `Shards loaded: ${state.all.length}${source ? ` (from ${source.replace(/^https?:\/\//,'')})` : ""}`;
     applyFilters();
   } catch (e) {
     console.error("[shards] error:", e);
-    if (status) {
-      status.textContent = "Error while loading archon shards.";
-      status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
-    }
+    status.textContent = "Error while loading archon shards.";
+    status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
+    status.style.background = "rgba(255,0,0,.08)";
+    status.style.color = "#ffd1d1";
   }
 })();
