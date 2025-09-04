@@ -197,26 +197,25 @@ function cardArcane(m, apiByName) {
 
   const { primary, fallback } = imageSourcesForArcane(m, apiByName);
 
-  const descHtml = desc ? renderTextIcons(desc) : "";
-
   return `
     <div class="arcane-card orn">
       <div class="arcane-cover">
         <img src="${escapeHtml(primary)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async"
              onerror="this.onerror=null; this.src='${escapeHtml(fallback)}';">
       </div>
+
       <div class="arcane-body">
-        <div class="flex items-start justify-between gap-3">
-          <div class="min-w-0">
-            <div class="title">${escapeHtml(name)}</div>
-            <!-- on ne répète pas le type ici pour éviter le doublon -->
-          </div>
-          <div class="shrink-0 flex items-center gap-2">
-            ${rarityBadge(rar)}${type ? typeBadge(type) : ""}
-          </div>
+        <!-- Titre pleine largeur, pas de troncature -->
+        <div class="title">${escapeHtml(name)}</div>
+
+        <!-- Pastilles SOUS le titre -->
+        <div class="chips-row">
+          ${rar ? rarityBadge(rar) : ""} 
+          ${type ? typeBadge(type) : ""}
         </div>
+
         ${crit ? `<div class="mt-2">${criteriaRow(crit)}</div>` : ""}
-        ${descHtml ? `<p class="desc mt-2">${descHtml}</p>` : ""}
+        ${desc ? `<p class="desc mt-2">${renderTextIcons(desc)}</p>` : ""}
       </div>
     </div>
   `;
