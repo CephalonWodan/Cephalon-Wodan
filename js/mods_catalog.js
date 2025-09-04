@@ -280,7 +280,7 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
-    the compat = m.compatibility || "";
+    const compat = m.compatibility || "";
     const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
