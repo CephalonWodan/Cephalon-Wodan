@@ -180,6 +180,34 @@ function badge(text){ return `<span class="badge">${text}</span>`; }
 function badgeGold(text){ return `<span class="badge gold">${text}</span>`; }
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+// Hide the grey meta line if it repeats the title meaning
+function isMetaRedundant(title, meta, color, tau) {
+  if (!meta) return true;
+  const clean = s =>
+    String(s || "")
+      .toLowerCase()
+      .replace(/\b(archon|shard)\b/g, "")  // ignore these words
+      .replace(/\s+/g, " ")
+      .trim();
+
+  const t = clean(title);
+  const m = clean(meta);
+
+  if (!m) return true;
+  if (t.includes(m)) return true;
+
+  // Expected “meaning” for this card
+  const expected = (tau ? "tauforged " : "") + String(color || "").toLowerCase();
+  if (m === expected) return true;
+
+  // Common variants from the API
+  if (m === color?.toLowerCase()) return true;
+  if (m === `${color?.toLowerCase()} shard`) return true;
+  if (m === `tauforged ${color?.toLowerCase()} shard`) return true;
+
+  return false;
+}
+
 function shardCard(m){
   const { color, tau, localGrid, localFull, wikiGrid, wikiFull, dot } = getShardImageSources(m);
   const effects = extractEffects(m);
@@ -194,10 +222,9 @@ function shardCard(m){
   const fullPrimary = localFull  || wikiFull  || dot;
   const fullFallback= (localFull ? (wikiFull  || dot) : dot);
 
-  // Titre non tronqué + sous-titre seulement si utile
   const title = escapeHtml(m.name || "Archon Shard");
-  const meta  = norm(m.type || "");
-  const showMeta = meta && !new RegExp(meta.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(title);
+  const metaRaw = norm(m.type || "");
+  const showMeta = !isMetaRedundant(title, metaRaw, color, tau);
 
   return `
   <div class="shard-card">
@@ -216,7 +243,7 @@ function shardCard(m){
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
           <div class="title">${title}</div>
-          ${ showMeta ? `<div class="meta">${escapeHtml(meta)}</div>` : "" }
+          ${ showMeta ? `<div class="meta">${escapeHtml(metaRaw)}</div>` : "" }
         </div>
         <div class="flex items-center gap-2 shrink-0">${metaRight}</div>
       </div>
