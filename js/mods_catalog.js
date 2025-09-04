@@ -35,6 +35,11 @@
     DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
   };
 
+  // tags additionnels simples (ex : <ENERGY>)
+  const EXTRA_ICONS = {
+    ENERGY: "EnergySymbol.png",
+  };
+
   // Rend le texte en remplaçant les <DT_...> par une icône inline
   // + absorbe les espaces/retours autour de la balise pour éviter les sauts de ligne.
   function renderTextIcons(input) {
@@ -42,19 +47,30 @@
 
     // normaliser d'abord
     s = s.replace(/\r\n?|\r/g, "\n")
+         .replace(/<\s*br\s*\/?>/gi, "\n")
          .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
     // échapper le HTML (sécurité)
     s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-    // remplacer les tokens (forme brute ou encodée) en "mangeant" le blanc autour
+    // remplacer les DT_* (forme brute ou encodée) en "mangeant" le blanc autour
     s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = DT_ICONS[key];
       if (!file) return "";
       const src = ICON_BASE + file;
-      // style inline léger pour garantir l’affichage correct sans dépendre du CSS
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
+
+    // remplacer quelques tags additionnels (ex: <ENERGY>) — même logique
+    s = s.replace(/\s*(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+      const file = EXTRA_ICONS[key];
+      if (!file) return `&lt;${key}&gt;`; // laisser encodé si inconnu, on nettoie juste après
+      const src = ICON_BASE + file;
+      return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
+    });
+
+    // supprimer toute autre balise technique restante (p.ex. &lt;LOWER_IS_BETTER&gt;)
+    s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
 
     // ménage
     s = s.replace(/[ \t]{2,}/g, " ");
@@ -264,7 +280,7 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
-    const compat = m.compatibility || "";
+    the compat = m.compatibility || "";
     const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
