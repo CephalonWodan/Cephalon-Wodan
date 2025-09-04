@@ -1,99 +1,82 @@
-/* css/arcanes_catalog.css — styles légers réutilisant ton thème (badges, orn, etc.) */
+/* css/arcanes_catalog.css */
+/* Cartes arcanes + visuels cohérents avec ton thème */
 
-.arc-card {
-  background: var(--panel);
+:root {
+  --panel-2: rgba(255,255,255,.04);
+  --muted: rgba(255,255,255,.6);
+  --accent-gold: #D4AF37;
+}
+
+/* carte */
+.arcane-card {
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.03);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.arc-cover {
-  display: block;
-  background: var(--panel-2);
-  border-bottom: 1px solid rgba(255,255,255,.06);
+/* visuel */
+.arcane-cover {
+  width: 100%;
   height: 220px;
-  position: relative;
+  display: grid;
+  place-items: center;
+  background: var(--panel-2);
+  border-bottom: 1px solid rgba(255,255,255,.08);
 }
-.arc-cover img {
+.arcane-cover img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block;
 }
 
-.arc-body {
+/* contenu */
+.arcane-body {
   padding: 12px 14px 14px 14px;
 }
-
-.arc-body .title {
+.arcane-body .title {
   font-weight: 600;
-  font-size: 1rem;
 }
-
-.arc-body .meta {
+.arcane-body .meta {
   color: var(--muted);
-  line-height: 1.2;
-  font-size: .85rem;
-  margin-top: 2px;
+  font-size: 12px;
 }
 
-.arc-body .desc {
-  margin-top: .25rem;
-  color: var(--ink);
-  font-size: .9rem;
+/* description + critères */
+.desc {
+  color: var(--muted);
+  line-height: 1.35;
+}
+.kv {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 6px 10px;
+  align-items: start;
+  font-size: 13px;
+}
+.kv .k {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: 11px;
 }
 
-/* badges (réutilise .badge de ton thème) */
+/* badges */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: .35rem;
+  font-size: 12px;
   padding: .15rem .5rem;
   border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.15);
-  background: rgba(255,255,255,.06);
-  font-size: .75rem;
-}
-.badge.gold {
-  border-color: rgba(212,175,55,.5);
-  color: #D4AF37;
-  background: rgba(212,175,55,.08);
+  border: 1px solid rgba(255,255,255,.18);
 }
 
-/* Lightbox */
-#lightbox {
-  position: fixed; inset: 0;
-  display: grid; place-items: center;
+/* pagination basique (si utilisée dans ta page) */
+#pager .btn-tab {
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 10px;
+  padding: .4rem .75rem;
 }
-#lightbox.hidden { display: none; }
-.lb-backdrop {
-  position: absolute; inset: 0; backdrop-filter: blur(3px);
-  background: rgba(0,0,0,.55);
-}
-.lb-content {
-  position: relative; z-index: 1;
-  background: var(--panel);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 14px;
-  padding: 12px;
-  max-width: min(92vw, 980px);
-}
-#lb-img { max-width: 100%; height: auto; display: block; }
-.lb-caption { margin-top: 6px; color: var(--muted); text-align: center; }
-.lb-close {
-  position: absolute; top: 8px; right: 8px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 8px;
-  padding: 4px 8px;
-}
-
-/* onglets mini (réutilisés partout) */
-.btn-tab.active {
-  border-color: rgba(212,175,55,.5) !important;
-  color: #D4AF37 !important;
-}
-
-/* tableau */
-#table-wrap table th, #table-wrap table td { text-align: left; }
-#table-wrap table th { font-weight: 600; }
