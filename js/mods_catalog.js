@@ -1,6 +1,8 @@
 // js/mods_catalog.js
 (() => {
   "use strict";
+  
+ console.log("[mods] build 2025-09-04a");
 
   /* ================== Text Icons (DT_* + LINE_SEPARATOR) ================== */
   const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
