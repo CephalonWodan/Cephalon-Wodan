@@ -18,63 +18,63 @@ const CFG = {
   ABILITIES_META_URL: "data/warframe_abilities.json",
 };
 
-/* ---------------- Text Icons (DT_* + LINE_SEPARATOR) → icône inline ---------------- */
-const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // ton dossier /img/symbol/
+// --- Text Icons (DT_* + <br>) -> <img> inline (icônes locales)
+const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
 
-// Mapping minimal : chaque balise -> nom de fichier (aucun label/pastille)
 const DT_ICONS = {
-  // Physiques
-  DT_IMPACT_COLOR:     "ImpactSymbol.png",
-  DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
-  DT_SLASH_COLOR:      "SlashSymbol.png",
-
-  // Élémentaires
-  DT_FIRE_COLOR:        "HeatSymbol.png",
-  DT_FREEZE_COLOR:      "ColdSymbol.png",
+  DT_IMPACT_COLOR: "ImpactSymbol.png",
+  DT_PUNCTURE_COLOR: "PunctureSymbol.png",
+  DT_SLASH_COLOR: "SlashSymbol.png",
+  DT_FIRE_COLOR: "HeatSymbol.png",
+  DT_FREEZE_COLOR: "ColdSymbol.png",
   DT_ELECTRICITY_COLOR: "ElectricitySymbol.png",
-  DT_POISON_COLOR:      "ToxinSymbol.png",
-  DT_TOXIN_COLOR:       "ToxinSymbol.png",
-
-  // Combinés
-  DT_GAS_COLOR:        "GasSymbol.png",
-  DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
-  DT_RADIATION_COLOR:  "RadiationSymbol.png",
-  DT_VIRAL_COLOR:      "ViralSymbol.png",
-  DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
-  DT_BLAST_COLOR:      "BlastSymbol.png",
-  DT_EXPLOSION_COLOR:  "BlastSymbol.png",
-
-  // Divers / Void
-  DT_RADIANT_COLOR:    "VoidSymbol.png",
-  DT_SENTIENT_COLOR:   "SentientSymbol.png",
-  DT_RESIST_COLOR:     "ResistSymbol.png",
-  DT_POSITIVE_COLOR:   "PositiveSymbol.png",
-  DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
+  DT_POISON_COLOR: "ToxinSymbol.png",
+  DT_TOXIN_COLOR: "ToxinSymbol.png",
+  DT_GAS_COLOR: "GasSymbol.png",
+  DT_MAGNETIC_COLOR: "MagneticSymbol.png",
+  DT_RADIATION_COLOR: "RadiationSymbol.png",
+  DT_VIRAL_COLOR: "ViralSymbol.png",
+  DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
+  DT_BLAST_COLOR: "BlastSymbol.png",
+  DT_EXPLOSION_COLOR: "BlastSymbol.png",
+  DT_RADIANT_COLOR: "VoidSymbol.png",
+  DT_SENTIENT_COLOR: "SentientSymbol.png",
+  DT_RESIST_COLOR: "ResistSymbol.png",
+  DT_POSITIVE_COLOR: "PositiveSymbol.png",
+  DT_NEGATIVE_COLOR: "NegativeSymbol.png",
 };
 
-// Rend un texte en remplaçant les <DT_...> par une icône inline,
-// en absorbant les espaces/retours autour pour éviter les sauts visuels.
-function renderTextIcons(input){
+const EXTRA_ICONS = { ENERGY: "EnergySymbol.png" };
+
+function renderTextIcons(input) {
   let s = String(input ?? "");
 
-  // normalise les séparateurs (on garde les \n pour mettre des <br> ensuite)
-  s = s.replace(/\r\n?|\r/g, "\n").replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+  // normalise
+  s = s.replace(/\r\n?|\r/g, "\n")
+       .replace(/<\s*br\s*\/?>/gi, "\n")
+       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
-  // échappe tout le HTML (sécurité)
-  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;'}[c]));
+  // échappe le HTML
+  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // remplace les tokens (forme brute ou encodée), en “mangeant” le blanc autour
+  // DT_* (forme brute ou encodée) – on avale le blanc autour pour éviter un saut de ligne moche
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
-    const file = DT_ICONS[key];
-    if (!file) return "";
+    const file = DT_ICONS[key]; if (!file) return "";
     const src = ICON_BASE + file;
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
 
-  // compacte les espaces et pose les <br> pour les retours réels
-  s = s.replace(/[ \t]{2,}/g, " ");
-  s = s.replace(/\n/g, "<br>");
-  return s.trim();
+  // tags simples (ex: <ENERGY>)
+  s = s.replace(/\s*(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+    const file = EXTRA_ICONS[key]; if (!file) return "";
+    const src = ICON_BASE + file;
+    return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
+  });
+
+  // supprime les balises techniques restantes
+  s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
+
+  return s.replace(/\n/g, "<br>").trim();
 }
 
 /* ---------------- utils ---------------- */
