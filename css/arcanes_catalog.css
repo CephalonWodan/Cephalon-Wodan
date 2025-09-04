@@ -1,430 +1,99 @@
-// js/arcanes.js — Catalogue d'Arcanes depuis data/arcanes_list.json (généré à partir du Lua)
+/* css/arcanes_catalog.css — styles légers réutilisant ton thème (badges, orn, etc.) */
 
-const DATA_URL_LIST = "data/arcanes_list.json"; // sort du script build_arcanes_from_lua_ast.mjs
-const DATA_URL_MAP  = "data/arcanes_map.json";  // fallback lisible aussi
-
-const $  = (sel) => document.querySelector(sel);
-const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-const norm = (s) => String(s || "").trim();
-
-const state = {
-  all: [],
-  filtered: [],
-  page: 1,
-  perPage: 24,
-  q: "",
-  sort: "name",
-  types: new Set(),    // filtres
-  rarities: new Set(), // filtres
-  // dictionnaires pour filtres
-  allTypes: [],
-  allRarities: [],
-};
-
-/* ------------ helpers ------------- */
-function uniq(arr){ return Array.from(new Set((arr||[]).map(x=>String(x)))).filter(Boolean); }
-
-function toLowerSafe(s){ return String(s||"").toLowerCase(); }
-
-function cleanDescription(desc){
-  if (!desc) return "";
-  let t = String(desc);
-
-  // préserver les sauts de ligne
-  t = t.replace(/<br\s*\/?>/gi, "\n")
-       .replace(/\\n/g, "\n")
-       .replace(/<LINE_SEPARATOR>/gi, "\n");
-
-  // retirer les balises placeholders type <DT_FIRE_COLOR>, <PRE_ATTACK>, etc.
-  t = t.replace(/<DT_[A-Z_]+_COLOR>/g, "")
-       .replace(/<PRE_[A-Z_]+>/g, "");
-
-  // enlever tout reste de balises HTML
-  t = t.replace(/<\/?[^>]+>/g, "");
-
-  // normaliser espaces
-  t = t.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
-
-  // remettre des <br> pour l'affichage HTML
-  return t.replace(/\n/g, "<br>");
+.arc-card {
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px;
+  overflow: hidden;
 }
 
-function rarityOrder(r){
-  const order = { Common:1, Uncommon:2, Rare:3, Legendary:4 };
-  return order[r] || 99;
+.arc-cover {
+  display: block;
+  background: var(--panel-2);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  height: 220px;
+  position: relative;
+}
+.arc-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
-function imgCandidates(a){
-  // On tente tes images locales d’abord si tu décides de les stocker dans img/arcanes/
-  // sinon fallback sur Wiki en utilisant les noms "Image" / "Icon" fournis par le Lua
-  const baseLocal = new URL("img/arcanes/", document.baseURI).href;
-
-  const files = [];
-  if (a.Image) files.push(baseLocal + a.Image);
-  if (a.Icon)  files.push(baseLocal + a.Icon);
-
-  // Wiki direct (si "Image" est un nom du fichier wiki, ex: ArcaneAcceleration.png)
-  if (a.Image) files.push("https://wiki.warframe.com/images/" + a.Image);
-  if (a.Icon)  files.push("https://wiki.warframe.com/images/" + a.Icon);
-
-  return files;
+.arc-body {
+  padding: 12px 14px 14px 14px;
 }
 
-function bestImage(a){
-  const list = imgCandidates(a);
-  return list[0] || "";
+.arc-body .title {
+  font-weight: 600;
+  font-size: 1rem;
 }
 
-function badge(text){ return `<span class="badge">${text}</span>`; }
-function badgeGold(text){ return `<span class="badge gold">${text}</span>`; }
-
-function cardArcane(a){
-  const imgList = imgCandidates(a);
-  const img = imgList[0] || "";
-  const fallbacks = imgList.slice(1);
-  const crit = a.Criteria ? `<div class="meta">${a.Criteria}</div>` : "";
-
-  const chips = [
-    a.Type ? badge(a.Type) : "",
-    a.Rarity ? badge(a.Rarity) : "",
-    (a.MaxRank!=null) ? badge(`Max Rank: ${a.MaxRank}`) : "",
-  ].filter(Boolean).join(" ");
-
-  const intro = a.Introduced ? `<div class="muted text-xs mt-1">Introduced: ${a.Introduced}</div>` : "";
-
-  return `
-  <div class="arc-card">
-    <a href="#" class="arc-cover"
-       data-full="${img}"
-       data-fallbacks='${JSON.stringify(fallbacks)}'
-       data-name="${escapeHtml(a.Name || "Arcane")}">
-      <img src="${escapeHtml(img)}" alt="${escapeHtml(a.Name||"Arcane")}" loading="lazy" decoding="async">
-    </a>
-
-    <div class="arc-body">
-      <div class="flex items-start justify-between gap-3">
-        <div class="min-w-0">
-          <div class="title truncate">${escapeHtml(a.Name || "Arcane")}</div>
-          ${crit}
-        </div>
-        <div class="flex items-center gap-2 shrink-0">${chips}</div>
-      </div>
-
-      ${ a.Description ? `<div class="desc mt-2">${cleanDescription(a.Description)}</div>` : "" }
-      ${intro}
-    </div>
-  </div>`;
+.arc-body .meta {
+  color: var(--muted);
+  line-height: 1.2;
+  font-size: .85rem;
+  margin-top: 2px;
 }
 
-function rowArcane(a){
-  const imgList = imgCandidates(a);
-  const img = imgList[0] || "";
-  const crit = a.Criteria ? escapeHtml(a.Criteria) : "";
-  return `
-    <tr class="border-b border-[rgba(255,255,255,.06)]">
-      <td class="p-2"><img src="${escapeHtml(img)}" alt="" class="h-10 w-auto mx-auto" loading="lazy" decoding="async"></td>
-      <td class="p-2 font-medium">${escapeHtml(a.Name||"Arcane")}</td>
-      <td class="p-2">${escapeHtml(a.Type||"—")}</td>
-      <td class="p-2">${escapeHtml(a.Rarity||"—")}</td>
-      <td class="p-2">${a.MaxRank ?? "—"}</td>
-      <td class="p-2">${crit || "—"}</td>
-      <td class="p-2">${escapeHtml(a.Introduced||"—")}</td>
-    </tr>`;
+.arc-body .desc {
+  margin-top: .25rem;
+  color: var(--ink);
+  font-size: .9rem;
 }
 
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* ------------ URL sync ------------ */
-function parseQuery(){
-  const p = new URLSearchParams(location.search);
-  state.q = norm(p.get("q") || "");
-  state.sort = p.get("sort") || "name";
-
-  const types = (p.get("types") || "").split(",").map(norm).filter(Boolean);
-  state.types = new Set(types);
-
-  const rars  = (p.get("rarities") || "").split(",").map(norm).filter(Boolean);
-  state.rarities = new Set(rars);
-
-  const page = parseInt(p.get("page")||"1",10);
-  state.page = Number.isFinite(page) && page > 0 ? page : 1;
+/* badges (réutilise .badge de ton thème) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .15rem .5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.06);
+  font-size: .75rem;
 }
-function writeQuery(){
-  const p = new URLSearchParams();
-  if (state.q) p.set("q", state.q);
-  if (state.sort && state.sort !== "name") p.set("sort", state.sort);
-  if (state.types.size) p.set("types", [...state.types].join(","));
-  if (state.rarities.size) p.set("rarities", [...state.rarities].join(","));
-  if (state.page > 1) p.set("page", String(state.page));
-  const url = `${location.pathname}?${p.toString()}`;
-  history.replaceState(null, "", url);
+.badge.gold {
+  border-color: rgba(212,175,55,.5);
+  color: #D4AF37;
+  background: rgba(212,175,55,.08);
 }
 
-/* ------------ Filtres UI ------------ */
-function renderTypeFilters(){
-  const host = $("#f-type");
-  host.innerHTML = state.allTypes.map(t => {
-    const id = `type-${t.replace(/\s+/g,'_')}`;
-    const checked = state.types.has(t) ? "checked" : "";
-    return `
-      <label for="${id}" class="flex items-center gap-2 cursor-pointer">
-        <input id="${id}" type="checkbox" value="${t}" ${checked} class="accent-[var(--ink)]">
-        <span>${t}</span>
-      </label>`;
-  }).join("");
-
-  state.allTypes.forEach(t => {
-    const el = $(`#type-${t.replace(/\s+/g,'_')}`);
-    el.addEventListener("change", () => {
-      if (el.checked) state.types.add(t);
-      else state.types.delete(t);
-      state.page = 1;
-      applyFilters();
-      writeQuery();
-    });
-  });
+/* Lightbox */
+#lightbox {
+  position: fixed; inset: 0;
+  display: grid; place-items: center;
 }
-function renderRarityFilters(){
-  const host = $("#f-rar");
-  host.innerHTML = state.allRarities.map(r => {
-    const id = `rar-${r}`;
-    const checked = state.rarities.has(r) ? "checked" : "";
-    return `
-      <label for="${id}" class="flex items-center gap-2 cursor-pointer">
-        <input id="${id}" type="checkbox" value="${r}" ${checked} class="accent-[var(--ink)]">
-        <span>${r}</span>
-      </label>`;
-  }).join("");
-
-  state.allRarities.forEach(r => {
-    const el = $(`#rar-${r}`);
-    el.addEventListener("change", () => {
-      if (el.checked) state.rarities.add(r);
-      else state.rarities.delete(r);
-      state.page = 1;
-      applyFilters();
-      writeQuery();
-    });
-  });
+#lightbox.hidden { display: none; }
+.lb-backdrop {
+  position: absolute; inset: 0; backdrop-filter: blur(3px);
+  background: rgba(0,0,0,.55);
 }
-function renderActiveChips(){
-  const wrap = $("#active-filters");
-  const chips = [];
-  if (state.q) chips.push({k:"q", label:`Text: "${escapeHtml(state.q)}"`});
-  if (state.types.size) chips.push({k:"types", label:`Types: ${[...state.types].join(", ")}`});
-  if (state.rarities.size) chips.push({k:"rarities", label:`Rarity: ${[...state.rarities].join(", ")}`});
-  wrap.innerHTML = chips.length
-    ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
-    : "";
-  wrap.querySelectorAll("[data-chip]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const [k] = btn.dataset.chip.split("|");
-      if (k==="q") { state.q=""; $("#q").value=""; }
-      if (k==="types") { state.types.clear(); renderTypeFilters(); }
-      if (k==="rarities") { state.rarities.clear(); renderRarityFilters(); }
-      state.page = 1;
-      applyFilters();
-      writeQuery();
-    });
-  });
+.lb-content {
+  position: relative; z-index: 1;
+  background: var(--panel);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 14px;
+  padding: 12px;
+  max-width: min(92vw, 980px);
+}
+#lb-img { max-width: 100%; height: auto; display: block; }
+.lb-caption { margin-top: 6px; color: var(--muted); text-align: center; }
+.lb-close {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 8px;
+  padding: 4px 8px;
 }
 
-/* ------------ Apply + Render ------------ */
-function applyFilters(){
-  const q = state.q = norm($("#q").value).toLowerCase();
-  let arr = state.all.slice();
-
-  if (state.types.size)    arr = arr.filter(a => state.types.has(a.Type || ""));
-  if (state.rarities.size) arr = arr.filter(a => state.rarities.has(a.Rarity || ""));
-
-  if (q) {
-    arr = arr.filter(a => {
-      const hay = [
-        a.Name, a.Description, a.Criteria, a.Type, a.Rarity, a.Introduced
-      ].map(norm).join(" ").toLowerCase();
-      return hay.includes(q);
-    });
-  }
-
-  const sort = state.sort = $("#sort").value;
-  arr.sort((a,b)=>{
-    if (sort==="type")       return (a.Type||"").localeCompare(b.Type||"") || (a.Name||"").localeCompare(b.Name||"");
-    if (sort==="rarity")     return rarityOrder(a.Rarity) - rarityOrder(b.Rarity) || (a.Name||"").localeCompare(b.Name||"");
-    if (sort==="maxrank")    return (b.MaxRank??-1)-(a.MaxRank??-1) || (a.Name||"").localeCompare(b.Name||"");
-    if (sort==="introduced") return (a.Introduced||"").localeCompare(b.Introduced||"") || (a.Name||"").localeCompare(b.Name||"");
-    return (a.Name||"").localeCompare(b.Name||"");
-  });
-
-  state.filtered = arr;
-  state.page = Math.min(state.page, Math.max(1, Math.ceil(arr.length / state.perPage))) || 1;
-
-  renderActiveChips();
-  render();
+/* onglets mini (réutilisés partout) */
+.btn-tab.active {
+  border-color: rgba(212,175,55,.5) !important;
+  color: #D4AF37 !important;
 }
 
-function render(){
-  const total = state.filtered.length;
-  $("#count").textContent = `${total} arcane(s)`;
-
-  const pages = Math.max(1, Math.ceil(total / state.perPage));
-  state.page = Math.min(Math.max(1, state.page), pages);
-  $("#prev").disabled = (state.page <= 1);
-  $("#next").disabled = (state.page >= pages);
-  $("#pageinfo").textContent = `Page ${state.page} / ${pages}`;
-
-  const start = (state.page - 1) * state.perPage;
-  const slice = state.filtered.slice(start, start + state.perPage);
-
-  const grid = $("#results");
-  grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
-  grid.innerHTML = slice.map(cardArcane).join("");
-
-  // Table
-  const tbody = $("#table-body");
-  tbody.innerHTML = slice.map(rowArcane).join("");
-
-  // cover click + fallback images
-  grid.querySelectorAll(".arc-cover").forEach(a=>{
-    const img = a.querySelector("img");
-    const fallbacks = JSON.parse(a.getAttribute("data-fallbacks") || "[]");
-    let i = 0;
-    if (img) {
-      img.addEventListener("error", () => {
-        if (i < fallbacks.length) {
-          img.src = fallbacks[i++];
-        }
-      });
-    }
-    a.addEventListener("click", (ev)=>{
-      ev.preventDefault();
-      const url = img?.src || "";
-      if (!url) return;
-      openLightbox(url, a.getAttribute("data-name") || "");
-    });
-  });
-}
-
-/* ------------ Lightbox ------------ */
-function openLightbox(url, caption=""){
-  $("#lb-img").src = url;
-  $("#lb-img").alt = caption;
-  $("#lb-caption").textContent = caption;
-  $("#lightbox").classList.remove("hidden");
-}
-function closeLightbox(){
-  $("#lightbox").classList.add("hidden");
-  $("#lb-img").src = "";
-}
-(function setupLightbox(){
-  const lb = $("#lightbox");
-  if (!lb) return;
-  $("#lb-close").addEventListener("click", closeLightbox);
-  lb.addEventListener("click", (e)=>{
-    if (e.target.id === "lightbox" || e.target.classList.contains("lb-backdrop")) closeLightbox();
-  });
-  document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
-})();
-
-/* ------------ Boot ------------ */
-(async function boot(){
-  const status = $("#status");
-  try {
-    // skeleton
-    $("#results").innerHTML = Array.from({length:8}).map(()=>`
-      <div class="arc-card">
-        <div class="arc-cover" style="height:220px;background:rgba(255,255,255,.04)"></div>
-        <div class="arc-body">
-          <div class="h-4 rounded bg-[rgba(255,255,255,.08)] w-2/3 mb-2"></div>
-          <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2 mb-1"></div>
-          <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-5/6"></div>
-        </div>
-      </div>
-    `).join("");
-
-    // charge d’abord la LISTE
-    let data = [];
-    try {
-      const r = await fetch(DATA_URL_LIST, { cache: "no-store" });
-      if (r.ok) data = await r.json();
-    } catch(_) {}
-    // fallback MAP → liste
-    if (!Array.isArray(data) || !data.length) {
-      const r2 = await fetch(DATA_URL_MAP, { cache: "no-store" });
-      if (r2.ok) {
-        const map = await r2.json();
-        data = Object.values(map || {});
-      }
-    }
-
-    // normalisation minimale
-    const list = Array.isArray(data) ? data : [];
-    state.all = list.map(a => ({
-      Name: norm(a.Name || a.name),
-      Type: norm(a.Type || a.type),
-      Rarity: norm(a.Rarity || a.rarity),
-      MaxRank: a.MaxRank ?? a.maxRank ?? null,
-      Criteria: norm(a.Criteria || a.criteria),
-      Description: a.Description || a.description || "",
-      Introduced: norm(a.Introduced || a.introduced),
-      Image: norm(a.Image || a.image || ""),
-      Icon: norm(a.Icon || a.icon || ""),
-    }));
-
-    // valeurs pour filtres
-    state.allTypes = uniq(state.all.map(a => a.Type)).sort((a,b)=>a.localeCompare(b));
-    state.allRarities = uniq(state.all.map(a => a.Rarity)).sort((a,b)=>rarityOrder(a)-rarityOrder(b));
-
-    parseQuery();
-    $("#q").value = state.q;
-    $("#sort").value = state.sort;
-
-    renderTypeFilters();
-    renderRarityFilters();
-
-    // events
-    $("#q").addEventListener("input", ()=>{ state.page=1; applyFilters(); writeQuery(); });
-    $("#sort").addEventListener("change", ()=>{ state.page=1; applyFilters(); writeQuery(); });
-
-    $("#reset").addEventListener("click", ()=>{
-      state.q=""; $("#q").value="";
-      state.types.clear(); state.rarities.clear();
-      $("#sort").value="name";
-      state.page=1;
-      renderTypeFilters();
-      renderRarityFilters();
-      applyFilters();
-      writeQuery();
-    });
-
-    $("#prev").addEventListener("click", ()=>{ state.page--; render(); writeQuery(); });
-    $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
-
-    // switch vue
-    const viewCards = $("#view-cards");
-    const viewTable = $("#view-table");
-    const tableWrap = $("#table-wrap");
-    const results   = $("#results");
-
-    viewCards.addEventListener("click", ()=>{
-      viewCards.classList.add("active");
-      viewTable.classList.remove("active");
-      tableWrap.classList.add("hidden");
-      results.classList.remove("hidden");
-    });
-    viewTable.addEventListener("click", ()=>{
-      viewTable.classList.add("active");
-      viewCards.classList.remove("active");
-      results.classList.add("hidden");
-      tableWrap.classList.remove("hidden");
-    });
-
-    status.textContent = `Arcanes loaded: ${state.all.length}`;
-    applyFilters();
-  } catch (e) {
-    console.error("[arcanes] error:", e);
-    status.textContent = "Error while loading arcanes.";
-    status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
-    status.style.background = "rgba(255,0,0,.08)";
-    status.style.color = "#ffd1d1";
-  }
-})();
+/* tableau */
+#table-wrap table th, #table-wrap table td { text-align: left; }
+#table-wrap table th { font-weight: 600; }
