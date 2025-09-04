@@ -1,10 +1,13 @@
-/* DT token icon (inline) */
-.dt-ico{
-  width:14px; height:14px;
+/* icônes inline pour les tokens <DT_...> */
+.dt-ico-inline{
   display:inline-block;
-  vertical-align:-2px;
-  margin:0 .15rem;
+  width:1.05em;
+  height:1.05em;
+  vertical-align:-0.2em;   /* posé correctement sur la ligne de texte */
+  margin:0 .25em;
+  object-fit:contain;
 }
+
 
 /* Cartes */
 .mod-card {
