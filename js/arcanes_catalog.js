@@ -40,16 +40,6 @@ function resolveDT(key){
   return v?.alias ? resolveDT(v.alias) : v || null;
 }
 
-  // 2) remplace les TAGS additionnels (ex: <ENERGY>) avant de supprimer le reste
-  const EXTRA_TAG_FILE = {
-    ENERGY: "EnergySymbol.png",   // <- nouveau mapping demandé
-    PRE_ATTACK: "LeftclicSymbol.png",
-  };
-  s = s.replace(/(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const file = EXTRA_TAG_FILE[(key || "").toUpperCase()];
-    return file ? `<img class="dt-ico dt-inline" alt="" aria-hidden="true" src="${ICON_BASE + file}">` : `<${key}>`;
-  });
-
 /** Rend les balises DT_* + gère <br> / <LINE_SEPARATOR> (brut OU encodé) */
 function renderTextIcons(input){
   let s = String(input ?? "");
