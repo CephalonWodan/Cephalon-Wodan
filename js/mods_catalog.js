@@ -1,6 +1,57 @@
 (() => {
   "use strict";
 
+  // --- DT inline icons (no badges / no aliases)
+const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
+const DT_ICON = {
+  DT_IMPACT_COLOR: "ImpactSymbol.png",
+  DT_PUNCTURE_COLOR: "PunctureSymbol.png",
+  DT_SLASH_COLOR: "SlashSymbol.png",
+  DT_FIRE_COLOR: "HeatSymbol.png",
+  DT_FREEZE_COLOR: "ColdSymbol.png",
+  DT_ELECTRICITY_COLOR: "ElectricitySymbol.png",
+  DT_POISON_COLOR: "ToxinSymbol.png",
+  DT_GAS_COLOR: "GasSymbol.png",
+  DT_MAGNETIC_COLOR: "MagneticSymbol.png",
+  DT_RADIATION_COLOR: "RadiationSymbol.png",
+  DT_VIRAL_COLOR: "ViralSymbol.png",
+  DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
+  DT_BLAST_COLOR: "BlastSymbol.png",
+  DT_RADIANT_COLOR: "VoidSymbol.png",
+  DT_SENTIENT_COLOR: "SentientSymbol.png",
+  DT_RESIST_COLOR: "ResistSymbol.png",
+  DT_POSITIVE_COLOR: "PositiveSymbol.png",
+  DT_NEGATIVE_COLOR: "NegativeSymbol.png",
+};
+
+// Replace <DT_...> (ou &lt;DT_...&gt;) par <img>, en échappant le reste.
+function renderTextIcons(input) {
+  const raw = String(input ?? "");
+
+  // protège les tokens pendant l’échappement
+  const tokens = [];
+  const protectedText = raw.replace(/(?:<|&lt;)\s*(DT_[A-Z_]+)\s*(?:>|&gt;)/g, (_, key) => {
+    const fname = DT_ICON[key];
+    if (!fname) return ""; // token inconnu → on supprime
+    const idx = tokens.push(`<img class="dt-ico" alt="${key}" src="${ICON_BASE}${fname}">`) - 1;
+    return `__DT_TOKEN_${idx}__`;
+  });
+
+  // échappe tout le reste
+  let safe = protectedText.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  // normalise les sauts de ligne (+ LINE_SEPARATOR)
+  safe = safe
+    .replace(/\r\n|\r/g, "\n")
+    .replace(/&lt;\s*LINE_SEPARATOR\s*&gt;/gi, "\n")
+    .replace(/\n{2,}/g, "\n")
+    .replace(/\n/g, "<br>");
+
+  // réinjecte les icônes
+  return safe.replace(/__DT_TOKEN_(\d+)__/g, (_, i) => tokens[Number(i)] || "");
+}
+
+
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
     "https://api.warframestat.us/mods?language=en",
@@ -77,17 +128,17 @@
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
   /* ================== Nettoyage de texte (fix tokens API) ================== */
-  function cleanFxText(s) {
-    if (!s) return "";
-    let t = String(s);
-    t = t.replace(/\\n/g, " ");
-    t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, " ");
-    t = t.replace(/<DT_[A-Z_]+(?:_COLOR)?>/g, "");
-    t = t.replace(/<[^>]*>/g, "");
-    t = t.replace(/\s{2,}/g, " ").trim();
-    t = t.replace(/\.\s*\./g, ".");
-    return t;
-  }
+function cleanFxText(s) {
+  if (!s) return "";
+  let t = String(s);
+  t = t.replace(/\\n/g, " ");
+  t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, " ");
+  // retire toutes les balises HTML SAUF les <DT_...>
+  t = t.replace(/<(?!DT_[A-Z_]+(?:_COLOR)?\s*>)[^>]*>/g, "");
+  t = t.replace(/\s{2,}/g, " ").trim();
+  t = t.replace(/\.\s*\./g, ".");
+  return t;
+}
 
   /* ================== Effets ================== */
   function effectsFromLevelStats(m){
@@ -232,7 +283,7 @@
         <div class="mod-effects">
           ${
             lines.length
-            ? lines.map(t => `<div class="fx">• ${escapeHtml(t)}</div>`).join("")
+            ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
             : `<div class="fx muted">No effect data in API</div>`
           }
         </div>
