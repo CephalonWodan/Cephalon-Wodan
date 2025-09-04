@@ -13,7 +13,155 @@ const norm = (s) => String(s || "").trim();
 
 const COLORS = ["Crimson","Amber","Azure","Emerald","Violet","Topaz"];
 const COLOR_MAP = {
-  Crimson: "#e25656", Amber: "#f6c152", Azure: "#58b3e2",
+  Crimson: "#e25656", Amber: "#f6c152", Azure: "#58b3e2",(() => {
+  "use strict";
+
+  const $  = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+  const norm = (v) => String(v || "").trim();
+
+  const API = "https://api.warframestat.us/archonshards?language=en";
+
+  // Couleurs (badge)
+  const COLOR_META = {
+    Amber:   { dot: "#f3c04a", class: "amber"   },
+    Azure:   { dot: "#3aa0d8", class: "azure"   },
+    Emerald: { dot: "#44c08a", class: "emerald" },
+    Crimson: { dot: "#e25b64", class: "crimson" },
+    Violet:  { dot: "#9164d6", class: "violet"  },
+  };
+
+  // Images locales
+  function shardImage(color, tau = false) {
+    const base = `${color}ArchonShard.png`;
+    const tauf = `Tauforged${color}ArchonShard.png`;
+    return `img/shards/${tau ? tauf : base}`;
+  }
+
+  // UI helpers
+  const dot = (hex) =>
+    `<span class="sh-dot" style="background:${hex}"></span>`;
+
+  const badge = (label, cls = "") =>
+    `<span class="sh-badge ${cls}">${label}</span>`;
+
+  const colorBadge = (color) => {
+    const meta = COLOR_META[color] || { dot: "#9aa7b5" };
+    return `<span class="sh-badge">
+      ${dot(meta.dot)} ${color}
+    </span>`;
+  };
+
+  function makeTitle(color, tau) {
+    // Titre unique (plus de redondance)
+    return `${tau ? "Tauforged " : ""}${color} Archon Shard`;
+  }
+
+  function effectLines(obj) {
+    // obj.upgradeTypes est un dictionnaire { path: { value: "..." } } dans l'API
+    const up = obj.upgradeTypes || obj.effects || {};
+    const vals = [];
+    for (const k in up) {
+      const v = up[k];
+      const txt = typeof v === "string" ? v : v?.value;
+      if (txt) vals.push(txt);
+    }
+    return vals;
+  }
+
+  function card(sh) {
+    const color = sh.color || sh.name?.match(/(Amber|Azure|Emerald|Crimson|Violet)/)?.[1] || "Amber";
+    const tau   = !!(sh.tauforged || /tauforged/i.test(sh.name || ""));
+    const meta  = COLOR_META[color] || COLOR_META.Amber;
+
+    const title = makeTitle(color, tau);
+    const img   = shardImage(color, tau);
+    const lines = effectLines(sh);
+
+    const chips = [
+      tau ? badge("Tauforged", "orn") : "",
+      colorBadge(color),
+    ].filter(Boolean).join(" ");
+
+    return `
+      <div class="sh-card">
+        <div class="sh-cover">
+          <img src="${img}" alt="${title}" loading="lazy" decoding="async">
+        </div>
+        <div class="sh-body">
+          <div class="sh-head">
+            <div class="sh-title" title="${title}">${title}</div>
+            <div class="sh-chips">${chips}</div>
+          </div>
+          <!-- Sous-titre retiré pour éviter la redondance -->
+          <div class="sh-effects">
+            <div class="sh-effects-title">Effects</div>
+            ${
+              lines.length
+                ? `<ul class="sh-list">${lines.map(x => `<li>${x}</li>`).join("")}</ul>`
+                : `<div class="muted">No data in API.</div>`
+            }
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function render(arr) {
+    const grid = $("#shards-grid");
+    grid.innerHTML = arr.map(card).join("");
+    $("#status").textContent = `Shards loaded: ${arr.length} (EN)`;
+  }
+
+  async function fetchShards() {
+    const r = await fetch(API, { cache: "no-store" });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const data = await r.json();
+
+    // Normalisation simple (fallback si l'API change un peu)
+    return (Array.isArray(data) ? data : []).map(x => {
+      const name = norm(x.name || "");
+      const tau  = /tauforged/i.test(name) || !!x.tauforged;
+      const colorMatch = name.match(/(Amber|Azure|Emerald|Crimson|Violet)/i);
+      const color = x.color || (colorMatch ? colorMatch[1][0].toUpperCase() + colorMatch[1].slice(1).toLowerCase() : "");
+      return { ...x, color, tauforged: tau };
+    });
+  }
+
+  (function boot() {
+    $("#status").textContent = "Loading shards…";
+
+    // Squelette
+    $("#shards-grid").innerHTML = Array.from({ length: 6 }).map(() => `
+      <div class="sh-card">
+        <div class="sh-cover skeleton"></div>
+        <div class="sh-body">
+          <div class="sh-head">
+            <div class="sh-title skeleton-line w-2/3"></div>
+            <div class="sh-chips skeleton-pill"></div>
+          </div>
+          <div class="sh-effects">
+            <div class="skeleton-line w-5/6"></div>
+            <div class="skeleton-line w-4/6"></div>
+            <div class="skeleton-line w-3/6"></div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+    fetchShards()
+      .then(render)
+      .catch((e) => {
+        console.error(e);
+        const st = $("#status");
+        st.textContent = "Error loading shards.";
+        st.className = "mt-2 text-sm px-3 py-2 rounded-lg";
+        st.style.background = "rgba(255,0,0,.08)";
+        st.style.color = "#ffd1d1";
+      });
+  })();
+})();
+
   Emerald: "#4ec88f", Violet: "#9a68e3", Topaz: "#f1a33a"
 };
 const LOCAL_DIR = new URL("img/shards/", document.baseURI).href;
