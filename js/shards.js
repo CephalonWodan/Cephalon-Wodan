@@ -45,6 +45,7 @@ function parseTau(name=""){ return /tauforged/i.test(name); }
 /* ------------ Images: local → wiki → dot ------------ */
 function localShardPath(color, tau){
   if (!color || color === "Unknown") return "";
+  // Noms EXACTS comme dans ton repo : TauforgedCrimsonArchonShard.png, etc.
   const base = tau ? `Tauforged${color}ArchonShard.png` : `${color}ArchonShard.png`;
   return LOCAL_DIR + base;
 }
@@ -188,10 +189,15 @@ function shardCard(m){
     color !== "Unknown" ? colorChip(color) : "",
   ].filter(Boolean).join(" ");
 
-  const primary = localGrid || wikiGrid || dot;
-  const fallback = (localGrid ? (wikiGrid || dot) : dot);
-  const fullPrimary = localFull || wikiFull || dot;
-  const fullFallback = (localFull ? (wikiFull || dot) : dot);
+  const primary     = localGrid || wikiGrid || dot;
+  const fallback    = (localGrid ? (wikiGrid || dot) : dot);
+  const fullPrimary = localFull  || wikiFull  || dot;
+  const fullFallback= (localFull ? (wikiFull  || dot) : dot);
+
+  // Titre non tronqué + sous-titre seulement si utile
+  const title = escapeHtml(m.name || "Archon Shard");
+  const meta  = norm(m.type || "");
+  const showMeta = meta && !new RegExp(meta.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i").test(title);
 
   return `
   <div class="shard-card">
@@ -199,18 +205,18 @@ function shardCard(m){
        data-full="${escapeHtml(fullFallback)}"
        data-full-primary="${escapeHtml(fullPrimary)}"
        data-full-fallback="${escapeHtml(fullFallback)}"
-       data-name="${escapeHtml(m.name||"Archon Shard")}">
+       data-name="${title}">
       <img
         src="${escapeHtml(primary)}"
-        alt="${escapeHtml(m.name||"Archon Shard")}"
+        alt="${title}"
         data-fallback="${escapeHtml(fallback)}"
         loading="lazy" decoding="async">
     </a>
     <div class="shard-body">
       <div class="flex items-start justify-between gap-3">
         <div class="min-w-0">
-          <div class="title truncate">${escapeHtml(m.name || "Archon Shard")}</div>
-          <div class="meta">${m.type ? escapeHtml(m.type) : ""}</div>
+          <div class="title">${title}</div>
+          ${ showMeta ? `<div class="meta">${escapeHtml(meta)}</div>` : "" }
         </div>
         <div class="flex items-center gap-2 shrink-0">${metaRight}</div>
       </div>
