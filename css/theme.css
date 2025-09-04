@@ -23,7 +23,7 @@ html,body{background:var(--bg); color:var(--ink);}
   padding:.15rem .5rem; border-radius:999px;
   border:1px solid currentColor; opacity:.95;
 }
-.dt-ico{ width:14px; height:14px; object-fit:contain; }
+.dt-ico{ width:16px; height:16px; object-fit:contain; vertical-align:middle; }
 
 /* Cartes / panneaux */
 .card{
