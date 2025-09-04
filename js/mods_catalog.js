@@ -80,23 +80,12 @@
   function cleanFxText(s) {
     if (!s) return "";
     let t = String(s);
-
-    // 1) Remplacer les échappements littéraux "\n" par espace (pas de coupure au milieu d’une phrase)
     t = t.replace(/\\n/g, " ");
-
-    // 2) Supprimer les séparateurs internes
     t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, " ");
-
-    // 3) Supprimer les balises / tokens internes, ex: <DT_EXPLOSION_COLOR>, <font color=...>, etc.
     t = t.replace(/<DT_[A-Z_]+(?:_COLOR)?>/g, "");
-    t = t.replace(/<[^>]*>/g, ""); // catch-all
-
-    // 4) Normaliser les espaces
+    t = t.replace(/<[^>]*>/g, "");
     t = t.replace(/\s{2,}/g, " ").trim();
-
-    // 5) Petite correction courante : "Enemies are revealed by Punch Through." (éviter . .)
     t = t.replace(/\.\s*\./g, ".");
-
     return t;
   }
 
@@ -115,9 +104,7 @@
   function effectsFromDescription(m){
     let d = norm(m.description);
     if (!d) return [];
-    // nettoyage global d’abord (supprime \n, <LINE_SEPARATOR>, <DT_*>, etc.)
     d = cleanFxText(d);
-    // on segmente sur véritables séparateurs (reste robuste même après nettoyage)
     const parts = d
       .replace(/\r?\n/g, "|")
       .replace(/[•;·]/g, "|")
@@ -206,8 +193,12 @@
   };
 
   /* ================== UI helpers ================== */
+  // NOTE: on marque la puce de polarité par une classe dédiée "chip pol"
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
-  function polChip(p){ const src = POL_ICON(p), txt = canonPolarity(p); return `<span class="chip"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`; }
+  function polChip(p){
+    const src = POL_ICON(p), txt = canonPolarity(p);
+    return `<span class="chip pol"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
+  }
 
   function modCard(m){
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
@@ -217,14 +208,15 @@
     const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
-    const chips = [
+    // On met la pastille de polarité en DERNIÈRE position
+    const chipsLeft = [
       cat && badge(cat),
       compat && badge(compat),
-      pol && polChip(pol),
       rar && badge(rar, `rar-${rar}`),
       Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "",
       (!m.imgVerified) ? badge("Unreleased","gold") : ""
     ].filter(Boolean).join(" ");
+    const chipPol = pol ? polChip(pol) : "";
 
     return `
     <div class="mod-card">
@@ -233,7 +225,10 @@
       </a>
       <div class="mod-body">
         <div class="mod-title">${escapeHtml(m.name)}</div>
-        <div class="mod-chips">${chips}</div>
+        <div class="mod-chips">
+          <div class="chips-left">${chipsLeft}</div>
+          ${chipPol}
+        </div>
         <div class="mod-effects">
           ${
             lines.length
