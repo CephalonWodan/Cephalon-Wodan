@@ -1,56 +1,66 @@
 (() => {
   "use strict";
 
-  // --- DT inline icons (no badges / no aliases)
-const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
-const DT_ICON = {
-  DT_IMPACT_COLOR: "ImpactSymbol.png",
-  DT_PUNCTURE_COLOR: "PunctureSymbol.png",
-  DT_SLASH_COLOR: "SlashSymbol.png",
-  DT_FIRE_COLOR: "HeatSymbol.png",
-  DT_FREEZE_COLOR: "ColdSymbol.png",
-  DT_ELECTRICITY_COLOR: "ElectricitySymbol.png",
-  DT_POISON_COLOR: "ToxinSymbol.png",
-  DT_GAS_COLOR: "GasSymbol.png",
-  DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RadiationSymbol.png",
-  DT_VIRAL_COLOR: "ViralSymbol.png",
-  DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
-  DT_BLAST_COLOR: "BlastSymbol.png",
-  DT_RADIANT_COLOR: "VoidSymbol.png",
-  DT_SENTIENT_COLOR: "SentientSymbol.png",
-  DT_RESIST_COLOR: "ResistSymbol.png",
-  DT_POSITIVE_COLOR: "PositiveSymbol.png",
-  DT_NEGATIVE_COLOR: "NegativeSymbol.png",
-};
+  /* ================== Text Icons (DT_...) → <img> inline ================== */
+  const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
 
-// Replace <DT_...> (ou &lt;DT_...&gt;) par <img>, en échappant le reste.
-function renderTextIcons(input) {
-  const raw = String(input ?? "");
+  // mapping minimal : chaque balise -> nom de fichier PNG (aucun label/pastille)
+  const DT_ICONS = {
+    // Physiques
+    DT_IMPACT_COLOR:     "ImpactSymbol.png",
+    DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
+    DT_SLASH_COLOR:      "SlashSymbol.png",
 
-  // protège les tokens pendant l’échappement
-  const tokens = [];
-  const protectedText = raw.replace(/(?:<|&lt;)\s*(DT_[A-Z_]+)\s*(?:>|&gt;)/g, (_, key) => {
-    const fname = DT_ICON[key];
-    if (!fname) return ""; // token inconnu → on supprime
-    const idx = tokens.push(`<img class="dt-ico" alt="${key}" src="${ICON_BASE}${fname}">`) - 1;
-    return `__DT_TOKEN_${idx}__`;
-  });
+    // Élémentaires
+    DT_FIRE_COLOR:       "HeatSymbol.png",
+    DT_FREEZE_COLOR:     "ColdSymbol.png",
+    DT_ELECTRICITY_COLOR:"ElectricitySymbol.png",
+    DT_POISON_COLOR:     "ToxinSymbol.png",
+    DT_TOXIN_COLOR:      "ToxinSymbol.png",
 
-  // échappe tout le reste
-  let safe = protectedText.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    // Combinés
+    DT_GAS_COLOR:        "GasSymbol.png",
+    DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
+    DT_RADIATION_COLOR:  "RadiationSymbol.png",
+    DT_VIRAL_COLOR:      "ViralSymbol.png",
+    DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
+    DT_BLAST_COLOR:      "BlastSymbol.png",
+    DT_EXPLOSION_COLOR:  "BlastSymbol.png",
 
-  // normalise les sauts de ligne (+ LINE_SEPARATOR)
-  safe = safe
-    .replace(/\r\n|\r/g, "\n")
-    .replace(/&lt;\s*LINE_SEPARATOR\s*&gt;/gi, "\n")
-    .replace(/\n{2,}/g, "\n")
-    .replace(/\n/g, "<br>");
+    // Divers / Void
+    DT_RADIANT_COLOR:    "VoidSymbol.png",
+    DT_SENTIENT_COLOR:   "SentientSymbol.png",
+    DT_RESIST_COLOR:     "ResistSymbol.png",
+    DT_POSITIVE_COLOR:   "PositiveSymbol.png",
+    DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
+  };
 
-  // réinjecte les icônes
-  return safe.replace(/__DT_TOKEN_(\d+)__/g, (_, i) => tokens[Number(i)] || "");
-}
+  // Rend le texte en remplaçant les <DT_...> par une icône inline
+  // + absorbe les espaces/retours autour de la balise pour éviter les sauts de ligne.
+  function renderTextIcons(input) {
+    let s = String(input ?? "");
 
+    // normaliser d'abord
+    s = s.replace(/\r\n?|\r/g, "\n")
+         .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+
+    // échapper le HTML (sécurité)
+    s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // remplacer les tokens (forme brute ou encodée) en "mangeant" le blanc autour
+    s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+      const file = DT_ICONS[key];
+      if (!file) return "";
+      const src = ICON_BASE + file;
+      // style inline léger pour garantir l’affichage correct sans dépendre du CSS
+      return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
+    });
+
+    // ménage
+    s = s.replace(/[ \t]{2,}/g, " ");
+    s = s.replace(/\n/g, "<br>");
+    return s.trim();
+  }
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
@@ -127,18 +137,18 @@ function renderTextIcons(input) {
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte (fix tokens API) ================== */
-function cleanFxText(s) {
-  if (!s) return "";
-  let t = String(s);
-  t = t.replace(/\\n/g, " ");
-  t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, " ");
-  // retire toutes les balises HTML SAUF les <DT_...>
-  t = t.replace(/<(?!DT_[A-Z_]+(?:_COLOR)?\s*>)[^>]*>/g, "");
-  t = t.replace(/\s{2,}/g, " ").trim();
-  t = t.replace(/\.\s*\./g, ".");
-  return t;
-}
+  /* ================== Nettoyage de texte (sans supprimer les <DT_...>) ================== */
+  function cleanFxKeepTokens(s) {
+    if (!s) return "";
+    let t = String(s);
+    t = t.replace(/\\n/g, "\n");                 // \n échappés -> réels
+    t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+    // NE PAS supprimer <DT_...> !
+    // Ne pas supprimer toute balise générique ici (certaines descriptions ont des tags bénins).
+    // On se contente d’aplatir espaces multiples.
+    t = t.replace(/[ \t]{2,}/g, " ").trim();
+    return t;
+  }
 
   /* ================== Effets ================== */
   function effectsFromLevelStats(m){
@@ -150,17 +160,17 @@ function cleanFxText(s) {
       if (cand) pick = cand;
     }
     const stats = Array.isArray(pick?.stats) ? pick.stats : [];
-    return stats.map(s => cleanFxText(norm(s))).filter(Boolean);
+    return stats.map(s => cleanFxKeepTokens(norm(s))).filter(Boolean);
   }
   function effectsFromDescription(m){
     let d = norm(m.description);
     if (!d) return [];
-    d = cleanFxText(d);
+    d = cleanFxKeepTokens(d);
     const parts = d
       .replace(/\r?\n/g, "|")
       .replace(/[•;·]/g, "|")
       .split("|")
-      .map(x => cleanFxText(x))
+      .map(x => cleanFxKeepTokens(x))
       .filter(Boolean);
     return parts;
   }
@@ -245,7 +255,6 @@ function cleanFxText(s) {
 
   /* ================== UI helpers ================== */
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
-  // Badge de polarité (même style qu’un badge classique)
   function polBadge(p){
     const src = POL_ICON(p), txt = canonPolarity(p);
     return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
