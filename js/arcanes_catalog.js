@@ -8,7 +8,7 @@ const DT = {
   // Physiques
   DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
   DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
-  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
+  DT_SLASH_COLOR:      { icon: "SlashSymbol.png" },
 
   // Élémentaires
   DT_FIRE_COLOR:       { label: "Heat",       color: "#ff8a47", icon: "HeatSymbol.png" },
