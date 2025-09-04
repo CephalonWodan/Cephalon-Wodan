@@ -5,6 +5,7 @@
 // - Pas de dépendance à #vtabs
 // - Pas de fetch des fichiers *_by_warframe.json absents
 // - Failover API EN -> FR + messages d'erreur clairs
+// - Rendu des <DT_..._COLOR> + <LINE_SEPARATOR> (badges + icônes locales)
 // =====================================================
 
 const CFG = {
@@ -17,19 +18,84 @@ const CFG = {
   ABILITIES_META_URL: "data/warframe_abilities.json",
 };
 
-// ---------- utils
-const $ = (sel) => document.querySelector(sel);
+/* ---------------- Text Icons (DT_* + LINE_SEPARATOR) ---------------- */
+const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // ton dossier
+const USE_ICONS = true;
+
+const DT = {
+  // Physiques
+  DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
+  DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
+  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
+
+  // Élémentaires
+  DT_FIRE_COLOR:        { label: "Heat",        color: "#ff8a47", icon: "HeatSymbol.png" },
+  DT_FREEZE_COLOR:      { label: "Cold",        color: "#7dd3fc", icon: "ColdSymbol.png" },
+  DT_ELECTRICITY_COLOR: { label: "Electricity", color: "#f6d05e", icon: "ElectricitySymbol.png" },
+  DT_POISON_COLOR:      { label: "Toxin",       color: "#32d296", icon: "ToxinSymbol.png" },
+  DT_TOXIN_COLOR:       { alias: "DT_POISON_COLOR" },
+
+  // Combinés
+  DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
+  DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
+  DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
+  DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
+  DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
+  DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
+  DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
+
+  // Divers
+  DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
+  DT_SENTIENT_COLOR:   { label: "Sentient",   color: "#b0a6ff", icon: "SentientSymbol.png" },
+  DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
+  DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
+  DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
+};
+function resolveDT(key){
+  const v = DT[String(key || "").toUpperCase()];
+  return v?.alias ? resolveDT(v.alias) : v || null;
+}
+function renderTextIcons(input){
+  let s = String(input ?? "");
+
+  // Normalise les séparateurs (on garde les \n puis on convertira en <br>)
+  s = s.replace(/\r\n|\r/g, "\n").replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n").replace(/\n{2,}/g, "\n");
+
+  // Échappe d'abord tout le HTML
+  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  // Remplace les balises DT_* (acceptées brutes <TAG> ou encodées &lt;TAG&gt;)
+  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
+    const def = resolveDT(key);
+    if (!def) return "";
+    const { label, color, icon } = def;
+    if (USE_ICONS && icon) {
+      const src = ICON_BASE + icon;
+      return `<span class="dt-chip" style="color:${color}">
+        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
+      </span>`;
+    }
+    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
+  });
+
+  // Retours à la ligne → <br>
+  return s.replace(/\n/g, "<br>");
+}
+
+/* ---------------- utils ---------------- */
+const $  = (sel) => document.querySelector(sel);
 const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 const norm = (s) => String(s || "").trim();
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 const bySlot = (a, b) => (a.SlotKey ?? 99) - (b.SlotKey ?? 99);
 
 function variantFallbacks(name) {
   if (!name) return [];
-  const base = name.replace(/\s+Prime\b/i, "").trim();
+  const base = name.replace(/\s+(Prime|Umbra)\b/i, "").trim();
   const list = [];
   if (name !== base) list.push(base);
-  if (name === "Excalibur Umbra") list.push("Excalibur");
+  if (/^Excalibur Umbra$/i.test(name)) list.push("Excalibur");
   return list;
 }
 
@@ -57,7 +123,7 @@ async function fetchWarframesWithFailover() {
   throw new Error(`Impossible de charger la liste des Warframes.\n${errors.join("\n")}`);
 }
 
-// ---------- boot
+/* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
   try {
@@ -76,8 +142,7 @@ async function fetchWarframesWithFailover() {
       fetchJson(CFG.ABILITIES_META_URL, "warframe_abilities.json"),
     ]);
 
-    // ---- index values par path
-    const valuesByPath = new Map(valsRaw.map((x) => [x.path, x]));
+    // ---- index values (helper)
     function findValuesForInternal(internalName) {
       const cands = valsRaw.filter((v) => v.path.startsWith(internalName));
       if (!cands.length) return null;
@@ -164,37 +229,34 @@ async function fetchWarframesWithFailover() {
 
     // ---------- UI
     const card = $("#card");
-    const search = $("#search");
-    const picker = $("#picker");
 
-    function pill(label, value) {
-      return `
-        <div class="pill">
-          <div class="text-[10px] uppercase tracking-wide muted">${label}</div>
-          <div class="mt-1 font-medium">${txt(value)}</div>
-        </div>`;
-    }
-    function statBox(label, value) {
-      return `
-        <div class="stat">
-          <div class="text-[10px] uppercase tracking-wide text-slate-200">${label}</div>
-          <div class="text-lg font-semibold">${txt(value)}</div>
-        </div>`;
-    }
+    const pill = (label, value) => `
+      <div class="pill">
+        <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
+        <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
+      </div>`;
+
+    const statBox = (label, value) => `
+      <div class="stat">
+        <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
+        <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
+      </div>`;
 
     function renderCard(wf, iAbility = 0) {
+      const wfName = escapeHtml(wf.name);
+      const wfDesc = escapeHtml(wf.description || "");
       const abilities = wf.abilities || [];
       const a = abilities[iAbility] || {};
       const s = a.summary || {};
 
       const tabs = abilities.map((ab, i) =>
         `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">
-          ${ab.slot ?? i + 1}. ${ab.name || "—"}
+          ${escapeHtml(String(ab.slot ?? i + 1))}. ${escapeHtml(ab.name || "—")}
         </button>`
       ).join(" ");
 
       const affected = (s.affectedBy || [])
-        .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${k}</span>`)
+        .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`)
         .join(" ");
 
       const rowsHtml = (a.rows || []).map((r) => {
@@ -202,8 +264,8 @@ async function fetchWarframesWithFailover() {
         const main = r.mainNumeric != null ? r.mainNumeric : "";
         return `
           <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-            <div class="text-sm">${label}</div>
-            <div class="font-medium">${txt(main)}</div>
+            <div class="text-sm">${escapeHtml(label)}</div>
+            <div class="font-medium">${escapeHtml(txt(main))}</div>
           </div>`;
       }).join("");
 
@@ -213,7 +275,7 @@ async function fetchWarframesWithFailover() {
             <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
               ${
                 wf.image
-                  ? `<img src="${wf.image}" alt="${wf.name}" class="w-full h-full object-contain">`
+                  ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain">`
                   : `<div class="muted">Aucune image</div>`
               }
             </div>
@@ -221,17 +283,17 @@ async function fetchWarframesWithFailover() {
             <!-- Polarités sous l'image -->
             <div class="w-full">
               <div class="aura-label">Aura polarity</div>
-            <div class="polarity-row" data-zone="aura"></div>
-            <div class="polarity-label mt-3">Polarities</div>
-            <div class="polarity-row" data-zone="others"></div>
+              <div class="polarity-row" data-zone="aura"></div>
+              <div class="polarity-label mt-3">Polarities</div>
+              <div class="polarity-row" data-zone="others"></div>
             </div>
           </div>
 
           <div class="flex-1 flex flex-col gap-4">
             <div class="flex items-start gap-4">
               <div class="min-w-0 flex-1">
-                <h2 class="text-xl font-semibold">${wf.name}</h2>
-                <p class="mt-2 text-[var(--muted)]">${wf.description || ""}</p>
+                <h2 class="text-xl font-semibold">${wfName}</h2>
+                <p class="mt-2 text-[var(--muted)]">${wfDesc}</p>
               </div>
             </div>
 
@@ -247,8 +309,8 @@ async function fetchWarframesWithFailover() {
               ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ""}
 
               <div class="card p-4 orn">
-                <div class="font-semibold">${a.name || "—"}</div>
-                <p class="mt-1 text-[var(--muted)]">${(a.description || "").replace(/\r?\n/g, " ")}</p>
+                <div class="font-semibold">${escapeHtml(a.name || "—")}</div>
+                <p class="mt-1 text-[var(--muted)]">${renderTextIcons((a.description || "").replace(/\r?\n/g, "\n"))}</p>
 
                 <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
                   ${pill("Coût", s.costEnergy)}
