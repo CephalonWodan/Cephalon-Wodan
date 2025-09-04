@@ -1,56 +1,77 @@
-/* css/shards.css — Archon Shards (v3) */
-
-.badge { display:inline-flex; align-items:center; gap:.35rem; font-size:.75rem;
-  padding:.15rem .5rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.04);
+/* Carte */
+.sh-card{
+  background: var(--panel-1,#0f1a2d);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  overflow: hidden;
 }
-.badge.gold { border-color: rgba(212,175,55,.5); color:#D4AF37; background:rgba(212,175,55,.06); }
-
-.color-chip { display:inline-flex; align-items:center; gap:.4rem; font-size:.8rem;
-  padding:.25rem .5rem; border-radius:.5rem; border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.04);
+.sh-cover{
+  background: rgba(255,255,255,.03);
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
-.color-dot { width:.75rem; height:.75rem; border-radius:9999px; display:inline-block; }
+.sh-cover img{
+  width: 100%;
+  height: 220px;
+  object-fit: contain;
+  display: block;
+}
+.sh-body{ padding: 12px 14px 14px; }
 
-/* Stats couleurs (compteurs) */
-#color-stats .stat {
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:.3rem .6rem; border-radius:.6rem;
-  border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04);
-  font-size:.85rem;
+/* Titre + badges à droite */
+.sh-head{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:8px;
+}
+.sh-title{
+  font-weight:600;
+  font-size:1rem;
+  line-height:1.25;
+  /* >>> plus de troncature : le titre peut aller sur 2 lignes */
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  flex:1 1 auto;
+  min-width:0;
 }
 
-.shard-card { border:1px solid rgba(255,255,255,.08); background:var(--panel-1);
-  border-radius: 1rem; overflow: hidden; display:flex; flex-direction: column;
+/* Badges */
+.sh-chips{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  flex-shrink:0;
 }
-.shard-cover { position:relative; height: 260px; background: rgba(255,255,255,.04);
-  display:flex; align-items:center; justify-content:center; overflow:hidden;
+.sh-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:.35rem;
+  padding:.18rem .5rem;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:9999px;
+  font-size:12px;
+  line-height:1.2;
+  background:rgba(255,255,255,.03);
 }
-.shard-cover img { width:100%; height:100%; object-fit:contain; }
-
-.shard-body { padding: 12px 14px; display:flex; flex-direction:column; gap:.4rem; }
-.shard-body .title { font-weight:600; line-height:1.2; }
-.shard-body .meta { font-size:.75rem; color: var(--muted); }
-.shard-body .desc { color: var(--muted); font-size: .92rem; }
-
-.kv { display:grid; grid-template-columns: 1fr auto; gap:.35rem .75rem; }
-.kv .k { color: var(--muted); font-size:.85rem; }
-.kv .v { font-weight:500; font-size:.95rem; }
-
-/* Boutons dans la carte */
-.card-actions { display:flex; gap:.5rem; margin-top:.4rem; }
-.card-actions a {
-  font-size:.8rem; padding:.3rem .55rem; border-radius:.5rem;
-  border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04);
+.sh-badge.orn{
+  border-color: rgba(212,175,55,.5);
+  color:#e5c979;
 }
-.card-actions a:hover { background:rgba(255,255,255,.06); }
+.sh-dot{
+  width:8px;height:8px;border-radius:9999px;display:inline-block;
+}
 
-/* Lightbox */
-#lightbox.hidden { display:none; }
-#lightbox .lb-backdrop { position:fixed; inset:0; background: rgba(0,0,0,.75); }
-#lightbox .lb-content { position:fixed; inset: 10% 5% auto 5%; background: var(--panel-1);
-  border:1px solid rgba(255,255,255,.14); border-radius: .75rem; padding: 10px; display:grid; gap:.5rem; }
-#lightbox img { max-width: 100%; max-height: calc(80vh - 60px); margin: 0 auto; display:block; }
-#lightbox .lb-caption { text-align:center; font-size:.85rem; color: var(--muted); }
-#lightbox .lb-close { position:absolute; right:.5rem; top:.5rem; border:1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.06); border-radius:.5rem; padding:.25rem .5rem; }
+/* Effets */
+.sh-effects-title{ color: var(--muted,#8aa0b3); margin-bottom:6px; }
+.sh-list{ padding-left:1rem; list-style: disc; }
+.sh-list li{ margin:.25rem 0; }
+
+/* Skeletons */
+.skeleton{ height:220px; background:rgba(255,255,255,.04); }
+.skeleton-line{ height:12px; background:rgba(255,255,255,.06); border-radius:6px; margin:6px 0; }
+.skeleton-pill{ width:70px; height:22px; background:rgba(255,255,255,.06); border-radius:9999px; }
+
+/* (Option) si un ancien sous-titre existe encore dans le HTML, on le masque */
+.sh-sub{ display:none !important; }
