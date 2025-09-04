@@ -38,6 +38,9 @@
 }
 .arcane-body .title {
   font-weight: 600;
+  white-space: normal;       /* pas de troncature */
+  overflow: visible;
+  text-overflow: clip;
 }
 .arcane-body .meta {
   color: var(--muted);
@@ -49,18 +52,34 @@
   line-height: 1.35;
 }
 
+/* Bloc TRIGGER (kv) — mise en ligne, lisible */
 .kv {
-  display: grid;
-  grid-template-columns: 90px 1fr;
-  gap: 6px 10px;
-  align-items: start;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: .6rem;
+  margin-top: .35rem;
+  border-radius: 12px;
+  background: var(--panel-2);
+  border: 1px solid rgba(255,255,255,.08);
   font-size: 13px;
 }
 .kv .k {
+  flex: 0 0 auto;
   color: var(--muted);
   text-transform: uppercase;
-  letter-spacing: .06em;
+  letter-spacing: .08em;
   font-size: 11px;
+  padding: .25rem .5rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.08);
+}
+.kv .v {
+  flex: 1 1 auto;
+  font-weight: 600;
+  white-space: normal; /* permet le retour à la ligne naturel */
+  line-height: 1.35;
 }
 
 /* badges */
@@ -72,6 +91,19 @@
   padding: .15rem .5rem;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.18);
+}
+
+/* Text Icons (DT_*) */
+.dt-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3em;
+  white-space: nowrap;
+}
+.dt-ico {
+  width: 1.05em;
+  height: 1.05em;
+  vertical-align: -0.2em;
 }
 
 /* sidebar filtres (checkbox pills) */
