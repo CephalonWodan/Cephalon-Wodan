@@ -17,20 +17,37 @@
   display: block;
 }
 .mod-body { padding: 12px 14px 14px; }
-.mod-title { font-weight: 600; margin-bottom: 8px; }
 
-/* Rangée de badges + polarité à droite */
-.mod-chips {
+/* Titre + polarité sur la même ligne */
+.mod-head {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
-.mod-chips .chips-left {
+.mod-title {
+  font-weight: 600;
+  font-size: 1rem;
+  flex: 1 1 auto;      /* prend la place restante */
+  min-width: 0;        /* autorise ellipses */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Badge de polarité à droite, même style que les autres badges */
+.badge.pol-badge {
+  flex-shrink: 0;
+}
+
+/* Rangée de badges sous le titre */
+.mod-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 10px;
 }
+
+/* Badges (style uniforme) */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -43,25 +60,11 @@
   background: rgba(255,255,255,.03);
 }
 .badge.gold { border-color: rgba(212,175,55,.5); color: #e5c979; }
-
-/* Pastille de polarité — petite et alignée à droite */
-.mod-chips .chip.pol {
-  margin-left: auto;                /* pousse à droite */
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  padding: .18rem .5rem;
-  border: 1px dashed rgba(212,175,55,.45);
-  border-radius: 9999px;
-  font-size: 12px;
-  color: #e5c979;
-  background: rgba(212,175,55,.06);
-}
-.mod-chips .chip.pol img {
-  width: 14px;                      /* plus petit */
+.badge.pol-badge img {
+  width: 14px;
   height: 14px;
   display: inline-block;
-  transform: translateY(-1px);      /* léger alignement vertical */
+  transform: translateY(-1px);
 }
 
 /* Liste des effets */
