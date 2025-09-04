@@ -1,6 +1,15 @@
 (() => {
   "use strict";
 
+  /* badge de polarité dans l’en-tête de carte */
+.badge.pol-badge {
+  display:inline-flex; align-items:center; gap:.35rem;
+}
+.badge.pol-badge img {
+  width:18px; height:18px; display:inline-block; vertical-align:-3px;
+}
+
+  
   /* ================== Text Icons (DT_* + LINE_SEPARATOR) ================== */
   const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
   const USE_ICONS = true;
