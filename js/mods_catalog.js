@@ -1,28 +1,41 @@
 (() => {
   "use strict";
 
-  // --- Text Icons: rend les balises <DT_..._COLOR> et <LINE_SEPARATOR>
-const DT = {
-  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "Slash.png" },
-  DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "Impact.png" },
-  DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "Puncture.png" },
-  DT_FIRE_COLOR:       { label: "Heat",       color: "#ff8a47", icon: "Heat.png" },
-  DT_FREEZE_COLOR:     { label: "Cold",       color: "#7dd3fc", icon: "Cold.png" },
-  DT_ELECTRICITY_COLOR:{ label: "Electricity",color: "#f6d05e", icon: "Electricity.png" },
-  DT_POISON_COLOR:     { label: "Toxin",      color: "#32d296", icon: "Toxin.png" },
-  DT_TOXIN_COLOR:      { alias: "DT_POISON_COLOR" },
-  DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "Gas.png" },
-  DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "Magnetic.png" },
-  DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "Radiation.png" },
-  DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "Viral.png" },
-  DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "Corrosive.png" },
-  DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "Blast.png" },
-  DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
-  DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "Void.png" },
-};
+// --- Text Icons: rend les balises <DT_..._COLOR> et <LINE_SEPARATOR> en badges + icônes
+const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // <- ton dossier
+const USE_ICONS = true; // on a les images, on active
 
-const ICON_BASE = "img/dmg/";      // <- si tu ajoutes des PNG ici
-const USE_ICONS = false;           // passe à true quand tu auras posé les fichiers
+const DT = {
+  // Physiques
+  DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
+  DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
+  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
+
+  // Élémentaires
+  DT_FIRE_COLOR:       { label: "Heat",       color: "#ff8a47", icon: "HeatSymbol.png" },
+  DT_FREEZE_COLOR:     { label: "Cold",       color: "#7dd3fc", icon: "ColdSymbol.png" },
+  DT_ELECTRICITY_COLOR:{ label: "Electricity",color: "#f6d05e", icon: "ElectricitySymbol.png" },
+  DT_POISON_COLOR:     { label: "Toxin",      color: "#32d296", icon: "ToxinSymbol.png" },
+  DT_TOXIN_COLOR:      { alias: "DT_POISON_COLOR" },
+
+  // Combinés
+  DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
+  DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
+  DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
+  DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
+  DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
+  DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
+  DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
+
+  // “Void” / divers
+  DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
+
+  // Au cas où (tu as ces PNG dans ton dossier)
+  DT_SENTIENT_COLOR:   { label: "Sentient",   color: "#b0a6ff", icon: "SentientSymbol.png" },
+  DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
+  DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
+  DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
+};
 
 function resolveDT(key){
   const k = key.toUpperCase();
@@ -31,6 +44,39 @@ function resolveDT(key){
   if (v.alias) return resolveDT(v.alias);
   return v;
 }
+
+// sécurise le HTML puis remplace les balises (gère brut <TAG> et échappé &lt;TAG&gt;)
+function renderTextIcons(input){
+  let s = String(input ?? "");
+
+  // Normalisation des séparateurs
+  s = s.replace(/\r\n|\r/g, "\n")
+       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
+       .replace(/\n{2,}/g, "\n");
+
+  // Échapper le HTML (sécurité)
+  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+  // Remplacer les balises DT_* (formes encodées &lt;...&gt; ou brutes)
+  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
+    const def = resolveDT(key);
+    if (!def) return ""; // inconnu → on supprime proprement
+    const { label, color, icon } = def;
+    if (USE_ICONS && icon) {
+      const src = ICON_BASE + icon;
+      return `<span class="dt-chip" style="color:${color}">
+        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
+      </span>`;
+    }
+    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
+  });
+
+  // Retours à la ligne → <br>
+  s = s.replace(/\n/g, "<br>");
+
+  return s;
+}
+
 
 // sécurise le HTML puis remplace les balises (gère brut <TAG> et échappé &lt;TAG&gt;)
 function renderTextIcons(input){
