@@ -1,296 +1,252 @@
-// Catalogue Arcanes — utilise data/arcanes_list.json (généré depuis arcanes.Lua)
+// js/arcanes_catalog.js
+// Catalogue Arcanes — illustre chaque arcane (local -> wiki -> placeholder)
 
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 const norm = (s) => String(s || "").trim();
-const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const escapeHtml = (s) =>
+  String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-// Rangs/rareté (ordre)
-const RAR_ORDER = ["Common","Uncommon","Rare","Legendary"];
-const TYPE_ORDER = ["Warframe","Primary","Secondary","Melee","Shotgun","Bow","Amp","Operator","Kitgun","Zaw"];
-
-const state = {
-  all: [],
+// --- Préférences d’affichage
+const STATE = {
+  list: [],
   filtered: [],
   page: 1,
-  perPage: 18,
+  perPage: 24,
   q: "",
   sort: "name",
-  types: new Set(),
-  rarities: new Set(),
 };
 
-// ---------- UI helpers
-function badge(text, color="") {
-  const cls = color === "gold" ? "badge gold" : color === "gray" ? "badge gray" : "badge";
-  return `<span class="${cls}">${escapeHtml(text)}</span>`;
+// Emplacement pour d’éventuelles images locales (optionnel, tu peux les ajouter plus tard)
+const LOCAL_DIR = new URL("img/arcanes/", document.baseURI).href;
+
+// Couleurs par rareté (pour le placeholder et les puces)
+const RARITY_COLORS = {
+  Legendary: "#d4af37",
+  Rare: "#f39c12",
+  Uncommon: "#58b3e2",
+  Common: "#7dd3fc",
+};
+
+// -------- Helpers d’accès de champs (le JSON peut être en CamelCase ou lower-case)
+const get = (obj, keys, def = "") => {
+  for (const k of keys) {
+    if (obj && obj[k] != null) return obj[k];
+  }
+  return def;
+};
+const getName        = (m) => get(m, ["name", "Name"], "");
+const getType        = (m) => get(m, ["type", "Type"], "");
+const getDesc        = (m) => get(m, ["description", "Description"], "");
+const getCriteria    = (m) => get(m, ["criteria", "Criteria"], "");
+const getRarity      = (m) => get(m, ["rarity", "Rarity"], "");
+const getImageFile   = (m) => get(m, ["image", "Image"], "");      // ex: ArcaneAcceleration.png
+const getIconFile    = (m) => get(m, ["icon", "Icon"], "");        // ex: ArcaneAcceleration64x.png
+const getWikiThumb   = (m) => get(m, ["wikiaThumbnail", "wikiathumbnail", "wikia_thumbnail", "thumbnail"], "");
+
+// -------- Normalisation d’URL wiki (et upscale)
+function normalizeUrl(u) {
+  if (!u) return "";
+  return u.startsWith("//") ? "https:" + u : u;
+}
+function upscaleWikiThumb(url, size = 512) {
+  if (!url) return "";
+  let out = normalizeUrl(url);
+  out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
+  if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
+    out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs = "") => `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
+  }
+  return out;
 }
 
-function arcCard(a) {
-  const name = a.Name || a.name || "—";
-  const type = a.Type || a.type || "—";
-  const rarity = a.Rarity || a.rarity || "—";
-  const rank = a.MaxRank != null ? String(a.MaxRank) : "—";
-  const criteria = a.Criteria || a.criteria || "";
-  const desc = a.Description || a.description || "";
+// -------- Placeholder SVG si aucune image n’est trouvée
+function placeholderArcane(name, rarity) {
+  const hex = RARITY_COLORS[rarity] || "#888";
+  const initials = (name || "Arcane").split(/\s+/).map(s => s[0]).slice(0,2).join("").toUpperCase();
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+    <defs>
+      <radialGradient id="g" cx="50%" cy="45%" r="65%">
+        <stop offset="0%" stop-color="#fff" stop-opacity=".18"/>
+        <stop offset="100%" stop-color="${hex}"/>
+      </radialGradient>
+    </defs>
+    <circle cx="120" cy="120" r="110" fill="url(#g)" stroke="rgba(0,0,0,.4)" stroke-width="4"/>
+    <text x="50%" y="54%" text-anchor="middle" font-family="Inter,system-ui,Arial" font-size="68" fill="#111" opacity="0.85">${initials}</text>
+  </svg>`;
+  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+}
 
-  const right = [
-    rarity ? badge(rarity, rarity === "Legendary" ? "gold" : "") : "",
-    type ? badge(type, "gray") : "",
-    rank !== "—" ? badge(`Max Rank ${rank}`, "gray") : ""
-  ].filter(Boolean).join(" ");
+// -------- Construction des sources d’image pour un arcane
+// Priorité: 1) local (Image puis Icon)  2) wiki thumbnail upscalé  3) placeholder
+function imageSourcesForArcane(m, apiByName) {
+  const name = getName(m);
+  const rarity = getRarity(m);
+  const localImage = getImageFile(m);
+  const localIcon  = getIconFile(m);
+
+  const local1 = localImage ? (LOCAL_DIR + localImage) : "";
+  const local2 = localIcon  ? (LOCAL_DIR + localIcon)  : "";
+
+  // Enrichissement via l’API /arcanes : wikiaThumbnail + fallback
+  const apiRec = apiByName.get(name.toLowerCase());
+  const apiThumb = apiRec ? (apiRec.wikiaThumbnail || apiRec.wikiathumbnail || apiRec.thumbnail || apiRec.image || "") : "";
+
+  const wiki = upscaleWikiThumb(getWikiThumb(m) || apiThumb, 640);
+
+  const primary = local1 || local2 || wiki || placeholderArcane(name, rarity);
+  const fallback = local2 || wiki || placeholderArcane(name, rarity);
+
+  return { primary, fallback };
+}
+
+// -------- Carte UI
+function rarityBadge(r) {
+  const hex = RARITY_COLORS[r] || "rgba(255,255,255,.18)";
+  return `<span class="badge" style="border-color:${hex};color:${hex}">${escapeHtml(r || "—")}</span>`;
+}
+function typeBadge(t) {
+  return `<span class="badge">${escapeHtml(t || "—")}</span>`;
+}
+function criteriaRow(c) {
+  if (!c) return "";
+  return `<div class="kv"><div class="k">Trigger</div><div class="v">${escapeHtml(c)}</div></div>`;
+}
+
+function cardArcane(m, apiByName) {
+  const name = getName(m);
+  const type = getType(m);
+  const desc = getDesc(m);
+  const crit = getCriteria(m);
+  const rar  = getRarity(m);
+
+  const { primary, fallback } = imageSourcesForArcane(m, apiByName);
 
   return `
-    <div class="arc-card">
-      <div class="flex items-start justify-between gap-3">
-        <div class="min-w-0">
-          <div class="arc-title truncate">${escapeHtml(name)}</div>
-          ${ type ? `<div class="arc-meta">${escapeHtml(type)}</div>` : "" }
-        </div>
-        <div class="flex items-center gap-2 shrink-0">${right}</div>
+    <div class="arcane-card orn">
+      <div class="arcane-cover">
+        <img src="${escapeHtml(primary)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async"
+             onerror="this.onerror=null; this.src='${escapeHtml(fallback)}';">
       </div>
-
-      ${ criteria ? `
-        <div class="mt-3">
-          <div class="text-sm muted mb-1">Criteria</div>
-          <div class="arc-desc">${escapeHtml(criteria)}</div>
-        </div>` : "" }
-
-      ${ desc ? `
-        <div class="mt-3">
-          <div class="text-sm muted mb-1">Description</div>
-          <div class="arc-desc">${escapeHtml(desc)}</div>
-        </div>` : "" }
+      <div class="arcane-body">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="title truncate">${escapeHtml(name)}</div>
+            <div class="meta">${type ? escapeHtml(type) : ""}</div>
+          </div>
+          <div class="shrink-0 flex items-center gap-2">
+            ${rarityBadge(rar)}${type ? typeBadge(type) : ""}
+          </div>
+        </div>
+        ${crit ? `<div class="mt-2">${criteriaRow(crit)}</div>` : ""}
+        ${desc ? `<p class="desc mt-2">${escapeHtml(desc)}</p>` : ""}
+      </div>
     </div>
   `;
 }
 
-// ---------- URL sync (facultatif, pratique)
-function parseQuery(){
-  const p = new URLSearchParams(location.search);
-  state.q = norm(p.get("q") || "");
-  state.sort = p.get("sort") || "name";
-  const t = (p.get("types") || "").split(",").map(norm).filter(Boolean);
-  const r = (p.get("rar") || "").split(",").map(norm).filter(Boolean);
-  state.types = new Set(t);
-  state.rarities = new Set(r);
-  const page = parseInt(p.get("page")||"1",10);
-  state.page = Number.isFinite(page) && page > 0 ? page : 1;
-}
-function writeQuery(){
-  const p = new URLSearchParams();
-  if (state.q) p.set("q", state.q);
-  if (state.sort && state.sort !== "name") p.set("sort", state.sort);
-  if (state.types.size) p.set("types", [...state.types].join(","));
-  if (state.rarities.size) p.set("rar", [...state.rarities].join(","));
-  if (state.page > 1) p.set("page", String(state.page));
-  const url = `${location.pathname}?${p.toString()}`;
-  history.replaceState(null, "", url);
+// -------- Rendu + pagination minimaliste
+function render() {
+  const total = STATE.filtered.length;
+  const pages = Math.max(1, Math.ceil(total / STATE.perPage));
+  STATE.page = Math.min(Math.max(1, STATE.page), pages);
+
+  $("#pageinfo").textContent = `Page ${STATE.page} / ${pages}`;
+  $("#prev").disabled = STATE.page <= 1;
+  $("#next").disabled = STATE.page >= pages;
+  $("#count").textContent = `${total} arcane(s)`;
+
+  const start = (STATE.page - 1) * STATE.perPage;
+  const slice = STATE.filtered.slice(start, start + STATE.perPage);
+
+  const grid = $("#results");
+  grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+  grid.innerHTML = slice.map(m => cardArcane(m, STATE.apiByName || new Map())).join("");
 }
 
-// ---------- Filtres UI
-function renderTypeFilters(types){
-  const host = $("#f-type");
-  const arr = [...types].sort((a,b)=> TYPE_ORDER.indexOf(a) - TYPE_ORDER.indexOf(b));
-  host.innerHTML = arr.map(t=>{
-    const id = `type-${t.replace(/\s+/g,"_")}`;
-    const checked = state.types.has(t) ? "checked" : "";
-    return `<label for="${id}" class="flex items-center gap-2 cursor-pointer">
-              <input id="${id}" type="checkbox" value="${escapeHtml(t)}" ${checked} class="accent-[var(--ink)]">
-              ${badge(t,"gray")}
-            </label>`;
-  }).join("");
-  arr.forEach(t=>{
-    const el = $(`#type-${t.replace(/\s+/g,"_")}`);
-    el.addEventListener("change", ()=>{
-      if (el.checked) state.types.add(t);
-      else state.types.delete(t);
-      state.page = 1;
-      applyFilters(); writeQuery();
-    });
-  });
-}
-function renderRarityFilters(rars){
-  const host = $("#f-rar");
-  const arr = [...rars].sort((a,b)=> RAR_ORDER.indexOf(a) - RAR_ORDER.indexOf(b));
-  host.innerHTML = arr.map(r=>{
-    const id = `rar-${r.replace(/\s+/g,"_")}`;
-    const checked = state.rarities.has(r) ? "checked" : "";
-    return `<label for="${id}" class="flex items-center gap-2 cursor-pointer">
-              <input id="${id}" type="checkbox" value="${escapeHtml(r)}" ${checked} class="accent-[var(--ink)]">
-              ${badge(r, r==="Legendary"?"gold":"")}
-            </label>`;
-  }).join("");
-  arr.forEach(r=>{
-    const el = $(`#rar-${r.replace(/\s+/g,"_")}`);
-    el.addEventListener("change", ()=>{
-      if (el.checked) state.rarities.add(r);
-      else state.rarities.delete(r);
-      state.page = 1;
-      applyFilters(); writeQuery();
-    });
-  });
-}
-function renderActiveChips(){
-  const wrap = $("#active-filters");
-  const chips = [];
-  if (state.q) chips.push({k:"q", label:`Text: "${escapeHtml(state.q)}"`});
-  if (state.types.size) chips.push({k:"types", label:`Types: ${[...state.types].join(", ")}`});
-  if (state.rarities.size) chips.push({k:"rar", label:`Rarity: ${[...state.rarities].join(", ")}`});
-  wrap.innerHTML = chips.length
-    ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
-    : "";
-  wrap.querySelectorAll("[data-chip]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const [k] = btn.dataset.chip.split("|");
-      if (k==="q") { state.q=""; $("#q").value=""; }
-      if (k==="types") { state.types.clear(); renderTypeFilters(allTypes(state.all)); }
-      if (k==="rar") { state.rarities.clear(); renderRarityFilters(allRarities(state.all)); }
-      state.page = 1; applyFilters(); writeQuery();
-    });
-  });
-}
+function applyFilters() {
+  const q = STATE.q = norm($("#q").value).toLowerCase();
+  const sort = STATE.sort = $("#sort").value;
 
-// ---------- Filters/Sort/Render
-function allTypes(arr){ return new Set(arr.map(a=> norm(a.Type || a.type)).filter(Boolean)); }
-function allRarities(arr){ return new Set(arr.map(a=> norm(a.Rarity || a.rarity)).filter(Boolean)); }
-
-function applyFilters(){
-  const q = state.q = norm($("#q").value).toLowerCase();
-  let arr = state.all.slice();
-
-  if (state.types.size) arr = arr.filter(a => state.types.has(norm(a.Type || a.type)));
-  if (state.rarities.size) arr = arr.filter(a => state.rarities.has(norm(a.Rarity || a.rarity)));
+  let arr = STATE.list.slice();
 
   if (q) {
-    arr = arr.filter(a => {
+    arr = arr.filter((m) => {
       const hay = [
-        a.Name, a.name, a.Description, a.description, a.Criteria, a.criteria, a.Type, a.type
+        getName(m), getType(m), getDesc(m), getCriteria(m), getRarity(m)
       ].map(norm).join(" ").toLowerCase();
       return hay.includes(q);
     });
   }
 
-  const sort = state.sort = $("#sort").value;
-  arr.sort((a,b)=>{
-    if (sort === "type") {
-      const A = TYPE_ORDER.indexOf(a.Type||a.type); const B = TYPE_ORDER.indexOf(b.Type||b.type);
-      return (A-B) || String(a.Name||a.name).localeCompare(String(b.Name||b.name));
-    }
-    if (sort === "rarity") {
-      const A = RAR_ORDER.indexOf(a.Rarity||a.rarity); const B = RAR_ORDER.indexOf(b.Rarity||b.rarity);
-      return (A-B) || String(a.Name||a.name).localeCompare(String(b.Name||b.name));
-    }
-    if (sort === "maxrank") {
-      const A = a.MaxRank ?? -1; const B = b.MaxRank ?? -1;
-      return (B-A) || String(a.Name||a.name).localeCompare(String(b.Name||b.name));
-    }
-    return String(a.Name||a.name).localeCompare(String(b.Name||b.name));
+  arr.sort((a, b) => {
+    if (sort === "rarity") return getRarity(a).localeCompare(getRarity(b)) || getName(a).localeCompare(getName(b));
+    return getName(a).localeCompare(getName(b));
   });
 
-  state.filtered = arr;
-  state.page = Math.min(state.page, Math.max(1, Math.ceil(arr.length / state.perPage))) || 1;
-
-  $("#count").textContent = `${arr.length} arcane(s)`;
-  renderActiveChips();
+  STATE.filtered = arr;
+  STATE.page = 1;
   render();
 }
 
-function render(){
-  const total = state.filtered.length;
-  const pages = Math.max(1, Math.ceil(total / state.perPage));
-  state.page = Math.min(Math.max(1, state.page), pages);
-  $("#prev").disabled = (state.page <= 1);
-  $("#next").disabled = (state.page >= pages);
-  $("#pageinfo").textContent = `Page ${state.page} / ${pages}`;
-
-  const start = (state.page - 1) * state.perPage;
-  const slice = state.filtered.slice(start, start + state.perPage);
-
-  // CARTES
-  const grid = $("#results");
-  grid.className = "grid gap-4";
-  grid.innerHTML = slice.map(arcCard).join("");
-
-  // TABLE
-  const tb = $("#table-body");
-  tb.innerHTML = slice.map(a => `
-    <tr>
-      <td class="p-2 align-top">${escapeHtml(a.Name || a.name || "—")}</td>
-      <td class="p-2 align-top">${escapeHtml(a.Type || a.type || "—")}</td>
-      <td class="p-2 align-top">${escapeHtml(a.Rarity || a.rarity || "—")}</td>
-      <td class="p-2 align-top">${a.MaxRank != null ? a.MaxRank : "—"}</td>
-      <td class="p-2 align-top">${escapeHtml(a.Criteria || a.criteria || "")}</td>
-      <td class="p-2 align-top">${escapeHtml(a.Description || a.description || "")}</td>
-    </tr>
-  `).join("");
+// -------- Chargement des données (local JSON + API pour thumbs wiki)
+async function loadLocalArcanes() {
+  try {
+    const r = await fetch("data/arcanes_list.json", { cache: "no-store" });
+    if (!r.ok) return [];
+    const data = await r.json();
+    // data attendu: tableau d’objets
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+async function loadApiArcanes() {
+  try {
+    const r = await fetch("https://api.warframestat.us/arcanes?language=en", { cache: "no-store" });
+    if (!r.ok) return [];
+    const data = await r.json();
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
 }
 
-// ---------- Boot
-(async function boot(){
+function mapByNameCaseInsensitive(list) {
+  const m = new Map();
+  for (const it of list) {
+    const n = norm(it.name || it.Name || "");
+    if (!n) continue;
+    m.set(n.toLowerCase(), it);
+  }
+  return m;
+}
+
+// -------- Boot
+(async function boot() {
   const status = $("#status");
   try {
-    // Skeleton simple
-    $("#results").innerHTML = Array.from({length:6}).map(()=>`
-      <div class="arc-card">
-        <div class="h-5 rounded bg-[rgba(255,255,255,.08)] w-2/3 mb-2"></div>
-        <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-1/2 mb-4"></div>
-        <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-5/6 mb-1"></div>
-        <div class="h-3 rounded bg-[rgba(255,255,255,.06)] w-4/6"></div>
-      </div>
-    `).join("");
+    status.textContent = "Chargement des arcanes…";
 
-    // Charge la liste JSON (générée par ton script)
-    const res = await fetch("data/arcanes_list.json", { cache: "no-store" });
-    const data = await res.json();
+    const [localList, apiList] = await Promise.all([loadLocalArcanes(), loadApiArcanes()]);
+    STATE.list = localList;
+    STATE.apiByName = mapByNameCaseInsensitive(apiList);
 
-    // Normalisation légère
-    state.all = Array.isArray(data) ? data : [];
-    const types = allTypes(state.all);
-    const rars  = allRarities(state.all);
+    // UI
+    $("#q").addEventListener("input", applyFilters);
+    $("#sort").addEventListener("change", applyFilters);
+    $("#prev").addEventListener("click", () => { STATE.page--; render(); });
+    $("#next").addEventListener("click", () => { STATE.page++; render(); });
 
-    parseQuery();
-    $("#q").value = state.q;
-    $("#sort").value = state.sort;
+    // Init contrôles
+    $("#q").value = "";
+    $("#sort").value = "name";
 
-    renderTypeFilters(types);
-    renderRarityFilters(rars);
-
-    // Listeners
-    $("#q").addEventListener("input", ()=>{ state.page=1; applyFilters(); writeQuery(); });
-    $("#sort").addEventListener("change", ()=>{ state.page=1; applyFilters(); writeQuery(); });
-
-    $("#reset").addEventListener("click", ()=>{
-      state.q=""; $("#q").value="";
-      state.types.clear(); state.rarities.clear();
-      $("#sort").value="name"; state.page=1;
-      renderTypeFilters(types); renderRarityFilters(rars);
-      applyFilters(); writeQuery();
-    });
-
-    // Vue cartes/table
-    const btnCards = $("#view-cards");
-    const btnTable = $("#view-table");
-    btnCards.addEventListener("click", ()=>{
-      btnCards.classList.add("active"); btnTable.classList.remove("active");
-      $("#results").classList.remove("hidden");
-      $("#table-wrap").classList.add("hidden");
-    });
-    btnTable.addEventListener("click", ()=>{
-      btnTable.classList.add("active"); btnCards.classList.remove("active");
-      $("#results").classList.add("hidden");
-      $("#table-wrap").classList.remove("hidden");
-    });
-
-    // Pager
-    $("#prev").addEventListener("click", ()=>{ state.page--; render(); writeQuery(); });
-    $("#next").addEventListener("click", ()=>{ state.page++; render(); writeQuery(); });
-
-    status.textContent = `Arcanes loaded: ${state.all.length}`;
     applyFilters();
+    status.textContent = `Arcanes chargés : ${STATE.list.length}`;
   } catch (e) {
-    console.error("[arcanes] error:", e);
-    status.textContent = "Error while loading arcanes.";
+    console.error("[arcanes] load error:", e);
+    status.textContent = "Erreur de chargement des arcanes.";
     status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
     status.style.background = "rgba(255,0,0,.08)";
     status.style.color = "#ffd1d1";
