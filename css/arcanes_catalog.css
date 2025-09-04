@@ -125,3 +125,12 @@
   border-radius: 10px;
   padding: .4rem .75rem;
 }
+
+/* Icônes DT_* inline (pas de pastille, juste l'image) */
+.dt-ico-inline{
+  display:inline-block;
+  height: 1em;       /* suit la taille du texte */
+  width: auto;
+  vertical-align: -0.18em; /* aligne sur la ligne du texte */
+  margin: 0 .25em;   /* léger espace autour */
+}
