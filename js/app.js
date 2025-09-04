@@ -5,7 +5,7 @@
 // - Pas de dépendance à #vtabs
 // - Pas de fetch des fichiers *_by_warframe.json absents
 // - Failover API EN -> FR + messages d'erreur clairs
-// - Rendu des <DT_..._COLOR> + <LINE_SEPARATOR> (badges + icônes locales)
+// - Rendu des <DT_..._COLOR> + <LINE_SEPARATOR> (icônes locales inline)
 // =====================================================
 
 const CFG = {
@@ -18,68 +18,63 @@ const CFG = {
   ABILITIES_META_URL: "data/warframe_abilities.json",
 };
 
-/* ---------------- Text Icons (DT_* + LINE_SEPARATOR) ---------------- */
-const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // ton dossier
-const USE_ICONS = true;
+/* ---------------- Text Icons (DT_* + LINE_SEPARATOR) → icône inline ---------------- */
+const ICON_BASE = new URL("img/symbol/", document.baseURI).href; // ton dossier /img/symbol/
 
-const DT = {
+// Mapping minimal : chaque balise -> nom de fichier (aucun label/pastille)
+const DT_ICONS = {
   // Physiques
-  DT_IMPACT_COLOR:     { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
-  DT_PUNCTURE_COLOR:   { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
-  DT_SLASH_COLOR:      { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
+  DT_IMPACT_COLOR:     "ImpactSymbol.png",
+  DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
+  DT_SLASH_COLOR:      "SlashSymbol.png",
 
   // Élémentaires
-  DT_FIRE_COLOR:        { label: "Heat",        color: "#ff8a47", icon: "HeatSymbol.png" },
-  DT_FREEZE_COLOR:      { label: "Cold",        color: "#7dd3fc", icon: "ColdSymbol.png" },
-  DT_ELECTRICITY_COLOR: { label: "Electricity", color: "#f6d05e", icon: "ElectricitySymbol.png" },
-  DT_POISON_COLOR:      { label: "Toxin",       color: "#32d296", icon: "ToxinSymbol.png" },
-  DT_TOXIN_COLOR:       { alias: "DT_POISON_COLOR" },
+  DT_FIRE_COLOR:        "HeatSymbol.png",
+  DT_FREEZE_COLOR:      "ColdSymbol.png",
+  DT_ELECTRICITY_COLOR: "ElectricitySymbol.png",
+  DT_POISON_COLOR:      "ToxinSymbol.png",
+  DT_TOXIN_COLOR:       "ToxinSymbol.png",
 
   // Combinés
-  DT_GAS_COLOR:        { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
-  DT_MAGNETIC_COLOR:   { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
-  DT_RADIATION_COLOR:  { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
-  DT_VIRAL_COLOR:      { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
-  DT_CORROSIVE_COLOR:  { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
-  DT_BLAST_COLOR:      { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
-  DT_EXPLOSION_COLOR:  { alias: "DT_BLAST_COLOR" },
+  DT_GAS_COLOR:        "GasSymbol.png",
+  DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
+  DT_RADIATION_COLOR:  "RadiationSymbol.png",
+  DT_VIRAL_COLOR:      "ViralSymbol.png",
+  DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
+  DT_BLAST_COLOR:      "BlastSymbol.png",
+  DT_EXPLOSION_COLOR:  "BlastSymbol.png",
 
-  // Divers
-  DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
-  DT_SENTIENT_COLOR:   { label: "Tau",   color: "#b0a6ff", icon: "SentientSymbol.png" },
-  DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
-  DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
-  DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
+  // Divers / Void
+  DT_RADIANT_COLOR:    "VoidSymbol.png",
+  DT_SENTIENT_COLOR:   "SentientSymbol.png",
+  DT_RESIST_COLOR:     "ResistSymbol.png",
+  DT_POSITIVE_COLOR:   "PositiveSymbol.png",
+  DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
 };
-function resolveDT(key){
-  const v = DT[String(key || "").toUpperCase()];
-  return v?.alias ? resolveDT(v.alias) : v || null;
-}
+
+// Rend un texte en remplaçant les <DT_...> par une icône inline,
+// en absorbant les espaces/retours autour pour éviter les sauts visuels.
 function renderTextIcons(input){
   let s = String(input ?? "");
 
-  // Normalise les séparateurs (on garde les \n puis on convertira en <br>)
-  s = s.replace(/\r\n|\r/g, "\n").replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n").replace(/\n{2,}/g, "\n");
+  // normalise les séparateurs (on garde les \n pour mettre des <br> ensuite)
+  s = s.replace(/\r\n?|\r/g, "\n").replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
-  // Échappe d'abord tout le HTML
-  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  // échappe tout le HTML (sécurité)
+  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;'}[c]));
 
-  // Remplace les balises DT_* (acceptées brutes <TAG> ou encodées &lt;TAG&gt;)
-  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const def = resolveDT(key);
-    if (!def) return "";
-    const { label, color, icon } = def;
-    if (USE_ICONS && icon) {
-      const src = ICON_BASE + icon;
-      return `<span class="dt-chip" style="color:${color}">
-        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
-      </span>`;
-    }
-    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
+  // remplace les tokens (forme brute ou encodée), en “mangeant” le blanc autour
+  s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+    const file = DT_ICONS[key];
+    if (!file) return "";
+    const src = ICON_BASE + file;
+    return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
 
-  // Retours à la ligne → <br>
-  return s.replace(/\n/g, "<br>");
+  // compacte les espaces et pose les <br> pour les retours réels
+  s = s.replace(/[ \t]{2,}/g, " ");
+  s = s.replace(/\n/g, "<br>");
+  return s.trim();
 }
 
 /* ---------------- utils ---------------- */
