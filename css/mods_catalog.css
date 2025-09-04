@@ -61,8 +61,8 @@
 }
 .badge.gold { border-color: rgba(212,175,55,.5); color: #e5c979; }
 .badge.pol-badge img {
-  width: 14px;
-  height: 14px;
+  width: 18px;
+  height: 18px;
   display: inline-block;
   transform: translateY(-1px);
 }
