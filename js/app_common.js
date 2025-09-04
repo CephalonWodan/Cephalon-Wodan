@@ -7,7 +7,7 @@ const CFG = {
   ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json",
   ABILITIES_META_URL: "data/warframe_abilities.json",
   // 🔗 Mods depuis l’API officielle (gros JSON)
-  ALL_MODS_URL: "https://api.warframestat.us/mods/?language=fr",
+  ALL_MODS_URL: "https://api.warframestat.us/mods/?language=en",
 
   // Ces fichiers restent optionnels pour d’autres pages (shards, weapons…)
   ARCANES_BY_WF_URL: "data/arcanes_by_warframe.json",
