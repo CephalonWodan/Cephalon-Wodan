@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <title>Catalogue des Arcanes — Warframe</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind (ok pour le dev; tu passeras au build PostCSS plus tard) -->
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Thème + styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/arcanes_catalog.css?v=1" />
+  <link rel="stylesheet" href="css/arcanes_catalog.css?v=3" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
   <!-- NAV -->
@@ -42,16 +42,10 @@
                   class="sm:w-[220px] py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
                          outline-none orn focus-gold">
             <option value="name">Sort: Name (A→Z)</option>
-            <option value="type">Sort: Type</option>
             <option value="rarity">Sort: Rarity</option>
-            <option value="maxrank">Sort: Max Rank</option>
-            <option value="introduced">Sort: Introduced</option>
           </select>
 
-          <div class="flex items-center gap-2">
-            <button id="view-cards" class="btn-tab active">Cards</button>
-            <button id="view-table" class="btn-tab">Table</button>
-          </div>
+          <button id="reset" class="btn-tab">Reset</button>
         </div>
       </div>
     </div>
@@ -68,12 +62,12 @@
 
           <div class="card p-4 orn">
             <div class="font-semibold mb-2">Rarity</div>
-            <div id="f-rar" class="grid grid-cols-2 gap-2 text-sm"></div>
+            <div id="f-rarity" class="grid grid-cols-2 gap-2 text-sm"></div>
           </div>
 
           <div class="flex items-center justify-between">
-            <button id="reset" class="btn-tab">Reset</button>
             <div id="count" class="text-sm muted"></div>
+            <div></div>
           </div>
         </div>
       </aside>
@@ -86,24 +80,6 @@
         <!-- Grille cartes -->
         <div id="results" class="grid gap-4"></div>
 
-        <!-- Tableau -->
-        <div id="table-wrap" class="hidden overflow-x-auto rounded-xl border border-[rgba(255,255,255,.08)]">
-          <table class="w-full text-sm table-fixed">
-            <thead class="bg-[rgba(255,255,255,.04)]">
-              <tr>
-                <th class="p-2 w-24">Icon</th>
-                <th class="p-2">Name</th>
-                <th class="p-2">Type</th>
-                <th class="p-2">Rarity</th>
-                <th class="p-2">Max Rank</th>
-                <th class="p-2">Criteria</th>
-                <th class="p-2">Introduced</th>
-              </tr>
-            </thead>
-            <tbody id="table-body"></tbody>
-          </table>
-        </div>
-
         <!-- Pagination -->
         <div id="pager" class="flex items-center justify-between mt-5">
           <button id="prev" class="btn-tab">← Prev</button>
@@ -114,18 +90,8 @@
     </div>
   </div>
 
-  <!-- Lightbox plein écran -->
-  <div id="lightbox" class="hidden">
-    <div class="lb-backdrop"></div>
-    <div class="lb-content">
-      <img id="lb-img" alt="" />
-      <div id="lb-caption" class="lb-caption"></div>
-      <button id="lb-close" class="lb-close" aria-label="Close">✕</button>
-    </div>
-  </div>
-
   <!-- JS -->
   <script src="js/site_nav.js" defer></script>
-  <script src="js/arcanes_catalog.js?v=1" defer></script>
+  <script src="js/arcanes_catalog.js?v=3" defer></script>
 </body>
 </html>
