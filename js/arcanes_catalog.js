@@ -29,7 +29,7 @@ const DT = {
   // “Void” / divers
   DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "VoidSymbol.png" },
 
-  // Au cas où (tu as ces PNG dans ton dossier)
+  // Divers (présents dans ton dossier)
   DT_SENTIENT_COLOR:   { label: "Sentient",   color: "#b0a6ff", icon: "SentientSymbol.png" },
   DT_RESIST_COLOR:     { label: "Resist",     color: "#9aa0a6", icon: "ResistSymbol.png" },
   DT_POSITIVE_COLOR:   { label: "Positive",   color: "#66d17e", icon: "PositiveSymbol.png" },
@@ -76,40 +76,9 @@ function renderTextIcons(input){
   return s;
 }
 
-// sécurise le HTML puis remplace les balises (gère brut <TAG> et échappé &lt;TAG&gt;)
-function renderTextIcons(input){
-  let s = String(input ?? "");
-
-  // Normalisation de séparateurs
-  s = s.replace(/\r\n|\r/g, "\n")
-       .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-       .replace(/\n{2,}/g, "\n");
-
-  // Échappe le HTML pour éviter l’injection
-  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-
-  // Remplace chaque balise DT_* (forme encodée &lt;...&gt; ou brute)
-  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const def = resolveDT(key);
-    if (!def) return ""; // inconnu -> on supprime la balise “vide”
-    const { label, color, icon } = def;
-    if (USE_ICONS && icon) {
-      const src = ICON_BASE + icon;
-      return `<span class="dt-chip" style="color:${color}">
-        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
-      </span>`;
-    }
-    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
-  });
-
-  // Convertit les retours à la ligne en <br>
-  s = s.replace(/\n/g, "<br>");
-
-  return s;
-}
-
-
-// Catalogue Arcanes — filtre latéral + images (Wiki -> API thumb -> placeholder)
+// =====================
+// Catalogue Arcanes
+// =====================
 
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -168,7 +137,6 @@ function mapByNameCaseInsensitive(list) {
 // ---- URL helpers
 function wikiImageUrl(file) {
   if (!file) return "";
-  // On tente l’accès direct au fichier sur le wiki (ça marche pour la grande majorité)
   return `https://wiki.warframe.com/images/${encodeURIComponent(file)}`;
 }
 function normalizeUrl(u) { return u && u.startsWith("//") ? "https:" + u : u || ""; }
@@ -228,7 +196,8 @@ function rarityBadge(r) {
 function typeBadge(t) { return `<span class="badge">${escapeHtml(t || "—")}</span>`; }
 function criteriaRow(c) {
   if (!c) return "";
-  return `<div class="kv"><div class="k">Trigger</div><div class="v">${escapeHtml(c)}</div></div>`;
+  // 🔁 ICI on rend les balises d’icônes dans le critère
+  return `<div class="kv"><div class="k">Trigger</div><div class="v">${renderTextIcons(c)}</div></div>`;
 }
 
 function cardArcane(m, apiByName) {
@@ -257,7 +226,12 @@ function cardArcane(m, apiByName) {
           </div>
         </div>
         ${crit ? `<div class="mt-2">${criteriaRow(crit)}</div>` : ""}
-        ${desc ? `<p class="desc mt-2">${escapeHtml(desc)}</p>` : ""}
+        ${
+          desc
+            // 🔁 ICI on rend les balises d’icônes dans la description
+            ? `<p class="desc mt-2">${renderTextIcons(desc)}</p>`
+            : ""
+        }
       </div>
     </div>
   `;
