@@ -1,65 +1,5 @@
-// js/mods_catalog.js
 (() => {
   "use strict";
-  
- console.log("[mods] build 2025-09-04a");
-
-  /* ================== Text Icons (DT_* + LINE_SEPARATOR) ================== */
-  const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
-  const USE_ICONS = true;
-
-  const DT = {
-    // Physiques
-    DT_IMPACT_COLOR:   { label: "Impact",     color: "#6aa4e0", icon: "ImpactSymbol.png" },
-    DT_PUNCTURE_COLOR: { label: "Puncture",   color: "#c6b07f", icon: "PunctureSymbol.png" },
-    DT_SLASH_COLOR:    { label: "Slash",      color: "#d46a6a", icon: "SlashSymbol.png" },
-    // Élémentaires
-    DT_FIRE_COLOR:        { label: "Heat",        color: "#ff8a47", icon: "HeatSymbol.png" },
-    DT_FREEZE_COLOR:      { label: "Cold",        color: "#7dd3fc", icon: "ColdSymbol.png" },
-    DT_ELECTRICITY_COLOR: { label: "Electricity", color: "#f6d05e", icon: "ElectricitySymbol.png" },
-    DT_POISON_COLOR:      { label: "Toxin",       color: "#32d296", icon: "ToxinSymbol.png" },
-    DT_TOXIN_COLOR:       { alias: "DT_POISON_COLOR" },
-    // Combinés
-    DT_GAS_COLOR:       { label: "Gas",        color: "#7fd4c1", icon: "GasSymbol.png" },
-    DT_MAGNETIC_COLOR:  { label: "Magnetic",   color: "#9bb8ff", icon: "MagneticSymbol.png" },
-    DT_RADIATION_COLOR: { label: "Radiation",  color: "#f5d76e", icon: "RadiationSymbol.png" },
-    DT_VIRAL_COLOR:     { label: "Viral",      color: "#d16ba5", icon: "ViralSymbol.png" },
-    DT_CORROSIVE_COLOR: { label: "Corrosive",  color: "#a3d977", icon: "CorrosiveSymbol.png" },
-    DT_BLAST_COLOR:     { label: "Blast",      color: "#ffb26b", icon: "BlastSymbol.png" },
-    DT_EXPLOSION_COLOR: { alias: "DT_BLAST_COLOR" },
-    // Divers
-    DT_RADIANT_COLOR:  { label: "Void",     color: "#c9b6ff", icon: "VoidSymbol.png" },
-    DT_SENTIENT_COLOR: { label: "Tau", color: "#b0a6ff", icon: "SentientSymbol.png" },
-    DT_RESIST_COLOR:   { label: "Resist",   color: "#9aa0a6", icon: "ResistSymbol.png" },
-    DT_POSITIVE_COLOR: { label: "Positive", color: "#66d17e", icon: "PositiveSymbol.png" },
-    DT_NEGATIVE_COLOR: { label: "Negative", color: "#e57373", icon: "NegativeSymbol.png" },
-  };
-
-  function resolveDT(key){
-    const k = String(key || "").toUpperCase();
-    const v = DT[k];
-    if (!v) return null;
-    return v.alias ? resolveDT(v.alias) : v;
-  }
-
-  function renderTextIcons(input){
-    let s = String(input ?? "");
-    s = s.replace(/\r\n|\r/g, "\n")
-         .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-         .replace(/\n{2,}/g, "\n");
-    s = s.replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-    s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-      const def = resolveDT(key);
-      if (!def) return "";
-      const { label, color, icon } = def;
-      if (USE_ICONS && icon) {
-        const src = ICON_BASE + icon;
-        return `<span class="dt-chip" style="color:${color}"><img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}</span>`;
-      }
-      return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
-    });
-    return s.replace(/\n/g, "<br>");
-  }
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
@@ -70,7 +10,7 @@
   const $  = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
   const norm = (v) => String(v || "").trim();
-  const ucFirst = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+  const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   // ---- Category denylist (exclues de la sidebar)
@@ -91,16 +31,6 @@
   const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
 
   /* ================== Polarity (icônes locales) ================== */
-  function canonPolarity(p){
-    const s = norm(p).toLowerCase();
-    if (!s) return "Any";
-    const aliases = {
-      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon",
-      zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
-      umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
-    };
-    return aliases[s] || ucFirst(s);
-  }
   const POL_ICON = (p) => {
     const map = {
       Madurai: "Madurai_Pol.svg", Vazarin: "Vazarin_Pol.svg",
@@ -112,17 +42,27 @@
     const key = canonPolarity(p);
     return `img/polarities/${map[key] || "Any_Pol.svg"}`;
   };
+  function canonPolarity(p){
+    const s = norm(p).toLowerCase();
+    if (!s) return "Any";
+    const aliases = {
+      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon",
+      zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
+      umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
+    };
+    return aliases[s] || ucFirst(s);
+  }
 
   /* ================== Images wiki (vérifiées) ================== */
-  const wikiThumbRaw = (m) => m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || "";
-  const normalizeUrl = (u) => (!u ? "" : (u.startsWith("//") ? "https:" + u : u));
+  function wikiThumbRaw(m){ return m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || ""; }
+  function normalizeUrl(u){ return !u ? "" : (u.startsWith("//") ? "https:" + u : u); }
   function upscaleThumb(url, size=720){
     if (!url) return "";
     let out = normalizeUrl(url);
     out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
     if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
-      out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i,
-        (m, slash, qs='') => `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
+      out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs='') =>
+        `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
     }
     return out;
   }
@@ -131,13 +71,12 @@
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-
-  // Placeholder
+  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte ================== */
+  /* ================== Nettoyage de texte (fix tokens API) ================== */
   function cleanFxText(s) {
     if (!s) return "";
     let t = String(s);
@@ -166,8 +105,12 @@
     let d = norm(m.description);
     if (!d) return [];
     d = cleanFxText(d);
-    const parts = d.replace(/\r?\n/g, "|").replace(/[•;·]/g, "|")
-      .split("|").map(x => cleanFxText(x)).filter(Boolean);
+    const parts = d
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxText(x))
+      .filter(Boolean);
     return parts;
   }
   function makeEffects(m){
@@ -182,7 +125,7 @@
     const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
     return /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
   }
-  const isRiven = (m) => /riven/i.test(m.name) || /riven/i.test(m.type);
+  function isRiven(m){ return /riven/i.test(m.name) || /riven/i.test(m.type); }
   function isEmptySetStub(m){
     const stub = /set\s*mod/i.test(m.type) || /^set\s*mod$/i.test(m.name);
     const emptyish = !(m.description && m.description.trim().length) && !Array.isArray(m.levelStats);
@@ -190,30 +133,33 @@
   }
 
   /* ================== Rareté / Qualité ================== */
-  const rarityKey   = (r) => ( /PRIMED/i.test(r||"") ? "PRIMED" : String(r||"").toUpperCase() );
-  const rarityOrder = (r) => ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0;
-  const descScore   = (m) => Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length);
-  const qualityForPrimary = (m) => (wikiThumbRaw(m) ? 2000 : 0) + descScore(m) + (m.fusionLimit || 0);
+  function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
+  function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
+  function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
+  function qualityForPrimary(m){ return (wikiThumbRaw(m) ? 2000 : 0) + descScore(m) + (m.fusionLimit || 0); }
 
   /* ================== Fusion des doublons PAR NOM ================== */
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
 
-    const effects  = makeEffects(bestTxt).length ? makeEffects(bestTxt) : makeEffects(primary);
+    const effects = makeEffects(bestTxt).length ? makeEffects(bestTxt) : makeEffects(primary);
     const imgPrim  = verifiedWikiImage(primary);
     const imgBest  = verifiedWikiImage(bestTxt);
     const img      = imgPrim.url || imgBest.url;
     const verified = imgPrim.verified || imgBest.verified;
 
-    const pick       = (...arr) => arr.find(v => v != null && String(v).trim() !== "") ?? "";
-    const pickMaxInt = (...arr) => { let best=null; for (const v of arr) if (Number.isFinite(v)) best = best==null?v:Math.max(best,v); return best; };
-    const pickRarity = (...arr) => { const vals = arr.filter(Boolean); return vals.length ? vals.sort((a,b)=>rarityOrder(b)-rarityOrder(a))[0] : ""; };
-    const pickPol    = (...arr) => { const vals = arr.map(canonPolarity).filter(Boolean); return vals.length ? vals.sort((a,b)=> (a==="Any")-(b==="Any") || a.localeCompare(b))[0] : "Any"; };
+    function pick(...arr){ return arr.find(v => v != null && String(v).trim() !== "") ?? ""; }
+    function pickMaxInt(...arr){ let best=null; for (const v of arr) if (Number.isFinite(v)) best = best==null?v:Math.max(best,v); return best; }
+    function pickRarity(...arr){ const vals = arr.filter(Boolean); if (!vals.length) return ""; return vals.sort((a,b)=>rarityOrder(b)-rarityOrder(a))[0]; }
+    function pickPolarity(...arr){
+      const vals = arr.map(canonPolarity).filter(Boolean);
+      if (!vals.length) return "Any";
+      return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
+    }
 
     return {
-      name: pick(primary.name),
-      uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
+      name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
       description: pick(bestTxt.description, primary.description),
       effectsLines: effects,
       type: pick(primary.type, bestTxt.type),
@@ -221,8 +167,9 @@
       baseDrain: pickMaxInt(primary.baseDrain, bestTxt.baseDrain),
       fusionLimit: pickMaxInt(primary.fusionLimit, bestTxt.fusionLimit),
       rarity: pickRarity(primary.rarity, primary.rarityString, bestTxt.rarity, bestTxt.rarityString),
-      polarity: pickPol(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
+      polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
+
       wikiImage: img,
       imgVerified: !!verified,
     };
@@ -246,7 +193,8 @@
   };
 
   /* ================== UI helpers ================== */
-  const badge = (text, cls="") => `<span class="badge ${cls}">${escapeHtml(text)}</span>`;
+  function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
+  // Badge de polarité (même style qu’un badge classique)
   function polBadge(p){
     const src = POL_ICON(p), txt = canonPolarity(p);
     return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
@@ -271,25 +219,25 @@
     const headRight = pol ? polBadge(pol) : "";
 
     return `
-      <div class="mod-card">
-        <a href="#" class="mod-cover" data-full="${escapeHtml(img)}" data-name="${escapeHtml(m.name)}">
-          <img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" loading="lazy" decoding="async">
-        </a>
-        <div class="mod-body">
-          <div class="mod-head">
-            <div class="mod-title" title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</div>
-            ${headRight}
-          </div>
-          <div class="mod-chips">${chipsLeft}</div>
-          <div class="mod-effects">
-            ${
-              lines.length
-                ? lines.map(t => `<div class="fx">• ${escapeHtml(t)}</div>`).join("")
-                : `<div class="fx muted">No effect data in API</div>`
-            }
-          </div>
+    <div class="mod-card">
+      <a href="#" class="mod-cover" data-full="${escapeHtml(img)}" data-name="${escapeHtml(m.name)}">
+        <img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" loading="lazy" decoding="async">
+      </a>
+      <div class="mod-body">
+        <div class="mod-head">
+          <div class="mod-title" title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</div>
+          ${headRight}
         </div>
-      </div>`;
+        <div class="mod-chips">${chipsLeft}</div>
+        <div class="mod-effects">
+          ${
+            lines.length
+            ? lines.map(t => `<div class="fx">• ${escapeHtml(t)}</div>`).join("")
+            : `<div class="fx muted">No effect data in API</div>`
+          }
+        </div>
+      </div>
+    </div>`;
   }
 
   function tableRow(m){
@@ -366,16 +314,14 @@
   function renderActiveChips(){
     const wrap = $("#active-filters");
     const chips = [];
-    if (STATE.q)         chips.push({k:"q",        label:`"${escapeHtml(STATE.q)}"`});
-    if (STATE.fCats.size)chips.push({k:"cats",     label:`Cat: ${[...STATE.fCats].join(", ")}`});
-    if (STATE.fPols.size)chips.push({k:"pols",     label:`Pol: ${[...STATE.fPols].join(", ")}`});
-    if (STATE.fRars.size)chips.push({k:"rars",     label:`Rarity: ${[...STATE.fRars].join(", ")}`});
+    if (STATE.q) chips.push({k:"q", label:`"${escapeHtml(STATE.q)}"`});
+    if (STATE.fCats.size) chips.push({k:"cats", label:`Cat: ${[...STATE.fCats].join(", ")}`});
+    if (STATE.fPols.size) chips.push({k:"pols", label:`Pol: ${[...STATE.fPols].join(", ")}`});
+    if (STATE.fRars.size) chips.push({k:"rars", label:`Rarity: ${[...STATE.fRars].join(", ")}`});
     if (STATE.onlyVerified) chips.push({k:"verified", label:`Verified wiki image`});
-
     wrap.innerHTML = chips.length
       ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
       : "";
-
     wrap.querySelectorAll("[data-chip]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const [k] = btn.dataset.chip.split("|");
