@@ -1,5 +1,5 @@
 // js/arcanes_catalog.js
-// Catalogue Arcanes — illustre chaque arcane (local -> wiki -> placeholder)
+// Catalogue Arcanes — filtre latéral + images (Wiki -> API thumb -> placeholder)
 
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -7,7 +7,6 @@ const norm = (s) => String(s || "").trim();
 const escapeHtml = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
-// --- Préférences d’affichage
 const STATE = {
   list: [],
   filtered: [],
@@ -15,12 +14,11 @@ const STATE = {
   perPage: 24,
   q: "",
   sort: "name",
+  types: new Set(),   // filtres actifs
+  rarities: new Set()
 };
 
-// Emplacement pour d’éventuelles images locales (optionnel, tu peux les ajouter plus tard)
-const LOCAL_DIR = new URL("img/arcanes/", document.baseURI).href;
-
-// Couleurs par rareté (pour le placeholder et les puces)
+// Couleurs par rareté (placeholder + puces)
 const RARITY_COLORS = {
   Legendary: "#d4af37",
   Rare: "#f39c12",
@@ -28,28 +26,43 @@ const RARITY_COLORS = {
   Common: "#7dd3fc",
 };
 
-// -------- Helpers d’accès de champs (le JSON peut être en CamelCase ou lower-case)
-const get = (obj, keys, def = "") => {
-  for (const k of keys) {
-    if (obj && obj[k] != null) return obj[k];
-  }
-  return def;
-};
-const getName        = (m) => get(m, ["name", "Name"], "");
-const getType        = (m) => get(m, ["type", "Type"], "");
-const getDesc        = (m) => get(m, ["description", "Description"], "");
-const getCriteria    = (m) => get(m, ["criteria", "Criteria"], "");
-const getRarity      = (m) => get(m, ["rarity", "Rarity"], "");
-const getImageFile   = (m) => get(m, ["image", "Image"], "");      // ex: ArcaneAcceleration.png
-const getIconFile    = (m) => get(m, ["icon", "Icon"], "");        // ex: ArcaneAcceleration64x.png
-const getWikiThumb   = (m) => get(m, ["wikiaThumbnail", "wikiathumbnail", "wikia_thumbnail", "thumbnail"], "");
+// ---- getters champs (compat LUA JSON)
+const get = (obj, keys, def = "") => { for (const k of keys) if (obj && obj[k] != null) return obj[k]; return def; };
+const getName     = (m) => get(m, ["name", "Name"], "");
+const getType     = (m) => get(m, ["type", "Type"], "");
+const getDesc     = (m) => get(m, ["description", "Description"], "");
+const getCriteria = (m) => get(m, ["criteria", "Criteria"], "");
+const getRarity   = (m) => get(m, ["rarity", "Rarity"], "");
+const getImage    = (m) => get(m, ["image", "Image"], ""); // ex: ArcaneAcceleration.png
+const getIcon     = (m) => get(m, ["icon", "Icon"], "");   // ex: ArcaneAcceleration64x.png
 
-// -------- Normalisation d’URL wiki (et upscale)
-function normalizeUrl(u) {
-  if (!u) return "";
-  return u.startsWith("//") ? "https:" + u : u;
+// ---- API arcanes (pour tenter wikiaThumbnail si dispo)
+async function loadApiArcanes() {
+  try {
+    const r = await fetch("https://api.warframestat.us/arcanes?language=en", { cache: "no-store" });
+    if (!r.ok) return [];
+    const data = await r.json();
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
 }
-function upscaleWikiThumb(url, size = 512) {
+function mapByNameCaseInsensitive(list) {
+  const m = new Map();
+  for (const it of list) {
+    const n = norm(it.name || it.Name || "");
+    if (!n) continue;
+    m.set(n.toLowerCase(), it);
+  }
+  return m;
+}
+
+// ---- URL helpers
+function wikiImageUrl(file) {
+  if (!file) return "";
+  // On tente l’accès direct au fichier sur le wiki (ça marche pour la grande majorité)
+  return `https://wiki.warframe.com/images/${encodeURIComponent(file)}`;
+}
+function normalizeUrl(u) { return u && u.startsWith("//") ? "https:" + u : u || ""; }
+function upscaleWikiThumb(url, size = 640) {
   if (!url) return "";
   let out = normalizeUrl(url);
   out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
@@ -59,7 +72,7 @@ function upscaleWikiThumb(url, size = 512) {
   return out;
 }
 
-// -------- Placeholder SVG si aucune image n’est trouvée
+// ---- placeholder si rien
 function placeholderArcane(name, rarity) {
   const hex = RARITY_COLORS[rarity] || "#888";
   const initials = (name || "Arcane").split(/\s+/).map(s => s[0]).slice(0,2).join("").toUpperCase();
@@ -77,37 +90,32 @@ function placeholderArcane(name, rarity) {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
-// -------- Construction des sources d’image pour un arcane
-// Priorité: 1) local (Image puis Icon)  2) wiki thumbnail upscalé  3) placeholder
+// ---- construit les sources d'image: Wiki(Image) -> Wiki(Icon) -> API thumb -> placeholder
 function imageSourcesForArcane(m, apiByName) {
-  const name = getName(m);
+  const name   = getName(m);
   const rarity = getRarity(m);
-  const localImage = getImageFile(m);
-  const localIcon  = getIconFile(m);
+  const img    = getImage(m);
+  const ico    = getIcon(m);
 
-  const local1 = localImage ? (LOCAL_DIR + localImage) : "";
-  const local2 = localIcon  ? (LOCAL_DIR + localIcon)  : "";
+  const wikiImg = img ? wikiImageUrl(img) : "";
+  const wikiIco = ico ? wikiImageUrl(ico) : "";
 
-  // Enrichissement via l’API /arcanes : wikiaThumbnail + fallback
-  const apiRec = apiByName.get(name.toLowerCase());
-  const apiThumb = apiRec ? (apiRec.wikiaThumbnail || apiRec.wikiathumbnail || apiRec.thumbnail || apiRec.image || "") : "";
+  const apiRec  = apiByName.get(name.toLowerCase());
+  const apiTn   = apiRec ? (apiRec.wikiaThumbnail || apiRec.wikiathumbnail || apiRec.thumbnail || apiRec.image || "") : "";
+  const apiBig  = upscaleWikiThumb(apiTn, 640);
 
-  const wiki = upscaleWikiThumb(getWikiThumb(m) || apiThumb, 640);
-
-  const primary = local1 || local2 || wiki || placeholderArcane(name, rarity);
-  const fallback = local2 || wiki || placeholderArcane(name, rarity);
+  const primary = wikiImg || wikiIco || apiBig || placeholderArcane(name, rarity);
+  const fallback = wikiIco || apiBig || placeholderArcane(name, rarity);
 
   return { primary, fallback };
 }
 
-// -------- Carte UI
+// ---- UI helpers
 function rarityBadge(r) {
   const hex = RARITY_COLORS[r] || "rgba(255,255,255,.18)";
   return `<span class="badge" style="border-color:${hex};color:${hex}">${escapeHtml(r || "—")}</span>`;
 }
-function typeBadge(t) {
-  return `<span class="badge">${escapeHtml(t || "—")}</span>`;
-}
+function typeBadge(t) { return `<span class="badge">${escapeHtml(t || "—")}</span>`; }
 function criteriaRow(c) {
   if (!c) return "";
   return `<div class="kv"><div class="k">Trigger</div><div class="v">${escapeHtml(c)}</div></div>`;
@@ -145,7 +153,75 @@ function cardArcane(m, apiByName) {
   `;
 }
 
-// -------- Rendu + pagination minimaliste
+// ---- Filtres latéraux
+function renderSideFilters(distinctTypes, distinctRarities) {
+  // Types
+  const hostT = $("#f-type");
+  hostT.innerHTML = distinctTypes.map(t => {
+    const id = `t-${t.replace(/\s+/g, "_")}`;
+    const checked = STATE.types.has(t) ? "checked" : "";
+    return `
+      <label for="${id}" class="filter-pill cursor-pointer">
+        <input id="${id}" type="checkbox" value="${escapeHtml(t)}" ${checked}>
+        <span>${escapeHtml(t)}</span>
+      </label>`;
+  }).join("");
+
+  distinctTypes.forEach(t => {
+    const el = $(`#t-${t.replace(/\s+/g, "_")}`);
+    el.addEventListener("change", () => {
+      if (el.checked) STATE.types.add(t);
+      else STATE.types.delete(t);
+      STATE.page = 1; applyFilters();
+    });
+  });
+
+  // Rarity
+  const hostR = $("#f-rarity");
+  hostR.innerHTML = distinctRarities.map(r => {
+    const id = `r-${r}`;
+    const checked = STATE.rarities.has(r) ? "checked" : "";
+    const hex = RARITY_COLORS[r] || "rgba(255,255,255,.5)";
+    return `
+      <label for="${id}" class="filter-pill cursor-pointer" style="color:${hex};border-color:${hex}99">
+        <input id="${id}" type="checkbox" value="${escapeHtml(r)}" ${checked}>
+        <span>${escapeHtml(r)}</span>
+      </label>`;
+  }).join("");
+
+  distinctRarities.forEach(r => {
+    const el = $(`#r-${r}`);
+    el.addEventListener("change", () => {
+      if (el.checked) STATE.rarities.add(r);
+      else STATE.rarities.delete(r);
+      STATE.page = 1; applyFilters();
+    });
+  });
+}
+
+function renderActiveChips() {
+  const wrap = $("#active-filters");
+  const chips = [];
+  if (STATE.q) chips.push({ k:"q", label:`Text: "${escapeHtml(STATE.q)}"` });
+  if (STATE.types.size) chips.push({ k:"types", label:`Types: ${[...STATE.types].join(", ")}` });
+  if (STATE.rarities.size) chips.push({ k:"rarities", label:`Rarity: ${[...STATE.rarities].join(", ")}` });
+
+  wrap.innerHTML = chips.length
+    ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
+    : "";
+
+  wrap.querySelectorAll("[data-chip]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const [k] = btn.dataset.chip.split("|");
+      if (k==="q") { STATE.q=""; $("#q").value=""; }
+      if (k==="types") { STATE.types.clear(); }
+      if (k==="rarities") { STATE.rarities.clear(); }
+      STATE.page = 1; applyFilters();
+    });
+  });
+}
+
+// ---- Rendu + pagination
 function render() {
   const total = STATE.filtered.length;
   const pages = Math.max(1, Math.ceil(total / STATE.perPage));
@@ -170,6 +246,11 @@ function applyFilters() {
 
   let arr = STATE.list.slice();
 
+  // Filtres latéraux
+  if (STATE.types.size)   arr = arr.filter(m => STATE.types.has(getType(m)));
+  if (STATE.rarities.size) arr = arr.filter(m => STATE.rarities.has(getRarity(m)));
+
+  // Recherche
   if (q) {
     arr = arr.filter((m) => {
       const hay = [
@@ -179,50 +260,28 @@ function applyFilters() {
     });
   }
 
+  // Tri
   arr.sort((a, b) => {
     if (sort === "rarity") return getRarity(a).localeCompare(getRarity(b)) || getName(a).localeCompare(getName(b));
     return getName(a).localeCompare(getName(b));
   });
 
   STATE.filtered = arr;
-  STATE.page = 1;
+  renderActiveChips();
   render();
 }
 
-// -------- Chargement des données (local JSON + API pour thumbs wiki)
+// ---- charge les données locales + API pour thumbnails
 async function loadLocalArcanes() {
   try {
     const r = await fetch("data/arcanes_list.json", { cache: "no-store" });
     if (!r.ok) return [];
     const data = await r.json();
-    // data attendu: tableau d’objets
     return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
-}
-async function loadApiArcanes() {
-  try {
-    const r = await fetch("https://api.warframestat.us/arcanes?language=en", { cache: "no-store" });
-    if (!r.ok) return [];
-    const data = await r.json();
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
-function mapByNameCaseInsensitive(list) {
-  const m = new Map();
-  for (const it of list) {
-    const n = norm(it.name || it.Name || "");
-    if (!n) continue;
-    m.set(n.toLowerCase(), it);
-  }
-  return m;
-}
-
-// -------- Boot
+// ---- Boot
 (async function boot() {
   const status = $("#status");
   try {
@@ -232,15 +291,25 @@ function mapByNameCaseInsensitive(list) {
     STATE.list = localList;
     STATE.apiByName = mapByNameCaseInsensitive(apiList);
 
-    // UI
-    $("#q").addEventListener("input", applyFilters);
-    $("#sort").addEventListener("change", applyFilters);
+    // Distincts pour filtres
+    const distinctTypes = Array.from(new Set(STATE.list.map(getType))).filter(Boolean).sort();
+    const distinctRarities = ["Common","Uncommon","Rare","Legendary"].filter(r => STATE.list.some(m => getRarity(m) === r));
+
+    renderSideFilters(distinctTypes, distinctRarities);
+
+    // Listeners
+    $("#q").addEventListener("input", () => { STATE.page = 1; applyFilters(); });
+    $("#sort").addEventListener("change", () => { STATE.page = 1; applyFilters(); });
+    $("#reset").addEventListener("click", () => {
+      STATE.q = ""; $("#q").value = "";
+      STATE.sort = "name"; $("#sort").value = "name";
+      STATE.types.clear(); STATE.rarities.clear();
+      STATE.page = 1;
+      renderSideFilters(distinctTypes, distinctRarities);
+      applyFilters();
+    });
     $("#prev").addEventListener("click", () => { STATE.page--; render(); });
     $("#next").addEventListener("click", () => { STATE.page++; render(); });
-
-    // Init contrôles
-    $("#q").value = "";
-    $("#sort").value = "name";
 
     applyFilters();
     status.textContent = `Arcanes chargés : ${STATE.list.length}`;
