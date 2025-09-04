@@ -44,7 +44,7 @@ function resolveDT(key){
 function renderTextIcons(input){
   let s = String(input ?? "");
 
-  // Normalise d'abord les séparateurs (avant l'échappement)
+  // 1) Normalise d'abord les séparateurs (y compris versions encodées)
   s = s
     .replace(/\r\n|\r/g, "\n")
     .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
@@ -53,24 +53,19 @@ function renderTextIcons(input){
     .replace(/&lt;\s*br\s*\/?&gt;/gi, "\n")
     .replace(/\n{2,}/g, "\n");
 
-  // Échappe tout le HTML
+  // 2) Échappe tout le HTML
   s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-  // Remplace les balises DT_... (brutes <...> ou encodées &lt;...&gt;)
+  // 3) Remplace les balises DT_* par **l'icône seule** (aucun texte)
   s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
     const def = resolveDT(key);
-    if (!def) return "";
-    const { label, color, icon } = def;
-    if (USE_ICONS && icon) {
-      const src = ICON_BASE + icon;
-      return `<span class="dt-chip" style="color:${color}">
-        <img class="dt-ico" alt="${label}" title="${label}" src="${src}">${label}
-      </span>`;
-    }
-    return `<span class="dt-chip" style="color:${color}" title="${label}">${label}</span>`;
+    if (!def || !def.icon) return "";
+    const src = ICON_BASE + def.icon;
+    // image inline, pas de title ni de label, enlève l’élément si l’image casse
+    return `<img class="dt-ico-inline" src="${src}" alt="" aria-hidden="true" onerror="this.remove()">`;
   });
 
-  // Convertit les retours à la ligne en <br>
+  // 4) Convertit les retours à la ligne en <br>
   return s.replace(/\n/g, "<br>");
 }
 
