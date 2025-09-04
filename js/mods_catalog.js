@@ -13,7 +13,7 @@
   const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // ---- Category denylist (cachée du panneau "Categories")
+  // ---- Category denylist (exclues de la sidebar)
   const CATEGORY_DENY = [
     "Focus Way",
     "Mod Set Mod",
@@ -71,7 +71,7 @@
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-  // Placeholder compact (une seule ligne)
+  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
@@ -141,9 +141,6 @@
   /* ================== Fusion des doublons PAR NOM ================== */
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
-    a: {
-      /* label a for readability only */
-    }
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
 
     const effects = makeEffects(bestTxt).length ? makeEffects(bestTxt) : makeEffects(primary);
@@ -197,9 +194,10 @@
 
   /* ================== UI helpers ================== */
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
+  // Badge de polarité (même style qu’un badge classique)
   function polBadge(p){
     const src = POL_ICON(p), txt = canonPolarity(p);
-    return `<span class="badge pol"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
+    return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
   }
 
   function modCard(m){
@@ -227,7 +225,7 @@
       </a>
       <div class="mod-body">
         <div class="mod-head">
-          <div class="mod-title">${escapeHtml(m.name)}</div>
+          <div class="mod-title" title="${escapeHtml(m.name)}">${escapeHtml(m.name)}</div>
           ${headRight}
         </div>
         <div class="mod-chips">${chipsLeft}</div>
