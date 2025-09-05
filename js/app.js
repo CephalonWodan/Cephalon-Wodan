@@ -55,7 +55,7 @@ function renderTextIcons(input) {
        .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
   // échappe le HTML
-  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 
   // DT_* (forme brute ou encodée) – on avale le blanc autour pour éviter un saut de ligne moche
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
@@ -81,7 +81,7 @@ function renderTextIcons(input) {
 const $  = (sel) => document.querySelector(sel);
 const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 const norm = (s) => String(s || "").trim();
-const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 const bySlot = (a, b) => (a.SlotKey ?? 99) - (b.SlotKey ?? 99);
 
@@ -225,6 +225,33 @@ async function fetchWarframesWithFailover() {
     // ---------- UI
     const card = $("#card");
 
+    // Helpers pour normaliser les lignes du tableau "Détails"
+    function splitFilledLabel(filled) {
+      // "Energy Cost: 25" -> { label:"Energy Cost", value:"25" }
+      const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
+      return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
+    }
+    function makeDetailRows(rows) {
+      // Retourne [{label, value}] sans doublons (garde l’unité si présente dans filledLabel)
+      return (rows || []).map(r => {
+        let label = (r.label || "").trim();
+        let value = (r.mainNumeric ?? "").toString();
+
+        if (!label) {
+          const p = splitFilledLabel(r.filledLabel || "");
+          label = p.label.trim();
+          if (!value && p.value) value = p.value.trim();
+        } else {
+          label = label.replace(/\s*:\s*$/, "");
+          if (!value && r.filledLabel) {
+            const p = splitFilledLabel(r.filledLabel);
+            if (p.value) value = p.value.trim();
+          }
+        }
+        return { label, value };
+      }).filter(x => x.label);
+    }
+
     const pill = (label, value) => `
       <div class="pill">
         <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
@@ -254,16 +281,32 @@ async function fetchWarframesWithFailover() {
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`)
         .join(" ");
 
-      const rowsHtml = (a.rows || []).map((r) => {
-        const label = r.filledLabel || r.label || "";
-        const main = r.mainNumeric != null ? r.mainNumeric : "";
-        return `
-          <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-            <div class="text-sm">${escapeHtml(label)}</div>
-            <div class="font-medium">${escapeHtml(txt(main))}</div>
-          </div>`;
-      }).join("");
+      // Détails nettoyés (label + value uniques)
+      const detailRows = makeDetailRows(a.rows || []);
+      const rowsHtml = detailRows.map(({label, value}) => `
+        <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
+          <div class="text-sm">${escapeHtml(label)}</div>
+          <div class="font-medium">${escapeHtml(value || "—")}</div>
+        </div>`).join("");
 
+      // Pastilles uniquement s'il n'y a PAS de bloc Détails
+      const pillsHtml = !detailRows.length ? `
+        <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
+          ${pill("Coût", s.costEnergy)}
+          ${pill("Puissance", s.strength)}
+          ${pill("Durée", s.duration)}
+          ${pill("Portée", s.range)}
+        </div>` : "";
+
+      const detailsBlock = rowsHtml ? `
+        <div class="mt-5">
+          <div class="text-sm muted mb-2">Détails</div>
+          <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
+            ${rowsHtml}
+          </div>
+        </div>` : "";
+
+      // ----- rendu principal
       card.innerHTML = `
         <div class="flex flex-col md:flex-row gap-6">
           <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
@@ -307,12 +350,7 @@ async function fetchWarframesWithFailover() {
                 <div class="font-semibold">${escapeHtml(a.name || "—")}</div>
                 <p class="mt-1 text-[var(--muted)]">${renderTextIcons((a.description || "").replace(/\r?\n/g, "\n"))}</p>
 
-                <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
-                  ${pill("Coût", s.costEnergy)}
-                  ${pill("Puissance", s.strength)}
-                  ${pill("Durée", s.duration)}
-                  ${pill("Portée", s.range)}
-                </div>
+                ${pillsHtml}
 
                 ${
                   (s.affectedBy && s.affectedBy.length)
@@ -323,16 +361,7 @@ async function fetchWarframesWithFailover() {
                     : ""
                 }
 
-                ${
-                  rowsHtml
-                    ? `<div class="mt-5">
-                        <div class="text-sm muted mb-2">Détails</div>
-                        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-                          ${rowsHtml}
-                        </div>
-                      </div>`
-                    : ""
-                }
+                ${detailsBlock}
               </div>
             </div>
           </div>
