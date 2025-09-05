@@ -34,6 +34,12 @@ const DT = {
   DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
 };
 
+// --- Icônes pour tokens non-DT (balises simples comme <ENERGY>, <PRE_ATTACK>, etc.)
+const NON_DT_ICONS = {
+  ENERGY: "EnergySymbol.png",
+  PRE_ATTACK: "LeftclicSymbol.png",   // ← clic gauche
+};
+
 function resolveDT(key){
   const k = String(key || "").toUpperCase();
   const v = DT[k];
@@ -44,28 +50,35 @@ function resolveDT(key){
 function renderTextIcons(input){
   let s = String(input ?? "");
 
-  // 1) Normalise d'abord les séparateurs (y compris versions encodées)
+  // Normalisations de base
   s = s
-    .replace(/\r\n|\r/g, "\n")
+    .replace(/\r\n?|\r/g, "\n")
     .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-    .replace(/&lt;\s*LINE_SEPARATOR\s*&gt;/gi, "\n")
-    .replace(/<\s*br\s*\/?>/gi, "\n")
-    .replace(/&lt;\s*br\s*\/?&gt;/gi, "\n")
-    .replace(/\n{2,}/g, "\n");
+    .replace(/<\s*br\s*\/?\s*>/gi, "\n"); // nettoie les <br> bruts éventuels
 
-  // 2) Échappe tout le HTML
-  s = s.replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  // Échapper le HTML (sécurité)
+  s = s.replace(/[&<>"']/g, (c) => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
 
-  // 3) Remplace les balises DT_* par **l'icône seule** (aucun texte)
-  s = s.replace(/(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)/g, (_, key) => {
-    const def = resolveDT(key);
-    if (!def || !def.icon) return "";
-    const src = ICON_BASE + def.icon;
-    // image inline, pas de title ni de label, enlève l’élément si l’image casse
-    return `<img class="dt-ico-inline" src="${src}" alt="" aria-hidden="true" onerror="this.remove()">`;
+  // 1) Remplacer d'abord les DT_* (Impact, Slash, Viral, etc.)
+  s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+    const def = DT[key];
+    const file = def && def.icon;
+    if (!file) return "";
+    const src = ICON_BASE + file;
+    return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
 
-  // 4) Convertit les retours à la ligne en <br>
+  // 2) Puis les tokens simples (ENERGY, PRE_ATTACK, …) — éviter de reprendre les DT_
+  s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+    const file = NON_DT_ICONS[key];
+    if (!file) return ""; // inconnu → on supprime proprement
+    const src = ICON_BASE + file;
+    return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
+  });
+
+  // Retours à la ligne → <br>
   return s.replace(/\n/g, "<br>");
 }
 
