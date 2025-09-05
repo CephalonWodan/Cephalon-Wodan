@@ -307,7 +307,7 @@ async function fetchWarframesWithFailover() {
     const pill = (label, value) => `
       <div class="pill">
         <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
-        <div class="mt-1 font-medium">${escapeHtml(txt(value)))}}</div>
+        <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
       </div>`.replace(")))", "))"); // petite sûreté au cas où minif
 
     const statBox = (label, value) => `
