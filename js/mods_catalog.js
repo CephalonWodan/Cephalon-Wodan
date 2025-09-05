@@ -38,6 +38,7 @@
   // tags additionnels simples (ex : <ENERGY>)
   const EXTRA_ICONS = {
     ENERGY: "EnergySymbol.png",
+    PRE_ATTACK: LeftclicSymbol.png",
   };
 
   // Rend le texte en remplaçant les <DT_...> par une icône inline
