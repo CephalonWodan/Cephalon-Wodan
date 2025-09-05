@@ -1931,8 +1931,8 @@
         "mainNumeric": 20
       },
       {
-        "label": "Fov: |val1|xb0",
-        "filledLabel": "Fov: 60xb0",
+        "label": "Fov: |val1|°",
+        "filledLabel": "Fov: 60°",
         "modifier": "NONE",
         "values": {
           "Val1": 60
@@ -2775,8 +2775,8 @@
         "mainNumeric": 15
       },
       {
-        "label": "Blast Angle: |val1|xb0",
-        "filledLabel": "Blast Angle: 80xb0",
+        "label": "Blast Angle: |val1|°",
+        "filledLabel": "Blast Angle: 80°",
         "modifier": "NONE",
         "values": {
           "Val1": 80
@@ -4500,8 +4500,8 @@
         "mainNumeric": 25
       },
       {
-        "label": "Speed: |val1|xb0/s",
-        "filledLabel": "Speed: 360xb0/s",
+        "label": "Speed: |val1|°/s",
+        "filledLabel": "Speed: 360°/s",
         "modifier": "NONE",
         "values": {
           "Val1": 360
@@ -5641,8 +5641,8 @@
         "mainNumeric": 60
       },
       {
-        "label": "Min Charge Size: |val1|xb0",
-        "filledLabel": "Min Charge Size: 25xb0",
+        "label": "Min Charge Size: |val1|°",
+        "filledLabel": "Min Charge Size: 25°",
         "modifier": "NONE",
         "values": {
           "Val1": 25
@@ -5650,8 +5650,8 @@
         "mainNumeric": 25
       },
       {
-        "label": "Max Charge Size: |val1|xb0",
-        "filledLabel": "Max Charge Size: 95xb0",
+        "label": "Max Charge Size: |val1|°",
+        "filledLabel": "Max Charge Size: 95°",
         "modifier": "NONE",
         "values": {
           "Val1": 95
@@ -6109,8 +6109,8 @@
         "mainNumeric": 10
       },
       {
-        "label": "Sweep Arc: |val1|xb0",
-        "filledLabel": "Sweep Arc: 225xb0",
+        "label": "Sweep Arc: |val1|°",
+        "filledLabel": "Sweep Arc: 225°",
         "modifier": "NONE",
         "values": {
           "Val1": 225
@@ -6329,8 +6329,8 @@
         "mainNumeric": 50
       },
       {
-        "label": "Minimum Field Of View: |val1|xb0",
-        "filledLabel": "Minimum Field Of View: 15xb0",
+        "label": "Minimum Field Of View: |val1|°",
+        "filledLabel": "Minimum Field Of View: 15°",
         "modifier": "NONE",
         "values": {
           "Val1": 15
@@ -6585,8 +6585,8 @@
         "mainNumeric": 700
       },
       {
-        "label": "Angle: |val1|xb0",
-        "filledLabel": "Angle: 45xb0",
+        "label": "Angle: |val1|°",
+        "filledLabel": "Angle: 45°",
         "modifier": "AVATAR_ABILITY_RANGE",
         "values": {
           "Val1": 45
@@ -6621,8 +6621,8 @@
         "mainNumeric": 600
       },
       {
-        "label": "Angle Cap: |val1|xb0",
-        "filledLabel": "Angle Cap: 60xb0",
+        "label": "Angle Cap: |val1|°",
+        "filledLabel": "Angle Cap: 60°",
         "modifier": "NONE",
         "values": {
           "Val1": 60
@@ -9366,8 +9366,8 @@
         "mainNumeric": 3
       },
       {
-        "label": "Firing Arc: |val1|xb0",
-        "filledLabel": "Firing Arc: 130xb0",
+        "label": "Firing Arc: |val1|°",
+        "filledLabel": "Firing Arc: 130°",
         "modifier": "NONE",
         "values": {
           "Val1": 130
@@ -9597,8 +9597,8 @@
         "mainNumeric": 3
       },
       {
-        "label": "Shrapnel Grenade Spread: |val1|xb0",
-        "filledLabel": "Shrapnel Grenade Spread: 135xb0",
+        "label": "Shrapnel Grenade Spread: |val1|°",
+        "filledLabel": "Shrapnel Grenade Spread: 135°",
         "modifier": "NONE",
         "values": {
           "Val1": 135
@@ -9633,8 +9633,8 @@
         "mainNumeric": 4
       },
       {
-        "label": "Shield Grenade Spread: |val1|xb0",
-        "filledLabel": "Shield Grenade Spread: 135xb0",
+        "label": "Shield Grenade Spread: |val1|°",
+        "filledLabel": "Shield Grenade Spread: 135°",
         "modifier": "NONE",
         "values": {
           "Val1": 135
@@ -9870,8 +9870,8 @@
         "mainNumeric": 2
       },
       {
-        "label": "Evasion Angle: |val1|xb0",
-        "filledLabel": "Evasion Angle: 180xb0",
+        "label": "Evasion Angle: |val1|°",
+        "filledLabel": "Evasion Angle: 180°",
         "modifier": "AVATAR_ABILITY_RANGE",
         "values": {
           "Val1": 180
@@ -10611,8 +10611,8 @@
         "mainNumeric": 6
       },
       {
-        "label": "Angle: |val1|xb0",
-        "filledLabel": "Angle: 90xb0",
+        "label": "Angle: |val1|°",
+        "filledLabel": "Angle: 90°",
         "modifier": "NONE",
         "values": {
           "Val1": 90
@@ -11151,8 +11151,8 @@
         "mainNumeric": 20
       },
       {
-        "label": "Pull Angle: |val1|xb0",
-        "filledLabel": "Pull Angle: 80xb0",
+        "label": "Pull Angle: |val1|°",
+        "filledLabel": "Pull Angle: 80°",
         "modifier": "NONE",
         "values": {
           "Val1": 80
@@ -12118,8 +12118,8 @@
         "mainNumeric": 95
       },
       {
-        "label": "Deflect Angle: |val1|xb0",
-        "filledLabel": "Deflect Angle: 45xb0",
+        "label": "Deflect Angle: |val1|°",
+        "filledLabel": "Deflect Angle: 45°",
         "modifier": "NONE",
         "values": {
           "Val1": 45
@@ -12127,8 +12127,8 @@
         "mainNumeric": 45
       },
       {
-        "label": "Divert Angle: |val1|xb0",
-        "filledLabel": "Divert Angle: 90xb0",
+        "label": "Divert Angle: |val1|°",
+        "filledLabel": "Divert Angle: 90°",
         "modifier": "NONE",
         "values": {
           "Val1": 90
