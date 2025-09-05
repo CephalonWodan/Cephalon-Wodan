@@ -57,7 +57,7 @@ function renderTextIcons(input) {
   // échappe le HTML
   s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 
-  // DT_* (forme brute ou encodée) – on avale le blanc autour pour éviter un saut de ligne moche
+  // DT_* (forme brute ou encodée) – avale les blancs autour
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = DT_ICONS[key]; if (!file) return "";
     const src = ICON_BASE + file;
@@ -225,30 +225,52 @@ async function fetchWarframesWithFailover() {
     // ---------- UI
     const card = $("#card");
 
-    // Helpers pour normaliser les lignes du tableau "Détails"
+    // Helpers pour formater proprement les lignes “Détails”
     function splitFilledLabel(filled) {
-      // "Energy Cost: 25" -> { label:"Energy Cost", value:"25" }
       const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
       return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
     }
-    function makeDetailRows(rows) {
-      // Retourne [{label, value}] sans doublons (garde l’unité si présente dans filledLabel)
-      return (rows || []).map(r => {
-        let label = (r.label || "").trim();
-        let value = (r.mainNumeric ?? "").toString();
+    // Remplace “|valX|” par la valeur numérique + unité éventuelle,
+    // et renvoie {label, value}. Ex: "Range: |val1|m" + 60 -> { "Range", "60m" }
+    function fromTokenPattern(src, mainNumeric) {
+      const t = String(src || "");
+      if (!/\|val\d+\|/i.test(t)) return null;
 
-        if (!label) {
-          const p = splitFilledLabel(r.filledLabel || "");
-          label = p.label.trim();
-          if (!value && p.value) value = p.value.trim();
-        } else {
-          label = label.replace(/\s*:\s*$/, "");
-          if (!value && r.filledLabel) {
-            const p = splitFilledLabel(r.filledLabel);
-            if (p.value) value = p.value.trim();
-          }
-        }
+      // label avant les deux-points (optionnels) + token + suffixe éventuel
+      const m = t.match(/^(.*?)(?::)?\s*\|val\d+\|\s*([^|]*)$/i);
+      if (m) {
+        const label = m[1].trim().replace(/\s*:\s*$/, "");
+        const suffix = (m[2] || "").trim();
+        const value = (mainNumeric != null ? String(mainNumeric) : "").concat(suffix);
         return { label, value };
+      }
+
+      // fallback générique
+      const label = t.replace(/\s*:\s*\|val\d+\|.*$/i, "").replace(/\|val\d+\|/ig, "").trim();
+      const value = (mainNumeric != null ? String(mainNumeric) : "");
+      return { label, value };
+    }
+    function makeDetailRows(rows) {
+      return (rows || []).map(r => {
+        const main = r.mainNumeric;
+
+        // 1) label avec tokens
+        let tok = fromTokenPattern(r.label, main) || fromTokenPattern(r.filledLabel, main);
+        if (tok) return tok;
+
+        // 2) label simple + mainNumeric
+        if ((r.label || "").trim()) {
+          const label = r.label.replace(/\s*:\s*$/, "");
+          if (main != null && main !== "") return { label, value: String(main) };
+        }
+
+        // 3) filledLabel déjà “resolu” (Energy Cost: 25)
+        if (r.filledLabel) {
+          const p = splitFilledLabel(r.filledLabel);
+          return { label: p.label.trim(), value: p.value.trim() };
+        }
+
+        return { label: (r.label || "").trim(), value: main != null ? String(main) : "" };
       }).filter(x => x.label);
     }
 
@@ -281,7 +303,7 @@ async function fetchWarframesWithFailover() {
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`)
         .join(" ");
 
-      // Détails nettoyés (label + value uniques)
+      // Détails nettoyés (label + value uniques, tokens remplacés)
       const detailRows = makeDetailRows(a.rows || []);
       const rowsHtml = detailRows.map(({label, value}) => `
         <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
