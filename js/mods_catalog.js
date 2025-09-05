@@ -35,10 +35,10 @@
     DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
   };
 
-  // tags additionnels simples (ex : <ENERGY>)
+  // tags additionnels simples (ex : <ENERGY>, <PRE_ATTACK>)
   const EXTRA_ICONS = {
     ENERGY: "EnergySymbol.png",
-    PRE_ATTACK: LeftclicSymbol.png",
+    PRE_ATTACK: "LeftclicSymbol.png",
   };
 
   // Rend le texte en remplaçant les <DT_...> par une icône inline
@@ -62,8 +62,8 @@
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
 
-    // remplacer quelques tags additionnels (ex: <ENERGY>) — même logique
-    s = s.replace(/\s*(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
+    // remplacer quelques tags additionnels (ex: <ENERGY>, <PRE_ATTACK>) — même logique
+    s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = EXTRA_ICONS[key];
       if (!file) return `&lt;${key}&gt;`; // laisser encodé si inconnu, on nettoie juste après
       const src = ICON_BASE + file;
