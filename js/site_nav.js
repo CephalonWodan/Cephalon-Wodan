@@ -19,6 +19,7 @@
     { href: "arcanes.html", key: "arcanes.html", label: "Arcanes" },
     { href: "shards.html",  key: "shards.html",  label: "Archon Shards" },
     { href: "weapons.html", key: "weapons.html", label: "Weapons" },
+    { href: "companions.html", key: "companions.html", label: "Companions" },
   ];
 
   host.innerHTML = `
