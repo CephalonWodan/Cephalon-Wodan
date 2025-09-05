@@ -225,60 +225,90 @@ async function fetchWarframesWithFailover() {
     // ---------- UI
     const card = $("#card");
 
-    // Helpers pour formater proprement les lignes “Détails”
+    // ====== Helpers “Détails” (multi-tokens) ======
     function splitFilledLabel(filled) {
       const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
       return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
     }
-    // Remplace “|valX|” par la valeur numérique + unité éventuelle,
-    // et renvoie {label, value}. Ex: "Range: |val1|m" + 60 -> { "Range", "60m" }
-    function fromTokenPattern(src, mainNumeric) {
-      const t = String(src || "");
-      if (!/\|val\d+\|/i.test(t)) return null;
+    function buildTokenMap(row) {
+      const map = Object.create(null);
 
-      // label avant les deux-points (optionnels) + token + suffixe éventuel
-      const m = t.match(/^(.*?)(?::)?\s*\|val\d+\|\s*([^|]*)$/i);
-      if (m) {
-        const label = m[1].trim().replace(/\s*:\s*$/, "");
-        const suffix = (m[2] || "").trim();
-        const value = (mainNumeric != null ? String(mainNumeric) : "").concat(suffix);
-        return { label, value };
+      // val1..valN présents directement
+      for (const k in row) {
+        if (/^val\d+$/i.test(k) && isFinite(Number(row[k]))) {
+          map[k.toLowerCase()] = row[k];
+        }
       }
-
-      // fallback générique
-      const label = t.replace(/\s*:\s*\|val\d+\|.*$/i, "").replace(/\|val\d+\|/ig, "").trim();
-      const value = (mainNumeric != null ? String(mainNumeric) : "");
-      return { label, value };
+      // row.values.{val1..} éventuel
+      if (row.values && typeof row.values === "object") {
+        for (const k in row.values) {
+          if (/^val\d+$/i.test(k) && isFinite(Number(row.values[k]))) {
+            map[k.toLowerCase()] = row.values[k];
+          }
+        }
+      }
+      // tableau numerics éventuel -> val1, val2, ...
+      if (Array.isArray(row.numerics)) {
+        row.numerics.forEach((n, i) => {
+          if (isFinite(Number(n)) && map["val"+(i+1)] == null) {
+            map["val"+(i+1)] = n;
+          }
+        });
+      }
+      // mainNumeric => val1 par défaut
+      if (map.val1 == null && isFinite(Number(row.mainNumeric))) {
+        map.val1 = row.mainNumeric;
+      }
+      return map;
+    }
+    function fillTokens(template, tokenMap) {
+      return String(template || "").replace(/\|val(\d+)\|/gi, (_, n) => {
+        const key = ("val" + n).toLowerCase();
+        const v = tokenMap[key];
+        return v == null ? "" : String(v);
+      });
+    }
+    function fromTemplateToLabelValue(template, tokenMap) {
+      const filled = fillTokens(template, tokenMap).trim();
+      const m = filled.match(/^(.+?):\s*(.*)$/);
+      if (m) return { label: m[1], value: m[2] };
+      // pas de “:”, tout dans le label
+      return { label: filled, value: "" };
     }
     function makeDetailRows(rows) {
       return (rows || []).map(r => {
-        const main = r.mainNumeric;
+        const mapTok = buildTokenMap(r);
 
-        // 1) label avec tokens
-        let tok = fromTokenPattern(r.label, main) || fromTokenPattern(r.filledLabel, main);
-        if (tok) return tok;
+        // 1) Priorité aux templates contenant des tokens
+        const hasTokLabel = /\|val\d+\|/i.test(r.label || "");
+        const hasTokFilled = /\|val\d+\|/i.test(r.filledLabel || "");
+        if (hasTokLabel)  return fromTemplateToLabelValue(r.label,       mapTok);
+        if (hasTokFilled) return fromTemplateToLabelValue(r.filledLabel, mapTok);
 
-        // 2) label simple + mainNumeric
-        if ((r.label || "").trim()) {
-          const label = r.label.replace(/\s*:\s*$/, "");
-          if (main != null && main !== "") return { label, value: String(main) };
-        }
-
-        // 3) filledLabel déjà “resolu” (Energy Cost: 25)
+        // 2) filledLabel déjà prêt (Energy Cost: 25)
         if (r.filledLabel) {
           const p = splitFilledLabel(r.filledLabel);
           return { label: p.label.trim(), value: p.value.trim() };
         }
 
-        return { label: (r.label || "").trim(), value: main != null ? String(main) : "" };
-      }).filter(x => x.label);
+        // 3) label simple + mainNumeric (fallback)
+        if ((r.label || "").trim()) {
+          const label = r.label.replace(/\s*:\s*$/, "");
+          if (r.mainNumeric != null && r.mainNumeric !== "") {
+            return { label, value: String(r.mainNumeric) };
+          }
+          return { label, value: "" };
+        }
+
+        return null;
+      }).filter(Boolean);
     }
 
     const pill = (label, value) => `
       <div class="pill">
         <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
-        <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
-      </div>`;
+        <div class="mt-1 font-medium">${escapeHtml(txt(value)))}</div>
+      </div>`.replace(")))", "))"); // petite sûreté au cas où minif
 
     const statBox = (label, value) => `
       <div class="stat">
@@ -303,7 +333,7 @@ async function fetchWarframesWithFailover() {
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`)
         .join(" ");
 
-      // Détails nettoyés (label + value uniques, tokens remplacés)
+      // Détails nettoyés (tokens multiples OK)
       const detailRows = makeDetailRows(a.rows || []);
       const rowsHtml = detailRows.map(({label, value}) => `
         <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
@@ -328,7 +358,6 @@ async function fetchWarframesWithFailover() {
           </div>
         </div>` : "";
 
-      // ----- rendu principal
       card.innerHTML = `
         <div class="flex flex-col md:flex-row gap-6">
           <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
