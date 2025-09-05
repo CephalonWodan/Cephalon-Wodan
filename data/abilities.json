@@ -9862,12 +9862,12 @@
       },
       {
         "label": "Energy Drain: |val1|",
-        "filledLabel": "Energy Drain: 2",
+        "filledLabel": "Energy Drain: 2.5/s",
         "modifier": "ENERGY_DRAIN",
         "values": {
-          "Val1": 2
+          "Val1": 2.5
         },
-        "mainNumeric": 2
+        "mainNumeric": 2.5
       },
       {
         "label": "Evasion Angle: |val1|°",
