@@ -55,7 +55,7 @@ function renderTextIcons(input) {
        .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
   // échappe le HTML
-  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
+  s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   // DT_* (forme brute ou encodée) – avale les blancs autour
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
@@ -308,13 +308,22 @@ async function fetchWarframesWithFailover() {
       <div class="pill">
         <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
         <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
-      </div>`.replace(")))", "))"); // petite sûreté au cas où minif
+      </div>`;
 
     const statBox = (label, value) => `
       <div class="stat">
         <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
         <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
       </div>`;
+
+  // Normalise les sauts de ligne des descriptions (gère \r\n et \n littéraux)
+  function normalizeDesc(text) {
+    let s = String(text ?? "");
+    s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n"); // séquences littérales -> vrais \n
+    s = s.replace(/\r\n?/g, "\n");                        // CRLF réels -> \n
+    s = s.replace(/\n{2,}/g, "\n");                       // compacte les lignes vides
+  return s;
+}
 
     function renderCard(wf, iAbility = 0) {
       const wfName = escapeHtml(wf.name);
@@ -399,7 +408,7 @@ async function fetchWarframesWithFailover() {
 
               <div class="card p-4 orn">
                 <div class="font-semibold">${escapeHtml(a.name || "—")}</div>
-                <p class="mt-1 text-[var(--muted)]">${renderTextIcons((a.description || "").replace(/\r?\n/g, "\n"))}</p>
+                <p class="mt-1 text-[var(--muted)]">${renderTextIcons(normalizeDesc(a.description))}</p>
 
                 ${pillsHtml}
 
