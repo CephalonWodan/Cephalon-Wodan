@@ -1,32 +1,35 @@
 // js/weapons_catalog.js
-// UI style aligné sur Warframes/Companions. Sources :
-// - ExportWeapons (WARFRAME officiel — URL hashée à mettre à jour si besoin)
-// - WarframeStat API (fallback/complément)
+// Sources: ExportWeapons (Warframe officiel) + WarframeStat API
+// Onglets Primary/Secondary/Melee, Archwing exclu.
 
 (() => {
   "use strict";
 
   /* -------------------- Config -------------------- */
-  // >>> Mets à jour cette URL si le hash change (voir index_en.txt.lzma) :
+  // mets à jour ce hash si besoin
   const EXPORT_WEAPONS_URL =
     "http://content.warframe.com/PublicExport/Manifest/ExportWeapons_en.json!00_bEtI98Hav9NkSKXKNxI9cA";
-
   const WFSTAT_API_URL = "https://api.warframestat.us/weapons/";
 
-  // Catégories valides (armes jouables), pour filtrer bruit/modulaire
-  const ALLOWED_API_CATEGORIES = new Set(["Primary", "Secondary", "Melee", "Arch-Gun", "Arch-Melee"]);
-  const ALLOWED_EXPORT_PRODUCTS = new Set(["LongGuns", "Pistols", "Melee", "SpaceGuns", "SpaceMelee"]);
+  // On NE GARDE que ces catégories
+  const KEEP_API = new Set(["Primary", "Secondary", "Melee"]);
+  const MAP_EXPORT_TO_CAT = {
+    LongGuns: "Primary",
+    Pistols: "Secondary",
+    Melee: "Melee",
+    // SpaceGuns / SpaceMelee = Archwing -> exclus
+  };
 
-  // Images : priorité wiki officiel > CDN WarframeStat > local
-  const wikiImage = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
-  const cdnImage  = (fileOrName) => fileOrName ? `https://cdn.warframestat.us/img/${encodeURIComponent(fileOrName)}` : "";
-  const localImage= (fileOrName) => fileOrName ? `img/weapons/${encodeURIComponent(fileOrName)}` : "";
+  // Images (priorité wiki > cdn > local)
+  const wikiImage  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
+  const cdnImage   = (name) => name ? `https://cdn.warframestat.us/img/${encodeURIComponent(name)}` : "";
+  const localImage = (name) => name ? `img/weapons/${encodeURIComponent(name)}` : "";
 
   /* -------------------- Utils -------------------- */
   const $ = (s) => document.querySelector(s);
   const norm = (s) => String(s || "").trim();
-  const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
-  const byName = (a,b) => (a.name || a.Name || "").localeCompare(b.name || b.Name || "");
+  const esc  = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
+  const byName = (a,b) => (a.name||"").localeCompare(b.name||"");
 
   const toPct = (v) => (v == null ? "—" : `${Math.round(Number(v) * 1000)/10}%`);
   const toX   = (v) => (v == null ? "—" : `×${v}`);
@@ -38,20 +41,8 @@
       .replace(/\n{3,}/g, "\n\n")
       .replace(/\n/g, "<br>");
   }
-
-  function coalesce(obj, keys, def=null){
-    for (const k of keys) if (obj && obj[k] != null) return obj[k];
-    return def;
-  }
-
-  function allowedFromExport(rec){
-    const pc = coalesce(rec, ["ProductCategory","productCategory"], "");
-    return ALLOWED_EXPORT_PRODUCTS.has(pc);
-  }
-  function allowedFromApi(rec){
-    const c = coalesce(rec, ["category","Category"], "");
-    return ALLOWED_API_CATEGORIES.has(c);
-  }
+  function coalesce(obj, keys, def=null){ for (const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
+  function mapByLowerName(list){ const m=new Map(); for (const it of list){ const n=norm(it.name||it.Name||""); if(n) m.set(n.toLowerCase(), it); } return m; }
 
   /* -------------------- Loaders -------------------- */
   async function loadExportWeapons(){
@@ -59,12 +50,15 @@
       const r = await fetch(EXPORT_WEAPONS_URL, { cache:"no-store" });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const data = await r.json();
-      // Export = objet avec propriété ExportWeapons OU simple tableau
       let list = data && (data.ExportWeapons || data.exportWeapons || data);
       if (!list) return [];
       if (!Array.isArray(list)) list = Object.values(list);
-      return list.filter(allowedFromExport).sort(byName);
-    }catch(_){ return []; }
+      // Filtre: seulement catégories qu'on mappe (pas SpaceGuns/SpaceMelee)
+      list = list.filter(rec => MAP_EXPORT_TO_CAT[rec.ProductCategory]);
+      // Normalise name pour tri
+      list.sort((a,b)=> (a.Name||"").localeCompare(b.Name||""));
+      return list;
+    }catch{ return []; }
   }
 
   async function loadApiWeapons(){
@@ -73,17 +67,8 @@
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const data = await r.json();
       if (!Array.isArray(data)) return [];
-      return data.filter(allowedFromApi).sort(byName);
-    }catch(_){ return []; }
-  }
-
-  function mapByLowerName(list){
-    const m = new Map();
-    for (const it of list){
-      const n = norm(it.name || it.Name || "");
-      if (n) m.set(n.toLowerCase(), it);
-    }
-    return m;
+      return data.filter(w => KEEP_API.has(w.category)).sort(byName);
+    }catch{ return []; }
   }
 
   /* -------------------- Merge model -------------------- */
@@ -92,57 +77,36 @@
     if (!obj || typeof obj !== "object") return null;
     const out = {};
     for (const k of Object.keys(obj)){
-      const v = Number(obj[k]);
-      if (!isNaN(v) && v > 0) out[k] = v;
+      const v = Number(obj[k]); if (!isNaN(v) && v>0) out[k]=v;
     }
     return Object.keys(out).length ? out : null;
   }
-
-  function sumDamage(map){
-    if (!map) return null;
-    let t = 0;
-    for (const k in map){ const v = Number(map[k]); if (!isNaN(v)) t += v; }
-    return t || null;
-  }
+  function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if(!isNaN(v)) t+=v; } return t||null; }
 
   function unifyWeapon(name, exportRec, apiRec){
-    // Champs de base
-    const category = apiRec?.category || (function(pc){
-      switch(pc){
-        case "LongGuns": return "Primary";
-        case "Pistols": return "Secondary";
-        case "Melee": return "Melee";
-        case "SpaceGuns": return "Arch-Gun";
-        case "SpaceMelee": return "Arch-Melee";
-        default: return "";
-      }
-    })(coalesce(exportRec, ["ProductCategory"], ""));
+    const category =
+      apiRec?.category ||
+      MAP_EXPORT_TO_CAT[coalesce(exportRec, ["ProductCategory"], "")] || "";
 
-    const type   = apiRec?.type || exportRec?.Type || "";
-    const desc   = apiRec?.description || exportRec?.Description || "";
-    const mastery= apiRec?.masteryReq ?? exportRec?.Mastery ?? null;
-    const dispo  = apiRec?.disposition ?? exportRec?.Disposition ?? null;
-    const trigger= apiRec?.trigger || exportRec?.Trigger || null;
+    const type    = apiRec?.type || exportRec?.Type || "";
+    const desc    = apiRec?.description || exportRec?.Description || "";
+    const mastery = apiRec?.masteryReq ?? exportRec?.Mastery ?? null;
+    const dispo   = apiRec?.disposition ?? exportRec?.Disposition ?? null;
+    const trigger = apiRec?.trigger || exportRec?.Trigger || null;
 
-    // Stats
-    const critC  = apiRec?.criticalChance ?? exportRec?.CritChance ?? null;
-    const critM  = apiRec?.criticalMultiplier ?? exportRec?.CritMultiplier ?? null;
-    const status = (apiRec?.procChance ?? exportRec?.StatusChance ?? null);
-    const fire   = apiRec?.fireRate ?? exportRec?.FireRate ?? null;
-    const mag    = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;
-    const reload = apiRec?.reloadTime ?? exportRec?.Reload ?? null;
+    const critC   = apiRec?.criticalChance ?? exportRec?.CritChance ?? null;
+    const critM   = apiRec?.criticalMultiplier ?? exportRec?.CritMultiplier ?? null;
+    const status  = apiRec?.procChance ?? exportRec?.StatusChance ?? null;
+    const fire    = apiRec?.fireRate ?? exportRec?.FireRate ?? null;
+    const mag     = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;
+    const reload  = apiRec?.reloadTime ?? exportRec?.Reload ?? null;
 
-    // Dégâts (API fournit les types; total fallback si possible)
-    const dmgMap = computeDamageMap(apiRec);
-    const total  = apiRec?.totalDamage ?? exportRec?.TotalDamage ?? sumDamage(dmgMap);
+    const dmgMap  = computeDamageMap(apiRec);
+    const total   = apiRec?.totalDamage ?? exportRec?.TotalDamage ?? sumDamage(dmgMap);
 
-    // Images
     const exportFile = coalesce(exportRec, ["Image","image"], "");
     const apiImgName = apiRec?.imageName || "";
-    const wiki = wikiImage(exportFile);
-    const cdn  = cdnImage(exportFile || apiImgName);
-    const loc  = localImage(exportFile || apiImgName);
-    const img  = wiki || cdn || loc;
+    const img = wikiImage(exportFile) || cdnImage(exportFile || apiImgName) || localImage(exportFile || apiImgName);
 
     return {
       name,
@@ -159,26 +123,33 @@
   function mergeLists(exportList, apiList){
     const expBy = mapByLowerName(exportList);
     const apiBy = mapByLowerName(apiList);
-
     const names = new Set([...expBy.keys(), ...apiBy.keys()]);
     const out = [];
     for (const n of names){
       const e = expBy.get(n) || null;
       const a = apiBy.get(n) || null;
       const name = (a?.name || e?.Name || e?.name || "");
-      out.push(unifyWeapon(name, e, a));
+      const w = unifyWeapon(name, e, a);
+      // Sécurité: ne garde que Primary/Secondary/Melee
+      if (KEEP_API.has(w.category)) out.push(w);
     }
-    return out.sort((a,b)=>a.name.localeCompare(b.name));
+    return out.sort(byName);
   }
 
-  /* -------------------- UI helpers -------------------- */
+  /* -------------------- UI -------------------- */
+  const STATE = {
+    list: [],           // tout (3 catégories)
+    tab: "Primary",     // onglet actif
+    q: ""
+  };
+
   const statBox = (label, value) => `
     <div class="stat">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${esc(label)}</div>
       <div class="text-lg font-semibold">${esc(value)}</div>
     </div>`;
 
-  function chip(t){ return t ? `<span class="badge">${esc(t)}</span>` : ""; }
+  const chip = (t) => t ? `<span class="badge">${esc(t)}</span>` : "";
 
   function damageRows(map){
     if (!map) return "";
@@ -204,15 +175,12 @@
 
     $("#card").innerHTML = `
       <div class="flex flex-col md:flex-row gap-6">
-        <!-- image -->
         <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
           <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            ${w.image ? `<img src="${esc(w.image)}" alt="${title}" class="w-full h-full object-contain">`
-                       : `<div class="muted">No Image</div>`}
+            ${w.image ? `<img src="${esc(w.image)}" alt="${title}" class="w-full h-full object-contain">` : `<div class="muted">No Image</div>`}
           </div>
         </div>
 
-        <!-- content -->
         <div class="flex-1 flex flex-col gap-4">
           <div class="flex items-start gap-4">
             <div class="min-w-0 flex-1">
@@ -241,10 +209,17 @@
     `;
   }
 
-  function renderPicker(list){
+  function listForTabAndSearch(){
+    const q = STATE.q.toLowerCase();
+    return STATE.list
+      .filter(w => w.category === STATE.tab)
+      .filter(w => !q || (w.name.toLowerCase().includes(q)));
+  }
+
+  function renderPicker(arr){
     const pick = $("#picker");
     pick.innerHTML = "";
-    list.forEach((w,i)=>{
+    arr.forEach((w,i)=>{
       const o = document.createElement("option");
       o.value = i;
       o.textContent = w.name;
@@ -253,50 +228,60 @@
     pick.value = "0";
   }
 
+  function updateUI(){
+    const arr = listForTabAndSearch();
+    renderPicker(arr);
+    $("#status").textContent = `Catégorie ${STATE.tab} — ${arr.length} résultat(s)`;
+    if (arr.length) renderCard(arr[0]); else $("#card").innerHTML = `<div class="muted">Aucun résultat</div>`;
+  }
+
+  function activateTab(cat){
+    STATE.tab = cat;
+    // toggle classe active
+    document.querySelectorAll("#tabs .btn-tab").forEach(b=>{
+      b.classList.toggle("active", b.dataset.cat === cat);
+    });
+    updateUI();
+  }
+
   /* -------------------- Boot -------------------- */
   (async function boot(){
     const status = $("#status");
-    try {
+    try{
       status.textContent = "Chargement des armes…";
 
-      const [exportList, apiList] = await Promise.all([loadExportWeapons(), loadApiWeapons()]);
-      const list = mergeLists(exportList, apiList);
+      const [eList, aList] = await Promise.all([loadExportWeapons(), loadApiWeapons()]);
+      STATE.list = mergeLists(eList, aList); // Primary/Secondary/Melee uniquement
 
-      if (!list.length){
+      if (!STATE.list.length){
         status.textContent = "Aucune arme trouvée.";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
         return;
       }
 
-      // UI init
-      renderPicker(list);
-      renderCard(list[0]);
-      const setStatus = (msg, ok=true) => {
-        status.textContent = msg;
-        status.className = "mb-4 text-sm px-3 py-2 rounded-lg" + (ok ? " orn" : "");
-        status.style.background = ok ? "rgba(0,229,255,.08)" : "rgba(255,0,0,.08)";
-        status.style.color = ok ? "#bfefff" : "#ffd1d1";
-      };
-      setStatus(`Weapons chargées : ${list.length}`);
-
-      // interactions
+      // Interactions
       $("#picker").addEventListener("change", (e)=>{
-        const idx = parseInt(e.target.value, 10);
-        const q = norm($("#search").value).toLowerCase();
-        const filtered = q ? list.filter(x => x.name.toLowerCase().includes(q)) : list;
-        if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
+        const arr = listForTabAndSearch();
+        const idx = Math.min(parseInt(e.target.value,10) || 0, Math.max(0, arr.length-1));
+        if (arr.length) renderCard(arr[idx]);
       });
 
       $("#search").addEventListener("input", ()=>{
-        const q = norm($("#search").value).toLowerCase();
-        const filtered = q ? list.filter(x => x.name.toLowerCase().includes(q)) : list;
-        renderPicker(filtered);
-        if (filtered.length) renderCard(filtered[0]);
-        setStatus(`Affichage : ${filtered.length} résultat(s)`);
+        STATE.q = norm($("#search").value);
+        updateUI();
       });
 
-    } catch (e){
+      document.querySelectorAll("#tabs .btn-tab").forEach(btn=>{
+        btn.addEventListener("click", ()=> activateTab(btn.dataset.cat));
+      });
+
+      // UI init (onglet Primary par défaut)
+      activateTab("Primary");
+      status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
+      status.style.background = "rgba(0,229,255,.08)";
+      status.style.color = "#bfefff";
+    }catch(e){
       console.error("[weapons] load error:", e);
       status.textContent = "Erreur de chargement des armes.";
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
