@@ -1,227 +1,296 @@
 // js/companions_catalog.js
 // =====================================================
-// Companions depuis data/companions.json (dump wiki)
-// - Images: local img/companions/<file> (absolu) → cdn.warframestat.us/img/<file>
-// - AUCUN fallback Fandom/Wiki
-// - Nettoyage \r\n / \\r\\n / \\n dans les descriptions
-// - Attaques affichées avec les stats
+// Companions (Kavats, Kubrows, Sentinels, MOA, Predasite, Vulpaphyla, Hounds)
+// Source: data/companions.json (dump wiki officiel -> JSON)
+// - Image priority: Wiki /images/...  -> WarframeStat CDN -> assets locaux
+// - Nettoyage \r\n -> <br>
+// - Intègre "Attacks" dans le panneau (si présent)
+// - IDs utilisés: #status, #search, #picker, #card
 // =====================================================
 
-(() => {
+(function(){
   "use strict";
 
-  const DATA_URL = "data/companions.json";
-
-  /* ---------- utils ---------- */
+  /* ---------------- utils DOM & texte ---------------- */
   const $  = (s) => document.querySelector(s);
-  const norm = (v) => String(v ?? "").trim();
-  const txt  = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
-  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const byName = (a,b) => (a.Name||"").localeCompare(b.Name||"");
+  const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
+  const norm = (s) => String(s || "").trim();
+  const byName = (a,b) => (a.name||"").localeCompare(b.name||"");
 
-  function renderDesc(s) {
+  function cleanDesc(s){
     if (!s) return "";
-    let t = String(s);
-    // nettoie toutes les variantes d'échappement
-    t = t.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\r\n?/g, "\n");
-    t = t.replace(/\n{3,}/g, "\n\n");
-    return escapeHtml(t).replace(/\n/g, "<br>");
+    return escapeHtml(String(s).replace(/\r\n?/g, "\n")).replace(/\n{3,}/g, "\n\n").replace(/\n/g, "<br>");
   }
 
-  /* ---------- Images ---------- */
-  const LOCAL_COMP_BASE = new URL("img/companions/", document.baseURI).href;
-
-  const PLACEHOLDER =
-    "data:image/svg+xml;utf8," +
-    encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><rect x="14" y="14" width="612" height="332" rx="22" ry="22" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="22" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>');
-
-  function fileCandidates(item) {
-    const set = new Set();
-    const push = (v) => { v = norm(v); if (v) set.add(v.replace(/^.*[\\/]/, "")); }; // garde seulement le nom de fichier
-    push(item.Image);
-    push(item.SquadPortrait);
-    push(item.Icon);
-    const name = norm(item.Name);
-    if (name) push(name.replace(/\s+/g, "") + ".png");
-    return Array.from(set);
+  function fmtPercent(v){
+    if (v == null || v === "") return "—";
+    // si déjà en %, laisse tel quel
+    if (typeof v === "string" && /%$/.test(v.trim())) return v.trim();
+    const n = Number(v);
+    if (!Number.isFinite(n)) return escapeHtml(String(v));
+    const p = (n <= 1 && n >= 0) ? n * 100 : n; // 0.3 -> 30, sinon suppose déjà en %
+    return `${Number(p.toFixed(p % 1 === 0 ? 0 : (p < 1 ? 2 : 1)))}%`;
   }
 
-  function expandNameVariants(file) {
-    const list = new Set();
-    const base = file.replace(/^.*[\\/]/, "");
-    const variants = [
-      base,
-      base.replace(/\s+/g, ""),
-      base.toLowerCase(),
-      base.replace(/\s+/g, "").toLowerCase()
-    ];
-    for (const v of variants) {
-      list.add(v);
-      if (/\.png$/i.test(v)) list.add(v.replace(/\.png$/i, ".webp"));
+  function fmtDamageMap(obj){
+    if (!obj || typeof obj !== "object") return "—";
+    const parts = [];
+    for (const [k,v] of Object.entries(obj)){
+      if (v == null) continue;
+      parts.push(`${escapeHtml(k)} ${Number(v)}`);
     }
-    return Array.from(list);
+    return parts.length ? parts.join(" · ") : "—";
   }
 
-  function imageCandidates(item) {
-    const files = fileCandidates(item).flatMap(expandNameVariants);
-    const out = [];
-    for (const f of files) {
-      const enc = encodeURIComponent(f);
-      out.push(LOCAL_COMP_BASE + enc);                       // chemin ABSOLU local
-      out.push(`https://cdn.warframestat.us/img/${enc}`);    // CDN WarframeStat
+  /* ---------------- images: priorité & fallback ---------------- */
+  // Priorité 1 : wiki officiel /images/<File>
+  const wikiImg = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
+  // Priorité 2 : CDN warframestat (si disponible pour ce fichier)
+  const wfStat = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
+  // Priorité 3 : assets locaux (ton repo)
+  const localImg = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
+
+  function buildImageCandidates(cmp){
+    const files = [cmp.Image, cmp.SquadPortrait, cmp.Icon].filter(Boolean);
+    const urls = [];
+    for (const f of files){ urls.push(wikiImg(f)); }
+    for (const f of files){ urls.push(wfStat(f)); }
+    for (const f of files){ urls.push(localImg(f)); }
+
+    // fallback final: placeholder SVG (inline)
+    const ph = placeholder(`${cmp.Name || cmp.name || "Companion"}`);
+    urls.push(ph);
+    // filtre doublons / vides
+    return Array.from(new Set(urls.filter(Boolean)));
+  }
+
+  function placeholder(name){
+    const initials = (name||"C").split(/\s+/).map(s=>s[0]).slice(0,2).join("").toUpperCase();
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
+          </linearGradient>
+        </defs>
+        <rect width="240" height="160" rx="16" fill="url(#g)"/>
+        <text x="50%" y="55%" fill="#7aa2d6" font-family="Inter,system-ui,Segoe UI,Roboto" font-size="56" text-anchor="middle">${escapeHtml(initials)}</text>
+      </svg>`;
+    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  }
+
+  // onerror fallback chain
+  window._nextImg = function(img){
+    try{
+      const arr = JSON.parse(img.dataset.srcs || "[]");
+      let idx = Number(img.dataset.idx || 0);
+      idx++;
+      if (idx < arr.length){
+        img.dataset.idx = String(idx);
+        img.src = arr[idx];
+      }
+    }catch(e){ /* noop */ }
+  };
+
+  /* ---------------- chargement des données ---------------- */
+  async function loadLocalCompanions(){
+    // Le JSON converti depuis le LUA doit être au format:
+    // { "Companions": { "Name": { ... }, "Other": { ... } } }
+    const r = await fetch("data/companions.json", { cache: "no-store" });
+    if (!r.ok) throw new Error(`HTTP ${r.status} @ data/companions.json`);
+    const data = await r.json();
+    const dict = data && (data.Companions || data.companions || data);
+    if (!dict || typeof dict !== "object") return [];
+    const list = [];
+    for (const [k, raw] of Object.entries(dict)){
+      // normalise structure
+      const rec = Object.assign({}, raw);
+      rec.Name = rec.Name || rec.name || k;
+      rec.Type = rec.Type || rec.type || "";
+      rec.Category = rec.Category || rec.category || "";
+      rec.Description = rec.Description || rec.description || "";
+      rec.Image = rec.Image || rec.image || "";
+      rec.Icon = rec.Icon || rec.icon || "";
+      rec.SquadPortrait = rec.SquadPortrait || rec.squadPortrait || "";
+      rec.Health = rec.Health ?? rec.health ?? null;
+      rec.Shield = rec.Shield ?? rec.shield ?? null;
+      rec.Armor = rec.Armor ?? rec.armor ?? null;
+      rec.Energy = rec.Energy ?? rec.energy ?? null;
+      rec.Stamina = rec.Stamina ?? rec.stamina ?? null;
+      rec.Polarities = rec.Polarities || rec.polarities || [];
+      rec.Attacks = Array.isArray(rec.Attacks) ? rec.Attacks : (Array.isArray(rec.attacks) ? rec.attacks : []);
+      list.push(rec);
     }
-    // déduplique tout en gardant l'ordre
-    return out.filter((v, i, a) => a.indexOf(v) === i);
+    return list.sort(byName);
   }
 
-  function attachImgWithFallbacks(img, item) {
-    const list = imageCandidates(item);
-    const tryNext = () => {
-      if (!list.length) { img.onerror = null; img.src = PLACEHOLDER; return; }
-      img.src = list.shift();
-    };
-    img.onerror = tryNext;
-    tryNext();
+  /* ---------------- UI helpers ---------------- */
+  const txt = (v) => (v == null || v === "" ? "—" : String(v));
+  function badge(label, cls=""){ return `<span class="badge ${cls}">${escapeHtml(label)}</span>`; }
+
+  function statBox(label, value){
+    return `
+      <div class="stat">
+        <div class="text-[10px] uppercase tracking-wide text-slate-300">${escapeHtml(label)}</div>
+        <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
+      </div>`;
   }
 
-  /* ---------- Attaques ---------- */
-  function pct(x) {
-    if (x === undefined || x === null || x === "") return "—";
-    const n = Number(x);
-    if (Number.isNaN(n)) return "—";
-    if (n > 1) return `${Math.round(n)}%`;
-    return `${Math.round(n * 100)}%`;
-  }
-  function damageTotal(a) {
-    if (Number.isFinite(a.TotalDamage) && a.TotalDamage > 0) return a.TotalDamage;
-    const d = a.Damage || {};
-    return Object.values(d).reduce((s, v) => s + (Number(v) || 0), 0);
-  }
-  function formatAttackLine(a) {
-    const name = norm(a.AttackName) || "Attack";
-    const dmg = damageTotal(a);
-    const cc  = pct(a.CritChance);
-    const cm  = (a.CritMultiplier ? `×${a.CritMultiplier}` : "×—");
-    const sc  = pct(a.StatusChance);
-    return `• ${escapeHtml(name)} — Dégâts ${escapeHtml(txt(dmg))} · Crit ${escapeHtml(cc)} ${escapeHtml(cm)} · Statut ${escapeHtml(sc)}`;
-  }
-
-  /* ---------- Rendu ---------- */
-  const STATE = { all: [], filtered: [], page: 1, perPage: 12, q: "" };
-
-  function statsPanel(item) {
-    const rows = [
-      ["Armor",  item.Armor],
-      ["Health", item.Health],
-      ["Shield", item.Shield],
-      ["Energy", item.Energy],
-    ];
-    const attacks = Array.isArray(item.Attacks) ? item.Attacks : [];
-    const attHtml = attacks.length
-      ? `<div class="my-2 h-px bg-[rgba(255,255,255,.08)]"></div>
-         <div class="text-[10px] uppercase tracking-wide muted mb-1">Attaques</div>
-         ${attacks.map(a => `<div class="py-0.5">${formatAttackLine(a)}</div>`).join("")}`
-      : "";
+  function attackCard(a){
+    const name = a.AttackName || a.name || "Attack";
+    const total = (a.TotalDamage != null) ? Number(a.TotalDamage) : null;
+    const dmgMap = fmtDamageMap(a.Damage || a.damage);
+    const cc  = (a.CritChance != null) ? fmtPercent(a.CritChance) : "—";
+    const cd  = (a.CritMultiplier != null) ? `${Number(a.CritMultiplier)}x` : "—";
+    const sc  = (a.StatusChance != null) ? fmtPercent(a.StatusChance) : "—";
+    const fr  = (a.FireRate != null) ? `${a.FireRate}/s` : null;
 
     return `
-      <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-        ${rows.map(([k,v]) => `
-          <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-            <div class="text-sm">${escapeHtml(k)}</div>
-            <div class="font-medium">${escapeHtml(txt(v))}</div>
-          </div>`).join("")}
-        ${attHtml}
+      <div class="rounded-xl border border-[rgba(255,255,255,.10)] p-3 bg-[rgba(255,255,255,.02)]">
+        <div class="font-semibold mb-2">${escapeHtml(name)}</div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm">
+          <div><span class="text-[var(--muted)]">Total:</span> <b>${escapeHtml(total==null?"—":String(total))}</b></div>
+          <div><span class="text-[var(--muted)]">Crit:</span> <b>${cc} / ${cd}</b></div>
+          <div><span class="text-[var(--muted)]">Status:</span> <b>${sc}</b></div>
+          ${fr ? `<div><span class="text-[var(--muted)]">Cadence:</span> <b>${escapeHtml(fr)}</b></div>` : ""}
+          <div class="col-span-2 sm:col-span-3"><span class="text-[var(--muted)]">Dégâts:</span> <b>${escapeHtml(dmgMap)}</b></div>
+        </div>
       </div>`;
   }
 
-  function card(item) {
-    const cat = norm(item.Category);
-    const type = norm(item.Type);
-    const desc = renderDesc(item.Description || "");
+  function polaritiesRow(arr){
+    if (!Array.isArray(arr) || !arr.length) return "";
+    return `<div class="flex flex-wrap gap-2">${arr.map(p=>badge(p)).join("")}</div>`;
+  }
 
-    const el = document.createElement("div");
-    el.className = "card p-4";
-    el.innerHTML = `
-      <div class="flex gap-4">
-        <div class="w-[260px] shrink-0">
-          <div class="w-full h-[180px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            <img class="w-full h-full object-contain" alt="${escapeHtml(item.Name || "")}">
+  /* ---------------- rendu carte ---------------- */
+  function renderCard(c){
+    const card = $("#card");
+    if (!card) return;
+    const name = c.Name || c.name || "—";
+    const desc = cleanDesc(c.Description || c.description || "");
+    const cats = [c.Category, c.Type].filter(Boolean).map(s=>badge(s)).join(" ");
+
+    const imgCandidates = buildImageCandidates(c);
+    const firstSrc = imgCandidates[0];
+    const rest = imgCandidates.slice(1);
+
+    const attacks = Array.isArray(c.Attacks) ? c.Attacks : [];
+    const attacksHtml = attacks.length
+      ? `<div class="mt-5">
+           <div class="text-sm text-[var(--muted)] mb-2">Attaques</div>
+           <div class="grid gap-3">
+             ${attacks.map(attackCard).join("")}
+           </div>
+         </div>`
+      : "";
+
+    card.innerHTML = `
+      <div class="flex flex-col md:flex-row gap-6">
+        <div class="w-full md:w-[280px] shrink-0 flex flex-col items-center gap-3">
+          <div class="w-[240px] h-[160px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
+            <img src="${escapeHtml(firstSrc)}"
+                 data-srcs='${escapeHtml(JSON.stringify(imgCandidates))}'
+                 data-idx="0"
+                 alt="${escapeHtml(name)}"
+                 class="w-full h-full object-contain"
+                 loading="lazy" decoding="async"
+                 onerror="_nextImg(this)">
+          </div>
+
+          <div class="w-full">
+            <div class="text-[10px] uppercase tracking-wide text-[var(--muted)] mb-1">Polarities</div>
+            ${polaritiesRow(c.Polarities)}
           </div>
         </div>
+
         <div class="flex-1 min-w-0">
-          <div class="font-semibold">${escapeHtml(item.Name || "—")}</div>
-          <div class="mt-1 text-[var(--muted)]">${escapeHtml(cat)} ${escapeHtml(type)}</div>
-          ${desc ? `<p class="mt-3">${desc}</p>` : ""}
-          <div class="mt-3">${statsPanel(item)}</div>
+          <div class="flex items-start gap-3">
+            <div class="min-w-0 flex-1">
+              <h2 class="text-xl font-semibold">${escapeHtml(name)}</h2>
+              ${cats ? `<div class="mt-1 flex flex-wrap gap-2">${cats}</div>` : ""}
+              ${desc ? `<p class="mt-3 text-[var(--muted)]">${desc}</p>` : ""}
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-4">
+            ${statBox("HP", c.Health)}
+            ${statBox("SHIELD", c.Shield)}
+            ${statBox("ARMOR", c.Armor)}
+            ${statBox("ENERGY", c.Energy)}
+            ${statBox("STAMINA", c.Stamina)}
+          </div>
+
+          ${attacksHtml}
         </div>
-      </div>`;
-    const img = el.querySelector("img");
-    attachImgWithFallbacks(img, item);
-    return el;
+      </div>
+    `;
   }
 
-  function render() {
-    const per = STATE.perPage;
-    const total = STATE.filtered.length;
-    const pages = Math.max(1, Math.ceil(total / per));
-    const page = Math.min(Math.max(1, STATE.page), pages);
-    STATE.page = page;
-
-    const grid = $("#results") || $("#card");
-    grid.className = "grid gap-4 grid-cols-1";
-    grid.innerHTML = "";
-    const start = (page - 1) * per;
-    STATE.filtered.slice(start, start + per).forEach(it => grid.appendChild(card(it)));
+  /* ---------------- picker + search ---------------- */
+  function renderPicker(arr){
+    const picker = $("#picker");
+    if (!picker) return;
+    picker.innerHTML = "";
+    arr.forEach((c, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = c.Name || c.name || "—";
+      picker.appendChild(opt);
+    });
+    picker.value = "0";
   }
 
-  function apply() {
-    const q = STATE.q = norm($("#q")?.value || $("#search")?.value || "").toLowerCase();
-    let arr = STATE.all.slice();
-    if (q) {
-      arr = arr.filter(it => {
-        const hay = [it.Name, it.Description, it.Category, it.Type].map(norm).join(" ").toLowerCase();
-        return hay.includes(q);
-      });
-    }
-    STATE.filtered = arr.sort(byName);
-    STATE.page = 1;
-    render();
-  }
-
-  async function fetchJson(url){
-    const r = await fetch(url, { cache: "no-store" });
-    if (!r.ok) throw new Error(`HTTP ${r.status} @ ${url}`);
-    return r.json();
-  }
-
+  /* ---------------- boot ---------------- */
   (async function boot(){
     const status = $("#status");
-    try {
-      const raw = await fetchJson(DATA_URL);
-      const list = (() => {
-        if (Array.isArray(raw)) return raw;
-        if (raw && typeof raw === "object" && raw.Companions) {
-          const obj = raw.Companions;
-          return Array.isArray(obj) ? obj : Object.values(obj);
-        }
-        if (raw && typeof raw === "object") return Object.values(raw);
-        return [];
-      })();
-      STATE.all = list.sort(byName);
-
-      $("#q")?.addEventListener("input", ()=>{ STATE.page=1; apply(); });
-      $("#search")?.addEventListener("input", ()=>{ STATE.page=1; apply(); });
-
-      if (status) {
-        status.textContent = `Chargé : ${STATE.all.length} compagnons`;
+    try{
+      if (status){
+        status.textContent = "Chargement des companions…";
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
         status.style.background = "rgba(0,229,255,.08)";
         status.style.color = "#bfefff";
       }
-      apply();
-    } catch (e) {
-      console.error("[companions] boot error:", e);
-      if (status) {
+
+      const all = await loadLocalCompanions();
+      if (!all.length){
+        if (status){
+          status.textContent = "Aucun compagnon trouvé dans data/companions.json.";
+          status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+          status.style.background = "rgba(255,0,0,.08)";
+          status.style.color = "#ffd1d1";
+        }
+        return;
+      }
+
+      // search + picker
+      const search = $("#search");
+      let filtered = all.slice();
+      renderPicker(filtered);
+      renderCard(filtered[0]);
+
+      const update = ()=>{
+        const q = norm(search ? search.value : "").toLowerCase();
+        filtered = !q ? all.slice() : all.filter(c => (c.Name||"").toLowerCase().includes(q));
+        renderPicker(filtered);
+        if (filtered.length) renderCard(filtered[0]);
+        if (status) status.textContent = `Affichage : ${filtered.length} résultat(s)`;
+      };
+
+      if (search) search.addEventListener("input", update);
+      const picker = $("#picker");
+      if (picker) picker.addEventListener("change", (e)=>{
+        const idx = parseInt(e.target.value, 10);
+        if (!filtered.length) return;
+        renderCard(filtered[Math.min(Math.max(0, idx), filtered.length - 1)]);
+      });
+
+      if (status) status.textContent = `Companions chargés : ${all.length}`;
+    }catch(e){
+      console.error("[companions] ERREUR :", e);
+      if (status){
         status.textContent = `Erreur de chargement : ${e.message || e}`;
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
         status.style.background = "rgba(255,0,0,.08)";
