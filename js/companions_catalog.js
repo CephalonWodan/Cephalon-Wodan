@@ -1,7 +1,7 @@
 // js/companions_catalog.js
 // =====================================================
 // Companions depuis data/companions.json (dump wiki)
-// - Images: local img/companions/<file> → cdn.warframestat.us/img/<file>
+// - Images: local img/companions/<file> (absolu) → cdn.warframestat.us/img/<file>
 // - AUCUN fallback Fandom/Wiki
 // - Nettoyage \r\n / \\r\\n / \\n dans les descriptions
 // - Attaques affichées avec les stats
@@ -22,19 +22,22 @@
   function renderDesc(s) {
     if (!s) return "";
     let t = String(s);
+    // nettoie toutes les variantes d'échappement
     t = t.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n").replace(/\r\n?/g, "\n");
     t = t.replace(/\n{3,}/g, "\n\n");
     return escapeHtml(t).replace(/\n/g, "<br>");
   }
 
   /* ---------- Images ---------- */
+  const LOCAL_COMP_BASE = new URL("img/companions/", document.baseURI).href;
+
   const PLACEHOLDER =
     "data:image/svg+xml;utf8," +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="640" height="360" fill="url(#g)"/><rect x="14" y="14" width="612" height="332" rx="22" ry="22" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="22" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>');
 
   function fileCandidates(item) {
     const set = new Set();
-    const push = (v) => { v = norm(v); if (v) set.add(v); };
+    const push = (v) => { v = norm(v); if (v) set.add(v.replace(/^.*[\\/]/, "")); }; // garde seulement le nom de fichier
     push(item.Image);
     push(item.SquadPortrait);
     push(item.Icon);
@@ -43,25 +46,42 @@
     return Array.from(set);
   }
 
+  function expandNameVariants(file) {
+    const list = new Set();
+    const base = file.replace(/^.*[\\/]/, "");
+    const variants = [
+      base,
+      base.replace(/\s+/g, ""),
+      base.toLowerCase(),
+      base.replace(/\s+/g, "").toLowerCase()
+    ];
+    for (const v of variants) {
+      list.add(v);
+      if (/\.png$/i.test(v)) list.add(v.replace(/\.png$/i, ".webp"));
+    }
+    return Array.from(list);
+  }
+
   function imageCandidates(item) {
-    const files = fileCandidates(item);
+    const files = fileCandidates(item).flatMap(expandNameVariants);
     const out = [];
     for (const f of files) {
       const enc = encodeURIComponent(f);
-      out.push(`img/companions/${f}`);                  // images locales (si tu en ajoutes)
-      out.push(`https://cdn.warframestat.us/img/${enc}`); // CDN WarframeStat
+      out.push(LOCAL_COMP_BASE + enc);                       // chemin ABSOLU local
+      out.push(`https://cdn.warframestat.us/img/${enc}`);    // CDN WarframeStat
     }
-    return out;
+    // déduplique tout en gardant l'ordre
+    return out.filter((v, i, a) => a.indexOf(v) === i);
   }
 
   function attachImgWithFallbacks(img, item) {
-    const list = imageCandidates(item).slice();
-    img.onerror = () => {
-      if (list.length) { img.src = list.shift(); return; }
-      img.onerror = null;
-      img.src = PLACEHOLDER;
+    const list = imageCandidates(item);
+    const tryNext = () => {
+      if (!list.length) { img.onerror = null; img.src = PLACEHOLDER; return; }
+      img.src = list.shift();
     };
-    img.src = list.shift() || PLACEHOLDER;
+    img.onerror = tryNext;
+    tryNext();
   }
 
   /* ---------- Attaques ---------- */
