@@ -2,83 +2,48 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Warframe - Companions</title>
+  <title>Companions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thème -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
+  <!-- NAV -->
   <div id="site-nav"></div>
 
   <div class="max-w-6xl mx-auto p-6">
     <h1 class="text-2xl font-semibold mb-3">Companions</h1>
 
-    <!-- Status -->
     <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
          style="background:rgba(0,229,255,.08); color:#bfefff;">
-      Chargement des compagnons…
+      Chargement des données…
     </div>
 
-    <!-- Barre d’outils -->
-    <div class="flex flex-wrap items-center gap-3 mb-5">
+    <div class="flex flex-wrap gap-3 items-center mb-5">
+      <!-- Recherche -->
       <div class="relative">
-        <input id="q" type="search" placeholder="Rechercher un compagnon…"
+        <input id="search" type="text" placeholder="Rechercher un compagnon…"
                class="w-72 pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
                       placeholder:text-[var(--muted)] outline-none orn focus-gold" />
-        <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2"
-             viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <svg class="w-4 h-4 [color:rgba(0,229,255,.7)] absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none">
+          <path d="m21 21-4.3-4.3m1.3-5.2a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
 
-      <select id="sort"
-              class="w-56 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
-                     outline-none orn focus-gold">
-        <option value="name">Tri : Nom</option>
-        <option value="armor">Tri : Armor</option>
-        <option value="health">Tri : Health</option>
-        <option value="shield">Tri : Shield</option>
-        <option value="energy">Tri : Energy</option>
-      </select>
-
-      <button id="reset" class="btn-tab px-3 py-2 rounded-xl">Réinitialiser</button>
-
-      <!-- Chips des filtres actifs -->
-      <div id="active-filters" class="flex flex-wrap gap-2 ml-auto"></div>
+      <!-- Sélecteur -->
+      <select id="picker"
+              class="w-72 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
+                     outline-none orn focus-gold"></select>
     </div>
 
-    <!-- Layout : sidebar filtres + résultats -->
-    <div class="flex gap-6">
-      <!-- Sidebar Filtres -->
-      <aside class="w-full md:w-[240px] shrink-0">
-        <div class="card p-4">
-          <div class="text-xs uppercase tracking-wide muted mb-2">Catégories</div>
-          <div id="f-cat" class="flex flex-wrap gap-2"></div>
-          <hr class="my-4 border-[rgba(255,255,255,.08)]">
-          <div class="text-xs uppercase tracking-wide muted mb-2">Types</div>
-          <div id="f-type" class="flex flex-wrap gap-2"></div>
-        </div>
-      </aside>
-
-      <!-- Résultats + Pager -->
-      <main class="flex-1 min-w-0">
-        <!-- Grille résultats -->
-        <div id="results" class="grid gap-4"></div>
-
-        <!-- Pager -->
-        <div class="mt-4 flex items-center gap-2">
-          <button id="prev" class="btn-tab px-3 py-2 rounded-xl">Précédent</button>
-          <span id="pageinfo" class="muted"></span>
-          <button id="next" class="btn-tab px-3 py-2 rounded-xl">Suivant</button>
-          <span id="count" class="ml-auto muted"></span>
-        </div>
-      </main>
-    </div>
+    <!-- Carte centrale -->
+    <div id="card" class="card p-5"></div>
   </div>
 
-  <!-- Scripts -->
-  <script src="js/companions_catalog.js?v=2" defer></script>
+  <!-- JS -->
   <script src="js/site_nav.js" defer></script>
+  <script src="js/companions_catalog.js?v=6" defer></script>
 </body>
 </html>
