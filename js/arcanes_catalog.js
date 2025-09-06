@@ -1,8 +1,10 @@
 // js/arcanes_catalog.js
+// =====================================================
+// Arcanes: rendu, filtres, images (wiki -> WFS CDN -> local), icônes inline
+// =====================================================
 
 // --- Text Icons ------------------------------------------------------
 const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
-const USE_ICONS = true;
 
 const DT = {
   // Physiques
@@ -34,10 +36,10 @@ const DT = {
   DT_NEGATIVE_COLOR:   { label: "Negative",   color: "#e57373", icon: "NegativeSymbol.png" },
 };
 
-// --- Icônes pour tokens non-DT (balises simples comme <ENERGY>, <PRE_ATTACK>, etc.)
+// Icônes pour tokens non-DT (balises simples comme <ENERGY>, <PRE_ATTACK>, etc.)
 const NON_DT_ICONS = {
-  ENERGY: "EnergySymbol.png",
-  PRE_ATTACK: "LeftclicSymbol.png",   // ← clic gauche
+  ENERGY:     "EnergySymbol.png",
+  PRE_ATTACK: "LeftclicSymbol.png", // clic gauche
 };
 
 function resolveDT(key){
@@ -54,16 +56,16 @@ function renderTextIcons(input){
   s = s
     .replace(/\r\n?|\r/g, "\n")
     .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n")
-    .replace(/<\s*br\s*\/?\s*>/gi, "\n"); // nettoie les <br> bruts éventuels
+    .replace(/<\s*br\s*\/?\s*>/gi, "\n");
 
-  // Échapper le HTML (sécurité)
+  // Échapper le HTML
   s = s.replace(/[&<>"']/g, (c) => ({
     "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
   }[c]));
 
-  // 1) Remplacer d'abord les DT_* (Impact, Slash, Viral, etc.)
+  // 1) Remplacer d'abord les DT_*
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
-    const def = DT[key];
+    const def = resolveDT(key);
     const file = def && def.icon;
     if (!file) return "";
     const src = ICON_BASE + file;
@@ -73,7 +75,7 @@ function renderTextIcons(input){
   // 2) Puis les tokens simples (ENERGY, PRE_ATTACK, …) — éviter de reprendre les DT_
   s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = NON_DT_ICONS[key];
-    if (!file) return ""; // inconnu → on supprime proprement
+    if (!file) return "";
     const src = ICON_BASE + file;
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
@@ -119,7 +121,7 @@ const getRarity   = (m) => get(m, ["rarity", "Rarity"], "");
 const getImage    = (m) => get(m, ["image", "Image"], "");
 const getIcon     = (m) => get(m, ["icon", "Icon"], "");
 
-// API thumbnails ------------------------------------------------------
+// --- API thumbnails (non utilisés pour les images, juste pour infos) --
 async function loadApiArcanes() {
   try {
     const r = await fetch("https://api.warframestat.us/arcanes?language=en", { cache: "no-store" });
@@ -138,22 +140,23 @@ function mapByNameCaseInsensitive(list) {
   return m;
 }
 
-// Images wiki / placeholders -----------------------------------------
-function wikiImageUrl(file) {
-  if (!file) return "";
-  return `https://wiki.warframe.com/images/${encodeURIComponent(file)}`;
-}
-function normalizeUrl(u) { return u && u.startsWith("//") ? "https:" + u : u || ""; }
-function upscaleWikiThumb(url, size = 640) {
-  if (!url) return "";
-  let out = normalizeUrl(url);
-  out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
-  if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
-    out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs = "") =>
-      `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
+// --- Images (priorité: wiki officiel -> WFS CDN -> local) ------------
+const IMG_BASE_WIKI_IMG = "https://wiki.warframe.com/images/";                 // 1) wiki OFFICIEL
+const IMG_BASE_WFS      = "https://cdn.warframestat.us/img/";                  // 2) CDN WarframeStat
+const IMG_BASE_LOCAL    = new URL("img/arcanes/", document.baseURI).href;     // 3) repo local
+
+function imageCandidatesForArcane(m){
+  const files = [getImage(m), getIcon(m)].map(norm).filter(Boolean);
+  const uniq = new Set();
+  for (const f of files) {
+    const enc = encodeURIComponent(f);
+    uniq.add(IMG_BASE_WIKI_IMG + enc);
+    uniq.add(IMG_BASE_WFS + enc);
+    uniq.add(IMG_BASE_LOCAL + enc);
   }
-  return out;
+  return Array.from(uniq);
 }
+
 function placeholderArcane(name, rarity) {
   const hex = RARITY_COLORS[rarity] || "#888";
   const initials = (name || "Arcane").split(/\s+/).map(s => s[0]).slice(0,2).join("").toUpperCase();
@@ -170,23 +173,20 @@ function placeholderArcane(name, rarity) {
   </svg>`;
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
-function imageSourcesForArcane(m, apiByName) {
-  const name   = getName(m);
-  const rarity = getRarity(m);
-  const img    = getImage(m);
-  const ico    = getIcon(m);
 
-  const wikiImg = img ? wikiImageUrl(img) : "";
-  const wikiIco = ico ? wikiImageUrl(ico) : "";
-
-  const apiRec  = apiByName.get(name.toLowerCase());
-  const apiTn   = apiRec ? (apiRec.wikiaThumbnail || apiRec.wikiathumbnail || apiRec.thumbnail || apiRec.image || "") : "";
-  const apiBig  = upscaleWikiThumb(apiTn, 640);
-
-  const primary = wikiImg || wikiIco || apiBig || placeholderArcane(name, rarity);
-  const fallback = wikiIco || apiBig || placeholderArcane(name, rarity);
-
-  return { primary, fallback };
+// Active les fallbacks sur les <img data-srcs="url1|url2|..."> (multi-étapes)
+function wireImageFallbacks(root){
+  (root || document).querySelectorAll("img[data-srcs]").forEach(img => {
+    const urls = (img.dataset.srcs || "").split("|").filter(Boolean);
+    const placeholder = img.dataset.placeholder || "";
+    let i = 0;
+    const tryNext = () => {
+      if (i >= urls.length) { img.onerror = null; if (placeholder) img.src = placeholder; return; }
+      img.src = urls[i++];
+    };
+    img.addEventListener("error", tryNext);
+    tryNext();
+  });
 }
 
 // UI helpers ----------------------------------------------------------
@@ -201,27 +201,27 @@ function criteriaRow(c) {
   return `<div class="kv"><div class="k">TRIGGER</div><div class="v">${html}</div></div>`;
 }
 
-function cardArcane(m, apiByName) {
+function cardArcane(m) {
   const name = getName(m);
   const type = getType(m);
   const desc = getDesc(m);
   const crit = getCriteria(m);
   const rar  = getRarity(m);
 
-  const { primary, fallback } = imageSourcesForArcane(m, apiByName);
+  const srcs = imageCandidatesForArcane(m).join("|");
+  const placeholder = placeholderArcane(name, rar);
 
   return `
     <div class="arcane-card orn">
       <div class="arcane-cover">
-        <img src="${escapeHtml(primary)}" alt="${escapeHtml(name)}" loading="lazy" decoding="async"
-             onerror="this.onerror=null; this.src='${escapeHtml(fallback)}';">
+        <img data-srcs="${escapeHtml(srcs)}"
+             data-placeholder="${escapeHtml(placeholder)}"
+             alt="${escapeHtml(name)}" loading="lazy" decoding="async">
       </div>
 
       <div class="arcane-body">
-        <!-- Titre pleine largeur, pas de troncature -->
         <div class="title">${escapeHtml(name)}</div>
 
-        <!-- Pastilles SOUS le titre -->
         <div class="chips-row">
           ${rar ? rarityBadge(rar) : ""} 
           ${type ? typeBadge(type) : ""}
@@ -318,7 +318,10 @@ function render() {
 
   const grid = $("#results");
   grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
-  grid.innerHTML = slice.map(m => cardArcane(m, STATE.apiByName || new Map())).join("");
+  grid.innerHTML = slice.map(m => cardArcane(m)).join("");
+
+  // brancher les fallbacks d’images après injection
+  wireImageFallbacks(grid);
 }
 
 function applyFilters() {
@@ -327,7 +330,7 @@ function applyFilters() {
 
   let arr = STATE.list.slice();
 
-  if (STATE.types.size)   arr = arr.filter(m => STATE.types.has(getType(m)));
+  if (STATE.types.size)    arr = arr.filter(m => STATE.types.has(getType(m)));
   if (STATE.rarities.size) arr = arr.filter(m => STATE.rarities.has(getRarity(m)));
 
   if (q) {
@@ -365,7 +368,10 @@ async function loadLocalArcanes() {
   try {
     status.textContent = "Chargement des arcanes…";
 
-    const [localList, apiList] = await Promise.all([loadLocalArcanes(), loadApiArcanes()]);
+    const [localList, apiList] = await Promise.all([
+      loadLocalArcanes(),
+      loadApiArcanes() // gardé pour des infos annexes si besoin
+    ]);
     STATE.list = localList;
     STATE.apiByName = mapByNameCaseInsensitive(apiList);
 
