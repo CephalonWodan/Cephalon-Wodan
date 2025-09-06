@@ -18,8 +18,7 @@
       Chargement des données…
     </div>
 
-    <div class="flex flex-wrap gap-3 items-center mb-5">
-      <!-- Recherche -->
+    <div class="flex flex-wrap gap-3 items-center mb-4">
       <div class="relative">
         <input id="search" type="text" placeholder="Rechercher une arme…"
           class="w-72 pl-9 pr-3 py-2 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
@@ -29,16 +28,22 @@
         </svg>
       </div>
 
-      <!-- Sélecteur -->
       <select id="picker"
         class="w-72 py-2 px-3 rounded-xl bg-[var(--panel-2)] text-[var(--ink)]
                outline-none orn focus-gold"></select>
+    </div>
+
+    <!-- Onglets catégories -->
+    <div id="tabs" class="flex flex-wrap gap-2 mb-5">
+      <button class="btn-tab active"   data-cat="Primary">Primary</button>
+      <button class="btn-tab"          data-cat="Secondary">Secondary</button>
+      <button class="btn-tab"          data-cat="Melee">Melee</button>
     </div>
 
     <div id="card" class="card p-5"></div>
   </div>
 
   <script src="js/site_nav.js" defer></script>
-  <script src="js/weapons_catalog.js?v=1" defer></script>
+  <script src="js/weapons_catalog.js?v=2" defer></script>
 </body>
 </html>
