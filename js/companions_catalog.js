@@ -1,326 +1,231 @@
 // js/companions_catalog.js
-// =====================================================
-// Companions Catalog (grid + filters + pagination)
-// Data: data/companions.json  (dump wiki -> json)
-// Image order: Wiki /images/<file> -> WarframeStat CDN -> local img/companions/
-// =====================================================
+// Mise en page type “Warframes” (index.html) + même code couleurs
+
 (() => {
   "use strict";
 
-  /* ---------- tiny utils ---------- */
+  /* ----------------- Config ----------------- */
+  const DATA_URL = "data/companions.json"; // ton JSON dérivé du LUA (wiki officiel)
+  const WIKI_IMG = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
+  // Fallback #2: CDN WarframeStat si le même nom existe
+  const CDN_IMG  = (fileOrName) => fileOrName ? `https://cdn.warframestat.us/img/${encodeURIComponent(fileOrName)}` : "";
+  // Fallback #3: repo local (au cas où tu mets des PNG dans /img/companions/)
+  const LOCAL_IMG = (fileOrName) => fileOrName ? `img/companions/${encodeURIComponent(fileOrName)}` : "";
+
+  /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
-  const norm  = (s) => String(s || "").trim();
-  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-  const byName = (a,b) => (a.Name||a.name||"").localeCompare(b.Name||b.name||"");
-  const txt = (v) => (v==null || v==="" ? "—" : String(v));
+  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
+  const norm = (s) => String(s || "").trim();
+  const byName = (a,b) => (a.Name || a.name || "").localeCompare(b.Name || b.name || "");
+  const fmtNum = (v) => (v === null || v === undefined || v === "") ? "—" : String(v);
+  const pct = (v) => (v === null || v === undefined) ? "—" : `${Math.round(v*1000)/10}%`;
 
   function cleanDesc(s){
-    return esc(String(s||"").replace(/\r\n?/g,"\n")).replace(/\n{3,}/g,"\n\n").replace(/\n/g,"<br>");
-  }
-  function fmtPercent(v){
-    if (v==null || v==="") return "—";
-    if (typeof v === "string" && /%$/.test(v.trim())) return v.trim();
-    const n = Number(v);
-    if (!Number.isFinite(n)) return esc(String(v));
-    const p = (n >= 0 && n <= 1) ? n*100 : n;
-    return `${Number(p.toFixed(p%1?1:0))}%`;
-  }
-  function fmtDamageMap(obj){
-    if (!obj || typeof obj !== "object") return "—";
-    const parts = [];
-    for (const [k,v] of Object.entries(obj)) if (v!=null) parts.push(`${esc(k)} ${Number(v)}`);
-    return parts.join(" · ") || "—";
+    return escapeHtml(String(s||""))
+      .replace(/\r\n?/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .replace(/\n/g, "<br>");
   }
 
-  /* ---------- images (priority + onerror chain) ---------- */
-  const wikiImg = (f) => f ? `https://wiki.warframe.com/images/${encodeURIComponent(f)}` : "";
-  const wfstat  = (f) => f ? `https://cdn.warframestat.us/img/${encodeURIComponent(f)}` : "";
-  const local   = (f) => f ? `img/companions/${encodeURIComponent(f)}` : "";
-
-  function imageCandidates(rec){
-    const files = [rec.Image, rec.SquadPortrait, rec.Icon].filter(Boolean);
-    const urls = [];
-    files.forEach(f=>urls.push(wikiImg(f)));
-    files.forEach(f=>urls.push(wfstat(f)));
-    files.forEach(f=>urls.push(local(f)));
-    urls.push(placeholder(rec.Name || rec.name || "Companion"));
-    return Array.from(new Set(urls.filter(Boolean)));
+  function coalesce(obj, keys, def=null) {
+    for (const k of keys) if (obj && obj[k] != null) return obj[k];
+    return def;
   }
-  function placeholder(name){
-    const initials = (name||"C").split(/\s+/).map(s=>s[0]).slice(0,2).join("").toUpperCase();
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 220">
-      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#0c1729"/><stop offset="100%" stop-color="#0f1d34"/></linearGradient></defs>
-      <rect width="360" height="220" rx="18" fill="url(#g)"/>
-      <text x="50%" y="56%" text-anchor="middle" font-family="Inter,system-ui,Segoe UI,Roboto" font-size="72" fill="#80b3ff">${esc(initials)}</text>
-    </svg>`;
-    return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-  }
-  // global onerror handler for fallback chain
-  window._imgNext = (img) => {
-    try {
-      const arr = JSON.parse(img.dataset.srcs || "[]");
-      let i = Number(img.dataset.idx || 0) + 1;
-      if (i < arr.length){ img.dataset.idx = String(i); img.src = arr[i]; }
-    } catch {}
-  };
 
-  /* ---------- load & normalize data ---------- */
-  async function loadCompanions(){
-    const r = await fetch("data/companions.json", { cache: "no-store" });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const raw = await r.json();
-    const dict = raw.Companions || raw.companions || raw;
-    const list = [];
-    for (const [k, v] of Object.entries(dict)){
-      const r = { ...v };
-      r.Name  = r.Name  || r.name || k;
-      r.Type  = r.Type  || r.type || "";
-      r.Category = r.Category || r.category || "";
-      r.Description = r.Description || r.description || "";
-      r.Image = r.Image || r.image || "";
-      r.Icon  = r.Icon  || r.icon  || "";
-      r.SquadPortrait = r.SquadPortrait || r.squadPortrait || "";
-      r.Health = r.Health ?? r.health ?? null;
-      r.Shield = r.Shield ?? r.shield ?? null;
-      r.Armor  = r.Armor  ?? r.armor  ?? null;
-      r.Energy = r.Energy ?? r.energy ?? null;
-      r.Stamina = r.Stamina ?? r.stamina ?? null;
-      r.Polarities = r.Polarities || r.polarities || [];
-      r.Attacks = Array.isArray(r.Attacks) ? r.Attacks
-                 : (Array.isArray(r.attacks) ? r.attacks : []);
-      list.push(r);
+  /* -------------- Normalisation liste -------------- */
+  function normalizeList(raw){
+    // Supporte { Companions: { "Name": {...}, ... } } OU { Companions: [ {...}, ... ] }
+    let coll = raw && raw.Companions ? raw.Companions : raw;
+    if (!coll) return [];
+
+    let arr;
+    if (Array.isArray(coll)) {
+      arr = coll.slice();
+    } else {
+      arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
     }
-    return list.sort(byName);
+    // trie nom
+    arr.sort(byName);
+    return arr;
   }
 
-  /* ---------- state ---------- */
-  const S = {
-    all: [],
-    filtered: [],
-    page: 1,
-    perPage: 24,
-    q: "",
-    sort: "name",
-    cats: new Set(),  // categories
-    types: new Set(), // companion types
-  };
+  /* -------------- Image tri-source -------------- */
+  function imageFor(item){
+    const file = coalesce(item, ["Image","image"], "");
+    const name = coalesce(item, ["Name","name"], "");
+    // ordre de priorité demandé : Wiki -> CDN -> Local
+    const sources = [
+      WIKI_IMG(file),
+      CDN_IMG(file || `${name}.png`),
+      LOCAL_IMG(file || `${name}.png`)
+    ].filter(Boolean);
 
-  /* ---------- cards ---------- */
+    // data:svg placeholder pour éviter un gros flash “No Image”
+    const ph = 'data:image/svg+xml;utf8,'+encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>`
+    );
+
+    // on laisse le navigateur tomber de l’un à l’autre
+    return { src: sources[0] || ph, fallbacks: sources.slice(1), placeholder: ph };
+  }
+
+  /* -------------- Attaques (intégrées sous les stats) -------------- */
+  function sumDamage(dmg){
+    if (!dmg || typeof dmg !== "object") return null;
+    let total = 0;
+    for (const k in dmg) {
+      const v = Number(dmg[k]); if (!isNaN(v)) total += v;
+    }
+    return total || null;
+  }
+
+  function attacksBlock(item){
+    const atks = coalesce(item, ["Attacks","attacks"], null);
+    if (!Array.isArray(atks) || !atks.length) return "";
+    const lines = atks.map(a => {
+      const name  = a.AttackName || a.name || "Attack";
+      const dmgT  = sumDamage(a.Damage || a.damage);
+      const critC = a.CritChance != null ? pct(a.CritChance) : null;
+      const critM = a.CritMultiplier != null ? `×${a.CritMultiplier}` : null;
+      const stat  = a.StatusChance != null ? pct(a.StatusChance) : null;
+
+      const parts = [];
+      if (dmgT != null) parts.push(`Dégâts ${dmgT}`);
+      if (critC) parts.push(`Crit ${critC}${critM ? " " + critM : ""}`);
+      if (stat)  parts.push(`Statut ${stat}`);
+
+      return `• ${escapeHtml(name)} — ${parts.join(" · ")}`;
+    });
+
+    return `
+      <div class="mt-4">
+        <div class="text-sm muted mb-1">Attaques</div>
+        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
+          ${lines.map(l => `<div class="py-1">${l}</div>`).join("")}
+        </div>
+      </div>`;
+  }
+
+  /* -------------- UI helpers -------------- */
   const statBox = (label, value) => `
-    <div class="rounded-lg border border-[rgba(255,255,255,.08)] px-3 py-2">
-      <div class="text-[10px] uppercase tracking-wide text-slate-300">${esc(label)}</div>
-      <div class="text-base font-semibold">${esc(txt(value))}</div>
+    <div class="stat">
+      <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
+      <div class="text-lg font-semibold">${escapeHtml(fmtNum(value))}</div>
     </div>`;
 
-  const badge = (t, cls="") =>
-    `<span class="inline-block text-xs px-2 py-[2px] rounded-full border ${cls}">${esc(t)}</span>`;
-
-  function attackChunk(a){
-    const name = a.AttackName || a.name || "Attack";
-    const total = a.TotalDamage!=null ? Number(a.TotalDamage) : null;
-    const dmg = fmtDamageMap(a.Damage||a.damage);
-    const cc = a.CritChance!=null ? fmtPercent(a.CritChance) : "—";
-    const cd = a.CritMultiplier!=null ? `${Number(a.CritMultiplier)}x` : "—";
-    const sc = a.StatusChance!=null ? fmtPercent(a.StatusChance) : "—";
-    return `
-      <div class="rounded-lg border border-[rgba(255,255,255,.08)] p-2">
-        <div class="text-sm font-medium mb-1">${esc(name)}</div>
-        <div class="text-xs grid grid-cols-2 gap-x-3 gap-y-1">
-          <div><span class="text-[var(--muted)]">Total:</span> <b>${esc(total==null?"—":String(total))}</b></div>
-          <div><span class="text-[var(--muted)]">Crit:</span> <b>${cc} / ${cd}</b></div>
-          <div class="col-span-2"><span class="text-[var(--muted)]">Dégâts:</span> <b>${esc(dmg)}</b></div>
-          <div><span class="text-[var(--muted)]">Statut:</span> <b>${sc}</b></div>
-        </div>
-      </div>`;
+  function chips(item){
+    const cat  = coalesce(item, ["Category","category"], "");
+    const type = coalesce(item, ["Type","type"], "");
+    const mk = (t) => t ? `<span class="badge">${escapeHtml(t)}</span>` : "";
+    return [mk(cat), mk(type)].filter(Boolean).join(" ");
   }
 
-  function card(rec){
-    const name = rec.Name || "—";
-    const cats = [rec.Category, rec.Type].filter(Boolean)
-                  .map(s=>badge(s,"border-[rgba(255,255,255,.3)] text-[rgba(255,255,255,.8)]")).join(" ");
+  function renderCard(item){
+    const name = coalesce(item, ["Name","name"], "—");
+    const desc = coalesce(item, ["Description","description"], "");
+    const armor = coalesce(item, ["Armor","armor"], "—");
+    const health = coalesce(item, ["Health","health"], "—");
+    const shield = coalesce(item, ["Shield","shield"], "—");
+    const energy = coalesce(item, ["Energy","energy"], "—");
 
-    const srcs = imageCandidates(rec);
-    const first = srcs[0];
-    const srcsJson = esc(JSON.stringify(srcs));
+    const img = imageFor(item);
 
-    const attacks = Array.isArray(rec.Attacks) ? rec.Attacks : [];
-    const attacksHtml = attacks.length
-      ? `<div class="mt-3 grid gap-2">${attacks.map(attackChunk).join("")}</div>` : "";
-
-    return `
-      <div class="card p-4 orn flex flex-col">
-        <div class="w-full aspect-[16/10] rounded-xl overflow-hidden bg-[var(--panel-2)] border mb-3">
-          <img src="${esc(first)}" data-srcs='${srcsJson}' data-idx="0" alt="${esc(name)}"
-               class="w-full h-full object-contain" loading="lazy" decoding="async"
-               onerror="_imgNext(this)">
-        </div>
-
-        <div class="flex-1 flex flex-col">
-          <div class="text-lg font-semibold">${esc(name)}</div>
-          ${cats ? `<div class="mt-1 flex flex-wrap gap-2">${cats}</div>` : ""}
-          ${rec.Description ? `<p class="mt-2 text-[var(--muted)] text-sm">${cleanDesc(rec.Description)}</p>` : ""}
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-3">
-            ${statBox("Armor", rec.Armor)}
-            ${statBox("Health", rec.Health)}
-            ${statBox("Shield", rec.Shield)}
-            ${statBox("Energy", rec.Energy)}
+    $("#card").innerHTML = `
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Colonne image -->
+        <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
+          <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
+            <img src="${img.src}" alt="${escapeHtml(name)}" class="w-full h-full object-contain"
+                 onerror="(function(el){ if(!el._f){ el._f=1; el.src='${img.fallbacks[0]||img.placeholder}'; } else if(!el._f2 && '${img.fallbacks[1]||""}') { el._f2=1; el.src='${img.fallbacks[1]}'; } })(this)">
           </div>
-          ${attacksHtml}
         </div>
-      </div>`;
+
+        <!-- Colonne contenu -->
+        <div class="flex-1 flex flex-col gap-4">
+          <div class="flex items-start gap-4">
+            <div class="min-w-0 flex-1">
+              <h2 class="text-xl font-semibold">${escapeHtml(name)}</h2>
+              <div class="mt-2 flex flex-wrap gap-2">${chips(item)}</div>
+              <p class="mt-2 text-[var(--muted)]">${cleanDesc(desc)}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            ${statBox("ARMOR", armor)}
+            ${statBox("HEALTH", health)}
+            ${statBox("SHIELD", shield)}
+            ${statBox("ENERGY", energy)}
+          </div>
+
+          ${attacksBlock(item)}
+        </div>
+      </div>
+    `;
   }
 
-  /* ---------- side filters ---------- */
-  function renderSideFilters(distCats, distTypes){
-    const boxC = $("#f-category");
-    const boxT = $("#f-type");
-    if (boxC){
-      boxC.innerHTML = distCats.map(c=>{
-        const id = `c-${c.replace(/\s+/g,"_")}`;
-        const checked = S.cats.has(c) ? "checked" : "";
-        return `<label for="${id}" class="filter-pill cursor-pointer">
-          <input id="${id}" type="checkbox" value="${esc(c)}" ${checked}>
-          <span>${esc(c)}</span></label>`;
-      }).join("") || `<div class="text-sm text-[var(--muted)]">—</div>`;
-      distCats.forEach(c=>{
-        const el = $(`#c-${c.replace(/\s+/g,"_")}`);
-        el && el.addEventListener("change", ()=>{
-          if (el.checked) S.cats.add(c); else S.cats.delete(c);
-          S.page = 1; apply();
-        });
-      });
-    }
-    if (boxT){
-      boxT.innerHTML = distTypes.map(t=>{
-        const id = `t-${t.replace(/\s+/g,"_")}`;
-        const checked = S.types.has(t) ? "checked" : "";
-        return `<label for="${id}" class="filter-pill cursor-pointer">
-          <input id="${id}" type="checkbox" value="${esc(t)}" ${checked}>
-          <span>${esc(t)}</span></label>`;
-      }).join("") || `<div class="text-sm text-[var(--muted)]">—</div>`;
-      distTypes.forEach(t=>{
-        const el = $(`#t-${t.replace(/\s+/g,"_")}`);
-        el && el.addEventListener("change", ()=>{
-          if (el.checked) S.types.add(t); else S.types.delete(t);
-          S.page = 1; apply();
-        });
-      });
-    }
-  }
-
-  function renderActiveChips(){
-    const wrap = $("#active-filters");
-    if (!wrap) return;
-    const chips = [];
-    if (S.q) chips.push({k:"q", label:`Texte: "${esc(S.q)}"`});
-    if (S.cats.size) chips.push({k:"cats", label:`Catégories: ${[...S.cats].join(", ")}`});
-    if (S.types.size) chips.push({k:"types", label:`Types: ${[...S.types].join(", ")}`});
-    wrap.innerHTML = chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("");
-    wrap.querySelectorAll("[data-chip]").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        const [k] = btn.dataset.chip.split("|");
-        if (k==="q"){ S.q=""; const q=$("#q"); if(q) q.value=""; }
-        if (k==="cats") S.cats.clear();
-        if (k==="types") S.types.clear();
-        S.page = 1; apply();
-      });
+  function renderPicker(list){
+    const pick = $("#picker");
+    pick.innerHTML = "";
+    list.forEach((it, i) => {
+      const o = document.createElement("option");
+      o.value = i;
+      o.textContent = coalesce(it, ["Name","name"], "—");
+      pick.appendChild(o);
     });
+    pick.value = "0";
   }
 
-  /* ---------- render grid + pagination ---------- */
-  function render(){
-    const total = S.filtered.length;
-    const pages = Math.max(1, Math.ceil(total / S.perPage));
-    S.page = Math.min(Math.max(1, S.page), pages);
-
-    const start = (S.page-1)*S.perPage;
-    const slice = S.filtered.slice(start, start + S.perPage);
-
-    const grid = $("#results");
-    if (grid){
-      grid.className = "grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
-      grid.innerHTML = slice.map(card).join("");
-    }
-
-    const pageinfo = $("#pageinfo"); if (pageinfo) pageinfo.textContent = `Page ${S.page} / ${pages}`;
-    const prev = $("#prev"); if (prev) prev.disabled = S.page<=1;
-    const next = $("#next"); if (next) next.disabled = S.page>=pages;
-    const count = $("#count"); if (count) count.textContent = `${total} compagnon(s)`;
-  }
-
-  function apply(){
-    const q = S.q = norm($("#q")?.value).toLowerCase();
-    const sort = S.sort = $("#sort")?.value || "name";
-
-    let arr = S.all.slice();
-    if (S.cats.size)  arr = arr.filter(r => S.cats.has(r.Category));
-    if (S.types.size) arr = arr.filter(r => S.types.has(r.Type));
-
-    if (q){
-      arr = arr.filter(r=>{
-        const hay = [r.Name, r.Type, r.Category, r.Description].map(norm).join(" ").toLowerCase();
-        return hay.includes(q);
-      });
-    }
-
-    arr.sort((a,b)=>{
-      if (sort === "category") return (a.Category||"").localeCompare(b.Category||"") || byName(a,b);
-      if (sort === "type")     return (a.Type||"").localeCompare(b.Type||"") || byName(a,b);
-      return byName(a,b);
-    });
-
-    S.filtered = arr;
-    renderActiveChips();
-    render();
-
-    const status = $("#status");
-    if (status) status.textContent = `Companions chargés : ${S.all.length}`;
-  }
-
-  /* ---------- boot ---------- */
+  /* -------------- Boot -------------- */
   (async function boot(){
     const status = $("#status");
     try{
-      if (status){
-        status.textContent = "Chargement des companions…";
-        status.className = "mb-3 text-sm px-3 py-2 rounded-lg orn";
-        status.style.background = "rgba(0,229,255,.08)";
-        status.style.color = "#bfefff";
-      }
+      status.textContent = "Chargement des companions…";
 
-      S.all = await loadCompanions();
+      const r = await fetch(DATA_URL, { cache: "no-store" });
+      const raw = await r.json();
+      const list = normalizeList(raw);
 
-      // distincts
-      const distCats  = Array.from(new Set(S.all.map(r=>r.Category).filter(Boolean))).sort();
-      const distTypes = Array.from(new Set(S.all.map(r=>r.Type).filter(Boolean))).sort();
-      renderSideFilters(distCats, distTypes);
-
-      // hooks
-      $("#q")?.addEventListener("input", ()=>{ S.page=1; apply(); });
-      $("#sort")?.addEventListener("change", ()=>{ S.page=1; apply(); });
-      $("#reset")?.addEventListener("click", ()=>{
-        S.q=""; const q=$("#q"); if(q) q.value="";
-        S.sort="name"; const s=$("#sort"); if(s) s.value="name";
-        S.cats.clear(); S.types.clear();
-        renderSideFilters(distCats, distTypes);
-        S.page=1; apply();
-      });
-      $("#prev")?.addEventListener("click", ()=>{ S.page--; render(); });
-      $("#next")?.addEventListener("click", ()=>{ S.page++; render(); });
-
-      apply();
-    }catch(e){
-      console.error("[companions] load error:", e);
-      if (status){
-        status.textContent = `Erreur : ${e.message || e}`;
-        status.className = "mb-3 text-sm px-3 py-2 rounded-lg";
+      if (!list.length){
+        status.textContent = "Aucun compagnon trouvé.";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
+        return;
       }
+
+      // UI
+      renderPicker(list);
+      renderCard(list[0]);
+
+      const setStatus = (n) => {
+        status.textContent = `Companions chargés : ${n}`;
+        status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
+        status.style.background = "rgba(0,229,255,.08)";
+        status.style.color = "#bfefff";
+      };
+      setStatus(list.length);
+
+      // interactions
+      $("#picker").addEventListener("change", (e)=>{
+        const idx = parseInt(e.target.value, 10);
+        const q = norm($("#search").value).toLowerCase();
+        const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
+        if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
+      });
+
+      $("#search").addEventListener("input", ()=>{
+        const q = norm($("#search").value).toLowerCase();
+        const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
+        renderPicker(filtered);
+        if (filtered.length) renderCard(filtered[0]);
+        setStatus(`Affichage : ${filtered.length} résultat(s)`);
+      });
+
+    } catch(e){
+      console.error("[companions] load error:", e);
+      status.textContent = "Erreur de chargement des companions.";
+      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+      status.style.background = "rgba(255,0,0,.08)";
+      status.style.color = "#ffd1d1";
     }
   })();
-
 })();
