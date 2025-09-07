@@ -1,5 +1,5 @@
 // js/companions_catalog.js
-// Compagnons + onglets MOA/Hound (modulaires) — sûr même si #tabs-host / #controls-standard n'existent pas.
+// Compagnons + onglets MOA/Hound (modulaires) — ordre d'images optimisé (NS -> US) + lazy loading
 
 (() => {
   "use strict";
@@ -9,7 +9,7 @@
   const EXPORT_WEAPONS_URL   = "data/ExportWeapons_en.json";
   const FALLBACK_LUA_URL     = "data/companions.json"; // pour Attacks/images
 
-  // Images (priorité : Wiki -> CDN -> Local)
+  // Helpers URL (Wiki officiel en priorité, puis CDN, puis local)
   const wikiFilepath = (file) =>
     file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
   const wikiImages   = (file) =>
@@ -19,6 +19,7 @@
   const localImg = (file) =>
     file ? `img/companions/${encodeURIComponent(file)}` : "";
 
+  // Corrections manuelles
   const MANUAL_IMG = {
     "Venari": "Venari.png",
     "Venari Prime": "VenariPrime.png",
@@ -32,6 +33,9 @@
     "Bhaira Hound": "BhairaHound.png",
     "Dorma Hound":  "DormaHound.png",
     "Hec Hound":    "HecHound.png",
+    "Frak":   "Frak.png",
+    "Hinta": "Hinta.png",
+    "Wanz":  "Wanz.png",
   };
 
   /* ----------------- Utils ----------------- */
@@ -56,7 +60,7 @@
     </svg>`
   );
 
-  // onerror fallback cycler (robuste)
+  // Fallback cycler pour <img onerror>
   window.__cycleImg = function(el, placeholder){
     const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
     let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
@@ -68,6 +72,25 @@
       el.src = placeholder;
     }
   };
+
+  // Construit une liste d'images avec priorité “sans underscore” (NS) → “underscore” (US)
+  function buildImgList(name, explicitFile){
+    const manual = MANUAL_IMG[name];
+    const NS = (manual || explicitFile || (name ? name.replace(/\s+/g, "")  + ".png" : "")) || "";
+    const US = (manual || explicitFile || (name ? name.replace(/\s+/g, "_") + ".png" : "")) || "";
+
+    const uniq = (arr) => {
+      const s = new Set(); const out = [];
+      for (const u of arr) if (u && !s.has(u)) { s.add(u); out.push(u); }
+      return out;
+    };
+
+    // Ordre réduit & optimisé : Wiki/images(NS) → FilePath(NS) → CDN(NS) → Local(NS) → (puis variantes US)
+    return uniq([
+      wikiImages(NS),   wikiFilepath(NS),   cdnImg(NS),   localImg(NS),
+      wikiImages(US),   wikiFilepath(US),   cdnImg(US),   localImg(US),
+    ]);
+  }
 
   /* ----------------- Types & normalisation ----------------- */
   function detectTypeFromUnique(uniqueName) {
@@ -86,19 +109,6 @@
       const name = x.name || "";
       const type = detectTypeFromUnique(x.uniqueName);
       const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-
-      const manual = MANUAL_IMG[name];
-      const baseUS = (manual || name).replace(/\s+/g, "_") + ".png";
-      const baseNS = (manual || name).replace(/\s+/g, "")  + ".png";
-
-      const candidates = [
-        manual ? wikiImages(manual) : "",
-        wikiFilepath(baseUS), wikiFilepath(baseNS),
-        wikiImages(baseUS),   wikiImages(baseNS),
-        cdnImg(baseNS),       cdnImg(baseUS),
-        localImg(baseNS),     localImg(baseUS),
-      ].filter(Boolean);
-
       return {
         Name: name,
         Type: type,
@@ -109,7 +119,7 @@
         Shield: x.shield ?? 0,
         Energy: x.power ?? 0,
         Attacks: null,
-        _imgList: candidates.length ? candidates : [PLACEHOLDER],
+        _imgList: buildImgList(name, ""), // on n'a pas de file explicite dans l'export
       };
     }).sort(byName);
   }
@@ -122,23 +132,8 @@
 
     arr = arr.map(v => {
       const name = coalesce(v, ["Name","name"], "");
-      const file = coalesce(v, ["Image","image"], "");
-      const manual = MANUAL_IMG[name];
-      const baseUS = (manual || file || (name ? name.replace(/\s+/g, "_") + ".png" : ""));
-      const baseNS = (manual || file || (name ? name.replace(/\s+/g, "")  + ".png" : ""));
-
-      const candidates = [
-        baseUS ? wikiFilepath(baseUS) : "",
-        baseNS ? wikiFilepath(baseNS) : "",
-        baseUS ? wikiImages(baseUS)   : "",
-        baseNS ? wikiImages(baseNS)   : "",
-        baseNS ? cdnImg(baseNS)       : "",
-        baseUS ? cdnImg(baseUS)       : "",
-        baseNS ? localImg(baseNS)     : "",
-        baseUS ? localImg(baseUS)     : "",
-      ].filter(Boolean);
-
-      return { ...v, _imgList: candidates.length ? candidates : [PLACEHOLDER] };
+      const file = coalesce(v, ["Image","image"], ""); // fichier exact si présent
+      return { ...v, _imgList: buildImgList(name, file) };
     });
 
     arr.sort(byName);
@@ -201,19 +196,8 @@
       Count: c.itemCount ?? c.ItemCount ?? c.count ?? 1
     })) : [];
 
-    const imgFile = it.imageName || "";
-    const manual  = MANUAL_IMG[name] || "";
-    const baseUS  = (manual || name).replace(/\s+/g, "_") + ".png";
-    const baseNS  = (manual || name).replace(/\s+/g, "")  + ".png";
-
-    const imgs = [
-      manual ? wikiImages(manual) : "",
-      imgFile ? wikiFilepath(imgFile) : "",
-      wikiFilepath(baseUS), wikiFilepath(baseNS),
-      wikiImages(baseUS),   wikiImages(baseNS),
-      cdnImg(baseNS),       cdnImg(baseUS),
-      localImg(baseNS),     localImg(baseUS),
-    ].filter(Boolean);
+    const imgFile = it.imageName || ""; // s'il existe, on le privilégie
+    const imgs = buildImgList(name, imgFile);
 
     return { Name: name, Description: desc, Components: components, _imgList: imgs.length ? imgs : [PLACEHOLDER] };
   }
@@ -240,166 +224,4 @@
 
   /* ----------------- Rendu standard ----------------- */
   const statBox = (label, value) => `<div class="stat"><div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div><div class="text-lg font-semibold">${escapeHtml(fmtNum(value))}</div></div>`;
-  function chips(item){ const cat=coalesce(item,["Category","category"],""); const type=coalesce(item,["Type","type"],""); const mk=(t)=>t?`<span class="badge">${escapeHtml(t)}</span>`:""; return [mk(cat),mk(type)].filter(Boolean).join(" "); }
-
-  function renderCard(item){
-    const name = coalesce(item, ["Name","name"], "—");
-    const desc = coalesce(item, ["Description","description"], "");
-    const armor  = coalesce(item, ["Armor","armor"], "—");
-    const health = coalesce(item, ["Health","health"], "—");
-    const shield = coalesce(item, ["Shield","shield"], "—");
-    const energy = coalesce(item, ["Energy","energy"], "—");
-    const imgs = Array.isArray(item._imgList) && item._imgList.length ? item._imgList : [PLACEHOLDER];
-
-    $("#card").innerHTML = `
-      <div class="flex flex-col md:flex-row gap-6">
-        <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
-          <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            <img src="${imgs[0]}" data-srcs="${imgs.join("|")}" data-i="0" alt="${escapeHtml(name)}" class="w-full h-full object-contain" onerror="__cycleImg(this, '${PLACEHOLDER}')">
-          </div>
-        </div>
-        <div class="flex-1 flex flex-col gap-4">
-          <div class="flex items-start gap-4">
-            <div class="min-w-0 flex-1">
-              <h2 class="text-xl font-semibold">${escapeHtml(name)}</h2>
-              <div class="mt-2 flex flex-wrap gap-2">${chips(item)}</div>
-              <p class="mt-2 text-[var(--muted)]">${cleanDesc(desc)}</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
-          </div>
-          ${attacksBlock(item)}
-        </div>
-      </div>`;
-  }
-
-  function renderPicker(list){
-    const pick = $("#picker");
-    if (!pick) return;
-    pick.innerHTML = "";
-    list.forEach((it,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=coalesce(it,["Name","name"],"—"); pick.appendChild(o); });
-    pick.value = "0";
-  }
-
-  /* ----------------- MOA/Hound (catalogue pièces) ----------------- */
-  function renderModularCatalog(kind, data){
-    const order = kind === "moa" ? ["Head","Core","Gyro","Bracket","Other"] : ["Head","Core","Stabilizer","Tail","Other"];
-    const title = kind === "moa" ? "MOA — pièces modulaires" : "Hound — pièces modulaires";
-    const root = $("#card"); if (!root) return;
-    root.innerHTML = `
-      <div>
-        <h2 class="text-xl font-semibold mb-3">${title}</h2>
-        <div class="text-[var(--muted)] mb-4">Sélectionne des pièces pour composer ton compagnon.</div>
-        ${order.map(slot => slotSection(slot, data[slot] || [])).join("")}
-      </div>`;
-  }
-  function slotSection(slot, list){ if(!list.length) return ""; return `<div class="mt-6"><div class="text-sm muted mb-2">${slot}</div><div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">${list.map(modularPartCard).join("")}</div></div>`; }
-  function modularPartCard(p){
-    const name = p.Name || "—";
-    const desc = cleanDesc(p.Description || "");
-    const imgs = p._imgList?.length ? p._imgList : [PLACEHOLDER];
-    const components = Array.isArray(p.Components) && p.Components.length
-      ? `<div class="mt-3 text-sm"><div class="muted mb-1">Composants requis</div><ul class="list-disc pl-5 space-y-1">${p.Components.map(c=>`<li>${escapeHtml(c.Name)} × ${escapeHtml(String(c.Count ?? 1))}</li>`).join("")}</ul></div>` : "";
-    return `<div class="card p-4 orn"><div class="w-full h-[160px] rounded-xl overflow-hidden bg-[var(--panel-2)] border flex items-center justify-center mb-3"><img src="${imgs[0]}" data-srcs="${imgs.join("|")}" data-i="0" alt="${escapeHtml(name)}" class="w-full h-full object-contain" onerror="__cycleImg(this, '${PLACEHOLDER}')"></div><div class="font-semibold">${escapeHtml(name)}</div>${desc?`<p class="mt-1 text-[var(--muted)]">${desc}</p>`:""}${components}</div>`;
-  }
-
-  /* ----------------- Onglets (création auto) ----------------- */
-  function ensureTabsHost(){
-    let host = $("#tabs-host");
-    if (!host) {
-      host = document.createElement("div");
-      host.id = "tabs-host";
-      const ref = $("#status"); // insérer juste sous le status
-      if (ref && ref.parentNode) ref.parentNode.insertBefore(host, ref.nextSibling);
-      else document.body.prepend(host);
-    }
-    return host;
-  }
-  function renderTabs(){
-    const host = ensureTabsHost();
-    host.innerHTML = `
-      <div class="flex gap-2 mb-4">
-        <button id="tab-standard" class="btn-tab active">Compagnons</button>
-        <button id="tab-moa" class="btn-tab">MOA (modulaire)</button>
-        <button id="tab-hound" class="btn-tab">Hound (modulaire)</button>
-      </div>`;
-  }
-  function setActiveTab(tab){
-    const a = $("#tab-standard"); if (a) a.classList.toggle("active", tab==="standard");
-    const b = $("#tab-moa");      if (b) b.classList.toggle("active", tab==="moa");
-    const c = $("#tab-hound");    if (c) c.classList.toggle("active", tab==="hound");
-    // masquer/afficher la rangée recherche+picker si on la trouve
-    const controls = $("#controls-standard") || document.querySelector(".flex.flex-wrap.gap-3.items-center.mb-5");
-    if (controls) controls.style.display = (tab === "standard") ? "" : "none";
-  }
-
-  /* ----------------- Boot ----------------- */
-  (async function boot(){
-    const status = $("#status");
-    try{
-      status.textContent = "Chargement des données…";
-
-      const [rStd, rW] = await Promise.all([
-        fetch(EXPORT_SENTINELS_URL, { cache:"no-store" }).catch(()=>null),
-        fetch(EXPORT_WEAPONS_URL,   { cache:"no-store" }).catch(()=>null),
-      ]);
-
-      const rawStd = rStd?.ok ? await rStd.json() : { ExportSentinels: [] };
-      const rawW   = rW?.ok   ? await rW.json()   : { ExportWeapons: [] };
-
-      const standardList = normalizeFromExportSentinels(rawStd);
-      const modular = parseModularPartsFromWeapons(rawW);
-
-      // LUA optional
-      try{
-        const rLua = await fetch(FALLBACK_LUA_URL, { cache:"no-store" });
-        if (rLua.ok){
-          const rawLua = await rLua.json();
-          const luaList = normalizeFromLua(rawLua);
-          injectAttacksFromLua(standardList, luaList);
-        }
-      } catch {}
-
-      renderTabs();          // crée les onglets
-      setActiveTab("standard");
-
-      renderPicker(standardList);
-      if (standardList.length) renderCard(standardList[0]);
-
-      status.textContent = `Données chargées — ${standardList.length} compagnon(s) standard, ${Object.values(modular.moa).flat().length} pièces MOA, ${Object.values(modular.hound).flat().length} pièces Hound.`;
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
-      status.style.background = "rgba(0,229,255,.08)";
-      status.style.color = "#bfefff";
-
-      // interactions standard
-      const picker = $("#picker");
-      const search = $("#search");
-      if (picker) picker.addEventListener("change", (e)=>{
-        const idx = parseInt(e.target.value, 10);
-        const q = norm(search?.value).toLowerCase();
-        const filtered = q ? standardList.filter(x => (x.Name||"").toLowerCase().includes(q)) : standardList;
-        if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
-      });
-      if (search) search.addEventListener("input", ()=>{
-        const q = norm(search.value).toLowerCase();
-        const filtered = q ? standardList.filter(x => (x.Name||"").toLowerCase().includes(q)) : standardList;
-        renderPicker(filtered);
-        if (filtered.length) renderCard(filtered[0]);
-        status.textContent = `Affichage : ${filtered.length} résultat(s)`;
-      });
-
-      // onglets
-      $("#tab-standard")?.addEventListener("click", ()=>{ setActiveTab("standard"); if (standardList.length) renderCard(standardList[0]); });
-      $("#tab-moa")?.addEventListener("click", ()=>{ setActiveTab("moa"); renderModularCatalog("moa", modular.moa); });
-      $("#tab-hound")?.addEventListener("click", ()=>{ setActiveTab("hound"); renderModularCatalog("hound", modular.hound); });
-
-    } catch (e){
-      console.error("[companions] load error:", e);
-      status.textContent = "Erreur de chargement des données.";
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
-    }
-  })();
-})();
+  function chips(item){ const cat=coalesce(item,["Category","category"],""); const type=coalesce(item,["Type","type"],""); const mk=(t)=>t?`<span class="badge">${escapeHtml(t)}</span>`:"
