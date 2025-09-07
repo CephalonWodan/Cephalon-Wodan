@@ -5,16 +5,18 @@
 
   /* ----------------- Config ----------------- */
   const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
-  const FALLBACK_URL = "data/companions.json";         // ton ancien JSON (LUA)
+  const FALLBACK_URL = "data/companions.json";         // ancien JSON (LUA)
+
+  // Dossier unique pour toutes les images locales
+  const LOCAL_DIR = "img/companion/";
 
   // Priorité images : LOCAL -> WIKI -> CDN
-  const LOCAL_FILE = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
-  const WIKI_FILE  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
-  const CDN_FILE   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
+  const LOCAL_FILE = (file) => file ? (LOCAL_DIR + encodeURIComponent(file)) : "";
+  const WIKI_FILE  = (file) => file ? ("https://wiki.warframe.com/w/Special:FilePath/" + encodeURIComponent(file)) : "";
+  const CDN_FILE   = (file) => file ? ("https://cdn.warframestat.us/img/" + encodeURIComponent(file)) : "";
 
   /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
-  const $$ = (s) => Array.from(document.querySelectorAll(s));
   const norm = (s) => String(s || "").trim();
   const byName = (a,b) => (a.Name || a.name || "").localeCompare(b.Name || b.name || "");
   const fmtNum = (v) => (v === null || v === undefined || v === "") ? "—" : String(v);
@@ -23,6 +25,20 @@
   const cleanLF = (s) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n");
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
+
+  // --- Génère plusieurs variantes de nom de fichier (evite 404, local d'abord)
+  function nameCandidates(name){
+    const raw = String(name || "").trim();
+    if (!raw) return [];
+    const nospace = raw.replace(/\s+/g, "");
+    const under   = raw.replace(/\s+/g, "_");
+    // ordre souhaité : exact → NoSpace → UnderScore
+    const base = [raw + ".png", nospace + ".png", under + ".png"];
+    // dé-dupe en conservant l'ordre
+    const seen = new Set(), out = [];
+    for (const f of base) if (f && !seen.has(f)) { seen.add(f); out.push(f); }
+    return out;
+  }
 
   // placeholder inline (une seule ligne pour éviter l’erreur “unescaped line break”)
   const svgPlaceholder = (() => {
@@ -49,7 +65,7 @@
         const name = x.name || "";
         const type = detectType(x.uniqueName);
         const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-        const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
+        const candidates = nameCandidates(name);
 
         return {
           Name: name,
@@ -61,7 +77,12 @@
           Shield: x.shield ?? 0,
           Energy: x.power ?? 0,
           Attacks: null, // pas fourni par l’Export
-          _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
+          _imgSrcs: [
+            ...candidates.map(LOCAL_FILE),
+            ...candidates.map(WIKI_FILE),
+            // le CDN n'a en général que la variante sans espace
+            CDN_FILE(name.replace(/\s+/g,"") + ".png")
+          ].filter(Boolean)
         };
       })
       .sort(byName);
@@ -73,18 +94,19 @@
     if (!coll) return [];
 
     let arr;
-    if (Array.isArray(coll)) {
-      arr = coll.slice();
-    } else {
-      arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
-    }
+    if (Array.isArray(coll)) arr = coll.slice();
+    else arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
 
     arr = arr.map(v => {
       const name = coalesce(v, ["Name","name"], "");
-      const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
+      const candidates = nameCandidates(name);
       return {
         ...v,
-        _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
+        _imgSrcs: [
+          ...candidates.map(LOCAL_FILE),
+          ...candidates.map(WIKI_FILE),
+          CDN_FILE(name.replace(/\s+/g,"") + ".png")
+        ].filter(Boolean)
       };
     });
 
@@ -99,9 +121,7 @@
       const name = (it.Name || it.name || "").toLowerCase();
       if (!name) continue;
       const atks = it.Attacks || it.attacks;
-      if (Array.isArray(atks) && atks.length){
-        m.set(name, atks);
-      }
+      if (Array.isArray(atks) && atks.length) m.set(name, atks);
     }
     return m;
   }
@@ -122,17 +142,16 @@
       el.setAttribute("data-i", String(i));
       el.src = list[i];
     } else {
-      el.onerror = null;
-      el.src = placeholder;
+      el.onerror = null; el.src = placeholder;
     }
   };
   function renderImg(name, srcs){
     const safePH = svgPlaceholder.replace(/'/g, "%27");
-    const dataSrcs = srcs.join("|").replace(/'/g, "%27");
+    const dataSrcs = (srcs && srcs.length ? srcs : [svgPlaceholder]).join("|").replace(/'/g, "%27");
     const alt = escapeHtml(name);
     return `
       <img
-        src="${srcs[0] || svgPlaceholder}"
+        src="${srcs && srcs[0] ? srcs[0] : svgPlaceholder}"
         data-srcs="${dataSrcs}"
         data-i="0"
         alt="${alt}"
@@ -238,8 +257,43 @@
     pick.value = "0";
   }
 
+  /* ----------------- MOA: données fixes (de ton texte) ----------------- */
+  function moaDataFromWiki(){
+    return {
+      Models: [
+        { Name: "Para",   Precepts: ["Whiplash Mine", "Anti-Grav Grenade"], CostStanding: 500,  Rank: "Rank 0: Neutral" },
+        { Name: "Lambeo", Precepts: ["Stasis Field",  "Shockwave Actuators"], CostStanding: 1000, Rank: "Rank 1: Outworlder" },
+        { Name: "Oloro",  Precepts: ["Tractor Beam",  "Security Override"],   CostStanding: 2000, Rank: "Rank 2: Rapscallion" },
+        { Name: "Nychus", Precepts: ["Blast Shield",  "Hard Engage"],         CostStanding: 3000, Rank: "Rank 3: Doer" },
+      ],
+      Cores: [
+        { Name: "Drex",   HealthPct: +10, ShieldPct: +15, ArmorPct: +5,  CostStanding: 500,  DonationStanding: 300 },
+        { Name: "Krisys", HealthPct: +10, ShieldPct: +5,  ArmorPct: +15, CostStanding: 1000, DonationStanding: 300 },
+        { Name: "Alcrom", HealthPct: +10, ShieldPct: +10, ArmorPct: +10, CostStanding: 2000, DonationStanding: 300 },
+        { Name: "Lehan",  HealthPct: +15, ShieldPct: +0,  ArmorPct: +15, CostStanding: 4000, DonationStanding: 300 },
+      ],
+      Gyros: [
+        { Name: "Trux",   HealthPct: +5,  ShieldPct: -5,  ArmorPct: +10, CostStanding: 500,  DonationStanding: 300 },
+        { Name: "Harpen", HealthPct: +5,  ShieldPct: +10, ArmorPct: -5,  CostStanding: 1000, DonationStanding: 300 },
+        { Name: "Aegron", HealthPct: -5,  ShieldPct: +5,  ArmorPct: +10, CostStanding: 2000, DonationStanding: 300 },
+        { Name: "Hextra", HealthPct: +10, ShieldPct: +5,  ArmorPct: -5,  CostStanding: 3000, DonationStanding: 300 },
+        { Name: "Munit",  HealthPct: +10, ShieldPct: -5,  ArmorPct: +5,  CostStanding: 3000, DonationStanding: 300 },
+        { Name: "Atheca", HealthPct: +20, ShieldPct: -5,  ArmorPct: -5,  CostStanding: 4000, DonationStanding: 300 },
+        { Name: "Phazor", HealthPct: -5,  ShieldPct: +10, ArmorPct: +5,  CostStanding: 4000, DonationStanding: 300 },
+        { Name: "Tyli",   HealthPct: +10, ShieldPct: -10, ArmorPct: +10, CostStanding: 4000, DonationStanding: 300 },
+      ],
+      Brackets: [
+        { Name: "Drimper Bracket", ExtraPolarity: "None",    CostStanding: 500,  Rank: "Rank 0: Neutral",   Desc: "A basic bracket with no polarized Mod slots." },
+        { Name: "Tian Bracket",    ExtraPolarity: "Vazarin", CostStanding: 500,  Rank: "Rank 0: Neutral",   Desc: "Armoured bracket featuring a Vazarin polarity slot." },
+        { Name: "Jonsin Bracket",  ExtraPolarity: "Madurai", CostStanding: 1000, Rank: "Rank 1: Outworlder",Desc: "Flexible bracket featuring a Madurai polarity slot." },
+        { Name: "Gauth Bracket",   ExtraPolarity: "Naramon", CostStanding: 2000, Rank: "Rank 2: Rapscallion",Desc: "Armoured bracket featuring a Naramon polarity slot." },
+        { Name: "Hona Bracket",    ExtraPolarity: "Naramon", CostStanding: 3000, Rank: "Rank 3: Doer",      Desc: "Armoured bracket featuring a Naramon polarity slot." },
+      ],
+    };
+  }
+
   /* -------------- MOA & Hound builders -------------- */
-  // MOA: base
+  // MOA: base de calcul
   const MOA_BASE = { Health: 350, Shield: 350, Armor: 350 };
   const MOA_MODELS = [
     { name:"Para",    precepts:["Whiplash Mine","Anti-Grav Grenade"] },
@@ -276,6 +330,57 @@
     const a = Math.round(MOA_BASE.Armor   * (1 + (core?.A||0) + (gyro?.A||0)));
     return { h, s, a };
   }
+  function optionHTML(list){ return list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join(""); }
+
+  function renderMOABuilder(){
+    const data = moaDataFromWiki();
+    $("#card").innerHTML = `
+      <div class="card p-4">
+        <h2 class="text-lg font-semibold mb-3">MOA Builder</h2>
+        <div class="grid sm:grid-cols-2 gap-3">
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
+        </div>
+        <div id="moa-out" class="mt-4"></div>
+      </div>
+    `;
+    const out = $("#moa-out");
+    const upd = () => {
+      const m = MOA_MODELS[$("#moa-model").value|0];
+      const c = MOA_CORES[$("#moa-core").value|0];
+      const g = MOA_GYROS[$("#moa-gyro").value|0];
+      const b = MOA_BRACKETS[$("#moa-bracket").value|0];
+      const r = moaCompute(c,g);
+
+      // infos détaillées depuis data
+      const M = data.Models.find(x=>x.Name===m.name);
+      const C = data.Cores.find(x=>x.Name===c.name);
+      const G = data.Gyros.find(x=>x.Name===g.name);
+      const B = data.Brackets.find(x=>x.Name.startsWith(b.name));
+
+      out.innerHTML = `
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          ${statBox("HEALTH", r.h)}
+          ${statBox("SHIELD", r.s)}
+          ${statBox("ARMOR",  r.a)}
+        </div>
+        <div class="mt-3 text-sm space-y-1">
+          <div><b>Precepts (Model):</b> ${escapeHtml((M?.Precepts||m.precepts).join(", "))}</div>
+          <div><b>Model:</b> ${escapeHtml(m.name)} — <b>Standing:</b> ${M?.CostStanding ?? "—"} — ${escapeHtml(M?.Rank || "")}</div>
+          <div><b>Core:</b> ${escapeHtml(c.name)} — ${Math.round(c.H*100)}% H / ${Math.round(c.S*100)}% S / ${Math.round(c.A*100)}% A · Standing ${C?.CostStanding ?? "—"}</div>
+          <div><b>Gyro:</b> ${escapeHtml(g.name)} — ${Math.round(g.H*100)}% H / ${Math.round(g.S*100)}% S / ${Math.round(g.A*100)}% A · Standing ${G?.CostStanding ?? "—"}</div>
+          <div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)} · Standing ${B?.CostStanding ?? "—"} — ${escapeHtml(B?.Rank || "")}</div>
+        </div>
+      `;
+    };
+    $("#moa-model").addEventListener("change", upd);
+    $("#moa-core").addEventListener("change", upd);
+    $("#moa-gyro").addEventListener("change", upd);
+    $("#moa-bracket").addEventListener("change", upd);
+    upd();
+  }
 
   // HOUND
   const HOUND_MODELS = [
@@ -306,48 +411,6 @@
     const a = Math.round(core.A * (1 + mult*(bracket?.A||0)));
     return { h, s, a };
   }
-
-  function optionHTML(list){ return list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join(""); }
-
-  function renderMOABuilder(){
-    $("#card").innerHTML = `
-      <div class="card p-4">
-        <h2 class="text-lg font-semibold mb-3">MOA Builder</h2>
-        <div class="grid sm:grid-cols-2 gap-3">
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
-        </div>
-        <div id="moa-out" class="mt-4"></div>
-      </div>
-    `;
-    const out = $("#moa-out");
-    const upd = () => {
-      const m = MOA_MODELS[$("#moa-model").value|0];
-      const c = MOA_CORES[$("#moa-core").value|0];
-      const g = MOA_GYROS[$("#moa-gyro").value|0];
-      const b = MOA_BRACKETS[$("#moa-bracket").value|0];
-      const r = moaCompute(c,g);
-      out.innerHTML = `
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          ${statBox("HEALTH", r.h)}
-          ${statBox("SHIELD", r.s)}
-          ${statBox("ARMOR",  r.a)}
-        </div>
-        <div class="mt-3 text-sm">
-          <div><b>Precepts (Model):</b> ${escapeHtml(m.precepts.join(", "))}</div>
-          <div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)}</div>
-        </div>
-      `;
-    };
-    $("#moa-model").addEventListener("change", upd);
-    $("#moa-core").addEventListener("change", upd);
-    $("#moa-gyro").addEventListener("change", upd);
-    $("#moa-bracket").addEventListener("change", upd);
-    upd();
-  }
-
   function renderHoundBuilder(){
     $("#card").innerHTML = `
       <div class="card p-4">
@@ -392,64 +455,56 @@
   }
 
   /* -------------- Onglets mode (créés si absents) -------------- */
-// --- Onglets : à droite du titre -------------------------------------------------
-function ensureModeTabs(){
-  // S'il existe déjà, on le renvoie.
-  let host = document.getElementById("mode-tabs");
-  if (host) return host;
+  function ensureModeTabs(){
+    let host = document.getElementById("mode-tabs");
+    if (host) return host;
 
-  // On prend le conteneur principal (celui qui contient #status et le <h1>)
-  const root = document.getElementById("status")?.parentElement || document.body;
-  const h1   = root.querySelector("h1") || (() => {
-    const f = document.createElement("h1");
-    f.className = "text-2xl font-semibold mb-3";
-    f.textContent = "Companions";
-    root.prepend(f);
-    return f;
-  })();
+    const root = document.getElementById("status")?.parentElement || document.body;
+    const h1   = root.querySelector("h1") || (() => {
+      const f = document.createElement("h1");
+      f.className = "text-2xl font-semibold mb-3";
+      f.textContent = "Companions";
+      root.prepend(f);
+      return f;
+    })();
 
-  // On crée une rangée flex pour mettre le titre à gauche et les onglets à droite
-  const row = document.createElement("div");
-  row.className = "flex items-center justify-between gap-4 mb-4";
-  // Remplace le <h1> par cette rangée, puis déplace le <h1> dedans
-  h1.parentNode.insertBefore(row, h1);
-  row.appendChild(h1);
+    const row = document.createElement("div");
+    row.className = "flex items-center justify-between gap-4 mb-4";
+    h1.parentNode.insertBefore(row, h1);
+    row.appendChild(h1);
 
-  // Les onglets (plus visibles / plus gros)
-  host = document.createElement("div");
-  host.id = "mode-tabs";
-  host.className = "flex flex-wrap items-center gap-2 ml-auto";
-  host.innerHTML = `
-    <button data-mode="all"   class="badge gold px-4 py-2 text-sm md:text-base shadow-sm">Companions</button>
-    <button data-mode="moa"   class="badge px-4 py-2 text-sm md:text-base">MOA</button>
-    <button data-mode="hound" class="badge px-4 py-2 text-sm md:text-base">Hound</button>
-  `;
-  row.appendChild(host);
+    host = document.createElement("div");
+    host.id = "mode-tabs";
+    host.className = "flex flex-wrap items-center gap-2 ml-auto";
+    host.innerHTML = `
+      <button data-mode="all"   class="badge gold px-4 py-2 text-sm md:text-base shadow-sm">Companions</button>
+      <button data-mode="moa"   class="badge px-4 py-2 text-sm md:text-base">MOA</button>
+      <button data-mode="hound" class="badge px-4 py-2 text-sm md:text-base">Hound</button>
+    `;
+    row.appendChild(host);
+    return host;
+  }
 
-  return host;
-}
+  function applyMode(mode){
+    const host = ensureModeTabs();
+    if (!host) return;
 
-function applyMode(mode){
-  const host = ensureModeTabs();
+    host.querySelectorAll("[data-mode]").forEach(btn => {
+      const active = btn.dataset.mode === mode;
+      btn.classList.toggle("gold", active);
+    });
 
-  // Styles actifs/inactifs
-  host.querySelectorAll("[data-mode]").forEach(btn => {
-    const active = btn.dataset.mode === mode;
-    btn.classList.toggle("gold", active);  // 'gold' = style accent dans ton thème
-  });
+    const search = document.getElementById("search");
+    const picker = document.getElementById("picker");
+    const showListUI = (mode === "all");
+    if (search && search.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
+    if (picker && picker.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
 
-  // On masque/affiche la recherche + picker quand on passe en builder
-  const search = document.getElementById("search");
-  const picker = document.getElementById("picker");
-  const showListUI = (mode === "all");
-  if (search) search.parentElement.style.display = showListUI ? "" : "none";
-  if (picker) picker.parentElement.style.display = showListUI ? "" : "none";
+    if (mode === "moa")      renderMOABuilder();
+    else if (mode === "hound") renderHoundBuilder();
+    // "all" => on ne modifie pas la carte en cours
+  }
 
-  if (mode === "moa")   renderMOABuilder();
-  else if (mode === "hound") renderHoundBuilder();
-  // sinon (mode "all") on ne touche pas à la carte courante
-}
-  
   /* -------------- Chargement data -------------- */
   async function loadData(){
     try{
@@ -505,17 +560,19 @@ function applyMode(mode){
       };
       setStatus(list.length);
 
-      if ($("#picker")){
-        $("#picker").addEventListener("change", (e)=>{
+      const pickerEl = $("#picker");
+      if (pickerEl){
+        pickerEl.addEventListener("change", (e)=>{
           const idx = parseInt(e.target.value, 10);
           const q = norm($("#search")?.value).toLowerCase();
           const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
           if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
         });
       }
-      if ($("#search")){
-        $("#search").addEventListener("input", ()=>{
-          const q = norm($("#search").value).toLowerCase();
+      const searchEl = $("#search");
+      if (searchEl){
+        searchEl.addEventListener("input", ()=>{
+          const q = norm(searchEl.value).toLowerCase();
           const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
           renderPicker(filtered);
           if (filtered.length) renderCard(filtered[0]);
@@ -531,10 +588,12 @@ function applyMode(mode){
       applyMode("all");
     } catch(e){
       console.error("[companions] load error:", e);
-      status.textContent = "Erreur de chargement des companions.";
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
+      if (status){
+        status.textContent = "Erreur de chargement des données.";
+        status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+        status.style.background = "rgba(255,0,0,.08)";
+        status.style.color = "#ffd1d1";
+      }
     }
   })();
 })();
