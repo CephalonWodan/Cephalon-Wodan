@@ -27,6 +27,8 @@
     "Nautilus": "Nautilus",
     "Nautilus Prime": "NautilusPrime",
     "Bhaira": "BhairaHound",
+    "Dorma": "DormaHound",
+    "Hec": "HecHound",
   };
 
   /* ----------------- Utils ----------------- */
