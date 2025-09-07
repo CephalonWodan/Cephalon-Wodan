@@ -7,11 +7,9 @@
   const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
   const FALLBACK_URL = "data/companions.json";         // ton ancien JSON (LUA)
   // URL helpers (priorité demandée : Wiki -> CDN -> Local)
-  const WIKI_IMG = (file) => file ? https://wiki.warframe.com/images/${encodeURIComponent(file)} : ""; 
-    // Fallback #2: CDN WarframeStat si le même nom existe 
-    const CDN_IMG = (fileOrName) => fileOrName ? https://cdn.warframestat.us/img/${encodeURIComponent(fileOrName)} : ""; 
-    // Fallback #3: repo local (au cas où tu mets des PNG dans /img/companions/) 
-    const LOCAL_IMG = (fileOrName) => fileOrName ? img/companions/${encodeURIComponent(fileOrName)} : "";
+  const WIKI_IMG  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
+  const CDN_IMG   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
+  const LOCAL_IMG = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
 
   /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
@@ -108,21 +106,24 @@
   }
 
   /* -------------- Image tri-source -------------- */
- function imageFor(item){ 
-   const file = coalesce(item, ["Image","image"], "");
-  const name = coalesce(item, ["Name","name"], "");
-   // ordre de priorité demandé : Wiki -> CDN -> Local const sources = [ 
-   WIKI_IMG(file), 
-     CDN_IMG(file || ${name}.png), 
-     LOCAL_IMG(file || ${name}.png) ].filter(Boolean); 
-   // data:svg placeholder pour éviter un gros flash “No Image” 
-   const ph = 'data:image/svg+xml;utf8,'+encodeURIComponent( 
-     <svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-     <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs>
-     <rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
-     <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg> ); 
-   
-   // on laisse le navigateur tomber de l’un à l’autre return { src: sources[0] || ph, fallbacks: sources.slice(1), placeholder: ph }; }
+  function imageFor(item){
+    // si on a déjà construit la chaîne (cas export ou lua)
+    if (item._img) return item._img;
+
+    // ultra-fallback (ne devrait pas arriver)
+    const name = coalesce(item, ["Name","name"], "");
+    const wiki = name ? (name.replace(/\s+/g, "_") + ".png") : "";
+    const cdn  = name ? (name.replace(/\s+/g, "") + ".png") : "";
+    const ph = 'data:image/svg+xml;utf8,'+encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>`
+    );
+    return {
+      primary:  WIKI_IMG(wiki) || ph,
+      fallback1: CDN_IMG(cdn)  || ph,
+      fallback2: LOCAL_IMG(cdn) || ph,
+      placeholder: ph
+    };
+  }
 
   /* -------------- Attaques (si présentes) -------------- */
   function sumDamage(dmg){
