@@ -392,45 +392,64 @@
   }
 
   /* -------------- Onglets mode (créés si absents) -------------- */
-  function ensureModeTabs(){
-    let host = $("#mode-tabs");
-    if (!host){
-      const wrap = document.createElement("div");
-      wrap.id = "mode-tabs";
-      wrap.className = "max-w-6xl mx-auto px-6 mb-4";
-      wrap.innerHTML = `
-        <div class="flex gap-2">
-          <button data-mode="all"   class="badge gold">Companions</button>
-          <button data-mode="moa"   class="badge">MOA</button>
-          <button data-mode="hound" class="badge">Hound</button>
-        </div>
-      `;
-      const nav = $("#site-nav");
-      if (nav && nav.parentNode) nav.parentNode.insertBefore(wrap, nav.nextSibling);
-      else document.body.insertBefore(wrap, document.body.firstChild);
-      host = wrap;
-    }
-    return host;
-  }
-  function applyMode(mode){
-    const host = ensureModeTabs();
-    host.querySelectorAll("[data-mode]").forEach(btn => {
-      btn.classList.toggle("gold", btn.dataset.mode === mode);
-      btn.classList.toggle("badge", true);
-    });
-    const search = $("#search");
-    const picker = $("#picker");
-    if (mode === "all"){
-      if (search) search.parentElement.style.display = "";
-      if (picker) picker.parentElement.style.display = "";
-    } else {
-      if (search) search.parentElement.style.display = "none";
-      if (picker) picker.parentElement.style.display = "none";
-    }
-    if (mode === "moa")   renderMOABuilder();
-    if (mode === "hound") renderHoundBuilder();
-  }
+// --- Onglets : à droite du titre -------------------------------------------------
+function ensureModeTabs(){
+  // S'il existe déjà, on le renvoie.
+  let host = document.getElementById("mode-tabs");
+  if (host) return host;
 
+  // On prend le conteneur principal (celui qui contient #status et le <h1>)
+  const root = document.getElementById("status")?.parentElement || document.body;
+  const h1   = root.querySelector("h1") || (() => {
+    const f = document.createElement("h1");
+    f.className = "text-2xl font-semibold mb-3";
+    f.textContent = "Companions";
+    root.prepend(f);
+    return f;
+  })();
+
+  // On crée une rangée flex pour mettre le titre à gauche et les onglets à droite
+  const row = document.createElement("div");
+  row.className = "flex items-center justify-between gap-4 mb-4";
+  // Remplace le <h1> par cette rangée, puis déplace le <h1> dedans
+  h1.parentNode.insertBefore(row, h1);
+  row.appendChild(h1);
+
+  // Les onglets (plus visibles / plus gros)
+  host = document.createElement("div");
+  host.id = "mode-tabs";
+  host.className = "flex flex-wrap items-center gap-2 ml-auto";
+  host.innerHTML = `
+    <button data-mode="all"   class="badge gold px-4 py-2 text-sm md:text-base shadow-sm">Companions</button>
+    <button data-mode="moa"   class="badge px-4 py-2 text-sm md:text-base">MOA</button>
+    <button data-mode="hound" class="badge px-4 py-2 text-sm md:text-base">Hound</button>
+  `;
+  row.appendChild(host);
+
+  return host;
+}
+
+function applyMode(mode){
+  const host = ensureModeTabs();
+
+  // Styles actifs/inactifs
+  host.querySelectorAll("[data-mode]").forEach(btn => {
+    const active = btn.dataset.mode === mode;
+    btn.classList.toggle("gold", active);  // 'gold' = style accent dans ton thème
+  });
+
+  // On masque/affiche la recherche + picker quand on passe en builder
+  const search = document.getElementById("search");
+  const picker = document.getElementById("picker");
+  const showListUI = (mode === "all");
+  if (search) search.parentElement.style.display = showListUI ? "" : "none";
+  if (picker) picker.parentElement.style.display = showListUI ? "" : "none";
+
+  if (mode === "moa")   renderMOABuilder();
+  else if (mode === "hound") renderHoundBuilder();
+  // sinon (mode "all") on ne touche pas à la carte courante
+}
+  
   /* -------------- Chargement data -------------- */
   async function loadData(){
     try{
