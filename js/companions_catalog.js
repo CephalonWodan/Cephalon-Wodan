@@ -518,19 +518,19 @@
       $("#tab-moa").addEventListener("click", ()=>{ setActiveTab("moa"); renderModularCatalog("moa", modular.moa); });
       $("#tab-hound").addEventListener("click", ()=>{ setActiveTab("hound"); renderModularCatalog("hound", modular.hound); });
 
-    catch(e){
-  console.error("[companions] load error:", e);
-  if (typeof setStatus === "function") {
-    setStatus("Erreur de chargement des données.", false);
-  } else {
-    const status = $("#status");
-    if (status) {
-      status.textContent = "Erreur de chargement des données.";
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
+    } catch(e){
+      console.error("[companions] load error:", e);
+      if (typeof setStatus === "function") {
+        setStatus("Erreur de chargement des données.", false);
+      } else {
+        const status = $("#status");
+        if (status) {
+          status.textContent = "Erreur de chargement des données.";
+          status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+          status.style.background = "rgba(255,0,0,.08)";
+          status.style.color = "#ffd1d1";
+        }
+      }
     }
-  }
-}
   })();
 })();
