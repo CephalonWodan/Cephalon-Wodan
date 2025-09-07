@@ -106,24 +106,69 @@
   }
 
   /* -------------- Image tri-source -------------- */
-  function imageFor(item){
-    // si on a déjà construit la chaîne (cas export ou lua)
-    if (item._img) return item._img;
 
-    // ultra-fallback (ne devrait pas arriver)
-    const name = coalesce(item, ["Name","name"], "");
-    const wiki = name ? (name.replace(/\s+/g, "_") + ".png") : "";
-    const cdn  = name ? (name.replace(/\s+/g, "") + ".png") : "";
-    const ph = 'data:image/svg+xml;utf8,'+encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>`
-    );
-    return {
-      primary:  WIKI_IMG(wiki) || ph,
-      fallback1: CDN_IMG(cdn)  || ph,
-      fallback2: LOCAL_IMG(cdn) || ph,
-      placeholder: ph
-    };
+// Corrections manuelles si un nom ne correspond pas du tout au fichier
+const MANUAL_IMG = {
+  "Venari": "Venari.png",
+  "Venari Prime": "VenariPrime.png",
+  "Helminth Charger": "HelminthCharger.png",
+  "Nautilus": "Nautilus.png",
+  "Nautilus Prime": "NautilusPrime.png",
+};
+
+function buildImageCandidates(item){
+  const name = (item.Name || item.name || "").trim();
+  const manual = MANUAL_IMG[name];
+
+  const baseUS = (manual || name).replace(/\s+/g, "_"); // “Sly Vulpaphyla” -> “Sly_Vulpaphyla”
+  const baseNS = (manual || name).replace(/\s+/g, "");  // “Sly Vulpaphyla” -> “SlyVulpaphyla”
+
+  const cand = [];
+
+  // 1) Wiki officiel – Special:FilePath (gère les révisions/jetons)
+  cand.push(`https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(baseUS + ".png")}`);
+  // si jamais le fichier wiki est sans underscore
+  cand.push(`https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(baseNS + ".png")}`);
+
+  // 2) CDN WarframeStat (2 variantes)
+  cand.push(`https://cdn.warframestat.us/img/${encodeURIComponent(baseNS + ".png")}`);
+  cand.push(`https://cdn.warframestat.us/img/${encodeURIComponent(baseUS + ".png")}`);
+
+  // 3) Local (2 variantes)
+  cand.push(`img/companions/${encodeURIComponent(baseNS + ".png")}`);
+  cand.push(`img/companions/${encodeURIComponent(baseUS + ".png")}`);
+
+  // de-dup
+  const seen = new Set();
+  const list = cand.filter(u => u && !seen.has(u) && seen.add(u));
+
+  // joli placeholder
+  const placeholder = 'data:image/svg+xml;utf8,'+encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360">
+      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
+      </linearGradient></defs>
+      <rect width="600" height="360" fill="url(#g)"/>
+      <rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
+      <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text>
+    </svg>`
+  );
+
+  return { list, placeholder };
+}
+
+// petit helper pour itérer les fallbacks depuis l'attribut data
+window.__cycleImg = function(el, placeholder){
+  const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
+  let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
+  if (i < list.length) {
+    el.setAttribute("data-i", String(i));
+    el.src = list[i];
+  } else {
+    el.onerror = null;
+    el.src = placeholder;
   }
+};
 
   /* -------------- Attaques (si présentes) -------------- */
   function sumDamage(dmg){
@@ -184,17 +229,21 @@
     const shield = coalesce(item, ["Shield","shield"], "—");
     const energy = coalesce(item, ["Energy","energy"], "—");
 
-    const img = imageFor(item);
+    const img = buildImageCandidates(item);
 
-    $("#card").innerHTML = `
-      <div class="flex flex-col md:flex-row gap-6">
-        <!-- Colonne image -->
-        <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
-          <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            <img src="${img.primary}" alt="${escapeHtml(name)}" class="w-full h-full object-contain"
-                 onerror="(function(el){ if(!el._f){ el._f=1; el.src='${img.fallback1 || img.placeholder}'; } else if(!el._f2 && '${img.fallback2||""}') { el._f2=1; el.src='${img.fallback2}'; } })(this)">
-          </div>
-        </div>
+$("#card").innerHTML = `
+  <div class="flex flex-col md:flex-row gap-6">
+    <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
+      <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
+        <img
+          src="${img.list[0]}"
+          data-srcs="${img.list.join("|")}"
+          data-i="0"
+          alt="${escapeHtml(name)}"
+          class="w-full h-full object-contain"
+          onerror="__cycleImg(this, '${img.placeholder}')">
+      </div>
+    </div>
 
         <!-- Colonne contenu -->
         <div class="flex-1 flex flex-col gap-4">
