@@ -1,0 +1,130 @@
+name: Update Warframe Public Export JSONs
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # toutes les 6h
+  workflow_dispatch:        # lancement manuel
+
+permissions:
+  contents: write
+
+concurrency:
+  group: warframe-exports
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    env:
+      LANG_CODE: en
+      # ❗️Liste des exports à suivre. Tu peux mettre
+      # soit juste le nom "ExportXxx_en.json"
+      # soit le nom + hash "ExportXxx_en.json!00_xxx"
+      EXPORTS: |
+        ExportCustoms_en.json
+        ExportDrones_en.json
+        ExportFlavour_en.json
+        ExportFusionBundles_en.json
+        ExportGear_en.json
+        ExportKeys_en.json
+        ExportRecipes_en.json
+        ExportRegions_en.json
+        ExportRelicArcane_en.json
+        ExportResources_en.json
+        ExportSentinels_en.json
+        ExportSortieRewards_en.json
+        ExportUpgrades_en.json
+        ExportWarframes_en.json
+        ExportWeapons_en.json
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: pip install -q requests
+
+      - name: Fetch latest hashed URLs & download JSONs
+        run: |
+          python - <<'PY'
+          import os, re, lzma, json, time, pathlib, sys, urllib.parse
+          import requests
+
+          LANG = os.environ.get("LANG_CODE", "en").strip()
+          ORIGIN = f"https://origin.warframe.com/PublicExport/index_{LANG}.txt.lzma"
+          CONTENT = "http://content.warframe.com/PublicExport/Manifest/"
+
+          targets = [t.strip() for t in os.environ.get("EXPORTS","").splitlines() if t.strip()]
+          out_dir = pathlib.Path("data")
+          out_dir.mkdir(parents=True, exist_ok=True)
+
+          print(f"[*] Téléchargement index: {ORIGIN}")
+          try:
+            idx_lz = requests.get(ORIGIN, timeout=45)
+            idx_lz.raise_for_status()
+            idx_txt = lzma.decompress(idx_lz.content).decode("utf-8", errors="ignore")
+          except Exception as e:
+            print(f"[!] Échec chargement index: {e}")
+            sys.exit(1)
+
+          used = {}     # pour garder trace des URLs/hash utilisés
+          missing = []  # entrées non trouvées dans l'index (si non hashées)
+
+          for wanted in targets:
+            # Si l'entrée contient déjà "!", on l'utilise telle quelle.
+            if "!" in wanted:
+              base, hashed = wanted.split("!", 1)
+              url = CONTENT + wanted
+              out_name = base
+            else:
+              base = wanted
+              # on cherche "ExportXxx_en.json!..." dans l'index
+              m = re.search(rf"{re.escape(base)}![^\s]+", idx_txt)
+              if not m:
+                print(f"[!] Introuvable dans l'index: {base}")
+                missing.append(base)
+                continue
+              hashed = m.group(0).split("!",1)[1]
+              url = CONTENT + base + "!" + hashed
+              out_name = base
+
+            print(f"[*] {out_name} -> {url}")
+            try:
+              r = requests.get(url, timeout=120)
+              if r.status_code != 200:
+                print(f"[!] HTTP {r.status_code} pour {out_name}")
+                continue
+              # on sauvegarde SANS le hash dans /data
+              (out_dir / out_name).write_text(r.text, encoding="utf-8")
+              used[out_name] = {
+                "url": url,
+                "fetched_at": int(time.time())
+              }
+            except Exception as e:
+              print(f"[!] Erreur téléchargement {out_name}: {e}")
+
+          # journal des sources/hash
+          (out_dir / "_export_sources.json").write_text(
+            json.dumps(used, indent=2, ensure_ascii=False), encoding="utf-8"
+          )
+
+          if missing:
+            print(f"[!] Manquants ({len(missing)}): " + ", ".join(missing))
+          else:
+            print("[✓] Tous les exports demandés ont été traités.")
+          PY
+
+      - name: Commit if changed
+        run: |
+          if ! git diff --quiet; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/
+            git commit -m "chore: update PublicExport JSONs ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+            git push
+          else
+            echo "Aucun changement."
+          fi
