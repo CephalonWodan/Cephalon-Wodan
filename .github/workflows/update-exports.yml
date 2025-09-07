@@ -44,23 +44,30 @@ jobs:
       - name: Install deps
         run: pip install -q requests
 
-      - name: Fetch latest hashed URLs & download JSONs (origin index only)
+      - name: Fetch latest hashed URLs & download JSONs (origin index)
         run: |
           python - <<'PY'
-          import os, re, lzma, json, time, pathlib, sys, requests
+          import os, re, lzma, json, time, pathlib, sys, requests, traceback
 
-          def get(url, timeout=60, tries=3):
-            last = None
+          def get(url, timeout=60, tries=4):
+            err = None
             for i in range(tries):
               try:
-                r = requests.get(url, timeout=timeout, headers={"User-Agent":"github-actions/warframe-export"})
-                r.raise_for_status()
-                return r
+                print(f"[GET] {url} (try {i+1}/{tries})")
+                r = requests.get(
+                  url, timeout=timeout,
+                  headers={
+                    "User-Agent":"github-actions/warframe-export",
+                    "Accept":"*/*",
+                    "Accept-Encoding":"gzip, deflate, br",
+                  })
+                if r.status_code == 200:
+                  return r
+                err = Exception(f"HTTP {r.status_code}")
               except Exception as e:
-                last = e
-                print(f"[retry {i+1}/{tries}] {url} -> {e}")
-                time.sleep(1+i)
-            raise last
+                err = e
+              time.sleep(1+i)   # small backoff
+            raise err
 
           LANG = os.environ.get("LANG_CODE","en").strip()
           ORIGIN_INDEX = f"https://origin.warframe.com/PublicExport/index_{LANG}.txt.lzma"
@@ -70,17 +77,21 @@ jobs:
           targets = [t.strip() for t in os.environ.get("EXPORTS","").splitlines() if t.strip()]
           out_dir = pathlib.Path("data"); out_dir.mkdir(parents=True, exist_ok=True)
 
-          print(f"[*] Index (origin): {ORIGIN_INDEX}")
+          report = {"index_url": ORIGIN_INDEX, "files": [], "errors": []}
+
           try:
             idx_lz = get(ORIGIN_INDEX)
             idx_txt = lzma.decompress(idx_lz.content).decode("utf-8", errors="ignore")
-            print("[✓] Index OK")
+            print("[✓] Index origin OK")
           except Exception as e:
-            print(f"[×] Index origin KO: {e}")
-            sys.exit(1)
+            msg = f"Index origin KO: {e}"
+            print("[×]", msg)
+            report["errors"].append(msg)
+            # on ne peut pas continuer sans index → on s'arrête proprement
+            (out_dir / "_export_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+            sys.exit(0)  # succès mou : pas de commit, mais workflow OK
 
-          used, ok, missing = {}, 0, []
-
+          ok = 0
           for wanted in targets:
             if "!" in wanted:
               base, hashed = wanted.split("!",1)
@@ -88,46 +99,54 @@ jobs:
               base = wanted
               m = re.search(rf"{re.escape(base)}![^\s]+", idx_txt)
               if not m:
-                print(f"[!] Introuvable dans l'index: {base}")
-                missing.append(base); continue
+                msg = f"Introuvable dans l'index: {base}"
+                print("[!]", msg)
+                report["errors"].append(msg)
+                continue
               hashed = m.group(0).split("!",1)[1]
 
             url_http  = CONTENT_HTTP  + base + "!" + hashed
             url_https = CONTENT_HTTPS + base + "!" + hashed
             out_path  = out_dir / base
 
-            print(f"[*] {base} -> {url_http} (fallback HTTPS)")
             try:
               try:
                 r = get(url_http, timeout=120)
-              except Exception:
+              except Exception as e_http:
+                print(f"[i] HTTP fallback → HTTPS ({e_http})")
                 r = get(url_https, timeout=120)
+
               out_path.write_text(r.text, encoding="utf-8")
-              used[base] = {"url": r.url, "fetched_at": int(time.time())}
+              report["files"].append({"name": base, "url": r.url, "bytes": len(r.content)})
               ok += 1
             except Exception as e:
-              print(f"[!] Erreur {base}: {e}")
+              tb = traceback.format_exc()
+              msg = f"Erreur {base}: {e}"
+              print("[!]", msg)
+              print(tb)
+              report["errors"].append(msg)
 
-          (out_dir / "_export_sources.json").write_text(json.dumps(used, indent=2, ensure_ascii=False), encoding="utf-8")
+          (out_dir / "_export_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
 
-          if missing:
-            print(f"[i] Non trouvés ({len(missing)}): " + ", ".join(missing))
-          if ok == 0:
-            print("[×] Aucun export mis à jour.")
-            sys.exit(2)
-          print(f"[✓] Exports mis à jour: {ok}")
+          print(f"[i] Résumé: téléchargés={ok}, erreurs={len(report['errors'])}")
+          # ne pas échouer le job même si ok==0 → logs consultables
           PY
 
       - name: Commit if changed
         run: |
-          # 1) Tout ajouter d'abord, y compris les fichiers non suivis
           git add -A data/
-          # 2) Vérifier le diff INDEX vs HEAD (ce qui est prêt à commit)
           if git diff --cached --quiet; then
-            echo "Aucun changement."
+            echo "Aucun changement à committer."
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git commit -m "chore: update PublicExport JSONs ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: warframe-export-report
+          path: |
+            data/_export_report.json
