@@ -47,10 +47,9 @@ jobs:
       - name: Fetch latest hashed URLs & download JSONs (origin index only)
         run: |
           python - <<'PY'
-          import os, re, lzma, json, time, pathlib, sys
-          import requests
+          import os, re, lzma, json, time, pathlib, sys, requests
 
-          def get(url, timeout=45, tries=3):
+          def get(url, timeout=60, tries=3):
             last = None
             for i in range(tries):
               try:
@@ -63,30 +62,28 @@ jobs:
                 time.sleep(1+i)
             raise last
 
-          LANG = os.environ.get("LANG_CODE", "en").strip()
+          LANG = os.environ.get("LANG_CODE","en").strip()
           ORIGIN_INDEX = f"https://origin.warframe.com/PublicExport/index_{LANG}.txt.lzma"
-          CONTENT = "http://content.warframe.com/PublicExport/Manifest/"
+          CONTENT_HTTP  = "http://content.warframe.com/PublicExport/Manifest/"
+          CONTENT_HTTPS = "https://content.warframe.com/PublicExport/Manifest/"
 
           targets = [t.strip() for t in os.environ.get("EXPORTS","").splitlines() if t.strip()]
           out_dir = pathlib.Path("data"); out_dir.mkdir(parents=True, exist_ok=True)
 
           print(f"[*] Index (origin): {ORIGIN_INDEX}")
           try:
-            idx_lz = get(ORIGIN_INDEX, timeout=60, tries=3)
+            idx_lz = get(ORIGIN_INDEX)
             idx_txt = lzma.decompress(idx_lz.content).decode("utf-8", errors="ignore")
             print("[✓] Index OK")
           except Exception as e:
-            print(f"[×] Impossible de récupérer l'index origin: {e}")
+            print(f"[×] Index origin KO: {e}")
             sys.exit(1)
 
-          used, ok = {}, 0
-          missing = []
+          used, ok, missing = {}, 0, []
 
           for wanted in targets:
             if "!" in wanted:
-              base, hashed = wanted.split("!", 1)
-              url = CONTENT + wanted
-              out_name = base
+              base, hashed = wanted.split("!",1)
             else:
               base = wanted
               m = re.search(rf"{re.escape(base)}![^\s]+", idx_txt)
@@ -94,17 +91,22 @@ jobs:
                 print(f"[!] Introuvable dans l'index: {base}")
                 missing.append(base); continue
               hashed = m.group(0).split("!",1)[1]
-              url = CONTENT + base + "!" + hashed
-              out_name = base
 
-            print(f"[*] {out_name} -> {url}")
+            url_http  = CONTENT_HTTP  + base + "!" + hashed
+            url_https = CONTENT_HTTPS + base + "!" + hashed
+            out_path  = out_dir / base
+
+            print(f"[*] {base} -> {url_http} (fallback HTTPS)")
             try:
-              r = get(url, timeout=120, tries=3)
-              (out_dir / out_name).write_text(r.text, encoding="utf-8")
-              used[out_name] = {"url": url, "fetched_at": int(time.time())}
+              try:
+                r = get(url_http, timeout=120)
+              except Exception:
+                r = get(url_https, timeout=120)
+              out_path.write_text(r.text, encoding="utf-8")
+              used[base] = {"url": r.url, "fetched_at": int(time.time())}
               ok += 1
             except Exception as e:
-              print(f"[!] Erreur {out_name}: {e}")
+              print(f"[!] Erreur {base}: {e}")
 
           (out_dir / "_export_sources.json").write_text(json.dumps(used, indent=2, ensure_ascii=False), encoding="utf-8")
 
@@ -118,11 +120,14 @@ jobs:
 
       - name: Commit if changed
         run: |
-          if ! git diff --quiet; then
+          # 1) Tout ajouter d'abord, y compris les fichiers non suivis
+          git add -A data/
+          # 2) Vérifier le diff INDEX vs HEAD (ce qui est prêt à commit)
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/
             git commit -m "chore: update PublicExport JSONs ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
-          else
-            echo "Aucun changement."
+          fi
