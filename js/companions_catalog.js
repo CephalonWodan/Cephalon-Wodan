@@ -1,5 +1,4 @@
 <!-- js/companions_catalog.js -->
-<script>
 (() => {
   "use strict";
 
