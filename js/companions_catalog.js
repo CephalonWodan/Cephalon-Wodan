@@ -21,11 +21,11 @@
 
   // Corrections manuelles (si nom d'image non standard)
   const MANUAL_IMG = {
-    "Venari": "Venari.png",
-    "Venari Prime": "VenariPrime.png",
-    "Helminth Charger": "HelminthCharger.png",
+    "Venari": "Venari",
+    "Venari Prime": "Venari",
+    "Helminth Charger": "HelminthCharger",
     "Nautilus": "Nautilus",
-    "Nautilus Prime": "NautilusPrime.png",
+    "Nautilus Prime": "NautilusPrime",
   };
 
   /* ----------------- Utils ----------------- */
