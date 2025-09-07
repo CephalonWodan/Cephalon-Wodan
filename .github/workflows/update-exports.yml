@@ -15,24 +15,6 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    env:
-      LANG_CODE: en
-      EXPORTS: |
-        ExportCustoms_en.json
-        ExportDrones_en.json
-        ExportFlavour_en.json
-        ExportFusionBundles_en.json
-        ExportGear_en.json
-        ExportKeys_en.json
-        ExportRecipes_en.json
-        ExportRegions_en.json
-        ExportRelicArcane_en.json
-        ExportResources_en.json
-        ExportSentinels_en.json
-        ExportSortieRewards_en.json
-        ExportUpgrades_en.json
-        ExportWarframes_en.json
-        ExportWeapons_en.json
 
     steps:
       - uses: actions/checkout@v4
@@ -41,96 +23,123 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps
-        run: pip install -q requests
-
-      - name: Fetch latest hashed URLs & download JSONs (origin index)
+      - name: Write fetch script (your code + tiny --index option)
         run: |
-          python - <<'PY'
-          import os, re, lzma, json, time, pathlib, sys, requests, traceback
+          mkdir -p tools data
+          cat > tools/fetch_wf_exports.py <<'PY'
+          #!/usr/bin/env python3
+          import argparse, lzma, urllib.request, pathlib, sys
 
-          def get(url, timeout=60, tries=4):
-            err = None
-            for i in range(tries):
+          ORIGIN_INDEX = "https://origin.warframe.com/PublicExport/index_{lang}.txt.lzma"
+          CONTENT_ROOT = "http://content.warframe.com/PublicExport/Manifest/"
+
+          ASSETS = {
+              "companions":   "ExportSentinels_{lang}.json",
+              "warframes":    "ExportWarframes_{lang}.json",
+              "weapons":      "ExportWeapons_{lang}.json",
+              "upgrades":     "ExportUpgrades_{lang}.json",
+              "relicarcanes": "ExportRelicArcane_{lang}.json",
+              "resources":    "ExportResources_{lang}.json",
+              "customs":      "ExportCustoms_{lang}.json",
+              "gear":         "ExportGear_{lang}.json",
+              "regions":      "ExportRegions_{lang}.json",
+              "recipes":      "ExportRecipes_{lang}.json",
+              "flavour":      "ExportFlavour_{lang}.json",
+              "sortierewards":"ExportSortieRewards_{lang}.json",
+          }
+
+          def http_get(url: str) -> bytes:
+              req = urllib.request.Request(url, headers={
+                  "User-Agent": "Mozilla/5.0 (Actions Bot); WarframeExport",
+                  "Accept": "*/*",
+                  "Accept-Encoding": "gzip, deflate, br",
+              })
+              with urllib.request.urlopen(req) as r:
+                  return r.read()
+
+          def fetch_index(lang: str, index_file: str | None = None) -> str:
+              if index_file:
+                  return pathlib.Path(index_file).read_text(encoding="utf-8")
+              raw = http_get(ORIGIN_INDEX.format(lang=lang))
               try:
-                print(f"[GET] {url} (try {i+1}/{tries})")
-                r = requests.get(
-                  url, timeout=timeout,
-                  headers={
-                    "User-Agent":"github-actions/warframe-export",
-                    "Accept":"*/*",
-                    "Accept-Encoding":"gzip, deflate, br",
-                  })
-                if r.status_code == 200:
-                  return r
-                err = Exception(f"HTTP {r.status_code}")
-              except Exception as e:
-                err = e
-              time.sleep(1+i)   # small backoff
-            raise err
+                  txt = lzma.decompress(raw).decode("utf-8", "replace")
+              except lzma.LZMAError as e:
+                  sys.exit(f"Failed to decompress index: {e}")
+              return txt
 
-          LANG = os.environ.get("LANG_CODE","en").strip()
-          ORIGIN_INDEX = f"https://origin.warframe.com/PublicExport/index_{LANG}.txt.lzma"
-          CONTENT_HTTP  = "http://content.warframe.com/PublicExport/Manifest/"
-          CONTENT_HTTPS = "https://content.warframe.com/PublicExport/Manifest/"
+          def find_hashed_url(index_txt: str, asset_basename: str) -> str:
+              target_prefix = asset_basename + "!"
+              for line in index_txt.splitlines():
+                  if line.startswith(target_prefix):
+                      return CONTENT_ROOT + line.strip()
+              raise SystemExit(f"Asset not found in index: {asset_basename}")
 
-          targets = [t.strip() for t in os.environ.get("EXPORTS","").splitlines() if t.strip()]
-          out_dir = pathlib.Path("data"); out_dir.mkdir(parents=True, exist_ok=True)
+          def save(url: str, out_path: pathlib.Path):
+              data = http_get(url)
+              out_path.parent.mkdir(parents=True, exist_ok=True)
+              out_path.write_bytes(data)
+              print(f"✓ Saved {out_path} ({len(data):,} bytes)")
 
-          report = {"index_url": ORIGIN_INDEX, "files": [], "errors": []}
+          def main():
+              p = argparse.ArgumentParser(description="Fetch Warframe Public Export JSONs")
+              p.add_argument("what", nargs="+", help="what to fetch (e.g. companions) or 'all'")
+              p.add_argument("-l", "--lang", default="en", help="language code (default: en)")
+              p.add_argument("-o", "--out", default=".", help="output directory")
+              p.add_argument("--index", help="path to pre-fetched index.txt (optional)")
+              args = p.parse_args()
 
-          try:
-            idx_lz = get(ORIGIN_INDEX)
-            idx_txt = lzma.decompress(idx_lz.content).decode("utf-8", errors="ignore")
-            print("[✓] Index origin OK")
-          except Exception as e:
-            msg = f"Index origin KO: {e}"
-            print("[×]", msg)
-            report["errors"].append(msg)
-            # on ne peut pas continuer sans index → on s'arrête proprement
-            (out_dir / "_export_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-            sys.exit(0)  # succès mou : pas de commit, mais workflow OK
+              want = list(ASSETS.keys()) if "all" in args.what else args.what
+              unknown = [w for w in want if w not in ASSETS]
+              if unknown:
+                  sys.exit(f"Unknown asset key(s): {', '.join(unknown)}\nValid: {', '.join(ASSETS)}")
 
-          ok = 0
-          for wanted in targets:
-            if "!" in wanted:
-              base, hashed = wanted.split("!",1)
-            else:
-              base = wanted
-              m = re.search(rf"{re.escape(base)}![^\s]+", idx_txt)
-              if not m:
-                msg = f"Introuvable dans l'index: {base}"
-                print("[!]", msg)
-                report["errors"].append(msg)
-                continue
-              hashed = m.group(0).split("!",1)[1]
+              index_txt = fetch_index(args.lang, args.index)
+              out_dir = pathlib.Path(args.out)
 
-            url_http  = CONTENT_HTTP  + base + "!" + hashed
-            url_https = CONTENT_HTTPS + base + "!" + hashed
-            out_path  = out_dir / base
+              for key in want:
+                  basename = ASSETS[key].format(lang=args.lang)
+                  url = find_hashed_url(index_txt, basename)
+                  # keep hashed filename (we’ll rename after)
+                  fname = url.rsplit("/", 1)[1]
+                  save(url, out_dir / fname)
 
-            try:
-              try:
-                r = get(url_http, timeout=120)
-              except Exception as e_http:
-                print(f"[i] HTTP fallback → HTTPS ({e_http})")
-                r = get(url_https, timeout=120)
-
-              out_path.write_text(r.text, encoding="utf-8")
-              report["files"].append({"name": base, "url": r.url, "bytes": len(r.content)})
-              ok += 1
-            except Exception as e:
-              tb = traceback.format_exc()
-              msg = f"Erreur {base}: {e}"
-              print("[!]", msg)
-              print(tb)
-              report["errors"].append(msg)
-
-          (out_dir / "_export_report.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
-
-          print(f"[i] Résumé: téléchargés={ok}, erreurs={len(report['errors'])}")
-          # ne pas échouer le job même si ok==0 → logs consultables
+          if __name__ == "__main__":
+              main()
           PY
+          chmod +x tools/fetch_wf_exports.py
+
+      - name: Download index (origin → content fallback)
+        run: |
+          set -e
+          UA="Mozilla/5.0 (Actions Bot); WarframeExport"
+          URL_ORIGIN="https://origin.warframe.com/PublicExport/index_en.txt.lzma"
+          URL_CONTENT="https://content.warframe.com/PublicExport/index_en.txt.lzma"
+
+          echo "Trying origin…"
+          if ! curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$URL_ORIGIN" -o index_en.txt.lzma; then
+            echo "Origin blocked (likely 403). Trying content CDN…"
+            curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$URL_CONTENT" -o index_en.txt.lzma
+          fi
+
+          python - <<'PY'
+          import lzma, sys, pathlib
+          raw = pathlib.Path("index_en.txt.lzma").read_bytes()
+          pathlib.Path("index_en.txt").write_bytes(lzma.decompress(raw))
+          print("Index decompressed → index_en.txt")
+          PY
+
+      - name: Fetch all exports with your script (using the downloaded index)
+        run: |
+          python tools/fetch_wf_exports.py all -l en -o data --index index_en.txt
+
+      - name: Rename hashed files to stable basenames
+        run: |
+          shopt -s nullglob
+          for f in data/*.json\!00_*; do
+            base="${f%%!00_*}"
+            mv "$f" "$base"
+            echo "→ $f  ==>  $base"
+          done
 
       - name: Commit if changed
         run: |
@@ -143,10 +152,3 @@ jobs:
             git commit -m "chore: update PublicExport JSONs ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
-
-      - name: Upload report artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: warframe-export-report
-          path: |
-            data/_export_report.json
