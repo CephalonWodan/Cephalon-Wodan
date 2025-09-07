@@ -1,59 +1,18 @@
-<!-- js/companions_catalog.js -->
+// js/companions_catalog.js
+// Mise en page type “Warframes” + images locales en priorité, Attacks fusionnées, onglets MOA/Hound.
 (() => {
   "use strict";
 
-  /* ================================
-   * Config – URLs & priorités images
-   * ================================ */
+  /* ----------------- Config ----------------- */
   const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
   const FALLBACK_URL = "data/companions.json";         // ton ancien JSON (LUA)
 
-  // priorités : Wiki (sans underscore) -> CDN -> Local
-  const LOCAL_FILE  = (fileNoUnderscore) => fileNoUnderscore ? `img/companions/${encodeURIComponent(fileNoUnderscore)}` : "";
-  const WIKI_FILE   = (fileNoUnderscore) => fileNoUnderscore ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(fileNoUnderscore)}` : "";
-  const CDN_FILE    = (fileNoUnderscore) => fileNoUnderscore ? `https://cdn.warframestat.us/img/${encodeURIComponent(fileNoUnderscore)}` : "";
-  
-  // Corrections manuelles -> permet d’éviter des essais inutiles
-  const MANUAL_IMG = {
-    "Venari": "Venari.png",
-    "Venari Prime": "Venari.png",
-    "Helminth Charger": "HelminthCharger.png",
-    "Nautilus": "Nautilus.png",
-    "Nautilus Prime": "NautilusPrime.png",
-    "Chesa Kubrow": "ChesaKubrow.png",
-    "Sunika Kubrow": "SunikaKubrow.png",
-    "Raksa Kubrow": "RaksaKubrow.png",
-    "Huras Kubrow": "HurasKubrow.png",
-    "Sahasa Kubrow": "SahasaKubrow.png",
-    "Adarza Kavat": "AdarzaKavat.png",
-    "Smeeta Kavat": "SmeetaKavat.png",
-    "Vasca Kavat": "VascaKavat.png",
-    "Crescent Vulpaphyla": "CrescentVulpaphyla.png",
-    "Panzer Vulpaphyla": "PanzerVulpaphyla.png",
-    "Sly Vulpaphyla": "SlyVulpaphyla.png",
-    "Vizier Predasite": "VizierPredasite.png",
-    "Medjay Predasite": "MedjayPredasite.png",
-    "Pharaoh Predasite": "PharaohPredasite.png",
-    "Prisma Shade": "PrismaShade.png",
-    "Wyrm Prime": "WyrmPrime.png",
-    "Shade Prime": "ShadePrime.png",
-    "Helios Prime": "HeliosPrime.png",
-    "Carrier Prime": "CarrierPrime.png",
-    "Dethcube Prime": "DethcubePrime.png",
-    "Wyrm": "Wyrm.png",
-    "Shade": "Shade.png",
-    "Helios": "Helios.png",
-    "Carrier": "Carrier.png",
-    "Dethcube": "Dethcube.png",
-    "Diriga": "Diriga.png",
-    "Taxon": "Taxon.png",
-    "Oxylus": "Oxylus.png",
-    "Djinn": "Djinn.png",
-  };
+  // Priorité images : LOCAL -> WIKI -> CDN
+  const LOCAL_FILE = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
+  const WIKI_FILE  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
+  const CDN_FILE   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
 
-  /* ================
-   * Helpers généraux
-   * ================ */
+  /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
   const norm = (s) => String(s || "").trim();
@@ -65,15 +24,13 @@
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
 
-  // évite le bug "string literal contains an unescaped line break"
+  // placeholder inline (une seule ligne pour éviter l’erreur “unescaped line break”)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   })();
 
-  /* =========================
-   * Détection type (Export)
-   * ========================= */
+  /* -------------- Détection type depuis uniqueName (Public Export) -------------- */
   function detectType(u) {
     const p = String(u || "");
     if (p.includes("/CatbrowPet/")) return "Kavat";
@@ -84,9 +41,7 @@
     return "Companion";
   }
 
-  /* ==================================
-   * Normalisation Public Export (base)
-   * ================================== */
+  /* -------------- Normalisation EXPORT (Public Export) -------------- */
   function normalizeFromExport(raw){
     const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
     return arr
@@ -94,9 +49,7 @@
         const name = x.name || "";
         const type = detectType(x.uniqueName);
         const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-
-        // nom d’image privilégié : Sans espaces/underscores + .png
-        const fileBase = MANUAL_IMG[name] || (name.replace(/\s+/g,"") + ".png");
+        const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
 
         return {
           Name: name,
@@ -107,20 +60,14 @@
           Health: x.health ?? 0,
           Shield: x.shield ?? 0,
           Energy: x.power ?? 0,
-          Attacks: null, // sera éventuellement enrichi avec le LUA
-          _imgSrcs: [
-            WIKI_FILE(fileBase),
-            CDN_FILE(fileBase),
-            LOCAL_FILE(fileBase),
-          ].filter(Boolean)
+          Attacks: null, // pas fourni par l’Export
+          _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
         };
       })
       .sort(byName);
   }
 
-  /* =========================================
-   * Normalisation ancien JSON (LUA -> wiki)
-   * ========================================= */
+  /* -------------- Normalisation ancien JSON (LUA -> wiki) -------------- */
   function normalizeFromLua(raw){
     let coll = raw && raw.Companions ? raw.Companions : raw;
     if (!coll) return [];
@@ -134,14 +81,10 @@
 
     arr = arr.map(v => {
       const name = coalesce(v, ["Name","name"], "");
-      const fileBase = MANUAL_IMG[name] || (name.replace(/\s+/g,"") + ".png");
+      const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
       return {
         ...v,
-        _imgSrcs: [
-          WIKI_FILE(fileBase),
-          CDN_FILE(fileBase),
-          LOCAL_FILE(fileBase),
-        ].filter(Boolean)
+        _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
       };
     });
 
@@ -149,9 +92,7 @@
     return arr;
   }
 
-  /* =========================
-   * Fusion des Attacks (LUA)
-   * ========================= */
+  /* -------------- Fusion des Attacks (depuis le LUA) -------------- */
   function buildAttacksMapFromLua(luaList){
     const m = new Map();
     for (const it of luaList){
@@ -164,7 +105,6 @@
     }
     return m;
   }
-
   function injectAttacks(list, attacksByName){
     for (const it of list){
       const key = (it.Name || "").toLowerCase();
@@ -174,10 +114,7 @@
     }
   }
 
-  /* ============
-   * Image <img>
-   * ============ */
-  // itère les sources sans spammer 10 variantes
+  /* -------------- <img> avec cycle de fallback court -------------- */
   window.__cycleImg = function(el, placeholder){
     const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
     let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
@@ -189,7 +126,6 @@
       el.src = placeholder;
     }
   };
-
   function renderImg(name, srcs){
     const safePH = svgPlaceholder.replace(/'/g, "%27");
     const dataSrcs = srcs.join("|").replace(/'/g, "%27");
@@ -206,9 +142,7 @@
     `;
   }
 
-  /* ==============
-   * Attaques bloc
-   * ============== */
+  /* -------------- Attaques (intégrées sous les stats) -------------- */
   function sumDamage(dmg){ if (!dmg || typeof dmg !== "object") return null; let t=0; for(const k in dmg){ const v=Number(dmg[k]); if(!isNaN(v)) t+=v; } return t||null; }
   function attacksBlock(item){
     const atks = coalesce(item, ["Attacks","attacks"], null);
@@ -237,15 +171,12 @@
       </div>`;
   }
 
-  /* ===========
-   * UI helpers
-   * =========== */
+  /* -------------- UI helpers -------------- */
   const statBox = (label, value) => `
     <div class="stat">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
       <div class="text-lg font-semibold">${escapeHtml(fmtNum(value))}</div>
     </div>`;
-
   function chips(item){
     const cat  = coalesce(item, ["Category","category"], "");
     const type = coalesce(item, ["Type","type"], "");
@@ -260,7 +191,6 @@
     const health = coalesce(item, ["Health","health"], "—");
     const shield = coalesce(item, ["Shield","shield"], "—");
     const energy = coalesce(item, ["Energy","energy"], "—");
-
     const imgHTML = renderImg(name, item._imgSrcs || []);
 
     $("#card").innerHTML = `
@@ -308,12 +238,9 @@
     pick.value = "0";
   }
 
-  /* ===========================
-   * MOA & Hound – mini builders
-   * =========================== */
+  /* -------------- MOA & Hound builders -------------- */
   // MOA: base
   const MOA_BASE = { Health: 350, Shield: 350, Armor: 350 };
-
   const MOA_MODELS = [
     { name:"Para",    precepts:["Whiplash Mine","Anti-Grav Grenade"] },
     { name:"Lambeo",  precepts:["Stasis Field","Shockwave Actuators"] },
@@ -343,14 +270,11 @@
     { name:"Gauth",   polarities:"(Naramon)" },
     { name:"Hona",    polarities:"(Naramon)" },
   ];
-
   function moaCompute(core, gyro){
     const h = Math.round(MOA_BASE.Health  * (1 + (core?.H||0) + (gyro?.H||0)));
     const s = Math.round(MOA_BASE.Shield  * (1 + (core?.S||0) + (gyro?.S||0)));
     const a = Math.round(MOA_BASE.Armor   * (1 + (core?.A||0) + (gyro?.A||0)));
     return { h, s, a };
-    // (Les chiffres exacts du wiki ont des arrondis particuliers,
-    //  ici on applique une règle simple et lisible pour l’utilisateur.)
   }
 
   // HOUND
@@ -374,7 +298,6 @@
     { name:"Hinta", polarity:"Madurai",  precept:"Synergized Prospectus" },
     { name:"Wanz",  polarity:"Naramon",  precept:"Aerial Prospectus" },
   ];
-
   function houndCompute(core, bracket, gilded=false){
     if (!core) return { h:0, s:0, a:0 };
     const mult = gilded ? 2 : 1;
@@ -391,28 +314,14 @@
       <div class="card p-4">
         <h2 class="text-lg font-semibold mb-3">MOA Builder</h2>
         <div class="grid sm:grid-cols-2 gap-3">
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Model</span>
-            <select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select>
-          </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Core</span>
-            <select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select>
-          </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Gyro</span>
-            <select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select>
-          </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Bracket</span>
-            <select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select>
-          </label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
         </div>
-
         <div id="moa-out" class="mt-4"></div>
       </div>
     `;
-
     const out = $("#moa-out");
     const upd = () => {
       const m = MOA_MODELS[$("#moa-model").value|0];
@@ -432,7 +341,6 @@
         </div>
       `;
     };
-    ["#moa-model","#moa-core","#moa-gyro","#moa-bracket"].forEach(sel => { $$(sel).forEach(()=>{}); });
     $("#moa-model").addEventListener("change", upd);
     $("#moa-core").addEventListener("change", upd);
     $("#moa-gyro").addEventListener("change", upd);
@@ -445,32 +353,15 @@
       <div class="card p-4">
         <h2 class="text-lg font-semibold mb-3">Hound Builder</h2>
         <div class="grid sm:grid-cols-2 gap-3">
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Model</span>
-            <select id="hound-model" class="input">${optionHTML(HOUND_MODELS)}</select>
-          </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Core</span>
-            <select id="hound-core" class="input">${optionHTML(HOUND_CORES)}</select>
-          </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Bracket</span>
-            <select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select>
-          </label>
-          <label class="flex items-center gap-2 mt-6">
-            <input id="hound-gilded" type="checkbox" class="scale-125">
-            <span class="text-sm">Gilded (double les bonus de Bracket)</span>
-          </label>
-          <label class="flex flex-col gap-1">
-            <span class="text-xs uppercase tracking-wider">Stabilizer</span>
-            <select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select>
-          </label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="hound-model" class="input">${optionHTML(HOUND_MODELS)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="hound-core" class="input">${optionHTML(HOUND_CORES)}</select></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select></label>
+          <label class="flex items-center gap-2 mt-6"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
+          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
         </div>
-
         <div id="hound-out" class="mt-4"></div>
       </div>
     `;
-
     const out = $("#hound-out");
     const upd = () => {
       const m = HOUND_MODELS[$("#hound-model").value|0];
@@ -500,13 +391,10 @@
     upd();
   }
 
-  /* ===========================
-   * Mode (onglets en haut de page)
-   * =========================== */
+  /* -------------- Onglets mode (créés si absents) -------------- */
   function ensureModeTabs(){
     let host = $("#mode-tabs");
     if (!host){
-      // on crée un petit bandeau d’onglets si absent
       const wrap = document.createElement("div");
       wrap.id = "mode-tabs";
       wrap.className = "max-w-6xl mx-auto px-6 mb-4";
@@ -518,26 +406,20 @@
         </div>
       `;
       const nav = $("#site-nav");
-      if (nav && nav.parentNode){
-        nav.parentNode.insertBefore(wrap, nav.nextSibling);
-      } else {
-        document.body.insertBefore(wrap, document.body.firstChild);
-      }
+      if (nav && nav.parentNode) nav.parentNode.insertBefore(wrap, nav.nextSibling);
+      else document.body.insertBefore(wrap, document.body.firstChild);
       host = wrap;
     }
     return host;
   }
-
   function applyMode(mode){
-    const tabs = ensureModeTabs().querySelectorAll("[data-mode]");
-    tabs.forEach(btn => {
+    const host = ensureModeTabs();
+    host.querySelectorAll("[data-mode]").forEach(btn => {
       btn.classList.toggle("gold", btn.dataset.mode === mode);
       btn.classList.toggle("badge", true);
     });
-
     const search = $("#search");
     const picker = $("#picker");
-
     if (mode === "all"){
       if (search) search.parentElement.style.display = "";
       if (picker) picker.parentElement.style.display = "";
@@ -545,16 +427,12 @@
       if (search) search.parentElement.style.display = "none";
       if (picker) picker.parentElement.style.display = "none";
     }
-
     if (mode === "moa")   renderMOABuilder();
     if (mode === "hound") renderHoundBuilder();
   }
 
-  /* ===========
-   * Chargement
-   * =========== */
+  /* -------------- Chargement data -------------- */
   async function loadData(){
-    // 1) Public Export (priorité)
     try{
       const r = await fetch(EXPORT_URL, { cache: "no-store" });
       if (r.ok) {
@@ -563,48 +441,27 @@
         if (list.length) return { list, source: "export" };
       }
     }catch{}
-
-    // 2) Fallback LUA
     const r2 = await fetch(FALLBACK_URL, { cache: "no-store" });
     const raw2 = await r2.json();
     return { list: normalizeFromLua(raw2), source: "lua" };
   }
 
-  /* =====
-   * Boot
-   * ===== */
+  /* -------------- Boot -------------- */
   (async function boot(){
     const status = $("#status");
     try{
       status.textContent = "Chargement des companions…";
 
-      // charge export & LUA (pour Attacks map)
+      // charge export & LUA pour fusionner Attacks
       const [exportRes, luaRes] = await Promise.allSettled([
-        (async () => {
-          try {
-            const r = await fetch(EXPORT_URL, { cache:"no-store" });
-            if (!r.ok) throw 0;
-            const raw = await r.json();
-            return normalizeFromExport(raw);
-          } catch { return []; }
-        })(),
-        (async () => {
-          try {
-            const r = await fetch(FALLBACK_URL, { cache:"no-store" });
-            if (!r.ok) throw 0;
-            const raw = await r.json();
-            return normalizeFromLua(raw);
-          } catch { return []; }
-        })()
+        (async () => { try { const r=await fetch(EXPORT_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
+        (async () => { try { const r=await fetch(FALLBACK_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
       ]);
-
-      const listFromExport = exportRes.status === "fulfilled" ? exportRes.value : [];
-      const listFromLua    = luaRes.status    === "fulfilled" ? luaRes.value    : [];
-
+      const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
+      const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
       const list = (listFromExport.length ? listFromExport : listFromLua).slice();
       const source = listFromExport.length ? "export" : "lua";
 
-      // fusion Attacks depuis LUA si possible
       if (list.length && listFromLua.length){
         const atkMap = buildAttacksMapFromLua(listFromLua);
         injectAttacks(list, atkMap);
@@ -629,7 +486,6 @@
       };
       setStatus(list.length);
 
-      // interactions “Companions”
       if ($("#picker")){
         $("#picker").addEventListener("change", (e)=>{
           const idx = parseInt(e.target.value, 10);
@@ -638,7 +494,6 @@
           if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
         });
       }
-
       if ($("#search")){
         $("#search").addEventListener("input", ()=>{
           const q = norm($("#search").value).toLowerCase();
@@ -649,15 +504,12 @@
         });
       }
 
-      // onglets (créés si absents)
+      // Onglets
       const tabs = ensureModeTabs();
       tabs.querySelector('[data-mode="all"]').addEventListener("click", ()=>applyMode("all"));
       tabs.querySelector('[data-mode="moa"]').addEventListener("click", ()=>applyMode("moa"));
       tabs.querySelector('[data-mode="hound"]').addEventListener("click", ()=>applyMode("hound"));
-
-      // mode par défaut = Companions
       applyMode("all");
-
     } catch(e){
       console.error("[companions] load error:", e);
       status.textContent = "Erreur de chargement des companions.";
