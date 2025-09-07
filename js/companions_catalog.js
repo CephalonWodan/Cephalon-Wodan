@@ -14,16 +14,17 @@
   const FALLBACK_LUA_URL     = "data/companions.json";         // attaques/titres LUA (merge)
 
   // Images (priorité: Wiki -> CDN -> Local)
+  const localImg     = (name) => `img/companions/${encodeURIComponent(name)}`;
   const wikiFilePath = (name) => `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(name)}`;
   const cdnImg       = (name) => `https://cdn.warframestat.us/img/${encodeURIComponent(name)}`;
-  const localImg     = (name) => `img/companions/${encodeURIComponent(name)}`;
+  
 
   // Corrections manuelles (si nom d'image non standard)
   const MANUAL_IMG = {
     "Venari": "Venari.png",
     "Venari Prime": "VenariPrime.png",
     "Helminth Charger": "HelminthCharger.png",
-    "Nautilus": "Nautilus.png",
+    "Nautilus": "Nautilus",
     "Nautilus Prime": "NautilusPrime.png",
   };
 
