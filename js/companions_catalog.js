@@ -8,10 +8,6 @@
   const FALLBACK_URL = "data/companions.json";         // ton ancien JSON (LUA)
   // URL helpers (priorité demandée : Wiki /images -> Wiki FilePath -> CDN -> Local)
   const WIKI_IMG_IMAGES  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
-  const WIKI_IMG_FILEPATH= (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
-  const CDN_IMG          = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
-  const LOCAL_IMG        = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
-
   /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
