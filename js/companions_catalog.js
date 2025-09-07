@@ -1,8 +1,8 @@
 // js/companions_catalog.js
 // Page "Companions" avec onglet "MOA & Hound" (parts).
 // - Stats Companions depuis ExportSentinels + fusion Attaques depuis ton JSON LUA
-// - Hound parts (models/cores/brackets/stabilizers) intégrés depuis ton copié-collé wiki
-// - MOA parts autodétectés depuis ExportWeapons
+// - Hound parts (models/cores/brackets/stabilizers) fixées
+// - MOA parts (models/cores/gyros/brackets) fixées depuis le texte wiki collé
 // - Images: priorité wiki (Special:FilePath) -> CDN -> local, d'abord NomSansEspace.png puis Nom_Avec_Underscore.png
 
 (() => {
@@ -10,14 +10,14 @@
 
   /* ----------------- Config ----------------- */
   const EXPORT_SENTINELS_URL = "data/ExportSentinels_en.json"; // stats Companions
-  const EXPORT_WEAPONS_URL   = "data/ExportWeapons_en.json";   // pièces MOA/Hound (MOA auto)
-  const FALLBACK_LUA_URL     = "data/companions.json";         // attaques/titres LUA
+  const EXPORT_WEAPONS_URL   = "data/ExportWeapons_en.json";   // (pas obligatoire ici, on garde pour futur)
+  const FALLBACK_LUA_URL     = "data/companions.json";         // attaques/titres LUA (merge)
 
   // Images (priorité: Wiki -> CDN -> Local)
-  const localImg     = (name) => `img/companions/${encodeURIComponent(name)}`;
   const wikiFilePath = (name) => `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(name)}`;
   const cdnImg       = (name) => `https://cdn.warframestat.us/img/${encodeURIComponent(name)}`;
-  
+  const localImg     = (name) => `img/companions/${encodeURIComponent(name)}`;
+
   // Corrections manuelles (si nom d'image non standard)
   const MANUAL_IMG = {
     "Venari": "Venari.png",
@@ -69,7 +69,7 @@
 
     const placeholder = 'data:image/svg+xml;utf8,'+encodeURIComponent(
       `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+        <defs><linearGradient id="g" x1="0" y="0" x2="0" y2="1">
           <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
         </linearGradient></defs>
         <rect width="600" height="360" fill="url(#g)"/>
@@ -229,7 +229,7 @@
     `;
   }
 
-  /* ----------------- HOUND: données fixes depuis ton copié-collé ----------------- */
+  /* ----------------- HOUND: données fixes (de ton texte) ----------------- */
   function houndDataFromWiki(){
     return {
       Models: [
@@ -256,30 +256,43 @@
     };
   }
 
-  /* ----------------- MOA/Hound: extraction MOA auto depuis ExportWeapons ----------------- */
-  function parseModularPartsForMoa(weaponsJson){
-    const list = Array.isArray(weaponsJson?.ExportWeapons) ? weaponsJson.ExportWeapons : [];
-    const moa = { Heads: [], Cores: [], Gyros: [], Brackets: [], Weapons: [] };
-
-    for (const it of list){
-      const uname = String(it.uniqueName || "");
-      const name  = String(it.name || "");
-      if (!uname) continue;
-
-      if (uname.includes("/MoaPetParts/")) {
-        if (/Head/i.test(uname))      moa.Heads.push(name);
-        else if (/Core/i.test(uname)) moa.Cores.push(name);
-        else if (/Gyro/i.test(uname)) moa.Gyros.push(name);
-        else if (/Bracket/i.test(uname)) moa.Brackets.push(name);
-        continue;
-      }
-    }
-
-    // Dédup + tri
-    for (const k of Object.keys(moa)) {
-      moa[k] = Array.from(new Set(moa[k])).sort((a,b)=>a.localeCompare(b));
-    }
-    return moa;
+  /* ----------------- MOA: données fixes (de ton texte) ----------------- */
+  function moaDataFromWiki(){
+    return {
+      // Modèles = têtes (2 precepts + coût + rang)
+      Models: [
+        { Name: "Para",   Precepts: ["Whiplash Mine", "Anti-Grav Grenade"], CostStanding: 500,  Rank: "Rank 0: Neutral" },
+        { Name: "Lambeo", Precepts: ["Stasis Field",  "Shockwave Actuators"], CostStanding: 1000, Rank: "Rank 1: Outworlder" },
+        { Name: "Oloro",  Precepts: ["Tractor Beam",  "Security Override"],   CostStanding: 2000, Rank: "Rank 2: Rapscallion" },
+        { Name: "Nychus", Precepts: ["Blast Shield",  "Hard Engage"],         CostStanding: 3000, Rank: "Rank 3: Doer" },
+      ],
+      // Cores (pourcentages + coût + bonus don)
+      Cores: [
+        { Name: "Drex",   HealthPct: +10, ShieldPct: +15, ArmorPct: +5,  CostStanding: 500,  DonationStanding: 300 },
+        { Name: "Krisys", HealthPct: +10, ShieldPct: +5,  ArmorPct: +15, CostStanding: 1000, DonationStanding: 300 },
+        { Name: "Alcrom", HealthPct: +10, ShieldPct: +10, ArmorPct: +10, CostStanding: 2000, DonationStanding: 300 },
+        { Name: "Lehan",  HealthPct: +15, ShieldPct: +0,  ArmorPct: +15, CostStanding: 4000, DonationStanding: 300 },
+      ],
+      // Gyros
+      Gyros: [
+        { Name: "Trux",   HealthPct: +5,  ShieldPct: -5,  ArmorPct: +10, CostStanding: 500,  DonationStanding: 300 },
+        { Name: "Harpen", HealthPct: +5,  ShieldPct: +10, ArmorPct: -5,  CostStanding: 1000, DonationStanding: 300 },
+        { Name: "Aegron", HealthPct: -5,  ShieldPct: +5,  ArmorPct: +10, CostStanding: 2000, DonationStanding: 300 },
+        { Name: "Hextra", HealthPct: +10, ShieldPct: +5,  ArmorPct: -5,  CostStanding: 3000, DonationStanding: 300 },
+        { Name: "Munit",  HealthPct: +10, ShieldPct: -5,  ArmorPct: +5,  CostStanding: 3000, DonationStanding: 300 },
+        { Name: "Atheca", HealthPct: +20, ShieldPct: -5,  ArmorPct: -5,  CostStanding: 4000, DonationStanding: 300 },
+        { Name: "Phazor", HealthPct: -5,  ShieldPct: +10, ArmorPct: +5,  CostStanding: 4000, DonationStanding: 300 },
+        { Name: "Tyli",   HealthPct: +10, ShieldPct: -10, ArmorPct: +10, CostStanding: 4000, DonationStanding: 300 },
+      ],
+      // Brackets (jambes) + polarités supplémentaires
+      Brackets: [
+        { Name: "Drimper Bracket", ExtraPolarity: "None",    CostStanding: 500,  Rank: "Rank 0: Neutral",   Desc: "A basic bracket with no polarized Mod slots." },
+        { Name: "Tian Bracket",    ExtraPolarity: "Vazarin", CostStanding: 500,  Rank: "Rank 0: Neutral",   Desc: "Armoured bracket featuring a Vazarin polarity slot." },
+        { Name: "Jonsin Bracket",  ExtraPolarity: "Madurai", CostStanding: 1000, Rank: "Rank 1: Outworlder",Desc: "Flexible bracket featuring a Madurai polarity slot." },
+        { Name: "Gauth Bracket",   ExtraPolarity: "Naramon", CostStanding: 2000, Rank: "Rank 2: Rapscallion",Desc: "Armoured bracket featuring a Naramon polarity slot." },
+        { Name: "Hona Bracket",    ExtraPolarity: "Naramon", CostStanding: 3000, Rank: "Rank 3: Doer",      Desc: "Armoured bracket featuring a Naramon polarity slot." },
+      ],
+    };
   }
 
   /* ----------------- UI: petites cartes pour parts ----------------- */
@@ -323,6 +336,24 @@
     return renderPill(s.Name, sub);
   }
 
+  // MOA pills
+  function renderMoaModelCard(m){
+    const sub = `Precepts: ${m.Precepts.join(" + ")} · ${m.CostStanding} Standing · ${m.Rank}`;
+    return renderPill(m.Name, sub);
+  }
+  function renderMoaCoreCard(c){
+    const sub = `${c.HealthPct>0?'+':''}${c.HealthPct}% HP · ${c.ShieldPct>0?'+':''}${c.ShieldPct}% Shield · ${c.ArmorPct>0?'+':''}${c.ArmorPct}% Armor · ${c.CostStanding} Standing`;
+    return renderPill(c.Name, sub);
+  }
+  function renderMoaGyroCard(g){
+    const sub = `${g.HealthPct>0?'+':''}${g.HealthPct}% HP · ${g.ShieldPct>0?'+':''}${g.ShieldPct}% Shield · ${g.ArmorPct>0?'+':''}${g.ArmorPct}% Armor · ${g.CostStanding} Standing`;
+    return renderPill(g.Name, sub);
+  }
+  function renderMoaBracketCard(b){
+    const sub = `${b.ExtraPolarity === "None" ? "No extra polarity" : `Extra polarity: ${b.ExtraPolarity}`} · ${b.CostStanding} Standing · ${b.Rank}`;
+    return renderPill(b.Name, sub);
+  }
+
   function groupBlock(title, pillsHtml){
     if (!pillsHtml || !pillsHtml.length) return "";
     return `
@@ -335,13 +366,13 @@
   }
 
   function renderModularPanel(moa, hnd){
-    // MOA pills
-    const moaHeads = moa.Heads.map(n => renderPill(n));
-    const moaCores = moa.Cores.map(n => renderPill(n));
-    const moaGyros = moa.Gyros.map(n => renderPill(n));
-    const moaBrkts = moa.Brackets.map(n => renderPill(n));
+    // MOA sections
+    const mModels = moa.Models.map(renderMoaModelCard);
+    const mCores  = moa.Cores.map(renderMoaCoreCard);
+    const mGyros  = moa.Gyros.map(renderMoaGyroCard);
+    const mBrkts  = moa.Brackets.map(renderMoaBracketCard);
 
-    // Hound pills (données fixes)
+    // Hound sections
     const hModels = hnd.Models.map(renderHoundModelCard);
     const hCores  = hnd.Cores.map(renderHoundCoreCard);
     const hBrkts  = hnd.Brackets.map(renderHoundBracketCard);
@@ -353,10 +384,10 @@
         <section>
           <h3 class="text-lg font-semibold mb-3">MOA (Companion)</h3>
           <div class="flex flex-col gap-5">
-            ${groupBlock("Heads / Models", moaHeads)}
-            ${groupBlock("Cores", moaCores)}
-            ${groupBlock("Gyros", moaGyros)}
-            ${groupBlock("Brackets", moaBrkts)}
+            ${groupBlock("Models (Heads)", mModels)}
+            ${groupBlock("Cores", mCores)}
+            ${groupBlock("Gyros", mGyros)}
+            ${groupBlock("Brackets (Legs)", mBrkts)}
           </div>
         </section>
 
@@ -379,7 +410,7 @@
     const card = $("#card");
     if (!card) return;
 
-    // Barre (tabs)
+    // Tabs
     card.innerHTML = `
       <div class="flex flex-wrap gap-2 mb-4">
         <button class="tab gold" data-tab="comp">Companions</button>
@@ -391,7 +422,6 @@
     const tabContent = $("#tab-content");
 
     function showCompanionList(list) {
-      // sélecteur + fiche
       const html = `
         <div class="flex flex-col gap-4">
           <div class="relative max-w-[420px]">
@@ -485,16 +515,16 @@
       status.textContent = "Chargement des companions…";
 
       // 1) Export officiels
-      const [rComp, rWeap] = await Promise.all([
+      const [rComp/*, rWeap*/] = await Promise.all([
         fetch(EXPORT_SENTINELS_URL, { cache: "no-store" }),
-        fetch(EXPORT_WEAPONS_URL,   { cache: "no-store" }),
+        // fetch(EXPORT_WEAPONS_URL,   { cache: "no-store" }), // pas requis pour l’instant
       ]);
       const exportComp = rComp.ok ? await rComp.json() : { ExportSentinels: [] };
-      const exportWeap = rWeap.ok ? await rWeap.json() : { ExportWeapons: [] };
+      // const exportWeap = rWeap?.ok ? await rWeap.json() : { ExportWeapons: [] };
 
       let list = normalizeFromExport(exportComp);
 
-      // 2) Fallback LUA (pour attaques & corrections de desc)
+      // 2) Fallback LUA (pour attaques & descriptions manquantes)
       let luaList = [];
       try {
         const rLua = await fetch(FALLBACK_LUA_URL, { cache: "no-store" });
@@ -503,9 +533,9 @@
 
       mergeAttacks(list, luaList);
 
-      // 3) Parts
-      const moaParts   = parseModularPartsForMoa(exportWeap);
-      const houndParts = houndDataFromWiki(); // depuis ton copié-collé
+      // 3) Parts (MOA/Hound) depuis tes textes wiki
+      const moaParts   = moaDataFromWiki();
+      const houndParts = houndDataFromWiki();
 
       // 4) Rendu
       renderPage({
