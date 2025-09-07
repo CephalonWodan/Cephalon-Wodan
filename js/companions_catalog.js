@@ -26,6 +26,7 @@
     "Helminth Charger": "HelminthCharger",
     "Nautilus": "Nautilus",
     "Nautilus Prime": "NautilusPrime",
+    "Bhaira": "BhairaHound",
   };
 
   /* ----------------- Utils ----------------- */
