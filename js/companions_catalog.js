@@ -7,9 +7,11 @@
   const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
   const FALLBACK_URL = "data/companions.json";         // ton ancien JSON (LUA)
   // URL helpers (priorité demandée : Wiki -> CDN -> Local)
-  const WIKI_IMG  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
-  const CDN_IMG   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
-  const LOCAL_IMG = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
+  const WIKI_IMG = (file) => file ? https://wiki.warframe.com/images/${encodeURIComponent(file)} : ""; 
+    // Fallback #2: CDN WarframeStat si le même nom existe 
+    const CDN_IMG = (fileOrName) => fileOrName ? https://cdn.warframestat.us/img/${encodeURIComponent(fileOrName)} : ""; 
+    // Fallback #3: repo local (au cas où tu mets des PNG dans /img/companions/) 
+    const LOCAL_IMG = (fileOrName) => fileOrName ? img/companions/${encodeURIComponent(fileOrName)} : "";
 
   /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
