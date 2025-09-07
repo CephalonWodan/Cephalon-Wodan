@@ -2,15 +2,15 @@ name: Update Warframe Public Export JSONs
 
 on:
   schedule:
-    - cron: "0 */6 * * *"       # toutes les 6h (UTC)
-  workflow_dispatch:
+    - cron: "0 */6 * * *"   # toutes les 6h
+  workflow_dispatch:        # lancement manuel
 
 permissions:
   contents: write
 
 concurrency:
   group: warframe-exports
-  cancel-in-progress: false      # passe à true si tu veux annuler un run en cours
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -36,8 +36,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: main                 # 🔒 épingle explicitement main
 
       - uses: actions/setup-python@v5
         with:
@@ -46,30 +44,42 @@ jobs:
       - name: Install deps
         run: pip install -q requests
 
-      - name: Fetch latest hashed URLs & download JSONs
+      - name: Fetch latest hashed URLs & download JSONs (origin index only)
         run: |
           python - <<'PY'
           import os, re, lzma, json, time, pathlib, sys
           import requests
 
+          def get(url, timeout=45, tries=3):
+            last = None
+            for i in range(tries):
+              try:
+                r = requests.get(url, timeout=timeout, headers={"User-Agent":"github-actions/warframe-export"})
+                r.raise_for_status()
+                return r
+              except Exception as e:
+                last = e
+                print(f"[retry {i+1}/{tries}] {url} -> {e}")
+                time.sleep(1+i)
+            raise last
+
           LANG = os.environ.get("LANG_CODE", "en").strip()
-          ORIGIN = f"https://origin.warframe.com/PublicExport/index_{LANG}.txt.lzma"
+          ORIGIN_INDEX = f"https://origin.warframe.com/PublicExport/index_{LANG}.txt.lzma"
           CONTENT = "http://content.warframe.com/PublicExport/Manifest/"
 
           targets = [t.strip() for t in os.environ.get("EXPORTS","").splitlines() if t.strip()]
-          out_dir = pathlib.Path("data")
-          out_dir.mkdir(parents=True, exist_ok=True)
+          out_dir = pathlib.Path("data"); out_dir.mkdir(parents=True, exist_ok=True)
 
-          print(f"[*] Téléchargement index: {ORIGIN}")
+          print(f"[*] Index (origin): {ORIGIN_INDEX}")
           try:
-            idx_lz = requests.get(ORIGIN, timeout=45)
-            idx_lz.raise_for_status()
+            idx_lz = get(ORIGIN_INDEX, timeout=60, tries=3)
             idx_txt = lzma.decompress(idx_lz.content).decode("utf-8", errors="ignore")
+            print("[✓] Index OK")
           except Exception as e:
-            print(f"[!] Échec chargement index: {e}")
+            print(f"[×] Impossible de récupérer l'index origin: {e}")
             sys.exit(1)
 
-          used = {}
+          used, ok = {}, 0
           missing = []
 
           for wanted in targets:
@@ -82,30 +92,28 @@ jobs:
               m = re.search(rf"{re.escape(base)}![^\s]+", idx_txt)
               if not m:
                 print(f"[!] Introuvable dans l'index: {base}")
-                missing.append(base)
-                continue
+                missing.append(base); continue
               hashed = m.group(0).split("!",1)[1]
               url = CONTENT + base + "!" + hashed
               out_name = base
 
             print(f"[*] {out_name} -> {url}")
             try:
-              r = requests.get(url, timeout=120)
-              r.raise_for_status()
-              # Écrit tel quel (formatage identique à la source)
+              r = get(url, timeout=120, tries=3)
               (out_dir / out_name).write_text(r.text, encoding="utf-8")
               used[out_name] = {"url": url, "fetched_at": int(time.time())}
+              ok += 1
             except Exception as e:
-              print(f"[!] Erreur téléchargement {out_name}: {e}")
+              print(f"[!] Erreur {out_name}: {e}")
 
-          (out_dir / "_export_sources.json").write_text(
-            json.dumps(used, indent=2, ensure_ascii=False), encoding="utf-8"
-          )
+          (out_dir / "_export_sources.json").write_text(json.dumps(used, indent=2, ensure_ascii=False), encoding="utf-8")
 
           if missing:
-            print(f"[!] Manquants ({len(missing)}): " + ", ".join(missing))
-          else:
-            print("[✓] Tous les exports demandés ont été traités.")
+            print(f"[i] Non trouvés ({len(missing)}): " + ", ".join(missing))
+          if ok == 0:
+            print("[×] Aucun export mis à jour.")
+            sys.exit(2)
+          print(f"[✓] Exports mis à jour: {ok}")
           PY
 
       - name: Commit if changed
@@ -118,4 +126,3 @@ jobs:
             git push
           else
             echo "Aucun changement."
-          fi
