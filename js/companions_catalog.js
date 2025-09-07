@@ -33,9 +33,9 @@
     "Bhaira Hound": "BhairaHound.png",
     "Dorma Hound":  "DormaHound.png",
     "Hec Hound":    "HecHound.png",
-    "Frak":   "Frak.png",
-    "Hinta": "Hinta.png",
-    "Wanz":  "Wanz.png",
+    "Frak Stabilizer":   "Frak.png",
+    "Hinta Stabilizer": "Hinta.png",
+    "Wanz Stabilizer":  "Wanz.png",
   };
 
   /* ----------------- Utils ----------------- */
