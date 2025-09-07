@@ -2,24 +2,21 @@ name: Update Warframe Public Export JSONs
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # toutes les 6h
-  workflow_dispatch:        # lancement manuel
+    - cron: "0 */6 * * *"       # toutes les 6h (UTC)
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
   group: warframe-exports
-  cancel-in-progress: false
+  cancel-in-progress: false      # passe à true si tu veux annuler un run en cours
 
 jobs:
   update:
     runs-on: ubuntu-latest
     env:
       LANG_CODE: en
-      # ❗️Liste des exports à suivre. Tu peux mettre
-      # soit juste le nom "ExportXxx_en.json"
-      # soit le nom + hash "ExportXxx_en.json!00_xxx"
       EXPORTS: |
         ExportCustoms_en.json
         ExportDrones_en.json
@@ -39,6 +36,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main                 # 🔒 épingle explicitement main
 
       - uses: actions/setup-python@v5
         with:
@@ -50,7 +49,7 @@ jobs:
       - name: Fetch latest hashed URLs & download JSONs
         run: |
           python - <<'PY'
-          import os, re, lzma, json, time, pathlib, sys, urllib.parse
+          import os, re, lzma, json, time, pathlib, sys
           import requests
 
           LANG = os.environ.get("LANG_CODE", "en").strip()
@@ -70,18 +69,16 @@ jobs:
             print(f"[!] Échec chargement index: {e}")
             sys.exit(1)
 
-          used = {}     # pour garder trace des URLs/hash utilisés
-          missing = []  # entrées non trouvées dans l'index (si non hashées)
+          used = {}
+          missing = []
 
           for wanted in targets:
-            # Si l'entrée contient déjà "!", on l'utilise telle quelle.
             if "!" in wanted:
               base, hashed = wanted.split("!", 1)
               url = CONTENT + wanted
               out_name = base
             else:
               base = wanted
-              # on cherche "ExportXxx_en.json!..." dans l'index
               m = re.search(rf"{re.escape(base)}![^\s]+", idx_txt)
               if not m:
                 print(f"[!] Introuvable dans l'index: {base}")
@@ -94,19 +91,13 @@ jobs:
             print(f"[*] {out_name} -> {url}")
             try:
               r = requests.get(url, timeout=120)
-              if r.status_code != 200:
-                print(f"[!] HTTP {r.status_code} pour {out_name}")
-                continue
-              # on sauvegarde SANS le hash dans /data
+              r.raise_for_status()
+              # Écrit tel quel (formatage identique à la source)
               (out_dir / out_name).write_text(r.text, encoding="utf-8")
-              used[out_name] = {
-                "url": url,
-                "fetched_at": int(time.time())
-              }
+              used[out_name] = {"url": url, "fetched_at": int(time.time())}
             except Exception as e:
               print(f"[!] Erreur téléchargement {out_name}: {e}")
 
-          # journal des sources/hash
           (out_dir / "_export_sources.json").write_text(
             json.dumps(used, indent=2, ensure_ascii=False), encoding="utf-8"
           )
