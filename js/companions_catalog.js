@@ -17,7 +17,7 @@
   // Corrections manuelles -> permet d’éviter des essais inutiles
   const MANUAL_IMG = {
     "Venari": "Venari.png",
-    "Venari Prime": "VenariPrime.png",
+    "Venari Prime": "Venari.png",
     "Helminth Charger": "HelminthCharger.png",
     "Nautilus": "Nautilus.png",
     "Nautilus Prime": "NautilusPrime.png",
