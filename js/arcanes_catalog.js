@@ -107,7 +107,7 @@ const STATE = {
 const RARITY_COLORS = {
   Legendary: "#d4af37",
   Rare: "#f39c12",
-  Uncommon: "##71c994",
+  Uncommon: "#71c994",
   Common: "#7dd3fc",
 };
 
