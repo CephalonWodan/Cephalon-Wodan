@@ -1,14 +1,16 @@
 // js/companions_catalog.js
-// Page "Companions" avec onglet "MOA & Hound" (parts), fusion d'attaques LUA + stats Export,
-// et images: priorité wiki officiel -> CDN -> local, en commençant par NomSansEspace.png.
-// Aucune dépendance HTML supplémentaire: tout est rendu dans #card.
+// Page "Companions" avec onglet "MOA & Hound" (parts).
+// - Stats Companions depuis ExportSentinels + fusion Attaques depuis ton JSON LUA
+// - Hound parts (models/cores/brackets/stabilizers) intégrés depuis ton copié-collé wiki
+// - MOA parts autodétectés depuis ExportWeapons
+// - Images: priorité wiki (Special:FilePath) -> CDN -> local, d'abord NomSansEspace.png puis Nom_Avec_Underscore.png
 
 (() => {
   "use strict";
 
   /* ----------------- Config ----------------- */
   const EXPORT_SENTINELS_URL = "data/ExportSentinels_en.json"; // stats Companions
-  const EXPORT_WEAPONS_URL   = "data/ExportWeapons_en.json";   // pièces MOA/Hound
+  const EXPORT_WEAPONS_URL   = "data/ExportWeapons_en.json";   // pièces MOA/Hound (MOA auto)
   const FALLBACK_LUA_URL     = "data/companions.json";         // attaques/titres LUA
 
   // Images (priorité: Wiki -> CDN -> Local)
@@ -34,7 +36,6 @@
   const pct = (v) => (v === null || v === undefined) ? "—" : `${Math.round(v*1000)/10}%`;
   const cleanLF = (s) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n");
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
-
   const coalesce = (obj, keys, def=null) => { for (const k of keys) if (obj && obj[k] != null) return obj[k]; return def; };
 
   function detectType(uniqueName) {
@@ -54,7 +55,7 @@
     const baseUS = (manual || name).replace(/\s+/g, "_");     // Sly Vulpaphyla -> Sly_Vulpaphyla
     const list = [];
 
-    // IMPORTANT: on essaie d'abord NomSansEspace (moins de 404), puis underscores
+    // IMPORTANT: moins de 404 si on commence par NomSansEspace
     list.push(wikiFilePath(`${baseNS}.png`));
     list.push(wikiFilePath(`${baseUS}.png`));
     list.push(cdnImg(`${baseNS}.png`));
@@ -118,7 +119,6 @@
     let arr;
     if (Array.isArray(coll)) arr = coll.slice();
     else arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
-
     return arr.sort(byName);
   }
 
@@ -229,101 +229,145 @@
     `;
   }
 
-  /* ----------------- Parsing des pièces MOA/Hound (ExportWeapons) ----------------- */
-  function parseModularParts(weaponsJson){
-    const list = Array.isArray(weaponsJson?.ExportWeapons) ? weaponsJson.ExportWeapons : [];
+  /* ----------------- HOUND: données fixes depuis ton copié-collé ----------------- */
+  function houndDataFromWiki(){
+    return {
+      Models: [
+        { Name: "Bhaira", Weapon: "Lacerten", Precept: "Null Audit" },
+        { Name: "Dorma",  Weapon: "Batoten",  Precept: "Repo Audit" },
+        { Name: "Hec",    Weapon: "Akaten",   Precept: "Equilibrium Audit" },
+      ],
+      Cores: [
+        { Name: "Adlet", Health: 350, Shields: 450, Armor: 350 },
+        { Name: "Garmr", Health: 350, Shields: 350, Armor: 450 },
+        { Name: "Raiju", Health: 450, Shields: 350, Armor: 350 },
+      ],
+      Brackets: [
+        { Name: "Cela", HealthPct: +10, ShieldsPct: +15, ArmorPct: -5,  Precept: "Reflex Denial" },
+        { Name: "Urga", HealthPct: +15, ShieldsPct: -5,  ArmorPct: +10, Precept: "Diversified Denial" },
+        { Name: "Zubb", HealthPct: -5,  ShieldsPct: +10, ArmorPct: +15, Precept: "Evasive Denial" },
+      ],
+      Stabilizers: [
+        { Name: "Frak",  School: "Vazarin",  Precept: "Focused Prospectus" },
+        { Name: "Hinta", School: "Madurai",  Precept: "Synergized Prospectus" },
+        { Name: "Wanz",  School: "Naramon",  Precept: "Aerial Prospectus" },
+      ],
+      Weapons: ["Lacerten", "Batoten", "Akaten"],
+    };
+  }
 
+  /* ----------------- MOA/Hound: extraction MOA auto depuis ExportWeapons ----------------- */
+  function parseModularPartsForMoa(weaponsJson){
+    const list = Array.isArray(weaponsJson?.ExportWeapons) ? weaponsJson.ExportWeapons : [];
     const moa = { Heads: [], Cores: [], Gyros: [], Brackets: [], Weapons: [] };
-    const hnd = { Heads: [], Cores: [], Tails: [],  Weapons: [] };
 
     for (const it of list){
       const uname = String(it.uniqueName || "");
       const name  = String(it.name || "");
       if (!uname) continue;
 
-      // MOA parts
       if (uname.includes("/MoaPetParts/")) {
         if (/Head/i.test(uname))      moa.Heads.push(name);
         else if (/Core/i.test(uname)) moa.Cores.push(name);
         else if (/Gyro/i.test(uname)) moa.Gyros.push(name);
         else if (/Bracket/i.test(uname)) moa.Brackets.push(name);
-        // (les armes de MOA sont des armes classiques, on ne les inclut pas ici par défaut)
         continue;
-      }
-
-      // Hound parts (Zanuka)
-      if (uname.includes("/ZanukaPetParts/")) {
-        if (/Head/i.test(uname))           hnd.Heads.push(name);
-        else if (/(Torso|Body|Core)/i.test(uname)) hnd.Cores.push(name);
-        else if (/Tail/i.test(uname))      hnd.Tails.push(name);
-        continue;
-      }
-
-      // Hound weapons (robustes: noms connus + fallback sur motif)
-      if (/Hound/i.test(name) || /Zanuka/i.test(uname)) {
-        if (/Weapon/i.test(uname)) hnd.Weapons.push(name);
-      } else {
-        // Noms historiques (courants)
-        if (["Lacerten","Batoten","Udi"].includes(name)) hnd.Weapons.push(name);
       }
     }
 
     // Dédup + tri
-    for (const grp of [moa, hnd]) {
-      for (const k of Object.keys(grp)) {
-        grp[k] = Array.from(new Set(grp[k])).sort((a,b)=>a.localeCompare(b));
-      }
+    for (const k of Object.keys(moa)) {
+      moa[k] = Array.from(new Set(moa[k])).sort((a,b)=>a.localeCompare(b));
     }
-
-    return { moa, hnd };
+    return moa;
   }
 
-  function renderPartPill(name){
+  /* ----------------- UI: petites cartes pour parts ----------------- */
+  function partThumb(name){
     const img = buildImageCandidatesFromName(name);
     return `
+      <img
+        src="${img.list[0]}"
+        data-srcs="${img.list.join("|")}"
+        data-i="0"
+        alt="${escapeHtml(name)}"
+        class="w-10 h-10 object-contain rounded"
+        onerror="__cycleImg(this, '${img.placeholder}')">`;
+  }
+
+  function renderPill(name, subtitle=""){
+    return `
       <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--panel-2)] border">
-        <img
-          src="${img.list[0]}"
-          data-srcs="${img.list.join("|")}"
-          data-i="0"
-          alt="${escapeHtml(name)}"
-          class="w-8 h-8 object-contain rounded"
-          onerror="__cycleImg(this, '${img.placeholder}')">
-        <span class="text-sm">${escapeHtml(name)}</span>
+        ${partThumb(name)}
+        <div class="leading-tight">
+          <div class="text-sm">${escapeHtml(name)}</div>
+          ${subtitle ? `<div class="text-[11px] text-[var(--muted)]">${escapeHtml(subtitle)}</div>` : ""}
+        </div>
       </div>`;
   }
 
-  function groupBlock(title, items){
-    if (!items || items.length === 0) return "";
+  function renderHoundModelCard(m){
+    const sub = `Precept: ${m.Precept} · Weapon: ${m.Weapon}`;
+    return renderPill(m.Name, sub);
+  }
+  function renderHoundCoreCard(c){
+    const sub = `Base: ${c.Health} HP · ${c.Shields} Shield · ${c.Armor} Armor`;
+    return renderPill(c.Name, sub);
+  }
+  function renderHoundBracketCard(b){
+    const sub = `${b.HealthPct>0?'+':''}${b.HealthPct}% HP · ${b.ShieldsPct>0?'+':''}${b.ShieldsPct}% Shield · ${b.ArmorPct>0?'+':''}${b.ArmorPct}% Armor · Precept: ${b.Precept}`;
+    return renderPill(b.Name, sub);
+  }
+  function renderHoundStabCard(s){
+    const sub = `${s.School} · Precept: ${s.Precept}`;
+    return renderPill(s.Name, sub);
+  }
+
+  function groupBlock(title, pillsHtml){
+    if (!pillsHtml || !pillsHtml.length) return "";
     return `
       <div>
         <div class="text-[11px] tracking-wide uppercase mb-2 text-[var(--muted)]">${escapeHtml(title)}</div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-          ${items.map(renderPartPill).join("")}
+          ${pillsHtml.join("")}
         </div>
       </div>`;
   }
 
   function renderModularPanel(moa, hnd){
+    // MOA pills
+    const moaHeads = moa.Heads.map(n => renderPill(n));
+    const moaCores = moa.Cores.map(n => renderPill(n));
+    const moaGyros = moa.Gyros.map(n => renderPill(n));
+    const moaBrkts = moa.Brackets.map(n => renderPill(n));
+
+    // Hound pills (données fixes)
+    const hModels = hnd.Models.map(renderHoundModelCard);
+    const hCores  = hnd.Cores.map(renderHoundCoreCard);
+    const hBrkts  = hnd.Brackets.map(renderHoundBracketCard);
+    const hStabs  = hnd.Stabilizers.map(renderHoundStabCard);
+    const hWeaps  = hnd.Weapons.map(n => renderPill(n, "Hound Weapon"));
+
     return `
       <div class="flex flex-col gap-8">
         <section>
           <h3 class="text-lg font-semibold mb-3">MOA (Companion)</h3>
           <div class="flex flex-col gap-5">
-            ${groupBlock("Heads / Models", moa.Heads)}
-            ${groupBlock("Cores", moa.Cores)}
-            ${groupBlock("Gyros", moa.Gyros)}
-            ${groupBlock("Brackets", moa.Brackets)}
+            ${groupBlock("Heads / Models", moaHeads)}
+            ${groupBlock("Cores", moaCores)}
+            ${groupBlock("Gyros", moaGyros)}
+            ${groupBlock("Brackets", moaBrkts)}
           </div>
         </section>
 
         <section>
           <h3 class="text-lg font-semibold mb-3">Hound (Companion)</h3>
           <div class="flex flex-col gap-5">
-            ${groupBlock("Heads", hnd.Heads)}
-            ${groupBlock("Cores", hnd.Cores)}
-            ${groupBlock("Tails", hnd.Tails)}
-            ${groupBlock("Weapons", hnd.Weapons)}
+            ${groupBlock("Models", hModels)}
+            ${groupBlock("Cores", hCores)}
+            ${groupBlock("Brackets", hBrkts)}
+            ${groupBlock("Stabilizers", hStabs)}
+            ${groupBlock("Weapons", hWeaps)}
           </div>
         </section>
       </div>
@@ -459,14 +503,15 @@
 
       mergeAttacks(list, luaList);
 
-      // 3) Parts MOA/Hound (depuis ExportWeapons)
-      const { moa, hnd } = parseModularParts(exportWeap);
+      // 3) Parts
+      const moaParts   = parseModularPartsForMoa(exportWeap);
+      const houndParts = houndDataFromWiki(); // depuis ton copié-collé
 
       // 4) Rendu
       renderPage({
         _listForUI: list,
-        _moaParts: moa,
-        _houndParts: hnd
+        _moaParts: moaParts,
+        _houndParts: houndParts
       });
 
       status.textContent = `Companions chargés : ${list.length} (Export officiel${luaList.length ? " + attaques LUA" : ""})`;
