@@ -1,146 +1,75 @@
 // js/companions_catalog.js
-// Mise en page type “Warframes” (index.html) + même code couleurs
+// Page "Companions" avec onglets : Compagnons standards / MOA modulaires / Hound modulaires
+// - Source 1 : ExportSentinels_en.json (Public Export) -> compagnons standards
+// - Source 2 : ExportWeapons_en.json (Public Export) -> pièces modulaires (MOA/Hound)
+// - Fallback enrichissement : companions.json (LUA wiki) -> injecte Attacks par Name
+// - Images : Wiki (Special:FilePath) -> CDN -> Local
+
 (() => {
   "use strict";
 
   /* ----------------- Config ----------------- */
-  const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
-  const FALLBACK_URL = "data/companions.json";         // ton ancien JSON (LUA)
-  // URL helpers (priorité demandée : Wiki /images -> Wiki FilePath -> CDN -> Local)
-  const WIKI_IMG_IMAGES  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
-  const WIKI_IMG_FILEPATH= (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
-  const CDN_IMG          = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
-  const LOCAL_IMG        = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
+  const EXPORT_SENTINELS_URL = "data/ExportSentinels_en.json";
+  const EXPORT_WEAPONS_URL   = "data/ExportWeapons_en.json";
+  const FALLBACK_LUA_URL     = "data/companions.json"; // pour Attacks + quelques images
 
-  /* ----------------- Utils ----------------- */
-  const $  = (s) => document.querySelector(s);
-  const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
-  const norm = (s) => String(s || "").trim();
-  const byName = (a,b) => (a.Name || a.name || "").localeCompare(b.Name || b.name || "");
-  const fmtNum = (v) => (v === null || v === undefined || v === "") ? "—" : String(v);
-  const pct = (v) => (v === null || v === undefined) ? "—" : `${Math.round(v*1000)/10}%`;
-  const cleanLF = (s) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n");
+  // Helpers images (priorité : Wiki -> CDN -> Local)
+  const wikiFilepath = (file) =>
+    file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
+  const wikiImages   = (file) =>
+    file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
+  const cdnImg = (file) =>
+    file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
+  const localImg = (file) =>
+    file ? `img/companions/${encodeURIComponent(file)}` : "";
 
-  function cleanDesc(s){
-    return escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
-  }
-
-  function coalesce(obj, keys, def=null) {
-    for (const k of keys) if (obj && obj[k] != null) return obj[k];
-    return def;
-  }
-
-  /* -------------- Détection type depuis le uniqueName (Public Export) -------------- */
-  function detectType(u) {
-    const p = String(u || "");
-    if (p.includes("/CatbrowPet/")) return "Kavat";
-    if (p.includes("/KubrowPet/"))  return "Kubrow";
-    if (p.includes("/CreaturePets/ArmoredInfestedCatbrow")) return "Vulpaphyla";
-    if (p.includes("/CreaturePets/PharaohPredator") || p.includes("/CreaturePets/VizierPredator") || p.includes("/CreaturePets/MedjayPredator")) return "Predasite";
-    if (p.includes("/SentinelPowersuits/")) return "Sentinel";
-    return "Companion";
-  }
-
-  /* -------------- Normalisation EXPORT (Public Export) -------------- */
-  function normalizeFromExport(raw){
-    const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
-    return arr
-      .map(x => {
-        const name = x.name || "";
-        const type = detectType(x.uniqueName);
-        const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-
-        return {
-          Name: name,
-          Type: type,
-          Category: category,
-          Description: x.description || "",
-          Armor:  x.armor ?? 0,
-          Health: x.health ?? 0,
-          Shield: x.shield ?? 0,
-          Energy: x.power ?? 0,
-          Attacks: null, // pas fourni par le Public Export
-          // on placera une propriété Image plus tard si le LUA en apporte
-        };
-      })
-      .sort(byName);
-  }
-
-  /* -------------- Normalisation ancien JSON (LUA -> wiki) -------------- */
-  function normalizeFromLua(raw){
-    let coll = raw && raw.Companions ? raw.Companions : raw;
-    if (!coll) return [];
-
-    let arr;
-    if (Array.isArray(coll)) {
-      arr = coll.slice();
-    } else {
-      arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
-    }
-    arr.sort(byName);
-    return arr;
-  }
-
-  /* -------------- Image tri-source -------------- */
-
-  // Corrections manuelles si un nom ne correspond pas du tout au fichier
+  // Quelques corrections manuelles utiles
   const MANUAL_IMG = {
     "Venari": "Venari.png",
     "Venari Prime": "VenariPrime.png",
     "Helminth Charger": "HelminthCharger.png",
     "Nautilus": "Nautilus.png",
     "Nautilus Prime": "NautilusPrime.png",
+    // MOA heads connus
+    "Lambeo Moa": "LambeoMOA.png",
+    "Oloro Moa":  "OloroMOA.png",
+    "Nychus Moa": "NychusMOA.png",
+    "Para Moa":   "ParaMOA.png",
+    // Hound heads connus
+    "Bhaira Hound": "BhairaHound.png",
+    "Dorma Hound":  "DormaHound.png",
+    "Hec Hound":    "HecHound.png",
   };
 
-  // génère les variantes d’URL pour un nom de fichier
-  function mkUrlsForFile(file){
-    return [
-      WIKI_IMG_IMAGES(file),       // 1) wiki /images/<file>
-      WIKI_IMG_FILEPATH(file),     // 2) wiki Special:FilePath/<file>
-      CDN_IMG(file),               // 3) cdn
-      LOCAL_IMG(file),             // 4) local
-    ].filter(Boolean);
-  }
+  /* ----------------- Utils ----------------- */
+  const $  = (s) => document.querySelector(s);
+  const norm = (s) => String(s || "").trim();
+  const escapeHtml = (s) =>
+    String(s).replace(/[&<>"']/g, (c)=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+  const byName = (a,b) => (a.Name || a.name || "").localeCompare(b.Name || b.name || "");
+  const fmtNum = (v) => (v === null || v === undefined || v === "") ? "—" : String(v);
+  const pct = (v) => (v === null || v === undefined) ? "—" : `${Math.round(v*1000)/10}%`;
+  const cleanLF = (s) => String(s ?? "").replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n");
+  const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
 
-  function buildImageCandidates(item){
-    const explicit = coalesce(item, ["Image","image"], "");
-    const name = (item.Name || item.name || "").trim();
-    const manual = MANUAL_IMG[name];
+  const coalesce = (obj, keys, def=null) => {
+    for (const k of keys) if (obj && obj[k] != null) return obj[k];
+    return def;
+  };
 
-    const baseUS = (manual || explicit || name).replace(/\s+/g, "_"); // ex: “Sly Vulpaphyla” -> “Sly_Vulpaphyla”
-    const baseNS = (manual || explicit || name).replace(/\s+/g, "");  // ex: “Sly Vulpaphyla” -> “SlyVulpaphyla”
-    const EXTS = [".png", ".webp", ".jpg", ".jpeg"];
+  // joli placeholder en SVG
+  const PLACEHOLDER = 'data:image/svg+xml;utf8,'+encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360">
+      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
+      </linearGradient></defs>
+      <rect width="600" height="360" fill="url(#g)"/>
+      <rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
+      <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text>
+    </svg>`
+  );
 
-    const cand = [];
-    const pushUnique = (u) => { if (u && !cand.includes(u)) cand.push(u); };
-
-    // Si on a un fichier explicite avec extension, essayer direct
-    if (/\.(png|webp|jpe?g)$/i.test(baseUS)) {
-      mkUrlsForFile(baseUS).forEach(pushUnique);
-    } else {
-      // Tenter plusieurs extensions et deux variantes de nom
-      for (const ext of EXTS) {
-        mkUrlsForFile(baseUS + ext).forEach(pushUnique);
-        mkUrlsForFile(baseNS + ext).forEach(pushUnique);
-      }
-    }
-
-    // joli placeholder
-    const placeholder = 'data:image/svg+xml;utf8,'+encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360">
-        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/>
-        </linearGradient></defs>
-        <rect width="600" height="360" fill="url(#g)"/>
-        <rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/>
-        <text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text>
-      </svg>`
-    );
-
-    return { list: cand, placeholder };
-  }
-
-  // petit helper pour itérer les fallbacks depuis l'attribut data
+  // cycle des fallbacks d’image (utilisé dans onerror=)
   window.__cycleImg = function(el, placeholder){
     const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
     let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
@@ -153,7 +82,108 @@
     }
   };
 
-  /* -------------- Attaques (si présentes) -------------- */
+  /* ----------------- Détection de type (ExportSentinels) ----------------- */
+  function detectTypeFromUnique(uniqueName) {
+    const p = String(uniqueName || "");
+    if (p.includes("/CatbrowPet/")) return "Kavat";
+    if (p.includes("/KubrowPet/"))  return "Kubrow";
+    if (p.includes("/CreaturePets/ArmoredInfestedCatbrow")) return "Vulpaphyla";
+    if (p.includes("/CreaturePets/PharaohPredator") || p.includes("/CreaturePets/VizierPredator") || p.includes("/CreaturePets/MedjayPredator")) return "Predasite";
+    if (p.includes("/SentinelPowersuits/")) return "Sentinel";
+    return "Companion";
+  }
+
+  /* ----------------- Normalise les compagnons standards ----------------- */
+  function normalizeFromExportSentinels(raw){
+    const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
+    return arr.map(x => {
+      const name = x.name || "";
+      const type = detectTypeFromUnique(x.uniqueName);
+      const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
+
+      // Essais d’images (manuel -> wiki -> cdn -> local), deux variantes (underscore / no-space)
+      const manual = MANUAL_IMG[name];
+      const baseUS = (manual || name).replace(/\s+/g, "_") + ".png";
+      const baseNS = (manual || name).replace(/\s+/g, "")  + ".png";
+
+      const candidates = [
+        manual ? wikiImages(manual) : "",                 // si on a une correspondance exacte
+        wikiFilepath(baseUS), wikiFilepath(baseNS),
+        wikiImages(baseUS),   wikiImages(baseNS),
+        cdnImg(baseNS),       cdnImg(baseUS),
+        localImg(baseNS),     localImg(baseUS),
+      ].filter(Boolean);
+
+      return {
+        Name: name,
+        Type: type,
+        Category: category,
+        Description: x.description || "",
+        Armor:  x.armor ?? 0,
+        Health: x.health ?? 0,
+        Shield: x.shield ?? 0,
+        Energy: x.power ?? 0,
+        Attacks: null, // à enrichir via LUA
+        _imgList: candidates.length ? candidates : [PLACEHOLDER],
+      };
+    }).sort(byName);
+  }
+
+  /* ----------------- Normalise le JSON LUA (pour Attacks + images) ----------------- */
+  function normalizeFromLua(raw){
+    let coll = raw && raw.Companions ? raw.Companions : raw;
+    if (!coll) return [];
+
+    let arr = Array.isArray(coll)
+      ? coll.slice()
+      : Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
+
+    arr = arr.map(v => {
+      const name = coalesce(v, ["Name","name"], "");
+      const file = coalesce(v, ["Image","image"], "");
+      const manual = MANUAL_IMG[name];
+      const baseUS = (manual || file || (name ? name.replace(/\s+/g, "_") + ".png" : ""));
+      const baseNS = (manual || file || (name ? name.replace(/\s+/g, "")  + ".png" : ""));
+
+      const candidates = [
+        baseUS ? wikiFilepath(baseUS) : "",
+        baseNS ? wikiFilepath(baseNS) : "",
+        baseUS ? wikiImages(baseUS)   : "",
+        baseNS ? wikiImages(baseNS)   : "",
+        baseNS ? cdnImg(baseNS)       : "",
+        baseUS ? cdnImg(baseUS)       : "",
+        baseNS ? localImg(baseNS)     : "",
+        baseUS ? localImg(baseUS)     : "",
+      ].filter(Boolean);
+
+      return {
+        ...v,
+        _imgList: candidates.length ? candidates : [PLACEHOLDER],
+      };
+    });
+
+    arr.sort(byName);
+    return arr;
+  }
+
+  /* ----------------- Fusion "Attacks" depuis LUA par Name ----------------- */
+  function injectAttacksFromLua(standardList, luaList){
+    const byNameMap = new Map(luaList.map(it => [String(it.Name || "").toLowerCase(), it]));
+    for (const item of standardList){
+      const key = String(item.Name || "").toLowerCase();
+      const src = byNameMap.get(key);
+      if (src && Array.isArray(src.Attacks)) {
+        item.Attacks = src.Attacks;
+      }
+      // si l’export n’a pas d’image correct et que le LUA en a une plus plausible, merge les listes images
+      if (src && Array.isArray(src._imgList)) {
+        const set = new Set([...(item._imgList || []), ...src._imgList]);
+        item._imgList = Array.from(set);
+      }
+    }
+  }
+
+  /* ----------------- Attaques (bloc UI) ----------------- */
   function sumDamage(dmg){
     if (!dmg || typeof dmg !== "object") return null;
     let total = 0;
@@ -190,7 +220,7 @@
       </div>`;
   }
 
-  /* -------------- UI helpers -------------- */
+  /* ----------------- Rendu fiche compagnon standard ----------------- */
   const statBox = (label, value) => `
     <div class="stat">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
@@ -211,25 +241,22 @@
     const health = coalesce(item, ["Health","health"], "—");
     const shield = coalesce(item, ["Shield","shield"], "—");
     const energy = coalesce(item, ["Energy","energy"], "—");
-
-    const img = buildImageCandidates(item);
+    const imgs = Array.isArray(item._imgList) && item._imgList.length ? item._imgList : [PLACEHOLDER];
 
     $("#card").innerHTML = `
       <div class="flex flex-col md:flex-row gap-6">
-        <!-- Colonne image -->
         <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
           <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
             <img
-              src="${img.list[0]}"
-              data-srcs="${img.list.join("|")}"
+              src="${imgs[0]}"
+              data-srcs="${imgs.join("|")}"
               data-i="0"
               alt="${escapeHtml(name)}"
               class="w-full h-full object-contain"
-              onerror="__cycleImg(this, '${img.placeholder}')">
+              onerror="__cycleImg(this, '${PLACEHOLDER}')">
           </div>
         </div>
 
-        <!-- Colonne contenu -->
         <div class="flex-1 flex flex-col gap-4">
           <div class="flex items-start gap-4">
             <div class="min-w-0 flex-1">
@@ -264,130 +291,237 @@
     pick.value = "0";
   }
 
-  /* -------------- Fusion Export + LUA (Attacks + MOA/Hound) -------------- */
-  function indexByLowerName(list){
-    const m = new Map();
-    for (const it of list) {
-      const n = norm(it.Name || it.name || "");
-      if (n) m.set(n.toLowerCase(), it);
+  /* ----------------- MOA / Hound (modulaires) : parsing des pièces ----------------- */
+  function parseModularPartsFromWeapons(raw){
+    const arr = Array.isArray(raw?.ExportWeapons) ? raw.ExportWeapons : [];
+    const moa   = { Head:[], Core:[], Gyro:[], Bracket:[], Other:[] };
+    const hound = { Head:[], Core:[], Stabilizer:[], Tail:[], Other:[] };
+
+    for (const it of arr){
+      const u = String(it.uniqueName || "");
+      const name = it.name || "";
+      const desc = it.description || "";
+
+      // Détection MOA parts
+      if (/\/MoaPetParts\//i.test(u)) {
+        const slot = /MoaPetHead/i.test(u) ? "Head"
+                   : /MoaPetCore|MoaPetEngine/i.test(u) ? "Core"
+                   : /MoaPetGyro/i.test(u) ? "Gyro"
+                   : /MoaPetBracket/i.test(u) ? "Bracket"
+                   : "Other";
+        moa[slot].push(decoratePart(it, name, desc, "MOA"));
+        continue;
+      }
+
+      // Détection Hound parts (Zanuka)
+      if (/\/ZanukaPetParts\//i.test(u)) {
+        const slot = /ZanukaPetPartHead/i.test(u) ? "Head"
+                   : /ZanukaPetPartCore|ZanukaPetPartChassis/i.test(u) ? "Core"
+                   : /ZanukaPetPartStabilizer/i.test(u) ? "Stabilizer"
+                   : /ZanukaPetPartTail/i.test(u) ? "Tail"
+                   : "Other";
+        hound[slot].push(decoratePart(it, name, desc, "HOUND"));
+        continue;
+      }
     }
-    return m;
+
+    // tri par nom
+    Object.values(moa).forEach(list => list.sort((a,b)=>a.Name.localeCompare(b.Name)));
+    Object.values(hound).forEach(list => list.sort((a,b)=>a.Name.localeCompare(b.Name)));
+
+    return { moa, hound };
   }
 
-  function mergeExportWithLua(exportList, luaList){
-    const luaByName = indexByLowerName(luaList);
+  function decoratePart(it, name, desc, family){
+    // composants de craft (si présents dans l’export)
+    const components = Array.isArray(it.components) ? it.components.map(c => ({
+      Name: c.name || c.type || "",
+      Count: c.itemCount ?? c.ItemCount ?? c.count ?? 1,
+      Image: c.imageName || c.Image || "",
+      Description: c.description || c.Description || ""
+    })) : [];
 
-    // 1) Injecter Attacks + Image depuis LUA quand dispo
-    const merged = exportList.map(base => {
-      const k = (base.Name || "").toLowerCase();
-      const lua = luaByName.get(k);
-      if (lua) {
-        if (!base.Attacks && Array.isArray(lua.Attacks)) base.Attacks = lua.Attacks;
-        // si le LUA a une image explicite, on la pose pour aider le builder d’URLs
-        const luaImg = coalesce(lua, ["Image","image"], "");
-        if (luaImg && !base.Image) base.Image = luaImg;
-      }
-      return base;
-    });
+    // heuristique image : si imageName dispo on l’utilise, sinon tentatives par nom
+    const imgFile = it.imageName || "";
+    const manual  = MANUAL_IMG[name] || "";
+    const baseUS  = (manual || name).replace(/\s+/g, "_") + ".png";
+    const baseNS  = (manual || name).replace(/\s+/g, "")  + ".png";
 
-    // 2) Ajouter les MOA + Hounds manquants (du LUA)
-    const present = new Set(merged.map(x => (x.Name||"").toLowerCase()));
-    const extra = luaList.filter(v => {
-      const t = (v.Type || v.type || "").trim();
-      const name = (v.Name || v.name || "").trim();
-      if (!name) return false;
-      if (present.has(name.toLowerCase())) return false;
-      return t === "MOA" || t === "Hound";
-    }).map(v => ({
-      Name: v.Name || v.name || "",
-      Type: v.Type || v.type || "Companion",
-      Category: v.Category || v.category || "Pets",
-      Description: v.Description || v.description || "",
-      Armor: v.Armor ?? v.armor ?? "—",
-      Health: v.Health ?? v.health ?? "—",
-      Shield: v.Shield ?? v.shield ?? "—",
-      Energy: v.Energy ?? v.energy ?? "—",
-      Attacks: Array.isArray(v.Attacks) ? v.Attacks : null,
-      Image: v.Image || v.image || "",
-    }));
+    const imgs = [
+      manual ? wikiImages(manual) : "",
+      imgFile ? wikiFilepath(imgFile) : "",
+      wikiFilepath(baseUS), wikiFilepath(baseNS),
+      wikiImages(baseUS),   wikiImages(baseNS),
+      cdnImg(baseNS),       cdnImg(baseUS),
+      localImg(baseNS),     localImg(baseUS),
+    ].filter(Boolean);
 
-    const out = merged.concat(extra).sort(byName);
-    return out;
+    return {
+      Name: name,
+      Description: desc,
+      Components: components,
+      Family: family,
+      _imgList: imgs.length ? imgs : [PLACEHOLDER],
+    };
   }
 
-  /* -------------- Chargement data -------------- */
-  async function loadData(){
-    // On charge TOUJOURS le LUA pour fusion (Attacks + MOA/Hound)
-    let luaList = [];
-    try {
-      const rLua = await fetch(FALLBACK_URL, { cache: "no-store" });
-      if (rLua.ok) luaList = normalizeFromLua(await rLua.json());
-    } catch {}
+  /* ----------------- Rendu MOA/Hound (catalogue de pièces) ----------------- */
+  function renderModularCatalog(kind, data){
+    // kind: "moa" | "hound"
+    const order = kind === "moa"
+      ? ["Head","Core","Gyro","Bracket","Other"]
+      : ["Head","Core","Stabilizer","Tail","Other"];
 
-    // 1) Public Export (priorité)
-    try{
-      const r = await fetch(EXPORT_URL, { cache: "no-store" });
-      if (r.ok) {
-        const raw = await r.json();
-        const base = normalizeFromExport(raw);
-        if (base.length) {
-          const merged = mergeExportWithLua(base, luaList);
-          return { list: merged, source: "export+lua" };
-        }
-      }
-    }catch{}
-
-    // 2) Fallback pur sur ton JSON LUA si l’export n’est pas dispo
-    return { list: luaList, source: "lua-only" };
+    const title = kind === "moa" ? "MOA — pièces modulaires" : "Hound — pièces modulaires";
+    const root = $("#card");
+    root.innerHTML = `
+      <div>
+        <h2 class="text-xl font-semibold mb-3">${title}</h2>
+        <div class="text-[var(--muted)] mb-4">
+          Sélectionne des pièces pour composer ton compagnon. Chaque carte liste la description et les composants de craft.
+        </div>
+        ${order.map(slot => slotSection(slot, data[slot] || [])).join("")}
+      </div>
+    `;
   }
 
-  /* -------------- Boot -------------- */
+  function slotSection(slot, list){
+    if (!list.length) return "";
+    const grid = list.map(part => modularPartCard(part)).join("");
+    return `
+      <div class="mt-6">
+        <div class="text-sm muted mb-2">${slot}</div>
+        <div class="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          ${grid}
+        </div>
+      </div>
+    `;
+  }
+
+  function modularPartCard(p){
+    const name = p.Name || "—";
+    const desc = cleanDesc(p.Description || "");
+    const imgs = p._imgList?.length ? p._imgList : [PLACEHOLDER];
+
+    const components = Array.isArray(p.Components) && p.Components.length
+      ? `<div class="mt-3 text-sm">
+           <div class="muted mb-1">Composants requis</div>
+           <ul class="list-disc pl-5 space-y-1">
+             ${p.Components.map(c => `<li>${escapeHtml(c.Name)} × ${escapeHtml(String(c.Count ?? 1))}</li>`).join("")}
+           </ul>
+         </div>`
+      : "";
+
+    return `
+      <div class="card p-4 orn">
+        <div class="w-full h-[160px] rounded-xl overflow-hidden bg-[var(--panel-2)] border flex items-center justify-center mb-3">
+          <img
+            src="${imgs[0]}"
+            data-srcs="${imgs.join("|")}"
+            data-i="0"
+            alt="${escapeHtml(name)}"
+            class="w-full h-full object-contain"
+            onerror="__cycleImg(this, '${PLACEHOLDER}')">
+        </div>
+        <div class="font-semibold">${escapeHtml(name)}</div>
+        ${desc ? `<p class="mt-1 text-[var(--muted)]">${desc}</p>` : ""}
+        ${components}
+      </div>
+    `;
+  }
+
+  /* ----------------- Onglets haut de page ----------------- */
+  function setActiveTab(tab){
+    // tab: "standard" | "moa" | "hound"
+    $("#tab-standard").classList.toggle("active", tab === "standard");
+    $("#tab-moa").classList.toggle("active", tab === "moa");
+    $("#tab-hound").classList.toggle("active", tab === "hound");
+
+    // Affichage/masquage des contrôles de recherche/choix
+    const controls = $("#controls-standard");
+    controls.style.display = (tab === "standard") ? "" : "none";
+  }
+
+  function renderTabsHost(){
+    const host = $("#tabs-host");
+    if (!host) return;
+    host.innerHTML = `
+      <div class="flex gap-2 mb-4">
+        <button id="tab-standard" class="btn-tab active">Compagnons</button>
+        <button id="tab-moa" class="btn-tab">MOA (modulaire)</button>
+        <button id="tab-hound" class="btn-tab">Hound (modulaire)</button>
+      </div>
+    `;
+  }
+
+  /* ----------------- Boot ----------------- */
   (async function boot(){
     const status = $("#status");
     try{
-      status.textContent = "Chargement des companions…";
+      status.textContent = "Chargement des données…";
 
-      const { list, source } = await loadData();
-      if (!list.length){
-        status.textContent = "Aucun compagnon trouvé.";
-        status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-        status.style.background = "rgba(255,0,0,.08)";
-        status.style.color = "#ffd1d1";
-        return;
-      }
+      // 1) Charge ExportSentinels (compagnons standards)
+      const rStd = await fetch(EXPORT_SENTINELS_URL, { cache: "no-store" });
+      const rawStd = rStd.ok ? await rStd.json() : { ExportSentinels: [] };
+      const standardList = normalizeFromExportSentinels(rawStd);
 
-      // UI
-      renderPicker(list);
-      renderCard(list[0]);
+      // 2) Charge ExportWeapons (pièces MOA/Hound)
+      const rW = await fetch(EXPORT_WEAPONS_URL, { cache: "no-store" });
+      const rawW = rW.ok ? await rW.json() : { ExportWeapons: [] };
+      const modular = parseModularPartsFromWeapons(rawW);
 
-      const setStatus = (n) => {
-        const tag = source === "export+lua" ? "(Export fusionné LUA)" : "(fallback LUA)";
-        status.textContent = `Companions chargés : ${n} ${tag}`;
-        status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
-        status.style.background = "rgba(0,229,255,.08)";
-        status.style.color = "#bfefff";
+      // 3) Fallback LUA (pour Attacks + images supplémentaires)
+      let luaList = [];
+      try{
+        const rLua = await fetch(FALLBACK_LUA_URL, { cache: "no-store" });
+        if (rLua.ok) {
+          const rawLua = await rLua.json();
+          luaList = normalizeFromLua(rawLua);
+          injectAttacksFromLua(standardList, luaList);
+        }
+      }catch{/* silencieux */}
+
+      // ---- UI de la page
+      renderTabsHost();
+      setActiveTab("standard");
+
+      // Contrôles standard
+      const setStatus = (msg, ok = true) => {
+        status.textContent = msg;
+        status.className = "mb-4 text-sm px-3 py-2 rounded-lg " + (ok ? "orn" : "");
+        status.style.background = ok ? "rgba(0,229,255,.08)" : "rgba(255,0,0,.08)";
+        status.style.color = ok ? "#bfefff" : "#ffd1d1";
       };
-      setStatus(list.length);
 
-      // interactions
+      // Prépare la liste standard
+      renderPicker(standardList);
+      if (standardList.length) renderCard(standardList[0]);
+      setStatus(`Données chargées — ${standardList.length} compagnon(s) standard, ${Object.values(modular.moa).flat().length} pièces MOA, ${Object.values(modular.hound).flat().length} pièces Hound.`);
+
+      // interactions recherche + picker
       $("#picker").addEventListener("change", (e)=>{
         const idx = parseInt(e.target.value, 10);
         const q = norm($("#search").value).toLowerCase();
-        const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
+        const filtered = q ? standardList.filter(x => (x.Name||"").toLowerCase().includes(q)) : standardList;
         if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
       });
-
       $("#search").addEventListener("input", ()=>{
         const q = norm($("#search").value).toLowerCase();
-        const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
+        const filtered = q ? standardList.filter(x => (x.Name||"").toLowerCase().includes(q)) : standardList;
         renderPicker(filtered);
         if (filtered.length) renderCard(filtered[0]);
         setStatus(`Affichage : ${filtered.length} résultat(s)`);
       });
 
+      // onglets
+      $("#tab-standard").addEventListener("click", ()=>{ setActiveTab("standard"); if (standardList.length) renderCard(standardList[0]); });
+      $("#tab-moa").addEventListener("click", ()=>{ setActiveTab("moa"); renderModularCatalog("moa", modular.moa); });
+      $("#tab-hound").addEventListener("click", ()=>{ setActiveTab("hound"); renderModularCatalog("hound", modular.hound); });
+
     } catch(e){
       console.error("[companions] load error:", e);
-      status.textContent = "Erreur de chargement des companions.";
+      const status = $("#status");
+      status.textContent = "Erreur de chargement des données.";
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
       status.style.background = "rgba(255,0,0,.08)";
       status.style.color = "#ffd1d1";
