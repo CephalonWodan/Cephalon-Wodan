@@ -738,7 +738,7 @@
     } catch(e){
       console.error("[companions] load error:", e);
       if (status){
-        status.textContent = "Erreur de chargement des données.";
+        status.textContent = "Error loading data.";
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
