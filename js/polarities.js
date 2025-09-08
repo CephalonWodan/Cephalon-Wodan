@@ -21,7 +21,7 @@
     Exilus:  "Exilus_Pol.svg",
     Any:     "Any_Pol.svg",
     Universal: "Any_Pol.svg",
-    None:      "Any_Pol.svg"
+    None:      ""
   };
 
   // Canonicalisation (tolère casse/variantes)
