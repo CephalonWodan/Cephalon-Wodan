@@ -1,15 +1,20 @@
 // js/polarities.js
-// Polarités (Aura + autres) avec TES SVG: img/polarities/*_Pol.svg
-// → styles dans CSS (plus de styles inline), classes .pol-icon et .pol-icon.aura
-// Sources: WarframeStat (EN) + data/polarity_overrides.json (optionnel)
-// Écoute l'événement "wf:card-rendered" émis par app.js.
-
+// Affiche les polarités avec TES SVG (img/polarities/*_Pol.svg)
+// - Préfère les données fournies par l'événement "wf:card-rendered"
+//   -> detail.wf = { name, auraPolarity, polarities: [...] }
+// - Sinon (pages Warframes), utilise l'API WarframeStat + overrides.
+//
+// Classes CSS attendues :
+//   .pol-icon           (26x26 par défaut)
+//   .pol-icon.aura      (style accentué)
+//   .polarity-row[data-zone="aura"|"others"]
+//
 (function () {
   const API = "https://api.warframestat.us/warframes/?language=en";
   const OVERRIDES_URL = "data/polarity_overrides.json"; // optionnel
-  const ICON_DIR = "img/polarities/"; // ton dossier exact
+  const ICON_DIR = "img/polarities/";
 
-  // Mapping exact fichiers présents dans ton repo
+  // Mapping exact de tes fichiers
   const FILES = {
     Madurai: "Madurai_Pol.svg",
     Vazarin: "Vazarin_Pol.svg",
@@ -17,29 +22,27 @@
     Zenurik: "Zenurik_Pol.svg",
     Unairu:  "Unairu_Pol.svg",
     Umbra:   "Umbra_Pol.svg",
-    Penjaga: "Penjaga_Pol.svg", // laisse si présent, sinon retire
+    Penjaga: "Penjaga_Pol.svg",
     Exilus:  "Exilus_Pol.svg",
-    Any:     "Any_Pol.svg",
+    Any:       "Any_Pol.svg",
     Universal: "Any_Pol.svg",
     None:      "Any_Pol.svg"
   };
 
-  // Canonicalisation (tolère casse/variantes)
   const CANON = Object.fromEntries(Object.keys(FILES).map(k => [k.toLowerCase(), k]));
   function canonPol(p) {
     if (!p) return null;
-    const k = String(p).toLowerCase().replace(/[^a-z]/g, "");
-    const alias = { universal: "Any", any: "Any", none: "Any" };
+    const cleaned = String(p).trim();
+    const k = cleaned.toLowerCase().replace(/[^a-z]/g, "");
+    const alias = { universal: "Any", any: "Any", none: "Any", v: "Madurai", d: "Vazarin", dash: "Naramon", bar: "Zenurik", u: "Umbra" };
     const ali = alias[k] || k;
-    const key = CANON[ali] || CANON[k];
-    return key ? key : (p[0].toUpperCase() + p.slice(1));
+    return CANON[ali] || cleaned;
   }
 
   const state = { apiIndex: null, overrides: {}, ready: false };
   const $ = (sel, root = document) => root.querySelector(sel);
   const norm = (s) => String(s || "").trim();
 
-  // Variantes nom Warframe (Prime/Umbra → base)
   function variantKeys(name) {
     const n = norm(name); if (!n) return [];
     const base = n.replace(/\s+Prime\b/i, "").replace(/\s+Dex\b/i, "").trim();
@@ -78,7 +81,6 @@
     return { aura, slots };
   }
 
-  // Fallback discret si un fichier manque (rare)
   function fallbackIcon(polName, isAura=false) {
     const letter = (polName || "?").slice(0, 1);
     const span = document.createElement("span");
@@ -99,10 +101,7 @@
     wrap.className = "pol-icon" + (isAura ? " aura" : "");
     wrap.setAttribute("title", polName);
 
-    if (!file) {
-      console.warn("[polarities] Aucun fichier mappé pour :", polName);
-      return fallbackIcon(polName, isAura);
-    }
+    if (!file) return fallbackIcon(polName, isAura);
 
     const img = new Image();
     img.decoding = "async";
@@ -111,11 +110,7 @@
     img.width = 26;
     img.height = 26;
     img.src = ICON_DIR + file;
-
-    img.onerror = () => {
-      console.warn("[polarities] 404 icône :", img.src);
-      wrap.replaceChildren(fallbackIcon(polName, isAura));
-    };
+    img.onerror = () => wrap.replaceChildren(fallbackIcon(polName, isAura));
 
     wrap.appendChild(img);
     return wrap;
@@ -131,10 +126,26 @@
 
   async function onCardRendered(e) {
     try {
-      const wf = e?.detail?.wf || {};
+      const detail = e?.detail || {};
+      const wf = detail.wf || {};
       const name = wf?.name || "";
-      if (!name) return;
 
+      const card = document.getElementById("card");
+      const $aura   = card?.querySelector('.polarity-row[data-zone="aura"]');
+      const $others = card?.querySelector('.polarity-row[data-zone="others"]');
+
+      // 1) Préférence: données déjà fournies (Companions / Sentinelles)
+      const providedAura  = wf?.auraPolarity || detail.aura || null;
+      const providedSlots = Array.isArray(wf?.polarities) ? wf.polarities
+                           : Array.isArray(detail.polarities) ? detail.polarities : null;
+      if (providedAura || providedSlots) {
+        renderRow($aura,  providedAura ? [providedAura] : [], true);
+        renderRow($others, providedSlots || [], false);
+        return;
+      }
+
+      // 2) Sinon, logique Warframes (API + overrides)
+      if (!name) return;
       const idx = await ensureApiIndex();
       await ensureOverrides();
 
@@ -143,10 +154,8 @@
       const ovr = state.overrides[name] || null;
 
       const { aura, slots } = mergePolarities(rec, ovr);
-
-      const card = document.getElementById("card");
-      renderRow(card?.querySelector('.polarity-row[data-zone="aura"]'),  aura ? [aura] : [], true);
-      renderRow(card?.querySelector('.polarity-row[data-zone="others"]'), slots, false);
+      renderRow($aura,  aura ? [aura] : [], true);
+      renderRow($others, slots, false);
     } catch (err) {
       console.error("[polarities] error:", err);
     }
