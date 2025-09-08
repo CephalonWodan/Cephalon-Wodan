@@ -18,7 +18,17 @@
   const norm = (s) => String(s || "").trim();
   const byName = (a,b) => (a.Name||"").localeCompare(b.Name||"");
   const pct = (v) => (v==null) ? "—" : `${Math.round(Number(v)*1000)/10}%`;
-  const fmt = (v) => (v==null || v==="") ? "—" : String(v);
+
+  // Arrondi propre (évite 12.000001) → 2 décimales max
+  const fmt = (v) => {
+    if (v == null || v === "") return "—";
+    if (typeof v === "number") {
+      const r = Math.round((v + Number.EPSILON) * 100) / 100;
+      return String(Number.isInteger(r) ? Math.trunc(r) : r);
+    }
+    return String(v);
+  };
+
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
 
   // ⚠️ Nettoie les tags type "<ARCHWING>" / "<NECRAMECH>" / etc.
@@ -213,14 +223,16 @@
 
   function renderWeaponCard(w){
     const imgHTML = imgTag(w.Name, w._imgSrcs || []);
-    const rows=[]; const add=(k,v)=>rows.push(`<div class="py-1">• <b>${esc(k)}:</b> ${esc(v)}</div>`);
+    const rows=[]; 
+    const add=(k,v)=>rows.push(`<div class="py-1">• <b>${esc(k)}:</b> ${esc(v)}</div>`);
     if (w.TotalDamage!=null) add("Total Dmg", String(Math.round(w.TotalDamage)));
-    if (w.CritC!=null) add("Crit", `${pct(w.CritC)} ×${fmt(w.CritM)}`);
-    if (w.Status!=null) add("Status", pct(w.Status));
-    if (w.FireRate!=null) add("Fire Rate", fmt(w.FireRate));
-    if (w.AttackSpeed!=null) add("Attack Speed", fmt(w.AttackSpeed));
-    if (w.Trigger) add("Trigger", w.Trigger);
-    if (w.Reload!=null) add("Reload", `${w.Reload}s`);
+    if (w.CritC!=null)      add("Crit Chance", pct(w.CritC));
+    if (w.CritM!=null)      add("Crit Multiplier", `×${fmt(w.CritM)}`);
+    if (w.Status!=null)     add("Status Chance", pct(w.Status));
+    if (w.FireRate!=null)   add("Fire Rate", fmt(w.FireRate));
+    if (w.AttackSpeed!=null)add("Attack Speed", fmt(w.AttackSpeed));
+    if (w.Trigger)          add("Trigger", w.Trigger);
+    if (w.Reload!=null)     add("Reload", `${fmt(w.Reload)}s`);
 
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
@@ -232,7 +244,7 @@
             ${statBox("MR", w.Mastery ?? "—")}
             ${statBox("CRIT", w.CritC!=null ? pct(w.CritC) : "—")}
             ${statBox("STATUS", w.Status!=null ? pct(w.Status) : "—")}
-            ${statBox(w.Kind==="Archmelee" ? "ATK SPD" : "FIRE RATE", w.Kind==="Archmelee" ? w.AttackSpeed : w.FireRate)}
+            ${statBox(w.Kind==="Archmelee" ? "ATK SPD" : "FIRE RATE", w.Kind==="Archmelee" ? fmt(w.AttackSpeed) : fmt(w.FireRate))}
           </div>
 
           <div class="mt-4">
