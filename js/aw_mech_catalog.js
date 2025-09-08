@@ -236,7 +236,7 @@
   const statBox = (label, value) => `
     <div class="stat h-24 flex flex-col justify-center">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${esc(label)}</div>
-      <div class="text-2xl font-semibold leading-tight">${esc(fmt(value)))}</div>
+      <div class="text-2xl font-semibold leading-tight">${esc(fmt(value))}</div>
     </div>`;
   const chips = (arr)=> (arr||[]).map(s=>`<span class="badge">${esc(s)}</span>`).join(" ");
 
