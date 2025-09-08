@@ -18,8 +18,6 @@
   const norm = (s) => String(s || "").trim();
   const byName = (a,b) => (a.Name||"").localeCompare(b.Name||"");
   const pct = (v) => (v==null) ? "—" : `${Math.round(Number(v)*1000)/10}%`;
-
-  // Arrondi propre (évite 12.000001) → 2 décimales max
   const fmt = (v) => {
     if (v == null || v === "") return "—";
     if (typeof v === "number") {
@@ -28,19 +26,16 @@
     }
     return String(v);
   };
-
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
 
-  // ⚠️ Nettoie les tags type "<ARCHWING>" / "<NECRAMECH>" / etc.
+  // Nettoie les tags <ARCHWING> etc.
   const cleanDisplayName = (name) => String(name||"")
     .replace(/<[^>]*>\s*/g, "")
     .replace(/\s+/g, " ")
     .trim();
 
   const cleanFileName = (name) =>
-    cleanDisplayName(name)
-      .replace(/['’\-\u2019]/g,"")
-      .replace(/\s+/g,"") + ".png";
+    cleanDisplayName(name).replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
 
   // Placeholder + cyclage
   const svgPH = (() => {
@@ -88,7 +83,7 @@
       };
     }).filter(Boolean);
 
-    // Fallback overrides si besoin
+    // Fallback overrides
     const have = new Set(list.map(i=>i.Name));
     (overrides ? Object.keys(overrides) : []).forEach(n=>{
       if (have.has(n)) return;
@@ -123,7 +118,6 @@
     return Object.keys(out).length ? out : null;
   }
   function extractDamageMap(x){
-    // essaie plusieurs emplacements possibles selon l’export
     const candidates = [];
     if (x.damage && typeof x.damage === "object") candidates.push(x.damage);
     if (x.normalAttack?.damage) candidates.push(x.normalAttack.damage);
@@ -159,8 +153,11 @@
       const crit  = x.criticalChance ?? x.critChance ?? null;
       const critM = x.criticalMultiplier ?? x.critMultiplier ?? null;
       const stat  = x.statusChance ?? x.procChance ?? null;
+
+      // ⚠️ Pour Archmelee, fireRate = attackSpeed si attackSpeed absent
+      const isMelee = (kind === "Archmelee");
       const fireRate = x.fireRate ?? x.fireRateSecondary ?? null;
-      const atkSpd  = x.attackSpeed ?? null;
+      const atkSpd  = isMelee ? (x.attackSpeed ?? fireRate ?? null) : (x.attackSpeed ?? null);
 
       // Dégâts
       const dmgMap = extractDamageMap(x);
@@ -175,7 +172,8 @@
       return {
         Kind: kind, Name: name, Mastery: x.masteryReq,
         CritC: crit, CritM: critM, Status: stat,
-        FireRate: fireRate, AttackSpeed: atkSpd,
+        FireRate: isMelee ? null : fireRate,      // on masque FireRate pour les Archmelee
+        AttackSpeed: atkSpd,
         Trigger: x.trigger || null, Reload: x.reloadTime ?? null,
         TotalDamage: totalDmg, DamageMap: dmgMap || null,
         _imgSrcs: [ IMG_MSWEAP_LOCAL(file), IMG_WIKI(file), IMG_CDN(file) ]
@@ -284,8 +282,11 @@
     if (w.CritC!=null)      add("Crit Chance", pct(w.CritC));
     if (w.CritM!=null)      add("Crit Multiplier", `×${fmt(w.CritM)}`);
     if (w.Status!=null)     add("Status Chance", pct(w.Status));
-    if (w.FireRate!=null)   add("Fire Rate", fmt(w.FireRate));
-    if (w.AttackSpeed!=null)add("Attack Speed", fmt(w.AttackSpeed));
+    if (w.Kind==="Archmelee") {
+      if (w.AttackSpeed!=null) add("Attack Speed", fmt(w.AttackSpeed));
+    } else {
+      if (w.FireRate!=null)    add("Fire Rate", fmt(w.FireRate));
+    }
     if (w.Trigger)          add("Trigger", w.Trigger);
     if (w.Reload!=null)     add("Reload", `${fmt(w.Reload)}s`);
 
