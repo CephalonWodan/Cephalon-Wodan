@@ -1,19 +1,11 @@
-// js/companions_catalog.js
-// Mise en page type “Warframes” + images locales en priorité, Attacks fusionnées, onglets MOA/Hound.
+<!-- js/companions_catalog.js -->
 (() => {
   "use strict";
 
   /* ----------------- Config ----------------- */
   const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
   const FALLBACK_URL = "data/companions.json";         // ancien JSON (LUA)
-
-  // Dossier unique pour toutes les images locales
-  const LOCAL_DIR = "img/companion/";
-
-  // Priorité images : LOCAL -> WIKI -> CDN
-  const LOCAL_FILE = (file) => file ? (LOCAL_DIR + encodeURIComponent(file)) : "";
-  const WIKI_FILE  = (file) => file ? ("https://wiki.warframe.com/w/Special:FilePath/" + encodeURIComponent(file)) : "";
-  const CDN_FILE   = (file) => file ? ("https://cdn.warframestat.us/img/" + encodeURIComponent(file)) : "";
+  const IMG_ROOT     = "img/companions/";              // <<< TON DOSSIER
 
   /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
@@ -26,25 +18,21 @@
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
 
-  // --- Génère plusieurs variantes de nom de fichier (evite 404, local d'abord)
-  function nameCandidates(name){
-    const raw = String(name || "").trim();
-    if (!raw) return [];
-    const nospace = raw.replace(/\s+/g, "");
-    const under   = raw.replace(/\s+/g, "_");
-    // ordre souhaité : exact → NoSpace → UnderScore
-    const base = [raw + ".png", nospace + ".png", under + ".png"];
-    // dé-dupe en conservant l'ordre
-    const seen = new Set(), out = [];
-    for (const f of base) if (f && !seen.has(f)) { seen.add(f); out.push(f); }
-    return out;
-  }
+  // Mappe un nom → fichier .png de ton repo: “Prisma Shade” → “PrismaShade.png”
+  const nameToFile = (name) => (String(name||"").replace(/[^A-Za-z0-9]/g, "") || "placeholder") + ".png";
 
-  // placeholder inline (une seule ligne pour éviter l’erreur “unescaped line break”)
+  // placeholder inline (une ligne → pas de retour non échappé)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   })();
+
+  const renderImgLocal = (title) => {
+    const src = IMG_ROOT + nameToFile(title);
+    const ph  = svgPlaceholder.replace(/'/g, "%27");
+    const alt = escapeHtml(title);
+    return `<img src="${src}" alt="${alt}" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='${ph}'">`;
+  };
 
   /* -------------- Détection type depuis uniqueName (Public Export) -------------- */
   function detectType(u) {
@@ -60,61 +48,33 @@
   /* -------------- Normalisation EXPORT (Public Export) -------------- */
   function normalizeFromExport(raw){
     const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
-    return arr
-      .map(x => {
-        const name = x.name || "";
-        const type = detectType(x.uniqueName);
-        const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-        const candidates = nameCandidates(name);
-
-        return {
-          Name: name,
-          Type: type,
-          Category: category,
-          Description: x.description || "",
-          Armor:  x.armor ?? 0,
-          Health: x.health ?? 0,
-          Shield: x.shield ?? 0,
-          Energy: x.power ?? 0,
-          Attacks: null, // pas fourni par l’Export
-          _imgSrcs: [
-            ...candidates.map(LOCAL_FILE),
-            ...candidates.map(WIKI_FILE),
-            // le CDN n'a en général que la variante sans espace
-            CDN_FILE(name.replace(/\s+/g,"") + ".png")
-          ].filter(Boolean)
-        };
-      })
-      .sort(byName);
+    return arr.map(x => ({
+      Name:  x.name || "",
+      Type:  detectType(x.uniqueName),
+      Category: (x.productCategory === "Sentinels") ? "Sentinels" : "Pets",
+      Description: x.description || "",
+      Armor:  x.armor ?? 0,
+      Health: x.health ?? 0,
+      Shield: x.shield ?? 0,
+      Energy: x.power ?? 0,
+      Attacks: null // pas fourni par l’Export
+    })).sort(byName);
   }
 
   /* -------------- Normalisation ancien JSON (LUA -> wiki) -------------- */
   function normalizeFromLua(raw){
     let coll = raw && raw.Companions ? raw.Companions : raw;
     if (!coll) return [];
-
     let arr;
-    if (Array.isArray(coll)) arr = coll.slice();
-    else arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
-
-    arr = arr.map(v => {
-      const name = coalesce(v, ["Name","name"], "");
-      const candidates = nameCandidates(name);
-      return {
-        ...v,
-        _imgSrcs: [
-          ...candidates.map(LOCAL_FILE),
-          ...candidates.map(WIKI_FILE),
-          CDN_FILE(name.replace(/\s+/g,"") + ".png")
-        ].filter(Boolean)
-      };
-    });
-
-    arr.sort(byName);
-    return arr;
+    if (Array.isArray(coll)) {
+      arr = coll.slice();
+    } else {
+      arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
+    }
+    return arr.sort(byName);
   }
 
-  /* -------------- Fusion des Attacks (depuis le LUA) -------------- */
+  /* -------------- Fusion des Attacks depuis le LUA -------------- */
   function buildAttacksMapFromLua(luaList){
     const m = new Map();
     for (const it of luaList){
@@ -128,40 +88,11 @@
   function injectAttacks(list, attacksByName){
     for (const it of list){
       const key = (it.Name || "").toLowerCase();
-      if (!it.Attacks && attacksByName.has(key)){
-        it.Attacks = attacksByName.get(key);
-      }
+      if (!it.Attacks && attacksByName.has(key)) it.Attacks = attacksByName.get(key);
     }
   }
 
-  /* -------------- <img> avec cycle de fallback court -------------- */
-  window.__cycleImg = function(el, placeholder){
-    const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
-    let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
-    if (i < list.length) {
-      el.setAttribute("data-i", String(i));
-      el.src = list[i];
-    } else {
-      el.onerror = null; el.src = placeholder;
-    }
-  };
-  function renderImg(name, srcs){
-    const safePH = svgPlaceholder.replace(/'/g, "%27");
-    const dataSrcs = (srcs && srcs.length ? srcs : [svgPlaceholder]).join("|").replace(/'/g, "%27");
-    const alt = escapeHtml(name);
-    return `
-      <img
-        src="${srcs && srcs[0] ? srcs[0] : svgPlaceholder}"
-        data-srcs="${dataSrcs}"
-        data-i="0"
-        alt="${alt}"
-        referrerpolicy="no-referrer"
-        class="w-full h-full object-contain"
-        onerror="__cycleImg(this, '${safePH}')">
-    `;
-  }
-
-  /* -------------- Attaques (intégrées sous les stats) -------------- */
+  /* -------------- Attaques (bloc sous les stats) -------------- */
   function sumDamage(dmg){ if (!dmg || typeof dmg !== "object") return null; let t=0; for(const k in dmg){ const v=Number(dmg[k]); if(!isNaN(v)) t+=v; } return t||null; }
   function attacksBlock(item){
     const atks = coalesce(item, ["Attacks","attacks"], null);
@@ -172,21 +103,16 @@
       const critC = a.CritChance != null ? pct(a.CritChance) : null;
       const critM = a.CritMultiplier != null ? `×${a.CritMultiplier}` : null;
       const stat  = a.StatusChance != null ? pct(a.StatusChance) : null;
-
       const parts = [];
       if (dmgT != null) parts.push(`Dégâts ${dmgT}`);
       if (critC) parts.push(`Crit ${critC}${critM ? " " + critM : ""}`);
       if (stat)  parts.push(`Statut ${stat}`);
-
       return `<div class="py-1">• ${escapeHtml(name)} — ${parts.join(" · ")}</div>`;
     }).join("");
-
     return `
       <div class="mt-4">
         <div class="text-sm muted mb-1">Attaques</div>
-        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-          ${rows}
-        </div>
+        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">${rows}</div>
       </div>`;
   }
 
@@ -210,14 +136,13 @@
     const health = coalesce(item, ["Health","health"], "—");
     const shield = coalesce(item, ["Shield","shield"], "—");
     const energy = coalesce(item, ["Energy","energy"], "—");
-    const imgHTML = renderImg(name, item._imgSrcs || []);
 
     $("#card").innerHTML = `
       <div class="flex flex-col md:flex-row gap-6">
         <!-- Colonne image -->
         <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
           <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            ${imgHTML}
+            ${renderImgLocal(name)}
           </div>
         </div>
 
@@ -257,43 +182,8 @@
     pick.value = "0";
   }
 
-  /* ----------------- MOA: données fixes (de ton texte) ----------------- */
-  function moaDataFromWiki(){
-    return {
-      Models: [
-        { Name: "Para",   Precepts: ["Whiplash Mine", "Anti-Grav Grenade"], CostStanding: 500,  Rank: "Rank 0: Neutral" },
-        { Name: "Lambeo", Precepts: ["Stasis Field",  "Shockwave Actuators"], CostStanding: 1000, Rank: "Rank 1: Outworlder" },
-        { Name: "Oloro",  Precepts: ["Tractor Beam",  "Security Override"],   CostStanding: 2000, Rank: "Rank 2: Rapscallion" },
-        { Name: "Nychus", Precepts: ["Blast Shield",  "Hard Engage"],         CostStanding: 3000, Rank: "Rank 3: Doer" },
-      ],
-      Cores: [
-        { Name: "Drex",   HealthPct: +10, ShieldPct: +15, ArmorPct: +5,  CostStanding: 500,  DonationStanding: 300 },
-        { Name: "Krisys", HealthPct: +10, ShieldPct: +5,  ArmorPct: +15, CostStanding: 1000, DonationStanding: 300 },
-        { Name: "Alcrom", HealthPct: +10, ShieldPct: +10, ArmorPct: +10, CostStanding: 2000, DonationStanding: 300 },
-        { Name: "Lehan",  HealthPct: +15, ShieldPct: +0,  ArmorPct: +15, CostStanding: 4000, DonationStanding: 300 },
-      ],
-      Gyros: [
-        { Name: "Trux",   HealthPct: +5,  ShieldPct: -5,  ArmorPct: +10, CostStanding: 500,  DonationStanding: 300 },
-        { Name: "Harpen", HealthPct: +5,  ShieldPct: +10, ArmorPct: -5,  CostStanding: 1000, DonationStanding: 300 },
-        { Name: "Aegron", HealthPct: -5,  ShieldPct: +5,  ArmorPct: +10, CostStanding: 2000, DonationStanding: 300 },
-        { Name: "Hextra", HealthPct: +10, ShieldPct: +5,  ArmorPct: -5,  CostStanding: 3000, DonationStanding: 300 },
-        { Name: "Munit",  HealthPct: +10, ShieldPct: -5,  ArmorPct: +5,  CostStanding: 3000, DonationStanding: 300 },
-        { Name: "Atheca", HealthPct: +20, ShieldPct: -5,  ArmorPct: -5,  CostStanding: 4000, DonationStanding: 300 },
-        { Name: "Phazor", HealthPct: -5,  ShieldPct: +10, ArmorPct: +5,  CostStanding: 4000, DonationStanding: 300 },
-        { Name: "Tyli",   HealthPct: +10, ShieldPct: -10, ArmorPct: +10, CostStanding: 4000, DonationStanding: 300 },
-      ],
-      Brackets: [
-        { Name: "Drimper Bracket", ExtraPolarity: "None",    CostStanding: 500,  Rank: "Rank 0: Neutral",   Desc: "A basic bracket with no polarized Mod slots." },
-        { Name: "Tian Bracket",    ExtraPolarity: "Vazarin", CostStanding: 500,  Rank: "Rank 0: Neutral",   Desc: "Armoured bracket featuring a Vazarin polarity slot." },
-        { Name: "Jonsin Bracket",  ExtraPolarity: "Madurai", CostStanding: 1000, Rank: "Rank 1: Outworlder",Desc: "Flexible bracket featuring a Madurai polarity slot." },
-        { Name: "Gauth Bracket",   ExtraPolarity: "Naramon", CostStanding: 2000, Rank: "Rank 2: Rapscallion",Desc: "Armoured bracket featuring a Naramon polarity slot." },
-        { Name: "Hona Bracket",    ExtraPolarity: "Naramon", CostStanding: 3000, Rank: "Rank 3: Doer",      Desc: "Armoured bracket featuring a Naramon polarity slot." },
-      ],
-    };
-  }
-
-  /* -------------- MOA & Hound builders -------------- */
-  // MOA: base de calcul
+  /* -------------- MOA & Hound builders (avec images locales) -------------- */
+  // MOA
   const MOA_BASE = { Health: 350, Shield: 350, Armor: 350 };
   const MOA_MODELS = [
     { name:"Para",    precepts:["Whiplash Mine","Anti-Grav Grenade"] },
@@ -324,68 +214,16 @@
     { name:"Gauth",   polarities:"(Naramon)" },
     { name:"Hona",    polarities:"(Naramon)" },
   ];
-  function moaCompute(core, gyro){
-    const h = Math.round(MOA_BASE.Health  * (1 + (core?.H||0) + (gyro?.H||0)));
-    const s = Math.round(MOA_BASE.Shield  * (1 + (core?.S||0) + (gyro?.S||0)));
-    const a = Math.round(MOA_BASE.Armor   * (1 + (core?.A||0) + (gyro?.A||0)));
-    return { h, s, a };
-  }
-  function optionHTML(list){ return list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join(""); }
+  const moaCompute = (core, gyro) => ({
+    h: Math.round(MOA_BASE.Health * (1 + (core?.H||0) + (gyro?.H||0))),
+    s: Math.round(MOA_BASE.Shield * (1 + (core?.S||0) + (gyro?.S||0))),
+    a: Math.round(MOA_BASE.Armor  * (1 + (core?.A||0) + (gyro?.A||0))),
+  });
 
-  function renderMOABuilder(){
-    const data = moaDataFromWiki();
-    $("#card").innerHTML = `
-      <div class="card p-4">
-        <h2 class="text-lg font-semibold mb-3">MOA Builder</h2>
-        <div class="grid sm:grid-cols-2 gap-3">
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
-        </div>
-        <div id="moa-out" class="mt-4"></div>
-      </div>
-    `;
-    const out = $("#moa-out");
-    const upd = () => {
-      const m = MOA_MODELS[$("#moa-model").value|0];
-      const c = MOA_CORES[$("#moa-core").value|0];
-      const g = MOA_GYROS[$("#moa-gyro").value|0];
-      const b = MOA_BRACKETS[$("#moa-bracket").value|0];
-      const r = moaCompute(c,g);
-
-      // infos détaillées depuis data
-      const M = data.Models.find(x=>x.Name===m.name);
-      const C = data.Cores.find(x=>x.Name===c.name);
-      const G = data.Gyros.find(x=>x.Name===g.name);
-      const B = data.Brackets.find(x=>x.Name.startsWith(b.name));
-
-      out.innerHTML = `
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          ${statBox("HEALTH", r.h)}
-          ${statBox("SHIELD", r.s)}
-          ${statBox("ARMOR",  r.a)}
-        </div>
-        <div class="mt-3 text-sm space-y-1">
-          <div><b>Precepts (Model):</b> ${escapeHtml((M?.Precepts||m.precepts).join(", "))}</div>
-          <div><b>Model:</b> ${escapeHtml(m.name)} — <b>Standing:</b> ${M?.CostStanding ?? "—"} — ${escapeHtml(M?.Rank || "")}</div>
-          <div><b>Core:</b> ${escapeHtml(c.name)} — ${Math.round(c.H*100)}% H / ${Math.round(c.S*100)}% S / ${Math.round(c.A*100)}% A · Standing ${C?.CostStanding ?? "—"}</div>
-          <div><b>Gyro:</b> ${escapeHtml(g.name)} — ${Math.round(g.H*100)}% H / ${Math.round(g.S*100)}% S / ${Math.round(g.A*100)}% A · Standing ${G?.CostStanding ?? "—"}</div>
-          <div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)} · Standing ${B?.CostStanding ?? "—"} — ${escapeHtml(B?.Rank || "")}</div>
-        </div>
-      `;
-    };
-    $("#moa-model").addEventListener("change", upd);
-    $("#moa-core").addEventListener("change", upd);
-    $("#moa-gyro").addEventListener("change", upd);
-    $("#moa-bracket").addEventListener("change", upd);
-    upd();
-  }
-
-  // HOUND
+  // Hound
   const HOUND_MODELS = [
-    { name:"Bhaira", precept:"Null Audit",     weapon:"Lacerten" },
-    { name:"Dorma",  precept:"Repo Audit",     weapon:"Batoten"  },
+    { name:"Bhaira", precept:"Null Audit", weapon:"Lacerten" },
+    { name:"Dorma",  precept:"Repo Audit", weapon:"Batoten"  },
     { name:"Hec",    precept:"Equilibrium Audit", weapon:"Akaten" },
   ];
   const HOUND_CORES = [
@@ -406,26 +244,110 @@
   function houndCompute(core, bracket, gilded=false){
     if (!core) return { h:0, s:0, a:0 };
     const mult = gilded ? 2 : 1;
-    const h = Math.round(core.H * (1 + mult*(bracket?.H||0)));
-    const s = Math.round(core.S * (1 + mult*(bracket?.S||0)));
-    const a = Math.round(core.A * (1 + mult*(bracket?.A||0)));
-    return { h, s, a };
+    return {
+      h: Math.round(core.H * (1 + mult*(bracket?.H||0))),
+      s: Math.round(core.S * (1 + mult*(bracket?.S||0))),
+      a: Math.round(core.A * (1 + mult*(bracket?.A||0))),
+    };
   }
-  function renderHoundBuilder(){
-    $("#card").innerHTML = `
+
+  const optionHTML = (list) => list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join("");
+
+  function moaPreview(model, core, gyro, bracket){
+    const img = (n) => `<div class="w-20 h-20 rounded-xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">${renderImgLocal(n)}</div>`;
+    return `
+      <div class="flex gap-3 items-center">
+        ${img(model?.name||"")}
+        ${img(core?.name||"")}
+        ${img(gyro?.name||"")}
+        ${img(bracket?.name||"")}
+      </div>`;
+  }
+  function houndPreview(model, core, bracket, stab){
+    const img = (n) => `<div class="w-20 h-20 rounded-xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">${renderImgLocal(n)}</div>`;
+    return `
+      <div class="flex gap-3 items-center">
+        ${img(model?.name||"")}
+        ${img(core?.name||"")}
+        ${img(bracket?.name||"")}
+        ${img(stab?.name||"")}
+      </div>`;
+  }
+
+  function renderMOABuilder(){
+    const host = $("#card"); if (!host) return;
+    host.innerHTML = `
       <div class="card p-4">
-        <h2 class="text-lg font-semibold mb-3">Hound Builder</h2>
-        <div class="grid sm:grid-cols-2 gap-3">
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="hound-model" class="input">${optionHTML(HOUND_MODELS)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="hound-core" class="input">${optionHTML(HOUND_CORES)}</select></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select></label>
-          <label class="flex items-center gap-2 mt-6"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
-          <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
+        <div class="flex items-center justify-between gap-4 mb-3">
+          <h2 class="text-lg font-semibold">MOA Builder</h2>
         </div>
-        <div id="hound-out" class="mt-4"></div>
+        <div class="grid lg:grid-cols-[1fr,320px] gap-6">
+          <div>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
+            </div>
+            <div id="moa-out" class="mt-4"></div>
+          </div>
+          <aside class="hidden md:block">
+            <div id="moa-preview" class="flex justify-center">${moaPreview(MOA_MODELS[0], MOA_CORES[0], MOA_GYROS[0], MOA_BRACKETS[0])}</div>
+          </aside>
+        </div>
+      </div>
+    `;
+    const out = $("#moa-out");
+    const prev = $("#moa-preview");
+    const upd = () => {
+      const m = MOA_MODELS[$("#moa-model").value|0];
+      const c = MOA_CORES[$("#moa-core").value|0];
+      const g = MOA_GYROS[$("#moa-gyro").value|0];
+      const b = MOA_BRACKETS[$("#moa-bracket").value|0];
+      const r = moaCompute(c,g);
+      out.innerHTML = `
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          ${statBox("HEALTH", r.h)}${statBox("SHIELD", r.s)}${statBox("ARMOR",  r.a)}
+        </div>
+        <div class="mt-3 text-sm">
+          <div><b>Precepts (Model):</b> ${escapeHtml(m.precepts.join(", "))}</div>
+          <div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)}</div>
+        </div>`;
+      if (prev) prev.innerHTML = moaPreview(m,c,g,b);
+    };
+    $("#moa-model").addEventListener("change", upd);
+    $("#moa-core").addEventListener("change", upd);
+    $("#moa-gyro").addEventListener("change", upd);
+    $("#moa-bracket").addEventListener("change", upd);
+    upd();
+  }
+
+  function renderHoundBuilder(){
+    const host = $("#card"); if (!host) return;
+    host.innerHTML = `
+      <div class="card p-4">
+        <div class="flex items-center justify-between gap-4 mb-3">
+          <h2 class="text-lg font-semibold">Hound Builder</h2>
+        </div>
+        <div class="grid lg:grid-cols-[1fr,320px] gap-6">
+          <div>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="hound-model" class="input">${optionHTML(HOUND_MODELS)}</select></label>
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="hound-core" class="input">${optionHTML(HOUND_CORES)}</select></label>
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select></label>
+              <label class="flex items-center gap-2 mt-6"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
+              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
+            </div>
+            <div id="hound-out" class="mt-4"></div>
+          </div>
+          <aside class="hidden md:block">
+            <div id="hound-preview" class="flex justify-center">${houndPreview(HOUND_MODELS[0], HOUND_CORES[0], HOUND_BRACKETS[0], HOUND_STABILIZERS[0])}</div>
+          </aside>
+        </div>
       </div>
     `;
     const out = $("#hound-out");
+    const prev = $("#hound-preview");
     const upd = () => {
       const m = HOUND_MODELS[$("#hound-model").value|0];
       const c = HOUND_CORES[$("#hound-core").value|0];
@@ -435,16 +357,14 @@
       const r = houndCompute(c,b,gilded);
       out.innerHTML = `
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          ${statBox("HEALTH", r.h)}
-          ${statBox("SHIELD", r.s)}
-          ${statBox("ARMOR",  r.a)}
+          ${statBox("HEALTH", r.h)}${statBox("SHIELD", r.s)}${statBox("ARMOR",  r.a)}
         </div>
         <div class="mt-3 text-sm">
           <div><b>Model:</b> ${escapeHtml(m.name)} — Precept: ${escapeHtml(m.precept)} — Weapon: ${escapeHtml(m.weapon)}</div>
           <div><b>Bracket:</b> ${escapeHtml(b.name)} — ${Math.round((b.H||0)*100)}% H / ${Math.round((b.S||0)*100)}% S / ${Math.round((b.A||0)*100)}% A — Precept: ${escapeHtml(b.precept)} ${gilded ? "(doublé)" : ""}</div>
           <div><b>Stabilizer:</b> ${escapeHtml(s.name)} (${escapeHtml(s.polarity)}) — Precept: ${escapeHtml(s.precept)}</div>
-        </div>
-      `;
+        </div>`;
+      if (prev) prev.innerHTML = houndPreview(m,c,b,s);
     };
     $("#hound-model").addEventListener("change", upd);
     $("#hound-core").addEventListener("change", upd);
@@ -454,12 +374,12 @@
     upd();
   }
 
-  /* -------------- Onglets mode (créés si absents) -------------- */
+  /* -------------- Onglets “mode” (à droite du titre) -------------- */
   function ensureModeTabs(){
     let host = document.getElementById("mode-tabs");
     if (host) return host;
 
-    const root = document.getElementById("status")?.parentElement || document.body;
+    const root = $("#status")?.parentElement || document.body;
     const h1   = root.querySelector("h1") || (() => {
       const f = document.createElement("h1");
       f.className = "text-2xl font-semibold mb-3";
@@ -479,80 +399,66 @@
     host.innerHTML = `
       <button data-mode="all"   class="badge gold px-4 py-2 text-sm md:text-base shadow-sm">Companions</button>
       <button data-mode="moa"   class="badge px-4 py-2 text-sm md:text-base">MOA</button>
-      <button data-mode="hound" class="badge px-4 py-2 text-sm md:text-base">Hound</button>
-    `;
+      <button data-mode="hound" class="badge px-4 py-2 text-sm md:text-base">Hound</button>`;
     row.appendChild(host);
     return host;
   }
 
   function applyMode(mode){
     const host = ensureModeTabs();
-    if (!host) return;
-
-    host.querySelectorAll("[data-mode]").forEach(btn => {
-      const active = btn.dataset.mode === mode;
-      btn.classList.toggle("gold", active);
-    });
-
-    const search = document.getElementById("search");
-    const picker = document.getElementById("picker");
+    if (host) {
+      host.querySelectorAll("[data-mode]")?.forEach(btn => {
+        const active = btn.dataset.mode === mode;
+        btn.classList.toggle("gold", active);
+      });
+    }
+    const search = $("#search");
+    const picker = $("#picker");
     const showListUI = (mode === "all");
-    if (search && search.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
-    if (picker && picker.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
+    if (search?.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
+    if (picker?.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
 
-    if (mode === "moa")      renderMOABuilder();
+    if (mode === "moa")   renderMOABuilder();
     else if (mode === "hound") renderHoundBuilder();
-    // "all" => on ne modifie pas la carte en cours
+    // mode "all": on laisse la carte affichée
   }
 
   /* -------------- Chargement data -------------- */
-  async function loadData(){
-    try{
-      const r = await fetch(EXPORT_URL, { cache: "no-store" });
-      if (r.ok) {
-        const raw = await r.json();
-        const list = normalizeFromExport(raw);
-        if (list.length) return { list, source: "export" };
-      }
-    }catch{}
-    const r2 = await fetch(FALLBACK_URL, { cache: "no-store" });
-    const raw2 = await r2.json();
-    return { list: normalizeFromLua(raw2), source: "lua" };
+  async function loadDataPair(){
+    const [exportRes, luaRes] = await Promise.allSettled([
+      (async () => { try { const r=await fetch(EXPORT_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
+      (async () => { try { const r=await fetch(FALLBACK_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
+    ]);
+    const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
+    const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
+    const list = (listFromExport.length ? listFromExport : listFromLua).slice();
+    const source = listFromExport.length ? "export" : "lua";
+    if (list.length && listFromLua.length) injectAttacks(list, buildAttacksMapFromLua(listFromLua));
+    return { list, source };
   }
 
   /* -------------- Boot -------------- */
   (async function boot(){
     const status = $("#status");
     try{
-      status.textContent = "Chargement des companions…";
+      if (status) status.textContent = "Chargement des companions…";
 
-      // charge export & LUA pour fusionner Attacks
-      const [exportRes, luaRes] = await Promise.allSettled([
-        (async () => { try { const r=await fetch(EXPORT_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
-        (async () => { try { const r=await fetch(FALLBACK_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
-      ]);
-      const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
-      const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
-      const list = (listFromExport.length ? listFromExport : listFromLua).slice();
-      const source = listFromExport.length ? "export" : "lua";
-
-      if (list.length && listFromLua.length){
-        const atkMap = buildAttacksMapFromLua(listFromLua);
-        injectAttacks(list, atkMap);
-      }
-
+      const { list, source } = await loadDataPair();
       if (!list.length){
-        status.textContent = "Aucun compagnon trouvé.";
-        status.style.background = "rgba(255,0,0,.08)";
-        status.style.color = "#ffd1d1";
+        if (status){
+          status.textContent = "Aucun compagnon trouvé.";
+          status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+          status.style.background = "rgba(255,0,0,.08)";
+          status.style.color = "#ffd1d1";
+        }
         return;
       }
 
-      // UI “Companions”
       renderPicker(list);
       renderCard(list[0]);
 
       const setStatus = (n) => {
+        if (!status) return;
         status.textContent = `Companions chargés : ${n} ${source === "export" ? "(Export officiel)" : "(fallback LUA)"}`;
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
         status.style.background = "rgba(0,229,255,.08)";
@@ -560,36 +466,35 @@
       };
       setStatus(list.length);
 
-      const pickerEl = $("#picker");
-      if (pickerEl){
-        pickerEl.addEventListener("change", (e)=>{
+      if ($("#picker")){
+        $("#picker").addEventListener("change", (e)=>{
           const idx = parseInt(e.target.value, 10);
           const q = norm($("#search")?.value).toLowerCase();
           const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
           if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
         });
       }
-      const searchEl = $("#search");
-      if (searchEl){
-        searchEl.addEventListener("input", ()=>{
-          const q = norm(searchEl.value).toLowerCase();
+      if ($("#search")){
+        $("#search").addEventListener("input", ()=>{
+          const q = norm($("#search").value).toLowerCase();
           const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
           renderPicker(filtered);
           if (filtered.length) renderCard(filtered[0]);
-          status.textContent = `Affichage : ${filtered.length} résultat(s)`;
+          if (status) status.textContent = `Affichage : ${filtered.length} résultat(s)`;
         });
       }
 
       // Onglets
       const tabs = ensureModeTabs();
-      tabs.querySelector('[data-mode="all"]').addEventListener("click", ()=>applyMode("all"));
-      tabs.querySelector('[data-mode="moa"]').addEventListener("click", ()=>applyMode("moa"));
-      tabs.querySelector('[data-mode="hound"]').addEventListener("click", ()=>applyMode("hound"));
+      tabs?.querySelector('[data-mode="all"]')?.addEventListener("click", ()=>applyMode("all"));
+      tabs?.querySelector('[data-mode="moa"]')?.addEventListener("click", ()=>applyMode("moa"));
+      tabs?.querySelector('[data-mode="hound"]')?.addEventListener("click", ()=>applyMode("hound"));
       applyMode("all");
+
     } catch(e){
       console.error("[companions] load error:", e);
       if (status){
-        status.textContent = "Erreur de chargement des données.";
+        status.textContent = "Erreur de chargement des companions.";
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
