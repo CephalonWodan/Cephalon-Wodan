@@ -41,9 +41,6 @@
     "exilus": null,
     "exilusPolarity": null
   },
-
-  /* ---------------- Sentinels ---------------- */
-
   "Carrier": {
     "aura": null,
     "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Vazarin"],
