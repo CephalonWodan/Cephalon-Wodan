@@ -6,6 +6,7 @@
   const WF_EXPORT_WARFRAMES = "data/ExportWarframes_en.json";
   const WF_EXPORT_WEAPONS   = "data/ExportWeapons_en.json";
   const AW_OVERRIDES        = "data/aw_overrides.json";
+  const WF_WEAPONS_API      = "https://api.warframestat.us/weapons/?language=en";
 
   /* ----------------- Images ----------------- */
   const IMG_SUITS_LOCAL   = (f) => f ? `img/mobilesuits/${encodeURIComponent(f)}` : "";
@@ -28,11 +29,19 @@
   };
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
 
-  // Nettoie les tags <ARCHWING> / <NECRAMECH> présents dans les noms.
-  const cleanDisplayName = (name) => String(name||"").replace(/<[^>]*>\s*/g, "").replace(/\s+/g, " ").trim();
-  const cleanFileName = (name) => cleanDisplayName(name).replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
+  const cleanDisplayName = (name) => String(name||"")
+    .replace(/<[^>]*>\s*/g, "")   // enlève <ARCHWING> / <NECRAMECH>…
+    .replace(/\s+/g, " ").trim();
 
-  // Placeholder + cyclage d’images (local -> wiki -> cdn)
+  const cleanFileName = (name) =>
+    cleanDisplayName(name).replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
+
+  const slug = (s) => cleanDisplayName(s).toLowerCase()
+    .replace(/['’\u2019]/g,"")
+    .replace(/[^a-z0-9]+/g," ")
+    .trim();
+
+  // Placeholder + cyclage d’images
   const svgPH = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -78,7 +87,7 @@
       };
     }).filter(Boolean);
 
-    // Ajoute depuis overrides si manquants (utile pour R30, polarités, abilities…)
+    // ajoute ceux présents uniquement dans overrides (fallback)
     const have = new Set(list.map(i=>i.Name));
     (overrides ? Object.keys(overrides) : []).forEach(n=>{
       if (have.has(n)) return;
@@ -148,6 +157,11 @@
     }
     return mergeDamageMaps(parts);
   }
+  function computeDamageMapFromAPI(apiRec){
+    // ws API: damageTypes (object) ou damage (object)
+    const obj = apiRec && (apiRec.damageTypes || apiRec.damage);
+    return toDamageMap(obj);
+  }
 
   /* ----------------- Normalisation ARMES ----------------- */
   function classifyWeapon(x){
@@ -160,7 +174,7 @@
         t.includes("heavygun") || t.includes("/archwing/primary")) return "Archgun";
     return null;
   }
-  function normalizeWeapons(raw){
+  function normalizeWeaponsFromExport(raw){
     const arr = Array.isArray(raw?.ExportWeapons) ? raw.ExportWeapons.slice() : [];
     return arr.map(x=>{
       const kind = classifyWeapon(x);
@@ -176,7 +190,6 @@
       const fireRate = x.fireRate ?? x.fireRateSecondary ?? x.normalAttack?.fire_rate ?? null;
       const atkSpd  = isMelee ? (x.attackSpeed ?? fireRate ?? null) : (x.attackSpeed ?? null);
 
-      // Dégâts
       const dmgMap = computeDamageMapFromExport(x);
       let totalDmg = sumDamage(dmgMap);
       if (totalDmg == null) {
@@ -186,7 +199,8 @@
       }
 
       return {
-        Kind: kind, Name: name, Mastery: x.masteryReq,
+        Kind: kind, Name: name, _slug: slug(name),
+        Mastery: x.masteryReq,
         CritC: crit, CritM: critM, Status: stat,
         FireRate: isMelee ? null : fireRate,
         AttackSpeed: isMelee ? atkSpd : null,
@@ -195,6 +209,71 @@
         _imgSrcs: [ IMG_MSWEAP_LOCAL(file), IMG_WIKI(file), IMG_CDN(file) ]
       };
     }).filter(Boolean).sort(byName);
+  }
+  function normalizeWeaponsFromAPI(apiList){
+    const out=[];
+    (Array.isArray(apiList)?apiList:[]).forEach(w=>{
+      const cat = String(w.category||"").toLowerCase();
+      if (!(cat.includes("arch-gun") || cat.includes("archgun") || cat.includes("arch-melee") || cat.includes("archmelee"))) return;
+      const name = cleanDisplayName(w.name||"");
+      const kind = cat.includes("melee") ? "Archmelee" : "Archgun";
+
+      const dmgMap = computeDamageMapFromAPI(w);
+      const total  = w.totalDamage ?? sumDamage(dmgMap);
+
+      const fire   = w.fireRate ?? null;
+      const atkSpd = w.speed ?? w.attackSpeed ?? (cat.includes("melee") ? (w.fireRate ?? null) : null);
+
+      out.push({
+        Kind: kind, Name: name, _slug: slug(name),
+        Mastery: w.masteryReq ?? null,
+        CritC: w.criticalChance ?? null,
+        CritM: w.criticalMultiplier ?? null,
+        Status: w.procChance ?? w.statusChance ?? null,
+        FireRate: kind==="Archmelee" ? null : fire,
+        AttackSpeed: kind==="Archmelee" ? atkSpd : null,
+        Trigger: w.trigger || null,
+        Reload: w.reloadTime ?? null,
+        TotalDamage: total ?? null,
+        DamageMap: dmgMap || null,
+        _imgSrcs: null // on garde les images locales/export
+      });
+    });
+    return out.sort(byName);
+  }
+
+  function mergeWeapons(expList, apiList){
+    const bySlug = (list)=> {
+      const m=new Map();
+      list.forEach(x=>m.set(x._slug, x));
+      return m;
+    };
+    const E = bySlug(expList), A = bySlug(apiList);
+    const names = new Set([...E.keys(), ...A.keys()]);
+    const out=[];
+    names.forEach(s=>{
+      const e = E.get(s) || null;
+      const a = A.get(s) || null;
+      const base = e || a;
+      if (!base) return;
+      out.push({
+        Kind: base.Kind,
+        Name: base.Name,
+        _slug: s,
+        Mastery: e?.Mastery ?? a?.Mastery ?? null,
+        CritC: e?.CritC ?? a?.CritC ?? null,
+        CritM: e?.CritM ?? a?.CritM ?? null,
+        Status: e?.Status ?? a?.Status ?? null,
+        FireRate: base.Kind==="Archmelee" ? null : (e?.FireRate ?? a?.FireRate ?? null),
+        AttackSpeed: base.Kind==="Archmelee" ? (e?.AttackSpeed ?? a?.AttackSpeed ?? null) : null,
+        Trigger: e?.Trigger ?? a?.Trigger ?? null,
+        Reload: e?.Reload ?? a?.Reload ?? null,
+        TotalDamage: e?.TotalDamage ?? a?.TotalDamage ?? sumDamage(e?.DamageMap) ?? sumDamage(a?.DamageMap) ?? null,
+        DamageMap: e?.DamageMap || a?.DamageMap || null,
+        _imgSrcs: e?._imgSrcs || a?._imgSrcs || []
+      });
+    });
+    return out.sort(byName);
   }
 
   /* ----------------- Overrides (R30, Abilities, Polarities…) ----------------- */
@@ -392,15 +471,18 @@
       status.textContent="Chargement des données…";
 
       const overrides = await fetch(AW_OVERRIDES).then(r=>r.json()).catch(()=>null);
-      const [wfRes, wpRes] = await Promise.all([
+      const [wfRes, wpRes, apiW] = await Promise.all([
         fetch(WF_EXPORT_WARFRAMES).then(r=>r.json()).catch(()=>null),
-        fetch(WF_EXPORT_WEAPONS).then(r=>r.json()).catch(()=>null)
+        fetch(WF_EXPORT_WEAPONS).then(r=>r.json()).catch(()=>null),
+        fetch(WF_WEAPONS_API).then(r=>r.json()).catch(()=>[])
       ]);
 
       const suits = normalizeSuits(wfRes, overrides);
       if (overrides) applyOverrides(suits, overrides);
 
-      const weaps = normalizeWeapons(wpRes);
+      const weExp = normalizeWeaponsFromExport(wpRes);
+      const weApi = normalizeWeaponsFromAPI(apiW);
+      const weaps = mergeWeapons(weExp, weApi);
 
       UI.all = suits.concat(weaps);
 
