@@ -23,6 +23,9 @@
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
 
+  // ⬇️ État UI pour restaurer la carte quand on ferme les builders
+  let UI = { list: [], filtered: [], idx: 0 };
+
   // Placeholder inline (1 ligne)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
@@ -185,7 +188,7 @@
     pick.value = "0";
   }
 
-  /* ----------------- MOA: données fixes (wikisteps) ----------------- */
+  /* ----------------- MOA: données fixes ----------------- */
   const MOA_BASE = { Health: 350, Shield: 350, Armor: 350 };
   const MOA_MODELS = [
     { name:"Para",   precepts:["Whiplash Mine","Anti-Grav Grenade"] },
@@ -255,7 +258,7 @@
 
   /* -------------- Helpers UI builder -------------- */
   function optionHTML(list){ return list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join(""); }
-  function fileCandidates(simpleName){ // Pour les vignettes des pièces (local -> wiki -> cdn)
+  function fileCandidates(simpleName){
     if (!simpleName) return [];
     const file = simpleName.replace(/\s+/g,"") + ".png";
     return [ LOCAL_FILE(file), WIKI_FILE(file), CDN_FILE(file) ];
@@ -266,11 +269,10 @@
     </div>`;
   }
 
-  /* -------------- MOA Builder (aéré) -------------- */
+  /* -------------- MOA Builder -------------- */
   function renderMOABuilder(){
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
-        <!-- Colonne gauche : contrôles -->
         <div>
           <h2 class="text-xl font-semibold mb-4">MOA Builder</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -301,7 +303,6 @@
           <div id="moa-notes" class="mt-4 text-sm"></div>
         </div>
 
-        <!-- Colonne droite : aperçu des pièces -->
         <div class="flex flex-col gap-3">
           <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
           <div class="flex flex-wrap gap-3">
@@ -334,11 +335,10 @@
     upd();
   }
 
-  /* -------------- Hound Builder (aéré) -------------- */
+  /* -------------- Hound Builder -------------- */
   function renderHoundBuilder(){
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
-        <!-- Colonne gauche : contrôles -->
         <div>
           <h2 class="text-xl font-semibold mb-4">Hound Builder</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -358,7 +358,6 @@
           <div id="hd-notes" class="mt-4 text-sm"></div>
         </div>
 
-        <!-- Colonne droite : aperçu des pièces -->
         <div class="flex flex-col gap-3">
           <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
           <div class="flex flex-wrap gap-3">
@@ -425,17 +424,28 @@
   }
   function applyMode(mode){
     const host = ensureModeTabs();
+
+    // active/inactive style
     host.querySelectorAll("[data-mode]").forEach(btn => {
-      const active = btn.dataset.mode === mode;
-      btn.classList.toggle("gold", active);
+      btn.classList.toggle("gold", btn.dataset.mode === mode);
     });
+
+    // show/hide search + picker in builder modes
     const search = $("#search");
     const picker = $("#picker");
     const showListUI = (mode === "all");
     if (search?.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
     if (picker?.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
-    if (mode === "moa") renderMOABuilder();
-    else if (mode === "hound") renderHoundBuilder();
+
+    if (mode === "moa") {
+      renderMOABuilder();
+    } else if (mode === "hound") {
+      renderHoundBuilder();
+    } else {
+      // retour à la vue Companions → re-render l'item courant
+      const item = UI.filtered[UI.idx] || UI.list[0];
+      if (item) renderCard(item);
+    }
   }
 
   /* -------------- Chargement -------------- */
@@ -466,6 +476,11 @@
         return;
       }
 
+      // Init état UI
+      UI.list = list.slice();
+      UI.filtered = list.slice();
+      UI.idx = 0;
+
       // UI “Companions”
       renderPicker(list);
       renderCard(list[0]);
@@ -482,14 +497,18 @@
         $("#picker").addEventListener("change", (e)=>{
           const idx = parseInt(e.target.value, 10);
           const q = norm($("#search")?.value).toLowerCase();
-          const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
-          if (filtered.length) renderCard(filtered[Math.min(idx, filtered.length-1)]);
+          const filtered = q ? UI.list.filter(x => (x.Name||"").toLowerCase().includes(q)) : UI.list;
+          UI.filtered = filtered;
+          UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
+          if (filtered.length) renderCard(filtered[UI.idx]);
         });
       }
       if ($("#search")){
         $("#search").addEventListener("input", ()=>{
           const q = norm($("#search").value).toLowerCase();
-          const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
+          const filtered = q ? UI.list.filter(x => (x.Name||"").toLowerCase().includes(q)) : UI.list;
+          UI.filtered = filtered;
+          UI.idx = 0;
           renderPicker(filtered);
           if (filtered.length) renderCard(filtered[0]);
           status.textContent = `Affichage : ${filtered.length} résultat(s)`;
