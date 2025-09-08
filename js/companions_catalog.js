@@ -1,14 +1,19 @@
-<!-- js/companions_catalog.js -->
+// js/companions_catalog.js
 (() => {
   "use strict";
 
   /* ----------------- Config ----------------- */
   const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
   const FALLBACK_URL = "data/companions.json";         // ancien JSON (LUA)
-  const IMG_ROOT     = "img/companions/";              // <<< TON DOSSIER
+
+  // Priorité images : LOCAL -> WIKI -> CDN
+  const LOCAL_FILE = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
+  const WIKI_FILE  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
+  const CDN_FILE   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
 
   /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
   const norm = (s) => String(s || "").trim();
   const byName = (a,b) => (a.Name || a.name || "").localeCompare(b.Name || b.name || "");
   const fmtNum = (v) => (v === null || v === undefined || v === "") ? "—" : String(v);
@@ -18,23 +23,13 @@
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
 
-  // Mappe un nom → fichier .png de ton repo: “Prisma Shade” → “PrismaShade.png”
-  const nameToFile = (name) => (String(name||"").replace(/[^A-Za-z0-9]/g, "") || "placeholder") + ".png";
-
-  // placeholder inline (une ligne → pas de retour non échappé)
+  // Placeholder inline (1 ligne)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   })();
 
-  const renderImgLocal = (title) => {
-    const src = IMG_ROOT + nameToFile(title);
-    const ph  = svgPlaceholder.replace(/'/g, "%27");
-    const alt = escapeHtml(title);
-    return `<img src="${src}" alt="${alt}" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='${ph}'">`;
-  };
-
-  /* -------------- Détection type depuis uniqueName (Public Export) -------------- */
+  /* -------------- Détection type (Public Export) -------------- */
   function detectType(u) {
     const p = String(u || "");
     if (p.includes("/CatbrowPet/")) return "Kavat";
@@ -45,36 +40,48 @@
     return "Companion";
   }
 
-  /* -------------- Normalisation EXPORT (Public Export) -------------- */
+  /* -------------- Normalisation EXPORT -------------- */
   function normalizeFromExport(raw){
     const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
-    return arr.map(x => ({
-      Name:  x.name || "",
-      Type:  detectType(x.uniqueName),
-      Category: (x.productCategory === "Sentinels") ? "Sentinels" : "Pets",
-      Description: x.description || "",
-      Armor:  x.armor ?? 0,
-      Health: x.health ?? 0,
-      Shield: x.shield ?? 0,
-      Energy: x.power ?? 0,
-      Attacks: null // pas fourni par l’Export
-    })).sort(byName);
+    return arr
+      .map(x => {
+        const name = x.name || "";
+        const type = detectType(x.uniqueName);
+        const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
+        const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
+        return {
+          Name: name,
+          Type: type,
+          Category: category,
+          Description: x.description || "",
+          Armor:  x.armor ?? 0,
+          Health: x.health ?? 0,
+          Shield: x.shield ?? 0,
+          Energy: x.power ?? 0,
+          Attacks: null, // pas fourni par l’Export
+          _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
+        };
+      })
+      .sort(byName);
   }
 
-  /* -------------- Normalisation ancien JSON (LUA -> wiki) -------------- */
+  /* -------------- Normalisation LUA -------------- */
   function normalizeFromLua(raw){
     let coll = raw && raw.Companions ? raw.Companions : raw;
     if (!coll) return [];
     let arr;
-    if (Array.isArray(coll)) {
-      arr = coll.slice();
-    } else {
-      arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
-    }
-    return arr.sort(byName);
+    if (Array.isArray(coll)) arr = coll.slice();
+    else arr = Object.entries(coll).map(([k,v]) => (v.Name ? v : { ...v, Name: v.Name || k }));
+    arr = arr.map(v => {
+      const name = coalesce(v, ["Name","name"], "");
+      const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
+      return { ...v, _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean) };
+    });
+    arr.sort(byName);
+    return arr;
   }
 
-  /* -------------- Fusion des Attacks depuis le LUA -------------- */
+  /* -------------- Fusion des Attacks (depuis LUA) -------------- */
   function buildAttacksMapFromLua(luaList){
     const m = new Map();
     for (const it of luaList){
@@ -92,7 +99,21 @@
     }
   }
 
-  /* -------------- Attaques (bloc sous les stats) -------------- */
+  /* -------------- <img> avec fallbacks -------------- */
+  window.__cycleImg = function(el, placeholder){
+    const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
+    let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
+    if (i < list.length) { el.setAttribute("data-i", String(i)); el.src = list[i]; }
+    else { el.onerror = null; el.src = placeholder; }
+  };
+  function renderImg(name, srcs, klass="w-full h-full object-contain"){
+    const safePH = svgPlaceholder.replace(/'/g, "%27");
+    const dataSrcs = (srcs && srcs.length ? srcs : [svgPlaceholder]).join("|").replace(/'/g, "%27");
+    const alt = escapeHtml(name||"");
+    return `<img src="${srcs?.[0]||svgPlaceholder}" data-srcs="${dataSrcs}" data-i="0" alt="${alt}" referrerpolicy="no-referrer" class="${klass}" onerror="__cycleImg(this,'${safePH}')">`;
+  }
+
+  /* -------------- Attaques -------------- */
   function sumDamage(dmg){ if (!dmg || typeof dmg !== "object") return null; let t=0; for(const k in dmg){ const v=Number(dmg[k]); if(!isNaN(v)) t+=v; } return t||null; }
   function attacksBlock(item){
     const atks = coalesce(item, ["Attacks","attacks"], null);
@@ -109,18 +130,14 @@
       if (stat)  parts.push(`Statut ${stat}`);
       return `<div class="py-1">• ${escapeHtml(name)} — ${parts.join(" · ")}</div>`;
     }).join("");
-    return `
-      <div class="mt-4">
-        <div class="text-sm muted mb-1">Attaques</div>
-        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">${rows}</div>
-      </div>`;
+    return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
-  /* -------------- UI helpers -------------- */
+  /* -------------- Carte Companion -------------- */
   const statBox = (label, value) => `
-    <div class="stat">
+    <div class="stat h-24 flex flex-col justify-center">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
-      <div class="text-lg font-semibold">${escapeHtml(fmtNum(value))}</div>
+      <div class="text-2xl font-semibold leading-tight">${escapeHtml(fmtNum(value))}</div>
     </div>`;
   function chips(item){
     const cat  = coalesce(item, ["Category","category"], "");
@@ -128,7 +145,6 @@
     const mk = (t) => t ? `<span class="badge">${escapeHtml(t)}</span>` : "";
     return [mk(cat), mk(type)].filter(Boolean).join(" ");
   }
-
   function renderCard(item){
     const name = coalesce(item, ["Name","name"], "—");
     const desc = coalesce(item, ["Description","description"], "");
@@ -136,37 +152,24 @@
     const health = coalesce(item, ["Health","health"], "—");
     const shield = coalesce(item, ["Shield","shield"], "—");
     const energy = coalesce(item, ["Energy","energy"], "—");
-
+    const imgHTML = renderImg(name, item._imgSrcs || []);
     $("#card").innerHTML = `
-      <div class="flex flex-col md:flex-row gap-6">
-        <!-- Colonne image -->
-        <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
-          <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            ${renderImgLocal(name)}
+      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
+        <div class="flex flex-col gap-4">
+          <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
+          <div class="flex flex-wrap gap-2">${chips(item)}</div>
+          <p class="text-[var(--muted)] leading-relaxed">${cleanDesc(desc)}</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+            ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
           </div>
-        </div>
-
-        <!-- Colonne contenu -->
-        <div class="flex-1 flex flex-col gap-4">
-          <div class="flex items-start gap-4">
-            <div class="min-w-0 flex-1">
-              <h2 class="text-xl font-semibold">${escapeHtml(name)}</h2>
-              <div class="mt-2 flex flex-wrap gap-2">${chips(item)}</div>
-              <p class="mt-2 text-[var(--muted)]">${cleanDesc(desc)}</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            ${statBox("ARMOR", armor)}
-            ${statBox("HEALTH", health)}
-            ${statBox("SHIELD", shield)}
-            ${statBox("ENERGY", energy)}
-          </div>
-
           ${attacksBlock(item)}
         </div>
-      </div>
-    `;
+        <div class="w-full max-w-[420px] mx-auto xl:mx-0">
+          <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
+            ${imgHTML}
+          </div>
+        </div>
+      </div>`;
   }
 
   function renderPicker(list){
@@ -182,14 +185,13 @@
     pick.value = "0";
   }
 
-  /* -------------- MOA & Hound builders (avec images locales) -------------- */
-  // MOA
+  /* ----------------- MOA: données fixes (wikisteps) ----------------- */
   const MOA_BASE = { Health: 350, Shield: 350, Armor: 350 };
   const MOA_MODELS = [
-    { name:"Para",    precepts:["Whiplash Mine","Anti-Grav Grenade"] },
-    { name:"Lambeo",  precepts:["Stasis Field","Shockwave Actuators"] },
-    { name:"Oloro",   precepts:["Tractor Beam","Security Override"] },
-    { name:"Nychus",  precepts:["Blast Shield","Hard Engage"] },
+    { name:"Para",   precepts:["Whiplash Mine","Anti-Grav Grenade"] },
+    { name:"Lambeo", precepts:["Stasis Field","Shockwave Actuators"] },
+    { name:"Oloro",  precepts:["Tractor Beam","Security Override"] },
+    { name:"Nychus", precepts:["Blast Shield","Hard Engage"] },
   ];
   const MOA_CORES = [
     { name:"Drex",   H:+0.10, S:+0.15, A:+0.05 },
@@ -214,13 +216,14 @@
     { name:"Gauth",   polarities:"(Naramon)" },
     { name:"Hona",    polarities:"(Naramon)" },
   ];
-  const moaCompute = (core, gyro) => ({
-    h: Math.round(MOA_BASE.Health * (1 + (core?.H||0) + (gyro?.H||0))),
-    s: Math.round(MOA_BASE.Shield * (1 + (core?.S||0) + (gyro?.S||0))),
-    a: Math.round(MOA_BASE.Armor  * (1 + (core?.A||0) + (gyro?.A||0))),
-  });
+  function moaCompute(core, gyro){
+    const h = Math.round(MOA_BASE.Health  * (1 + (core?.H||0) + (gyro?.H||0)));
+    const s = Math.round(MOA_BASE.Shield  * (1 + (core?.S||0) + (gyro?.S||0)));
+    const a = Math.round(MOA_BASE.Armor   * (1 + (core?.A||0) + (gyro?.A||0)));
+    return { h, s, a };
+  }
 
-  // Hound
+  /* ----------------- Hound: données fixes ----------------- */
   const HOUND_MODELS = [
     { name:"Bhaira", precept:"Null Audit", weapon:"Lacerten" },
     { name:"Dorma",  precept:"Repo Audit", weapon:"Batoten"  },
@@ -244,110 +247,130 @@
   function houndCompute(core, bracket, gilded=false){
     if (!core) return { h:0, s:0, a:0 };
     const mult = gilded ? 2 : 1;
-    return {
-      h: Math.round(core.H * (1 + mult*(bracket?.H||0))),
-      s: Math.round(core.S * (1 + mult*(bracket?.S||0))),
-      a: Math.round(core.A * (1 + mult*(bracket?.A||0))),
-    };
+    const h = Math.round(core.H * (1 + mult*(bracket?.H||0)));
+    const s = Math.round(core.S * (1 + mult*(bracket?.S||0)));
+    const a = Math.round(core.A * (1 + mult*(bracket?.A||0)));
+    return { h, s, a };
   }
 
-  const optionHTML = (list) => list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join("");
-
-  function moaPreview(model, core, gyro, bracket){
-    const img = (n) => `<div class="w-20 h-20 rounded-xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">${renderImgLocal(n)}</div>`;
-    return `
-      <div class="flex gap-3 items-center">
-        ${img(model?.name||"")}
-        ${img(core?.name||"")}
-        ${img(gyro?.name||"")}
-        ${img(bracket?.name||"")}
-      </div>`;
+  /* -------------- Helpers UI builder -------------- */
+  function optionHTML(list){ return list.map((x,i)=>`<option value="${i}">${escapeHtml(x.name)}</option>`).join(""); }
+  function fileCandidates(simpleName){ // Pour les vignettes des pièces (local -> wiki -> cdn)
+    if (!simpleName) return [];
+    const file = simpleName.replace(/\s+/g,"") + ".png";
+    return [ LOCAL_FILE(file), WIKI_FILE(file), CDN_FILE(file) ];
   }
-  function houndPreview(model, core, bracket, stab){
-    const img = (n) => `<div class="w-20 h-20 rounded-xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">${renderImgLocal(n)}</div>`;
-    return `
-      <div class="flex gap-3 items-center">
-        ${img(model?.name||"")}
-        ${img(core?.name||"")}
-        ${img(bracket?.name||"")}
-        ${img(stab?.name||"")}
-      </div>`;
+  function thumb(name){
+    return `<div class="w-20 h-20 rounded-xl bg-[var(--panel-2)] border orn flex items-center justify-center overflow-hidden">
+      ${renderImg(name, fileCandidates(name), "w-[80%] h-[80%] object-contain")}
+    </div>`;
   }
 
+  /* -------------- MOA Builder (aéré) -------------- */
   function renderMOABuilder(){
-    const host = $("#card"); if (!host) return;
-    host.innerHTML = `
-      <div class="card p-4">
-        <div class="flex items-center justify-between gap-4 mb-3">
-          <h2 class="text-lg font-semibold">MOA Builder</h2>
-        </div>
-        <div class="grid lg:grid-cols-[1fr,320px] gap-6">
-          <div>
-            <div class="grid sm:grid-cols-2 gap-3">
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
-            </div>
-            <div id="moa-out" class="mt-4"></div>
+    $("#card").innerHTML = `
+      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
+        <!-- Colonne gauche : contrôles -->
+        <div>
+          <h2 class="text-xl font-semibold mb-4">MOA Builder</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Model</span>
+              <select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select>
+            </label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Core</span>
+              <select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select>
+            </label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Gyro</span>
+              <select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select>
+            </label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Bracket</span>
+              <select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select>
+            </label>
           </div>
-          <aside class="hidden md:block">
-            <div id="moa-preview" class="flex justify-center">${moaPreview(MOA_MODELS[0], MOA_CORES[0], MOA_GYROS[0], MOA_BRACKETS[0])}</div>
-          </aside>
+
+          <div class="mt-6 grid grid-cols-3 gap-4">
+            <div id="moa-h" class="stat h-24"></div>
+            <div id="moa-s" class="stat h-24"></div>
+            <div id="moa-a" class="stat h-24"></div>
+          </div>
+
+          <div id="moa-notes" class="mt-4 text-sm"></div>
+        </div>
+
+        <!-- Colonne droite : aperçu des pièces -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
+          <div class="flex flex-wrap gap-3">
+            <div id="moa-thumb-model">${thumb("Para")}</div>
+            <div id="moa-thumb-core">${thumb("Drex")}</div>
+            <div id="moa-thumb-gyro">${thumb("Trux")}</div>
+            <div id="moa-thumb-bracket">${thumb("Drimper")}</div>
+          </div>
         </div>
       </div>
     `;
-    const out = $("#moa-out");
-    const prev = $("#moa-preview");
+
+    const outH = $("#moa-h"), outS = $("#moa-s"), outA = $("#moa-a"), notes = $("#moa-notes");
     const upd = () => {
       const m = MOA_MODELS[$("#moa-model").value|0];
       const c = MOA_CORES[$("#moa-core").value|0];
       const g = MOA_GYROS[$("#moa-gyro").value|0];
       const b = MOA_BRACKETS[$("#moa-bracket").value|0];
       const r = moaCompute(c,g);
-      out.innerHTML = `
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          ${statBox("HEALTH", r.h)}${statBox("SHIELD", r.s)}${statBox("ARMOR",  r.a)}
-        </div>
-        <div class="mt-3 text-sm">
-          <div><b>Precepts (Model):</b> ${escapeHtml(m.precepts.join(", "))}</div>
-          <div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)}</div>
-        </div>`;
-      if (prev) prev.innerHTML = moaPreview(m,c,g,b);
+      outH.innerHTML = `${statBox("HEALTH", r.h)}`;
+      outS.innerHTML = `${statBox("SHIELD", r.s)}`;
+      outA.innerHTML = `${statBox("ARMOR",  r.a)}`;
+      notes.innerHTML = `<div><b>Precepts (Model):</b> ${escapeHtml(m.precepts.join(", "))}</div><div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)}</div>`;
+      $("#moa-thumb-model").innerHTML   = thumb(m.name);
+      $("#moa-thumb-core").innerHTML    = thumb(c.name);
+      $("#moa-thumb-gyro").innerHTML    = thumb(g.name);
+      $("#moa-thumb-bracket").innerHTML = thumb(b.name);
     };
-    $("#moa-model").addEventListener("change", upd);
-    $("#moa-core").addEventListener("change", upd);
-    $("#moa-gyro").addEventListener("change", upd);
-    $("#moa-bracket").addEventListener("change", upd);
+    ["#moa-model","#moa-core","#moa-gyro","#moa-bracket"].forEach(id => $(id).addEventListener("change", upd));
     upd();
   }
 
+  /* -------------- Hound Builder (aéré) -------------- */
   function renderHoundBuilder(){
-    const host = $("#card"); if (!host) return;
-    host.innerHTML = `
-      <div class="card p-4">
-        <div class="flex items-center justify-between gap-4 mb-3">
-          <h2 class="text-lg font-semibold">Hound Builder</h2>
-        </div>
-        <div class="grid lg:grid-cols-[1fr,320px] gap-6">
-          <div>
-            <div class="grid sm:grid-cols-2 gap-3">
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="hound-model" class="input">${optionHTML(HOUND_MODELS)}</select></label>
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="hound-core" class="input">${optionHTML(HOUND_CORES)}</select></label>
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select></label>
-              <label class="flex items-center gap-2 mt-6"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
-              <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
-            </div>
-            <div id="hound-out" class="mt-4"></div>
+    $("#card").innerHTML = `
+      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
+        <!-- Colonne gauche : contrôles -->
+        <div>
+          <h2 class="text-xl font-semibold mb-4">Hound Builder</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="hound-model" class="input">${optionHTML(HOUND_MODELS)}</select></label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="hound-core" class="input">${optionHTML(HOUND_CORES)}</select></label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select></label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
           </div>
-          <aside class="hidden md:block">
-            <div id="hound-preview" class="flex justify-center">${houndPreview(HOUND_MODELS[0], HOUND_CORES[0], HOUND_BRACKETS[0], HOUND_STABILIZERS[0])}</div>
-          </aside>
+          <label class="flex items-center gap-2 mt-3"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
+
+          <div class="mt-6 grid grid-cols-3 gap-4">
+            <div id="hd-h" class="stat h-24"></div>
+            <div id="hd-s" class="stat h-24"></div>
+            <div id="hd-a" class="stat h-24"></div>
+          </div>
+
+          <div id="hd-notes" class="mt-4 text-sm"></div>
+        </div>
+
+        <!-- Colonne droite : aperçu des pièces -->
+        <div class="flex flex-col gap-3">
+          <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
+          <div class="flex flex-wrap gap-3">
+            <div id="hd-thumb-model">${thumb("Bhaira")}</div>
+            <div id="hd-thumb-core">${thumb("Adlet")}</div>
+            <div id="hd-thumb-bracket">${thumb("Cela")}</div>
+            <div id="hd-thumb-stab">${thumb("Frak")}</div>
+          </div>
         </div>
       </div>
     `;
-    const out = $("#hound-out");
-    const prev = $("#hound-preview");
+    const outH = $("#hd-h"), outS = $("#hd-s"), outA = $("#hd-a"), notes = $("#hd-notes");
     const upd = () => {
       const m = HOUND_MODELS[$("#hound-model").value|0];
       const c = HOUND_CORES[$("#hound-core").value|0];
@@ -355,26 +378,23 @@
       const s = HOUND_STABILIZERS[$("#hound-stab").value|0];
       const gilded = $("#hound-gilded").checked;
       const r = houndCompute(c,b,gilded);
-      out.innerHTML = `
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          ${statBox("HEALTH", r.h)}${statBox("SHIELD", r.s)}${statBox("ARMOR",  r.a)}
-        </div>
-        <div class="mt-3 text-sm">
-          <div><b>Model:</b> ${escapeHtml(m.name)} — Precept: ${escapeHtml(m.precept)} — Weapon: ${escapeHtml(m.weapon)}</div>
-          <div><b>Bracket:</b> ${escapeHtml(b.name)} — ${Math.round((b.H||0)*100)}% H / ${Math.round((b.S||0)*100)}% S / ${Math.round((b.A||0)*100)}% A — Precept: ${escapeHtml(b.precept)} ${gilded ? "(doublé)" : ""}</div>
-          <div><b>Stabilizer:</b> ${escapeHtml(s.name)} (${escapeHtml(s.polarity)}) — Precept: ${escapeHtml(s.precept)}</div>
-        </div>`;
-      if (prev) prev.innerHTML = houndPreview(m,c,b,s);
+      outH.innerHTML = `${statBox("HEALTH", r.h)}`;
+      outS.innerHTML = `${statBox("SHIELD", r.s)}`;
+      outA.innerHTML = `${statBox("ARMOR",  r.a)}`;
+      notes.innerHTML = `
+        <div><b>Model:</b> ${escapeHtml(m.name)} — Precept: ${escapeHtml(m.precept)} — Weapon: ${escapeHtml(m.weapon)}</div>
+        <div><b>Bracket:</b> ${escapeHtml(b.name)} — ${Math.round((b.H||0)*100)}% H / ${Math.round((b.S||0)*100)}% S / ${Math.round((b.A||0)*100)}% A — Precept: ${escapeHtml(b.precept)} ${gilded ? "(doublé)" : ""}</div>
+        <div><b>Stabilizer:</b> ${escapeHtml(s.name)} (${escapeHtml(s.polarity)}) — Precept: ${escapeHtml(s.precept)}</div>`;
+      $("#hd-thumb-model").innerHTML   = thumb(m.name);
+      $("#hd-thumb-core").innerHTML    = thumb(c.name);
+      $("#hd-thumb-bracket").innerHTML = thumb(b.name);
+      $("#hd-thumb-stab").innerHTML    = thumb(s.name);
     };
-    $("#hound-model").addEventListener("change", upd);
-    $("#hound-core").addEventListener("change", upd);
-    $("#hound-bracket").addEventListener("change", upd);
-    $("#hound-stab").addEventListener("change", upd);
-    $("#hound-gilded").addEventListener("change", upd);
+    ["#hound-model","#hound-core","#hound-bracket","#hound-stab","#hound-gilded"].forEach(id => $(id).addEventListener("change", upd));
     upd();
   }
 
-  /* -------------- Onglets “mode” (à droite du titre) -------------- */
+  /* -------------- Onglets (en haut à droite) -------------- */
   function ensureModeTabs(){
     let host = document.getElementById("mode-tabs");
     if (host) return host;
@@ -403,62 +423,54 @@
     row.appendChild(host);
     return host;
   }
-
   function applyMode(mode){
     const host = ensureModeTabs();
-    if (host) {
-      host.querySelectorAll("[data-mode]")?.forEach(btn => {
-        const active = btn.dataset.mode === mode;
-        btn.classList.toggle("gold", active);
-      });
-    }
+    host.querySelectorAll("[data-mode]").forEach(btn => {
+      const active = btn.dataset.mode === mode;
+      btn.classList.toggle("gold", active);
+    });
     const search = $("#search");
     const picker = $("#picker");
     const showListUI = (mode === "all");
     if (search?.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
     if (picker?.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
-
-    if (mode === "moa")   renderMOABuilder();
+    if (mode === "moa") renderMOABuilder();
     else if (mode === "hound") renderHoundBuilder();
-    // mode "all": on laisse la carte affichée
   }
 
-  /* -------------- Chargement data -------------- */
-  async function loadDataPair(){
-    const [exportRes, luaRes] = await Promise.allSettled([
-      (async () => { try { const r=await fetch(EXPORT_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
-      (async () => { try { const r=await fetch(FALLBACK_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
-    ]);
-    const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
-    const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
-    const list = (listFromExport.length ? listFromExport : listFromLua).slice();
-    const source = listFromExport.length ? "export" : "lua";
-    if (list.length && listFromLua.length) injectAttacks(list, buildAttacksMapFromLua(listFromLua));
-    return { list, source };
-  }
-
-  /* -------------- Boot -------------- */
+  /* -------------- Chargement -------------- */
   (async function boot(){
     const status = $("#status");
     try{
-      if (status) status.textContent = "Chargement des companions…";
+      status.textContent = "Chargement des companions…";
 
-      const { list, source } = await loadDataPair();
+      // charge export & LUA pour fusionner Attacks
+      const [exportRes, luaRes] = await Promise.allSettled([
+        (async () => { try { const r=await fetch(EXPORT_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
+        (async () => { try { const r=await fetch(FALLBACK_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
+      ]);
+      const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
+      const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
+      const list = (listFromExport.length ? listFromExport : listFromLua).slice();
+      const source = listFromExport.length ? "export" : "lua";
+
+      if (list.length && listFromLua.length){
+        const atkMap = buildAttacksMapFromLua(listFromLua);
+        injectAttacks(list, atkMap);
+      }
+
       if (!list.length){
-        if (status){
-          status.textContent = "Aucun compagnon trouvé.";
-          status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-          status.style.background = "rgba(255,0,0,.08)";
-          status.style.color = "#ffd1d1";
-        }
+        status.textContent = "Aucun compagnon trouvé.";
+        status.style.background = "rgba(255,0,0,.08)";
+        status.style.color = "#ffd1d1";
         return;
       }
 
+      // UI “Companions”
       renderPicker(list);
       renderCard(list[0]);
 
       const setStatus = (n) => {
-        if (!status) return;
         status.textContent = `Companions chargés : ${n} ${source === "export" ? "(Export officiel)" : "(fallback LUA)"}`;
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
         status.style.background = "rgba(0,229,255,.08)";
@@ -480,25 +492,22 @@
           const filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
           renderPicker(filtered);
           if (filtered.length) renderCard(filtered[0]);
-          if (status) status.textContent = `Affichage : ${filtered.length} résultat(s)`;
+          status.textContent = `Affichage : ${filtered.length} résultat(s)`;
         });
       }
 
       // Onglets
       const tabs = ensureModeTabs();
-      tabs?.querySelector('[data-mode="all"]')?.addEventListener("click", ()=>applyMode("all"));
-      tabs?.querySelector('[data-mode="moa"]')?.addEventListener("click", ()=>applyMode("moa"));
-      tabs?.querySelector('[data-mode="hound"]')?.addEventListener("click", ()=>applyMode("hound"));
+      tabs.querySelector('[data-mode="all"]').addEventListener("click", ()=>applyMode("all"));
+      tabs.querySelector('[data-mode="moa"]').addEventListener("click", ()=>applyMode("moa"));
+      tabs.querySelector('[data-mode="hound"]').addEventListener("click", ()=>applyMode("hound"));
       applyMode("all");
-
     } catch(e){
       console.error("[companions] load error:", e);
-      if (status){
-        status.textContent = "Erreur de chargement des companions.";
-        status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-        status.style.background = "rgba(255,0,0,.08)";
-        status.style.color = "#ffd1d1";
-      }
+      status.textContent = "Erreur de chargement des données.";
+      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+      status.style.background = "rgba(255,0,0,.08)";
+      status.style.color = "#ffd1d1";
     }
   })();
 })();
