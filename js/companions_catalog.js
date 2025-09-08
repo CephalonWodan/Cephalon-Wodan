@@ -3,8 +3,8 @@
   "use strict";
 
   /* ----------------- Config ----------------- */
-  const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
-  const FALLBACK_URL = "data/companions.json";         // ancien JSON (LUA)
+  const EXPORT_URL   = "data/ExportSentinels_en.json";
+  const FALLBACK_URL = "data/companions.json";
 
   // Priorité images : LOCAL -> WIKI -> CDN
   const LOCAL_FILE = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
@@ -137,7 +137,7 @@
     return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
-  /* ---------- Icônes de polarité (utilise tes classes CSS) ---------- */
+  /* ---------- Icônes de polarité (robuste) ---------- */
   const POL_FILES = {
     Madurai: "Madurai_Pol.svg",
     Vazarin: "Vazarin_Pol.svg",
@@ -162,13 +162,26 @@
   function injectLocalPolIcons(host, arr){
     if (!host) return;
     const list = (arr||[]).map(canonPolName).filter(Boolean);
-    host.innerHTML = ""; // .polarity-row a display:flex; flex-wrap:wrap; gap:… via polarities.css
+
+    // Force l’horizontal au cas où le CSS n’est pas appliqué
+    host.innerHTML = "";
+    host.classList.add("polarity-row");
+    host.style.display = "flex";
+    host.style.flexWrap = "wrap";
+    host.style.alignItems = "center";
+    host.style.gap = "8px";
 
     list.forEach(p=>{
       const file = POL_FILES[p] || POL_FILES.Any;
 
       const pill = document.createElement("span");
-      pill.className = "pol-icon"; // style pastille dorée (ton CSS)
+      pill.className = "pol-icon";
+      pill.style.display = "inline-flex";
+      pill.style.alignItems = "center";
+      pill.style.justifyContent = "center";
+      pill.style.width = "28px";
+      pill.style.height = "28px";
+      pill.style.borderRadius = "9999px";
 
       const img = new Image();
       img.alt = p;
@@ -233,7 +246,8 @@
                 ${statBox("ARMOR (R30)",  maxA)}
                 <div class="stat h-24 flex flex-col justify-center">
                   <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
-                  <div class="text-lg font-semibold">${ehp} <span class="text-[var(--muted)]">/ ${ehpS} avec boucliers</span></div>
+                  <div class="text-2xl font-semibold leading-tight">${ehp}</div>
+                  <div class="text-xs leading-tight opacity-80">EHP avec boucliers : ${ehpS}</div>
                 </div>
               </div>
             </div>
@@ -363,39 +377,24 @@
   }
 
   /* -------------- MOA Builder -------------- */
-  function renderMOABuilder(){
+  function renderMOABuilder(){ /* (identique à plus haut) */ 
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
         <div>
           <h2 class="text-xl font-semibold mb-4">MOA Builder</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label class="flex flex-col gap-1">
-              <span class="text-xs uppercase tracking-wider">Model</span>
-              <select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select>
-            </label>
-            <label class="flex flex-col gap-1">
-              <span class="text-xs uppercase tracking-wider">Core</span>
-              <select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select>
-            </label>
-            <label class="flex flex-col gap-1">
-              <span class="text-xs uppercase tracking-wider">Gyro</span>
-              <select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select>
-            </label>
-            <label class="flex flex-col gap-1">
-              <span class="text-xs uppercase tracking-wider">Bracket</span>
-              <select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select>
-            </label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
+            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
           </div>
-
           <div class="mt-6 grid grid-cols-3 gap-4">
             <div id="moa-h" class="stat h-24"></div>
             <div id="moa-s" class="stat h-24"></div>
             <div id="moa-a" class="stat h-24"></div>
           </div>
-
           <div id="moa-notes" class="mt-4 text-sm"></div>
         </div>
-
         <div class="flex flex-col gap-3">
           <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
           <div class="flex flex-wrap gap-3">
@@ -407,7 +406,6 @@
         </div>
       </div>
     `;
-
     const outH = $("#moa-h"), outS = $("#moa-s"), outA = $("#moa-a"), notes = $("#moa-notes");
     const upd = () => {
       const m = MOA_MODELS[$("#moa-model").value|0];
@@ -429,7 +427,7 @@
   }
 
   /* -------------- Hound Builder -------------- */
-  function renderHoundBuilder(){
+  function renderHoundBuilder(){ /* (identique à plus haut) */
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
         <div>
@@ -441,24 +439,18 @@
             <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
           </div>
           <label class="flex items-center gap-2 mt-3"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
-
           <div class="mt-6 grid grid-cols-3 gap-4">
             <div id="hd-h" class="stat h-24"></div>
             <div id="hd-s" class="stat h-24"></div>
             <div id="hd-a" class="stat h-24"></div>
           </div>
-
           <div id="hd-notes" class="mt-4 text-sm"></div>
         </div>
-
-        <div class="flex flex-col gap-3">
-          <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
-          <div class="flex flex-wrap gap-3">
-            <div id="hd-thumb-model">${thumb("Bhaira")}</div>
-            <div id="hd-thumb-core">${thumb("Adlet")}</div>
-            <div id="hd-thumb-bracket">${thumb("Cela")}</div>
-            <div id="hd-thumb-stab">${thumb("Frak")}</div>
-          </div>
+        <div class="flex flex-wrap gap-3">
+          <div id="hd-thumb-model">${thumb("Bhaira")}</div>
+          <div id="hd-thumb-core">${thumb("Adlet")}</div>
+          <div id="hd-thumb-bracket">${thumb("Cela")}</div>
+          <div id="hd-thumb-stab">${thumb("Frak")}</div>
         </div>
       </div>
     `;
@@ -517,11 +509,9 @@
   }
   function applyMode(mode){
     const host = ensureModeTabs();
-
     host.querySelectorAll("[data-mode]").forEach(btn => {
       btn.classList.toggle("gold", btn.dataset.mode === mode);
     });
-
     const search = $("#search");
     const picker = $("#picker");
     const showListUI = (mode === "all");
