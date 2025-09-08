@@ -11,34 +11,139 @@
     "exilus": null,
     "exilusPolarity": null
   },
-    "Harrow Prime": {
+  "Harrow Prime": {
     "aura": "Naramon",
     "slots": ["Madurai","Vazarin","Naramon"],
     "exilus": null,
     "exilusPolarity": null
   },
-    "Hildryn Prime": {
+  "Hildryn Prime": {
     "aura": "Naramon",
     "slots": ["Vazarin","Vazarin","Naramon"],
     "exilus": true,
-    "exilusPolarity":"Vazarin"
+    "exilusPolarity": "Vazarin"
   },
-    "Qorvex": {
+  "Qorvex": {
     "aura": "Naramon",
     "slots": ["Vazarin","Naramon"],
     "exilus": null,
-    "exilusPolarity":null
+    "exilusPolarity": null
   },
-    "Temple": {
+  "Temple": {
     "aura": "Naramon",
     "slots": ["Madurai","Vazarin"],
     "exilus": null,
-    "exilusPolarity":null
+    "exilusPolarity": null
   },
-    "Voruna": {
+  "Voruna": {
     "aura": "Vazarin",
     "slots": ["Madurai","Vazarin"],
     "exilus": null,
-    "exilusPolarity":null
+    "exilusPolarity": null
+  },
+
+  /* ---------------- Sentinels ---------------- */
+
+  "Carrier": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Carrier Prime": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Madurai","Vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Dethcube": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Dethcube Prime": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Diriga": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Djinn": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Naramon"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Helios": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Helios Prime": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Nautilus": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Nautilus Prime": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Vazarin"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Oxylus": {
+    "aura": null,
+    "slots": ["Naramon","Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Prisma Shade": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Naramon"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Shade": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Shade Prime": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga","Naramon"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Taxon": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Wyrm": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
+  "Wyrm Prime": {
+    "aura": null,
+    "slots": ["Penjaga","Penjaga","Penjaga","Penjaga"],
+    "exilus": null,
+    "exilusPolarity": null
   }
 }
