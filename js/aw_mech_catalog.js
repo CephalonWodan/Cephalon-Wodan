@@ -33,8 +33,8 @@
 
   // ⚠️ Nettoie les tags type "<ARCHWING>" / "<NECRAMECH>" / etc.
   const cleanDisplayName = (name) => String(name||"")
-    .replace(/<[^>]*>\s*/g, "")     // enlève tout ce qui est entre <>
-    .replace(/\s+/g, " ")           // espaces propres
+    .replace(/<[^>]*>\s*/g, "")
+    .replace(/\s+/g, " ")
     .trim();
 
   const cleanFileName = (name) =>
@@ -107,6 +107,36 @@
     return list.sort(byName);
   }
 
+  /* ----------------- Dégâts (helpers) ----------------- */
+  const cap = (s) => String(s||"").replace(/[_-]+/g," ").replace(/\b\w/g, m=>m.toUpperCase());
+  function sumObj(obj){ let t=0; for(const k in obj){ const v=Number(obj[k]); if(!isNaN(v)) t+=v; } return t; }
+  function mergeDamageMaps(list){
+    const out={};
+    list.forEach(m=>{
+      if (!m || typeof m!=="object") return;
+      for (const k in m){
+        const key = cap(k);
+        const v = Number(m[k]);
+        if (!isNaN(v)) out[key] = (out[key]||0) + v;
+      }
+    });
+    return Object.keys(out).length ? out : null;
+  }
+  function extractDamageMap(x){
+    // essaie plusieurs emplacements possibles selon l’export
+    const candidates = [];
+    if (x.damage && typeof x.damage === "object") candidates.push(x.damage);
+    if (x.normalAttack?.damage) candidates.push(x.normalAttack.damage);
+    if (x.areaAttack?.damage)   candidates.push(x.areaAttack.damage);
+    if (Array.isArray(x.damagePerShot) && Array.isArray(x.damageTypes)){
+      const map={}; for (let i=0;i<Math.min(x.damagePerShot.length,x.damageTypes.length);i++){
+        map[x.damageTypes[i]] = x.damagePerShot[i];
+      }
+      candidates.push(map);
+    }
+    return mergeDamageMaps(candidates);
+  }
+
   /* ----------------- Normalisation ARMES ----------------- */
   function classifyWeapon(x){
     const t = `${x.type||""} ${x.productCategory||""} ${x.uniqueName||""}`.toLowerCase();
@@ -132,17 +162,22 @@
       const fireRate = x.fireRate ?? x.fireRateSecondary ?? null;
       const atkSpd  = x.attackSpeed ?? null;
 
+      // Dégâts
+      const dmgMap = extractDamageMap(x);
       let totalDmg = null;
-      const dmg = x.damage || x.damagePerShot || x.totalDamage || null;
-      if (dmg && typeof dmg === "object") totalDmg = Object.values(dmg).reduce((a,b)=>a+(+b||0),0) || null;
-      else if (typeof dmg === "number") totalDmg = dmg;
+      if (dmgMap) totalDmg = sumObj(dmgMap);
+      else {
+        const dmg = x.damage || x.damagePerShot || x.totalDamage || null;
+        if (dmg && typeof dmg === "object") totalDmg = sumObj(dmg);
+        else if (typeof dmg === "number") totalDmg = dmg;
+      }
 
       return {
         Kind: kind, Name: name, Mastery: x.masteryReq,
         CritC: crit, CritM: critM, Status: stat,
         FireRate: fireRate, AttackSpeed: atkSpd,
         Trigger: x.trigger || null, Reload: x.reloadTime ?? null,
-        TotalDamage: totalDmg,
+        TotalDamage: totalDmg, DamageMap: dmgMap || null,
         _imgSrcs: [ IMG_MSWEAP_LOCAL(file), IMG_WIKI(file), IMG_CDN(file) ]
       };
     }).filter(Boolean).sort(byName);
@@ -221,6 +256,26 @@
       </div>`;
   }
 
+  function damagePanel(map, total){
+    if (!map) return "";
+    const rows = [`<div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)]">
+                     <div class="text-[13px] text-[var(--muted)]">Total</div><div class="font-medium">${fmt(total)}</div>
+                   </div>`]
+      .concat(Object.entries(map)
+        .filter(([,v]) => Number(v) > 0)
+        .sort((a,b)=>a[0].localeCompare(b[0]))
+        .map(([k,v])=>`<div class="flex items-center justify-between py-1">
+                         <div class="text-[13px]">${esc(k)}</div><div>${fmt(v)}</div>
+                       </div>`));
+    return `
+      <div class="mt-4">
+        <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Détails des dégâts</div>
+        <div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">
+          ${rows.join("")}
+        </div>
+      </div>`;
+  }
+
   function renderWeaponCard(w){
     const imgHTML = imgTag(w.Name, w._imgSrcs || []);
     const rows=[]; 
@@ -253,6 +308,8 @@
               ${rows.join("") || "<div class='text-[13px] text-[var(--muted)]'>Aucun détail exposé par l’export.</div>"}
             </div>
           </div>
+
+          ${damagePanel(w.DamageMap, w.TotalDamage)}
         </div>
 
         <div class="w-full max-w-[420px] mx-auto xl:mx-0">
