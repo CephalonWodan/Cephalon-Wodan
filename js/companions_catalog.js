@@ -279,7 +279,7 @@
                 <div class="stat h-24 flex flex-col justify-center">
                   <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
                   <div class="text-2xl font-semibold leading-tight">${ehp}</div>
-                  <div class="text-xs leading-tight opacity-80">EHP avec boucliers : ${ehpS}</div>
+                  <div class="text-xs leading-tight opacity-80">EHP with shield : ${ehpS}</div>
                 </div>
               </div>
             </div>
