@@ -1,17 +1,18 @@
-// js/aw_mech_catalog.js
+// js/necramechs_archwings.js
 (() => {
   "use strict";
 
   /* ----------------- URLs des datasets ----------------- */
   const WF_EXPORT_WARFRAMES = "data/ExportWarframes_en.json";
   const WF_EXPORT_WEAPONS   = "data/ExportWeapons_en.json";
-  const AW_OVERRIDES        = "data/aw_overrides.json"; // nos compléments (Amesha/Elytron/Itzal/Odonata/Prime/Bonewidow/Voidrig)
+  const ABILITIES_BY_WF     = "data/abilities_by_warframe.json"; // déjà géré
+  const AW_OVERRIDES        = "data/aw_overrides.json";           // nos compléments
 
   /* ----------------- Images ----------------- */
   // Archwing/Necramech (corps)
-  const IMG_SUITS_LOCAL   = (file) => file ? `img/mobilesuits/${encodeURIComponent(file)}` : "";
+  const IMG_SUITS_LOCAL = (file) => file ? `img/mobilesuits/${encodeURIComponent(file)}` : "";
   // Armes Archgun/Archmelee
-  const IMG_MSWEAP_LOCAL  = (file) => file ? `img/mobilesuits/MSweapons/${encodeURIComponent(file)}` : "";
+  const IMG_MSWEAP_LOCAL = (file) => file ? `img/mobilesuits/MSweapons/${encodeURIComponent(file)}` : "";
   // Fallbacks
   const IMG_WIKI  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
   const IMG_CDN   = (file) => file ? `https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/${encodeURIComponent(file)}` : "";
@@ -27,7 +28,7 @@
   const coalesce = (o, ks, d=null) => { for (const k of ks) if (o && o[k]!=null) return o[k]; return d; };
   const cleanFileName = (name) => String(name||"").replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
 
-  // Placeholder + cyclage d’URL en cas d’erreur
+  // Image placeholder + cyclage sur erreurs
   const svgPH = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -46,12 +47,13 @@
   }
 
   /* ----------------- État UI ----------------- */
-  let UI = { allItems: [], list: [], filtered: [], idx: 0, mode: "archwing" };
+  let UI = { list: [], filtered: [], idx: 0, mode: "archwing" };
 
   /* ----------------- Normalisation AW / Necramech ----------------- */
   function detectSuitType(uName){
     const s = String(uName||"");
     if (s.includes("/Mech/") || s.toLowerCase().includes("necramech")) return "Necramech";
+    // Archwing
     return "Archwing";
   }
   function normalizeSuits(raw){
@@ -89,9 +91,10 @@
       const crit = x.criticalChance ?? x.critChance ?? null;
       const critM = x.criticalMultiplier ?? x.critMultiplier ?? null;
       const stat  = x.statusChance ?? x.procChance ?? null;
+      // cadence/AS
       const fireRate = x.fireRate ?? x.fireRateSecondary ?? null;
       const attackSp = x.attackSpeed ?? null;
-
+      // dégâts total si dispo
       let totalDmg = null;
       const dmg = x.damage || x.damagePerShot || x.totalDamage || null;
       if (dmg && typeof dmg === "object") {
@@ -113,8 +116,10 @@
   /* ----------------- Overrides (AW/Necramech) ----------------- */
   function applyOverrides(list, overrides){
     if (!overrides || !Array.isArray(list)) return;
+    const m = overrides; // objet {Name: {...}}
     list.forEach(item=>{
-      const o = overrides[item.Name]; if (!o) return;
+      const o = m[item.Name]; if (!o) return;
+      // bases (R30 affichage)
       if (o.base){
         item.HealthR30 = o.base.HealthR30 ?? item.HealthR30;
         item.ShieldR30 = o.base.ShieldR30 ?? item.ShieldR30;
@@ -135,6 +140,7 @@
 
   function chips(arr){ return (arr||[]).map(s=>`<span class="badge">${escapeHtml(s)}</span>`).join(" "); }
 
+  // Carte AW/Necramech
   function renderSuitCard(item){
     const imgHTML = renderImg(item.Name, item._imgSrcs || []);
     const r30 = (n,m=3.5)=> Math.round((Number(n)||0)*m);
@@ -185,6 +191,7 @@
     `;
   }
 
+  // Carte Arme
   function renderWeaponCard(w){
     const imgHTML = renderImg(w.Name, w._imgSrcs || []);
     const rows = [];
@@ -268,6 +275,7 @@
       btn.classList.toggle("gold", btn.dataset.mode === mode);
     });
 
+    // filtre
     const list = UI.allItems.filter(it => {
       if (mode==="archwing")  return it.Kind==="Archwing";
       if (mode==="necramech") return it.Kind==="Necramech";
@@ -305,6 +313,7 @@
 
       const weaps = normalizeWeapons(wpRes);
 
+      // Fusion dans un seul tableau pour les tabs
       UI.allItems = suits.concat(weaps);
 
       if (!UI.allItems.length){
@@ -314,7 +323,7 @@
         return;
       }
 
-      // UI
+      // UI de base
       ensureModeTabs();
       $("#picker")?.addEventListener("change", (e)=>{
         const i = e.target.value|0;
@@ -342,7 +351,7 @@
       tabs.querySelector('[data-mode="archgun"]').addEventListener("click", ()=>applyMode("archgun"));
       tabs.querySelector('[data-mode="archmelee"]').addEventListener("click", ()=>applyMode("archmelee"));
 
-      applyMode("archwing"); // start
+      applyMode("archwing"); // démarrage sur Archwings
 
       status.textContent = `Datasets chargés : ${UI.allItems.length}`;
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
@@ -350,7 +359,7 @@
       status.style.color = "#bfefff";
       try{ status.setAttribute('aria-busy','false'); }catch(_){}
     } catch(e){
-      console.error("[aw/mech] load error:", e);
+      console.error("[aw/nm] load error:", e);
       status.textContent = "Erreur de chargement des données.";
       status.style.background = "rgba(255,0,0,.08)";
       status.style.color = "#ffd1d1";
