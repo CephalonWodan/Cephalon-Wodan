@@ -23,17 +23,15 @@
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
 
-  // ⬇️ État UI pour restaurer la carte quand on ferme les builders
   let UI = { list: [], filtered: [], idx: 0 };
 
-  // Polarités depuis l'item (tableau)
   function extractPolaritiesFromItem(item){
     let p = item.Polarities || item.polarities || item.Slots || null;
     if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
     return Array.isArray(p) ? p : [];
   }
 
-  // Placeholder inline (1 ligne)
+  // Placeholder inline
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -53,25 +51,23 @@
   /* -------------- Normalisation EXPORT -------------- */
   function normalizeFromExport(raw){
     const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
-    return arr
-      .map(x => {
-        const name = x.name || "";
-        const type = detectType(x.uniqueName);
-        const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-        const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
-        return {
-          Name: name,
-          Type: type,
-          Category: category,
-          Description: x.description || "",
-          Armor:  x.armor ?? 0,
-          Health: x.health ?? 0,
-          Shield: x.shield ?? 0,
-          Attacks: null, // pas fourni par l’Export
-          _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
-        };
-      })
-      .sort(byName);
+    return arr.map(x => {
+      const name = x.name || "";
+      const type = detectType(x.uniqueName);
+      const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
+      const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
+      return {
+        Name: name,
+        Type: type,
+        Category: category,
+        Description: x.description || "",
+        Armor:  x.armor ?? 0,
+        Health: x.health ?? 0,
+        Shield: x.shield ?? 0,
+        Attacks: null,
+        _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
+      };
+    }).sort(byName);
   }
 
   /* -------------- Normalisation LUA -------------- */
@@ -86,8 +82,7 @@
       const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
       return { ...v, _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean) };
     });
-    arr.sort(byName);
-    return arr;
+    return arr.sort(byName);
   }
 
   /* -------------- Fusion des Attacks (depuis LUA) -------------- */
@@ -142,7 +137,7 @@
     return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
-  /* ---------- Fallback local icônes de polarité ---------- */
+  /* ---------- Icônes de polarité (utilise tes classes CSS) ---------- */
   const POL_FILES = {
     Madurai: "Madurai_Pol.svg",
     Vazarin: "Vazarin_Pol.svg",
@@ -167,25 +162,24 @@
   function injectLocalPolIcons(host, arr){
     if (!host) return;
     const list = (arr||[]).map(canonPolName).filter(Boolean);
-
-    // Affichage horizontal, wrap si nécessaire
-    host.innerHTML = "";
-    host.style.display = "inline-flex";
-    host.style.flexWrap = "wrap";
-    host.style.alignItems = "center";
-    host.style.gap = "6px";
+    host.innerHTML = ""; // .polarity-row a display:flex; flex-wrap:wrap; gap:… via polarities.css
 
     list.forEach(p=>{
       const file = POL_FILES[p] || POL_FILES.Any;
+
+      const pill = document.createElement("span");
+      pill.className = "pol-icon"; // style pastille dorée (ton CSS)
+
       const img = new Image();
       img.alt = p;
       img.width = 26; img.height = 26;
       img.loading = "lazy";
       img.decoding = "async";
       img.src = `img/polarities/${file}`;
-      img.style.display = "inline-block";
-      img.onerror = () => { img.replaceWith(document.createTextNode(p[0]||"?")); };
-      host.appendChild(img);
+      img.onerror = () => { pill.textContent = p[0] || "?"; };
+
+      pill.appendChild(img);
+      host.appendChild(pill);
     });
   }
 
@@ -207,13 +201,11 @@
     const armor  = Number(coalesce(item, ["Armor","armor"], 0)) || 0;
     const health = Number(coalesce(item, ["Health","health"], 0)) || 0;
     const shield = Number(coalesce(item, ["Shield","shield"], 0)) || 0;
-    const providedSlots = extractPolaritiesFromItem(item); // ← slots pour n'importe quel type
+    const providedSlots = extractPolaritiesFromItem(item);
     const imgHTML = renderImg(name, item._imgSrcs || []);
 
-    // Sentinelle → bloc rang 30
     const isSentinel = /sentinel/i.test(String(item.Type || item.Category));
 
-    // Rang 30 + EHP
     const RANK30_SCALE = 3.5;
     const maxH = Math.round(health * RANK30_SCALE);
     const maxS = Math.round(shield * RANK30_SCALE);
@@ -221,7 +213,6 @@
     const ehp  = Math.round(maxH * (1 + maxA/300));
     const ehpS = Math.round(ehp + maxS);
 
-    // HTML carte
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
         <div class="flex flex-col gap-4">
@@ -250,11 +241,8 @@
 
           ${providedSlots.length ? `
             <div class="mt-4">
-              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Mod Slots</div>
-              <div class="mt-2 flex items-center gap-2 flex-wrap">
-                <span class="text-sm mr-1"><b>Polarités :</b></span>
-                <span class="polarity-row" data-zone="others"></span>
-              </div>
+              <div class="polarity-label">Polarities</div>
+              <div class="polarity-row" data-zone="others"></div>
               <div class="hidden"><span class="polarity-row" data-zone="aura"></span></div>
             </div>
           ` : ""}
@@ -270,12 +258,10 @@
       </div>
     `;
 
-    // Événement pour polarities.js
     document.dispatchEvent(new CustomEvent("wf:card-rendered", {
       detail: { wf: { name, auraPolarity: null, polarities: providedSlots }, source: "companions" }
     }));
 
-    // Fallback local immédiat (au cas où)
     if (providedSlots.length){
       const host = $("#card .polarity-row[data-zone='others']");
       injectLocalPolIcons(host, providedSlots);
@@ -500,7 +486,7 @@
     upd();
   }
 
-  /* -------------- Onglets (en haut à droite) -------------- */
+  /* -------------- Onglets -------------- */
   function ensureModeTabs(){
     let host = document.getElementById("mode-tabs");
     if (host) return host;
@@ -532,23 +518,19 @@
   function applyMode(mode){
     const host = ensureModeTabs();
 
-    // active/inactive style
     host.querySelectorAll("[data-mode]").forEach(btn => {
       btn.classList.toggle("gold", btn.dataset.mode === mode);
     });
 
-    // show/hide search + picker in builder modes
     const search = $("#search");
     const picker = $("#picker");
     const showListUI = (mode === "all");
     if (search?.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
     if (picker?.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
 
-    if (mode === "moa") {
-      renderMOABuilder();
-    } else if (mode === "hound") {
-      renderHoundBuilder();
-    } else {
+    if (mode === "moa") renderMOABuilder();
+    else if (mode === "hound") renderHoundBuilder();
+    else {
       const item = UI.filtered[UI.idx] || UI.list[0];
       if (item) renderCard(item);
     }
@@ -560,25 +542,20 @@
     try{
       status.textContent = "Chargement des companions…";
 
-      // charge export & LUA pour fusionner Attacks + Polarities (si manquantes)
       const [exportRes, luaRes] = await Promise.allSettled([
         (async () => {
           try {
             const r = await fetch(EXPORT_URL,   { cache: 'force-cache' /* was: no-store */ });
             if(!r.ok) throw 0;
             return normalizeFromExport(await r.json());
-          } catch {
-            return [];
-          }
+          } catch { return []; }
         })(),
         (async () => {
           try {
             const r = await fetch(FALLBACK_URL, { cache: 'force-cache' /* was: no-store */ });
             if(!r.ok) throw 0;
             return normalizeFromLua(await r.json());
-          } catch {
-            return [];
-          }
+          } catch { return []; }
         })()
       ]);
       const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
@@ -622,12 +599,10 @@
         return;
       }
 
-      // Init état UI
       UI.list = list.slice();
       UI.filtered = list.slice();
       UI.idx = 0;
 
-      // UI “Companions”
       renderPicker(list);
       renderCard(list[0]);
 
@@ -680,7 +655,6 @@
         });
       }
 
-      // Onglets
       const tabs = ensureModeTabs();
       tabs.querySelector('[data-mode="all"]').addEventListener("click", ()=>applyMode("all"));
       tabs.querySelector('[data-mode="moa"]').addEventListener("click", ()=>applyMode("moa"));
@@ -688,7 +662,6 @@
       applyMode("all");
     } catch(e){
       console.error("[companions] load error:", e);
-      const status = $("#status");
       if (status){
         status.textContent = "Erreur de chargement des données.";
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
