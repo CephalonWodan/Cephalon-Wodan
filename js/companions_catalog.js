@@ -3,8 +3,8 @@
   "use strict";
 
   /* ----------------- Config ----------------- */
-  const EXPORT_URL   = "data/ExportSentinels_en.json";
-  const FALLBACK_URL = "data/companions.json";
+  const EXPORT_URL   = "data/ExportSentinels_en.json"; // Public Export (workflow)
+  const FALLBACK_URL = "data/companions.json";         // ancien JSON (LUA)
 
   // Priorité images : LOCAL -> WIKI -> CDN
   const LOCAL_FILE = (file) => file ? `img/companions/${encodeURIComponent(file)}` : "";
@@ -23,15 +23,17 @@
   const cleanDesc = (s) => escapeHtml(cleanLF(s)).replace(/\n/g, "<br>");
   function coalesce(obj, keys, def=null){ for(const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
 
+  // État UI
   let UI = { list: [], filtered: [], idx: 0 };
 
+  // Polarités → tableau
   function extractPolaritiesFromItem(item){
     let p = item.Polarities || item.polarities || item.Slots || null;
     if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
     return Array.isArray(p) ? p : [];
   }
 
-  // Placeholder inline
+  // Placeholder inline (1 ligne)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -51,23 +53,25 @@
   /* -------------- Normalisation EXPORT -------------- */
   function normalizeFromExport(raw){
     const arr = Array.isArray(raw?.ExportSentinels) ? raw.ExportSentinels.slice() : [];
-    return arr.map(x => {
-      const name = x.name || "";
-      const type = detectType(x.uniqueName);
-      const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
-      const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
-      return {
-        Name: name,
-        Type: type,
-        Category: category,
-        Description: x.description || "",
-        Armor:  x.armor ?? 0,
-        Health: x.health ?? 0,
-        Shield: x.shield ?? 0,
-        Attacks: null,
-        _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
-      };
-    }).sort(byName);
+    return arr
+      .map(x => {
+        const name = x.name || "";
+        const type = detectType(x.uniqueName);
+        const category = (x.productCategory === "Sentinels") ? "Sentinels" : "Pets";
+        const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
+        return {
+          Name: name,
+          Type: type,
+          Category: category,
+          Description: x.description || "",
+          Armor:  x.armor ?? 0,
+          Health: x.health ?? 0,
+          Shield: x.shield ?? 0,
+          Attacks: null, // pas fourni par l’Export
+          _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
+        };
+      })
+      .sort(byName);
   }
 
   /* -------------- Normalisation LUA -------------- */
@@ -82,7 +86,8 @@
       const fileBase = name ? (name.replace(/\s+/g, "") + ".png") : "";
       return { ...v, _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean) };
     });
-    return arr.sort(byName);
+    arr.sort(byName);
+    return arr;
   }
 
   /* -------------- Fusion des Attacks (depuis LUA) -------------- */
@@ -163,7 +168,7 @@
     if (!host) return;
     const list = (arr||[]).map(canonPolName).filter(Boolean);
 
-    // Force l’horizontal au cas où le CSS n’est pas appliqué
+    // Force l’horizontal au cas où le CSS du site ne s’applique pas
     host.innerHTML = "";
     host.classList.add("polarity-row");
     host.style.display = "flex";
@@ -208,6 +213,32 @@
     const mk = (t) => t ? `<span class="badge">${escapeHtml(t)}</span>` : "";
     return [mk(cat), mk(type)].filter(Boolean).join(" ");
   }
+
+  // === helpers d’esthétique pour les BUILDERS ===
+  // vignettes plus grandes (container dimensionné en style, image à 85%)
+  function thumb(name, size = 120){
+    return `<div class="rounded-xl bg-[var(--panel-2)] border orn flex items-center justify-center overflow-hidden"
+                style="width:${size}px;height:${size}px">
+              ${renderImg(name, fileCandidates(name), "w-[85%] h-[85%] object-contain")}
+            </div>`;
+  }
+  // cases stats minimalistes pour builders (retire le petit “chip”)
+  const builderStatBox = (label, value) => `
+    <div class="h-24 flex flex-col justify-center rounded-xl bg-[var(--panel-2)] border px-4">
+      <div class="text-[10px] uppercase tracking-wide opacity-80">${escapeHtml(label)}</div>
+      <div class="text-3xl font-semibold leading-tight">${escapeHtml(fmtNum(value))}</div>
+    </div>`;
+  // centrage du texte des <select>
+  function applySelectCentering(scopeSelector){
+    const scope = scopeSelector ? document.querySelector(scopeSelector) : document;
+    if (!scope) return;
+    scope.querySelectorAll("select.input").forEach(sel=>{
+      sel.style.textAlign = "center";
+      sel.style.textAlignLast = "center";
+      sel.style.setProperty("-moz-text-align-last","center");
+    });
+  }
+
   function renderCard(item){
     const name = coalesce(item, ["Name","name"], "—");
     const desc = coalesce(item, ["Description","description"], "");
@@ -219,6 +250,7 @@
 
     const isSentinel = /sentinel/i.test(String(item.Type || item.Category));
 
+    // Rang 30 + EHP
     const RANK30_SCALE = 3.5;
     const maxH = Math.round(health * RANK30_SCALE);
     const maxS = Math.round(shield * RANK30_SCALE);
@@ -272,10 +304,12 @@
       </div>
     `;
 
+    // événement pour polarities.js
     document.dispatchEvent(new CustomEvent("wf:card-rendered", {
       detail: { wf: { name, auraPolarity: null, polarities: providedSlots }, source: "companions" }
     }));
 
+    // fallback d'icônes local
     if (providedSlots.length){
       const host = $("#card .polarity-row[data-zone='others']");
       injectLocalPolIcons(host, providedSlots);
@@ -370,42 +404,56 @@
     const file = simpleName.replace(/\s+/g,"") + ".png";
     return [ LOCAL_FILE(file), WIKI_FILE(file), CDN_FILE(file) ];
   }
-  function thumb(name){
-    return `<div class="w-20 h-20 rounded-xl bg-[var(--panel-2)] border orn flex items-center justify-center overflow-hidden">
-      ${renderImg(name, fileCandidates(name), "w-[80%] h-[80%] object-contain")}
-    </div>`;
-  }
 
   /* -------------- MOA Builder -------------- */
-  function renderMOABuilder(){ /* (identique à plus haut) */ 
+  function renderMOABuilder(){
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
         <div>
           <h2 class="text-xl font-semibold mb-4">MOA Builder</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Model</span><select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select></label>
-            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Core</span><select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select></label>
-            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Gyro</span><select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select></label>
-            <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select></label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Model</span>
+              <select id="moa-model" class="input">${optionHTML(MOA_MODELS)}</select>
+            </label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Core</span>
+              <select id="moa-core" class="input">${optionHTML(MOA_CORES)}</select>
+            </label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Gyro</span>
+              <select id="moa-gyro" class="input">${optionHTML(MOA_GYROS)}</select>
+            </label>
+            <label class="flex flex-col gap-1">
+              <span class="text-xs uppercase tracking-wider">Bracket</span>
+              <select id="moa-bracket" class="input">${optionHTML(MOA_BRACKETS)}</select>
+            </label>
           </div>
+
           <div class="mt-6 grid grid-cols-3 gap-4">
-            <div id="moa-h" class="stat h-24"></div>
-            <div id="moa-s" class="stat h-24"></div>
-            <div id="moa-a" class="stat h-24"></div>
+            <div id="moa-h" class="h-24"></div>
+            <div id="moa-s" class="h-24"></div>
+            <div id="moa-a" class="h-24"></div>
           </div>
+
           <div id="moa-notes" class="mt-4 text-sm"></div>
         </div>
+
         <div class="flex flex-col gap-3">
           <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
-          <div class="flex flex-wrap gap-3">
-            <div id="moa-thumb-model">${thumb("Para")}</div>
-            <div id="moa-thumb-core">${thumb("Drex")}</div>
-            <div id="moa-thumb-gyro">${thumb("Trux")}</div>
-            <div id="moa-thumb-bracket">${thumb("Drimper")}</div>
+          <div class="flex flex-wrap gap-4">
+            <div id="moa-thumb-model">${thumb("Para", 120)}</div>
+            <div id="moa-thumb-core">${thumb("Drex", 120)}</div>
+            <div id="moa-thumb-gyro">${thumb("Trux", 120)}</div>
+            <div id="moa-thumb-bracket">${thumb("Drimper", 120)}</div>
           </div>
         </div>
       </div>
     `;
+
+    // centre les selects
+    applySelectCentering("#card");
+
     const outH = $("#moa-h"), outS = $("#moa-s"), outA = $("#moa-a"), notes = $("#moa-notes");
     const upd = () => {
       const m = MOA_MODELS[$("#moa-model").value|0];
@@ -413,21 +461,23 @@
       const g = MOA_GYROS[$("#moa-gyro").value|0];
       const b = MOA_BRACKETS[$("#moa-bracket").value|0];
       const r = moaCompute(c,g);
-      outH.innerHTML = `${statBox("HEALTH", r.h)}`;
-      outS.innerHTML = `${statBox("SHIELD", r.s)}`;
-      outA.innerHTML = `${statBox("ARMOR",  r.a)}`;
+
+      outH.innerHTML = builderStatBox("HEALTH", r.h);
+      outS.innerHTML = builderStatBox("SHIELD", r.s);
+      outA.innerHTML = builderStatBox("ARMOR",  r.a);
+
       notes.innerHTML = `<div><b>Precepts (Model):</b> ${escapeHtml(m.precepts.join(", "))}</div><div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)}</div>`;
-      $("#moa-thumb-model").innerHTML   = thumb(m.name);
-      $("#moa-thumb-core").innerHTML    = thumb(c.name);
-      $("#moa-thumb-gyro").innerHTML    = thumb(g.name);
-      $("#moa-thumb-bracket").innerHTML = thumb(b.name);
+      $("#moa-thumb-model").innerHTML   = thumb(m.name, 120);
+      $("#moa-thumb-core").innerHTML    = thumb(c.name, 120);
+      $("#moa-thumb-gyro").innerHTML    = thumb(g.name, 120);
+      $("#moa-thumb-bracket").innerHTML = thumb(b.name, 120);
     };
     ["#moa-model","#moa-core","#moa-gyro","#moa-bracket"].forEach(id => $(id).addEventListener("change", upd));
     upd();
   }
 
   /* -------------- Hound Builder -------------- */
-  function renderHoundBuilder(){ /* (identique à plus haut) */
+  function renderHoundBuilder(){
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
         <div>
@@ -439,21 +489,30 @@
             <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
           </div>
           <label class="flex items-center gap-2 mt-3"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
+
           <div class="mt-6 grid grid-cols-3 gap-4">
-            <div id="hd-h" class="stat h-24"></div>
-            <div id="hd-s" class="stat h-24"></div>
-            <div id="hd-a" class="stat h-24"></div>
+            <div id="hd-h" class="h-24"></div>
+            <div id="hd-s" class="h-24"></div>
+            <div id="hd-a" class="h-24"></div>
           </div>
+
           <div id="hd-notes" class="mt-4 text-sm"></div>
         </div>
-        <div class="flex flex-wrap gap-3">
-          <div id="hd-thumb-model">${thumb("Bhaira")}</div>
-          <div id="hd-thumb-core">${thumb("Adlet")}</div>
-          <div id="hd-thumb-bracket">${thumb("Cela")}</div>
-          <div id="hd-thumb-stab">${thumb("Frak")}</div>
+
+        <div class="flex flex-col gap-3">
+          <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
+          <div class="flex flex-wrap gap-4">
+            <div id="hd-thumb-model">${thumb("Bhaira", 120)}</div>
+            <div id="hd-thumb-core">${thumb("Adlet", 120)}</div>
+            <div id="hd-thumb-bracket">${thumb("Cela", 120)}</div>
+            <div id="hd-thumb-stab">${thumb("Frak", 120)}</div>
+          </div>
         </div>
       </div>
     `;
+    // centre les selects
+    applySelectCentering("#card");
+
     const outH = $("#hd-h"), outS = $("#hd-s"), outA = $("#hd-a"), notes = $("#hd-notes");
     const upd = () => {
       const m = HOUND_MODELS[$("#hound-model").value|0];
@@ -462,23 +521,25 @@
       const s = HOUND_STABILIZERS[$("#hound-stab").value|0];
       const gilded = $("#hound-gilded").checked;
       const r = houndCompute(c,b,gilded);
-      outH.innerHTML = `${statBox("HEALTH", r.h)}`;
-      outS.innerHTML = `${statBox("SHIELD", r.s)}`;
-      outA.innerHTML = `${statBox("ARMOR",  r.a)}`;
+
+      outH.innerHTML = builderStatBox("HEALTH", r.h);
+      outS.innerHTML = builderStatBox("SHIELD", r.s);
+      outA.innerHTML = builderStatBox("ARMOR",  r.a);
+
       notes.innerHTML = `
         <div><b>Model:</b> ${escapeHtml(m.name)} — Precept: ${escapeHtml(m.precept)} — Weapon: ${escapeHtml(m.weapon)}</div>
         <div><b>Bracket:</b> ${escapeHtml(b.name)} — ${Math.round((b.H||0)*100)}% H / ${Math.round((b.S||0)*100)}% S / ${Math.round((b.A||0)*100)}% A — Precept: ${escapeHtml(b.precept)} ${gilded ? "(doublé)" : ""}</div>
         <div><b>Stabilizer:</b> ${escapeHtml(s.name)} (${escapeHtml(s.polarity)}) — Precept: ${escapeHtml(s.precept)}</div>`;
-      $("#hd-thumb-model").innerHTML   = thumb(m.name);
-      $("#hd-thumb-core").innerHTML    = thumb(c.name);
-      $("#hd-thumb-bracket").innerHTML = thumb(b.name);
-      $("#hd-thumb-stab").innerHTML    = thumb(s.name);
+      $("#hd-thumb-model").innerHTML   = thumb(m.name, 120);
+      $("#hd-thumb-core").innerHTML    = thumb(c.name, 120);
+      $("#hd-thumb-bracket").innerHTML = thumb(b.name, 120);
+      $("#hd-thumb-stab").innerHTML    = thumb(s.name, 120);
     };
     ["#hound-model","#hound-core","#hound-bracket","#hound-stab","#hound-gilded"].forEach(id => $(id).addEventListener("change", upd));
     upd();
   }
 
-  /* -------------- Onglets -------------- */
+  /* -------------- Onglets (en haut à droite) -------------- */
   function ensureModeTabs(){
     let host = document.getElementById("mode-tabs");
     if (host) return host;
@@ -509,18 +570,22 @@
   }
   function applyMode(mode){
     const host = ensureModeTabs();
+
     host.querySelectorAll("[data-mode]").forEach(btn => {
       btn.classList.toggle("gold", btn.dataset.mode === mode);
     });
+
     const search = $("#search");
     const picker = $("#picker");
     const showListUI = (mode === "all");
     if (search?.parentElement) search.parentElement.style.display = showListUI ? "" : "none";
     if (picker?.parentElement) picker.parentElement.style.display = showListUI ? "" : "none";
 
-    if (mode === "moa") renderMOABuilder();
-    else if (mode === "hound") renderHoundBuilder();
-    else {
+    if (mode === "moa") {
+      renderMOABuilder();
+    } else if (mode === "hound") {
+      renderHoundBuilder();
+    } else {
       const item = UI.filtered[UI.idx] || UI.list[0];
       if (item) renderCard(item);
     }
@@ -532,17 +597,18 @@
     try{
       status.textContent = "Chargement des companions…";
 
+      // charge export & LUA pour fusionner Attacks + Polarities (si manquantes)
       const [exportRes, luaRes] = await Promise.allSettled([
         (async () => {
           try {
-            const r = await fetch(EXPORT_URL,   { cache: 'force-cache' /* was: no-store */ });
+            const r = await fetch(EXPORT_URL,   { cache: 'force-cache' });
             if(!r.ok) throw 0;
             return normalizeFromExport(await r.json());
           } catch { return []; }
         })(),
         (async () => {
           try {
-            const r = await fetch(FALLBACK_URL, { cache: 'force-cache' /* was: no-store */ });
+            const r = await fetch(FALLBACK_URL, { cache: 'force-cache' });
             if(!r.ok) throw 0;
             return normalizeFromLua(await r.json());
           } catch { return []; }
@@ -589,10 +655,12 @@
         return;
       }
 
+      // Init état UI
       UI.list = list.slice();
       UI.filtered = list.slice();
       UI.idx = 0;
 
+      // UI “Companions”
       renderPicker(list);
       renderCard(list[0]);
 
@@ -645,6 +713,7 @@
         });
       }
 
+      // Onglets
       const tabs = ensureModeTabs();
       tabs.querySelector('[data-mode="all"]').addEventListener("click", ()=>applyMode("all"));
       tabs.querySelector('[data-mode="moa"]').addEventListener("click", ()=>applyMode("moa"));
