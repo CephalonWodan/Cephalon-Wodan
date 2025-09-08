@@ -7,8 +7,7 @@
 
   /* -------------------- Config -------------------- */
   // mets à jour ce hash si besoin
-  const EXPORT_WEAPONS_URL =
-    "http://content.warframe.com/PublicExport/Manifest/ExportWeapons_en.json!00_bEtI98Hav9NkSKXKNxI9cA";
+  const EXPORT_WEAPONS_URL = "data/ExportWeapons_en.json";
   const WFSTAT_API_URL = "https://api.warframestat.us/weapons/";
 
   // On NE GARDE que ces catégories
