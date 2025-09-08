@@ -67,7 +67,6 @@
           Armor:  x.armor ?? 0,
           Health: x.health ?? 0,
           Shield: x.shield ?? 0,
-          Energy: x.power ?? 0,
           Attacks: null, // pas fourni par l’Export
           _imgSrcs: [ LOCAL_FILE(fileBase), WIKI_FILE(fileBase), CDN_FILE(fileBase) ].filter(Boolean)
         };
@@ -201,7 +200,6 @@
     const armor  = Number(coalesce(item, ["Armor","armor"], 0)) || 0;
     const health = Number(coalesce(item, ["Health","health"], 0)) || 0;
     const shield = Number(coalesce(item, ["Shield","shield"], 0)) || 0;
-    const energy = coalesce(item, ["Energy","energy"], "—");
     const imgHTML = renderImg(name, item._imgSrcs || []);
 
     // Détecte sentinelle pour afficher le bloc "Rang 30"
@@ -224,7 +222,7 @@
           <p class="text-[var(--muted)] leading-relaxed">${cleanDesc(desc)}</p>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-            ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
+            ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}
           </div>
 
           ${isSentinel ? `
