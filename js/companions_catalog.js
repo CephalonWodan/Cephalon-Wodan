@@ -559,8 +559,8 @@
 
       // charge export & LUA pour fusionner Attacks
       const [exportRes, luaRes] = await Promise.allSettled([
-        (async () => { try { const r=await fetch(EXPORT_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
-        (async () => { try { const r=await fetch(FALLBACK_URL,{cache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
+        (async () => { try { const r=await fetch(EXPORT_URL,{cache:'force-cache'/*he:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
+        (async () => { try { const r=await fetch(FALLBACK_URL,{cache:'force-cache'/*ache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
       ]);
       const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
       const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
@@ -570,6 +570,30 @@
       if (list.length && listFromLua.length){
         const atkMap = buildAttacksMapFromLua(listFromLua);
         injectAttacks(list, atkMap);
+        // Merge Polarities from LUA into Export items if missing (Sentinels)
+        (function mergePolaritiesFromLua(){
+          try{
+            if (!Array.isArray(listFromLua) || !listFromLua.length) return;
+            const polMap = new Map();
+            listFromLua.forEach(it=>{
+              const name = (it.Name||it.name||"").toLowerCase();
+              const slots = it.Polarities || it.Slots || it.polarities || null;
+              if (!name) return;
+              let arr = Array.isArray(slots) ? slots
+                       : (typeof slots==="string" ? slots.split(/[\s,]+/).filter(Boolean) : []);
+              if (arr && arr.length) polMap.set(name, arr);
+            });
+            list.forEach(it=>{
+              const nm = (it.Name||it.name||"").toLowerCase();
+              if (!nm) return;
+              const already = it.Polarities || it.Slots || it.polarities;
+              if (already && ((Array.isArray(already) && already.length) || typeof already === "string")) return;
+              const fromLua = polMap.get(nm);
+              if (fromLua && fromLua.length) it.Polarities = fromLua.slice();
+            });
+          }catch(_){}
+        })();
+
       }
 
       if (!list.length){
@@ -595,12 +619,13 @@
         status.style.color = "#bfefff";
       };
       setStatus(list.length);
+      try{ document.getElementById('status')?.setAttribute('aria-busy','false'); }catch(_){}
 
       if ($("#picker")){
         $("#picker").addEventListener("change", (e)=>{
           const idx = parseInt(e.target.value, 10);
           const q = norm($("#search")?.value).toLowerCase();
-          const filtered = q ? UI.list.filter(x => (x.Name||"").toLowerCase().includes(q)) : UI.list;
+          const filtered = q ? UI.list.filter(x => ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))).toLowerCase().includes(q)) : UI.list;
           UI.filtered = filtered;
           UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
           if (filtered.length) renderCard(filtered[UI.idx]);
@@ -609,7 +634,7 @@
       if ($("#search")){
         $("#search").addEventListener("input", ()=>{
           const q = norm($("#search").value).toLowerCase();
-          const filtered = q ? UI.list.filter(x => (x.Name||"").toLowerCase().includes(q)) : UI.list;
+          const filtered = q ? UI.list.filter(x => ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))).toLowerCase().includes(q)) : UI.list;
           UI.filtered = filtered;
           UI.idx = 0;
           renderPicker(filtered);
