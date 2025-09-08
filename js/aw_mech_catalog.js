@@ -27,6 +27,9 @@
     catch { return null; }
   }
 
+  // Retire tout préfixe de type <ARCHWING> / <NECRAMECH> / <ARCHGUN>…
+  const stripAngleTag = (s) => String(s||"").replace(/^<[^>]+>\s*/g, "").trim();
+
   let UI = { mode:"archwing", list:[], filtered:[], idx:0 };
 
   /* ============================== POLARITÉS ============================== */
@@ -71,7 +74,6 @@
   const WIKI_FILE  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
   const CDN_FILE   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
 
-  // Aliases explicites (Nom → Fichier) — tu peux compléter si besoin
   const IMG_ALIASES = {
     /* Suits */
     "Amesha":"Amesha.png","Bonewidow":"Bonewidow.png","Elytron":"Elytron.png","Itzal":"Itzal.png",
@@ -114,8 +116,7 @@
 
   function fileNameFor(name){
     if (!name) return "";
-    // supprime tout éventuel tag hérité type "<ARCHWING>" au cas où
-    name = String(name).replace(/^<[^>]+>/g, "");
+    name = stripAngleTag(name); // retire <ARCHWING> etc pour les fichiers
     if (IMG_ALIASES[name]) return IMG_ALIASES[name];
     return name.replace(/\s+/g, "") + ".png";
   }
@@ -152,11 +153,12 @@
   }
 
   function normalizePowersuit(x){
-    const name = x.name || x.Name || "";
+    const raw = x.name || x.Name || "";
+    const name = stripAngleTag(raw);
     const kind = detectKind(x.uniqueName, x.productCategory, name);
     return {
       Kind: kind,
-      Name: name,
+      Name: name, // affichage sans balise
       Description: x.description || "",
       Armor: x.armor ?? x.Armor ?? 0,
       Health: x.health ?? x.Health ?? 0,
@@ -169,7 +171,8 @@
 
   function sumDamage(dmg){ if (!dmg || typeof dmg !== "object") return null; let t=0; for(const k in dmg){ const v=Number(dmg[k]); if(!isNaN(v)) t+=v; } return t||null; }
   function normalizeWeapon(x){
-    const name = x.name || x.Name || "";
+    const raw = x.name || x.Name || "";
+    const name = stripAngleTag(raw);
     const kind = detectKind(x.uniqueName, x.productCategory, name);
     return {
       Kind: kind,
@@ -188,15 +191,58 @@
 
   /* ============================ ABILITIES MERGE ============================ */
 
-  function buildAbilitiesMapFromSources(srcs){
+  // abilities depuis ExportWarframes (archwings/necramechs)
+  function buildAbilitiesMapFromExportWarframes(suitsSrc){
     const out = new Map();
     const push = (suit, a) => {
-      if (!suit || !a || !a.name) return;
-      const k = String(suit).toLowerCase();
-      if (!out.has(k)) out.set(k, []);
-      if (!out.get(k).some(x => x.name===a.name && x.desc===a.desc)) out.get(k).push(a);
+      const key = stripAngleTag(suit||"").toLowerCase();
+      if (!key || !a || !a.name) return;
+      if (!out.has(key)) out.set(key, []);
+      const list = out.get(key);
+      if (!list.some(x => x.name===a.name && x.desc===a.desc)) list.push(a);
+    };
+    const getArr = (obj, key) => {
+      const v = obj?.[key];
+      return Array.isArray(v) ? v : null;
+    };
+    const pickName = (a) => a?.name || a?.Name || a?.ability || a?.Ability || a?.abilityName || a?.AbilityName || a?.DisplayName || "";
+    const pickDesc = (a) => a?.description || a?.Description || a?.desc || a?.Desc || a?.longDescription || "";
+    const pickCost = (a) => a?.energyCost ?? a?.EnergyCost ?? a?.cost ?? a?.Energy ?? null;
+
+    (Array.isArray(suitsSrc) ? suitsSrc : []).forEach(x=>{
+      const suit = x.name || x.Name || "";
+      const kind = detectKind(x.uniqueName, x.productCategory, suit);
+      if (!(kind==="archwing" || kind==="necramech")) return;
+
+      // essais multi-clés
+      const candidates =
+        (getArr(x,"abilities") || getArr(x,"Abilities") || getArr(x,"AbilityInfos") || getArr(x,"AbilityInfo") || getArr(x,"Powers") || getArr(x,"powers") || [])
+        .filter(Boolean);
+
+      candidates.forEach(a=>{
+        const nm = pickName(a);
+        if (!nm) return;
+        push(suit, { name:nm, desc:pickDesc(a), cost:pickCost(a) });
+      });
+    });
+
+    // limite 4
+    for (const [k,list] of out) out.set(k, list.slice(0,4));
+    return out;
+  }
+
+  // Construit map: "suitName (lower)" → [ {name, desc, cost} ] depuis API + fichiers abilities
+  function buildAbilitiesMapFromAuxSources(srcs){
+    const out = new Map();
+    const push = (suit, a) => {
+      const key = stripAngleTag(suit||"").toLowerCase();
+      if (!key || !a || !a.name) return;
+      if (!out.has(key)) out.set(key, []);
+      const list = out.get(key);
+      if (!list.some(x => x.name===a.name && x.desc===a.desc)) list.push(a);
     };
 
+    // API WarframeStat (souvent pas d'archwing/necramech — mais on fusionne tout de même)
     const ws = srcs.warframestat;
     if (Array.isArray(ws)){
       ws.forEach(e=>{
@@ -210,8 +256,10 @@
       });
     }
 
+    // abilities.json / warframe_abilities.json / abilities_by_warframe.json
     [srcs.abilitiesA, srcs.abilitiesB, srcs.abilitiesC].forEach(raw=>{
       if (!raw) return;
+
       if (Array.isArray(raw)){
         raw.forEach(x=>{
           const suit = x.suitName || x.SuitName || x.parentName || x.Warframe || x.frameName || x.name || "";
@@ -228,6 +276,7 @@
           }
         });
       }
+
       if (!Array.isArray(raw) && raw && typeof raw==="object"){
         Object.entries(raw).forEach(([k,v])=>{
           const suit = k;
@@ -241,7 +290,7 @@
       }
     });
 
-    for (const [k, list] of out) out.set(k, list.slice(0,4));
+    for (const [k,list] of out) out.set(k, list.slice(0,4));
     return out;
   }
 
@@ -379,12 +428,6 @@
     pick.value = "0";
   }
 
-  function ensureTabs(){
-    let host = document.getElementById("mode-tabs");
-    if (host) return host;
-    return null;
-  }
-
   /* ================================ BOOT ================================ */
 
   (async function boot(){
@@ -424,12 +467,19 @@
         .filter(x => x.Kind==="archgun" || x.Kind==="archmelee")
         .sort(byName);
 
-      const abilitiesMap = buildAbilitiesMapFromSources({
+      // Abilities : map depuis export (archwing/necramech) + fichiers + API
+      const abFromExport = buildAbilitiesMapFromExportWarframes(suitsSrc);
+      const abFromAux    = buildAbilitiesMapFromAuxSources({
         warframestat: warframestatRaw,
         abilitiesA: abilitiesRawA,
         abilitiesB: abilitiesRawB,
         abilitiesC: abilitiesRawC
       });
+      // fusion (export prioritaire pour archwing/mech)
+      const abilitiesMap = new Map(abFromAux);
+      for (const [k, list] of abFromExport){
+        abilitiesMap.set(k, list); // remplace si existe
+      }
 
       const byMode = {
         archwing:  suits.filter(x=>x.Kind==="archwing"),
@@ -473,7 +523,8 @@
         setStatus();
       });
 
-      const tabs = ensureTabs();
+      // Tabs présents dans le HTML
+      const tabs = document.getElementById("mode-tabs");
       if (tabs) {
         tabs.querySelectorAll("[data-mode]").forEach(btn=>{
           btn.addEventListener("click", ()=>{
