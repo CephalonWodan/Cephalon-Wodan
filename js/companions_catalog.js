@@ -639,31 +639,43 @@
 
       if ($("#picker")){
         $("#picker").addEventListener("change", (e)=>{
-          const idx = parseInt(e.target.value, 10);
-          const q = norm($("#search")?.value).toLowerCase();
-          const filtered = q ? UI.list.filter(x => (
-            ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+
-            ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
-          ).toLowerCase().includes(q)) : UI.list;
-          UI.filtered = filtered;
-          UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
-          if (filtered.length) renderCard(filtered[UI.idx]);
-        });
-      }
+  const idx = parseInt(e.target.value, 10);
+  const q = norm($("#search")?.value).toLowerCase();
+  const filtered = q
+    ? UI.list.filter(x => (
+        (
+          (x.Name||x.name||'')+' '+
+          (x.Type||x.type||'')+' '+
+          (x.Description||x.description||'')+' '+
+          ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
+        ).toLowerCase().includes(q)
+      ))
+    : UI.list;
+  UI.filtered = filtered;
+  UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
+  if (filtered.length) renderCard(filtered[UI.idx]);
+});
+     }
       if ($("#search")){
         $("#search").addEventListener("input", ()=>{
-          const q = norm($("#search").value).toLowerCase();
-          const filtered = q ? UI.list.filter(x => (
-            ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+
-            ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
-          ).toLowerCase().includes(q)) : UI.list;
-          UI.filtered = filtered;
-          UI.idx = 0;
-          renderPicker(filtered);
-          if (filtered.length) renderCard(filtered[0]);
-          status.textContent = `Affichage : ${filtered.length} résultat(s)`;
-        });
-      }
+  const q = norm($("#search").value).toLowerCase();
+  const filtered = q
+    ? UI.list.filter(x => (
+        (
+          (x.Name||x.name||'')+' '+
+          (x.Type||x.type||'')+' '+
+          (x.Description||x.description||'')+' '+
+          ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
+        ).toLowerCase().includes(q)
+      ))
+    : UI.list;
+  UI.filtered = filtered;
+  UI.idx = 0;
+  renderPicker(filtered);
+  if (filtered.length) renderCard(filtered[0]);
+  status.textContent = `Affichage : ${filtered.length} résultat(s)`;
+});
+    }
 
       // Onglets
       const tabs = ensureModeTabs();
