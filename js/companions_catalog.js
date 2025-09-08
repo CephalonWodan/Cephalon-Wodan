@@ -33,6 +33,13 @@
     return Array.isArray(p) ? p : [];
   }
 
+  // Parse "(Vazarin)" -> ["Vazarin"], "(—)" -> []
+  function parsePolarityTokens(s){
+    const raw = String(s || "").replace(/[()]/g,"").trim();
+    if (!raw || raw === "—" || raw === "-") return [];
+    return raw.split(/[,\s/]+/).filter(Boolean);
+  }
+
   // Placeholder inline (1 ligne)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
@@ -142,7 +149,7 @@
     return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
-  /* ---------- Icônes de polarité (robuste) ---------- */
+  /* ---------- Icônes de polarité (robuste, piloté par CSS) ---------- */
   const POL_FILES = {
     Madurai: "Madurai_Pol.svg",
     Vazarin: "Vazarin_Pol.svg",
@@ -168,29 +175,21 @@
     if (!host) return;
     const list = (arr||[]).map(canonPolName).filter(Boolean);
 
-    // Force l’horizontal au cas où le CSS du site ne s’applique pas
+    // Orientation horizontale (le look vient du CSS .polarity-row / .pol-icon)
     host.innerHTML = "";
     host.classList.add("polarity-row");
     host.style.display = "flex";
     host.style.flexWrap = "wrap";
     host.style.alignItems = "center";
-    host.style.gap = "8px";
+    host.style.gap = "10px";
 
     list.forEach(p=>{
       const file = POL_FILES[p] || POL_FILES.Any;
-
       const pill = document.createElement("span");
       pill.className = "pol-icon";
-      pill.style.display = "inline-flex";
-      pill.style.alignItems = "center";
-      pill.style.justifyContent = "center";
-      pill.style.width = "28px";
-      pill.style.height = "28px";
-      pill.style.borderRadius = "9999px";
 
       const img = new Image();
       img.alt = p;
-      img.width = 26; img.height = 26;
       img.loading = "lazy";
       img.decoding = "async";
       img.src = `img/polarities/${file}`;
@@ -215,14 +214,13 @@
   }
 
   // === helpers d’esthétique pour les BUILDERS ===
-  // vignettes plus grandes (container dimensionné en style, image à 85%)
   function thumb(name, size = 120){
     return `<div class="rounded-xl bg-[var(--panel-2)] border orn flex items-center justify-center overflow-hidden"
                 style="width:${size}px;height:${size}px">
               ${renderImg(name, fileCandidates(name), "w-[85%] h-[85%] object-contain")}
             </div>`;
   }
-  // cases stats minimalistes pour builders (retire le petit “chip”)
+  // cases stats minimalistes pour builders
   const builderStatBox = (label, value) => `
     <div class="h-24 flex flex-col justify-center rounded-xl bg-[var(--panel-2)] border px-4">
       <div class="text-[10px] uppercase tracking-wide opacity-80">${escapeHtml(label)}</div>
@@ -279,7 +277,7 @@
                 <div class="stat h-24 flex flex-col justify-center">
                   <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
                   <div class="text-2xl font-semibold leading-tight">${ehp}</div>
-                  <div class="text-xs leading-tight opacity-80">EHP with shield : ${ehpS}</div>
+                  <div class="text-xs leading-tight opacity-80">EHP avec boucliers : ${ehpS}</div>
                 </div>
               </div>
             </div>
@@ -430,6 +428,12 @@
             </label>
           </div>
 
+          <!-- Polarity du Bracket -->
+          <div class="mt-4">
+            <div class="polarity-label">Polarity (Bracket)</div>
+            <div id="moa-pol-row" class="polarity-row"></div>
+          </div>
+
           <div class="mt-6 grid grid-cols-3 gap-4">
             <div id="moa-h" class="h-24"></div>
             <div id="moa-s" class="h-24"></div>
@@ -466,6 +470,10 @@
       outS.innerHTML = builderStatBox("SHIELD", r.s);
       outA.innerHTML = builderStatBox("ARMOR",  r.a);
 
+      // Icônes de polarité (Bracket)
+      const pols = parsePolarityTokens(b.polarities);
+      injectLocalPolIcons($("#moa-pol-row"), pols);
+
       notes.innerHTML = `<div><b>Precepts (Model):</b> ${escapeHtml(m.precepts.join(", "))}</div><div><b>Bracket:</b> ${escapeHtml(b.name)} ${escapeHtml(b.polarities)}</div>`;
       $("#moa-thumb-model").innerHTML   = thumb(m.name, 120);
       $("#moa-thumb-core").innerHTML    = thumb(c.name, 120);
@@ -490,6 +498,12 @@
           </div>
           <label class="flex items-center gap-2 mt-3"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
 
+          <!-- Polarity du Stabilizer -->
+          <div class="mt-4">
+            <div class="polarity-label">Polarity (Stabilizer)</div>
+            <div id="hd-pol-row" class="polarity-row"></div>
+          </div>
+
           <div class="mt-6 grid grid-cols-3 gap-4">
             <div id="hd-h" class="h-24"></div>
             <div id="hd-s" class="h-24"></div>
@@ -510,7 +524,6 @@
         </div>
       </div>
     `;
-    // centre les selects
     applySelectCentering("#card");
 
     const outH = $("#hd-h"), outS = $("#hd-s"), outA = $("#hd-a"), notes = $("#hd-notes");
@@ -525,6 +538,9 @@
       outH.innerHTML = builderStatBox("HEALTH", r.h);
       outS.innerHTML = builderStatBox("SHIELD", r.s);
       outA.innerHTML = builderStatBox("ARMOR",  r.a);
+
+      // Icône de polarité (Stabilizer)
+      injectLocalPolIcons($("#hd-pol-row"), [s.polarity]);
 
       notes.innerHTML = `
         <div><b>Model:</b> ${escapeHtml(m.name)} — Precept: ${escapeHtml(m.precept)} — Weapon: ${escapeHtml(m.weapon)}</div>
