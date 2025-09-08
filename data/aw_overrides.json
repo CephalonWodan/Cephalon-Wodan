@@ -1,0 +1,297 @@
+{
+  "Amesha": {
+    "base": {
+      "Energy": 220,
+      "EnergyR30": 270,
+      "Health": 650,
+      "HealthR30": 900,
+      "Shield": 220,
+      "ShieldR30": 270,
+      "Armor": 195,
+      "ArmorR30": 195,
+      "SprintSpeed": 1.1,
+      "Mastery": 0,
+      "Polarities": []
+    },
+    "abilities": [
+      {
+        "name": "Watchful Swarm",
+        "cost": "25",
+        "desc": "Tiny drones orbit the Warframe or an ally and intercept enemy fire.",
+        "stats": {
+          "Strength": "6 / 9 / 12 / 15 (Number of drones)",
+          "Duration": "N/A",
+          "Range": "N/A"
+        }
+      },
+      {
+        "name": "Benevolent Decoy",
+        "cost": "50",
+        "desc": "Creates beacons that draw enemy fire, converting the damage into healing pulses.",
+        "stats": {
+          "Strength": "1 / 1.25 / 1.3 / 1.5× (Healing multiplier)",
+          "Duration": "10 / 15 / 20 / 25 s",
+          "Range": "Bubble 20 / 40 / 60 / 80 m • Heal 40 / 60 / 80 / 100 m"
+        }
+      },
+      {
+        "name": "Warding Grace",
+        "cost": "75 + 10/s",
+        "desc": "Renders the Warframe and nearby allies immune to Status Effects, while slowing nearby enemies.",
+        "stats": {
+          "Strength": "20% / 30% / 40% / 50% Slow",
+          "Duration": "N/A",
+          "Range": "160 / 240 / 320 / 400 m"
+        }
+      },
+      {
+        "name": "Vengeful Rush",
+        "cost": "100",
+        "desc": "All damage taken is transformed into Energy; abilities gain enhanced range, duration and power.",
+        "stats": {
+          "Strength": "100% Energy conversion",
+          "Duration": "15 / 20 / 25 / 30 s",
+          "Range": "160 / 240 / 320 / 400 m"
+        }
+      }
+    ]
+  },
+
+  "Elytron": {
+    "base": {
+      "Energy": 120,
+      "EnergyR30": 170,
+      "Health": 765,
+      "HealthR30": 1015,
+      "Shield": 745,
+      "ShieldR30": 945,
+      "Armor": 145,
+      "ArmorR30": 145,
+      "SprintSpeed": 0.9,
+      "Mastery": 0,
+      "Polarities": ["Vazarin", "Vazarin", "Naramon"]
+    },
+    "abilities": [
+      {
+        "name": "Bloomer",
+        "cost": "25",
+        "desc": "Fires a high-yield, remotely detonated explosive projectile capable of latching onto targets.",
+        "stats": {
+          "Strength": "500 / 600 / 800 / 1000 (Blast)",
+          "Duration": "N/A",
+          "Range": "120 / 160 / 200 / 240 m"
+        }
+      },
+      {
+        "name": "Core Vent",
+        "cost": "50",
+        "desc": "Vents out the Archwing's propulsion core, confusing enemy projectiles and causing them to detonate.",
+        "stats": {
+          "Strength": "—",
+          "Duration": "10 / 12 / 14 / 16 s (contrail) — 6 / 7 / 8 / 9 s (vent)",
+          "Range": "N/A"
+        }
+      },
+      {
+        "name": "Thumper",
+        "cost": "75",
+        "desc": "Creates a localized storm of punishing explosions.",
+        "stats": {
+          "Strength": "200 / 300 / 400 / 500 (Blast)",
+          "Duration": "1.5 / 2 / 2.5 / 3 s⁻¹ (explosion frequency) — 30 / 35 / 40 / 45 s (barrage duration)",
+          "Range": "100 / 120 / 140 / 180 m (barrage radius) — 32 / 40 / 60 / 80 m (explosion radius)"
+        }
+      },
+      {
+        "name": "Warhead",
+        "cost": "100",
+        "desc": "Launches a plodding missile capable of unleashing a massive explosion.",
+        "stats": {
+          "Strength": "1000 / 1250 / 1500 / 1750 (Blast)",
+          "Duration": "N/A",
+          "Range": "120 / 180 / 200 / 240 m"
+        }
+      }
+    ]
+  },
+
+  "Itzal": {
+    "base": {
+      "Energy": 220,
+      "EnergyR30": 270,
+      "Health": 200,
+      "HealthR30": 450,
+      "Shield": 220,
+      "ShieldR30": 420,
+      "Armor": 50,
+      "ArmorR30": 50,
+      "SprintSpeed": 1.2,
+      "Mastery": 0,
+      "Polarities": []
+    },
+    "abilities": [
+      {
+        "name": "Arch Line",
+        "cost": "25",
+        "desc": "Launch a tethered hook that either pulls enemies close, or pulls the Warframe toward stationary objects.",
+        "stats": {
+          "Strength": "300 / 400 / 500 / 600 (Slash)",
+          "Duration": "1 s (combo window)",
+          "Range": "150 / 200 / 250 / 300 m"
+        }
+      },
+      {
+        "name": "Penumba",
+        "cost": "15 + 5/s",
+        "desc": "Activates a cloaking field that hides the Warframe and any nearby allies who remain stationary.",
+        "stats": {
+          "Strength": "N/A",
+          "Duration": "N/A",
+          "Range": "40 / 52 / 64 / 76 m"
+        }
+      },
+      {
+        "name": "Cosmic Crush",
+        "cost": "75",
+        "desc": "Forms a miniature black hole that sucks in nearby objects before rupturing in a massive shock wave.",
+        "stats": {
+          "Strength": "800 / 1000 / 1250 / 1500 (Blast)",
+          "Duration": "N/A",
+          "Range": "80 / 100 / 120 / 140 m (explosion radius) — 120 / 120 / 140 / 140 m (pull radius)"
+        }
+      },
+      {
+        "name": "Fighter Escort",
+        "cost": "100",
+        "desc": "Deploys drones that fight alongside the Warframe, detonating in a destructive blast when killed.",
+        "stats": {
+          "Strength": "2 / 4 / 6 / 8 (drones) — 1000 / 1500 / 2000 / 2500 (Blast)",
+          "Duration": "15 / 20 / 25 / 30 s",
+          "Range": "60 / 100 / 120 / 160 m (explosion radius) — 80 m (beam range)"
+        }
+      }
+    ]
+  },
+
+  "Odonata": {
+    "base": {
+      "Energy": 85,
+      "EnergyR30": 135,
+      "Health": 675,
+      "HealthR30": 775,
+      "Shield": 430,
+      "ShieldR30": 630,
+      "Armor": 100,
+      "ArmorR30": 100,
+      "SprintSpeed": 1.0,
+      "Mastery": 0,
+      "Polarities": []
+    },
+    "abilities": [
+      {
+        "name": "Energy Shell",
+        "cost": "25",
+        "desc": "Forms a protective energy shell around the Warframe.",
+        "stats": {
+          "Strength": "N/A",
+          "Duration": "10 / 14 / 18 / 22 s",
+          "Range": "N/A",
+          "Misc": "50% Heat damage bonus • 2× Critical damage multiplier"
+        }
+      },
+      {
+        "name": "Disarray",
+        "cost": "50",
+        "desc": "Drops flare beacons confusing incoming guided missiles.",
+        "stats": {
+          "Strength": "N/A",
+          "Duration": "3 / 5 / 6 / 8 s",
+          "Range": "120 / 140 / 160 / 180 m",
+          "Misc": "20 / 30 / 40 / 50 (number of flares)"
+        }
+      },
+      {
+        "name": "Seeking Fire",
+        "cost": "75",
+        "desc": "Fires a large volley of homing missiles.",
+        "stats": {
+          "Strength": "5 / 6 / 7 / 8 (volleys)",
+          "Duration": "N/A",
+          "Range": "240 / 340 / 360 / 480 m (tracking)",
+          "Misc": "300 (initial Blast) • 40 (area Blast)"
+        }
+      },
+      {
+        "name": "Repel",
+        "cost": "100",
+        "desc": "The Warframe emits a massive pulse of energy, stunning nearby enemies and sending them flying.",
+        "stats": {
+          "Strength": "500 / 750 / 1000 / 1500 (Impact)",
+          "Duration": "5 / 7 / 9 / 11 s",
+          "Range": "80 / 100 / 120 / 140 m"
+        }
+      }
+    ]
+  },
+
+  "Odonata Prime": {
+    "base": {
+      "Energy": 85,
+      "EnergyR30": 135,
+      "Health": 650,
+      "HealthR30": 900,
+      "Shield": 640,
+      "ShieldR30": 840,
+      "Armor": 100,
+      "ArmorR30": 100,
+      "SprintSpeed": 1.05,
+      "Mastery": 0,
+      "Polarities": []
+    },
+    "abilities": [
+      {
+        "name": "Energy Shell",
+        "cost": "25",
+        "desc": "Forms a protective energy shell around the Warframe.",
+        "stats": {
+          "Strength": "N/A",
+          "Duration": "10 / 14 / 18 / 22 s",
+          "Range": "N/A",
+          "Misc": "50% Heat damage bonus • 2× Critical damage multiplier"
+        }
+      },
+      {
+        "name": "Disarray",
+        "cost": "50",
+        "desc": "Drops flare beacons confusing incoming guided missiles.",
+        "stats": {
+          "Strength": "N/A",
+          "Duration": "3 / 5 / 6 / 8 s",
+          "Range": "120 / 140 / 160 / 180 m",
+          "Misc": "20 / 30 / 40 / 50 (number of flares)"
+        }
+      },
+      {
+        "name": "Seeking Fire",
+        "cost": "75",
+        "desc": "Fires a large volley of homing missiles.",
+        "stats": {
+          "Strength": "5 / 6 / 7 / 8 (volleys)",
+          "Duration": "N/A",
+          "Range": "240 / 340 / 360 / 480 m (tracking)",
+          "Misc": "300 (initial Blast) • 40 (area Blast)"
+        }
+      },
+      {
+        "name": "Repel",
+        "cost": "100",
+        "desc": "The Warframe emits a massive pulse of energy, stunning nearby enemies and sending them flying.",
+        "stats": {
+          "Strength": "500 / 750 / 1000 / 1500 (Impact)",
+          "Duration": "5 / 7 / 9 / 11 s",
+          "Range": "80 / 100 / 120 / 140 m"
+        }
+      }
+    ]
+  }
+}
