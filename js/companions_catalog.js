@@ -26,6 +26,13 @@
   // ⬇️ État UI pour restaurer la carte quand on ferme les builders
   let UI = { list: [], filtered: [], idx: 0 };
 
+  // Récupération des polarités éventuelles venant du JSON (ou rien)
+function extractPolaritiesFromItem(item){
+  let p = item.Polarities || item.polarities || item.Slots || null;
+  if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
+  return Array.isArray(p) ? p : [];
+}
+
   // Placeholder inline (1 ligne)
   const svgPlaceholder = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
@@ -148,33 +155,88 @@
     const mk = (t) => t ? `<span class="badge">${escapeHtml(t)}</span>` : "";
     return [mk(cat), mk(type)].filter(Boolean).join(" ");
   }
-  function renderCard(item){
-    const name = coalesce(item, ["Name","name"], "—");
-    const desc = coalesce(item, ["Description","description"], "");
-    const armor  = coalesce(item, ["Armor","armor"], "—");
-    const health = coalesce(item, ["Health","health"], "—");
-    const shield = coalesce(item, ["Shield","shield"], "—");
-    const energy = coalesce(item, ["Energy","energy"], "—");
-    const imgHTML = renderImg(name, item._imgSrcs || []);
-    $("#card").innerHTML = `
-      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
-        <div class="flex flex-col gap-4">
-          <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
-          <div class="flex flex-wrap gap-2">${chips(item)}</div>
-          <p class="text-[var(--muted)] leading-relaxed">${cleanDesc(desc)}</p>
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-            ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
-          </div>
-          ${attacksBlock(item)}
-        </div>
-        <div class="w-full max-w-[420px] mx-auto xl:mx-0">
-          <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
-            ${imgHTML}
-          </div>
-        </div>
-      </div>`;
-  }
+function renderCard(item){
+  const name = coalesce(item, ["Name","name"], "—");
+  const desc = coalesce(item, ["Description","description"], "");
+  const armor  = Number(coalesce(item, ["Armor","armor"], 0)) || 0;
+  const health = Number(coalesce(item, ["Health","health"], 0)) || 0;
+  const shield = Number(coalesce(item, ["Shield","shield"], 0)) || 0;
+  const energy = coalesce(item, ["Energy","energy"], "—");
+  const imgHTML = renderImg(name, item._imgSrcs || []);
 
+  // Détecte sentinelle pour afficher le bloc "Rang 30"
+  const isSentinel = /sentinel/i.test(String(item.Type || item.Category));
+
+  // Rang 30 + EHP
+  const RANK30_SCALE = 3.5;
+  const maxH = Math.round(health * RANK30_SCALE);
+  const maxS = Math.round(shield * RANK30_SCALE);
+  const maxA = Math.round(armor  * RANK30_SCALE);
+  const ehp  = Math.round(maxH * (1 + maxA/300));
+  const ehpS = Math.round(ehp + maxS);
+
+  // HTML carte
+  $("#card").innerHTML = `
+    <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
+      <div class="flex flex-col gap-4">
+        <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
+        <div class="flex flex-wrap gap-2">${chips(item)}</div>
+        <p class="text-[var(--muted)] leading-relaxed">${cleanDesc(desc)}</p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+          ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
+        </div>
+
+        ${isSentinel ? `
+          <div class="mt-4">
+            <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rang 30)</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              ${statBox("HEALTH (R30)", maxH)}
+              ${statBox("SHIELD (R30)", maxS)}
+              ${statBox("ARMOR (R30)",  maxA)}
+              <div class="stat h-24 flex flex-col justify-center">
+                <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
+                <div class="text-lg font-semibold">${ehp} <span class="text-[var(--muted)]">/ ${ehpS} avec boucliers</span></div>
+              </div>
+            </div>
+
+            <!-- Rangées que polarities.js remplira -->
+            <div class="mt-2 flex items-center gap-2 flex-wrap">
+              <span class="text-sm mr-1"><b>Polarités :</b></span>
+              <span class="polarity-row" data-zone="others"></span>
+            </div>
+            <!-- (facultatif pour sentinelles) -->
+            <div class="hidden">
+              <span class="polarity-row" data-zone="aura"></span>
+            </div>
+          </div>
+        ` : ""}
+
+        ${attacksBlock(item)}
+      </div>
+
+      <div class="w-full max-w-[420px] mx-auto xl:mx-0">
+        <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
+          ${imgHTML}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // 👉 informe polarities.js (il préfèrera ces données et ne fera aucun fetch)
+  const providedSlots = extractPolaritiesFromItem(item); // tableau ou []
+  document.dispatchEvent(new CustomEvent("wf:card-rendered", {
+    detail: {
+      wf: {
+        name,                    // pour logs/outils
+        auraPolarity: null,      // pas d’aura sur sentinelles
+        polarities: providedSlots
+      },
+      source: "companions"
+    }
+  }));
+}
+  
   function renderPicker(list){
     const pick = $("#picker");
     if (!pick) return;
