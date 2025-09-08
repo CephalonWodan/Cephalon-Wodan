@@ -28,11 +28,11 @@
   };
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
 
-  // Nettoie les tags <ARCHWING> etc.
+  // Nettoie les tags <ARCHWING> / <NECRAMECH> présents dans les noms.
   const cleanDisplayName = (name) => String(name||"").replace(/<[^>]*>\s*/g, "").replace(/\s+/g, " ").trim();
   const cleanFileName = (name) => cleanDisplayName(name).replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
 
-  // Placeholder + cyclage
+  // Placeholder + cyclage d’images (local -> wiki -> cdn)
   const svgPH = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
@@ -78,7 +78,7 @@
       };
     }).filter(Boolean);
 
-    // Fallback overrides
+    // Ajoute depuis overrides si manquants (utile pour R30, polarités, abilities…)
     const have = new Set(list.map(i=>i.Name));
     (overrides ? Object.keys(overrides) : []).forEach(n=>{
       if (have.has(n)) return;
@@ -97,11 +97,10 @@
     return list.sort(byName);
   }
 
-  /* ----------------- Dégâts (helpers) ----------------- */
+  /* ----------------- Dégâts (helpers robustes) ----------------- */
   const cap = (s) => String(s||"").replace(/[_-]+/g," ").replace(/\b\w/g, m=>m.toUpperCase());
-  function sumObj(obj){ let t=0; for(const k in obj){ const v=Number(obj[k]); if(!isNaN(v)) t+=v; } return t; }
+  function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if(!isNaN(v)) t+=v; } return t||null; }
 
-  // Convertit objets OU tableaux d’entrées {type,amount} en map "Type -> valeur"
   function toDamageMap(d){
     if (!d) return null;
     if (Array.isArray(d)){
@@ -123,7 +122,6 @@
     }
     return null;
   }
-
   function mergeDamageMaps(list){
     const out={};
     list.forEach(m=>{
@@ -133,36 +131,22 @@
     });
     return Object.keys(out).length ? out : null;
   }
+  function computeDamageMapFromExport(x){
+    const parts = [];
+    if (x.damage) parts.push(x.damage);
+    if (x.normalAttack?.damage) parts.push(x.normalAttack.damage);
+    if (x.areaAttack?.damage) parts.push(x.areaAttack.damage);
+    if (x.secondaryAreaAttack?.damage) parts.push(x.secondaryAreaAttack.damage);
 
-  // Essaye toutes les formes connues des exports
-  function extractDamageMap(x){
-    const candidates = [];
-
-    // Direct
-    if (x.damage) candidates.push(x.damage);
-
-    // Attaques normales / zone / secondaire
-    if (x.normalAttack?.damage) candidates.push(x.normalAttack.damage);
-    if (x.areaAttack?.damage)   candidates.push(x.areaAttack.damage);
-    if (x.secondaryAreaAttack?.damage) candidates.push(x.secondaryAreaAttack.damage);
-
-    // Couple (types + valeurs)
     if (Array.isArray(x.damagePerShot) && Array.isArray(x.damageTypes)){
-      const map={}; for (let i=0;i<Math.min(x.damagePerShot.length,x.damageTypes.length);i++){
-        map[x.damageTypes[i]] = x.damagePerShot[i];
-      }
-      candidates.push(map);
+      const m={}; x.damageTypes.forEach((t,i)=>{ const v=Number(x.damagePerShot[i]); if(!isNaN(v)) m[t]=(m[t]||0)+v; });
+      parts.push(m);
     }
-
-    // Parfois “normalDamage”
     if (Array.isArray(x.normalDamage) && Array.isArray(x.damageTypes)){
-      const map={}; for (let i=0;i<Math.min(x.normalDamage.length,x.damageTypes.length);i++){
-        map[x.damageTypes[i]] = x.normalDamage[i];
-      }
-      candidates.push(map);
+      const m={}; x.damageTypes.forEach((t,i)=>{ const v=Number(x.normalDamage[i]); if(!isNaN(v)) m[t]=(m[t]||0)+v; });
+      parts.push(m);
     }
-
-    return mergeDamageMaps(candidates);
+    return mergeDamageMaps(parts);
   }
 
   /* ----------------- Normalisation ARMES ----------------- */
@@ -188,27 +172,24 @@
       const critM = x.criticalMultiplier ?? x.critMultiplier ?? x.normalAttack?.crit_mult ?? null;
       const stat  = x.statusChance ?? x.procChance ?? x.normalAttack?.status_chance ?? null;
 
-      // ⚠️ Pour Archmelee, fireRate = attackSpeed si indéfini
       const isMelee = (kind === "Archmelee");
-      const fireRate = x.fireRate ?? x.fireRateSecondary ?? null;
-      const atkSpd  = isMelee ? (x.attackSpeed ?? fireRate ?? x.normalAttack?.fire_rate ?? null)
-                              : (x.attackSpeed ?? null);
+      const fireRate = x.fireRate ?? x.fireRateSecondary ?? x.normalAttack?.fire_rate ?? null;
+      const atkSpd  = isMelee ? (x.attackSpeed ?? fireRate ?? null) : (x.attackSpeed ?? null);
 
       // Dégâts
-      const dmgMap = extractDamageMap(x);
-      let totalDmg = null;
-      if (dmgMap) totalDmg = sumObj(dmgMap);
-      else {
-        const dmg = x.damage || x.totalDamage || null;
-        if (dmg && typeof dmg === "object") totalDmg = sumObj(dmg);
-        else if (typeof dmg === "number") totalDmg = dmg;
+      const dmgMap = computeDamageMapFromExport(x);
+      let totalDmg = sumDamage(dmgMap);
+      if (totalDmg == null) {
+        const d = x.totalDamage ?? x.damage;
+        if (typeof d === "number") totalDmg = d;
+        else if (d && typeof d === "object") totalDmg = sumDamage(d);
       }
 
       return {
         Kind: kind, Name: name, Mastery: x.masteryReq,
         CritC: crit, CritM: critM, Status: stat,
         FireRate: isMelee ? null : fireRate,
-        AttackSpeed: atkSpd,
+        AttackSpeed: isMelee ? atkSpd : null,
         Trigger: x.trigger || null, Reload: x.reloadTime ?? null,
         TotalDamage: totalDmg, DamageMap: dmgMap || null,
         _imgSrcs: [ IMG_MSWEAP_LOCAL(file), IMG_WIKI(file), IMG_CDN(file) ]
@@ -216,7 +197,7 @@
     }).filter(Boolean).sort(byName);
   }
 
-  /* ----------------- Overrides ----------------- */
+  /* ----------------- Overrides (R30, Abilities, Polarities…) ----------------- */
   function applyOverrides(list, overrides){
     if (!overrides) return;
     list.forEach(it=>{
@@ -291,22 +272,23 @@
 
   function damagePanel(map, total){
     if (!map) return "";
-    const rows = [`<div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)]">
-                     <div class="text-[13px] text-[var(--muted)]">Total</div><div class="font-medium">${fmt(total)}</div>
-                   </div>`]
-      .concat(Object.entries(map)
-        .filter(([,v]) => Number(v) > 0)
-        .sort((a,b)=>a[0].localeCompare(b[0]))
-        .map(([k,v])=>`<div class="flex items-center justify-between py-1">
-                         <div class="text-[13px]">${esc(k)}</div><div>${fmt(v)}</div>
-                       </div>`));
-    return `
-      <div class="mt-4">
-        <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Détails des dégâts</div>
-        <div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">
-          ${rows.join("")}
-        </div>
-      </div>`;
+    const rows = [
+      `<div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)]">
+         <div class="text-[13px] text-[var(--muted)]">Total</div><div class="font-medium">${fmt(total)}</div>
+       </div>`
+    ].concat(Object.entries(map)
+      .filter(([,v])=>Number(v)>0)
+      .sort((a,b)=>a[0].localeCompare(b[0]))
+      .map(([k,v])=>`<div class="flex items-center justify-between py-1">
+                       <div class="text-[13px]">${esc(k)}</div><div>${fmt(v)}</div>
+                     </div>`));
+
+    return `<div class="mt-4">
+      <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Détails des dégâts</div>
+      <div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">
+        ${rows.join("")}
+      </div>
+    </div>`;
   }
 
   function renderWeaponCard(w){
@@ -335,7 +317,7 @@
             ${statBox("MR", w.Mastery ?? "—")}
             ${statBox("CRIT", w.CritC!=null ? pct(w.CritC) : "—")}
             ${statBox("STATUS", w.Status!=null ? pct(w.Status) : "—")}
-            ${statBox(w.Kind==="Archmelee" ? "ATK SPD" : "FIRE RATE", w.Kind==="Archmelee" ? fmt(w.AttackSpeed) : fmt(w.FireRate))}
+            ${statBox(w.Kind==="Archmelee" ? "ATK SPD" : "FIRE RATE", w.Kind==="Archmelee" ? w.AttackSpeed : w.FireRate)}
           </div>
 
           <div class="mt-4">
