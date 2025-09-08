@@ -27,11 +27,11 @@
   let UI = { list: [], filtered: [], idx: 0 };
 
   // Récupération des polarités éventuelles venant du JSON (ou rien)
-function extractPolaritiesFromItem(item){
-  let p = item.Polarities || item.polarities || item.Slots || null;
-  if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
-  return Array.isArray(p) ? p : [];
-}
+  function extractPolaritiesFromItem(item){
+    let p = item.Polarities || item.polarities || item.Slots || null;
+    if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
+    return Array.isArray(p) ? p : [];
+  }
 
   // Placeholder inline (1 ligne)
   const svgPlaceholder = (() => {
@@ -143,6 +143,46 @@ function extractPolaritiesFromItem(item){
     return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
+  /* ---------- Fallback local icônes de polarité (au cas où polarities.js n'est pas là) ---------- */
+  const POL_FILES = {
+    Madurai: "Madurai_Pol.svg",
+    Vazarin: "Vazarin_Pol.svg",
+    Naramon: "Naramon_Pol.svg",
+    Zenurik: "Zenurik_Pol.svg",
+    Unairu:  "Unairu_Pol.svg",
+    Umbra:   "Umbra_Pol.svg",
+    Penjaga: "Penjaga_Pol.svg",
+    Exilus:  "Exilus_Pol.svg",
+    Any:     "Any_Pol.svg",
+    Universal: "Any_Pol.svg",
+    None:      "Any_Pol.svg"
+  };
+  const CANON_POL = Object.fromEntries(Object.keys(POL_FILES).map(k=>[k.toLowerCase(),k]));
+  function canonPolName(p){
+    if (!p) return null;
+    const raw = String(p).trim();
+    const k = raw.toLowerCase();
+    const alias = { universal:"Any", any:"Any", none:"Any" };
+    return CANON_POL[k] || CANON_POL[alias[k]] || (raw[0].toUpperCase()+raw.slice(1));
+  }
+  function injectLocalPolIcons(host, arr){
+    if (!host) return;
+    const list = (arr||[]).map(canonPolName).filter(Boolean);
+    host.innerHTML = "";
+    list.forEach(p=>{
+      const file = POL_FILES[p] || POL_FILES.Any;
+      const img = new Image();
+      img.alt = p;
+      img.width = 26; img.height = 26;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.src = `img/polarities/${file}`;
+      // petite sécurité si un fichier manque
+      img.onerror = () => { img.replaceWith(document.createTextNode(p[0]||"?")); };
+      host.appendChild(img);
+    });
+  }
+
   /* -------------- Carte Companion -------------- */
   const statBox = (label, value) => `
     <div class="stat h-24 flex flex-col justify-center">
@@ -155,88 +195,91 @@ function extractPolaritiesFromItem(item){
     const mk = (t) => t ? `<span class="badge">${escapeHtml(t)}</span>` : "";
     return [mk(cat), mk(type)].filter(Boolean).join(" ");
   }
-function renderCard(item){
-  const name = coalesce(item, ["Name","name"], "—");
-  const desc = coalesce(item, ["Description","description"], "");
-  const armor  = Number(coalesce(item, ["Armor","armor"], 0)) || 0;
-  const health = Number(coalesce(item, ["Health","health"], 0)) || 0;
-  const shield = Number(coalesce(item, ["Shield","shield"], 0)) || 0;
-  const energy = coalesce(item, ["Energy","energy"], "—");
-  const imgHTML = renderImg(name, item._imgSrcs || []);
+  function renderCard(item){
+    const name = coalesce(item, ["Name","name"], "—");
+    const desc = coalesce(item, ["Description","description"], "");
+    const armor  = Number(coalesce(item, ["Armor","armor"], 0)) || 0;
+    const health = Number(coalesce(item, ["Health","health"], 0)) || 0;
+    const shield = Number(coalesce(item, ["Shield","shield"], 0)) || 0;
+    const energy = coalesce(item, ["Energy","energy"], "—");
+    const imgHTML = renderImg(name, item._imgSrcs || []);
 
-  // Détecte sentinelle pour afficher le bloc "Rang 30"
-  const isSentinel = /sentinel/i.test(String(item.Type || item.Category));
+    // Détecte sentinelle pour afficher le bloc "Rang 30"
+    const isSentinel = /sentinel/i.test(String(item.Type || item.Category));
 
-  // Rang 30 + EHP
-  const RANK30_SCALE = 3.5;
-  const maxH = Math.round(health * RANK30_SCALE);
-  const maxS = Math.round(shield * RANK30_SCALE);
-  const maxA = Math.round(armor  * RANK30_SCALE);
-  const ehp  = Math.round(maxH * (1 + maxA/300));
-  const ehpS = Math.round(ehp + maxS);
+    // Rang 30 + EHP
+    const RANK30_SCALE = 3.5;
+    const maxH = Math.round(health * RANK30_SCALE);
+    const maxS = Math.round(shield * RANK30_SCALE);
+    const maxA = Math.round(armor  * RANK30_SCALE);
+    const ehp  = Math.round(maxH * (1 + maxA/300));
+    const ehpS = Math.round(ehp + maxS);
 
-  // HTML carte
-  $("#card").innerHTML = `
-    <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
-      <div class="flex flex-col gap-4">
-        <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
-        <div class="flex flex-wrap gap-2">${chips(item)}</div>
-        <p class="text-[var(--muted)] leading-relaxed">${cleanDesc(desc)}</p>
+    // HTML carte
+    $("#card").innerHTML = `
+      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
+        <div class="flex flex-col gap-4">
+          <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
+          <div class="flex flex-wrap gap-2">${chips(item)}</div>
+          <p class="text-[var(--muted)] leading-relaxed">${cleanDesc(desc)}</p>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-          ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
-        </div>
-
-        ${isSentinel ? `
-          <div class="mt-4">
-            <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rang 30)</div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              ${statBox("HEALTH (R30)", maxH)}
-              ${statBox("SHIELD (R30)", maxS)}
-              ${statBox("ARMOR (R30)",  maxA)}
-              <div class="stat h-24 flex flex-col justify-center">
-                <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
-                <div class="text-lg font-semibold">${ehp} <span class="text-[var(--muted)]">/ ${ehpS} avec boucliers</span></div>
-              </div>
-            </div>
-
-            <!-- Rangées que polarities.js remplira -->
-            <div class="mt-2 flex items-center gap-2 flex-wrap">
-              <span class="text-sm mr-1"><b>Polarités :</b></span>
-              <span class="polarity-row" data-zone="others"></span>
-            </div>
-            <!-- (facultatif pour sentinelles) -->
-            <div class="hidden">
-              <span class="polarity-row" data-zone="aura"></span>
-            </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+            ${statBox("ARMOR", armor)}${statBox("HEALTH", health)}${statBox("SHIELD", shield)}${statBox("ENERGY", energy)}
           </div>
-        ` : ""}
 
-        ${attacksBlock(item)}
-      </div>
+          ${isSentinel ? `
+            <div class="mt-4">
+              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rang 30)</div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                ${statBox("HEALTH (R30)", maxH)}
+                ${statBox("SHIELD (R30)", maxS)}
+                ${statBox("ARMOR (R30)",  maxA)}
+                <div class="stat h-24 flex flex-col justify-center">
+                  <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
+                  <div class="text-lg font-semibold">${ehp} <span class="text-[var(--muted)]">/ ${ehpS} avec boucliers</span></div>
+                </div>
+              </div>
 
-      <div class="w-full max-w-[420px] mx-auto xl:mx-0">
-        <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
-          ${imgHTML}
+              <!-- Polarités (Sentinelles) -->
+              <div class="mt-2 flex items-center gap-2 flex-wrap">
+                <span class="text-sm mr-1"><b>Polarités :</b></span>
+                <span class="polarity-row" data-zone="others"></span>
+              </div>
+              <div class="hidden"><span class="polarity-row" data-zone="aura"></span></div>
+            </div>
+          ` : ""}
+
+          ${attacksBlock(item)}
+        </div>
+
+        <div class="w-full max-w-[420px] mx-auto xl:mx-0">
+          <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
+            ${imgHTML}
+          </div>
         </div>
       </div>
-    </div>
-  `;
+    `;
 
-  // 👉 informe polarities.js (il préfèrera ces données et ne fera aucun fetch)
-  const providedSlots = extractPolaritiesFromItem(item); // tableau ou []
-  document.dispatchEvent(new CustomEvent("wf:card-rendered", {
-    detail: {
-      wf: {
-        name,                    // pour logs/outils
-        auraPolarity: null,      // pas d’aura sur sentinelles
-        polarities: providedSlots
-      },
-      source: "companions"
+    // ➜ informe polarities.js (il préfèrera ces données et ne fera aucun fetch si elles sont fournies)
+    const providedSlots = extractPolaritiesFromItem(item); // tableau ou []
+    document.dispatchEvent(new CustomEvent("wf:card-rendered", {
+      detail: {
+        wf: {
+          name,
+          auraPolarity: null,     // pas d’aura sur sentinelles
+          polarities: providedSlots
+        },
+        source: "companions"
+      }
+    }));
+
+    // Fallback local immédiat (affiche des icônes si polarities.js n’est pas/encore chargé)
+    if (isSentinel && providedSlots.length){
+      const host = $("#card .polarity-row[data-zone='others']");
+      injectLocalPolIcons(host, providedSlots);
     }
-  }));
-}
-  
+  }
+
   function renderPicker(list){
     const pick = $("#picker");
     if (!pick) return;
