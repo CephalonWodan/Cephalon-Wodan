@@ -108,27 +108,37 @@
 
   /* ----------------- Dégâts (helpers robustes) ----------------- */
   const cap = (s) => String(s||"").replace(/[_-]+/g," ").replace(/\b\w/g, m=>m.toUpperCase());
+  const isTotalKey = (k) => /^total(\s|$)/i.test(String(k||""));  // ⬅️ ajoute: repère "total"
   function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if(!isNaN(v)) t+=v; } return t||null; }
 
   function toDamageMap(d){
     if (!d) return null;
+
     if (Array.isArray(d)){
-      const out={};
+      const out = {};
       for (const e of d){
-        const k = cap(e?.damageType || e?.type || e?.elemType || e?.name);
+        const kRaw = e?.damageType || e?.type || e?.elemType || e?.name;
         const v = Number(e?.amount ?? e?.value ?? e?.damage ?? e?.dmg);
-        if (k && !isNaN(v)) out[k] = (out[k]||0) + v;
+        if (!kRaw || isNaN(v)) continue;
+        const k = cap(kRaw);
+        if (isTotalKey(k)) continue;      // ⬅️ ignore toute entrée "total"
+        out[k] = (out[k]||0) + v;
       }
       return Object.keys(out).length ? out : null;
     }
+
     if (typeof d === "object"){
-      const out={};
-      for (const k in d){
-        const v = Number(d[k]);
-        if (!isNaN(v)) out[cap(k)] = (out[cap(k)]||0) + v;
+      const out = {};
+      for (const kk in d){
+        const v = Number(d[kk]);
+        if (isNaN(v)) continue;
+        const k = cap(kk);
+        if (isTotalKey(k)) continue;      // ⬅️ ignore "total"
+        out[k] = (out[k]||0) + v;
       }
       return Object.keys(out).length ? out : null;
     }
+
     return null;
   }
   function mergeDamageMaps(list){
@@ -351,16 +361,24 @@
 
   function damagePanel(map, total){
     if (!map) return "";
+
+    // filtre toute entrée "total" et valeurs nulles
+    const entries = Object.entries(map)
+      .filter(([k,v]) => !isTotalKey(k) && Number(v) > 0)
+      .sort((a,b) => a[0].localeCompare(b[0]));
+
+    // calcule/reprend le total
+    const tot = (total != null) ? total : entries.reduce((a,[,v]) => a + Number(v||0), 0);
+
     const rows = [
       `<div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)]">
-         <div class="text-[13px] text-[var(--muted)]">Total</div><div class="font-medium">${fmt(total)}</div>
+         <div class="text-[13px] text-[var(--muted)]">Total</div><div class="font-medium">${fmt(tot)}</div>
        </div>`
-    ].concat(Object.entries(map)
-      .filter(([,v])=>Number(v)>0)
-      .sort((a,b)=>a[0].localeCompare(b[0]))
-      .map(([k,v])=>`<div class="flex items-center justify-between py-1">
-                       <div class="text-[13px]">${esc(k)}</div><div>${fmt(v)}</div>
-                     </div>`));
+    ].concat(entries.map(([k,v]) =>
+      `<div class="flex items-center justify-between py-1">
+         <div class="text-[13px]">${esc(k)}</div><div>${fmt(v)}</div>
+       </div>`
+    ));
 
     return `<div class="mt-4">
       <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Détails des dégâts</div>
@@ -426,7 +444,7 @@
   function ensureModeTabs(){
     let host=document.getElementById("mode-tabs"); if(host) return host;
     const root=$("#status")?.parentElement||document.body;
-    const h1=root.querySelector("h1")||(()=>{const f=document.createElement("h1");f.className="text-2xl font-semibold mb-3";f.textContent="Archwings / Necramechs";root.prepend(f);return f})();
+    const h1=root.querySelector("h1")||(()=>{const f=document.createElement("h1");f.className = "text-2xl font-semibold mb-3";f.textContent="Archwings / Necramechs";root.prepend(f);return f})();
     const row=document.createElement("div"); row.className="flex items-center justify-between gap-4 mb-4"; h1.parentNode.insertBefore(row,h1); row.appendChild(h1);
     host=document.createElement("div"); host.id="mode-tabs"; host.className="flex flex-wrap items-center gap-2 ml-auto";
     host.innerHTML=`
