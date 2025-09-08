@@ -361,7 +361,7 @@ async function fetchWarframesWithFailover() {
 
       const detailsBlock = rowsHtml ? `
         <div class="mt-5">
-          <div class="text-sm muted mb-2">Détails</div>
+          <div class="text-sm muted mb-2">Details</div>
           <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
             ${rowsHtml}
           </div>
