@@ -29,13 +29,8 @@
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
 
   // Nettoie les tags <ARCHWING> etc.
-  const cleanDisplayName = (name) => String(name||"")
-    .replace(/<[^>]*>\s*/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const cleanFileName = (name) =>
-    cleanDisplayName(name).replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
+  const cleanDisplayName = (name) => String(name||"").replace(/<[^>]*>\s*/g, "").replace(/\s+/g, " ").trim();
+  const cleanFileName = (name) => cleanDisplayName(name).replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
 
   // Placeholder + cyclage
   const svgPH = (() => {
@@ -105,29 +100,68 @@
   /* ----------------- Dégâts (helpers) ----------------- */
   const cap = (s) => String(s||"").replace(/[_-]+/g," ").replace(/\b\w/g, m=>m.toUpperCase());
   function sumObj(obj){ let t=0; for(const k in obj){ const v=Number(obj[k]); if(!isNaN(v)) t+=v; } return t; }
+
+  // Convertit objets OU tableaux d’entrées {type,amount} en map "Type -> valeur"
+  function toDamageMap(d){
+    if (!d) return null;
+    if (Array.isArray(d)){
+      const out={};
+      for (const e of d){
+        const k = cap(e?.damageType || e?.type || e?.elemType || e?.name);
+        const v = Number(e?.amount ?? e?.value ?? e?.damage ?? e?.dmg);
+        if (k && !isNaN(v)) out[k] = (out[k]||0) + v;
+      }
+      return Object.keys(out).length ? out : null;
+    }
+    if (typeof d === "object"){
+      const out={};
+      for (const k in d){
+        const v = Number(d[k]);
+        if (!isNaN(v)) out[cap(k)] = (out[cap(k)]||0) + v;
+      }
+      return Object.keys(out).length ? out : null;
+    }
+    return null;
+  }
+
   function mergeDamageMaps(list){
     const out={};
     list.forEach(m=>{
-      if (!m || typeof m!=="object") return;
-      for (const k in m){
-        const key = cap(k);
-        const v = Number(m[k]);
-        if (!isNaN(v)) out[key] = (out[key]||0) + v;
-      }
+      const map = toDamageMap(m);
+      if (!map) return;
+      for (const k in map){ out[k] = (out[k]||0) + Number(map[k]||0); }
     });
     return Object.keys(out).length ? out : null;
   }
+
+  // Essaye toutes les formes connues des exports
   function extractDamageMap(x){
     const candidates = [];
-    if (x.damage && typeof x.damage === "object") candidates.push(x.damage);
+
+    // Direct
+    if (x.damage) candidates.push(x.damage);
+
+    // Attaques normales / zone / secondaire
     if (x.normalAttack?.damage) candidates.push(x.normalAttack.damage);
     if (x.areaAttack?.damage)   candidates.push(x.areaAttack.damage);
+    if (x.secondaryAreaAttack?.damage) candidates.push(x.secondaryAreaAttack.damage);
+
+    // Couple (types + valeurs)
     if (Array.isArray(x.damagePerShot) && Array.isArray(x.damageTypes)){
       const map={}; for (let i=0;i<Math.min(x.damagePerShot.length,x.damageTypes.length);i++){
         map[x.damageTypes[i]] = x.damagePerShot[i];
       }
       candidates.push(map);
     }
+
+    // Parfois “normalDamage”
+    if (Array.isArray(x.normalDamage) && Array.isArray(x.damageTypes)){
+      const map={}; for (let i=0;i<Math.min(x.normalDamage.length,x.damageTypes.length);i++){
+        map[x.damageTypes[i]] = x.normalDamage[i];
+      }
+      candidates.push(map);
+    }
+
     return mergeDamageMaps(candidates);
   }
 
@@ -150,21 +184,22 @@
       const name = cleanDisplayName(x.name || "");
       const file = cleanFileName(name);
 
-      const crit  = x.criticalChance ?? x.critChance ?? null;
-      const critM = x.criticalMultiplier ?? x.critMultiplier ?? null;
-      const stat  = x.statusChance ?? x.procChance ?? null;
+      const crit  = x.criticalChance ?? x.critChance ?? x.normalAttack?.crit_chance ?? null;
+      const critM = x.criticalMultiplier ?? x.critMultiplier ?? x.normalAttack?.crit_mult ?? null;
+      const stat  = x.statusChance ?? x.procChance ?? x.normalAttack?.status_chance ?? null;
 
-      // ⚠️ Pour Archmelee, fireRate = attackSpeed si attackSpeed absent
+      // ⚠️ Pour Archmelee, fireRate = attackSpeed si indéfini
       const isMelee = (kind === "Archmelee");
       const fireRate = x.fireRate ?? x.fireRateSecondary ?? null;
-      const atkSpd  = isMelee ? (x.attackSpeed ?? fireRate ?? null) : (x.attackSpeed ?? null);
+      const atkSpd  = isMelee ? (x.attackSpeed ?? fireRate ?? x.normalAttack?.fire_rate ?? null)
+                              : (x.attackSpeed ?? null);
 
       // Dégâts
       const dmgMap = extractDamageMap(x);
       let totalDmg = null;
       if (dmgMap) totalDmg = sumObj(dmgMap);
       else {
-        const dmg = x.damage || x.damagePerShot || x.totalDamage || null;
+        const dmg = x.damage || x.totalDamage || null;
         if (dmg && typeof dmg === "object") totalDmg = sumObj(dmg);
         else if (typeof dmg === "number") totalDmg = dmg;
       }
@@ -172,7 +207,7 @@
       return {
         Kind: kind, Name: name, Mastery: x.masteryReq,
         CritC: crit, CritM: critM, Status: stat,
-        FireRate: isMelee ? null : fireRate,      // on masque FireRate pour les Archmelee
+        FireRate: isMelee ? null : fireRate,
         AttackSpeed: atkSpd,
         Trigger: x.trigger || null, Reload: x.reloadTime ?? null,
         TotalDamage: totalDmg, DamageMap: dmgMap || null,
@@ -201,7 +236,7 @@
   const statBox = (label, value) => `
     <div class="stat h-24 flex flex-col justify-center">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${esc(label)}</div>
-      <div class="text-2xl font-semibold leading-tight">${esc(fmt(value))}</div>
+      <div class="text-2xl font-semibold leading-tight">${esc(fmt(value)))}</div>
     </div>`;
   const chips = (arr)=> (arr||[]).map(s=>`<span class="badge">${esc(s)}</span>`).join(" ");
 
