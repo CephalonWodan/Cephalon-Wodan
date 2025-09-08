@@ -18,41 +18,25 @@
         "name": "Watchful Swarm",
         "cost": "25",
         "desc": "Tiny drones orbit the Warframe or an ally and intercept enemy fire.",
-        "stats": {
-          "Strength": "6 / 9 / 12 / 15 (Number of drones)",
-          "Duration": "N/A",
-          "Range": "N/A"
-        }
+        "stats": { "Strength": "6 / 9 / 12 / 15 (Number of drones)", "Duration": "N/A", "Range": "N/A" }
       },
       {
         "name": "Benevolent Decoy",
         "cost": "50",
         "desc": "Creates beacons that draw enemy fire, converting the damage into healing pulses.",
-        "stats": {
-          "Strength": "1 / 1.25 / 1.3 / 1.5× (Healing multiplier)",
-          "Duration": "10 / 15 / 20 / 25 s",
-          "Range": "Bubble 20 / 40 / 60 / 80 m • Heal 40 / 60 / 80 / 100 m"
-        }
+        "stats": { "Strength": "1 / 1.25 / 1.3 / 1.5× (Healing multiplier)", "Duration": "10 / 15 / 20 / 25 s", "Range": "Bubble 20 / 40 / 60 / 80 m • Heal 40 / 60 / 80 / 100 m" }
       },
       {
         "name": "Warding Grace",
         "cost": "75 + 10/s",
         "desc": "Renders the Warframe and nearby allies immune to Status Effects, while slowing nearby enemies.",
-        "stats": {
-          "Strength": "20% / 30% / 40% / 50% Slow",
-          "Duration": "N/A",
-          "Range": "160 / 240 / 320 / 400 m"
-        }
+        "stats": { "Strength": "20% / 30% / 40% / 50% Slow", "Duration": "N/A", "Range": "160 / 240 / 320 / 400 m" }
       },
       {
         "name": "Vengeful Rush",
         "cost": "100",
         "desc": "All damage taken is transformed into Energy; abilities gain enhanced range, duration and power.",
-        "stats": {
-          "Strength": "100% Energy conversion",
-          "Duration": "15 / 20 / 25 / 30 s",
-          "Range": "160 / 240 / 320 / 400 m"
-        }
+        "stats": { "Strength": "100% Energy conversion", "Duration": "15 / 20 / 25 / 30 s", "Range": "160 / 240 / 320 / 400 m" }
       }
     ]
   },
@@ -76,41 +60,25 @@
         "name": "Bloomer",
         "cost": "25",
         "desc": "Fires a high-yield, remotely detonated explosive projectile capable of latching onto targets.",
-        "stats": {
-          "Strength": "500 / 600 / 800 / 1000 (Blast)",
-          "Duration": "N/A",
-          "Range": "120 / 160 / 200 / 240 m"
-        }
+        "stats": { "Strength": "500 / 600 / 800 / 1000 (Blast)", "Duration": "N/A", "Range": "120 / 160 / 200 / 240 m" }
       },
       {
         "name": "Core Vent",
         "cost": "50",
         "desc": "Vents out the Archwing's propulsion core, confusing enemy projectiles and causing them to detonate.",
-        "stats": {
-          "Strength": "—",
-          "Duration": "10 / 12 / 14 / 16 s (contrail) — 6 / 7 / 8 / 9 s (vent)",
-          "Range": "N/A"
-        }
+        "stats": { "Strength": "—", "Duration": "10 / 12 / 14 / 16 s (contrail) — 6 / 7 / 8 / 9 s (vent)", "Range": "N/A" }
       },
       {
         "name": "Thumper",
         "cost": "75",
         "desc": "Creates a localized storm of punishing explosions.",
-        "stats": {
-          "Strength": "200 / 300 / 400 / 500 (Blast)",
-          "Duration": "1.5 / 2 / 2.5 / 3 s⁻¹ (explosion frequency) — 30 / 35 / 40 / 45 s (barrage duration)",
-          "Range": "100 / 120 / 140 / 180 m (barrage radius) — 32 / 40 / 60 / 80 m (explosion radius)"
-        }
+        "stats": { "Strength": "200 / 300 / 400 / 500 (Blast)", "Duration": "1.5 / 2 / 2.5 / 3 s⁻¹ (freq) — 30 / 35 / 40 / 45 s (barrage)", "Range": "100 / 120 / 140 / 180 m (barrage) — 32 / 40 / 60 / 80 m (explosion)" }
       },
       {
         "name": "Warhead",
         "cost": "100",
         "desc": "Launches a plodding missile capable of unleashing a massive explosion.",
-        "stats": {
-          "Strength": "1000 / 1250 / 1500 / 1750 (Blast)",
-          "Duration": "N/A",
-          "Range": "120 / 180 / 200 / 240 m"
-        }
+        "stats": { "Strength": "1000 / 1250 / 1500 / 1750 (Blast)", "Duration": "N/A", "Range": "120 / 180 / 200 / 240 m" }
       }
     ]
   },
@@ -127,48 +95,32 @@
       "ArmorR30": 50,
       "SprintSpeed": 1.2,
       "Mastery": 0,
-      "Polarities": []
+      "Polarities": ["Vazarin", "Naramon", "Madurai"]
     },
     "abilities": [
       {
         "name": "Arch Line",
         "cost": "25",
         "desc": "Launch a tethered hook that either pulls enemies close, or pulls the Warframe toward stationary objects.",
-        "stats": {
-          "Strength": "300 / 400 / 500 / 600 (Slash)",
-          "Duration": "1 s (combo window)",
-          "Range": "150 / 200 / 250 / 300 m"
-        }
+        "stats": { "Strength": "300 / 400 / 500 / 600 (Slash)", "Duration": "1 s (combo window)", "Range": "150 / 200 / 250 / 300 m" }
       },
       {
         "name": "Penumba",
         "cost": "15 + 5/s",
         "desc": "Activates a cloaking field that hides the Warframe and any nearby allies who remain stationary.",
-        "stats": {
-          "Strength": "N/A",
-          "Duration": "N/A",
-          "Range": "40 / 52 / 64 / 76 m"
-        }
+        "stats": { "Strength": "N/A", "Duration": "N/A", "Range": "40 / 52 / 64 / 76 m" }
       },
       {
         "name": "Cosmic Crush",
         "cost": "75",
         "desc": "Forms a miniature black hole that sucks in nearby objects before rupturing in a massive shock wave.",
-        "stats": {
-          "Strength": "800 / 1000 / 1250 / 1500 (Blast)",
-          "Duration": "N/A",
-          "Range": "80 / 100 / 120 / 140 m (explosion radius) — 120 / 120 / 140 / 140 m (pull radius)"
-        }
+        "stats": { "Strength": "800 / 1000 / 1250 / 1500 (Blast)", "Duration": "N/A", "Range": "80 / 100 / 120 / 140 m (explosion) — 120 / 120 / 140 / 140 m (pull)" }
       },
       {
         "name": "Fighter Escort",
         "cost": "100",
         "desc": "Deploys drones that fight alongside the Warframe, detonating in a destructive blast when killed.",
-        "stats": {
-          "Strength": "2 / 4 / 6 / 8 (drones) — 1000 / 1500 / 2000 / 2500 (Blast)",
-          "Duration": "15 / 20 / 25 / 30 s",
-          "Range": "60 / 100 / 120 / 160 m (explosion radius) — 80 m (beam range)"
-        }
+        "stats": { "Strength": "2 / 4 / 6 / 8 (drones) — 1000 / 1500 / 2000 / 2500 (Blast)", "Duration": "15 / 20 / 25 / 30 s", "Range": "60 / 100 / 120 / 160 m (explosion) — 80 m (beam)" }
       }
     ]
   },
@@ -185,51 +137,32 @@
       "ArmorR30": 100,
       "SprintSpeed": 1.0,
       "Mastery": 0,
-      "Polarities": []
+      "Polarities": ["Naramon", "Madurai", "Vazarin"]
     },
     "abilities": [
       {
         "name": "Energy Shell",
         "cost": "25",
         "desc": "Forms a protective energy shell around the Warframe.",
-        "stats": {
-          "Strength": "N/A",
-          "Duration": "10 / 14 / 18 / 22 s",
-          "Range": "N/A",
-          "Misc": "50% Heat damage bonus • 2× Critical damage multiplier"
-        }
+        "stats": { "Strength": "N/A", "Duration": "10 / 14 / 18 / 22 s", "Range": "N/A", "Misc": "50% Heat bonus • 2× Crit multiplier" }
       },
       {
         "name": "Disarray",
         "cost": "50",
         "desc": "Drops flare beacons confusing incoming guided missiles.",
-        "stats": {
-          "Strength": "N/A",
-          "Duration": "3 / 5 / 6 / 8 s",
-          "Range": "120 / 140 / 160 / 180 m",
-          "Misc": "20 / 30 / 40 / 50 (number of flares)"
-        }
+        "stats": { "Strength": "N/A", "Duration": "3 / 5 / 6 / 8 s", "Range": "120 / 140 / 160 / 180 m", "Misc": "20 / 30 / 40 / 50 (flares)" }
       },
       {
         "name": "Seeking Fire",
         "cost": "75",
         "desc": "Fires a large volley of homing missiles.",
-        "stats": {
-          "Strength": "5 / 6 / 7 / 8 (volleys)",
-          "Duration": "N/A",
-          "Range": "240 / 340 / 360 / 480 m (tracking)",
-          "Misc": "300 (initial Blast) • 40 (area Blast)"
-        }
+        "stats": { "Strength": "5 / 6 / 7 / 8 (volleys)", "Duration": "N/A", "Range": "240 / 340 / 360 / 480 m (tracking)", "Misc": "300 (initial Blast) • 40 (area Blast)" }
       },
       {
         "name": "Repel",
         "cost": "100",
-        "desc": "The Warframe emits a massive pulse of energy, stunning nearby enemies and sending them flying.",
-        "stats": {
-          "Strength": "500 / 750 / 1000 / 1500 (Impact)",
-          "Duration": "5 / 7 / 9 / 11 s",
-          "Range": "80 / 100 / 120 / 140 m"
-        }
+        "desc": "Massive pulse of energy that stuns nearby enemies and sends them flying.",
+        "stats": { "Strength": "500 / 750 / 1000 / 1500 (Impact)", "Duration": "5 / 7 / 9 / 11 s", "Range": "80 / 100 / 120 / 140 m" }
       }
     ]
   },
@@ -246,50 +179,144 @@
       "ArmorR30": 100,
       "SprintSpeed": 1.05,
       "Mastery": 0,
-      "Polarities": []
+      "Polarities": ["Naramon", "Naramon", "Madurai", "Vazarin"]
     },
     "abilities": [
       {
         "name": "Energy Shell",
         "cost": "25",
         "desc": "Forms a protective energy shell around the Warframe.",
-        "stats": {
-          "Strength": "N/A",
-          "Duration": "10 / 14 / 18 / 22 s",
-          "Range": "N/A",
-          "Misc": "50% Heat damage bonus • 2× Critical damage multiplier"
-        }
+        "stats": { "Strength": "N/A", "Duration": "10 / 14 / 18 / 22 s", "Range": "N/A", "Misc": "50% Heat bonus • 2× Crit multiplier" }
       },
       {
         "name": "Disarray",
         "cost": "50",
         "desc": "Drops flare beacons confusing incoming guided missiles.",
-        "stats": {
-          "Strength": "N/A",
-          "Duration": "3 / 5 / 6 / 8 s",
-          "Range": "120 / 140 / 160 / 180 m",
-          "Misc": "20 / 30 / 40 / 50 (number of flares)"
-        }
+        "stats": { "Strength": "N/A", "Duration": "3 / 5 / 6 / 8 s", "Range": "120 / 140 / 160 / 180 m", "Misc": "20 / 30 / 40 / 50 (flares)" }
       },
       {
         "name": "Seeking Fire",
         "cost": "75",
         "desc": "Fires a large volley of homing missiles.",
-        "stats": {
-          "Strength": "5 / 6 / 7 / 8 (volleys)",
-          "Duration": "N/A",
-          "Range": "240 / 340 / 360 / 480 m (tracking)",
-          "Misc": "300 (initial Blast) • 40 (area Blast)"
-        }
+        "stats": { "Strength": "5 / 6 / 7 / 8 (volleys)", "Duration": "N/A", "Range": "240 / 340 / 360 / 480 m (tracking)", "Misc": "300 (initial Blast) • 40 (area Blast)" }
       },
       {
         "name": "Repel",
         "cost": "100",
-        "desc": "The Warframe emits a massive pulse of energy, stunning nearby enemies and sending them flying.",
+        "desc": "Massive pulse of energy that stuns nearby enemies and sends them flying.",
+        "stats": { "Strength": "500 / 750 / 1000 / 1500 (Impact)", "Duration": "5 / 7 / 9 / 11 s", "Range": "80 / 100 / 120 / 140 m" }
+      }
+    ]
+  },
+
+  "Bonewidow": {
+    "base": {
+      "Energy": 175,
+      "EnergyR30": 225,
+      "Health": 1880,
+      "HealthR30": 2880,
+      "Shield": 430,
+      "ShieldR30": 630,
+      "Armor": 480,
+      "ArmorR30": 480,
+      "SprintSpeed": 1.1,
+      "Mastery": 0,
+      "Polarities": ["Vazarin", "Vazarin", "Madurai"]
+    },
+    "abilities": [
+      {
+        "name": "Meathook",
+        "cost": "25",
+        "desc": "Skewer and hold a target. Use again to hurl the victim, damaging them and anyone near the impact site.",
         "stats": {
-          "Strength": "500 / 750 / 1000 / 1500 (Impact)",
-          "Duration": "5 / 7 / 9 / 11 s",
-          "Range": "80 / 100 / 120 / 140 m"
+          "Strength": "30 / 35 / 40 / 50 % (Impact explosion) • 5 / 10 / 15 / 20 % (Impact per second) • 25 / 30 / 35 / 40 % (lifesteal conversion)",
+          "Duration": "N/A",
+          "Range": "10 / 12 / 15 / 17 m (explosion radius)",
+          "Misc": "100% Impact status on hit"
+        }
+      },
+      {
+        "name": "Shield Maiden",
+        "cost": "25",
+        "desc": "Raise Bonewidow’s shield to block incoming forward damage. While active, bash enemies with a Maiden’s Kiss.",
+        "stats": {
+          "Strength": "1000 / 1200 / 1500 / 2000 HP (shield) • 1.25 / 1.5 / 1.75 / 2× (reflected multiplier) • 1.15 / 1.25 / 1.75 / 2.5× (armor multiplier)",
+          "Duration": "N/A",
+          "Range": "N/A",
+          "Misc": "3 s invulnerability • 160 / 220° blocking angles • 10 s cooldown upon breaking"
+        }
+      },
+      {
+        "name": "Firing Line",
+        "cost": "50",
+        "desc": "Sweep surrounding enemies into the line of fire with a force beam.",
+        "stats": { "Strength": "N/A", "Duration": "5 s (Lifted)", "Range": "10 / 15 / 20 / 25 m", "Misc": "180 / 240 / 300 / 360 °/s (speed) • 1.5× Lifted damage vulnerability" }
+      },
+      {
+        "name": "Exalted Ironbride",
+        "cost": "50 + 2.5/s",
+        "desc": "Summon a devastating exalted blade.",
+        "stats": { "Strength": "800 / 1000 / 1250 / 1500 (Blast & Heat)", "Duration": "N/A", "Range": "N/A" }
+      }
+    ]
+  },
+
+  "Voidrig": {
+    "base": {
+      "Energy": 175,
+      "EnergyR30": 225,
+      "Health": 1400,
+      "HealthR30": 2400,
+      "Shield": 850,
+      "ShieldR30": 1050,
+      "Armor": 385,
+      "ArmorR30": 385,
+      "SprintSpeed": 1.0,
+      "Mastery": 0,
+      "Polarities": ["Naramon", "Madurai", "Vazarin"]
+    },
+    "abilities": [
+      {
+        "name": "Necraweb",
+        "cost": "25",
+        "desc": "Hurl a canister of gravitation fluids to create a wide net that slows enemies; shoot it in mid-air to create a fiery conflagration.",
+        "stats": {
+          "Strength": "750 / 1000 / 1500 / 2000 (Blast)",
+          "Duration": "10 / 13 / 15 / 20 s",
+          "Range": "5 / 10 / 15 / 20 m (range) — 15 / 20 / 22 / 25 m (explosion radius)",
+          "Misc": "50% slow"
+        }
+      },
+      {
+        "name": "Storm Shroud",
+        "cost": "50",
+        "desc": "Swathe the Necramech in an electrical field that greatly enhances survivability in close combat.",
+        "stats": {
+          "Strength": "400 / 600 / 800 / 1200 (base health) • 1 / 1.25 / 1.5 / 2× (absorption multiplier)",
+          "Duration": "N/A",
+          "Range": "N/A",
+          "Misc": "25% / 50% / 75% / 100% counter chance • 3 s invulnerability duration"
+        }
+      },
+      {
+        "name": "Gravemines",
+        "cost": "75",
+        "desc": "Launch a pattern of charged mines that detonate in a violent blast when touched.",
+        "stats": {
+          "Strength": "200 (Heat)",
+          "Duration": "8 / 12 / 16 / 24 (number of charges)",
+          "Range": "5 / 6 / 7 / 8 m (scatter range)",
+          "Misc": "3 m explosion radius • 2.5 s self detonation time"
+        }
+      },
+      {
+        "name": "Guard Mode",
+        "cost": "50 + 5/s",
+        "desc": "Take a stationary stance to deploy maximum firepower and gain increased structural integrity.",
+        "stats": {
+          "Strength": "150 / 250 / 350 / 500 (Blast & Heat)",
+          "Duration": "N/A",
+          "Range": "N/A"
         }
       }
     ]
