@@ -115,7 +115,7 @@ async function fetchWarframesWithFailover() {
       errors.push(e.message || String(e));
     }
   }
-  throw new Error(`Impossible de charger la liste des Warframes.\n${errors.join("\n")}`);
+  throw new Error(`Unable to load Warframe list.\n${errors.join("\n")}`);
 }
 
 /* ---------------- boot ---------------- */
@@ -123,7 +123,7 @@ async function fetchWarframesWithFailover() {
   const status = $("#status");
   try {
     if (status) {
-      status.textContent = "Chargement des données…";
+      status.textContent = "Loading Data…";
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
       status.style.background = "rgba(0,229,255,.08)";
       status.style.color = "#bfefff";
@@ -353,10 +353,10 @@ async function fetchWarframesWithFailover() {
       // Pastilles uniquement s'il n'y a PAS de bloc Détails
       const pillsHtml = !detailRows.length ? `
         <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
-          ${pill("Coût", s.costEnergy)}
-          ${pill("Puissance", s.strength)}
-          ${pill("Durée", s.duration)}
-          ${pill("Portée", s.range)}
+          ${pill("Cost", s.costEnergy)}
+          ${pill("Strength", s.strength)}
+          ${pill("Duration", s.duration)}
+          ${pill("Range", s.range)}
         </div>` : "";
 
       const detailsBlock = rowsHtml ? `
@@ -374,7 +374,7 @@ async function fetchWarframesWithFailover() {
               ${
                 wf.image
                   ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain">`
-                  : `<div class="muted">Aucune image</div>`
+                  : `<div class="muted">No Pictures</div>`
               }
             </div>
 
@@ -415,7 +415,7 @@ async function fetchWarframesWithFailover() {
                 ${
                   (s.affectedBy && s.affectedBy.length)
                     ? `<div class="mt-4 text-sm">
-                        <div class="mb-1 muted">Affecté par :</div>
+                        <div class="mb-1 muted">Affected by :</div>
                         <div class="flex flex-wrap gap-2">${affected}</div>
                       </div>`
                     : ""
@@ -464,12 +464,12 @@ async function fetchWarframesWithFailover() {
     };
 
     if (!list.length) {
-      setStatus("Aucune Warframe chargée (API vide). Regarde la console pour le détail.", false);
+      setStatus("No Warframe loaded (API empty). go to the console for the detail.", false);
       console.warn("[app] wfRaw vide", { wfRaw });
       return;
     }
 
-    setStatus(`Dataset chargé : ${list.length} Warframes`);
+    setStatus(`Dataset loaded : ${list.length} Warframes`);
     renderPicker(list);
     renderCard(list[0], 0);
 
@@ -491,7 +491,7 @@ async function fetchWarframesWithFailover() {
   } catch (e) {
     console.error("[app] ERREUR BOOT :", e);
     if (status) {
-      status.textContent = `Erreur de chargement : ${e.message || e}`;
+      status.textContent = `Loading error : ${e.message || e}`;
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
       status.style.background = "rgba(255,0,0,.08)";
       status.style.color = "#ffd1d1";
