@@ -20,7 +20,17 @@
   const pct = (v) => (v==null) ? "—" : `${Math.round(Number(v)*1000)/10}%`;
   const fmt = (v) => (v==null || v==="") ? "—" : String(v);
   const esc = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
-  const cleanFileName = (name) => String(name||"").replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
+
+  // ⚠️ Nettoie les tags type "<ARCHWING>" / "<NECRAMECH>" / etc.
+  const cleanDisplayName = (name) => String(name||"")
+    .replace(/<[^>]*>\s*/g, "")     // enlève tout ce qui est entre <>
+    .replace(/\s+/g, " ")           // espaces propres
+    .trim();
+
+  const cleanFileName = (name) =>
+    cleanDisplayName(name)
+      .replace(/['’\-\u2019]/g,"")
+      .replace(/\s+/g,"") + ".png";
 
   // Placeholder + cyclage
   const svgPH = (() => {
@@ -46,10 +56,9 @@
   const MECH_NAMES = new Set(["Voidrig","Bonewidow"]);
   function detectSuitKind(x, overrideNamesSet){
     const un = String(x?.uniqueName||"").toLowerCase();
-    const nm = String(x?.name||"");
+    const nm = cleanDisplayName(x?.name||"");
     if (MECH_NAMES.has(nm) || /mech|necramech/.test(un)) return "Necramech";
     if (/archwing|wing/.test(un)) return "Archwing";
-    // fallback: si le nom existe dans overrides → deviner
     if (overrideNamesSet?.has(nm)) return MECH_NAMES.has(nm) ? "Necramech" : "Archwing";
     return null;
   }
@@ -59,7 +68,7 @@
     const list = arr.map(x=>{
       const kind = detectSuitKind(x, overNames);
       if (!kind) return null;
-      const name = x.name || "";
+      const name = cleanDisplayName(x.name || "");
       const file = cleanFileName(name);
       return {
         Kind: kind, Name: name, Description: x.description || "",
@@ -69,7 +78,7 @@
       };
     }).filter(Boolean);
 
-    // Fallback total si l’export n’a rien (ou a “perdu” des entrées) : on fabrique depuis overrides
+    // Fallback overrides si besoin
     const have = new Set(list.map(i=>i.Name));
     (overrides ? Object.keys(overrides) : []).forEach(n=>{
       if (have.has(n)) return;
@@ -91,11 +100,9 @@
   /* ----------------- Normalisation ARMES ----------------- */
   function classifyWeapon(x){
     const t = `${x.type||""} ${x.productCategory||""} ${x.uniqueName||""}`.toLowerCase();
-    // Arch-Melee: motifs larges
     if (t.includes("arch-melee") || t.includes("archmelee") || t.includes("space melee") ||
         (t.includes("archwing") && t.includes("melee")) || t.includes("/archwing/melee") ||
         t.includes("melee/archwing")) return "Archmelee";
-    // Arch-Gun
     if (t.includes("arch-gun") || t.includes("archgun") || t.includes("spaceguns") ||
         (t.includes("archwing") && (t.includes("gun") || t.includes("primary") || t.includes("rifle"))) ||
         t.includes("heavygun") || t.includes("/archwing/primary")) return "Archgun";
@@ -106,8 +113,9 @@
     return arr.map(x=>{
       const kind = classifyWeapon(x);
       if (!kind) return null;
-      const name = x.name || "";
+      const name = cleanDisplayName(x.name || "");
       const file = cleanFileName(name);
+
       const crit  = x.criticalChance ?? x.critChance ?? null;
       const critM = x.criticalMultiplier ?? x.critMultiplier ?? null;
       const stat  = x.statusChance ?? x.procChance ?? null;
@@ -296,9 +304,7 @@
     try{
       status.textContent="Chargement des données…";
 
-      // Charge d’abord overrides pour pouvoir les utiliser en fallback des suits
       const overrides = await fetch(AW_OVERRIDES).then(r=>r.json()).catch(()=>null);
-
       const [wfRes, wpRes] = await Promise.all([
         fetch(WF_EXPORT_WARFRAMES).then(r=>r.json()).catch(()=>null),
         fetch(WF_EXPORT_WEAPONS).then(r=>r.json()).catch(()=>null)
@@ -344,7 +350,7 @@
       tabs.querySelector('[data-mode="archgun"]').addEventListener("click", ()=>applyMode("archgun"));
       tabs.querySelector('[data-mode="archmelee"]').addEventListener("click", ()=>applyMode("archmelee"));
 
-      // Démarrage : si aucun archwing détecté, on bascule vers la première catégorie disponible
+      // Démarrage sur une catégorie présente
       if (suits.some(s=>s.Kind==="Archwing")) applyMode("archwing");
       else if (suits.some(s=>s.Kind==="Necramech")) applyMode("necramech");
       else if (weaps.some(w=>w.Kind==="Archgun")) applyMode("archgun");
