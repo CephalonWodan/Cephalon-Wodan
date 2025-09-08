@@ -146,7 +146,7 @@
       if (stat)  parts.push(`Statut ${stat}`);
       return `<div class="py-1">• ${escapeHtml(name)} — ${parts.join(" · ")}</div>`;
     }).join("");
-    return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
+    return `<div class="mt-6"><div class="text-sm muted mb-2">Claw Stat</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
   /* ---------- Icônes de polarité (robuste, piloté par CSS) ---------- */
@@ -269,7 +269,7 @@
 
           ${isSentinel ? `
             <div class="mt-4">
-              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rang 30)</div>
+              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rank 30)</div>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 ${statBox("HEALTH (R30)", maxH)}
                 ${statBox("SHIELD (R30)", maxS)}
@@ -277,7 +277,7 @@
                 <div class="stat h-24 flex flex-col justify-center">
                   <div class="text-[10px] uppercase tracking-wide text-slate-200">EHP (R30)</div>
                   <div class="text-2xl font-semibold leading-tight">${ehp}</div>
-                  <div class="text-xs leading-tight opacity-80">EHP avec boucliers : ${ehpS}</div>
+                  <div class="text-xs leading-tight opacity-80">EHP with shield : ${ehpS}</div>
                 </div>
               </div>
             </div>
@@ -444,7 +444,7 @@
         </div>
 
         <div class="flex flex-col gap-3">
-          <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
+          <div class="text-xs uppercase tracking-wider mb-1">Parts overview</div>
           <div class="flex flex-wrap gap-4">
             <div id="moa-thumb-model">${thumb("Para", 120)}</div>
             <div id="moa-thumb-core">${thumb("Drex", 120)}</div>
@@ -496,7 +496,7 @@
             <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Bracket</span><select id="hound-bracket" class="input">${optionHTML(HOUND_BRACKETS)}</select></label>
             <label class="flex flex-col gap-1"><span class="text-xs uppercase tracking-wider">Stabilizer</span><select id="hound-stab" class="input">${optionHTML(HOUND_STABILIZERS)}</select></label>
           </div>
-          <label class="flex items-center gap-2 mt-3"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double les bonus de Bracket)</span></label>
+          <label class="flex items-center gap-2 mt-3"><input id="hound-gilded" type="checkbox" class="scale-125"><span class="text-sm">Gilded (double the Bracket bonus)</span></label>
 
           <!-- Polarity du Stabilizer -->
           <div class="mt-4">
@@ -514,7 +514,7 @@
         </div>
 
         <div class="flex flex-col gap-3">
-          <div class="text-xs uppercase tracking-wider mb-1">Aperçu des pièces</div>
+          <div class="text-xs uppercase tracking-wider mb-1">Parts overview</div>
           <div class="flex flex-wrap gap-4">
             <div id="hd-thumb-model">${thumb("Bhaira", 120)}</div>
             <div id="hd-thumb-core">${thumb("Adlet", 120)}</div>
@@ -611,7 +611,7 @@
   (async function boot(){
     const status = $("#status");
     try{
-      status.textContent = "Chargement des companions…";
+      status.textContent = "Loading Companions…";
 
       // charge export & LUA pour fusionner Attacks + Polarities (si manquantes)
       const [exportRes, luaRes] = await Promise.allSettled([
@@ -665,7 +665,7 @@
       }
 
       if (!list.length){
-        status.textContent = "Aucun compagnon trouvé.";
+        status.textContent = "Companion not found.";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
         return;
@@ -681,7 +681,7 @@
       renderCard(list[0]);
 
       const setStatus = (n) => {
-        status.textContent = `Companions chargés : ${n} ${source === "export" ? "(Export officiel)" : "(fallback LUA)"}`;
+        status.textContent = `Companions loaded : ${n} ${source === "export" ? "(Official Export)" : "(fallback LUA)"}`;
         status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
         status.style.background = "rgba(0,229,255,.08)";
         status.style.color = "#bfefff";
