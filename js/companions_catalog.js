@@ -26,7 +26,7 @@
   // ⬇️ État UI pour restaurer la carte quand on ferme les builders
   let UI = { list: [], filtered: [], idx: 0 };
 
-  // Récupération des polarités éventuelles venant du JSON (ou rien)
+  // Polarités depuis l'item (tableau)
   function extractPolaritiesFromItem(item){
     let p = item.Polarities || item.polarities || item.Slots || null;
     if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
@@ -142,7 +142,7 @@
     return `<div class="mt-6"><div class="text-sm muted mb-2">Attaques</div><div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">${rows}</div></div>`;
   }
 
-  /* ---------- Fallback local icônes de polarité (au cas où polarities.js n'est pas là) ---------- */
+  /* ---------- Fallback local icônes de polarité ---------- */
   const POL_FILES = {
     Madurai: "Madurai_Pol.svg",
     Vazarin: "Vazarin_Pol.svg",
@@ -167,7 +167,14 @@
   function injectLocalPolIcons(host, arr){
     if (!host) return;
     const list = (arr||[]).map(canonPolName).filter(Boolean);
+
+    // Affichage horizontal, wrap si nécessaire
     host.innerHTML = "";
+    host.style.display = "inline-flex";
+    host.style.flexWrap = "wrap";
+    host.style.alignItems = "center";
+    host.style.gap = "6px";
+
     list.forEach(p=>{
       const file = POL_FILES[p] || POL_FILES.Any;
       const img = new Image();
@@ -176,7 +183,7 @@
       img.loading = "lazy";
       img.decoding = "async";
       img.src = `img/polarities/${file}`;
-      // petite sécurité si un fichier manque
+      img.style.display = "inline-block";
       img.onerror = () => { img.replaceWith(document.createTextNode(p[0]||"?")); };
       host.appendChild(img);
     });
@@ -200,9 +207,10 @@
     const armor  = Number(coalesce(item, ["Armor","armor"], 0)) || 0;
     const health = Number(coalesce(item, ["Health","health"], 0)) || 0;
     const shield = Number(coalesce(item, ["Shield","shield"], 0)) || 0;
+    const providedSlots = extractPolaritiesFromItem(item); // ← slots pour n'importe quel type
     const imgHTML = renderImg(name, item._imgSrcs || []);
 
-    // Détecte sentinelle pour afficher le bloc "Rang 30"
+    // Sentinelle → bloc rang 30
     const isSentinel = /sentinel/i.test(String(item.Type || item.Category));
 
     // Rang 30 + EHP
@@ -237,8 +245,12 @@
                   <div class="text-lg font-semibold">${ehp} <span class="text-[var(--muted)]">/ ${ehpS} avec boucliers</span></div>
                 </div>
               </div>
+            </div>
+          ` : ""}
 
-              <!-- Polarités (Sentinelles) -->
+          ${providedSlots.length ? `
+            <div class="mt-4">
+              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Mod Slots</div>
               <div class="mt-2 flex items-center gap-2 flex-wrap">
                 <span class="text-sm mr-1"><b>Polarités :</b></span>
                 <span class="polarity-row" data-zone="others"></span>
@@ -258,21 +270,13 @@
       </div>
     `;
 
-    // ➜ informe polarities.js (il préfèrera ces données et ne fera aucun fetch si elles sont fournies)
-    const providedSlots = extractPolaritiesFromItem(item); // tableau ou []
+    // Événement pour polarities.js
     document.dispatchEvent(new CustomEvent("wf:card-rendered", {
-      detail: {
-        wf: {
-          name,
-          auraPolarity: null,     // pas d’aura sur sentinelles
-          polarities: providedSlots
-        },
-        source: "companions"
-      }
+      detail: { wf: { name, auraPolarity: null, polarities: providedSlots }, source: "companions" }
     }));
 
-    // Fallback local immédiat (affiche des icônes si polarities.js n’est pas/encore chargé)
-    if (isSentinel && providedSlots.length){
+    // Fallback local immédiat (au cas où)
+    if (providedSlots.length){
       const host = $("#card .polarity-row[data-zone='others']");
       injectLocalPolIcons(host, providedSlots);
     }
@@ -545,7 +549,6 @@
     } else if (mode === "hound") {
       renderHoundBuilder();
     } else {
-      // retour à la vue Companions → re-render l'item courant
       const item = UI.filtered[UI.idx] || UI.list[0];
       if (item) renderCard(item);
     }
@@ -587,7 +590,7 @@
         const atkMap = buildAttacksMapFromLua(listFromLua);
         injectAttacks(list, atkMap);
 
-        // Merge Polarities from LUA into Export items if missing (Sentinels)
+        // Merge Polarities from LUA into items if missing
         (function mergePolaritiesFromLua(){
           try{
             if (!Array.isArray(listFromLua) || !listFromLua.length) return;
@@ -639,43 +642,43 @@
 
       if ($("#picker")){
         $("#picker").addEventListener("change", (e)=>{
-  const idx = parseInt(e.target.value, 10);
-  const q = norm($("#search")?.value).toLowerCase();
-  const filtered = q
-    ? UI.list.filter(x => (
-        (
-          (x.Name||x.name||'')+' '+
-          (x.Type||x.type||'')+' '+
-          (x.Description||x.description||'')+' '+
-          ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
-        ).toLowerCase().includes(q)
-      ))
-    : UI.list;
-  UI.filtered = filtered;
-  UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
-  if (filtered.length) renderCard(filtered[UI.idx]);
-});
-     }
+          const idx = parseInt(e.target.value, 10);
+          const q = norm($("#search")?.value).toLowerCase();
+          const filtered = q
+            ? UI.list.filter(x => (
+                (
+                  (x.Name||x.name||'')+' '+
+                  (x.Type||x.type||'')+' '+
+                  (x.Description||x.description||'')+' '+
+                  ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
+                ).toLowerCase().includes(q)
+              ))
+            : UI.list;
+          UI.filtered = filtered;
+          UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
+          if (filtered.length) renderCard(filtered[UI.idx]);
+        });
+      }
       if ($("#search")){
         $("#search").addEventListener("input", ()=>{
-  const q = norm($("#search").value).toLowerCase();
-  const filtered = q
-    ? UI.list.filter(x => (
-        (
-          (x.Name||x.name||'')+' '+
-          (x.Type||x.type||'')+' '+
-          (x.Description||x.description||'')+' '+
-          ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
-        ).toLowerCase().includes(q)
-      ))
-    : UI.list;
-  UI.filtered = filtered;
-  UI.idx = 0;
-  renderPicker(filtered);
-  if (filtered.length) renderCard(filtered[0]);
-  status.textContent = `Affichage : ${filtered.length} résultat(s)`;
-});
-    }
+          const q = norm($("#search").value).toLowerCase();
+          const filtered = q
+            ? UI.list.filter(x => (
+                (
+                  (x.Name||x.name||'')+' '+
+                  (x.Type||x.type||'')+' '+
+                  (x.Description||x.description||'')+' '+
+                  ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
+                ).toLowerCase().includes(q)
+              ))
+            : UI.list;
+          UI.filtered = filtered;
+          UI.idx = 0;
+          renderPicker(filtered);
+          if (filtered.length) renderCard(filtered[0]);
+          status.textContent = `Affichage : ${filtered.length} résultat(s)`;
+        });
+      }
 
       // Onglets
       const tabs = ensureModeTabs();
@@ -685,10 +688,13 @@
       applyMode("all");
     } catch(e){
       console.error("[companions] load error:", e);
-      status.textContent = "Erreur de chargement des données.";
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
+      const status = $("#status");
+      if (status){
+        status.textContent = "Erreur de chargement des données.";
+        status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
+        status.style.background = "rgba(255,0,0,.08)";
+        status.style.color = "#ffd1d1";
+      }
     }
   })();
 })();
