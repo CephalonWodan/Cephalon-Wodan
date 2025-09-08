@@ -2,602 +2,358 @@
 (() => {
   "use strict";
 
-  /* ============================ SOURCES ============================ */
+  /* ----------------- URLs des datasets ----------------- */
+  const WF_EXPORT_WARFRAMES = "data/ExportWarframes_en.json";
+  const WF_EXPORT_WEAPONS   = "data/ExportWeapons_en.json";
+  const AW_OVERRIDES        = "data/aw_overrides.json"; // nos compléments (Amesha/Elytron/Itzal/Odonata/Prime/Bonewidow/Voidrig)
 
-  const WARFRAMESTAT_URL = "https://api.warframestat.us/warframes/?language=en";
-  const DATA = {
-    exportWarframes: "data/ExportWarframes_en.json",
-    exportWeapons:   "data/ExportWeapons_en.json",
-    abilitiesA:      "data/abilities.json",
-    abilitiesB:      "data/warframe_abilities.json",
-    abilitiesC:      "data/abilities_by_warframe.json",
-    overrides:       "data/aw_overrides.json"        // ← NEW : compléments (base + R30 + abilities)
-  };
+  /* ----------------- Images ----------------- */
+  // Archwing/Necramech (corps)
+  const IMG_SUITS_LOCAL   = (file) => file ? `img/mobilesuits/${encodeURIComponent(file)}` : "";
+  // Armes Archgun/Archmelee
+  const IMG_MSWEAP_LOCAL  = (file) => file ? `img/mobilesuits/MSweapons/${encodeURIComponent(file)}` : "";
+  // Fallbacks
+  const IMG_WIKI  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
+  const IMG_CDN   = (file) => file ? `https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/${encodeURIComponent(file)}` : "";
 
-  /* =============================== UTILS ============================== */
-
+  /* ----------------- Utils ----------------- */
   const $  = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
   const norm = (s) => String(s || "").trim();
   const byName = (a,b) => (a.Name || a.name || "").localeCompare(b.Name || b.name || "");
-  const fmtNum = (v) => (v ?? v === 0) ? String(v) : "—";
-  const pct = (v) => (v==null) ? "—" : `${Math.round(v*1000)/10}%`;
+  const pct = (v) => (v == null) ? "—" : `${Math.round(Number(v)*1000)/10}%`;
+  const fmt = (v) => (v==null || v==="") ? "—" : String(v);
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
+  const coalesce = (o, ks, d=null) => { for (const k of ks) if (o && o[k]!=null) return o[k]; return d; };
+  const cleanFileName = (name) => String(name||"").replace(/['’\-\u2019]/g,"").replace(/\s+/g,"") + ".png";
 
-  async function getJSON(u){
-    try{ const r = await fetch(u, {cache:"force-cache"}); return r.ok ? r.json() : null; }
-    catch { return null; }
-  }
-
-  // Retire un éventuel tag d’angle au début : <ARCHWING> Elytron → Elytron
-  const stripAngleTag = (s) => String(s||"").replace(/^<[^>]+>\s*/g, "").trim();
-
-  let UI = { mode:"archwing", list:[], filtered:[], idx:0 };
-
-  /* ============================== POLARITÉS ============================== */
-
-  function extractPolaritiesFromItem(item){
-    let p = item.Polarities || item.polarities || item.Slots || null;
-    if (typeof p === "string") p = p.split(/[,\s]+/).filter(Boolean);
-    return Array.isArray(p) ? p : [];
-  }
-
-  const POL_FILES = {
-    Madurai:"Madurai_Pol.svg", Vazarin:"Vazarin_Pol.svg", Naramon:"Naramon_Pol.svg",
-    Zenurik:"Zenurik_Pol.svg", Unairu:"Unairu_Pol.svg",  Umbra:"Umbra_Pol.svg",
-    Penjaga:"Penjaga_Pol.svg", Exilus:"Exilus_Pol.svg",  Any:"Any_Pol.svg",
-    Universal:"Any_Pol.svg", None:"Any_Pol.svg"
-  };
-  const CANON_POL = Object.fromEntries(Object.keys(POL_FILES).map(k=>[k.toLowerCase(),k]));
-  const canonPol = (p)=>{ if(!p) return null; const k=String(p).trim().toLowerCase(); const ali={any:"Any",none:"Any",universal:"Any"}; return CANON_POL[k]||CANON_POL[ali[k]]||(p[0].toUpperCase()+p.slice(1)); };
-  function injectLocalPolIcons(host, arr){
-    if (!host) return;
-    const list = (arr||[]).map(canonPol).filter(Boolean);
-    host.innerHTML = "";
-    host.classList.add("polarity-row");
-    host.style.display = "flex";
-    host.style.flexWrap = "wrap";
-    host.style.alignItems = "center";
-    host.style.gap = "10px";
-    list.forEach(p=>{
-      const pill = document.createElement("span");
-      pill.className = "pol-icon";
-      const img = new Image();
-      img.alt=p; img.loading="lazy"; img.decoding="async";
-      img.src = `img/polarities/${POL_FILES[p]||POL_FILES.Any}`;
-      img.onerror = ()=>{ pill.textContent = p[0]||"?"; };
-      pill.appendChild(img);
-      host.appendChild(pill);
-    });
-  }
-
-  /* ================================= IMAGES =============================== */
-
-  const WIKI_FILE  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
-  const CDN_FILE   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
-
-  // Aliases explicites (Nom → Fichier)
-  const IMG_ALIASES = {
-    /* Suits */
-    "Amesha":"Amesha.png","Bonewidow":"Bonewidow.png","Elytron":"Elytron.png","Itzal":"Itzal.png",
-    "Odonata":"Odonata.png","Odonata Prime":"OdonataPrime.png","Voidrig":"Voidrig.png",
-    "Damaged Necramech Casing":"DamagedNecramechCasing.png","Damaged Necramech Engine":"DamagedNecramechEngine.png",
-    "Damaged Necramech Pod":"DamagedNecramechPod.png","Damaged Necramech Weapon Pod":"DamagedNecramechWeaponPod.png",
-    "Generic Archwing Harness":"GenericArchwingHarness.png","Generic Archwing Systems":"GenericArchwingSystems.png",
-    "Generic Archwing Wings":"GenericArchwingWings.png","Voidrig Capsule":"VoidrigCapsule.png",
-    "Voidrig Casing":"VoidrigCasing.png","Voidrig Engine":"VoidrigEngine.png","Voidrig Weapon Pod":"VoidrigWeaponPod.png",
-    /* Weapons */
-    "Agkuza":"Agkuza.png","Arquebex":"Arquebex.png","Centaur":"Centaur.png","Cortege":"Cortege.png",
-    "Corvas":"Corvas.png","Corvas Prime":"CorvasPrime.png","Cyngas":"Cyngas.png","Dual Decurion":"DualDecurion.png",
-    "Dual Decurions":"DualDecurion.png","Fluctus":"Fluctus.png","Grattler":"Grattler.png","Imperator":"Imperator.png",
-    "Imperator Vandal":"ImperatorVandal.png","Ironbride":"Ironbride.png","Kaszas":"Kaszas.png","Knux":"Knux.png",
-    "Kuva Ayanga":"KuvaAyanga.png","Kuva Grattler":"KuvaGrattler.png","Larkspur":"Larkspur.png",
-    "Larkspur Prime":"LarkspurPrime.png","Mandonel":"Mandonel.png","Mausolon":"Mausolon.png","Morgha":"Morgha.png",
-    "Onorix":"Onorix.png","Phaedra":"Phaedra.png","Prisma Dual Decurions":"PrismaDualDecurions.png",
-    "Prisma Veritux":"PrismaVeritux.png","Rathbone":"Rathbone.png","Velocitus":"Velocitus.png","Veritux":"Veritux.png"
-  };
-
-  const svgPlaceholder = (() => {
+  // Placeholder + cyclage d’URL en cas d’erreur
+  const svgPH = (() => {
     const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">No Image</text></svg>';
     return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
   })();
-
-  function renderImg(name, srcs, klass) {
-    klass = klass || "w-full h-full object-contain";
-    var safePH = svgPlaceholder.replace(/'/g, "%27");
-    var first = (srcs && srcs.length) ? srcs[0] : svgPlaceholder;
-    var dataSrcs = ((srcs && srcs.length) ? srcs : [svgPlaceholder]).join("|").replace(/'/g, "%27");
-    var alt = String(name || "").replace(/[&<>"']/g, function(c){
-      return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]);
-    });
-    var onerr = "var el=this,arr=(el.getAttribute('data-srcs')||'').split('|');" +
-                "var i=Number(el.getAttribute('data-i')||'0')+1;" +
-                "if(i<arr.length){el.setAttribute('data-i',String(i));el.src=arr[i];}" +
-                "else{el.onerror=null;el.src='" + safePH + "';}";
-    return `<img src="${first}" data-srcs="${dataSrcs}" data-i="0" alt="${alt}" referrerpolicy="no-referrer" class="${klass}" onerror="${onerr}">`;
+  window.__cycleImg = function(el, placeholder){
+    const list = (el.getAttribute("data-srcs") || "").split("|").filter(Boolean);
+    let i = parseInt(el.getAttribute("data-i") || "0", 10) + 1;
+    if (i < list.length) { el.setAttribute("data-i", String(i)); el.src = list[i]; }
+    else { el.onerror = null; el.src = placeholder; }
+  };
+  function renderImg(name, srcs, klass="w-full h-full object-contain"){
+    const safePH = svgPH.replace(/'/g, "%27");
+    const dataSrcs = (srcs && srcs.length ? srcs : [svgPH]).join("|").replace(/'/g, "%27");
+    const alt = escapeHtml(name||"");
+    return `<img src="${srcs?.[0]||svgPH}" data-srcs="${dataSrcs}" data-i="0" alt="${alt}" referrerpolicy="no-referrer" class="${klass}" onerror="__cycleImg(this,'${safePH}')">`;
   }
 
-  function fileNameFor(name){
-    if (!name) return "";
-    name = stripAngleTag(name);
-    if (IMG_ALIASES[name]) return IMG_ALIASES[name];
-    return name.replace(/\s+/g, "") + ".png";
+  /* ----------------- État UI ----------------- */
+  let UI = { allItems: [], list: [], filtered: [], idx: 0, mode: "archwing" };
+
+  /* ----------------- Normalisation AW / Necramech ----------------- */
+  function detectSuitType(uName){
+    const s = String(uName||"");
+    if (s.includes("/Mech/") || s.toLowerCase().includes("necramech")) return "Necramech";
+    return "Archwing";
+  }
+  function normalizeSuits(raw){
+    const arr = Array.isArray(raw?.ExportWarframes) ? raw.ExportWarframes.slice() : [];
+    return arr.filter(x=>{
+      const un = String(x.uniqueName||"");
+      return /ArchwingPowersuits|MechPowersuits|Necramech/i.test(un);
+    }).map(x=>{
+      const name = x.name || "";
+      const type = detectSuitType(x.uniqueName);
+      const file = cleanFileName(name);
+      return {
+        Kind: type, Name: name, Description: x.description || "",
+        Health: x.health, Shield: x.shield, Armor: x.armor, Energy: x.power,
+        Sprint: x.sprintSpeed, Mastery: x.masteryReq,
+        _imgSrcs: [ IMG_SUITS_LOCAL(file), IMG_WIKI(file), IMG_CDN(file) ].filter(Boolean)
+      };
+    }).sort(byName);
   }
 
-  function makeImgCandidates(name, kind){
-    const f = fileNameFor(name);
-    if (!f) return [];
-    const locals = (kind === "archgun" || kind === "archmelee")
-      ? [`img/mobilesuits/MSweapons/${encodeURIComponent(f)}`]
-      : [`img/mobilesuits/${encodeURIComponent(f)}`];
-    return [ ...locals, WIKI_FILE(f), CDN_FILE(f) ];
-  }
-
-  /* ===================== DÉTECTION & NORMALISATION ===================== */
-
-  function detectKind(uName, productCategory, name){
-    const u  = String(uName||"").toLowerCase();
-    const pc = String(productCategory||"").toLowerCase();
-    const nm = String(name||"").toLowerCase();
-
-    if (u.includes("/mech/") || u.includes("necramech") || nm.includes("voidrig") || nm.includes("bonewidow"))
-      return "necramech";
-    if (u.includes("/archwing/") || u.includes("archwingpowersuits") ||
-        (u.includes("archwing") && (u.includes("/powersuits/") || u.includes("/avatar/"))) ||
-        pc.includes("archwing"))
-      return "archwing";
-
-    if (u.includes("archwinggun") || u.includes("/spaceguns/") || pc.includes("archguns") || pc.includes("arch-gun"))
-      return "archgun";
-    if (u.includes("archwingmelee") || u.includes("/spacemelee/") || pc.includes("archmelee") || pc.includes("arch-melee"))
-      return "archmelee";
-
+  /* ----------------- Normalisation Armes (Archgun/Archmelee) ----------------- */
+  function classifyWeapon(x){
+    const t = `${x.type||""} ${x.productCategory||""} ${x.uniqueName||""}`.toLowerCase();
+    if (t.includes("arch-melee") || t.includes("archmelee") || t.includes("spacemelee") || t.includes("/archwing/melee")) return "Archmelee";
+    if (t.includes("arch-gun")   || t.includes("archgun")   || t.includes("spaceguns")  || t.includes("/archwing/primary") || t.includes("heavygun")) return "Archgun";
     return null;
   }
+  function normalizeWeapons(raw){
+    const arr = Array.isArray(raw?.ExportWeapons) ? raw.ExportWeapons.slice() : [];
+    return arr.map(x=>{
+      const cls = classifyWeapon(x);
+      if (!cls) return null;
+      const name = x.name || "";
+      const file = cleanFileName(name);
+      const crit = x.criticalChance ?? x.critChance ?? null;
+      const critM = x.criticalMultiplier ?? x.critMultiplier ?? null;
+      const stat  = x.statusChance ?? x.procChance ?? null;
+      const fireRate = x.fireRate ?? x.fireRateSecondary ?? null;
+      const attackSp = x.attackSpeed ?? null;
 
-  function normalizePowersuit(x){
-    const raw = x.name || x.Name || "";
-    const name = stripAngleTag(raw);
-    const kind = detectKind(x.uniqueName, x.productCategory, name);
-    return {
-      Kind: kind,
-      Name: name,
-      Description: x.description || "",
-      Armor:  x.armor  ?? x.Armor  ?? 0,
-      Health: x.health ?? x.Health ?? 0,
-      Shield: x.shield ?? x.Shield ?? 0,
-      Energy: x.power  ?? x.Power  ?? x.Energy ?? null,
-      Polarities: x.polarities || x.Polarities || [],
-      _imgSrcs: makeImgCandidates(name, kind)
-      // R30 seront injectés via overrides si disponibles (HealthR30/ShieldR30/ArmorR30/EnergyR30)
-    };
+      let totalDmg = null;
+      const dmg = x.damage || x.damagePerShot || x.totalDamage || null;
+      if (dmg && typeof dmg === "object") {
+        totalDmg = Object.values(dmg).reduce((a,b)=> a + (Number(b)||0), 0) || null;
+      } else if (typeof dmg === "number") totalDmg = dmg;
+
+      return {
+        Kind: cls, Name: name, Mastery: x.masteryReq,
+        CritC: crit, CritM: critM, Status: stat,
+        FireRate: fireRate, AttackSpeed: attackSp,
+        Trigger: x.trigger || null,
+        Reload: x.reloadTime ?? null,
+        TotalDamage: totalDmg,
+        _imgSrcs: [ IMG_MSWEAP_LOCAL(file), IMG_WIKI(file), IMG_CDN(file) ].filter(Boolean)
+      };
+    }).filter(Boolean).sort(byName);
   }
 
-  function sumDamage(dmg){ if (!dmg || typeof dmg !== "object") return null; let t=0; for(const k in dmg){ const v=Number(dmg[k]); if(!isNaN(v)) t+=v; } return t||null; }
-  function normalizeWeapon(x){
-    const raw = x.name || x.Name || "";
-    const name = stripAngleTag(raw);
-    const kind = detectKind(x.uniqueName, x.productCategory, name);
-    return {
-      Kind: kind,
-      Name: name,
-      Description: x.description || "",
-      Damage: x.damage || x.Damage || null,
-      TotalDamage: sumDamage(x.damage || x.Damage) || null,
-      CritChance: x.criticalChance ?? x.CritChance ?? null,
-      CritMultiplier: x.criticalMultiplier ?? x.CritMultiplier ?? null,
-      Status: x.procChance ?? x.StatusChance ?? null,
-      FireRate: x.fireRate ?? x.FireRate ?? null,
-      Polarities: x.polarities || x.Polarities || [],
-      _imgSrcs: makeImgCandidates(name, kind)
-    };
-  }
-
-  /* ============================ ABILITIES ============================ */
-
-  function buildAbilitiesMapFromExportWarframes(suitsSrc){
-    const out = new Map();
-    const push = (suit, a) => {
-      const key = stripAngleTag(suit||"").toLowerCase();
-      if (!key || !a || !a.name) return;
-      if (!out.has(key)) out.set(key, []);
-      const list = out.get(key);
-      if (!list.some(x => x.name===a.name && x.desc===a.desc)) list.push(a);
-    };
-    const getArr = (obj, key) => {
-      const v = obj?.[key];
-      return Array.isArray(v) ? v : null;
-    };
-    const pickName = (a) => a?.name || a?.Name || a?.ability || a?.Ability || a?.abilityName || a?.AbilityName || a?.DisplayName || "";
-    const pickDesc = (a) => a?.description || a?.Description || a?.desc || a?.Desc || a?.longDescription || "";
-    const pickCost = (a) => a?.energyCost ?? a?.EnergyCost ?? a?.cost ?? a?.Energy ?? null;
-
-    (Array.isArray(suitsSrc) ? suitsSrc : []).forEach(x=>{
-      const suit = x.name || x.Name || "";
-      const kind = detectKind(x.uniqueName, x.productCategory, suit);
-      if (!(kind==="archwing" || kind==="necramech")) return;
-
-      const candidates =
-        (getArr(x,"abilities") || getArr(x,"Abilities") || getArr(x,"AbilityInfos") || getArr(x,"AbilityInfo") || getArr(x,"Powers") || getArr(x,"powers") || [])
-        .filter(Boolean);
-
-      candidates.forEach(a=>{
-        const nm = pickName(a);
-        if (!nm) return;
-        push(suit, { name:nm, desc:pickDesc(a), cost:pickCost(a) });
-      });
-    });
-
-    for (const [k,list] of out) out.set(k, list.slice(0,4));
-    return out;
-  }
-
-  function buildAbilitiesMapFromAuxSources(srcs){
-    const out = new Map();
-    const push = (suit, a) => {
-      const key = stripAngleTag(suit||"").toLowerCase();
-      if (!key || !a || !a.name) return;
-      if (!out.has(key)) out.set(key, []);
-      const list = out.get(key);
-      if (!list.some(x => x.name===a.name && x.desc===a.desc)) list.push(a);
-    };
-
-    const ws = srcs.warframestat;
-    if (Array.isArray(ws)){
-      ws.forEach(e=>{
-        const suit = e.name || e.warframe || "";
-        const abs  = Array.isArray(e.abilities) ? e.abilities : [];
-        abs.forEach(a => push(suit, { name: a.name || a.ability || "", desc: a.description || a.desc || "", cost: null }));
-      });
-    }
-
-    [srcs.abilitiesA, srcs.abilitiesB, srcs.abilitiesC].forEach(raw=>{
-      if (!raw) return;
-
-      if (Array.isArray(raw)){
-        raw.forEach(x=>{
-          const suit = x.suitName || x.SuitName || x.parentName || x.Warframe || x.frameName || x.name || "";
-          const arr =
-            x.abilities || x.Abilities ||
-            (Array.isArray(x.abilityList) ? x.abilityList.map(n=>({name:n, desc:""})) : null) ||
-            (x.abilityName ? [{name:x.abilityName, desc:(x.description||x.desc||""), cost:(x.energyCost??x.energy??null)}] : null);
-          if (suit && Array.isArray(arr)){
-            arr.forEach(a => push(suit, { name: a.name || a.ability || "", desc: a.description || a.desc || "", cost: a.energyCost ?? a.cost ?? a.energy ?? null }));
-          }
-        });
+  /* ----------------- Overrides (AW/Necramech) ----------------- */
+  function applyOverrides(list, overrides){
+    if (!overrides || !Array.isArray(list)) return;
+    list.forEach(item=>{
+      const o = overrides[item.Name]; if (!o) return;
+      if (o.base){
+        item.HealthR30 = o.base.HealthR30 ?? item.HealthR30;
+        item.ShieldR30 = o.base.ShieldR30 ?? item.ShieldR30;
+        item.ArmorR30  = o.base.ArmorR30  ?? item.ArmorR30;
+        item.EnergyR30 = o.base.EnergyR30 ?? item.EnergyR30;
+        if (Array.isArray(o.base.Polarities)) item.Polarities = o.base.Polarities.slice();
       }
-
-      if (!Array.isArray(raw) && raw && typeof raw==="object"){
-        Object.entries(raw).forEach(([k,v])=>{
-          const suit = k;
-          const arr = Array.isArray(v) ? v : (Array.isArray(v?.abilities) ? v.abilities : []);
-          arr.forEach(a => push(suit, { name: a.name || a.ability || String(a), desc: a.description || a.desc || "", cost: a.energyCost ?? a.cost ?? a.energy ?? null }));
-        });
-      }
-    });
-
-    for (const [k,list] of out) out.set(k, list.slice(0,4));
-    return out;
-  }
-
-  /* ================================ OVERRIDES ================================ */
-
-  function applyOverridesToSuits(suits, overrides) {
-    if (!overrides || typeof overrides !== "object") return;
-    suits.forEach(s => {
-      const ov = overrides[s.Name];
-      if (!ov || !ov.base) return;
-      const b = ov.base;
-      if (b.Energy != null)      s.Energy = b.Energy;
-      if (b.SprintSpeed != null) s.SprintSpeed = b.SprintSpeed;
-      if (b.Mastery != null)     s.Mastery = b.Mastery;
-      if (Array.isArray(b.Polarities)) s.Polarities = b.Polarities.slice();
-
-      // NEW: Rank 30
-      if (b.HealthR30 != null) s.HealthR30 = b.HealthR30;
-      if (b.ShieldR30 != null) s.ShieldR30 = b.ShieldR30;
-      if (b.ArmorR30  != null) s.ArmorR30  = b.ArmorR30;
-      if (b.EnergyR30 != null) s.EnergyR30 = b.EnergyR30;
+      if (Array.isArray(o.abilities)) item.Abilities = o.abilities.slice();
     });
   }
 
-  function mergeAbilityOverrides(abilitiesMap, overrides) {
-    if (!overrides || typeof overrides !== "object") return abilitiesMap;
-    const out = new Map(abilitiesMap);
-    Object.entries(overrides).forEach(([suitName, ov])=>{
-      if (!ov || !Array.isArray(ov.abilities) || !ov.abilities.length) return;
-      const key = (suitName || "").toLowerCase();
-      out.set(key, ov.abilities.map(a => ({
-        name: a.name || "",
-        desc: a.desc || "",
-        cost: a.cost ?? null,
-        stats: a.stats || null
-      })).filter(x=>x.name));
-    });
-    return out;
-  }
-
-  /* ================================ UI ================================ */
-
+  /* ----------------- Rendus ----------------- */
   const statBox = (label, value) => `
     <div class="stat h-24 flex flex-col justify-center">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
-      <div class="text-2xl font-semibold leading-tight">${escapeHtml(fmtNum(value))}</div>
+      <div class="text-2xl font-semibold leading-tight">${escapeHtml(fmt(value))}</div>
     </div>`;
-  const chip = (t) => `<span class="badge">${escapeHtml(t)}</span>`;
 
-  function abilityBlock(name, cost, desc, stats){
-    const costTxt = (cost==null || cost==="") ? "" : `<span class="opacity-80">•</span> <b>Énergie :</b> ${escapeHtml(String(cost))}`;
-    const statsRows = (stats && typeof stats==="object")
-      ? `<div class="mt-2 text-xs grid gap-1">
-           ${Object.entries(stats).map(([k,v])=>`<div><b>${escapeHtml(k)} :</b> ${escapeHtml(String(v))}</div>`).join("")}
-         </div>`
-      : "";
-    return `
-      <div class="rounded-xl bg-[var(--panel-2)] border p-4">
-        <div class="font-semibold mb-1">${escapeHtml(name)}</div>
-        <div class="text-sm mb-2">${escapeHtml(desc||"")}</div>
-        <div class="text-xs opacity-80">${costTxt}</div>
-        ${statsRows}
-      </div>`;
-  }
+  function chips(arr){ return (arr||[]).map(s=>`<span class="badge">${escapeHtml(s)}</span>`).join(" "); }
 
-  function renderSuitCard(it, abilitiesBySuit){
-    const name = it.Name;
-    const img  = renderImg(name, it._imgSrcs);
-    const polys = extractPolaritiesFromItem(it);
-    const ab = abilitiesBySuit.get(name.toLowerCase()) || [];
-
-    // R30 (si fournis par overrides)
-    const hasR30 = (it.HealthR30!=null || it.ShieldR30!=null || it.ArmorR30!=null || it.EnergyR30!=null);
+  function renderSuitCard(item){
+    const imgHTML = renderImg(item.Name, item._imgSrcs || []);
+    const r30 = (n,m=3.5)=> Math.round((Number(n)||0)*m);
+    const maxH = item.HealthR30 ?? r30(item.Health);
+    const maxS = item.ShieldR30 ?? r30(item.Shield);
+    const maxA = item.ArmorR30  ?? r30(item.Armor);
+    const maxE = item.EnergyR30 ?? r30(item.Energy, 3.0);
 
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
-        <div class="flex flex-col gap-4">
-          <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
-          <div>${chip(it.Kind==="archwing"?"Archwing":"Necramech")}</div>
-          <p class="text-[var(--muted)] leading-relaxed">${escapeHtml(it.Description||"")}</p>
+        <div class="flex flex-col gap-3">
+          <h2 class="text-2xl font-semibold">${escapeHtml(item.Name)}</h2>
+          <div class="flex flex-wrap gap-2">${chips([item.Kind])}</div>
+          <p class="text-[var(--muted)] leading-relaxed">${escapeHtml(item.Description||"")}</p>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-            ${statBox("ARMOR", it.Armor)}${statBox("HEALTH", it.Health)}${statBox("SHIELD", it.Shield)}${it.Energy!=null ? statBox("ENERGY", it.Energy) : ""}
+            ${statBox("HEALTH", item.Health)}${statBox("SHIELD", item.Shield)}${statBox("ARMOR", item.Armor)}${statBox("ENERGY", item.Energy)}
           </div>
 
-          ${hasR30 ? `
-            <div class="mt-4">
-              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rank 30)</div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                ${it.HealthR30!=null ? statBox("HEALTH (R30)", it.HealthR30) : ""}
-                ${it.ShieldR30!=null ? statBox("SHIELD (R30)", it.ShieldR30) : ""}
-                ${it.ArmorR30!=null  ? statBox("ARMOR (R30)",  it.ArmorR30)  : ""}
-                ${it.EnergyR30!=null ? statBox("ENERGY (R30)", it.EnergyR30) : ""}
-              </div>
-            </div>` : ""}
-
-          ${polys.length ? `
-            <div class="mt-4">
-              <div class="polarity-label">Polarities</div>
-              <div class="polarity-row" data-zone="others"></div>
-            </div>` : ""}
-
-          ${ab.length ? `
-            <div class="mt-6">
-              <div class="text-sm muted mb-2">Abilities</div>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                ${ab.map(a=>abilityBlock(a.name,a.cost,a.desc,a.stats)).join("")}
-              </div>
-            </div>` : ""}
-        </div>
-
-        <div class="w-full max-w-[420px] mx-auto xl:mx-0">
-          <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
-            ${img}
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.dispatchEvent(new CustomEvent("wf:card-rendered", {
-      detail: { wf: { name, auraPolarity:null, polarities: polys }, source: "awmech" }
-    }));
-    if (polys.length){
-      injectLocalPolIcons($("#card .polarity-row[data-zone='others']"), polys);
-    }
-  }
-
-  function renderWeaponCard(it){
-    const name = it.Name;
-    const img  = renderImg(name, it._imgSrcs);
-    const polys = extractPolaritiesFromItem(it);
-    const rows = [
-      it.TotalDamage!=null ? `Dégâts ${it.TotalDamage}` : null,
-      it.CritChance!=null ? `Crit ${pct(it.CritChance)}${it.CritMultiplier?` ×${it.CritMultiplier}`:""}` : null,
-      it.Status!=null ? `Statut ${pct(it.Status)}` : null,
-      it.FireRate!=null ? `Cadence ${fmtNum(it.FireRate)}` : null
-    ].filter(Boolean).join(" · ");
-
-    $("#card").innerHTML = `
-      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
-        <div class="flex flex-col gap-4">
-          <h2 class="text-2xl font-semibold">${escapeHtml(name)}</h2>
-          <div>${chip(it.Kind==="archgun"?"Arch-Gun":"Arch-Melee")}</div>
-          <p class="text-[var(--muted)] leading-relaxed">${escapeHtml(it.Description||"")}</p>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-            <div class="h-24 flex flex-col justify-center">
-              <div class="text-[10px] uppercase tracking-wide text-slate-200">Principales stats</div>
-              <div class="text-base leading-relaxed">${escapeHtml(rows || "—")}</div>
+          <div class="mt-4">
+            <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rang 30)</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              ${statBox("HEALTH (R30)", maxH)}${statBox("SHIELD (R30)", maxS)}${statBox("ARMOR (R30)",  maxA)}${statBox("ENERGY (R30)", maxE)}
             </div>
           </div>
 
-          ${polys.length ? `
-            <div class="mt-4">
-              <div class="polarity-label">Polarities</div>
-              <div class="polarity-row" data-zone="others"></div>
+          ${Array.isArray(item.Abilities) && item.Abilities.length ? `
+            <div class="mt-6"><div class="text-sm muted mb-2">Abilities</div>
+              <div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">
+                ${item.Abilities.map(a=>{
+                  const S = a.stats||{};
+                  const lines = ["Strength","Duration","Range","Misc"].map(k=>S[k] ? `<div class="text-[13px]"><b>${k}:</b> ${escapeHtml(S[k])}</div>` : "").join("");
+                  return `<div class="py-1">
+                    <div class="font-medium">• ${escapeHtml(a.name)} <span class="text-[var(--muted)]">(${escapeHtml(a.cost||"—")})</span></div>
+                    ${lines}
+                  </div>`;
+                }).join("")}
+              </div>
             </div>` : ""}
         </div>
 
         <div class="w-full max-w-[420px] mx-auto xl:mx-0">
           <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
-            ${img}
+            ${imgHTML}
           </div>
         </div>
       </div>
     `;
-
-    document.dispatchEvent(new CustomEvent("wf:card-rendered", {
-      detail: { wf: { name, auraPolarity:null, polarities: polys }, source: "awmech" }
-    }));
-    if (polys.length){
-      injectLocalPolIcons($("#card .polarity-row[data-zone='others']"), polys);
-    }
   }
 
-  function renderCard(it, abilitiesMap){
-    if (!it) return;
-    if (it.Kind==="archgun" || it.Kind==="archmelee") renderWeaponCard(it);
-    else renderSuitCard(it, abilitiesMap);
+  function renderWeaponCard(w){
+    const imgHTML = renderImg(w.Name, w._imgSrcs || []);
+    const rows = [];
+    const mk = (k,v)=> rows.push(`<div class="py-1">• <b>${k}:</b> ${escapeHtml(v)}</div>`);
+    if (w.TotalDamage!=null) mk("Total Dmg", String(Math.round(w.TotalDamage)));
+    if (w.CritC!=null) mk("Crit", `${pct(w.CritC)} ×${fmt(w.CritM)}`);
+    if (w.Status!=null) mk("Status", pct(w.Status));
+    if (w.FireRate!=null) mk("Fire Rate", fmt(w.FireRate));
+    if (w.AttackSpeed!=null) mk("Attack Speed", fmt(w.AttackSpeed));
+    if (w.Trigger) mk("Trigger", w.Trigger);
+    if (w.Reload!=null) mk("Reload", `${w.Reload}s`);
+
+    $("#card").innerHTML = `
+      <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
+        <div class="flex flex-col gap-3">
+          <h2 class="text-2xl font-semibold">${escapeHtml(w.Name)}</h2>
+          <div class="flex flex-wrap gap-2">${chips([w.Kind])}</div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
+            ${statBox("MR", w.Mastery ?? "—")}
+            ${statBox("CRIT", w.CritC!=null ? pct(w.CritC) : "—")}
+            ${statBox("STATUS", w.Status!=null ? pct(w.Status) : "—")}
+            ${statBox(w.Kind==="Archmelee" ? "ATK SPD" : "FIRE RATE", w.Kind==="Archmelee" ? w.AttackSpeed : w.FireRate)}
+          </div>
+
+          <div class="mt-4">
+            <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Détails</div>
+            <div class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)]">
+              ${rows.join("") || "<div class='text-[13px] text-[var(--muted)]'>Aucun détail exposé par l’export.</div>"}
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full max-w-[420px] mx-auto xl:mx-0">
+          <div class="rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn aspect-[1/1] flex items-center justify-center">
+            ${imgHTML}
+          </div>
+        </div>
+      </div>
+    `;
   }
 
+  /* ----------------- Picker & filtrage ----------------- */
   function renderPicker(list){
-    const pick = $("#picker");
-    if (!pick) return;
+    const pick = $("#picker"); if (!pick) return;
     pick.innerHTML = "";
-    list.forEach((it, i) => {
-      const o = document.createElement("option");
-      o.value = i;
-      o.textContent = it.Name || "—";
-      pick.appendChild(o);
+    list.forEach((it,i)=>{
+      const o=document.createElement("option");
+      o.value = i; o.textContent = it.Name || "—"; pick.appendChild(o);
     });
     pick.value = "0";
   }
 
-  /* ================================ BOOT ================================ */
+  function ensureModeTabs(){
+    let host = document.getElementById("mode-tabs");
+    if (host) return host;
 
+    const root = $("#status")?.parentElement || document.body;
+    const h1 = root.querySelector("h1") || (()=>{ const f=document.createElement("h1"); f.className="text-2xl font-semibold mb-3"; f.textContent="Archwings / Necramechs"; root.prepend(f); return f; })();
+
+    const row = document.createElement("div");
+    row.className = "flex items-center justify-between gap-4 mb-4";
+    h1.parentNode.insertBefore(row, h1); row.appendChild(h1);
+
+    host = document.createElement("div");
+    host.id = "mode-tabs";
+    host.className = "flex flex-wrap items-center gap-2 ml-auto";
+    host.innerHTML = `
+      <button data-mode="archwing"  class="badge gold px-4 py-2 text-sm md:text-base shadow-sm">Archwings</button>
+      <button data-mode="necramech" class="badge px-4 py-2 text-sm md:text-base">Necramechs</button>
+      <button data-mode="archgun"   class="badge px-4 py-2 text-sm md:text-base">Archguns</button>
+      <button data-mode="archmelee" class="badge px-4 py-2 text-sm md:text-base">Archmelee</button>`;
+    row.appendChild(host);
+    return host;
+  }
+
+  function applyMode(mode){
+    UI.mode = mode;
+    const host = ensureModeTabs();
+    host.querySelectorAll("[data-mode]").forEach(btn=>{
+      btn.classList.toggle("gold", btn.dataset.mode === mode);
+    });
+
+    const list = UI.allItems.filter(it => {
+      if (mode==="archwing")  return it.Kind==="Archwing";
+      if (mode==="necramech") return it.Kind==="Necramech";
+      if (mode==="archgun")   return it.Kind==="Archgun";
+      if (mode==="archmelee") return it.Kind==="Archmelee";
+      return true;
+    }).sort(byName);
+
+    UI.list = list.slice();
+    const q = norm($("#search")?.value).toLowerCase();
+    UI.filtered = q ? list.filter(x => (x.Name||"").toLowerCase().includes(q)) : list;
+    UI.idx = 0;
+
+    renderPicker(UI.filtered);
+    if (UI.filtered.length){
+      const it = UI.filtered[0];
+      (it.Kind==="Archgun" || it.Kind==="Archmelee") ? renderWeaponCard(it) : renderSuitCard(it);
+    }
+  }
+
+  /* ----------------- Boot ----------------- */
   (async function boot(){
     const status = $("#status");
     try{
-      status.textContent = "Chargement…";
+      status.textContent = "Chargement des données…";
 
-      const [
-        exportWarframesRaw,
-        exportWeaponsRaw,
-        abilitiesRawA,
-        abilitiesRawB,
-        abilitiesRawC,
-        warframestatRaw,
-        overridesRaw
-      ] = await Promise.all([
-        getJSON(DATA.exportWarframes),
-        getJSON(DATA.exportWeapons),
-        getJSON(DATA.abilitiesA),
-        getJSON(DATA.abilitiesB),
-        getJSON(DATA.abilitiesC),
-        getJSON(WARFRAMESTAT_URL),
-        getJSON(DATA.overrides)
+      const [wfRes, wpRes, overRes] = await Promise.all([
+        fetch(WF_EXPORT_WARFRAMES).then(r=>r.json()).catch(()=>null),
+        fetch(WF_EXPORT_WEAPONS).then(r=>r.json()).catch(()=>null),
+        fetch(AW_OVERRIDES).then(r=>r.json()).catch(()=>null)
       ]);
 
-      // Normalise SUITS
-      const suitsSrc = Array.isArray(exportWarframesRaw?.ExportWarframes)
-        ? exportWarframesRaw.ExportWarframes
-        : (Array.isArray(exportWarframesRaw) ? exportWarframesRaw : []);
-      const suits = suitsSrc
-        .map(normalizePowersuit)
-        .filter(x => x.Kind==="archwing" || x.Kind==="necramech")
-        .sort(byName);
+      const suits = normalizeSuits(wfRes);
+      applyOverrides(suits, overRes);
 
-      // Apply overrides (base + Rank30)
-      applyOverridesToSuits(suits, overridesRaw);
+      const weaps = normalizeWeapons(wpRes);
 
-      // Normalise WEAPONS
-      const weaponsSrc = Array.isArray(exportWeaponsRaw?.ExportWeapons)
-        ? exportWeaponsRaw.ExportWeapons
-        : (Array.isArray(exportWeaponsRaw) ? exportWeaponsRaw : []);
-      const weapons = weaponsSrc
-        .map(normalizeWeapon)
-        .filter(x => x.Kind==="archgun" || x.Kind==="archmelee")
-        .sort(byName);
+      UI.allItems = suits.concat(weaps);
 
-      // Abilities :
-      const abFromExport = buildAbilitiesMapFromExportWarframes(suitsSrc);
-      const abFromAux    = buildAbilitiesMapFromAuxSources({
-        warframestat: warframestatRaw,
-        abilitiesA: abilitiesRawA,
-        abilitiesB: abilitiesRawB,
-        abilitiesC: abilitiesRawC
-      });
-      let abilitiesMap = new Map(abFromAux);
-      for (const [k, list] of abFromExport) abilitiesMap.set(k, list);
-      abilitiesMap = mergeAbilityOverrides(abilitiesMap, overridesRaw); // ← overrides (wiki)
-
-      // Datasets par onglet
-      const byMode = {
-        archwing:  suits.filter(x=>x.Kind==="archwing"),
-        necramech: suits.filter(x=>x.Kind==="necramech"),
-        archgun:   weapons.filter(x=>x.Kind==="archgun"),
-        archmelee: weapons.filter(x=>x.Kind==="archmelee"),
-      };
-
-      // UI init
-      UI.mode = "archwing";
-      UI.list = byMode[UI.mode];
-      UI.filtered = UI.list.slice();
-      UI.idx = 0;
-
-      const setStatus = () => {
-        status.textContent = `Affichage : ${UI.filtered.length} ${UI.mode}`;
-        status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
-        status.style.background = "rgba(0,229,255,.08)";
-        status.style.color = "#bfefff";
-      };
-
-      renderPicker(UI.list);
-      renderCard(UI.filtered[0], abilitiesMap);
-      setStatus();
-
-      // Interactions
-      $("#picker")?.addEventListener("change", (e)=>{
-        UI.idx = e.target.value|0;
-        renderCard(UI.filtered[UI.idx], abilitiesMap);
-      });
-
-      $("#search")?.addEventListener("input", ()=>{
-        const q = norm($("#search").value).toLowerCase();
-        UI.filtered = q ? UI.list.filter(x =>
-          ((x.Name||"") + " " + (x.Description||"")).toLowerCase().includes(q) ||
-          (abilitiesMap.get((x.Name||"").toLowerCase())||[]).some(a => (a.name+" "+a.desc).toLowerCase().includes(q))
-        ) : UI.list.slice();
-        UI.idx = 0;
-        renderPicker(UI.filtered);
-        if (UI.filtered.length) renderCard(UI.filtered[0], abilitiesMap);
-        setStatus();
-      });
-
-      // Onglets (si présents dans le HTML)
-      const tabs = document.getElementById("mode-tabs");
-      if (tabs) {
-        tabs.querySelectorAll("[data-mode]").forEach(btn=>{
-          btn.addEventListener("click", ()=>{
-            const mode = btn.dataset.mode;
-            tabs.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("gold", b===btn));
-            UI.mode = mode;
-            UI.list = byMode[mode];
-            UI.filtered = UI.list.slice();
-            UI.idx = 0;
-            renderPicker(UI.list);
-            if (UI.list.length) renderCard(UI.list[0], abilitiesMap);
-            setStatus();
-          });
-        });
-      }
-
-      try{ status?.setAttribute("aria-busy","false"); }catch(_){}
-
-    }catch(e){
-      console.error("[aw/mech] load error", e);
-      if (status){
-        status.textContent = "Erreur de chargement des données.";
+      if (!UI.allItems.length){
+        status.textContent = "Aucune donnée trouvée.";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
+        return;
       }
+
+      // UI
+      ensureModeTabs();
+      $("#picker")?.addEventListener("change", (e)=>{
+        const i = e.target.value|0;
+        UI.idx = Math.min(i, Math.max(0, UI.filtered.length-1));
+        const it = UI.filtered[UI.idx];
+        if (!it) return;
+        (it.Kind==="Archgun" || it.Kind==="Archmelee") ? renderWeaponCard(it) : renderSuitCard(it);
+      });
+      $("#search")?.addEventListener("input", ()=>{
+        const q = norm($("#search").value).toLowerCase();
+        const base = UI.list;
+        UI.filtered = q ? base.filter(x => (x.Name||"").toLowerCase().includes(q)) : base;
+        UI.idx = 0;
+        renderPicker(UI.filtered);
+        if (UI.filtered.length){
+          const it = UI.filtered[0];
+          (it.Kind==="Archgun" || it.Kind==="Archmelee") ? renderWeaponCard(it) : renderSuitCard(it);
+        }
+        status.textContent = `Affichage : ${UI.filtered.length} résultat(s)`;
+      });
+
+      const tabs = ensureModeTabs();
+      tabs.querySelector('[data-mode="archwing"]').addEventListener("click", ()=>applyMode("archwing"));
+      tabs.querySelector('[data-mode="necramech"]').addEventListener("click", ()=>applyMode("necramech"));
+      tabs.querySelector('[data-mode="archgun"]').addEventListener("click", ()=>applyMode("archgun"));
+      tabs.querySelector('[data-mode="archmelee"]').addEventListener("click", ()=>applyMode("archmelee"));
+
+      applyMode("archwing"); // start
+
+      status.textContent = `Datasets chargés : ${UI.allItems.length}`;
+      status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
+      status.style.background = "rgba(0,229,255,.08)";
+      status.style.color = "#bfefff";
+      try{ status.setAttribute('aria-busy','false'); }catch(_){}
+    } catch(e){
+      console.error("[aw/mech] load error:", e);
+      status.textContent = "Erreur de chargement des données.";
+      status.style.background = "rgba(255,0,0,.08)";
+      status.style.color = "#ffd1d1";
     }
   })();
 })();
