@@ -657,4 +657,3 @@
       status.style.color = "#ffd1d1";
     }
   })();
-})();
