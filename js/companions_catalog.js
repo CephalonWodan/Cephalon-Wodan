@@ -557,10 +557,26 @@
     try{
       status.textContent = "Chargement des companions…";
 
-      // charge export & LUA pour fusionner Attacks
+      // charge export & LUA pour fusionner Attacks + Polarities (si manquantes)
       const [exportRes, luaRes] = await Promise.allSettled([
-        (async () => { try { const r=await fetch(EXPORT_URL,{cache:'force-cache'/*he:"no-store"}); if(!r.ok) throw 0; return normalizeFromExport(await r.json()); } catch { return []; } })(),
-        (async () => { try { const r=await fetch(FALLBACK_URL,{cache:'force-cache'/*ache:"no-store"}); if(!r.ok) throw 0; return normalizeFromLua(await r.json()); } catch { return []; } })()
+        (async () => {
+          try {
+            const r = await fetch(EXPORT_URL,   { cache: 'force-cache' /* was: no-store */ });
+            if(!r.ok) throw 0;
+            return normalizeFromExport(await r.json());
+          } catch {
+            return [];
+          }
+        })(),
+        (async () => {
+          try {
+            const r = await fetch(FALLBACK_URL, { cache: 'force-cache' /* was: no-store */ });
+            if(!r.ok) throw 0;
+            return normalizeFromLua(await r.json());
+          } catch {
+            return [];
+          }
+        })()
       ]);
       const listFromExport = exportRes.status==="fulfilled" ? exportRes.value : [];
       const listFromLua    = luaRes.status==="fulfilled"    ? luaRes.value    : [];
@@ -570,13 +586,14 @@
       if (list.length && listFromLua.length){
         const atkMap = buildAttacksMapFromLua(listFromLua);
         injectAttacks(list, atkMap);
+
         // Merge Polarities from LUA into Export items if missing (Sentinels)
         (function mergePolaritiesFromLua(){
           try{
             if (!Array.isArray(listFromLua) || !listFromLua.length) return;
             const polMap = new Map();
             listFromLua.forEach(it=>{
-              const name = (it.Name||it.name||"").toLowerCase();
+              const name  = (it.Name||it.name||"").toLowerCase();
               const slots = it.Polarities || it.Slots || it.polarities || null;
               if (!name) return;
               let arr = Array.isArray(slots) ? slots
@@ -593,7 +610,6 @@
             });
           }catch(_){}
         })();
-
       }
 
       if (!list.length){
@@ -625,7 +641,10 @@
         $("#picker").addEventListener("change", (e)=>{
           const idx = parseInt(e.target.value, 10);
           const q = norm($("#search")?.value).toLowerCase();
-          const filtered = q ? UI.list.filter(x => ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))).toLowerCase().includes(q)) : UI.list;
+          const filtered = q ? UI.list.filter(x => (
+            ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+
+            ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
+          ).toLowerCase().includes(q)) : UI.list;
           UI.filtered = filtered;
           UI.idx = Math.min(idx, Math.max(0, filtered.length-1));
           if (filtered.length) renderCard(filtered[UI.idx]);
@@ -634,7 +653,10 @@
       if ($("#search")){
         $("#search").addEventListener("input", ()=>{
           const q = norm($("#search").value).toLowerCase();
-          const filtered = q ? UI.list.filter(x => ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))).toLowerCase().includes(q)) : UI.list;
+          const filtered = q ? UI.list.filter(x => (
+            ((x.Name||x.name||'')+' '+(x.Type||x.type||'')+' '+(x.Description||x.description||'')+' '+
+            ((x.Attacks||[]).map(a=>a.AttackName||a.name||'').join(' '))
+          ).toLowerCase().includes(q)) : UI.list;
           UI.filtered = filtered;
           UI.idx = 0;
           renderPicker(filtered);
@@ -657,3 +679,4 @@
       status.style.color = "#ffd1d1";
     }
   })();
+})();
