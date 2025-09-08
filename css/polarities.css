@@ -107,3 +107,59 @@
   letter-spacing: .06em;
   font-size: .75rem;
 }
+/* ===== Style "Warframes" pour les polarités ===== */
+
+/* Titre "POLARITIES" avec petit filet doré */
+.polarity-label{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  opacity:.9;
+  margin-bottom:6px;
+}
+.polarity-label::after{
+  content:"";
+  display:block;
+  width:64px;
+  height:2px;
+  border-radius:2px;
+  background:linear-gradient(90deg, rgba(255,213,120,.9), rgba(255,213,120,.15));
+  transform:translateY(1px);
+}
+
+/* Rangée d’icônes – horizontale, espacée, sans cadre autour du groupe */
+.polarity-row{
+  display:flex !important;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:10px;
+  padding:2px 0;
+  background:transparent;
+  border:none;
+}
+
+/* Pastille carrée arrondie avec bordure/halo doré (comme les Warframes) */
+.pol-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px !important;             /* un peu plus grand que 28 */
+  height:36px !important;
+  border-radius:10px !important;     /* carré arrondi (écrase le cercle inline) */
+  background:rgba(255,215,130,.06);
+  border:2px solid rgba(255,215,130,.55);
+  box-shadow:
+    0 0 0 1px rgba(255,215,130,.12),
+    0 6px 14px rgba(255,215,130,.08),
+    inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+/* Taille de l’icône à l’intérieur */
+.pol-icon img{
+  display:block;
+  width:26px;
+  height:26px;
+}
