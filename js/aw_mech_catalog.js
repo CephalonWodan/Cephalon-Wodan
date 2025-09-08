@@ -11,6 +11,7 @@
     abilitiesA:      "data/abilities.json",
     abilitiesB:      "data/warframe_abilities.json",
     abilitiesC:      "data/abilities_by_warframe.json",
+    overrides:       "data/aw_overrides.json"        // ← NEW : compléments (base + R30 + abilities)
   };
 
   /* =============================== UTILS ============================== */
@@ -27,7 +28,7 @@
     catch { return null; }
   }
 
-  // Retire tout préfixe de type <ARCHWING> / <NECRAMECH> / <ARCHGUN>…
+  // Retire un éventuel tag d’angle au début : <ARCHWING> Elytron → Elytron
   const stripAngleTag = (s) => String(s||"").replace(/^<[^>]+>\s*/g, "").trim();
 
   let UI = { mode:"archwing", list:[], filtered:[], idx:0 };
@@ -74,6 +75,7 @@
   const WIKI_FILE  = (file) => file ? `https://wiki.warframe.com/w/Special:FilePath/${encodeURIComponent(file)}` : "";
   const CDN_FILE   = (file) => file ? `https://cdn.warframestat.us/img/${encodeURIComponent(file)}` : "";
 
+  // Aliases explicites (Nom → Fichier)
   const IMG_ALIASES = {
     /* Suits */
     "Amesha":"Amesha.png","Bonewidow":"Bonewidow.png","Elytron":"Elytron.png","Itzal":"Itzal.png",
@@ -116,7 +118,7 @@
 
   function fileNameFor(name){
     if (!name) return "";
-    name = stripAngleTag(name); // retire <ARCHWING> etc pour les fichiers
+    name = stripAngleTag(name);
     if (IMG_ALIASES[name]) return IMG_ALIASES[name];
     return name.replace(/\s+/g, "") + ".png";
   }
@@ -158,14 +160,15 @@
     const kind = detectKind(x.uniqueName, x.productCategory, name);
     return {
       Kind: kind,
-      Name: name, // affichage sans balise
+      Name: name,
       Description: x.description || "",
-      Armor: x.armor ?? x.Armor ?? 0,
+      Armor:  x.armor  ?? x.Armor  ?? 0,
       Health: x.health ?? x.Health ?? 0,
       Shield: x.shield ?? x.Shield ?? 0,
-      Energy: x.power ?? x.Power ?? x.Energy ?? null,
+      Energy: x.power  ?? x.Power  ?? x.Energy ?? null,
       Polarities: x.polarities || x.Polarities || [],
       _imgSrcs: makeImgCandidates(name, kind)
+      // R30 seront injectés via overrides si disponibles (HealthR30/ShieldR30/ArmorR30/EnergyR30)
     };
   }
 
@@ -189,9 +192,8 @@
     };
   }
 
-  /* ============================ ABILITIES MERGE ============================ */
+  /* ============================ ABILITIES ============================ */
 
-  // abilities depuis ExportWarframes (archwings/necramechs)
   function buildAbilitiesMapFromExportWarframes(suitsSrc){
     const out = new Map();
     const push = (suit, a) => {
@@ -214,7 +216,6 @@
       const kind = detectKind(x.uniqueName, x.productCategory, suit);
       if (!(kind==="archwing" || kind==="necramech")) return;
 
-      // essais multi-clés
       const candidates =
         (getArr(x,"abilities") || getArr(x,"Abilities") || getArr(x,"AbilityInfos") || getArr(x,"AbilityInfo") || getArr(x,"Powers") || getArr(x,"powers") || [])
         .filter(Boolean);
@@ -226,12 +227,10 @@
       });
     });
 
-    // limite 4
     for (const [k,list] of out) out.set(k, list.slice(0,4));
     return out;
   }
 
-  // Construit map: "suitName (lower)" → [ {name, desc, cost} ] depuis API + fichiers abilities
   function buildAbilitiesMapFromAuxSources(srcs){
     const out = new Map();
     const push = (suit, a) => {
@@ -242,21 +241,15 @@
       if (!list.some(x => x.name===a.name && x.desc===a.desc)) list.push(a);
     };
 
-    // API WarframeStat (souvent pas d'archwing/necramech — mais on fusionne tout de même)
     const ws = srcs.warframestat;
     if (Array.isArray(ws)){
       ws.forEach(e=>{
         const suit = e.name || e.warframe || "";
         const abs  = Array.isArray(e.abilities) ? e.abilities : [];
-        abs.forEach(a => push(suit, {
-          name: a.name || a.ability || "",
-          desc: a.description || a.desc || "",
-          cost: null
-        }));
+        abs.forEach(a => push(suit, { name: a.name || a.ability || "", desc: a.description || a.desc || "", cost: null }));
       });
     }
 
-    // abilities.json / warframe_abilities.json / abilities_by_warframe.json
     [srcs.abilitiesA, srcs.abilitiesB, srcs.abilitiesC].forEach(raw=>{
       if (!raw) return;
 
@@ -268,11 +261,7 @@
             (Array.isArray(x.abilityList) ? x.abilityList.map(n=>({name:n, desc:""})) : null) ||
             (x.abilityName ? [{name:x.abilityName, desc:(x.description||x.desc||""), cost:(x.energyCost??x.energy??null)}] : null);
           if (suit && Array.isArray(arr)){
-            arr.forEach(a => push(suit, {
-              name: a.name || a.ability || "",
-              desc: a.description || a.desc || "",
-              cost: a.energyCost ?? a.cost ?? a.energy ?? null
-            }));
+            arr.forEach(a => push(suit, { name: a.name || a.ability || "", desc: a.description || a.desc || "", cost: a.energyCost ?? a.cost ?? a.energy ?? null }));
           }
         });
       }
@@ -281,16 +270,49 @@
         Object.entries(raw).forEach(([k,v])=>{
           const suit = k;
           const arr = Array.isArray(v) ? v : (Array.isArray(v?.abilities) ? v.abilities : []);
-          arr.forEach(a => push(suit, {
-            name: a.name || a.ability || String(a),
-            desc: a.description || a.desc || "",
-            cost: a.energyCost ?? a.cost ?? a.energy ?? null
-          }));
+          arr.forEach(a => push(suit, { name: a.name || a.ability || String(a), desc: a.description || a.desc || "", cost: a.energyCost ?? a.cost ?? a.energy ?? null }));
         });
       }
     });
 
     for (const [k,list] of out) out.set(k, list.slice(0,4));
+    return out;
+  }
+
+  /* ================================ OVERRIDES ================================ */
+
+  function applyOverridesToSuits(suits, overrides) {
+    if (!overrides || typeof overrides !== "object") return;
+    suits.forEach(s => {
+      const ov = overrides[s.Name];
+      if (!ov || !ov.base) return;
+      const b = ov.base;
+      if (b.Energy != null)      s.Energy = b.Energy;
+      if (b.SprintSpeed != null) s.SprintSpeed = b.SprintSpeed;
+      if (b.Mastery != null)     s.Mastery = b.Mastery;
+      if (Array.isArray(b.Polarities)) s.Polarities = b.Polarities.slice();
+
+      // NEW: Rank 30
+      if (b.HealthR30 != null) s.HealthR30 = b.HealthR30;
+      if (b.ShieldR30 != null) s.ShieldR30 = b.ShieldR30;
+      if (b.ArmorR30  != null) s.ArmorR30  = b.ArmorR30;
+      if (b.EnergyR30 != null) s.EnergyR30 = b.EnergyR30;
+    });
+  }
+
+  function mergeAbilityOverrides(abilitiesMap, overrides) {
+    if (!overrides || typeof overrides !== "object") return abilitiesMap;
+    const out = new Map(abilitiesMap);
+    Object.entries(overrides).forEach(([suitName, ov])=>{
+      if (!ov || !Array.isArray(ov.abilities) || !ov.abilities.length) return;
+      const key = (suitName || "").toLowerCase();
+      out.set(key, ov.abilities.map(a => ({
+        name: a.name || "",
+        desc: a.desc || "",
+        cost: a.cost ?? null,
+        stats: a.stats || null
+      })).filter(x=>x.name));
+    });
     return out;
   }
 
@@ -303,13 +325,19 @@
     </div>`;
   const chip = (t) => `<span class="badge">${escapeHtml(t)}</span>`;
 
-  function abilityBlock(name, cost, desc){
-    const costTxt = (cost==null) ? "" : `<span class="opacity-80">•</span> <b>Énergie :</b> ${escapeHtml(String(cost))}`;
+  function abilityBlock(name, cost, desc, stats){
+    const costTxt = (cost==null || cost==="") ? "" : `<span class="opacity-80">•</span> <b>Énergie :</b> ${escapeHtml(String(cost))}`;
+    const statsRows = (stats && typeof stats==="object")
+      ? `<div class="mt-2 text-xs grid gap-1">
+           ${Object.entries(stats).map(([k,v])=>`<div><b>${escapeHtml(k)} :</b> ${escapeHtml(String(v))}</div>`).join("")}
+         </div>`
+      : "";
     return `
       <div class="rounded-xl bg-[var(--panel-2)] border p-4">
         <div class="font-semibold mb-1">${escapeHtml(name)}</div>
-        <div class="text-sm mb-2">${escapeHtml(desc)}</div>
+        <div class="text-sm mb-2">${escapeHtml(desc||"")}</div>
         <div class="text-xs opacity-80">${costTxt}</div>
+        ${statsRows}
       </div>`;
   }
 
@@ -318,6 +346,9 @@
     const img  = renderImg(name, it._imgSrcs);
     const polys = extractPolaritiesFromItem(it);
     const ab = abilitiesBySuit.get(name.toLowerCase()) || [];
+
+    // R30 (si fournis par overrides)
+    const hasR30 = (it.HealthR30!=null || it.ShieldR30!=null || it.ArmorR30!=null || it.EnergyR30!=null);
 
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
@@ -330,6 +361,17 @@
             ${statBox("ARMOR", it.Armor)}${statBox("HEALTH", it.Health)}${statBox("SHIELD", it.Shield)}${it.Energy!=null ? statBox("ENERGY", it.Energy) : ""}
           </div>
 
+          ${hasR30 ? `
+            <div class="mt-4">
+              <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rank 30)</div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                ${it.HealthR30!=null ? statBox("HEALTH (R30)", it.HealthR30) : ""}
+                ${it.ShieldR30!=null ? statBox("SHIELD (R30)", it.ShieldR30) : ""}
+                ${it.ArmorR30!=null  ? statBox("ARMOR (R30)",  it.ArmorR30)  : ""}
+                ${it.EnergyR30!=null ? statBox("ENERGY (R30)", it.EnergyR30) : ""}
+              </div>
+            </div>` : ""}
+
           ${polys.length ? `
             <div class="mt-4">
               <div class="polarity-label">Polarities</div>
@@ -340,7 +382,7 @@
             <div class="mt-6">
               <div class="text-sm muted mb-2">Abilities</div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                ${ab.map(a=>abilityBlock(a.name,a.cost,a.desc)).join("")}
+                ${ab.map(a=>abilityBlock(a.name,a.cost,a.desc,a.stats)).join("")}
               </div>
             </div>` : ""}
         </div>
@@ -441,7 +483,8 @@
         abilitiesRawA,
         abilitiesRawB,
         abilitiesRawC,
-        warframestatRaw
+        warframestatRaw,
+        overridesRaw
       ] = await Promise.all([
         getJSON(DATA.exportWarframes),
         getJSON(DATA.exportWeapons),
@@ -449,8 +492,10 @@
         getJSON(DATA.abilitiesB),
         getJSON(DATA.abilitiesC),
         getJSON(WARFRAMESTAT_URL),
+        getJSON(DATA.overrides)
       ]);
 
+      // Normalise SUITS
       const suitsSrc = Array.isArray(exportWarframesRaw?.ExportWarframes)
         ? exportWarframesRaw.ExportWarframes
         : (Array.isArray(exportWarframesRaw) ? exportWarframesRaw : []);
@@ -459,6 +504,10 @@
         .filter(x => x.Kind==="archwing" || x.Kind==="necramech")
         .sort(byName);
 
+      // Apply overrides (base + Rank30)
+      applyOverridesToSuits(suits, overridesRaw);
+
+      // Normalise WEAPONS
       const weaponsSrc = Array.isArray(exportWeaponsRaw?.ExportWeapons)
         ? exportWeaponsRaw.ExportWeapons
         : (Array.isArray(exportWeaponsRaw) ? exportWeaponsRaw : []);
@@ -467,7 +516,7 @@
         .filter(x => x.Kind==="archgun" || x.Kind==="archmelee")
         .sort(byName);
 
-      // Abilities : map depuis export (archwing/necramech) + fichiers + API
+      // Abilities :
       const abFromExport = buildAbilitiesMapFromExportWarframes(suitsSrc);
       const abFromAux    = buildAbilitiesMapFromAuxSources({
         warframestat: warframestatRaw,
@@ -475,12 +524,11 @@
         abilitiesB: abilitiesRawB,
         abilitiesC: abilitiesRawC
       });
-      // fusion (export prioritaire pour archwing/mech)
-      const abilitiesMap = new Map(abFromAux);
-      for (const [k, list] of abFromExport){
-        abilitiesMap.set(k, list); // remplace si existe
-      }
+      let abilitiesMap = new Map(abFromAux);
+      for (const [k, list] of abFromExport) abilitiesMap.set(k, list);
+      abilitiesMap = mergeAbilityOverrides(abilitiesMap, overridesRaw); // ← overrides (wiki)
 
+      // Datasets par onglet
       const byMode = {
         archwing:  suits.filter(x=>x.Kind==="archwing"),
         necramech: suits.filter(x=>x.Kind==="necramech"),
@@ -488,6 +536,7 @@
         archmelee: weapons.filter(x=>x.Kind==="archmelee"),
       };
 
+      // UI init
       UI.mode = "archwing";
       UI.list = byMode[UI.mode];
       UI.filtered = UI.list.slice();
@@ -504,15 +553,14 @@
       renderCard(UI.filtered[0], abilitiesMap);
       setStatus();
 
-      const picker = $("#picker");
-      picker?.addEventListener("change", (e)=>{
+      // Interactions
+      $("#picker")?.addEventListener("change", (e)=>{
         UI.idx = e.target.value|0;
         renderCard(UI.filtered[UI.idx], abilitiesMap);
       });
 
-      const search = $("#search");
-      search?.addEventListener("input", ()=>{
-        const q = norm(search.value).toLowerCase();
+      $("#search")?.addEventListener("input", ()=>{
+        const q = norm($("#search").value).toLowerCase();
         UI.filtered = q ? UI.list.filter(x =>
           ((x.Name||"") + " " + (x.Description||"")).toLowerCase().includes(q) ||
           (abilitiesMap.get((x.Name||"").toLowerCase())||[]).some(a => (a.name+" "+a.desc).toLowerCase().includes(q))
@@ -523,7 +571,7 @@
         setStatus();
       });
 
-      // Tabs présents dans le HTML
+      // Onglets (si présents dans le HTML)
       const tabs = document.getElementById("mode-tabs");
       if (tabs) {
         tabs.querySelectorAll("[data-mode]").forEach(btn=>{
