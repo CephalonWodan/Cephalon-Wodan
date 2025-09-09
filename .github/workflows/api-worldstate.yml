@@ -2,11 +2,11 @@ name: API – Worldstate
 
 on:
   schedule:
-    - cron: "*/5 * * * *"         # toutes les 5 minutes
+    - cron: "*/5 * * * *"       # toutes les 5 minutes
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write               # nécessaire pour git push
 
 concurrency:
   group: api-worldstate
@@ -15,6 +15,8 @@ concurrency:
 jobs:
   fetch:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,13 +32,12 @@ jobs:
         run: |
           set -e
           mkdir -p api/v1/worldstate/{pc,ps4,xb1,swi}
-          echo "Folders ready."
 
-      - name: Download snapshots (pc/ps4/xb1/swi · en/fr) with logs
+      - name: Download snapshots (pc/ps4/xb1/swi · en/fr) with debug
         shell: bash
         run: |
-          set -euo pipefail
-          UA="wf-hub/1.0 (+github.com/Cephalon-Wodan/Cephalon-Wodan)"
+          set -Eeuo pipefail
+          UA="Cephalon-Wodan-Worldstate/1.0 (+https://cephalonwodan.github.io)"
           wrote=0
 
           for lang in en fr; do
@@ -44,32 +45,40 @@ jobs:
               url="https://api.warframestat.us/${plat}?language=${lang}"
               dest="api/v1/worldstate/${plat}/${lang}.json"
               tmp="${dest}.tmp"
-              echo "→ GET $url"
-              code=$(curl -L -H "User-Agent: $UA" -w "%{http_code}" -sS -o "$tmp" "$url" || true)
-              echo "  HTTP $code"
-              if [[ "$code" =~ ^2 ]]; then
-                # Valide + compresse le JSON en ligne unique
+
+              echo "::group::GET $url"
+              http=$(curl -sS -L \
+                         --retry 5 --retry-delay 2 --retry-all-errors \
+                         --connect-timeout 15 --max-time 60 \
+                         -H "User-Agent: $UA" \
+                         -H "Accept: application/json" \
+                         -w "%{http_code}" -o "$tmp" "$url" || true)
+              echo "HTTP: $http"
+
+              if [[ "$http" =~ ^2 ]]; then
                 if jq -e -c . "$tmp" > "$dest"; then
                   sz=$(wc -c < "$dest")
-                  echo "  ✓ wrote $dest ($sz bytes)"
+                  echo "✓ wrote $dest ($sz bytes)"
                   wrote=$((wrote+1))
                 else
-                  echo "  ✗ jq validation failed for $url"
-                  rm -f "$tmp"
+                  echo "✗ Invalid JSON. First 200 bytes:"
+                  head -c 200 "$tmp" | sed 's/[^[:print:]]//g'; echo
                 fi
               else
-                echo "  ✗ download failed for $url"
+                echo "✗ Download failed. First 200 bytes:"
+                head -c 200 "$tmp" | sed 's/[^[:print:]]//g'; echo
               fi
+
               rm -f "$tmp"
+              echo "::endgroup::"
             done
           done
 
           echo "================ Summary ================"
-          ls -lh api/v1/worldstate/*/*.json 2>/dev/null || true
+          ls -l api/v1/worldstate/*/*.json 2>/dev/null || true
           echo "Files written: $wrote"
-          # Si rien n'a été écrit, échoue explicitement pour le voir dans les logs
           if [ "$wrote" -eq 0 ]; then
-            echo "No snapshot written. Check HTTP codes above (rate limit ? network ?)."
+            echo "No snapshot written -> failing to surface the problem."
             exit 1
           fi
 
