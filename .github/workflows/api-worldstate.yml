@@ -33,55 +33,52 @@ jobs:
           set -e
           mkdir -p api/v1/worldstate/{pc,ps4,xb1,swi}
 
-      - name: Download snapshots (pc/ps4/xb1/swi · en/fr) with debug
-        shell: bash
-        run: |
-          set -Eeuo pipefail
-          UA="Cephalon-Wodan-Worldstate/1.0 (+https://cephalonwodan.github.io)"
-          wrote=0
+      - name: Download snapshots (pc/ps4/xb1/swi · en/fr) with logs
+  shell: bash
+  run: |
+    set -euo pipefail
+    UA="wf-hub/1.0 (+github.com/Cephalon-Wodan/Cephalon-Wodan)"
+    wrote=0
 
-          for lang in en fr; do
-            for plat in pc ps4 xb1 swi; do
-              url="https://api.warframestat.us/${plat}?language=${lang}"
-              dest="api/v1/worldstate/${plat}/${lang}.json"
-              tmp="${dest}.tmp"
+    for lang in en fr; do
+      for plat in pc ps4 xb1 swi; do
+        url="https://api.warframestat.us/${plat}?language=${lang}"
+        dest="api/v1/worldstate/${plat}/${lang}.json"
+        tmp="${dest}.tmp"
+        echo "→ GET $url"
 
-              echo "::group::GET $url"
-              http=$(curl -sS -L \
-                         --retry 5 --retry-delay 2 --retry-all-errors \
-                         --connect-timeout 15 --max-time 60 \
-                         -H "User-Agent: $UA" \
-                         -H "Accept: application/json" \
-                         -w "%{http_code}" -o "$tmp" "$url" || true)
-              echo "HTTP: $http"
+        code=$(curl -L \
+                 -H "User-Agent: $UA" \
+                 -H "Accept: application/json" \
+                 --retry 5 --retry-delay 3 --retry-all-errors \
+                 -w "%{http_code}" -sS -o "$tmp" "$url" || true)
+        echo "  HTTP $code"
 
-              if [[ "$http" =~ ^2 ]]; then
-                if jq -e -c . "$tmp" > "$dest"; then
-                  sz=$(wc -c < "$dest")
-                  echo "✓ wrote $dest ($sz bytes)"
-                  wrote=$((wrote+1))
-                else
-                  echo "✗ Invalid JSON. First 200 bytes:"
-                  head -c 200 "$tmp" | sed 's/[^[:print:]]//g'; echo
-                fi
-              else
-                echo "✗ Download failed. First 200 bytes:"
-                head -c 200 "$tmp" | sed 's/[^[:print:]]//g'; echo
-              fi
-
-              rm -f "$tmp"
-              echo "::endgroup::"
-            done
-          done
-
-          echo "================ Summary ================"
-          ls -l api/v1/worldstate/*/*.json 2>/dev/null || true
-          echo "Files written: $wrote"
-          if [ "$wrote" -eq 0 ]; then
-            echo "No snapshot written -> failing to surface the problem."
-            exit 1
+        if [[ "$code" =~ ^2 ]]; then
+          # JSON compact + validation
+          if jq -e -c . "$tmp" > "$dest"; then
+            sz=$(wc -c < "$dest")
+            echo "  ✓ wrote $dest ($sz bytes)"
+            wrote=$((wrote+1))
+          else
+            echo "  ✗ jq validation failed for $url"
           fi
+        else
+          echo "  ✗ download failed for $url"
+        fi
+        rm -f "$tmp" || true
+      done
+    done
 
+    echo "================ Summary ================"
+    ls -lh api/v1/worldstate/*/*.json 2>/dev/null || true
+    echo "Files written: $wrote"
+
+    # ⚠️ Ne pas faire échouer le workflow si tous les fetchs ont raté.
+    # On log juste un warning : la page affichera "Snapshot vide".
+    if [ "$wrote" -eq 0 ]; then
+      echo "::warning::No snapshot written (rate limit / network). Keeping previous files."
+    fi
       - name: Commit & push changes
         shell: bash
         run: |
