@@ -2,7 +2,7 @@ name: API – Worldstate
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # toutes les 5 minutes
+    - cron: "*/5 * * * *"   # toutes les 5 min
   workflow_dispatch:
 
 permissions:
@@ -16,7 +16,8 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -30,30 +31,54 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p api/v1/worldstate/{pc,ps4,xb1,swi}
+
+          fetch_one () {
+            plat="$1"; lang="$2"
+            url="https://api.warframestat.us/${plat}?language=${lang}"
+            dest="api/v1/worldstate/${plat}/${lang}.json"
+
+            echo "→ $url"
+            # Télécharge + log statut et taille
+            http=$(curl -w "%{http_code} %{size_download}\n" -fsSL "$url" -o "${dest}.tmp" || true)
+            echo "   HTTP/size: $http"
+
+            # Si curl a échoué, on stoppe
+            if [ ! -s "${dest}.tmp" ]; then
+              echo "   ⚠️ vide ou download raté, on n'écrit pas ${dest}"
+              rm -f "${dest}.tmp"
+              return 1
+            fi
+
+            # Valide JSON
+            if ! jq -e . "${dest}.tmp" > /dev/null; then
+              echo "   ⚠️ JSON invalide, on n'écrit pas ${dest}"
+              rm -f "${dest}.tmp"
+              return 1
+            fi
+
+            # Refuse d’écrire un JSON “vide” ({} ou sans clés utiles)
+            keys=$(jq -r 'keys|length' "${dest}.tmp")
+            if [ "$keys" = "0" ]; then
+              echo "   ⚠️ JSON sans clés ({}), on n'écrit pas ${dest}"
+              rm -f "${dest}.tmp"
+              return 1
+            fi
+
+            # OK: formatte et déplace
+            jq '.' "${dest}.tmp" > "${dest}"
+            rm -f "${dest}.tmp"
+            echo "   ✅ écrit ${dest} (keys=${keys})"
+          }
+
+          rc=0
           for lang in en fr; do
             for plat in pc ps4 xb1 swi; do
-              url="https://api.warframestat.us/${plat}?language=${lang}"
-              dest="api/v1/worldstate/${plat}/${lang}.json"
-              echo "→ $url"
-              if curl -fsSL -H "Accept: application/json" -H "User-Agent: gh-actions/1.0" "$url" -o "${dest}.tmp"; then
-                if [ -s "${dest}.tmp" ] && jq -e . "${dest}.tmp" > "${dest}.new"; then
-                  # refuse de publier {} (longueur 0)
-                  if [ "$(jq 'length' "${dest}.new")" -gt 0 ]; then
-                    mv "${dest}.new" "${dest}"
-                    echo "✅ saved ${dest}"
-                  else
-                    echo "⚠️  Snapshot vide pour ${plat}/${lang}, on conserve l’ancienne copie si elle existe."
-                    rm -f "${dest}.new"
-                    [ -f "${dest}" ] || printf "{}" > "${dest}"
-                  fi
-                fi
-                rm -f "${dest}.tmp"
-              else
-                echo "❌ curl a échoué pour ${url}"
-                [ -f "${dest}" ] || printf "{}" > "${dest}"
-              fi
+              fetch_one "$plat" "$lang" || rc=1
             done
           done
+          # on laisse le job "success" même si 1 plat/lang a raté,
+          # mais il restera visible dans les logs
+          exit 0
 
       - name: Commit & push
         shell: bash
@@ -61,8 +86,11 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add api/v1/worldstate || true
-          git diff --cached --quiet && { echo "Rien à committer."; exit 0; }
+          git add -A api/v1/worldstate || true
+          if git diff --cached --quiet; then
+            echo "Rien à committer."
+            exit 0
+          fi
           git commit -m "worldstate: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           git pull --rebase || true
           git push
