@@ -1,7 +1,7 @@
 // ===============================
-// Hub Warframe – JS complet
-// Sources: Live (warframestat.us) / Vercel API / Local (Pages)
-// Plateforme + Langue + Timers
+// Warframe Hub – hub.js (complet)
+// Sources: Live (warframestat.us) / Vercel (API perso) / Local (Pages)
+// Includes: fallback auto pour Vercel .js (legacy builds)
 // ===============================
 
 // ---- Préférences (plateforme / langue / source)
@@ -23,11 +23,8 @@ if ($source)   $source.value   = settings.source;
 
 // ---- Helpers UI / format
 const el = (sel) => document.querySelector(sel);
+function li(inner){ const n=document.createElement("li"); n.innerHTML=inner; return n; }
 
-// Ton domaine Vercel (change-le si besoin)
-const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
-
-// Formateur de date (Europe/Paris)
 function makeDateFormatter(){
   return new Intl.DateTimeFormat(settings.lang === "fr" ? "fr-FR" : "en-GB", {
     dateStyle: "short", timeStyle: "medium", timeZone: "Europe/Paris"
@@ -42,43 +39,66 @@ function left(ms){
   return (d? d+"j ":"") + String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(ss).padStart(2,"0");
 }
 function until(expiryIso){ return left(new Date(expiryIso) - new Date()); }
-function li(inner){ const n=document.createElement("li"); n.innerHTML=inner; return n; }
 
-// ---- Router d'URL par source
-function buildURL(section){
-  const sec = String(section).replace(/\/?$/, ""); // pas de slash final par défaut
-  if (settings.source === "vercel") {
-    // API maison (Vercel)
-    return `${VERCEL_BASE}/${settings.platform}/${sec}`;
-  }
-  if (settings.source === "live") {
-    // WarframeStatus préfère un slash final → évite les 301
-    const pathSlash = String(section).replace(/\/?$/, "/");
-    return `https://api.warframestat.us/${settings.platform}/${pathSlash}?language=${settings.lang}`;
-  }
-  // Source "local" : fichier agrégé (pc.json / ps4.json / xb1.json / swi.json)
-  return `/data/worldstate/${settings.platform}.json`;
+// ===============================
+// SOURCES & FETCH
+// ===============================
+
+// Ton domaine Vercel (API perso)
+const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
+
+// petit helper fetch JSON (avec gestion de statut)
+async function fetchJSON(url, init) {
+  const r = await fetch(url, init);
+  if (!r.ok) throw new Error(String(r.status));
+  return r.json();
 }
 
-// ---- Cache simple pour la source "local"
+// URL builder (Vercel “propre”)
+function buildURLClean(section) {
+  const sec = String(section).replace(/\/?$/, "");
+  return `${VERCEL_BASE}/${settings.platform}/${sec}`; // /api/pc/fissures
+}
+
+// URL builder (Vercel “legacy .js + query”)
+function buildURLLegacy(section) {
+  // /api/[platform]/[section].js?platform=pc&section=fissures
+  const u = new URL(`${VERCEL_BASE}/[platform]/[section].js`);
+  u.searchParams.set("platform", settings.platform);
+  u.searchParams.set("section", String(section).replace(/\/?$/, ""));
+  return u.toString();
+}
+
+// Cache simple pour la source "local"
 let localCache = { platform: null, data: null, at: 0 };
 
-// ---- Fetch unifié
 async function get(section){
-  // Bounties: uniquement dispo via WarframeStatus (Live). Les autres sources n'ont pas "syndicateMissions".
+  // Bounties: seulement via Live (warframestat.us)
   if (section === "syndicateMissions" && settings.source !== "live") {
     throw new Error("syndicateMissions non disponible sur cette source");
   }
 
-  if (settings.source === "live" || settings.source === "vercel") {
-    const r = await fetch(buildURL(section), { cache: "no-store" });
-    if (!r.ok) throw new Error(section+" "+r.status);
-    return r.json();
+  if (settings.source === "live") {
+    // WarframeStatus préfère un slash final → évite les 301
+    const pathSlash = String(section).replace(/\/?$/, "/");
+    const url = `https://api.warframestat.us/${settings.platform}/${pathSlash}?language=${settings.lang}`;
+    return fetchJSON(url, { cache: "no-store" });
+  }
+
+  if (settings.source === "vercel") {
+    // 1) on tente le routage “propre”
+    try {
+      return await fetchJSON(buildURLClean(section), { cache: "no-store" });
+    } catch (e) {
+      if (String(e.message) !== "404") throw e;
+      // 2) fallback auto sur le format “.js + query”
+      return fetchJSON(buildURLLegacy(section), { cache: "no-store" });
+    }
   }
 
   // Source locale: on charge une fois le JSON agrégé puis on renvoie la propriété
   if (localCache.platform !== settings.platform || Date.now() - localCache.at > 60_000) {
-    const r = await fetch(buildURL("ALL"), { cache: "no-store" });
+    const r = await fetch(`/data/worldstate/${settings.platform}.json`, { cache: "no-store" });
     if (!r.ok) throw new Error("local worldstate "+r.status);
     localCache = { platform: settings.platform, data: await r.json(), at: Date.now() };
   }
@@ -87,7 +107,9 @@ async function get(section){
   return data;
 }
 
-// ---- Badges de contexte
+// ===============================
+// Badges / Now
+// ===============================
 function setContextBadges(){
   const src = settings.source === "vercel" ? "VERCEL" : settings.source === "live" ? "LIVE" : "LOCAL";
   const ctx = `${settings.platform.toUpperCase()} • ${settings.lang.toUpperCase()} • ${src}`;
@@ -99,9 +121,8 @@ function setContextBadges(){
 async function drawNow(){ const n = el("#now"); if (n) n.textContent = fmt.format(new Date()); }
 
 // ===============================
-// Sections
+// RENDUS SECTIONS
 // ===============================
-
 async function drawCycles(){
   const root = el("#cycles-list"); if (!root) return;
   root.innerHTML = "";
@@ -141,6 +162,7 @@ async function drawCycles(){
 async function drawBounties(){
   const root = el("#bounty-content"); if (!root) return;
   root.innerHTML = "";
+
   // Tabs
   const tabs = document.querySelectorAll(".tabs button");
   tabs.forEach(btn => btn.onclick = () => {
@@ -150,11 +172,14 @@ async function drawBounties(){
   });
   if (!document.querySelector(".tabs button.active") && tabs[0]) tabs[0].classList.add("active");
 
-  // Rendu d'un syndicat
   async function render(key){
     root.innerHTML = "";
+    if (settings.source !== "live") {
+      root.innerHTML = `<p class="small">Primes non disponibles sur cette source. Passe sur <strong>Live</strong>.</p>`;
+      return;
+    }
     try{
-      const data = await get("syndicateMissions"); // uniquement Live
+      const data = await get("syndicateMissions"); // live only
       const bySyn = {}; for (const s of data) bySyn[s.syndicate] = s;
       const syn = bySyn[key];
       if (!syn || !syn.jobs?.length){
@@ -174,12 +199,10 @@ async function drawBounties(){
       });
       root.append(list);
     } catch(e){
-      // Sur Vercel/Local: pas de bounties -> message clair
-      root.innerHTML = `<p class="small">Primes non disponibles sur cette source. Passe sur <strong>Live</strong> pour les bounties.</p>`;
+      root.innerHTML = `<p class="small">Erreur bounties (${e.message})</p>`;
     }
   }
 
-  // Affiche l'onglet actif
   const current = document.querySelector(".tabs button.active")?.dataset.syn || "Cetus";
   render(current);
 }
@@ -330,9 +353,8 @@ async function drawBaro(){
 }
 
 // ===============================
-// Boucle / Timers / Refresh
+// Boucles / Timers / Refresh
 // ===============================
-
 async function tickTimers(){
   document.querySelectorAll(".timer").forEach(t=>{
     const exp = t.getAttribute("data-exp");
@@ -353,12 +375,11 @@ async function renderAll(){
   ]);
 }
 
-// ---- Listeners des selecteurs
+// ---- Listeners
 if ($platform) {
   $platform.addEventListener("change", async () => {
     settings.platform = $platform.value;
     saveSettings(settings);
-    // reset cache local si utilisé
     localCache = { platform: null, data: null, at: 0 };
     await renderAll();
   });
@@ -385,5 +406,5 @@ await renderAll();
 drawNow();
 setInterval(drawNow, 1000);     // horloge locale
 setInterval(tickTimers, 1000);  // compte à rebours
-setInterval(renderAll, 60_000); // re-fetch ~toutes les 60s
+setInterval(renderAll, 60_000); // re-fetch périodique
 console.log("Hub prêt.", settings);
