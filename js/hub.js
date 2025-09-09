@@ -1,177 +1,259 @@
-// js/hub.js  (v3)
 (() => {
-  'use strict';
+  "use strict";
 
-  /* ---------- helpers ---------- */
-  const $  = (s, r=document) => r.querySelector(s);
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[m]));
-  const pad2 = n => String(n).padStart(2, '0');
+  // ---------- Helpers ----------
+  const $ = s => document.querySelector(s);
+  const BASE = (document.querySelector('base') && document.querySelector('base').href) || location.origin + location.pathname.replace(/[^/]+$/, '');
 
-  const state = {
-    plat: 'pc',
-    lang: 'fr',
-    autoTimer: null
-  };
+  const wsUrl = (plat, lang) => new URL(`api/v1/worldstate/${plat}/${lang}.json`, BASE).href;
 
-  // relative to hub.html (=> /Cephalon-Wodan/api/v1/worldstate/…)
-  const localWS = (plat, lang) => `api/v1/worldstate/${plat}/${lang}.json`;
-  const liveWS  = (plat, lang) => `https://api.warframestat.us/${plat}?language=${lang}`;
-
-  const nowISO = () => new Date().toISOString().replace('T',' ').slice(0, 19);
-
-  const left = (expiry) => {
-    const t = Date.parse(expiry||''); if (isNaN(t)) return '';
-    let ms = t - Date.now(); if (ms < 0) return 'expiré';
-    const m = Math.floor(ms/60000); const h = Math.floor(m/60); const d = Math.floor(h/24);
-    if (d>0) return `${d}j ${h%24}h`;
-    if (h>0) return `${h}h ${m%60}m`;
-    return `${m}m`;
-  };
-
-  const safeArr = v => Array.isArray(v) ? v : [];
-
-  const showStatus = (type, msg) => {
-    const el = $('#status'); if (!el) return;
-    el.className = 'mb-4 text-sm px-3 py-2 rounded-lg orn';
-    el.style.background = type==='ok'   ? 'rgba(0,229,255,.08)'
-                        : type==='warn' ? 'rgba(255,196,0,.08)'
-                        :                 'rgba(255,0,0,.08)';
-    el.style.color = type==='ok'   ? '#bfefff'
-                  : type==='warn' ? '#ffe7a3'
-                  :                 '#ffd1d1';
+  function pad(n){ n=Number(n)||0; return n<10? "0"+n : String(n); }
+  function fmtETA(ms){
+    if (ms <= 0) return "0s";
+    const s = Math.floor(ms/1000);
+    const d = Math.floor(s/86400);
+    const h = Math.floor((s%86400)/3600);
+    const m = Math.floor((s%3600)/60);
+    const r = s%60;
+    if (d>0) return `${d}j ${pad(h)}:${pad(m)}:${pad(r)}`;
+    return `${pad(h)}:${pad(m)}:${pad(r)}`;
+  }
+  function until(iso){ const t=Date.parse(iso||""); return isNaN(t)? 0 : (t-Date.now()); }
+  function safeText(v, fallback){ return (v===null || v===undefined || v==="") ? (fallback||"—") : String(v); }
+  function setStatus(kind, msg){
+    const el=$("#status"); if(!el) return;
+    el.className = `card px-3 py-2 mb-4 ${kind}`;
     el.textContent = msg;
-  };
-
-  async function fetchJSON(url) {
-    const res = await fetch(url, {cache:'no-store'});
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
   }
 
-  async function loadWS(plat, lang) {
-    // 1) snapshot local
-    try {
-      const j = await fetchJSON(localWS(plat, lang));
-      if (j && Object.keys(j).length) {
-        return {data:j, source:'snapshot'};
-      }
-      // fichier vide: on tente live
-    } catch (e) {
-      // 404 ou autre -> on tente live
+  // ---------- Renderers ----------
+  function renderSortie(data){
+    const host = $("#sortie"); if(!host) return;
+    if (!data || !data.expiry){
+      host.innerHTML = `<div class="muted">Aucune donnée.</div>`;
+      return;
     }
-    // 2) fallback live
-    const live = await fetchJSON(liveWS(plat, lang));
-    return {data: live, source:'live'};
-  }
-
-  /* ---------- renderers ---------- */
-
-  function renderSortie(ws) {
-    const box = $('#sortie .body'); if (!box) return;
-    const s = ws.sortie || ws.Sortie || null;
-    if (!s || s.variants && s.variants.length === 0) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
-    const v = safeArr(s.variants).map(x =>
-      `<div class="py-1">• ${esc(x.missionType || x.mission || '')} — ${esc(x.node || '')} <span class="muted">(${esc(x.modifier || '')})</span></div>`
-    ).join('');
-    box.innerHTML = `
-      <div class="font-medium mb-1">${esc(s.boss || '')} — ${esc(s.faction || '')} <span class="muted">(${left(s.expiry)})</span></div>
-      ${v || '<div class="muted">—</div>'}
+    const ms = until(data.expiry);
+    const boss = safeText(data.boss, "Sortie");
+    host.innerHTML = `
+      <div class="row">
+        <div>${boss}</div>
+        <div class="eta" data-expiry="${data.expiry}">${fmtETA(ms)}</div>
+      </div>
+      ${(Array.isArray(data.variants)?data.variants:[])
+        .map(v=>`<div class="row"><div class="muted">${safeText(v.missionType,"—")} · ${safeText(v.node,"")}</div><div class="muted">${safeText(v.modifier,"")}</div></div>`)
+        .join("")}
     `;
   }
 
-  function renderArchon(ws) {
-    const box = $('#archon .body'); if (!box) return;
-    const a = ws.archonHunt || null;
-    if (!a || !a.variants) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
-    const v = safeArr(a.variants).map(x =>
-      `<div class="py-1">• ${esc(x.node || '')} — ${esc(x.missionType || '')}</div>`
-    ).join('');
-    box.innerHTML = `
-      <div class="font-medium mb-1">${esc(a.boss || 'Archon Hunt')} <span class="muted">(${left(a.expiry)})</span></div>
-      ${v || '<div class="muted">—</div>'}
+  function renderArchon(data){
+    const host = $("#archon"); if(!host) return;
+    if (!data || !data.expiry){
+      host.innerHTML = `<div class="muted">Aucune donnée.</div>`;
+      return;
+    }
+    const ms = until(data.expiry);
+    const boss = safeText(data.boss, "Archon Hunt");
+    const node = safeText(data.node, "");
+    host.innerHTML = `
+      <div class="row">
+        <div>${boss} <span class="muted">— ${node}</span></div>
+        <div class="eta" data-expiry="${data.expiry}">${fmtETA(ms)}</div>
+      </div>
     `;
   }
 
-  function renderFissures(ws) {
-    const box = $('#fissures .body'); if (!box) return;
-    const list = safeArr(ws.fissures).filter(f => !f.isStorm && !f.isHard);
-    if (!list.length) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
-    box.innerHTML = list.slice(0, 10).map(f =>
-      `<div class="py-1">• T${esc(f.tierNum ?? '')} — ${esc(f.missionType || '')} — ${esc(f.node || '')} <span class="muted">(${left(f.expiry)})</span></div>`
-    ).join('');
+  function renderFissures(list){
+    const host = $("#fissures"); if(!host) return;
+    if (!Array.isArray(list) || list.length===0){
+      host.innerHTML = `<div class="muted">Aucune donnée.</div>`;
+      return;
+    }
+    // garde les 12 prochaines, tri par temps restant
+    const rows = list
+      .filter(f=>!f.expired)
+      .map(f=>({ ...f, ms: until(f.expiry) }))
+      .sort((a,b)=>a.ms-b.ms)
+      .slice(0,12)
+      .map(f=>{
+        const tier = safeText(f.tierShort||f.tier, "");
+        const note = f.isStorm? " (Storm)" : (f.isHard? " (SP)" : "");
+        const node = safeText(f.node, "");
+        const type = safeText(f.missionType, "");
+        return `<div class="row">
+          <div>${tier}${note} · <span class="muted">${type}</span> · ${node}</div>
+          <div class="eta" data-expiry="${f.expiry}">${fmtETA(f.ms)}</div>
+        </div>`;
+      }).join("");
+
+    host.innerHTML = rows || `<div class="muted">Aucune fissure active.</div>`;
   }
 
-  function renderNightwave(ws) {
-    const box = $('#nightwave .body'); if (!box) return;
-    const nw = ws.nightwave || null;
-    if (!nw || !nw.active) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
-    const ch = safeArr(nw.challenges).map(c =>
-      `<div class="py-1">• ${esc(c.title || c.desc || '')}</div>`
-    ).join('');
-    box.innerHTML = ch || '<div class="muted">—</div>';
+  function renderInvasions(list){
+    const host = $("#invasions"); if(!host) return;
+    if (!Array.isArray(list)){
+      host.innerHTML = `<div class="muted">Aucune donnée.</div>`;
+      return;
+    }
+    const active = list.filter(i=>!i.completed);
+    if (active.length===0){
+      host.innerHTML = `<div class="muted">Aucune invasion active.</div>`;
+      return;
+    }
+    host.innerHTML = active.slice(0,10).map(i=>{
+      const node = safeText(i.node,"");
+      const desc = safeText(i.desc,"");
+      const eta  = safeText(i.eta,"");
+      return `<div class="row">
+        <div>${node} <span class="muted">— ${desc}</span></div>
+        <div class="eta">${eta}</div>
+      </div>`;
+    }).join("");
   }
 
-  function renderInvasions(ws) {
-    const box = $('#invasions .body'); if (!box) return;
-    const list = safeArr(ws.invasions).filter(i => !i.completed);
-    if (!list.length) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
-    box.innerHTML = list.slice(0, 6).map(i =>
-      `<div class="py-1">• ${esc(i.node || '')} — ${esc(i.desc || '')}</div>`
-    ).join('');
+  // Open worlds (cycles + bounties)
+  function renderOpenWorlds(ws){
+    const host = $("#openworlds"); if(!host) return;
+    const blocks = [];
+
+    // Cetus
+    if (ws.cetusCycle){
+      const c=ws.cetusCycle, ms=until(c.expiry);
+      blocks.push(cardWorld(
+        "Cetus (Plains of Eidolon)",
+        `Cycle: <b>${c.isDay? "Day":"Night"}</b>`,
+        c.expiry,
+        ms,
+        findBounty(ws.syndicateMissions, "Ostrons")
+      ));
+    }
+    // Vallis
+    if (ws.vallisCycle){
+      const v=ws.vallisCycle, ms=until(v.expiry);
+      blocks.push(cardWorld(
+        "Orb Vallis",
+        `Cycle: <b>${v.isWarm? "Warm":"Cold"}</b>`,
+        v.expiry,
+        ms,
+        findBounty(ws.syndicateMissions, "Solaris United")
+      ));
+    }
+    // Cambion
+    if (ws.cambionCycle){
+      const k=ws.cambionCycle, ms=until(k.expiry);
+      const phase = k.active ? (k.active[0].toUpperCase()+k.active.slice(1)) : (k.isVome? "Vome" : "Fass");
+      blocks.push(cardWorld(
+        "Cambion Drift",
+        `Cycle: <b>${phase}</b>`,
+        k.expiry,
+        ms,
+        findBounty(ws.syndicateMissions, "Entrati")
+      ));
+    }
+    // Zariman (jour/nuit Zariman)
+    if (ws.zarimanCycle){
+      const z=ws.zarimanCycle, ms=until(z.expiry);
+      blocks.push(cardWorld(
+        "Zariman",
+        `Cycle: <b>${safeText(z.state,"—")}</b>`,
+        z.expiry,
+        ms,
+        findBounty(ws.syndicateMissions, "Zariman Ten Zero")
+      ));
+    }
+
+    host.innerHTML = blocks.length ? blocks.join("") : `<div class="muted">Aucune donnée.</div>`;
   }
 
-  /* ---------- refresh ---------- */
+  function findBounty(syndMissions, name){
+    const list = Array.isArray(syndMissions)? syndMissions : [];
+    const m = list.find(x => (x && (x.syndicate===name)));
+    if (!m) return null;
+    return {
+      name,
+      expiry: m.expiry || null,
+      jobs: Array.isArray(m.jobs) ? m.jobs.slice(0,5).map(j => {
+        const lv = (Array.isArray(j.enemyLevels) && j.enemyLevels.length===2) ? `${j.enemyLevels[0]}-${j.enemyLevels[1]}` : "";
+        const t  = j.type || j.jobType || "Bounty";
+        return `${t} <span class="muted">(${lv})</span>`;
+      }) : []
+    };
+  }
 
-  async function refresh() {
-    // éléments nécessaires
-    const platSel = $('#plat'), langSel = $('#lang');
-    if (platSel) state.plat = (platSel.value || 'pc').toLowerCase();
-    if (langSel) state.lang = (langSel.value || 'fr').toLowerCase();
+  function cardWorld(title, cycleText, expiryISO, ms, bounty){
+    const eta = `<span class="eta" data-expiry="${expiryISO}">${fmtETA(ms)}</span>`;
+    const bountyBlock = bounty ? `
+      <div class="mt-2 text-sm">
+        <div class="muted">Bounties — expire in ${bounty.expiry ? `<span class="eta" data-expiry="${bounty.expiry}">${fmtETA(until(bounty.expiry))}</span>` : "—"}</div>
+        ${bounty.jobs.length ? bounty.jobs.map(j=>`<div class="row"><div>${j}</div></div>`).join("") : `<div class="row"><div class="muted">—</div></div>`}
+      </div>` : `<div class="mt-2 text-sm muted">Bounties — non disponible</div>`;
 
-    try {
-      showStatus('warn', 'Chargement…');
-      const {data, source} = await loadWS(state.plat, state.lang);
-      // header
-      const whenEl = $('#when');
-      const srcEl  = $('#src');
-      if (whenEl) whenEl.textContent = nowISO();
-      if (srcEl)  srcEl.textContent  = (source === 'snapshot' ? 'snapshot local' : 'API live');
+    return `<div class="card p-3">
+      <div class="font-semibold mb-1">${title}</div>
+      <div>${cycleText} · expire dans ${eta}</div>
+      ${bountyBlock}
+    </div>`;
+  }
 
-      // rendu
-      renderSortie(data);
-      renderArchon(data);
-      renderFissures(data);
-      renderNightwave(data);
-      renderInvasions(data);
+  // ---------- Live refresh (countdowns) ----------
+  function tickETAs(){
+    document.querySelectorAll("[data-expiry]").forEach(el=>{
+      const iso = el.getAttribute("data-expiry");
+      const ms  = until(iso);
+      el.textContent = fmtETA(ms);
+    });
+  }
 
-      showStatus('ok', `OK • ${state.plat.toUpperCase()} • ${state.lang.toUpperCase()} • ${source === 'snapshot' ? 'snapshot' : 'live'}`);
-    } catch (e) {
-      console.error(e);
-      showStatus('err', `Erreur : ${e.message}`);
-      // vide les panneaux pour éviter du vieux contenu
-      for (const id of ['sortie','archon','fissures','nightwave','invasions']) {
-        const b = $(`#${id} .body`); if (b) b.innerHTML = '<div class="muted">—</div>';
+  // ---------- Fetch & glue ----------
+  async function loadWS(plat, lang){
+    const url = wsUrl(plat, lang);
+    const r = await fetch(url, { cache:"no-store" });
+    if (!r.ok) throw new Error("HTTP "+r.status);
+    const j = await r.json();
+    return j;
+  }
+
+  async function refresh(){
+    const plat = $("#platform") ? $("#platform").value : "pc";
+    const lang = $("#lang") ? $("#lang").value : "fr";
+    setStatus("warn", "Chargement…");
+
+    try{
+      const ws = await loadWS(plat, lang);
+      const empty = !ws || (Object.keys(ws).length===0);
+      if (empty){
+        setStatus("warn", "Snapshot vide. Attends le prochain run du workflow.");
+      }else{
+        setStatus("ok", `Snapshot chargé · Plateforme ${plat.toUpperCase()} · Langue ${lang.toUpperCase()}`);
       }
+
+      renderSortie(ws.sortie);
+      renderArchon(ws.archonHunt);
+      renderFissures(ws.fissures);
+      renderInvasions(ws.invasions);
+      renderOpenWorlds(ws);
+
+    }catch(err){
+      console.error(err);
+      setStatus("err", "Erreur de chargement. Vérifie que api/v1/worldstate/... existe et n’est pas vide.");
+      // Efface les panneaux pour éviter des états incohérents
+      ["#sortie","#archon","#fissures","#invasions","#openworlds"].forEach(id=>{
+        const el=$(id); if(el) el.innerHTML=`<div class="muted">Aucune donnée.</div>`;
+      });
     }
   }
 
-  /* ---------- boot ---------- */
-
-  function start() {
-    // valeurs par défaut UI si présents
-    if ($('#plat')) $('#plat').value = state.plat.toUpperCase();
-    if ($('#lang')) $('#lang').value = state.lang.toUpperCase();
-
-    $('#btn-refresh')?.addEventListener('click', refresh);
-    $('#plat')?.addEventListener('change', refresh);
-    $('#lang')?.addEventListener('change', refresh);
+  function start(){
+    $("#btnRefresh") && $("#btnRefresh").addEventListener("click", refresh);
+    $("#platform") && $("#platform").addEventListener("change", refresh);
+    $("#lang") && $("#lang").addEventListener("change", refresh);
 
     refresh();
-
-    // auto refresh 60s
-    clearInterval(state.autoTimer);
-    state.autoTimer = setInterval(refresh, 60000);
+    setInterval(tickETAs, 1000); // compte à rebours live
   }
 
-  document.addEventListener('DOMContentLoaded', start);
+  document.readyState === "loading"
+    ? document.addEventListener("DOMContentLoaded", start)
+    : start();
+
 })();
