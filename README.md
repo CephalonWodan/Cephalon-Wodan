@@ -1,2 +1,3 @@
 # Cephalon-Wodan
-source : me, https://github.com/WFCD, https://api.warframestat.us, https://wiki.warframe.com . 
+source : me, https://github.com/WFCD, https://api.warframestat.us, https://wiki.warframe.com 
+"mini wiki" 
