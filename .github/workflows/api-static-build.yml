@@ -1,12 +1,12 @@
 name: API – Build Static
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *" # toutes les 6h
+    - cron: "0 */6 * * *"   # toutes les 6h
+  workflow_dispatch:
 
 permissions:
-  contents: write   # indispensable pour git push
+  contents: write
 
 concurrency:
   group: api-static-build
@@ -21,108 +21,174 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install jq
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y jq
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-      - name: Assert export files exist
-        run: |
-          test -f data/ExportWarframes_en.json || { echo "Missing data/ExportWarframes_en.json"; exit 1; }
-          test -f data/ExportWeapons_en.json   || { echo "Missing data/ExportWeapons_en.json"; exit 1; }
-
-      - name: Build static endpoints (archwings, necramechs, archguns, archmelee)
+      - name: Build static endpoints (archwings / necramechs / archguns / archmelee)
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p api/v1/static
+          node - <<'NODE'
+          const fs = require('fs/promises');
+          const path = require('path');
 
-          # Petite fonction jq pour nettoyer les noms ("<ARCHWING> Odonata" -> "Odonata")
-          CLEAN='def clean: ( . // "" ) | tostring | gsub("<[^>]*>"; "") | gsub("^\\s+|\\s+$"; "");'
+          const SRC_WARFRAMES = 'data/ExportWarframes_en.json';
+          const SRC_WEAPONS   = 'data/ExportWeapons_en.json';
+          const OUT_DIR       = 'api/v1/static';
 
-          # -------- SUITS --------
-          jq -r --argfile src data/ExportWarframes_en.json '
-            def kind($u):
-              ( ($u|ascii_downcase) | 
-                if test("mech|necramech") then "Necramech"
-                elif test("archwing|wing") then "Archwing"
-                else null end );
-            $src.ExportWarframes
-            | map( . as $w
-                | { 
-                    Kind: (kind($w.uniqueName) // empty),
-                    Name: ( ($w.name|tostring) | gsub("<[^>]*>"; "") | gsub("^\\s+|\\s+$"; "") ),
-                    Description: ($w.description // ""),
-                    Health: $w.health, Shield: $w.shield, Armor: $w.armor, Energy: $w.power,
-                    Sprint: $w.sprintSpeed, Mastery: $w.masteryReq
-                  }
-              )
-            | map(select(.Kind != null))
-            | sort_by(.Name)
-          ' > api/v1/static/ms_suits.json
+          const cleanDisplayName = s => String(s||'')
+            .replace(/<[^>]*>\s*/g,'').replace(/\s+/g,' ').trim();
+          const slug = s => cleanDisplayName(s).toLowerCase()
+            .replace(/['’\u2019]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 
-          # -------- WEAPONS --------
-          jq -r --argfile src data/ExportWeapons_en.json '
-            def clean: ( . // "" ) | tostring | gsub("<[^>]*>"; "") | gsub("^\\s+|\\s+$"; "");
-            def classify($t):
-              ( ($t|ascii_downcase) |
-                if test("arch-?melee|space melee|/archwing/melee|melee/archwing") then "Archmelee"
-                elif test("arch-?gun|spaceguns|/archwing/primary|\\bprimary\\b|\\brifle\\b") then "Archgun"
-                else null end );
+          const cap = s => String(s||'').replace(/[_-]+/g,' ')
+            .replace(/\b\w/g,m=>m.toUpperCase());
 
-            def dmgmap:
-              if .damage then .damage
-              elif (.damagePerShot and .damageTypes) then
-                reduce range(0; (.damagePerShot|length)) as $i ({}; .[.damageTypes[$i]] = (.damagePerShot[$i]//0))
-              elif (.normalAttack and .normalAttack.damage) then .normalAttack.damage
-              else null end;
+          const sumMap = m => {
+            if (!m) return null;
+            let t = 0; for (const k in m) t += Number(m[k])||0;
+            return t || null;
+          };
 
-            def total($m):
-              if ($m|type)=="object" then
-                reduce ($m|to_entries[]) as $e (0; . + (($e.value // 0) | tonumber))
-              else null end;
+          const toDamageMap = d => {
+            if (!d) return null;
+            if (Array.isArray(d)) {
+              const out = {};
+              for (const e of d) {
+                const k = cap(e?.damageType || e?.type || e?.name);
+                const v = Number(e?.amount ?? e?.value ?? e?.damage ?? e?.dmg);
+                if (k && !Number.isNaN(v)) out[k] = (out[k]||0) + v;
+              }
+              return Object.keys(out).length ? out : null;
+            }
+            if (typeof d === 'object') {
+              const out={};
+              for (const k in d) {
+                const v = Number(d[k]);
+                if (!Number.isNaN(v)) out[cap(k)] = (out[cap(k)]||0) + v;
+              }
+              return Object.keys(out).length ? out : null;
+            }
+            return null;
+          };
 
-            $src.ExportWeapons
-            | map( . as $w
-                | { t: ( [ $w.type, $w.productCategory, $w.uniqueName ] | map(tostring) | join(" ") ) ,
-                    Name: ( ($w.name|tostring) | clean ),
-                    Mastery: $w.masteryReq,
-                    CritC: ($w.criticalChance // $w.critChance // $w.normalAttack.crit_chance),
-                    CritM: ($w.criticalMultiplier // $w.critMultiplier // $w.normalAttack.crit_mult),
-                    Status: ($w.statusChance // $w.procChance // $w.normalAttack.status_chance),
-                    FireRate: ($w.fireRate // $w.fireRateSecondary // $w.normalAttack.fire_rate),
-                    AttackSpeed: ($w.attackSpeed // null),
-                    Trigger: $w.trigger,
-                    Reload: $w.reloadTime,
-                    _kind: classify( [ $w.type, $w.productCategory, $w.uniqueName ] | map(tostring) | join(" ") ),
-                    _dmg: (dmgmap)
-                  }
-              )
-            | map(select(._kind != null))
-            | map(. as $x
-                | .Kind = $x._kind
-                | .DamageMap = $x._dmg
-                | .TotalDamage = ( total($x._dmg) // $x.totalDamage // $x.damage // null )
-                | del(._kind, ._dmg)
-              )
-            | sort_by(.Name)
-          ' > api/v1/static/ms_weapons.json
+          const mergeMaps = (parts) => {
+            const out={};
+            for (const p of parts) {
+              const m = toDamageMap(p);
+              if (!m) continue;
+              for (const k in m) out[k] = (out[k]||0) + Number(m[k]||0);
+            }
+            return Object.keys(out).length ? out : null;
+          };
 
-          # Découpe en 2 fichiers pratiques
-          jq '[ .[] | select(.Kind=="Archgun") ]'   api/v1/static/ms_weapons.json > api/v1/static/archguns.json
-          jq '[ .[] | select(.Kind=="Archmelee") ]' api/v1/static/ms_weapons.json > api/v1/static/archmelee.json
+          const readJson = async (p) => JSON.parse(await fs.readFile(p,'utf8'));
 
-      - name: Commit & Push
+          (async () => {
+            // ---------- Charge sources ----------
+            const wf = await readJson(SRC_WARFRAMES).catch(e => { throw new Error(`Cannot read ${SRC_WARFRAMES}: ${e.message}`) });
+            const wp = await readJson(SRC_WEAPONS).catch(e => { throw new Error(`Cannot read ${SRC_WEAPONS}: ${e.message}`) });
+
+            const warframes = Array.isArray(wf?.ExportWarframes) ? wf.ExportWarframes : [];
+            const weapons   = Array.isArray(wp?.ExportWeapons)   ? wp.ExportWeapons   : [];
+
+            console.log(`Warframes: ${warframes.length}, Weapons: ${weapons.length}`);
+
+            // ---------- SUITS ----------
+            const MECH_NAMES = new Set(['Voidrig','Bonewidow']);
+            const detectSuitKind = (x) => {
+              const un = String(x?.uniqueName||'').toLowerCase();
+              const nm = cleanDisplayName(x?.name||'');
+              if (MECH_NAMES.has(nm) || /mech|necramech/.test(un)) return 'Necramech';
+              if (/archwing|wing/.test(un)) return 'Archwing';
+              return null;
+            };
+
+            const suits = warframes.map(x=>{
+              const kind = detectSuitKind(x);
+              if (!kind) return null;
+              const name = cleanDisplayName(x.name||'');
+              return {
+                Kind: kind, Name: name,
+                Health: x.health ?? null,
+                Shield: x.shield ?? null,
+                Armor:  x.armor  ?? null,
+                Energy: x.power  ?? null,
+                Mastery: x.masteryReq ?? null,
+              };
+            }).filter(Boolean).sort((a,b)=>a.Name.localeCompare(b.Name));
+
+            // ---------- WEAPONS ----------
+            const classifyWeapon = (x) => {
+              const t = `${x.type||''} ${x.productCategory||''} ${x.uniqueName||''}`.toLowerCase();
+              if (t.includes('arch-melee') || t.includes('archmelee') || (t.includes('archwing') && t.includes('melee')) || t.includes('/archwing/melee') || t.includes('melee/archwing')) return 'Archmelee';
+              if (t.includes('arch-gun')   || t.includes('archgun')   || (t.includes('archwing') && (t.includes('gun') || t.includes('rifle') || t.includes('primary'))) || t.includes('/archwing/primary') || t.includes('heavygun')) return 'Archgun';
+              return null;
+            };
+
+            const weExp = weapons.map(x=>{
+              const kind = classifyWeapon(x);
+              if (!kind) return null;
+              const name = cleanDisplayName(x.name||'');
+              const isMelee = kind === 'Archmelee';
+
+              // damage map
+              const parts = [];
+              if (x.damage) parts.push(x.damage);
+              if (x.normalAttack?.damage) parts.push(x.normalAttack.damage);
+              if (x.areaAttack?.damage) parts.push(x.areaAttack.damage);
+              if (Array.isArray(x.damagePerShot) && Array.isArray(x.damageTypes)) {
+                const m={}; x.damageTypes.forEach((t,i)=>{ const v=Number(x.damagePerShot[i]); if(!Number.isNaN(v)) m[t]=(m[t]||0)+v; }); parts.push(m);
+              }
+              const dmgMap = mergeMaps(parts);
+              let total = x.totalDamage ?? sumMap(dmgMap);
+
+              return {
+                Kind: kind, Name: name, _slug: slug(name),
+                Mastery: x.masteryReq ?? null,
+                CritC: x.criticalChance ?? x.critChance ?? x.normalAttack?.crit_chance ?? null,
+                CritM: x.criticalMultiplier ?? x.critMultiplier ?? x.normalAttack?.crit_mult ?? null,
+                Status: x.statusChance ?? x.procChance ?? x.normalAttack?.status_chance ?? null,
+                FireRate: isMelee ? null : (x.fireRate ?? x.fireRateSecondary ?? x.normalAttack?.fire_rate ?? null),
+                AttackSpeed: isMelee ? (x.attackSpeed ?? x.normalAttack?.fire_rate ?? null) : null,
+                Trigger: x.trigger || null,
+                Reload: x.reloadTime ?? null,
+                TotalDamage: total ?? null,
+                DamageMap: dmgMap || null,
+              };
+            }).filter(Boolean);
+
+            // exports dédiés
+            const archguns   = weExp.filter(w=>w.Kind==='Archgun').sort((a,b)=>a.Name.localeCompare(b.Name));
+            const archmelee  = weExp.filter(w=>w.Kind==='Archmelee').sort((a,b)=>a.Name.localeCompare(b.Name));
+            const ms_weapons = [...archguns, ...archmelee].sort((a,b)=>a.Name.localeCompare(b.Name));
+            const ms_suits   = suits;
+
+            await fs.mkdir(OUT_DIR, { recursive: true });
+            const write = (file, data) => fs.writeFile(path.join(OUT_DIR, file), JSON.stringify(data, null, 2), 'utf8');
+
+            await write('ms_suits.json',   ms_suits);
+            await write('ms_weapons.json', ms_weapons);
+            await write('archguns.json',   archguns);
+            await write('archmelee.json',  archmelee);
+
+            console.log(`Wrote ${OUT_DIR}/ (suits:${ms_suits.length}, guns:${archguns.length}, melee:${archmelee.length})`);
+          })().catch(e => { console.error(e); process.exit(1); });
+          NODE
+
+      - name: Commit & push
         shell: bash
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A api/v1/static
+          git add -A api/v1/static || true
           if git diff --cached --quiet; then
-            echo "Rien à committer."
+            echo "No changes to commit."
             exit 0
           fi
-          git commit -m "api(static): ms_suits / ms_weapons refreshed"
+          git commit -m "static: rebuild $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
           git pull --rebase || true
           git push
