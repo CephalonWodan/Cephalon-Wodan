@@ -1,0 +1,11 @@
+{
+  "name": "cephalon-wodan-api",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build:export": "node scripts/build_export_mirror.mjs",
+    "build:static": "node scripts/build_static_items.mjs",
+    "fetch:worldstate": "node scripts/refresh_worldstate.mjs"
+  }
+}
