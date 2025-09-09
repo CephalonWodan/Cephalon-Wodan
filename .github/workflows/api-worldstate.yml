@@ -1,25 +1,48 @@
+# .github/workflows/worldstate.yml
 name: API – Worldstate
 
 on:
-  workflow_dispatch:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/5 * * * *"   # toutes les 5 minutes
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: write   # IMPORTANT pour pouvoir commit
+
+concurrency:
+  group: worldstate
+  cancel-in-progress: true
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: node scripts/refresh_worldstate.mjs
-      - name: Commit & Push
+
+      - name: Download snapshots
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          set -euo pipefail
+          mkdir -p api/v1/worldstate
+          for plat in pc ps4 xb1 swi; do
+            mkdir -p "api/v1/worldstate/$plat"
+            for lang in en fr; do
+              url="https://api.warframestat.us/${plat}?language=${lang}"
+              out="api/v1/worldstate/$plat/${lang}.json"
+              echo "GET $url -> $out"
+              curl -fsSL "$url" -o "$out"
+            done
+          done
+          # petit index lisible
+          jq -n '
+            { platforms: ["pc","ps4","xb1","swi"],
+              languages: ["en","fr"],
+              updatedAt: (now|todate) }' > api/v1/worldstate/index.json
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --quiet && echo "No changes" || git commit -m "api(worldstate): refresh"
+          git diff --quiet && echo "No changes" && exit 0
+          git commit -m "worldstate: update"
           git push
