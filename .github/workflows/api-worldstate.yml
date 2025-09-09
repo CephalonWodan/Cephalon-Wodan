@@ -16,56 +16,42 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Ensure jq
+      - name: Install jq
         run: |
           sudo apt-get update -y
           sudo apt-get install -y jq
 
-      - name: Fetch Warframe worldstate (pc/ps4/xb1/swi · en/fr) – resilient
+      - name: Fetch Warframe worldstate (pc/ps4/xb1/swi · en/fr)
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p api/v1/worldstate/{pc,ps4,xb1,swi}
-
-          fetch_one () {
-            plat="$1"; lang="$2"
-            url="https://api.warframestat.us/${plat}?language=${lang}"
-            dest="api/v1/worldstate/${plat}/${lang}.json"
-            tmp="${dest}.tmp"
-
-            for i in 1 2 3 4 5; do
-              code=$(curl -A "wf-hub/1.0 (+github-actions)" \
-                         -H "Accept: application/json" \
-                         -w "%{http_code}" -fsSL "$url" -o "$tmp" || true)
-
-              if [ "$code" = "200" ] && jq -e . "$tmp" >/dev/null 2>&1; then
-                mv "$tmp" "$dest"
-                echo "OK  $plat/$lang"
-                return 0
-              fi
-
-              echo "Retry $i for $plat/$lang (HTTP=${code:-?})"
-              sleep $((i*3))
-            done
-
-            rm -f "$tmp" || true
-            if [ -f "$dest" ]; then
-              echo "WARN: API down for $plat/$lang → conservation de l'ancien snapshot"
-              return 0
-            fi
-
-            echo "WARN: aucun snapshot pour $plat/$lang, écriture d'un JSON vide"
-            echo '{}' > "$dest"
-          }
-
           for lang in en fr; do
             for plat in pc ps4 xb1 swi; do
-              fetch_one "$plat" "$lang"
+              url="https://api.warframestat.us/${plat}?language=${lang}"
+              dest="api/v1/worldstate/${plat}/${lang}.json"
+              echo "→ $url"
+              if curl -fsSL -H "Accept: application/json" -H "User-Agent: gh-actions/1.0" "$url" -o "${dest}.tmp"; then
+                if [ -s "${dest}.tmp" ] && jq -e . "${dest}.tmp" > "${dest}.new"; then
+                  # refuse de publier {} (longueur 0)
+                  if [ "$(jq 'length' "${dest}.new")" -gt 0 ]; then
+                    mv "${dest}.new" "${dest}"
+                    echo "✅ saved ${dest}"
+                  else
+                    echo "⚠️  Snapshot vide pour ${plat}/${lang}, on conserve l’ancienne copie si elle existe."
+                    rm -f "${dest}.new"
+                    [ -f "${dest}" ] || printf "{}" > "${dest}"
+                  fi
+                fi
+                rm -f "${dest}.tmp"
+              else
+                echo "❌ curl a échoué pour ${url}"
+                [ -f "${dest}" ] || printf "{}" > "${dest}"
+              fi
             done
           done
 
@@ -75,11 +61,8 @@ jobs:
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A api/v1/worldstate || true
-          if git diff --cached --quiet; then
-            echo "Rien à committer."
-            exit 0
-          fi
+          git add api/v1/worldstate || true
+          git diff --cached --quiet && { echo "Rien à committer."; exit 0; }
           git commit -m "worldstate: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
-          git pull --rebase --autostash || true
+          git pull --rebase || true
           git push
