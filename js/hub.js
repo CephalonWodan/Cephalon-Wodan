@@ -23,7 +23,11 @@ if ($lang) $lang.value = settings.lang;
 
 // Helpers UI / API
 const el = (sel) => document.querySelector(sel);
-const API = (p) => `https://api.warframestat.us/${settings.platform}/${p}?language=${settings.lang}`;
+const API = (p) => {
+  // normalise "earthCycle" -> "earthCycle/" (évite les 301)
+  const path = String(p).replace(/\/?$/, "/"); // force un slash final unique
+  return `https://api.warframestat.us/${settings.platform}/${path}?language=${settings.lang}`;
+};
 
 function makeDateFormatter(){
   return new Intl.DateTimeFormat(settings.lang === "fr" ? "fr-FR" : "en-GB", {
