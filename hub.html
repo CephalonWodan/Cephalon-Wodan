@@ -4,85 +4,35 @@
   <meta charset="utf-8" />
   <title>Warframe Hub</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- IMPORTANT : adapte le chemin selon ton repo GitHub Pages -->
-  <base href="/Cephalon-Wodan/">
-
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Thème existant (facultatif) -->
-  <link rel="stylesheet" href="css/theme.css">
-
-  <style>
-    :root{
-      --bg:#0b1220; --ink:#EAEFF7; --muted:#94a3b8;
-      --panel:#121b2d; --ring:#ffd26633; --gold:#e5bf62;
-    }
-    body{ background:var(--bg); color:var(--ink); }
-    .card{ background:var(--panel); border:1px solid rgba(255,255,255,.08); border-radius:16px; }
-    .pill{ border:1px solid var(--gold); border-radius:999px; padding:.15rem .6rem; font-size:.8rem; }
-    .muted{ color:var(--muted); }
-    .title{ font-weight:700; letter-spacing:.04em; text-transform:uppercase; }
-    .grid-auto{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
-    .row{ display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:.35rem 0; border-top:1px dashed rgba(255,255,255,.06); }
-    .row:first-child{ border-top:none; }
-    .eta{ font-variant-numeric: tabular-nums; }
-    .warn{ background:rgba(255,208,0,.08); color:#fbe4a4; border:1px solid rgba(255,208,0,.25); }
-    .ok{ background:rgba(0,229,255,.08); color:#bfefff; border:1px solid rgba(0,229,255,.25); }
-    .err{ background:rgba(255,0,0,.08); color:#ffd1d1; border:1px solid rgba(255,0,0,.25); }
-  </style>
+  <link rel="stylesheet" href="css/theme.css?v=1" />
 </head>
-<body class="min-h-screen">
-  <div class="max-w-6xl mx-auto p-5">
-    <div class="flex items-center justify-between gap-3 mb-4">
-      <h1 class="text-2xl font-semibold">Warframe Hub</h1>
+<body class="bg-[var(--bg)] text-[var(--ink)]">
+  <div class="max-w-6xl mx-auto p-6">
+    <h1 class="text-2xl font-semibold mb-4">Warframe Hub</h1>
 
-      <div class="flex flex-wrap items-center gap-2">
-        <label class="text-sm muted">Plateforme</label>
-        <select id="platform" class="pill bg-transparent">
-          <option value="pc">PC</option>
-          <option value="ps4">PS4</option>
-          <option value="xb1">XB1</option>
-          <option value="swi">SWI</option>
+    <div class="flex gap-3 items-center mb-3">
+      <label>Plateforme
+        <select id="plat" class="ml-2 rounded-lg bg-[var(--panel-2)] px-3 py-2">
+          <option>PC</option><option>PS4</option><option>XB1</option><option>SWI</option>
         </select>
-
-        <label class="ml-3 text-sm muted">Langue</label>
-        <select id="lang" class="pill bg-transparent">
-          <option value="en">EN</option>
-          <option value="fr" selected>FR</option>
+      </label>
+      <label>Langue
+        <select id="lang" class="ml-2 rounded-lg bg-[var(--panel-2)] px-3 py-2">
+          <option>EN</option><option selected>FR</option>
         </select>
-
-        <button id="btnRefresh" class="pill">Actualiser</button>
-      </div>
+      </label>
+      <button id="btn" class="badge gold px-4 py-2">Actualiser</button>
     </div>
 
-    <div id="status" class="card px-3 py-2 mb-4 muted"></div>
+    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"></div>
 
-    <div class="grid gap-4 md:grid-cols-2">
-      <section class="card p-4">
-        <h2 class="title mb-2">Sortie</h2>
-        <div id="sortie" class="muted">Aucune donnée.</div>
-      </section>
-
-      <section class="card p-4">
-        <h2 class="title mb-2">Archon</h2>
-        <div id="archon" class="muted">Aucune donnée.</div>
-      </section>
-
-      <section class="card p-4 md:col-span-2">
-        <h2 class="title mb-2">Fissures</h2>
-        <div id="fissures" class="muted">Aucune donnée.</div>
-      </section>
-
-      <section class="card p-4 md:col-span-2">
-        <h2 class="title mb-2">Invasions</h2>
-        <div id="invasions" class="muted">Aucune donnée.</div>
-      </section>
-
-      <section class="card p-4 md:col-span-2">
-        <h2 class="title mb-2">Open Worlds — Cycles & Bounties</h2>
-        <div id="openworlds" class="grid-auto"></div>
-      </section>
+    <div id="cards" class="grid grid-cols-1 gap-4">
+      <section id="card-sortie" class="card p-4"><h2 class="text-xl font-semibold mb-2">SORTIE</h2><div class="body muted">—</div></section>
+      <section id="card-archon" class="card p-4"><h2 class="text-xl font-semibold mb-2">ARCHON</h2><div class="body muted">—</div></section>
+      <section id="card-fiss"   class="card p-4"><h2 class="text-xl font-semibold mb-2">FISSURES</h2><div class="body muted">—</div></section>
+      <section id="card-nw"     class="card p-4"><h2 class="text-xl font-semibold mb-2">NIGHTWAVE</h2><div class="body muted">—</div></section>
+      <section id="card-inv"    class="card p-4"><h2 class="text-xl font-semibold mb-2">INVASIONS</h2><div class="body muted">—</div></section>
     </div>
   </div>
 
