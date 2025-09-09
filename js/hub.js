@@ -7,16 +7,15 @@
   const esc = (s) => String(s ?? "")
     .replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
   const arr = (v) => Array.isArray(v) ? v : [];
-  const missionsOf = (obj) => arr(obj?.missions || obj?.variants);
-  const fissuresOf  = (data) => arr(data?.fissures || data?.voidFissures);
-  const nightwaveChallenges = (data) => arr(data?.nightwave?.activeChallenges || data?.nightwave?.challenges);
-  const invasionsOf = (data) => arr(data?.invasions);
+  const missionsOf = (obj) => arr((obj && (obj.missions || obj.variants)) || []);
+  const fissuresOf  = (data) => arr((data && (data.fissures || data.voidFissures)) || []);
+  const nightwaveChallenges = (data) =>
+    arr((data?.nightwave && (data.nightwave.activeChallenges || data.nightwave.challenges)) || []);
+  const invasionsOf = (data) => arr(data?.invasions || []);
   const pct = (v) => (v==null ? "—" : `${Math.round(Number(v)*100)/100}%`);
   const fmtTime = (isoOrMs) => {
-    try {
-      const d = new Date(isoOrMs || Date.now());
-      return d.toLocaleString();
-    } catch { return ""; }
+    try { return new Date(isoOrMs || Date.now()).toLocaleString(); }
+    catch { return ""; }
   };
 
   /* -------------------- chargement JSON -------------------- */
@@ -26,7 +25,7 @@
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
 
-    // Bandeau: on masque la source, on n’affiche que le snapshot
+    // Bandeau: on masque le chemin (pas d'affichage de l'URL)
     const snap = fmtTime(json.timestamp || json.time || json.lastUpdate || Date.now());
     const status = $("#status");
     status.classList.remove("error");
@@ -72,7 +71,7 @@
   function renderFissures(data) {
     const box = $("#fissures");
     const list = fissuresOf(data)
-      .filter(f => !f.isStorm || f.tier)                  // garde “normales” + laisse les storm si tier présent
+      .filter(f => !f.isStorm || f.tier)
       .sort((a,b) => String(a.tier||"").localeCompare(String(b.tier||"")));
     const rows = list.map(f =>
       `<div class="row">
@@ -89,11 +88,11 @@
     const box = $("#nightwave");
     const nw = data?.nightwave || {};
     const list = nightwaveChallenges(data);
-    const head = nw?.season != null
+    const head = (nw.season != null)
       ? `<div class="row"><b>Saison ${esc(nw.season)}</b> · ${esc(nw.eta || "")}</div>` : "";
     const rows = list.map(c => {
       const title = c.title || c.challenge || c.desc || c.asString || "";
-      const rep   = c.reputation ?? c.reputation || 0;
+      const rep   = (c.reputation ?? 0);          // <-- corrige l’erreur `??` vs `||`
       const flags = [
         c.isElite ? "Elite" : "",
         c.isDaily ? "Daily" : "",
@@ -113,8 +112,8 @@
       const def = i.defendingFaction || i.defender?.faction || "Défense";
       const node = i.node || "";
       const p = (i.completion != null) ? ` · ${pct(i.completion)}` : "";
-      const rewA = i.attackerReward?.itemString || i.attackerReward?.asString || "";
-      const rewD = i.defenderReward?.itemString || i.defenderReward?.asString || "";
+      const rewA = (i.attackerReward && (i.attackerReward.itemString || i.attackerReward.asString)) || "";
+      const rewD = (i.defenderReward && (i.defenderReward.itemString || i.defenderReward.asString)) || "";
       const rew = (rewA || rewD) ? ` — 🎁 ${esc(rewA || rewD)}` : "";
       return `<div class="row">${esc(node)} — ${esc(atk)} vs ${esc(def)}${p}${rew}</div>`;
     }).join("");
@@ -128,6 +127,19 @@
     try {
       $("#status").textContent = "Chargement…";
       const data = await loadWS(plat, lang);
+
+      // Snapshot vide -> messages par défaut
+      if (!data || !Object.keys(data).length) {
+        const s = $("#status");
+        s.classList.add("error");
+        s.textContent = "Snapshot vide. Attends la prochaine exécution du workflow.";
+        ["sortie","archon","fissures","nightwave","invasions"].forEach(id => {
+          const el = $("#"+id);
+          if (el) el.innerHTML = `<div class="muted">Aucune donnée.</div>`;
+        });
+        return;
+      }
+
       renderSortie(data);
       renderArchon(data);
       renderFissures(data);
@@ -139,8 +151,7 @@
       console.error(e);
       const s = $("#status");
       s.classList.add("error");
-      s.textContent = `Échec de chargement. Vérifie que /api/v1/worldstate/... existe (détail: ${e.message})`;
-      // Vide proprement les panneaux
+      s.textContent = `Échec de chargement (${e.message}). Vérifie /api/v1/worldstate/...`;
       ["sortie","archon","fissures","nightwave","invasions"].forEach(id => {
         const el = $("#"+id);
         if (el) el.innerHTML = `<div class="muted">Aucune donnée.</div>`;
@@ -159,11 +170,10 @@
     $("#lang")?.addEventListener("change", refresh);
     $("#refreshBtn")?.addEventListener("click", refresh);
 
-    // auto-refresh toutes les 60 s
+    // auto-refresh 60 s
     setInterval(refresh, 60_000);
   }
 
-  /* ------------------------- boot -------------------------- */
   document.addEventListener("DOMContentLoaded", () => {
     initControls();
     refresh();
