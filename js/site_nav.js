@@ -21,6 +21,7 @@
     { href: "weapons.html", key: "weapons.html", label: "Weapons" },
     { href: "companions.html", key: "companions.html", label: "Companions" },
     { href: "necramechs_archwings.html", key: "necramechs_archwings.html", label: "Necramechs & Archwings" },
+    { href: "hub.html", key: "hub.html", label: "WorldState" },
   ];
 
   host.innerHTML = `
