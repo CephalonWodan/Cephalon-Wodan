@@ -6,43 +6,57 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # indispensable pour commit & push
+  contents: write   # IMPORTANT: permet de pousser sur la branche
 
 concurrency:
-  group: worldstate
-  cancel-in-progress: true
+  group: api-worldstate
+  cancel-in-progress: false
 
 jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Download snapshots
+      - name: Install jq (validation JSON)
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+
+      - name: Fetch Warframe worldstate (pc/ps4/xb1/swi · en/fr)
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p api/v1/worldstate
-          for plat in pc ps4 xb1 swi; do
-            mkdir -p "api/v1/worldstate/$plat"
-            for lang in en fr; do
+          mkdir -p api/v1/worldstate/{pc,ps4,xb1,swi}
+
+          for lang in en fr; do
+            for plat in pc ps4 xb1 swi; do
               url="https://api.warframestat.us/${plat}?language=${lang}"
-              out="api/v1/worldstate/$plat/${lang}.json"
-              echo "GET $url -> $out"
-              curl -fsSL "$url" -o "$out"
+              dest="api/v1/worldstate/${plat}/${lang}.json"
+              echo "→ $url"
+              curl -fsSL "$url" -o "${dest}.tmp"
+              # Valide et normalise le JSON
+              jq -e . "${dest}.tmp" > "$dest"
+              rm -f "${dest}.tmp"
             done
           done
-          # petit index
-          jq -n '
-            { platforms: ["pc","ps4","xb1","swi"],
-              languages: ["en","fr"],
-              updatedAt: (now|todate) }' > api/v1/worldstate/index.json
 
-      - name: Commit & push if changed
+      - name: Commit & push
+        shell: bash
         run: |
+          set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git diff --quiet && echo "No changes" && exit 0
-          git commit -m "worldstate: update"
+          # Ajoute uniquement le dossier worldstate
+          git add -A api/v1/worldstate || true
+          if git diff --cached --quiet; then
+            echo "Rien à committer."
+            exit 0
+          fi
+          git commit -m "worldstate: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          # Evite les non-fast-forward si un autre workflow a poussé
+          git pull --rebase || true
           git push
