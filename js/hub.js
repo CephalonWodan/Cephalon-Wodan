@@ -146,7 +146,7 @@
       renderInvasions(ws);
 
       const ts = ws.timestamp || ws.time || new Date().toISOString();
-      status.textContent = `OK · snapshot ${toLocal(ts)} · source: ${url}`;
+      status.textContent = `OK · snapshot ${snap}`;
       status.className   = "mb-4 text-sm px-3 py-2 rounded-lg orn";
       status.style.background = "rgba(0,229,255,.08)";
       status.style.color = "#bfefff";
