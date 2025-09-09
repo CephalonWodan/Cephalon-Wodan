@@ -1,179 +1,177 @@
-/* js/hub.js (compatible avec hub.html: ws-status, ws-platform, ws-lang, ws-refresh, card-*) */
+// js/hub.js  (v3)
 (() => {
-  "use strict";
+  'use strict';
 
-  /* ----------------- Helpers DOM ----------------- */
-  const $id = (id) => document.getElementById(id) || null;
-  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[c]));
-  const arr = (v) => Array.isArray(v) ? v : [];
-  const missionsOf = (obj) => arr((obj && (obj.missions || obj.variants)) || []);
-  const fissuresOf  = (data) => arr((data && (data.fissures || data.voidFissures)) || []);
-  const nightwaveChallenges = (data) =>
-    arr((data?.nightwave && (data.nightwave.activeChallenges || data.nightwave.challenges)) || []);
-  const invasionsOf = (data) => arr(data?.invasions || []);
-  const pct = (v) => (v==null ? "—" : `${Math.round(Number(v)*100)/100}%`);
-  const fmtTime = (isoOrMs) => { try { return new Date(isoOrMs || Date.now()).toLocaleString(); } catch { return ""; } };
-  const setText = (el, txt) => { if (el) el.textContent = txt; };
-  const addCls  = (el, c) => { if (el) el.classList && el.classList.add(c); };
-  const delCls  = (el, c) => { if (el) el.classList && el.classList.remove(c); };
+  /* ---------- helpers ---------- */
+  const $  = (s, r=document) => r.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':"&quot;","'":"&#39;"}[m]));
+  const pad2 = n => String(n).padStart(2, '0');
 
-  /* ----------------- Mini UI helpers ----------------- */
-  function card(title, bodyHtml){
-    return `
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-lg font-semibold">${esc(title)}</h2>
-      </div>
-      ${bodyHtml && bodyHtml.trim() ? bodyHtml : '<div class="text-[var(--muted)]">Aucune donnée.</div>'}
+  const state = {
+    plat: 'pc',
+    lang: 'fr',
+    autoTimer: null
+  };
+
+  // relative to hub.html (=> /Cephalon-Wodan/api/v1/worldstate/…)
+  const localWS = (plat, lang) => `api/v1/worldstate/${plat}/${lang}.json`;
+  const liveWS  = (plat, lang) => `https://api.warframestat.us/${plat}?language=${lang}`;
+
+  const nowISO = () => new Date().toISOString().replace('T',' ').slice(0, 19);
+
+  const left = (expiry) => {
+    const t = Date.parse(expiry||''); if (isNaN(t)) return '';
+    let ms = t - Date.now(); if (ms < 0) return 'expiré';
+    const m = Math.floor(ms/60000); const h = Math.floor(m/60); const d = Math.floor(h/24);
+    if (d>0) return `${d}j ${h%24}h`;
+    if (h>0) return `${h}h ${m%60}m`;
+    return `${m}m`;
+  };
+
+  const safeArr = v => Array.isArray(v) ? v : [];
+
+  const showStatus = (type, msg) => {
+    const el = $('#status'); if (!el) return;
+    el.className = 'mb-4 text-sm px-3 py-2 rounded-lg orn';
+    el.style.background = type==='ok'   ? 'rgba(0,229,255,.08)'
+                        : type==='warn' ? 'rgba(255,196,0,.08)'
+                        :                 'rgba(255,0,0,.08)';
+    el.style.color = type==='ok'   ? '#bfefff'
+                  : type==='warn' ? '#ffe7a3'
+                  :                 '#ffd1d1';
+    el.textContent = msg;
+  };
+
+  async function fetchJSON(url) {
+    const res = await fetch(url, {cache:'no-store'});
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  async function loadWS(plat, lang) {
+    // 1) snapshot local
+    try {
+      const j = await fetchJSON(localWS(plat, lang));
+      if (j && Object.keys(j).length) {
+        return {data:j, source:'snapshot'};
+      }
+      // fichier vide: on tente live
+    } catch (e) {
+      // 404 ou autre -> on tente live
+    }
+    // 2) fallback live
+    const live = await fetchJSON(liveWS(plat, lang));
+    return {data: live, source:'live'};
+  }
+
+  /* ---------- renderers ---------- */
+
+  function renderSortie(ws) {
+    const box = $('#sortie .body'); if (!box) return;
+    const s = ws.sortie || ws.Sortie || null;
+    if (!s || s.variants && s.variants.length === 0) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
+    const v = safeArr(s.variants).map(x =>
+      `<div class="py-1">• ${esc(x.missionType || x.mission || '')} — ${esc(x.node || '')} <span class="muted">(${esc(x.modifier || '')})</span></div>`
+    ).join('');
+    box.innerHTML = `
+      <div class="font-medium mb-1">${esc(s.boss || '')} — ${esc(s.faction || '')} <span class="muted">(${left(s.expiry)})</span></div>
+      ${v || '<div class="muted">—</div>'}
     `;
   }
-  function renderInto(id, html){ const host=$id(id); if(host) host.innerHTML = html; }
 
-  /* ----------------- Chargement JSON ----------------- */
-  async function loadWS(platform, lang) {
-    const url = `api/v1/worldstate/${platform}/${lang}.json?t=${Date.now()}`; // cache-buster
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-
-    // Bandeau (on masque l’URL source)
-    const snap = fmtTime(json.timestamp || json.time || json.lastUpdate || Date.now());
-    const st = $id("ws-status");
-    delCls(st, "error");
-    setText(st, `OK · snapshot ${snap}`);
-    return json;
+  function renderArchon(ws) {
+    const box = $('#archon .body'); if (!box) return;
+    const a = ws.archonHunt || null;
+    if (!a || !a.variants) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
+    const v = safeArr(a.variants).map(x =>
+      `<div class="py-1">• ${esc(x.node || '')} — ${esc(x.missionType || '')}</div>`
+    ).join('');
+    box.innerHTML = `
+      <div class="font-medium mb-1">${esc(a.boss || 'Archon Hunt')} <span class="muted">(${left(a.expiry)})</span></div>
+      ${v || '<div class="muted">—</div>'}
+    `;
   }
 
-  /* ----------------- Renderers ----------------- */
-  function renderSortie(ws){
-    const s = ws?.sortie || null;
-    const list = missionsOf(s);
-    const head = s ? `<div class="mb-2 text-sm text-[var(--muted)]">Boss: ${esc(s.boss||"")} · Faction: ${esc(s.faction||"")} ${s.eta?`· ${esc(s.eta)}`:""}</div>` : "";
-    const rows = list.map(v =>
-      `<li class="py-1"><b>${esc(v.missionType || v.type || "")}</b> — ${esc(v.node || "")}${v.modifier?` — <i>${esc(v.modifier)}</i>`:""}</li>`
-    ).join("");
-    renderInto("card-sortie", card("Sortie", head + (rows?`<ul class="list-disc pl-5">${rows}</ul>`:"")));
+  function renderFissures(ws) {
+    const box = $('#fissures .body'); if (!box) return;
+    const list = safeArr(ws.fissures).filter(f => !f.isStorm && !f.isHard);
+    if (!list.length) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
+    box.innerHTML = list.slice(0, 10).map(f =>
+      `<div class="py-1">• T${esc(f.tierNum ?? '')} — ${esc(f.missionType || '')} — ${esc(f.node || '')} <span class="muted">(${left(f.expiry)})</span></div>`
+    ).join('');
   }
 
-  function renderArchon(ws){
-    const a = ws?.archonHunt || null;
-    const list = missionsOf(a);
-    const head = a ? `<div class="mb-2 text-sm text-[var(--muted)]">${esc(a.boss||"Archon Hunt")} ${a.eta?`· ${esc(a.eta)}`:""}</div>` : "";
-    const rows = list.map(m => `<li class="py-1"><b>${esc(m.type || m.missionType || "")}</b> — ${esc(m.node || "")}</li>`).join("");
-    renderInto("card-archon", card("Archon Hunt", head + (rows?`<ul class="list-disc pl-5">${rows}</ul>`:"")));
+  function renderNightwave(ws) {
+    const box = $('#nightwave .body'); if (!box) return;
+    const nw = ws.nightwave || null;
+    if (!nw || !nw.active) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
+    const ch = safeArr(nw.challenges).map(c =>
+      `<div class="py-1">• ${esc(c.title || c.desc || '')}</div>`
+    ).join('');
+    box.innerHTML = ch || '<div class="muted">—</div>';
   }
 
-  function renderFissures(ws){
-    const list = fissuresOf(ws)
-      .filter(f => !f.isStorm || f.tier)
-      .sort((a,b) => String(a.tier||"").localeCompare(String(b.tier||"")));
-    const rows = list.map(f =>
-      `<tr>
-        <td class="py-1 pr-3">${esc(f.tierShort || f.tier || "")}${f.isStorm ? " (Void Storm)" : ""}</td>
-        <td class="py-1 pr-3">${esc(f.missionType || "")}</td>
-        <td class="py-1 pr-3">${esc(f.node || "")}</td>
-        <td class="py-1">${f.eta ? esc(f.eta) : ""}</td>
-      </tr>`
-    ).join("");
-    renderInto("card-fissures", card("Fissures",
-      rows ? `<div class="overflow-x-auto"><table class="min-w-full text-sm">
-        <thead class="text-[var(--muted)]"><tr>
-          <th class="text-left pr-3 py-1">Relique</th>
-          <th class="text-left pr-3 py-1">Mission</th>
-          <th class="text-left pr-3 py-1">Noeud</th>
-          <th class="text-left py-1">ETA</th>
-        </tr></thead><tbody>${rows}</tbody></table></div>` : ""
-    ));
+  function renderInvasions(ws) {
+    const box = $('#invasions .body'); if (!box) return;
+    const list = safeArr(ws.invasions).filter(i => !i.completed);
+    if (!list.length) return box.innerHTML = '<div class="muted">Aucune donnée.</div>';
+    box.innerHTML = list.slice(0, 6).map(i =>
+      `<div class="py-1">• ${esc(i.node || '')} — ${esc(i.desc || '')}</div>`
+    ).join('');
   }
 
-  function renderNightwave(ws){
-    const nw = ws?.nightwave || {};
-    const list = nightwaveChallenges(ws);
-    const head = (nw.season != null)
-      ? `<div class="mb-2 text-sm text-[var(--muted)]">Saison ${esc(nw.season)} ${nw.eta?`· ${esc(nw.eta)}`:""}</div>` : "";
-    const rows = list.map(c=>{
-      const title = c.title || c.challenge || c.desc || c.asString || "Challenge";
-      const rep   = (c.reputation ?? 0);
-      const tags  = [c.isElite&&"Elite", c.isDaily&&"Daily", c.isWeekly&&"Weekly"].filter(Boolean).join(" · ");
-      return `<li class="py-1">• ${esc(title)}${tags?` — ${esc(tags)}`:""} · +${rep} Rep</li>`;
-    }).join("");
-    renderInto("card-nightwave", card("Nightwave", head + (rows?`<ul class="list-disc pl-5">${rows}</ul>`:"")));
-  }
+  /* ---------- refresh ---------- */
 
-  function renderInvasions(ws){
-    const list = invasionsOf(ws).filter(i => !i.completed);
-    const rows = list.map(i=>{
-      const atk = i.attackingFaction || i.attacker?.faction || "Attaque";
-      const def = i.defendingFaction || i.defender?.faction || "Défense";
-      const node = i.node || "";
-      const p = (i.completion != null) ? ` · ${pct(i.completion)}` : "";
-      const rewA = (i.attackerReward && (i.attackerReward.itemString || i.attackerReward.asString)) || "";
-      const rewD = (i.defenderReward && (i.defenderReward.itemString || i.defenderReward.asString)) || "";
-      const rew = (rewA || rewD) ? ` — 🎁 ${esc(rewA || rewD)}` : "";
-      return `<li class="py-1">${esc(node)} — <b>${esc(atk)}</b> vs <b>${esc(def)}</b>${p}${rew}</li>`;
-    }).join("");
-    renderInto("card-invasions", card("Invasions", rows?`<ul class="list-disc pl-5">${rows}</ul>`:""));
-  }
+  async function refresh() {
+    // éléments nécessaires
+    const platSel = $('#plat'), langSel = $('#lang');
+    if (platSel) state.plat = (platSel.value || 'pc').toLowerCase();
+    if (langSel) state.lang = (langSel.value || 'fr').toLowerCase();
 
-  /* ----------------- Orchestration ----------------- */
-  async function refresh(){
-    const platSel = $id("ws-platform");
-    const langSel = $id("ws-lang");
-    const plat = (platSel?.value || "pc").toLowerCase();
-    const lang = (langSel?.value || "en").toLowerCase();
+    try {
+      showStatus('warn', 'Chargement…');
+      const {data, source} = await loadWS(state.plat, state.lang);
+      // header
+      const whenEl = $('#when');
+      const srcEl  = $('#src');
+      if (whenEl) whenEl.textContent = nowISO();
+      if (srcEl)  srcEl.textContent  = (source === 'snapshot' ? 'snapshot local' : 'API live');
 
-    const st = $id("ws-status");
-    setText(st, "Chargement…"); delCls(st, "error");
-
-    try{
-      const data = await loadWS(plat, lang);
-
-      // Snapshot vide => messages par défaut
-      if (!data || !Object.keys(data).length){
-        addCls(st, "error");
-        setText(st, "Snapshot vide. Attends le prochain run du workflow.");
-        ["card-sortie","card-archon","card-fissures","card-nightwave","card-invasions"].forEach(id=>{
-          renderInto(id, card(id.replace("card-","").toUpperCase(), ""));
-        });
-        return;
-      }
-
+      // rendu
       renderSortie(data);
       renderArchon(data);
       renderFissures(data);
       renderNightwave(data);
       renderInvasions(data);
 
-      try{ localStorage.setItem("hub.plat", platSel?.value || "pc"); }catch{}
-      try{ localStorage.setItem("hub.lang", langSel?.value || "en"); }catch{}
-    } catch(e){
+      showStatus('ok', `OK • ${state.plat.toUpperCase()} • ${state.lang.toUpperCase()} • ${source === 'snapshot' ? 'snapshot' : 'live'}`);
+    } catch (e) {
       console.error(e);
-      addCls(st, "error");
-      setText(st, `Échec de chargement (${e.message}). Vérifie /api/v1/worldstate/...`);
-      ["card-sortie","card-archon","card-fissures","card-nightwave","card-invasions"].forEach(id=>{
-        renderInto(id, card(id.replace("card-","").toUpperCase(), ""));
-      });
+      showStatus('err', `Erreur : ${e.message}`);
+      // vide les panneaux pour éviter du vieux contenu
+      for (const id of ['sortie','archon','fissures','nightwave','invasions']) {
+        const b = $(`#${id} .body`); if (b) b.innerHTML = '<div class="muted">—</div>';
+      }
     }
   }
 
-  function initControls(){
-    const platSel = $id("ws-platform");
-    const langSel = $id("ws-lang");
-    // Restorer dernier choix
-    try{
-      const p = localStorage.getItem("hub.plat"); if (p && platSel) platSel.value = p;
-      const l = localStorage.getItem("hub.lang"); if (l && langSel) langSel.value = l;
-    }catch{}
-    platSel?.addEventListener("change", refresh);
-    langSel?.addEventListener("change", refresh);
-    $id("ws-refresh")?.addEventListener("click", refresh);
-    setInterval(refresh, 60_000); // auto-refresh
+  /* ---------- boot ---------- */
+
+  function start() {
+    // valeurs par défaut UI si présents
+    if ($('#plat')) $('#plat').value = state.plat.toUpperCase();
+    if ($('#lang')) $('#lang').value = state.lang.toUpperCase();
+
+    $('#btn-refresh')?.addEventListener('click', refresh);
+    $('#plat')?.addEventListener('change', refresh);
+    $('#lang')?.addEventListener('change', refresh);
+
+    refresh();
+
+    // auto refresh 60s
+    clearInterval(state.autoTimer);
+    state.autoTimer = setInterval(refresh, 60000);
   }
 
-  function start(){ initControls(); refresh(); }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", start, { once:true });
-  } else {
-    start(); // script chargé via defer
-  }
+  document.addEventListener('DOMContentLoaded', start);
 })();
