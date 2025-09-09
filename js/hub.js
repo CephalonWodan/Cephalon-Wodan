@@ -45,6 +45,7 @@ function until(expiryIso){ return left(new Date(expiryIso) - new Date()); }
 // ===============================
 
 // Ton domaine Vercel (API perso)
+// === API perso (Vercel) ===
 const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
 
 // petit helper fetch JSON (avec gestion de statut)
