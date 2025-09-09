@@ -1,4 +1,4 @@
-import { getWorldstate, sendJSON, handleOPTIONS } from "../../_lib/worldstate.js";
+import { getWorldstate, sendJSON, handleOPTIONS } from "../../lib/worldstate.js";
 
 export default async function handler(req, res) {
   if (handleOPTIONS(req, res)) return;
