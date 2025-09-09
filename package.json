@@ -1,8 +1,9 @@
 {
-  "name": "wf-dynamic-api",
-  "private": true,
   "type": "module",
   "dependencies": {
     "warframe-worldstate-parser": "^3.0.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
