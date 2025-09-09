@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Warframe Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Ton thème -->
+  <link rel="stylesheet" href="css/theme.css" />
+</head>
+<body class="bg-[var(--bg)] text-[var(--ink)]">
+  <!-- NAV -->
+  <div id="site-nav"></div>
+
+  <div class="max-w-6xl mx-auto p-6">
+    <div class="flex items-center justify-between gap-4 mb-4">
+      <h1 class="text-2xl font-semibold">Warframe Hub</h1>
+      <div class="flex flex-wrap items-center gap-2">
+        <label class="text-sm">Plateforme</label>
+        <select id="platform" class="input px-3 py-2">
+          <option value="pc">PC</option>
+          <option value="ps4">PS4</option>
+          <option value="xb1">Xbox</option>
+          <option value="swi">Switch</option>
+        </select>
+        <label class="text-sm ml-2">Langue</label>
+        <select id="lang" class="input px-3 py-2">
+          <option value="fr">FR</option>
+          <option value="en">EN</option>
+        </select>
+        <button id="refresh" class="badge gold px-4 py-2">Rafraîchir</button>
+      </div>
+    </div>
+
+    <div id="status" class="mb-4 text-sm px-3 py-2 rounded-lg orn"
+         aria-live="polite" aria-busy="true"
+         style="background:rgba(0,229,255,.08); color:#bfefff;">
+      Chargement du worldstate…
+    </div>
+
+    <!-- Cycles -->
+    <section class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mb-6" id="cycles"></section>
+
+    <!-- Rangée de cartes principales -->
+    <section class="grid gap-6 grid-cols-1 lg:grid-cols-2">
+      <!-- Fissures -->
+      <div class="card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-semibold">Fissures</h2>
+          <div id="fissure-count" class="text-sm text-[var(--muted)]"></div>
+        </div>
+        <div id="fissures" class="space-y-2"></div>
+      </div>
+
+      <!-- Sortie / Arbitration -->
+      <div class="card p-5 space-y-5">
+        <div>
+          <h2 class="text-xl font-semibold mb-3">Sortie</h2>
+          <div id="sortie" class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)] text-sm"></div>
+        </div>
+        <div>
+          <h2 class="text-xl font-semibold mb-3">Arbitration</h2>
+          <div id="arbi" class="bg-[var(--panel-2)] rounded-xl p-4 border border-[rgba(255,255,255,.08)] text-sm"></div>
+        </div>
+      </div>
+
+      <!-- Nightwave -->
+      <div class="card p-5">
+        <h2 class="text-xl font-semibold mb-3">Nightwave</h2>
+        <div id="nightwave" class="space-y-2"></div>
+      </div>
+
+      <!-- Marchand (Baro) -->
+      <div class="card p-5">
+        <h2 class="text-xl font-semibold mb-3">Baro Ki’Teer</h2>
+        <div id="baro" class="text-sm"></div>
+      </div>
+    </section>
+
+    <div class="text-[12px] text-[var(--muted)] mt-6" id="updated"></div>
+  </div>
+
+  <!-- JS -->
+  <script src="js/site_nav.js" defer></script>
+  <script>
+  (() => {
+    "use strict";
+
+    const $ = (s) => document.querySelector(s);
+    const $$ = (s) => Array.from(document.querySelectorAll(s));
+    const esc = (str) => String(str||"").replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' })[c]);
+    const pad = (n) => String(n).padStart(2,"0");
+
+    const state = {
+      platform: localStorage.getItem("hub.platform") || "pc",
+      lang:     localStorage.getItem("hub.lang") || "fr",
+      data: null,
+      ticker: null
+    };
+
+    function setStatus(txt, ok=true){
+      const el = $("#status");
+      el.textContent = txt;
+      el.style.background = ok ? "rgba(0,229,255,.08)" : "rgba(255,0,0,.08)";
+      el.style.color = ok ? "#bfefff" : "#ffd1d1";
+      el.setAttribute("aria-busy", ok ? "false" : "true");
+    }
+
+    function apiURL(){
+      // Fichiers générés par le workflow: /api/v1/worldstate/pc.fr.json, etc.
+      return `api/v1/worldstate/${state.platform}.${state.lang}.json`;
+    }
+
+    function timeLeft(iso){
+      if (!iso) return "—";
+      const end = new Date(iso).getTime();
+      const now = Date.now();
+      let s = Math.max(0, Math.floor((end - now)/1000));
+      const h = Math.floor(s/3600); s -= h*3600;
+      const m = Math.floor(s/60);   s -= m*60;
+      const d = Math.floor(h/24);
+      const H = h - d*24;
+      return (d>0? d+"j ":"") + pad(H) + ":" + pad(m) + ":" + pad(s);
+    }
+
+    function chip(txt){ return `<span class="badge">${esc(txt)}</span>`; }
+    function gold(txt){ return `<span class="badge gold">${esc(txt)}</span>`; }
+
+    /* ---------- Rendu Cycles ---------- */
+    function renderCycles(ws){
+      const host = $("#cycles");
+      host.innerHTML = "";
+
+      const cards = [];
+
+      if (ws.cetusCycle){
+        const c = ws.cetusCycle;
+        cards.push({
+          title: "Cetus",
+          state: c.isDay ? "Jour" : "Nuit",
+          tl: timeLeft(c.expiry)
+        });
+      }
+      if (ws.vallisCycle){
+        const v = ws.vallisCycle;
+        cards.push({
+          title: "Vallis",
+          state: v.isWarm ? "Chaud" : "Froid",
+          tl: timeLeft(v.expiry)
+        });
+      }
+      if (ws.cambionCycle){
+        const k = ws.cambionCycle;
+        cards.push({
+          title: "Cambion",
+          state: (k.active||"").toUpperCase(), // VOME/FASS
+          tl: timeLeft(k.expiry)
+        });
+      }
+      if (ws.zarimanCycle){
+        const z = ws.zarimanCycle;
+        cards.push({
+          title: "Zariman",
+          state: z.state || "—",
+          tl: timeLeft(z.expiry)
+        });
+      }
+
+      if (!cards.length){
+        host.innerHTML = `<div class="card p-4">Aucun cycle trouvé.</div>`;
+        return;
+      }
+
+      host.innerHTML = cards.map(c => `
+        <div class="card p-4">
+          <div class="text-sm text-[var(--muted)]">${esc(c.title)}</div>
+          <div class="text-2xl font-semibold mt-1">${esc(c.state)}</div>
+          <div class="text-sm mt-1">${gold("reste")} <b>${esc(c.tl)}</b></div>
+        </div>
+      `).join("");
+    }
+
+    /* ---------- Rendu Fissures ---------- */
+    function renderFissures(ws){
+      const list = Array.isArray(ws.fissures) ? ws.fissures.slice() : [];
+      const host = $("#fissures");
+      const count = $("#fissure-count");
+
+      if (!list.length){
+        host.innerHTML = `<div class="text-[var(--muted)] text-sm">Aucune fissure en cours.</div>`;
+        count.textContent = "";
+        return;
+      }
+
+      // tri par tier puis temps restant
+      list.sort((a,b)=>{
+        const ta = (a.tierNum||0) - (b.tierNum||0);
+        if (ta !== 0) return ta;
+        return new Date(a.expiry) - new Date(b.expiry);
+      });
+
+      count.textContent = `${list.length} actives`;
+
+      host.innerHTML = list.map(f => {
+        const tier = f.tier || "";
+        const node = f.node || "";
+        const mt   = f.missionType || "";
+        const enemy= f.enemy || "";
+        const tl   = timeLeft(f.expiry);
+        return `
+          <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)] flex items-center justify-between">
+            <div class="min-w-0">
+              <div class="font-medium truncate">${esc(mt)} — ${esc(node)}</div>
+              <div class="text-xs text-[var(--muted)] truncate">${esc(enemy)}</div>
+            </div>
+            <div class="flex items-center gap-2">
+              ${chip(tier)}
+              <div class="text-sm"><b>${esc(tl)}</b></div>
+            </div>
+          </div>`;
+      }).join("");
+    }
+
+    /* ---------- Sortie ---------- */
+    function renderSortie(ws){
+      const el = $("#sortie");
+      const s = ws.sortie;
+      if (!s){
+        el.innerHTML = `<div class="text-[var(--muted)]">Pas de sortie trouvée.</div>`;
+        return;
+      }
+      const boss = s.boss || "—";
+      const faction = s.faction || "—";
+      const tl = timeLeft(s.expiry);
+      const variants = Array.isArray(s.variants) ? s.variants : [];
+      el.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <div class="font-medium">${esc(boss)} — ${esc(faction)}</div>
+          <div>${gold("reste")} <b>${esc(tl)}</b></div>
+        </div>
+        <div class="space-y-1">
+          ${variants.map(v => `
+            <div>• ${esc(v.missionType||"")} — ${esc(v.node||"")} <span class="text-[var(--muted)]">(${esc(v.modifier||"")})</span></div>
+          `).join("")}
+        </div>`;
+    }
+
+    /* ---------- Arbitration ---------- */
+    function renderArbitration(ws){
+      const el = $("#arbi");
+      const a = ws.arbitration;
+      if (!a){
+        el.innerHTML = `<div class="text-[var(--muted)]">Aucune arbitration active.</div>`;
+        return;
+      }
+      const tl = timeLeft(a.expiry);
+      el.innerHTML = `
+        <div class="flex items-center justify-between mb-2">
+          <div class="font-medium">${esc(a.type||"—")} — ${esc(a.node||"—")}</div>
+          <div>${gold("reste")} <b>${esc(tl)}</b></div>
+        </div>
+        <div class="text-xs text-[var(--muted)]">${a.archwing ? "Archwing autorisé" : ""}</div>`;
+    }
+
+    /* ---------- Nightwave ---------- */
+    function renderNightwave(ws){
+      const el = $("#nightwave");
+      const nw = ws.nightwave;
+      if (!nw || !Array.isArray(nw.activeChallenges) || !nw.activeChallenges.length){
+        el.innerHTML = `<div class="card p-4 text-sm text-[var(--muted)]">Aucun défi actif.</div>`;
+        return;
+      }
+      // on affiche hebdo + quotidien
+      const items = nw.activeChallenges.slice().sort((a,b)=>{
+        const A = (a.isDaily?1:0) - (b.isDaily?1:0); // d'abord hebdos
+        if (A) return A;
+        return (a.reputation||0) >= (b.reputation||0) ? -1 : 1;
+      }).map(c => `
+        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
+          <div class="flex items-center justify-between gap-2">
+            <div class="font-medium">${esc(c.title || c.challenge||"Défi")}</div>
+            <div class="text-xs">${c.isDaily ? chip("Quotidien") : chip("Hebdomadaire")}</div>
+          </div>
+          <div class="text-sm mt-1">${esc(c.desc || c.description || "")}</div>
+          <div class="text-xs text-[var(--muted)] mt-1">Réputation: ${esc(c.reputation ?? "—")} – Reste: <b>${esc(timeLeft(c.expiry))}</b></div>
+        </div>
+      `);
+      el.innerHTML = items.join("");
+    }
+
+    /* ---------- Baro ---------- */
+    function renderBaro(ws){
+      const el = $("#baro");
+      const v = ws.voidTrader;
+      if (!v){
+        el.innerHTML = `<div class="text-[var(--muted)]">Aucune info marchand.</div>`;
+        return;
+      }
+      if (v.active){
+        const inv = Array.isArray(v.inventory) ? v.inventory : [];
+        el.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <div class="font-medium">Présent sur ${esc(v.location||"—")}</div>
+            <div>${gold("reste")} <b>${esc(timeLeft(v.endString ? null : v.end))}</b></div>
+          </div>
+          <div class="text-sm text-[var(--muted)] mb-2">${inv.length} article(s)</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+            ${inv.slice(0,10).map(i=>`<div>• ${esc(i.item||"")} <span class="text-[var(--muted)]">${esc(i.ducats||"-")}ɖ / ${esc(i.credits||"-")}c</span></div>`).join("")}
+          </div>
+          ${inv.length>10 ? `<div class="text-xs text-[var(--muted)] mt-1">… et ${inv.length-10} de plus</div>`:""}
+        `;
+      } else {
+        el.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div class="font-medium">Prochain: ${esc(v.location||"—")}</div>
+            <div>${gold("arrive dans")} <b>${esc(timeLeft(v.start))}</b></div>
+          </div>`;
+      }
+    }
+
+    /* ---------- Boot / Refresh ---------- */
+    async function load(){
+      setStatus("Chargement du worldstate…");
+      try{
+        const url = apiURL();
+        const r = await fetch(url, { cache: "no-store" });
+        if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+        const ws = await r.json();
+        state.data = ws;
+
+        renderCycles(ws);
+        renderFissures(ws);
+        renderSortie(ws);
+        renderArbitration(ws);
+        renderNightwave(ws);
+        renderBaro(ws);
+
+        $("#updated").textContent = `Source: ${url} • Généré: ${new Date().toLocaleString()}`;
+        setStatus("Données chargées.");
+      } catch(e){
+        console.error(e);
+        setStatus("Échec de chargement. Vérifie que /api/v1/worldstate/… existe et que les workflows tournent.", false);
+      }
+    }
+
+    // UI
+    $("#platform").value = state.platform;
+    $("#lang").value = state.lang;
+
+    $("#platform").addEventListener("change", e=>{
+      state.platform = e.target.value;
+      localStorage.setItem("hub.platform", state.platform);
+      load();
+    });
+    $("#lang").addEventListener("change", e=>{
+      state.lang = e.target.value;
+      localStorage.setItem("hub.lang", state.lang);
+      load();
+    });
+    $("#refresh").addEventListener("click", load);
+
+    // tick (rafraîchit juste les compte à rebours via re-render léger)
+    if (state.ticker) clearInterval(state.ticker);
+    state.ticker = setInterval(()=>{
+      if (!state.data) return;
+      renderCycles(state.data);
+      renderFissures(state.data);
+      renderSortie(state.data);
+      renderArbitration(state.data);
+      renderNightwave(state.data);
+      renderBaro(state.data);
+    }, 1000);
+
+    load();
+  })();
+  </script>
+</body>
+</html>
