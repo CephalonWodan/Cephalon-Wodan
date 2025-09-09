@@ -1,6 +1,0 @@
-{
-  "functions": {
-    "api/[platform]/index.js":   { "runtime": "nodejs20.x" },
-    "api/[platform]/[section].js": { "runtime": "nodejs20.x" }
-  }
-}
