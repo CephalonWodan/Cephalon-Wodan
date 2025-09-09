@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Warframe Hub — Temps réel</title>
+  <link rel="stylesheet" href="./css/hub.css">
+</head>
+<body>
+  <header class="top">
+    <h1>Hub Warframe</h1>
+
+    <div class="controls">
+      <label>Plateforme
+        <select id="platform" aria-label="Plateforme">
+          <option value="pc">PC</option>
+          <option value="ps4">PlayStation</option>
+          <option value="xb1">Xbox</option>
+          <option value="swi">Switch</option>
+        </select>
+      </label>
+
+      <label>Langue
+        <select id="lang" aria-label="Langue">
+          <option value="fr">FR</option>
+          <option value="en">EN</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="now">
+      <span class="muted">Heure locale :</span>
+      <strong id="now" class="mono"></strong>
+    </div>
+  </header>
+
+  <main class="grid">
+    <section id="cycles" class="card">
+      <div class="section-head">
+        <h2>Cycles Open World</h2>
+        <span class="ctx pill" id="ctx-cycles"></span>
+      </div>
+      <ul id="cycles-list"></ul>
+    </section>
+
+    <section id="bounties" class="card">
+      <div class="section-head">
+        <h2>Primes (Bounties)</h2>
+        <span class="ctx pill" id="ctx-bounties"></span>
+      </div>
+      <div class="tabs">
+        <button data-syn="Cetus">Cetus</button>
+        <button data-syn="Solaris United">Vallis</button>
+        <button data-syn="Entrati">Deimos</button>
+        <button data-syn="Zariman">Zariman</button>
+      </div>
+      <div id="bounty-content"></div>
+    </section>
+
+    <section id="fissures" class="card">
+      <div class="section-head">
+        <h2>Fissures</h2>
+        <span class="ctx pill" id="ctx-fissures"></span>
+      </div>
+      <ul id="fissures-list"></ul>
+    </section>
+
+    <section id="alerts" class="card">
+      <div class="section-head">
+        <h2>Alertes & Invasions</h2>
+        <span class="ctx pill" id="ctx-alerts"></span>
+      </div>
+      <h3>Alertes</h3>
+      <ul id="alerts-list"></ul>
+      <h3>Invasions</h3>
+      <ul id="invasions-list"></ul>
+    </section>
+
+    <section id="nightwave" class="card">
+      <div class="section-head">
+        <h2>Nightwave</h2>
+        <span class="ctx pill" id="ctx-nightwave"></span>
+      </div>
+      <ul id="nightwave-list"></ul>
+    </section>
+
+    <section id="sorties" class="card">
+      <div class="section-head">
+        <h2>Sortie & Archon Hunt</h2>
+        <span class="ctx pill" id="ctx-sorties"></span>
+      </div>
+      <div id="sortie"></div>
+      <div id="archon"></div>
+    </section>
+
+    <section id="baro" class="card">
+      <div class="section-head">
+        <h2>Baro Ki’Teer</h2>
+        <span class="ctx pill" id="ctx-baro"></span>
+      </div>
+      <div id="baro-status"></div>
+      <ul id="baro-inventory"></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <small class="muted">Source : api.warframestat.us — rafraîchissement automatique. Plateforme/langue mémorisées.</small>
+  </footer>
+
+  <script type="module" src="./js/hub.js"></script>
+</body>
+</html>
