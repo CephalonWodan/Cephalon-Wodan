@@ -1,29 +1,33 @@
-name: API – Mirror Export
+name: API – Export mirror
 
 on:
-  workflow_dispatch:
   schedule:
     - cron: "0 */6 * * *"   # toutes les 6h
-  push:
-    paths:
-      - "data/**"
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  mirror:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: npm ci --ignore-scripts --no-audit --no-fund || true
-      - run: node scripts/build_export_mirror.mjs
-      - name: Commit & Push
+
+      - name: Mirror data/Export*.json -> api/v1/export
+        shell: bash
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          set -euo pipefail
+          mkdir -p api/v1/export
+          cp -f data/Export*.json api/v1/export/ 2>/dev/null || true
+          # index
+          ls -1 api/v1/export/Export*.json | sed 's|.*/||' | jq -R . | jq -s '{files: ., updatedAt: (now|todate)}' > api/v1/export/index.json
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git diff --quiet && echo "No changes" || git commit -m "api(export): mirror update"
+          git diff --quiet && echo "No changes" && exit 0
+          git commit -m "export mirror: update"
           git push
