@@ -2,7 +2,7 @@ name: API – Worldstate
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # toutes les 5 min
+    - cron: "*/5 * * * *"   # toutes les 5 minutes
   workflow_dispatch:
 
 permissions:
@@ -16,79 +16,43 @@ jobs:
   fetch:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
 
       - name: Install jq
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y jq
+        run: sudo apt-get update -y && sudo apt-get install -y jq
 
       - name: Fetch Warframe worldstate (pc/ps4/xb1/swi · en/fr)
         shell: bash
         run: |
           set -euo pipefail
+          UA="wf-hub/1.0 (+github.com/Cephalon-Wodan/Cephalon-Wodan)"
           mkdir -p api/v1/worldstate/{pc,ps4,xb1,swi}
-
-          fetch_one () {
-            plat="$1"; lang="$2"
-            url="https://api.warframestat.us/${plat}?language=${lang}"
-            dest="api/v1/worldstate/${plat}/${lang}.json"
-
-            echo "→ $url"
-            # Télécharge + log statut et taille
-            http=$(curl -w "%{http_code} %{size_download}\n" -fsSL "$url" -o "${dest}.tmp" || true)
-            echo "   HTTP/size: $http"
-
-            # Si curl a échoué, on stoppe
-            if [ ! -s "${dest}.tmp" ]; then
-              echo "   ⚠️ vide ou download raté, on n'écrit pas ${dest}"
-              rm -f "${dest}.tmp"
-              return 1
-            fi
-
-            # Valide JSON
-            if ! jq -e . "${dest}.tmp" > /dev/null; then
-              echo "   ⚠️ JSON invalide, on n'écrit pas ${dest}"
-              rm -f "${dest}.tmp"
-              return 1
-            fi
-
-            # Refuse d’écrire un JSON “vide” ({} ou sans clés utiles)
-            keys=$(jq -r 'keys|length' "${dest}.tmp")
-            if [ "$keys" = "0" ]; then
-              echo "   ⚠️ JSON sans clés ({}), on n'écrit pas ${dest}"
-              rm -f "${dest}.tmp"
-              return 1
-            fi
-
-            # OK: formatte et déplace
-            jq '.' "${dest}.tmp" > "${dest}"
-            rm -f "${dest}.tmp"
-            echo "   ✅ écrit ${dest} (keys=${keys})"
-          }
-
-          rc=0
+          ok=0
           for lang in en fr; do
             for plat in pc ps4 xb1 swi; do
-              fetch_one "$plat" "$lang" || rc=1
+              url="https://api.warframestat.us/${plat}?language=${lang}"
+              dest="api/v1/worldstate/${plat}/${lang}.json"
+              echo "→ $url"
+              # retry + fail if non-2xx; never write an empty placeholder
+              curl -fsSL --retry 3 --retry-delay 2 -H "User-Agent: $UA" "$url" \
+                | jq -e -c . > "${dest}"
+              ok=1
             done
           done
-          # on laisse le job "success" même si 1 plat/lang a raté,
-          # mais il restera visible dans les logs
-          exit 0
+          # print a quick summary
+          echo "===== sizes ====="
+          find api/v1/worldstate -type f -name '*.json' -exec ls -lh {} \;
 
       - name: Commit & push
-        shell: bash
+        if: always()
         run: |
           set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A api/v1/worldstate || true
           if git diff --cached --quiet; then
-            echo "Rien à committer."
+            echo "Nothing to commit."
             exit 0
           fi
           git commit -m "worldstate: $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
