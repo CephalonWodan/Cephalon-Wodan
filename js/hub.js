@@ -1,7 +1,6 @@
 // ===============================
-// Warframe Hub – hub.js (complet)
+// Warframe Hub – hub.js (complet, patché)
 // Sources: Live (warframestat.us) / Vercel (API perso) / Local (Pages)
-// Includes: fallback auto pour Vercel .js (legacy builds)
 // ===============================
 
 // ---- Préférences (plateforme / langue / source)
@@ -44,68 +43,56 @@ function until(expiryIso){ return left(new Date(expiryIso) - new Date()); }
 // SOURCES & FETCH
 // ===============================
 
-// Ton domaine Vercel (API perso)
-// === API perso (Vercel) ===
+// Base API perso (Vercel)
 const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
-
-// petit helper fetch JSON (avec gestion de statut)
-async function fetchJSON(url, init) {
-  const r = await fetch(url, init);
-  if (!r.ok) throw new Error(String(r.status));
-  return r.json();
-}
-
-// URL builder (Vercel “propre”)
-function buildURLClean(section) {
-  const sec = String(section).replace(/\/?$/, "");
-  return `${VERCEL_BASE}/${settings.platform}/${sec}`; // /api/pc/fissures
-}
-
-// URL builder (Vercel “legacy .js + query”)
-function buildURLLegacy(section) {
-  // /api/[platform]/[section].js?platform=pc&section=fissures
-  const u = new URL(`${VERCEL_BASE}/[platform]/[section].js`);
-  u.searchParams.set("platform", settings.platform);
-  u.searchParams.set("section", String(section).replace(/\/?$/, ""));
-  return u.toString();
-}
 
 // Cache simple pour la source "local"
 let localCache = { platform: null, data: null, at: 0 };
 
+// Construit l’URL selon la source choisie
+function buildURL(section) {
+  const s = String(section).replace(/\/?$/, ""); // "fissures" (sans slash final)
+
+  if (settings.source === "vercel") {
+    // /api/:platform/:section?lang=fr|en
+    const u = new URL(`${VERCEL_BASE}/${settings.platform}/${s}`);
+    u.searchParams.set("lang", settings.lang);
+    return u.toString();
+  }
+
+  if (settings.source === "live") {
+    // https://api.warframestat.us/:platform/:section/?language=fr|en
+    const u = new URL(`https://api.warframestat.us/${settings.platform}/${s}/`);
+    u.searchParams.set("language", settings.lang);
+    return u.toString();
+  }
+
+  // Local : JSON agrégé (pc.json, ps4.json…)
+  return `/data/worldstate/${settings.platform}.json`;
+}
+
+// Fetch unifié
 async function get(section){
-  // Bounties: seulement via Live (warframestat.us)
+  // Bounties seulement en Live (WarframeStatus)
   if (section === "syndicateMissions" && settings.source !== "live") {
     throw new Error("syndicateMissions non disponible sur cette source");
   }
 
-  if (settings.source === "live") {
-    // WarframeStatus préfère un slash final → évite les 301
-    const pathSlash = String(section).replace(/\/?$/, "/");
-    const url = `https://api.warframestat.us/${settings.platform}/${pathSlash}?language=${settings.lang}`;
-    return fetchJSON(url, { cache: "no-store" });
-  }
-
-  if (settings.source === "vercel") {
-    // 1) on tente le routage “propre”
-    try {
-      return await fetchJSON(buildURLClean(section), { cache: "no-store" });
-    } catch (e) {
-      if (String(e.message) !== "404") throw e;
-      // 2) fallback auto sur le format “.js + query”
-      return fetchJSON(buildURLLegacy(section), { cache: "no-store" });
+  if (settings.source === "local") {
+    if (localCache.platform !== settings.platform || Date.now() - localCache.at > 60_000) {
+      const r = await fetch(buildURL("ALL"), { cache: "no-store" });
+      if (!r.ok) throw new Error("local worldstate " + r.status);
+      localCache = { platform: settings.platform, data: await r.json(), at: Date.now() };
     }
+    const data = localCache.data?.[section];
+    if (typeof data === "undefined") throw new Error(`section "${section}" introuvable dans local worldstate`);
+    return data;
   }
 
-  // Source locale: on charge une fois le JSON agrégé puis on renvoie la propriété
-  if (localCache.platform !== settings.platform || Date.now() - localCache.at > 60_000) {
-    const r = await fetch(`/data/worldstate/${settings.platform}.json`, { cache: "no-store" });
-    if (!r.ok) throw new Error("local worldstate "+r.status);
-    localCache = { platform: settings.platform, data: await r.json(), at: Date.now() };
-  }
-  const data = localCache.data?.[section];
-  if (typeof data === "undefined") throw new Error(`section "${section}" introuvable dans local worldstate`);
-  return data;
+  // Vercel ou Live : on va directement chercher l’endpoint construit
+  const r = await fetch(buildURL(section), { cache: "no-store" });
+  if (!r.ok) throw new Error(section + " " + r.status);
+  return r.json();
 }
 
 // ===============================
