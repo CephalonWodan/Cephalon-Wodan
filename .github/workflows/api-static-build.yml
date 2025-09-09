@@ -3,28 +3,126 @@ name: API – Build Static
 on:
   workflow_dispatch:
   schedule:
-    - cron: "10 */6 * * *"  # 10 min après le miroir
-  push:
-    paths:
-      - "data/ExportWarframes_en.json"
-      - "data/ExportWeapons_en.json"
-      - "data/aw_overrides.json"
+    - cron: "0 */6 * * *" # toutes les 6h
 
 permissions:
-  contents: write
+  contents: write   # indispensable pour git push
+
+concurrency:
+  group: api-static-build
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: 20 }
-      - run: node scripts/build_static_items.mjs
-      - name: Commit & Push
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install jq
         run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add -A
-          git diff --quiet && echo "No changes" || git commit -m "api(static): rebuild"
+          sudo apt-get update -y
+          sudo apt-get install -y jq
+
+      - name: Assert export files exist
+        run: |
+          test -f data/ExportWarframes_en.json || { echo "Missing data/ExportWarframes_en.json"; exit 1; }
+          test -f data/ExportWeapons_en.json   || { echo "Missing data/ExportWeapons_en.json"; exit 1; }
+
+      - name: Build static endpoints (archwings, necramechs, archguns, archmelee)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p api/v1/static
+
+          # Petite fonction jq pour nettoyer les noms ("<ARCHWING> Odonata" -> "Odonata")
+          CLEAN='def clean: ( . // "" ) | tostring | gsub("<[^>]*>"; "") | gsub("^\\s+|\\s+$"; "");'
+
+          # -------- SUITS --------
+          jq -r --argfile src data/ExportWarframes_en.json '
+            def kind($u):
+              ( ($u|ascii_downcase) | 
+                if test("mech|necramech") then "Necramech"
+                elif test("archwing|wing") then "Archwing"
+                else null end );
+            $src.ExportWarframes
+            | map( . as $w
+                | { 
+                    Kind: (kind($w.uniqueName) // empty),
+                    Name: ( ($w.name|tostring) | gsub("<[^>]*>"; "") | gsub("^\\s+|\\s+$"; "") ),
+                    Description: ($w.description // ""),
+                    Health: $w.health, Shield: $w.shield, Armor: $w.armor, Energy: $w.power,
+                    Sprint: $w.sprintSpeed, Mastery: $w.masteryReq
+                  }
+              )
+            | map(select(.Kind != null))
+            | sort_by(.Name)
+          ' > api/v1/static/ms_suits.json
+
+          # -------- WEAPONS --------
+          jq -r --argfile src data/ExportWeapons_en.json '
+            def clean: ( . // "" ) | tostring | gsub("<[^>]*>"; "") | gsub("^\\s+|\\s+$"; "");
+            def classify($t):
+              ( ($t|ascii_downcase) |
+                if test("arch-?melee|space melee|/archwing/melee|melee/archwing") then "Archmelee"
+                elif test("arch-?gun|spaceguns|/archwing/primary|\\bprimary\\b|\\brifle\\b") then "Archgun"
+                else null end );
+
+            def dmgmap:
+              if .damage then .damage
+              elif (.damagePerShot and .damageTypes) then
+                reduce range(0; (.damagePerShot|length)) as $i ({}; .[.damageTypes[$i]] = (.damagePerShot[$i]//0))
+              elif (.normalAttack and .normalAttack.damage) then .normalAttack.damage
+              else null end;
+
+            def total($m):
+              if ($m|type)=="object" then
+                reduce ($m|to_entries[]) as $e (0; . + (($e.value // 0) | tonumber))
+              else null end;
+
+            $src.ExportWeapons
+            | map( . as $w
+                | { t: ( [ $w.type, $w.productCategory, $w.uniqueName ] | map(tostring) | join(" ") ) ,
+                    Name: ( ($w.name|tostring) | clean ),
+                    Mastery: $w.masteryReq,
+                    CritC: ($w.criticalChance // $w.critChance // $w.normalAttack.crit_chance),
+                    CritM: ($w.criticalMultiplier // $w.critMultiplier // $w.normalAttack.crit_mult),
+                    Status: ($w.statusChance // $w.procChance // $w.normalAttack.status_chance),
+                    FireRate: ($w.fireRate // $w.fireRateSecondary // $w.normalAttack.fire_rate),
+                    AttackSpeed: ($w.attackSpeed // null),
+                    Trigger: $w.trigger,
+                    Reload: $w.reloadTime,
+                    _kind: classify( [ $w.type, $w.productCategory, $w.uniqueName ] | map(tostring) | join(" ") ),
+                    _dmg: (dmgmap)
+                  }
+              )
+            | map(select(._kind != null))
+            | map(. as $x
+                | .Kind = $x._kind
+                | .DamageMap = $x._dmg
+                | .TotalDamage = ( total($x._dmg) // $x.totalDamage // $x.damage // null )
+                | del(._kind, ._dmg)
+              )
+            | sort_by(.Name)
+          ' > api/v1/static/ms_weapons.json
+
+          # Découpe en 2 fichiers pratiques
+          jq '[ .[] | select(.Kind=="Archgun") ]'   api/v1/static/ms_weapons.json > api/v1/static/archguns.json
+          jq '[ .[] | select(.Kind=="Archmelee") ]' api/v1/static/ms_weapons.json > api/v1/static/archmelee.json
+
+      - name: Commit & Push
+        shell: bash
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A api/v1/static
+          if git diff --cached --quiet; then
+            echo "Rien à committer."
+            exit 0
+          fi
+          git commit -m "api(static): ms_suits / ms_weapons refreshed"
+          git pull --rebase || true
           git push
