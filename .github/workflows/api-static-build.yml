@@ -1,0 +1,30 @@
+name: API – Build Static
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "10 */6 * * *"  # 10 min après le miroir
+  push:
+    paths:
+      - "data/ExportWarframes_en.json"
+      - "data/ExportWeapons_en.json"
+      - "data/aw_overrides.json"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: node scripts/build_static_items.mjs
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add -A
+          git diff --quiet && echo "No changes" || git commit -m "api(static): rebuild"
+          git push
