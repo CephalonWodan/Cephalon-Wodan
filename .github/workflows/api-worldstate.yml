@@ -1,4 +1,3 @@
-# .github/workflows/worldstate.yml
 name: API – Worldstate
 
 on:
@@ -7,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write   # IMPORTANT pour pouvoir commit
+  contents: write   # indispensable pour commit & push
 
 concurrency:
   group: worldstate
@@ -20,6 +19,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download snapshots
+        shell: bash
         run: |
           set -euo pipefail
           mkdir -p api/v1/worldstate
@@ -32,7 +32,7 @@ jobs:
               curl -fsSL "$url" -o "$out"
             done
           done
-          # petit index lisible
+          # petit index
           jq -n '
             { platforms: ["pc","ps4","xb1","swi"],
               languages: ["en","fr"],
