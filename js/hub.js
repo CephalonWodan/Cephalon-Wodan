@@ -111,10 +111,10 @@ function buildURL(section) {
 
 // Fetch unifié
 async function get(section){
-  if (section === "syndicateMissions" && currentSource() !== "live") {
-    throw new Error("syndicateMissions non disponible sur cette source");
-  }
-
+if (section === "syndicateMissions" && currentSource() === "local") {
+  throw new Error("syndicateMissions non disponible hors live/vercel");
+}
+  
   if (currentSource() === "local") {
     if (localCache.platform !== settings.platform || Date.now() - localCache.at > 60_000) {
       const r = await fetch(buildURL("ALL"), { cache: "no-store" });
