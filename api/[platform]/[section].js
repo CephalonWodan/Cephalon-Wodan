@@ -3,15 +3,18 @@ import {
   ALLOWED_SECTIONS,
   fetchSection,
   normalizeLang,
-} from "../../lib/worldstates.js";
+} from "../../../lib/worldstate.js"; // <<< chemin exact
 
 export default async function handler(req, res) {
-  // CORS (GitHub Pages)
+  // CORS pour GitHub Pages
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.setHeader("Vary", "Origin");
 
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
+    res.setHeader("Allow", "GET, OPTIONS");
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
@@ -25,11 +28,11 @@ export default async function handler(req, res) {
 
     const data = await fetchSection(plat, sec, lang);
 
-    // 30s cache CDN, SWR 60s
+    // Cache CDN 30s + SWR 60s
     res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
     return res.status(200).json(data);
   } catch (err) {
-    console.error(err);
+    console.error("section handler error:", err);
     return res.status(502).json({ error: "Upstream error", detail: String(err?.message || err) });
   }
 }
