@@ -2,15 +2,18 @@ import {
   ALLOWED_PLATFORMS,
   fetchAggregated,
   normalizeLang,
-} from "../../lib/worldstates.js";
+} from "../../../lib/worldstate.js"; // <<< chemin exact
 
 export default async function handler(req, res) {
   // CORS
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   res.setHeader("Vary", "Origin");
 
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
+    res.setHeader("Allow", "GET, OPTIONS");
     return res.status(405).json({ error: "Method Not Allowed" });
   }
 
@@ -24,7 +27,7 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
     return res.status(200).json(data);
   } catch (err) {
-    console.error(err);
+    console.error("index handler error:", err);
     return res.status(502).json({ error: "Upstream error", detail: String(err?.message || err) });
   }
 }
