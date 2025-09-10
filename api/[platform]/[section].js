@@ -20,7 +20,13 @@ export default async function handler(req, res) {
 
   try {
     const plat = String(req.query.platform || "").toLowerCase();
-    const sec  = String(req.query.section  || "").replace(/\.(js|json)$/i, "");
+
+    const rawSec = String(req.query.section || "")
+      .replace(/\.(js|json)$/i, "")
+      .toLowerCase();
+    // Alias convivial : /bounties -> /syndicateMissions
+    const sec = rawSec === "bounties" ? "syndicateMissions" : rawSec;
+
     const lang = normalizeLang(req.query.lang || req.query.language || "en");
 
     if (!ALLOWED_PLATFORMS.has(plat)) return res.status(400).json({ error: "Unknown platform" });
