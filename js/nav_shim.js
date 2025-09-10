@@ -18,10 +18,13 @@
 
   // 2) fallback simple (adapte les liens à ton arbo si besoin)
   mount(`
-    <a href="./index.html">Accueil</a>
-    <a href="./hub.html">Hub</a>
-    <a href="./warframes.html">Warframes</a>
-    <a href="./weapons.html">Armes</a>
+    <a href="./index.html">Warframes</a>
     <a href="./mods.html">Mods</a>
+    <a href="./arcanes.html">Arcanes</a>
+    <a href="./shards.html">Archon Shards</a>
+    <a href="./weapons.html">Weapons</a>
+    <a href="./companion.html">Companions</a>
+    <a href="./necramech_archwings.html">Nechramechs & Archwings</a>
+    <a href="./Hub.html">Timer</a>
   `);
 })();
