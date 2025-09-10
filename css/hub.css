@@ -1,47 +1,80 @@
+/* ===== Couleurs (peuvent être surchargées par theme.css) ===== */
 :root{
-  --bg:#0f1115; --fg:#e7e9ee; --muted:#aab; --card:#161a22; --line:#23283a;
-  --ok:#45c486; --warn:#e3b341; --bad:#e05d6f;
+  --bg: #0f1115;
+  --fg: #e5e7eb;
+  --muted: #9aa3b2;
+  --card: #151922;
+  --border: #232838;
+  --pill: #263043;
+  --accent: #6ee7ff;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 Inter,system-ui,Segoe UI,Roboto,sans-serif}
 
-/* Header */
-.top{
-  display:flex;gap:12px;justify-content:space-between;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--line);
-  position:sticky;top:0;background:#0f1115cc;backdrop-filter:blur(6px)
+body{ background: var(--bg); color: var(--fg); }
+
+.container{ max-width: 1100px; margin: 0 auto; padding: 16px; }
+
+.page-title{ margin: 8px 0 16px; font-size: 28px; }
+
+.panel{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
 }
-h1{margin:0;font-size:20px}
-.muted{color:var(--muted)}
-.mono{font-variant-numeric:tabular-nums}
+.controls label{ display: inline-flex; align-items: center; gap: 6px; margin-right: 10px; }
+.controls select{
+  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
+  border-radius: 10px; padding: 6px 8px;
+}
 
-.controls{display:flex;gap:10px;align-items:center}
-.controls label{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
-.controls select{background:#0b0d11;border:1px solid var(--line);color:var(--fg);padding:6px 10px;border-radius:8px}
+.block{ margin: 18px 0; }
+h2{ margin: 0 0 8px; font-size: 18px; }
+h2 small{ font-weight: 400; color: var(--muted); margin-left: 8px; }
+.sub{ color: var(--muted); font-weight: 600; margin: 10px 0 6px; }
 
-/* Layout */
-.grid{display:grid;gap:12px;padding:12px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.22)}
-.card h2{margin:0 0 8px}
-.card h3{margin:12px 0 6px;font-size:14px;color:var(--muted)}
-.section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.list{ list-style: none; padding: 0; margin: 8px 0; }
+.list li{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin: 6px 0;
+}
+.card{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
 
-ul{list-style:none;margin:0;padding:0}
+.row{ display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.pill{
+  background: var(--pill);
+  color: var(--fg);
+  padding: 2px 8px; border-radius: 999px; font-size: 12px; margin-left: 6px;
+}
+.small{ color: var(--muted); font-size: 12px; }
 
-/* Rows / Pills / Timers */
-.row{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px dashed #263}
-.row:last-child{border-bottom:0}
-.pill{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
-.timer{font-variant-numeric:tabular-nums}
-.bad{color:var(--bad)} .ok{color:var(--ok)} .warn{color:var(--warn)}
+.tabs{ display: flex; gap: 6px; margin: 8px 0; }
+.tabs button{
+  border: 1px solid var(--border); background: var(--card); color: var(--fg);
+  border-radius: 999px; padding: 6px 10px; cursor: pointer;
+}
+.tabs button.active{ outline: 2px solid var(--accent); }
 
-/* Tabs */
-.tabs{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.tabs button{background:#0b0d11;border:1px solid var(--line);color:var(--fg);padding:6px 10px;border-radius:8px;cursor:pointer}
-.tabs button.active{outline:2px solid #3a6cf4}
+.grid-2{ display: grid; grid-template-columns: 1fr; gap: 16px; }
+@media (min-width: 900px){ .grid-2{ grid-template-columns: 1fr 1fr; } }
 
-/* Misc */
-.small{color:var(--muted);font-size:12px}
-.ctx{font-size:11px}
-.foot{padding:12px 16px;border-top:1px solid var(--line)}
+/* Nav simple si fallback utilisé par nav_shim.js */
+.navbar{
+  display: flex; gap: 10px; padding: 10px 16px; background: var(--card);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 12px;
+}
+.navbar a{
+  color: var(--fg); text-decoration: none; padding: 6px 10px; border-radius: 8px;
+}
+.navbar a:hover{ background: var(--bg); }
