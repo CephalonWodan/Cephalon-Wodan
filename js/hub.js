@@ -1,5 +1,5 @@
 // ===============================
-// Warframe Hub – hub.js (complet, source UI fiable)
+// Warframe Hub – hub.js (source UI robuste)
 // Sources: Live (warframestat.us) / Vercel (API perso) / Local (Pages)
 // ===============================
 
@@ -15,7 +15,7 @@ const ALLOWED_LANGS     = ["fr","en"];
 const navLang = (navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en";
 let settings = Object.assign({ platform: "pc", lang: navLang, source: "live" }, loadSettings());
 
-// Assainir les prefs (évite platform = "vercel" etc.)
+// Assainir les prefs au démarrage
 (function sanitizeSettings(){
   if (!ALLOWED_PLATFORMS.includes(settings.platform)) settings.platform = "pc";
   if (!ALLOWED_LANGS.includes(settings.lang))          settings.lang     = navLang;
@@ -61,10 +61,19 @@ const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
 // Cache simple pour la source "local"
 let localCache = { platform: null, data: null, at: 0 };
 
+// Normalisation robuste d'une valeur de source (label ou value)
+function canonicalSource(raw) {
+  const s = String(raw ?? "").trim().toLowerCase();
+  if (s.includes("vercel")) return "vercel";
+  if (s.includes("live") || s.includes("warframe")) return "live";
+  if (s.includes("local")) return "local";
+  return ALLOWED_SOURCES.includes(s) ? s : "live";
+}
+
 // Source courante (lit le <select> en priorité)
 function currentSource() {
-  const raw = ($source && $source.value != null ? $source.value : settings.source) ?? "live";
-  return String(raw).trim().toLowerCase();
+  const ui = $source && $source.value != null ? $source.value : settings.source;
+  return canonicalSource(ui);
 }
 
 // Construit l’URL selon la source choisie (avec garde-fou plateforme)
@@ -403,7 +412,10 @@ if ($lang) {
 }
 if ($source) {
   $source.addEventListener("change", async () => {
-    settings.source = ALLOWED_SOURCES.includes($source.value) ? $source.value : "live";
+    const canon = canonicalSource($source.value);
+    settings.source = canon;
+    // remet la valeur canonique dans l'UI au cas où l'option ait un label exotique
+    $source.value = canon;
     saveSettings(settings);
     localCache = { platform: null, data: null, at: 0 };
     await renderAll();
