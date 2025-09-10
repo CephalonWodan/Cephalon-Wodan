@@ -1,7 +1,8 @@
 {
   "type": "module",
-  "engines": { "node": "20.x" },
+  "engines": { "node": "18.x" },
   "dependencies": {
-    "warframe-worldstate-parser": "^5.0.4"
+    "warframe-worldstate-parser": "^5.0.4",
+    "warframe-worldstate-data": "^latest"
   }
 }
