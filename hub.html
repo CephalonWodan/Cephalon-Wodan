@@ -1,114 +1,113 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Warframe Hub — Temps réel</title>
-  <link rel="stylesheet" href="./css/hub.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Warframe – Hub temps réel</title>
+
+  <!-- (Optionnel) ton CSS global + CSS hub -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/hub.css" />
 </head>
 <body>
-  <header class="top">
-    <h1>Hub Warframe</h1>
 
-    <div class="controls">
-      <label>Plateforme
-        <select id="platform" aria-label="Plateforme">
-          <option value="vercel">Vercel API</option>
-          <option value="pc">PC</option>
-          <option value="ps4">PlayStation</option>
-          <option value="xb1">Xbox</option>
-          <option value="swi">Switch</option>
-        </select>
-      </label>
+  <!-- Barre de navigation (rendue par js/site_nav.js) -->
+  <header id="site-nav"></header>
 
-      <label>Langue
-        <select id="lang" aria-label="Langue">
-          <option value="fr">FR</option>
-          <option value="en">EN</option>
-        </select>
-      </label>
-    </div>
+  <main class="container">
+    <h1>Warframe Hub</h1>
 
-    <div class="now">
-      <span class="muted">Heure locale :</span>
-      <strong id="now" class="mono"></strong>
-    </div>
-  </header>
+    <!-- Panneau de contrôle -->
+    <section class="panel">
+      <div class="controls">
+        <label>Plateforme
+          <select id="platform">
+            <option value="pc">PC</option>
+            <option value="ps4">PS4</option>
+            <option value="xb1">Xbox</option>
+            <option value="swi">Switch</option>
+          </select>
+        </label>
 
-  <main class="grid">
-    <section id="cycles" class="card">
-      <div class="section-head">
-        <h2>Cycles Open World</h2>
-        <span class="ctx pill" id="ctx-cycles"></span>
+        <label>Langue
+          <select id="lang">
+            <option value="fr">FR</option>
+            <option value="en">EN</option>
+          </select>
+        </label>
+
+        <label>Source
+          <select id="source">
+            <option value="live">Live (WarframeStatus)</option>
+            <option value="vercel">Vercel API</option>
+            <option value="local">Local JSON</option>
+          </select>
+        </label>
       </div>
-      <ul id="cycles-list"></ul>
+
+      <div class="now">
+        <strong>Heure (Europe/Paris):</strong> <span id="now">—</span>
+      </div>
     </section>
 
-    <section id="bounties" class="card">
-      <div class="section-head">
-        <h2>Primes (Bounties)</h2>
-        <span class="ctx pill" id="ctx-bounties"></span>
-      </div>
+    <!-- Cycles -->
+    <section>
+      <h2>Cycles <small id="ctx-cycles"></small></h2>
+      <ul id="cycles-list" class="list"></ul>
+    </section>
+
+    <!-- Bounties (primes) -->
+    <section>
+      <h2>Primes <small id="ctx-bounties"></small></h2>
       <div class="tabs">
-        <button data-syn="Cetus">Cetus</button>
-        <button data-syn="Solaris United">Vallis</button>
-        <button data-syn="Entrati">Deimos</button>
-        <button data-syn="Zariman">Zariman</button>
+        <button type="button" data-syn="Cetus">Cetus</button>
+        <button type="button" data-syn="Fortuna">Fortuna</button>
+        <button type="button" data-syn="Deimos">Deimos</button>
       </div>
       <div id="bounty-content"></div>
     </section>
 
-    <section id="fissures" class="card">
-      <div class="section-head">
-        <h2>Fissures</h2>
-        <span class="ctx pill" id="ctx-fissures"></span>
+    <!-- Fissures / Alertes / Invasions -->
+    <section class="grid-2">
+      <div>
+        <h2>Fissures <small id="ctx-fissures"></small></h2>
+        <ul id="fissures-list" class="list"></ul>
       </div>
-      <ul id="fissures-list"></ul>
+      <div>
+        <h2>Alertes & Invasions <small id="ctx-alerts"></small></h2>
+        <h3 class="sub">Alertes</h3>
+        <ul id="alerts-list" class="list"></ul>
+        <h3 class="sub">Invasions</h3>
+        <ul id="invasions-list" class="list"></ul>
+      </div>
     </section>
 
-    <section id="alerts" class="card">
-      <div class="section-head">
-        <h2>Alertes & Invasions</h2>
-        <span class="ctx pill" id="ctx-alerts"></span>
+    <!-- Nightwave / Sortie / Archon -->
+    <section class="grid-2">
+      <div>
+        <h2>Nightwave <small id="ctx-nightwave"></small></h2>
+        <ul id="nightwave-list" class="list"></ul>
       </div>
-      <h3>Alertes</h3>
-      <ul id="alerts-list"></ul>
-      <h3>Invasions</h3>
-      <ul id="invasions-list"></ul>
+      <div>
+        <h2>Sortie & Archon Hunt <small id="ctx-sorties"></small></h2>
+        <div id="sortie"></div>
+        <div id="archon" style="margin-top:1rem;"></div>
+      </div>
     </section>
 
-    <section id="nightwave" class="card">
-      <div class="section-head">
-        <h2>Nightwave</h2>
-        <span class="ctx pill" id="ctx-nightwave"></span>
-      </div>
-      <ul id="nightwave-list"></ul>
-    </section>
-
-    <section id="sorties" class="card">
-      <div class="section-head">
-        <h2>Sortie & Archon Hunt</h2>
-        <span class="ctx pill" id="ctx-sorties"></span>
-      </div>
-      <div id="sortie"></div>
-      <div id="archon"></div>
-    </section>
-
-    <section id="baro" class="card">
-      <div class="section-head">
-        <h2>Baro Ki’Teer</h2>
-        <span class="ctx pill" id="ctx-baro"></span>
-      </div>
+    <!-- Baro -->
+    <section>
+      <h2>Baro Ki’Teer <small id="ctx-baro"></small></h2>
       <div id="baro-status"></div>
-      <ul id="baro-inventory"></ul>
+      <h3 class="sub">Inventaire</h3>
+      <ul id="baro-inventory" class="list"></ul>
     </section>
   </main>
 
-  <footer class="foot">
-    <small class="muted">Source : api.warframestat.us — rafraîchissement automatique. Plateforme/langue mémorisées.</small>
-  </footer>
+  <!-- Ta barre de nav (doit injecter le contenu dans #site-nav) -->
+  <script defer src="js/site_nav.js"></script>
 
-  <script type="module" src="./js/hub.js" defer></script>
-  <script src="js/site_nav.js" defer></script>
+  <!-- Le Hub (module = différé automatiquement) -->
+  <script type="module" src="js/hub.js"></script>
 </body>
 </html>
