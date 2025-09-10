@@ -25,6 +25,6 @@
     <a href="./weapons.html">Weapons</a>
     <a href="./companion.html">Companions</a>
     <a href="./necramechs_archwings.html">Nechramechs & Archwings</a>
-    <a href="./Hub.html">Timer</a>
+    <a href="./hub.html">Timer</a>
   `);
 })();
