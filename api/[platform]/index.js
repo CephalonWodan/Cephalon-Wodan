@@ -1,14 +1,26 @@
-// api/[platform]/index.js
-import { getWorldstate, sendJSON, handleOPTIONS } from "../../lib/worldstate.js";
+import { ALLOWED_PLATFORMS, fetchAggregated, normalizeLang } from "../_lib/worldstate.js";
 
 export default async function handler(req, res) {
-  if (handleOPTIONS(req, res)) return;
+  // CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Vary", "Origin");
+
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
+
+  const plat = String(req.query.platform || "").toLowerCase();
+  const lang = normalizeLang(req.query.lang || req.query.language || "en");
+
+  if (!ALLOWED_PLATFORMS.has(plat)) return res.status(400).json({ error: "Unknown platform" });
+
   try {
-    const { platform } = req.query; // pc | ps4 | xb1 | swi
-    const data = await getWorldstate(platform);
-    sendJSON(res, data, 200);
-  } catch (e) {
-    console.error("WS index error:", e);
-    sendJSON(res, { error: String(e) }, 500);
+    const data = await fetchAggregated(plat, lang);
+    res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
+    return res.status(200).json(data);
+  } catch (err) {
+    console.error(err);
+    return res.status(502).json({ error: "Upstream error", detail: String(err?.message || err) });
   }
 }
