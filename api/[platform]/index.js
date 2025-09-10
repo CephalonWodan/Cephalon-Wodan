@@ -1,4 +1,8 @@
-import { ALLOWED_PLATFORMS, fetchAggregated, normalizeLang } from "../_lib/worldstate.js";
+import {
+  ALLOWED_PLATFORMS,
+  fetchAggregated,
+  normalizeLang,
+} from "../../lib/worldstates.js";
 
 export default async function handler(req, res) {
   // CORS
