@@ -1,8 +1,9 @@
+// api/[platform]/index.js
 import {
   ALLOWED_PLATFORMS,
-  fetchAggregated,
+  getAggregated,
   normalizeLang,
-} from "../../../lib/worldstate.js"; // <<< chemin exact
+} from "../../../lib/worldstate.js";
 
 export default async function handler(req, res) {
   // CORS
@@ -18,12 +19,12 @@ export default async function handler(req, res) {
   }
 
   const plat = String(req.query.platform || "").toLowerCase();
-  const lang = normalizeLang(req.query.lang || req.query.language || "en");
+  const lang = normalizeLang(req.query.lang || req.query.language || "en"); // réservé i18n
 
   if (!ALLOWED_PLATFORMS.has(plat)) return res.status(400).json({ error: "Unknown platform" });
 
   try {
-    const data = await fetchAggregated(plat, lang);
+    const data = await getAggregated(plat, lang);
     res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
     return res.status(200).json(data);
   } catch (err) {
