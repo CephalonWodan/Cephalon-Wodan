@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   }
 
   const plat = String(req.query.platform || "").toLowerCase();
-  const lang = normalizeLang(req.query.lang || req.query.language || "en"); // réservé i18n
+  const lang = normalizeLang(req.query.lang || req.query.language || "en"); // réserve i18n
 
   if (!ALLOWED_PLATFORMS.has(plat)) return res.status(400).json({ error: "Unknown platform" });
 
