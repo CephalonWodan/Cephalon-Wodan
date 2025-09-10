@@ -19,13 +19,18 @@ const ALLOWED_SOURCES   = ["live","vercel","local"];
 const ALLOWED_LANGS     = ["fr","en"];
 
 const navLang = (navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en";
-let settings = Object.assign({ platform: "pc", lang: navLang, source: "live" }, loadSettings());
+let settings = Object.assign(
+  { platform: "pc", lang: navLang, source: "live", fissureTier: "all", fissureHard: "all" },
+  loadSettings()
+);
 
 // Assainir prefs
 (function sanitizeSettings(){
   if (!ALLOWED_PLATFORMS.includes(settings.platform)) settings.platform = "pc";
   if (!ALLOWED_LANGS.includes(settings.lang))          settings.lang     = navLang;
   if (!ALLOWED_SOURCES.includes(settings.source))      settings.source   = "live";
+  if (!["all","lith","meso","neo","axi"].includes((settings.fissureTier||"all").toLowerCase())) settings.fissureTier = "all";
+  if (!["all","normal","hard"].includes((settings.fissureHard||"all").toLowerCase())) settings.fissureHard = "all";
   saveSettings(settings);
 })();
 
@@ -33,10 +38,14 @@ let settings = Object.assign({ platform: "pc", lang: navLang, source: "live" }, 
 const $platform = document.querySelector("#platform");
 const $lang     = document.querySelector("#lang");
 const $source   = document.querySelector("#source");
+const $fTier    = document.querySelector("#fissure-tier");
+const $fHard    = document.querySelector("#fissure-hard");
 
 if ($platform) $platform.value = settings.platform;
 if ($lang)     $lang.value     = settings.lang;
 if ($source)   $source.value   = settings.source;
+if ($fTier)    $fTier.value    = settings.fissureTier || "all";
+if ($fHard)    $fHard.value    = settings.fissureHard || "all";
 
 // ---- Helpers UI / format
 const el = (sel) => document.querySelector(sel);
@@ -68,8 +77,8 @@ let localCache = { platform: null, data: null, at: 0 };
 // Normaliser une valeur de source (label/value)
 function canonicalSource(raw) {
   const s = String(raw ?? "").trim().toLowerCase();
-  if (s.includes("vercel")) return "vercel";
-  if (s.includes("local"))  return "local";
+  if (s.includes("vercel"))   return "vercel";
+  if (s.includes("local"))    return "local";
   if (s.includes("live") || s.includes("warframe")) return "live";
   return ALLOWED_SOURCES.includes(s) ? s : "live";
 }
@@ -82,8 +91,8 @@ function currentSource() {
 
 // Construit l’URL selon la source choisie
 function buildURL(section) {
-  const s = String(section).replace(/\/?$/, ""); // ex: "fissures"
-  const src  = currentSource();                  // "live" | "vercel" | "local"
+  const s   = String(section).replace(/\/?$/, "");          // ex: "fissures"
+  const src = currentSource();                               // "live" | "vercel" | "local"
   const plat = ALLOWED_PLATFORMS.includes(settings.platform) ? settings.platform : "pc";
 
   if (src === "vercel") {
@@ -223,16 +232,50 @@ async function drawBounties(){
   render(current);
 }
 
+// --- FISSURES avec filtres (tier + Steel Path)
 async function drawFissures(){
   const ul = el("#fissures-list"); if (!ul) return;
   ul.innerHTML = "";
+
+  // valeurs des filtres
+  const tierSel = ($fTier?.value || settings.fissureTier || "all").toLowerCase();   // all|lith|meso|neo|axi
+  const hardSel = ($fHard?.value || settings.fissureHard || "all").toLowerCase();   // all|normal|hard
+
   try{
-    const fiss = await get("fissures");
+    let fiss = await get("fissures");
+
+    // tri par expiration
     fiss.sort((a,b)=> new Date(a.expiry) - new Date(b.expiry));
+
+    const normTier = (t) => String(t||"").toLowerCase();
+
+    // filtre Tier
+    if (tierSel !== "all") {
+      fiss = fiss.filter(f => normTier(f.tier) === tierSel);
+    }
+
+    // filtre Mode (Steel Path / Normal)
+    if (hardSel !== "all") {
+      const wantHard = (hardSel === "hard");
+      fiss = fiss.filter(f => Boolean(f.isHard) === wantHard);
+    }
+
+    if (!fiss.length) {
+      ul.innerHTML = `<p class="small">${
+        settings.lang==="fr" ? "Aucune fissure ne correspond aux filtres" : "No fissures match filters"
+      }</p>`;
+      return;
+    }
+
     fiss.forEach(f=>{
       ul.append(li(
         `<div class="row">
-           <span><strong>${f.tier}</strong> <span class="pill">${f.missionType}</span> <span class="small">${f.node}</span></span>
+           <span>
+             <strong>${f.tier}</strong>
+             <span class="pill">${f.missionType}</span>
+             <span class="small">${f.node}</span>
+             ${f.isHard ? `<span class="pill">Steel Path</span>` : ``}
+           </span>
            <span class="timer" data-exp="${f.expiry}">${until(f.expiry)}</span>
          </div>`
       ));
@@ -418,6 +461,18 @@ if ($source) {
     await renderAll();
   });
 }
+
+// Listeners filtres fissures
+$fTier?.addEventListener("change", async () => {
+  settings.fissureTier = ($fTier.value || "all").toLowerCase();
+  saveSettings(settings);
+  await drawFissures();
+});
+$fHard?.addEventListener("change", async () => {
+  settings.fissureHard = ($fHard.value || "all").toLowerCase();
+  saveSettings(settings);
+  await drawFissures();
+});
 
 // ---- Démarrage
 await renderAll();
