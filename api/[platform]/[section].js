@@ -1,9 +1,10 @@
+// api/[platform]/[section].js
 import {
   ALLOWED_PLATFORMS,
   ALLOWED_SECTIONS,
-  fetchSection,
+  getSection,
   normalizeLang,
-} from "../../../lib/worldstate.js"; // <<< chemin exact
+} from "../../../lib/worldstate.js";
 
 export default async function handler(req, res) {
   // CORS pour GitHub Pages
@@ -21,12 +22,12 @@ export default async function handler(req, res) {
   try {
     const plat = String(req.query.platform || "").toLowerCase();
     const sec  = String(req.query.section  || "").replace(/\.(js|json)$/i, "");
-    const lang = normalizeLang(req.query.lang || req.query.language || "en");
+    const lang = normalizeLang(req.query.lang || req.query.language || "en"); // réservé pour i18n ultérieure
 
     if (!ALLOWED_PLATFORMS.has(plat)) return res.status(400).json({ error: "Unknown platform" });
     if (!ALLOWED_SECTIONS.has(sec))   return res.status(404).json({ error: "Unknown section" });
 
-    const data = await fetchSection(plat, sec, lang);
+    const data = await getSection(plat, sec, lang);
 
     // Cache CDN 30s + SWR 60s
     res.setHeader("Cache-Control", "s-maxage=30, stale-while-revalidate=60");
