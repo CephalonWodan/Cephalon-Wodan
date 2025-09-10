@@ -24,7 +24,7 @@
     <a href="./shards.html">Archon Shards</a>
     <a href="./weapons.html">Weapons</a>
     <a href="./companion.html">Companions</a>
-    <a href="./necramech_archwings.html">Nechramechs & Archwings</a>
+    <a href="./necramechs_archwings.html">Nechramechs & Archwings</a>
     <a href="./Hub.html">Timer</a>
   `);
 })();
