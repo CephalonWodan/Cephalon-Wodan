@@ -1,12 +1,14 @@
 /* ===== Couleurs (peuvent être surchargées par theme.css) ===== */
 :root{
-  --bg: #0f1115;
-  --fg: #e5e7eb;
-  --muted: #9aa3b2;
-  --card: #151922;
-  --border: #232838;
-  --pill: #263043;
-  --accent: #6ee7ff;
+  --bg:#0a0f1a;              /* fond global très sombre */
+  --panel-1:#0f172a;         /* carte/panneau */
+  --panel-2:#0b1423;         /* champs / variantes */
+  --ink:#e6edf7;             /* texte principal */
+  --muted:#93a4b8;           /* texte atténué */
+  --cyan:#00e5ff;            /* accent Tenno */
+  --gold:#e6d28e;            /* or Orokin */
+  --gold-2:#f2e6b1;          /* or clair pour hover/focus */
+  --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
 }
 
 body{ background: var(--bg); color: var(--fg); }
