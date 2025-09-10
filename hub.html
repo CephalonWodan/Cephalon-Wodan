@@ -5,19 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Warframe – Hub temps réel</title>
 
-  <!-- (Optionnel) ton CSS global + CSS hub -->
-   <link rel="stylesheet" href="css/theme.css?v=1" />
+  <!-- Ton thème général si tu en as un -->
+  <link rel="stylesheet" href="css/theme.css" />
+  <!-- Styles du Hub -->
   <link rel="stylesheet" href="css/hub.css" />
 </head>
 <body>
 
-  <!-- Barre de navigation (rendue par js/site_nav.js) -->
+  <!-- Barre de navigation (contenu injecté par site_nav.js/nav_shim.js) -->
   <header id="site-nav"></header>
 
   <main class="container">
-    <h1>Warframe Hub</h1>
+    <h1 class="page-title">Warframe Hub</h1>
 
-    <!-- Panneau de contrôle -->
+    <!-- Contrôles -->
     <section class="panel">
       <div class="controls">
         <label>Plateforme
@@ -51,13 +52,13 @@
     </section>
 
     <!-- Cycles -->
-    <section>
+    <section class="block">
       <h2>Cycles <small id="ctx-cycles"></small></h2>
       <ul id="cycles-list" class="list"></ul>
     </section>
 
-    <!-- Bounties (primes) -->
-    <section>
+    <!-- Primes -->
+    <section class="block">
       <h2>Primes <small id="ctx-bounties"></small></h2>
       <div class="tabs">
         <button type="button" data-syn="Cetus">Cetus</button>
@@ -67,13 +68,13 @@
       <div id="bounty-content"></div>
     </section>
 
-    <!-- Fissures / Alertes / Invasions -->
+    <!-- Fissures / Alertes & Invasions -->
     <section class="grid-2">
-      <div>
+      <div class="block">
         <h2>Fissures <small id="ctx-fissures"></small></h2>
         <ul id="fissures-list" class="list"></ul>
       </div>
-      <div>
+      <div class="block">
         <h2>Alertes & Invasions <small id="ctx-alerts"></small></h2>
         <h3 class="sub">Alertes</h3>
         <ul id="alerts-list" class="list"></ul>
@@ -84,30 +85,32 @@
 
     <!-- Nightwave / Sortie / Archon -->
     <section class="grid-2">
-      <div>
+      <div class="block">
         <h2>Nightwave <small id="ctx-nightwave"></small></h2>
         <ul id="nightwave-list" class="list"></ul>
       </div>
-      <div>
+      <div class="block">
         <h2>Sortie & Archon Hunt <small id="ctx-sorties"></small></h2>
-        <div id="sortie"></div>
-        <div id="archon" style="margin-top:1rem;"></div>
+        <div id="sortie" class="card"></div>
+        <div id="archon" class="card" style="margin-top:1rem;"></div>
       </div>
     </section>
 
     <!-- Baro -->
-    <section>
+    <section class="block">
       <h2>Baro Ki’Teer <small id="ctx-baro"></small></h2>
-      <div id="baro-status"></div>
+      <div id="baro-status" class="card"></div>
       <h3 class="sub">Inventaire</h3>
       <ul id="baro-inventory" class="list"></ul>
     </section>
   </main>
 
-  <!-- Ta barre de nav (doit injecter le contenu dans #site-nav) -->
+  <!-- Ta barre de nav -->
   <script defer src="js/site_nav.js"></script>
+  <!-- Shim qui monte la nav, ou fournit un fallback -->
+  <script defer src="js/nav_shim.js"></script>
 
-  <!-- Le Hub (module = différé automatiquement) -->
+  <!-- Le Hub (module = différé) -->
   <script type="module" src="js/hub.js"></script>
 </body>
 </html>
