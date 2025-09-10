@@ -69,19 +69,32 @@
     </section>
 
     <!-- Fissures / Alertes & Invasions -->
-    <section class="grid-2">
-      <div class="block">
-        <h2>Fissures <small id="ctx-fissures"></small></h2>
-        <ul id="fissures-list" class="list"></ul>
-      </div>
-      <div class="block">
-        <h2>Alertes & Invasions <small id="ctx-alerts"></small></h2>
-        <h3 class="sub">Alertes</h3>
-        <ul id="alerts-list" class="list"></ul>
-        <h3 class="sub">Invasions</h3>
-        <ul id="invasions-list" class="list"></ul>
-      </div>
-    </section>
+    <section class="block">
+  <h2>Fissures <small id="ctx-fissures"></small></h2>
+
+  <!-- Filtres -->
+  <div class="filters">
+    <label>Tier
+      <select id="fissure-tier">
+        <option value="all">Toutes / All</option>
+        <option value="lith">Lith</option>
+        <option value="meso">Meso</option>
+        <option value="neo">Neo</option>
+        <option value="axi">Axi</option>
+      </select>
+    </label>
+
+    <label>Mode
+      <select id="fissure-hard">
+        <option value="all">Tous / All</option>
+        <option value="normal">Normal</option>
+        <option value="hard">Steel Path</option>
+      </select>
+    </label>
+  </div>
+
+  <ul id="fissures-list" class="list"></ul>
+</section>
 
     <!-- Nightwave / Sortie / Archon -->
     <section class="grid-2">
