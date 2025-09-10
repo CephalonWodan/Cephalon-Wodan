@@ -1,5 +1,5 @@
 // ===============================
-// Warframe Hub – hub.js (complet, patché)
+// Warframe Hub – hub.js (complet, patché anti-404)
 // Sources: Live (warframestat.us) / Vercel (API perso) / Local (Pages)
 // ===============================
 
@@ -8,8 +8,20 @@ const LS_KEY = "wfHubSettings";
 function loadSettings(){ try { return JSON.parse(localStorage.getItem(LS_KEY)) ?? {}; } catch { return {}; } }
 function saveSettings(s){ localStorage.setItem(LS_KEY, JSON.stringify(s)); }
 
+const ALLOWED_PLATFORMS = ["pc","ps4","xb1","swi"];
+const ALLOWED_SOURCES   = ["live","vercel","local"];
+const ALLOWED_LANGS     = ["fr","en"];
+
 const navLang = (navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en";
 let settings = Object.assign({ platform: "pc", lang: navLang, source: "live" }, loadSettings());
+
+// Assainir les prefs (évite platform = "vercel" etc.)
+(function sanitizeSettings(){
+  if (!ALLOWED_PLATFORMS.includes(settings.platform)) settings.platform = "pc";
+  if (!ALLOWED_LANGS.includes(settings.lang))          settings.lang     = navLang;
+  if (!ALLOWED_SOURCES.includes(settings.source))      settings.source   = "live";
+  saveSettings(settings);
+})();
 
 // ---- Éléments UI
 const $platform = document.querySelector("#platform");
@@ -49,26 +61,27 @@ const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
 // Cache simple pour la source "local"
 let localCache = { platform: null, data: null, at: 0 };
 
-// Construit l’URL selon la source choisie
+// Construit l’URL selon la source choisie (avec garde-fou plateforme)
 function buildURL(section) {
-  const s = String(section).replace(/\/?$/, ""); // "fissures" (sans slash final)
+  const s = String(section).replace(/\/?$/, ""); // "fissures"
+  const plat = ALLOWED_PLATFORMS.includes(settings.platform) ? settings.platform : "pc";
 
   if (settings.source === "vercel") {
     // /api/:platform/:section?lang=fr|en
-    const u = new URL(`${VERCEL_BASE}/${settings.platform}/${s}`);
+    const u = new URL(`${VERCEL_BASE}/${plat}/${s}`);
     u.searchParams.set("lang", settings.lang);
     return u.toString();
   }
 
   if (settings.source === "live") {
     // https://api.warframestat.us/:platform/:section/?language=fr|en
-    const u = new URL(`https://api.warframestat.us/${settings.platform}/${s}/`);
+    const u = new URL(`https://api.warframestat.us/${plat}/${s}/`);
     u.searchParams.set("language", settings.lang);
     return u.toString();
   }
 
   // Local : JSON agrégé (pc.json, ps4.json…)
-  return `/data/worldstate/${settings.platform}.json`;
+  return `/data/worldstate/${plat}.json`;
 }
 
 // Fetch unifié
@@ -366,7 +379,11 @@ async function renderAll(){
 // ---- Listeners
 if ($platform) {
   $platform.addEventListener("change", async () => {
-    settings.platform = $platform.value;
+    if (!ALLOWED_PLATFORMS.includes($platform.value)) {
+      settings.platform = "pc";
+    } else {
+      settings.platform = $platform.value;
+    }
     saveSettings(settings);
     localCache = { platform: null, data: null, at: 0 };
     await renderAll();
@@ -374,7 +391,7 @@ if ($platform) {
 }
 if ($lang) {
   $lang.addEventListener("change", async () => {
-    settings.lang = $lang.value;
+    settings.lang = ALLOWED_LANGS.includes($lang.value) ? $lang.value : navLang;
     saveSettings(settings);
     fmt = makeDateFormatter();
     await renderAll();
@@ -382,7 +399,7 @@ if ($lang) {
 }
 if ($source) {
   $source.addEventListener("change", async () => {
-    settings.source = $source.value;
+    settings.source = ALLOWED_SOURCES.includes($source.value) ? $source.value : "live";
     saveSettings(settings);
     localCache = { platform: null, data: null, at: 0 };
     await renderAll();
