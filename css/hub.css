@@ -1,91 +1,122 @@
-/* ===== Couleurs (peuvent être surchargées par theme.css) ===== */
-:root{
-  --bg:#0a0f1a;              /* fond global très sombre */
-  --panel-1:#0f172a;         /* carte/panneau */
-  --panel-2:#0b1423;         /* champs / variantes */
-  --ink:#e6edf7;             /* texte principal */
-  --muted:#93a4b8;           /* texte atténué */
-  --cyan:#00e5ff;            /* accent Tenno */
-  --gold:#e6d28e;            /* or Orokin */
-  --gold-2:#f2e6b1;          /* or clair pour hover/focus */
-  --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
-}
+/* ===================================================================
+   Hub – styles spécifiques, alignés sur le thème Orokin fourni
+   (réutilise : --bg, --panel-1, --panel-2, --ink, --muted, --gold, --gold-2, --shadow)
+   =================================================================== */
 
-body{background:var(--bg); color:var(--ink);}
+/* Conteneur & titres */
+.container{ max-width:1100px; margin:0 auto; padding:16px; }
+.page-title{ margin:8px 0 16px; font-size:28px; font-weight:600; letter-spacing:.2px; }
 
-.container{ max-width: 1100px; margin: 0 auto; padding: 16px; }
+/* Petit badge de contexte (plateforme/lang/source) à droite des h2 */
+h2{ display:flex; align-items:center; gap:.5rem; margin:0 0 8px; font-size:18px; }
+h2 small{ color:var(--muted); font-weight:400; }
 
-.page-title{ margin: 8px 0 16px; font-size: 28px; }
-
+/* Panneau des contrôles (sélecteurs) */
 .panel{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+  background:var(--panel-1);
+  color:var(--ink);
+  border-radius:1rem;
+  border:1px solid rgba(230,210,142,.55);
+  box-shadow:var(--shadow);
+  padding:12px 14px;
+  margin-bottom:16px;
+  display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between;
 }
-.controls label{ display: inline-flex; align-items: center; gap: 6px; margin-right: 10px; }
-.controls select{
-  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
-  border-radius: 10px; padding: 6px 8px;
+.controls{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.controls label{ display:inline-flex; align-items:center; gap:6px; }
+.controls select{ /* tes règles globales input/select s’appliquent déjà ; on ajoute juste un hint */
+  min-width:120px;
 }
 
-.block{ margin: 18px 0; }
-h2{ margin: 0 0 8px; font-size: 18px; }
-h2 small{ font-weight: 400; color: var(--muted); margin-left: 8px; }
-.sub{ color: var(--muted); font-weight: 600; margin: 10px 0 6px; }
+/* Grilles : on s’aligne sur tes utilitaires .grid-2/.grid-3/.grid-4 */
+.grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+@media (max-width: 560px){ .grid-2{ grid-template-columns:1fr; } }
 
-.list{ list-style: none; padding: 0; margin: 8px 0; }
+/* Blocs de contenu */
+.block{ margin:18px 0; }
+
+/* Listes & cartes d’items (fissures, alertes, etc.) */
+.list{ list-style:none; padding:0; margin:8px 0; }
 .list li{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 10px 12px;
-  margin: 6px 0;
-}
-.card{
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px;
+  background:var(--panel-1);
+  color:var(--ink);
+  border-radius:1rem;
+  border:1px solid rgba(230,210,142,.45);
+  box-shadow:var(--shadow);
+  padding:10px 12px;
+  margin:6px 0;
 }
 
-.row{ display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.pill{
-  background: var(--pill);
-  color: var(--fg);
-  padding: 2px 8px; border-radius: 999px; font-size: 12px; margin-left: 6px;
-}
-.small{ color: var(--muted); font-size: 12px; }
+/* Ligne titre + expiration */
+.row{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
 
-.tabs{ display: flex; gap: 6px; margin: 8px 0; }
+/* Texte atténué & timer */
+.small{ color:var(--muted); font-size:12px; }
+.timer{ font-variant-numeric:tabular-nums; }
+
+/* Pastilles : on garde ta .pill (thème) mais on ajuste pour l’usage “ligne” */
+.list .pill{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.15rem .5rem; border-radius:.75rem;
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.14));
+  border:1px solid rgba(230,210,142,.45);
+  font-size:.75rem;
+  margin-left:.35rem;
+}
+
+/* Onglets “Primes” : si tes boutons n’ont pas .btn-tab, on reproduit le style ici */
+.tabs{ display:flex; gap:.5rem; flex-wrap:wrap; margin:8px 0; }
 .tabs button{
-  border: 1px solid var(--border); background: var(--card); color: var(--fg);
-  border-radius: 999px; padding: 6px 10px; cursor: pointer;
+  padding:.375rem .75rem;
+  border-radius:.5rem;
+  border:1px solid rgba(230,210,142,.45);
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12));
+  font-size:.875rem;
+  color:var(--ink);
+  transition:transform .05s ease, border-color .2s ease, background .2s ease, color .2s ease, opacity .2s ease;
+  cursor:pointer;
 }
-.tabs button.active{ outline: 2px solid var(--accent); }
+.tabs button:hover{ transform:translateY(1px); border-color:var(--gold-2); }
+.tabs button.active{
+  background:linear-gradient(180deg, rgba(230,210,142,.18), rgba(230,210,142,.06));
+  color:#0b0e14;
+  border-color:var(--gold);
+  font-weight:600;
+}
 
-.grid-2{ display: grid; grid-template-columns: 1fr; gap: 16px; }
-@media (min-width: 900px){ .grid-2{ grid-template-columns: 1fr 1fr; } }
-
-/* Nav simple si fallback utilisé par nav_shim.js */
-.navbar{
-  display: flex; gap: 10px; padding: 10px 16px; background: var(--card);
-  border-bottom: 1px solid var(--border);
-  border-radius: 0 0 12px 12px;
-  margin-bottom: 12px;
-}
-.navbar a{
-  color: var(--fg); text-decoration: none; padding: 6px 10px; border-radius: 8px;
-}
-.navbar a:hover{ background: var(--bg); }
+/* Filtres Fissures (Tier + Steel Path) */
 .filters{
   display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:8px 0 10px;
 }
 .filters label{ display:inline-flex; gap:6px; align-items:center; }
-.filters select{
-  background: var(--bg); color: var(--fg); border: 1px solid var(--border);
-  border-radius: 10px; padding: 6px 8px;
-}
+.filters select{ min-width:120px; }
 
+/* Cartes riches (Sortie / Archon / Baro) */
+.card{
+  background:var(--panel-1);
+  color:var(--ink);
+  border-radius:1rem;
+  border:1px solid rgba(230,210,142,.55);
+  box-shadow:var(--shadow);
+}
+.card + .card{ margin-top:1rem; }
+.card h3{ margin:.25rem 0 .5rem; }
+
+/* Barre de navigation fallback (si site_nav.js n’injecte rien) */
+.navbar{
+  display:flex; gap:10px; padding:10px 16px;
+  background:var(--panel-1);
+  border-bottom:1px solid rgba(230,210,142,.45);
+  border-radius:0 0 12px 12px;
+  margin-bottom:12px;
+  box-shadow:var(--shadow);
+}
+.navbar a{
+  color:var(--ink); text-decoration:none; padding:6px 10px; border-radius:8px;
+  border:1px solid transparent;
+}
+.navbar a:hover{ border-color:var(--gold-2); background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.10)); }
+
+/* Petites améliorations d’accessibilité */
+select, button{ transition:box-shadow .2s ease, border-color .2s ease; }
+select:focus, button:focus{ outline:none; box-shadow:0 0 0 3px rgba(230,210,142,.3), 0 0 0 1px rgba(230,210,142,.8) inset; border-color:var(--gold); }
