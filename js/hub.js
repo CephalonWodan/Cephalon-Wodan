@@ -1,5 +1,5 @@
 // ===============================
-// Warframe Hub – hub.js (complet, patché anti-404)
+// Warframe Hub – hub.js (complet, source UI fiable)
 // Sources: Live (warframestat.us) / Vercel (API perso) / Local (Pages)
 // ===============================
 
@@ -61,37 +61,44 @@ const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
 // Cache simple pour la source "local"
 let localCache = { platform: null, data: null, at: 0 };
 
+// Source courante (lit le <select> en priorité)
+function currentSource() {
+  const raw = ($source && $source.value != null ? $source.value : settings.source) ?? "live";
+  return String(raw).trim().toLowerCase();
+}
+
 // Construit l’URL selon la source choisie (avec garde-fou plateforme)
 function buildURL(section) {
-  const s = String(section).replace(/\/?$/, ""); // "fissures"
+  const s = String(section).replace(/\/?$/, ""); // ex: "fissures"
+  const src  = currentSource();                  // "live" | "vercel" | "local"
   const plat = ALLOWED_PLATFORMS.includes(settings.platform) ? settings.platform : "pc";
 
-  if (settings.source === "vercel") {
+  if (src === "vercel") {
     // /api/:platform/:section?lang=fr|en
     const u = new URL(`${VERCEL_BASE}/${plat}/${s}`);
     u.searchParams.set("lang", settings.lang);
     return u.toString();
   }
 
-  if (settings.source === "live") {
+  if (src === "live") {
     // https://api.warframestat.us/:platform/:section/?language=fr|en
     const u = new URL(`https://api.warframestat.us/${plat}/${s}/`);
     u.searchParams.set("language", settings.lang);
     return u.toString();
   }
 
-  // Local : JSON agrégé (pc.json, ps4.json…)
+  // src === "local"
   return `/data/worldstate/${plat}.json`;
 }
 
 // Fetch unifié
 async function get(section){
   // Bounties seulement en Live (WarframeStatus)
-  if (section === "syndicateMissions" && settings.source !== "live") {
+  if (section === "syndicateMissions" && currentSource() !== "live") {
     throw new Error("syndicateMissions non disponible sur cette source");
   }
 
-  if (settings.source === "local") {
+  if (currentSource() === "local") {
     if (localCache.platform !== settings.platform || Date.now() - localCache.at > 60_000) {
       const r = await fetch(buildURL("ALL"), { cache: "no-store" });
       if (!r.ok) throw new Error("local worldstate " + r.status);
@@ -112,7 +119,8 @@ async function get(section){
 // Badges / Now
 // ===============================
 function setContextBadges(){
-  const src = settings.source === "vercel" ? "VERCEL" : settings.source === "live" ? "LIVE" : "LOCAL";
+  const srcKey = currentSource();
+  const src = srcKey === "vercel" ? "VERCEL" : srcKey === "live" ? "LIVE" : "LOCAL";
   const ctx = `${settings.platform.toUpperCase()} • ${settings.lang.toUpperCase()} • ${src}`;
   ["cycles","bounties","fissures","alerts","nightwave","sorties","baro"].forEach(id=>{
     const e = el(`#ctx-${id}`); if (e) e.textContent = ctx;
@@ -175,7 +183,7 @@ async function drawBounties(){
 
   async function render(key){
     root.innerHTML = "";
-    if (settings.source !== "live") {
+    if (currentSource() !== "live") {
       root.innerHTML = `<p class="small">Primes non disponibles sur cette source. Passe sur <strong>Live</strong>.</p>`;
       return;
     }
@@ -379,11 +387,7 @@ async function renderAll(){
 // ---- Listeners
 if ($platform) {
   $platform.addEventListener("change", async () => {
-    if (!ALLOWED_PLATFORMS.includes($platform.value)) {
-      settings.platform = "pc";
-    } else {
-      settings.platform = $platform.value;
-    }
+    settings.platform = ALLOWED_PLATFORMS.includes($platform.value) ? $platform.value : "pc";
     saveSettings(settings);
     localCache = { platform: null, data: null, at: 0 };
     await renderAll();
