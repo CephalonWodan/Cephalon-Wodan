@@ -7,7 +7,7 @@ import {
 } from "../../../lib/worldstate.js";
 
 export default async function handler(req, res) {
-  // CORS pour GitHub Pages
+  // CORS (GitHub Pages, etc.)
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   try {
     const plat = String(req.query.platform || "").toLowerCase();
     const sec  = String(req.query.section  || "").replace(/\.(js|json)$/i, "");
-    const lang = normalizeLang(req.query.lang || req.query.language || "en"); // réservé pour i18n ultérieure
+    const lang = normalizeLang(req.query.lang || req.query.language || "en"); // réserve i18n futur
 
     if (!ALLOWED_PLATFORMS.has(plat)) return res.status(400).json({ error: "Unknown platform" });
     if (!ALLOWED_SECTIONS.has(sec))   return res.status(404).json({ error: "Unknown section" });
