@@ -1,7 +1,13 @@
 // ===============================
-// Warframe Hub – hub.js (source UI robuste)
-// Sources: Live (warframestat.us) / Vercel (API perso) / Local (Pages)
+// Warframe Hub – hub.js (complet, robuste + nav + Vercel/Live)
 // ===============================
+
+// -- Attendre que le DOM soit prêt (évite #source === null)
+async function domReady() {
+  if (document.readyState !== 'loading') return;
+  await new Promise(r => document.addEventListener('DOMContentLoaded', r, { once: true }));
+}
+await domReady();
 
 // ---- Préférences (plateforme / langue / source)
 const LS_KEY = "wfHubSettings";
@@ -15,7 +21,7 @@ const ALLOWED_LANGS     = ["fr","en"];
 const navLang = (navigator.language || "fr").toLowerCase().startsWith("fr") ? "fr" : "en";
 let settings = Object.assign({ platform: "pc", lang: navLang, source: "live" }, loadSettings());
 
-// Assainir les prefs au démarrage
+// Assainir prefs
 (function sanitizeSettings(){
   if (!ALLOWED_PLATFORMS.includes(settings.platform)) settings.platform = "pc";
   if (!ALLOWED_LANGS.includes(settings.lang))          settings.lang     = navLang;
@@ -54,55 +60,48 @@ function until(expiryIso){ return left(new Date(expiryIso) - new Date()); }
 // ===============================
 // SOURCES & FETCH
 // ===============================
+const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api"; // ton API
 
-// Base API perso (Vercel)
-const VERCEL_BASE = "https://cephalon-wodan.vercel.app/api";
-
-// Cache simple pour la source "local"
+// Cache simple pour "local"
 let localCache = { platform: null, data: null, at: 0 };
 
-// Normalisation robuste d'une valeur de source (label ou value)
+// Normaliser une valeur de source (label/value)
 function canonicalSource(raw) {
   const s = String(raw ?? "").trim().toLowerCase();
   if (s.includes("vercel")) return "vercel";
+  if (s.includes("local"))  return "local";
   if (s.includes("live") || s.includes("warframe")) return "live";
-  if (s.includes("local")) return "local";
   return ALLOWED_SOURCES.includes(s) ? s : "live";
 }
 
-// Source courante (lit le <select> en priorité)
+// Source courante (UI en priorité)
 function currentSource() {
   const ui = $source && $source.value != null ? $source.value : settings.source;
   return canonicalSource(ui);
 }
 
-// Construit l’URL selon la source choisie (avec garde-fou plateforme)
+// Construit l’URL selon la source choisie
 function buildURL(section) {
   const s = String(section).replace(/\/?$/, ""); // ex: "fissures"
   const src  = currentSource();                  // "live" | "vercel" | "local"
   const plat = ALLOWED_PLATFORMS.includes(settings.platform) ? settings.platform : "pc";
 
   if (src === "vercel") {
-    // /api/:platform/:section?lang=fr|en
     const u = new URL(`${VERCEL_BASE}/${plat}/${s}`);
     u.searchParams.set("lang", settings.lang);
     return u.toString();
   }
-
   if (src === "live") {
-    // https://api.warframestat.us/:platform/:section/?language=fr|en
     const u = new URL(`https://api.warframestat.us/${plat}/${s}/`);
     u.searchParams.set("language", settings.lang);
     return u.toString();
   }
-
-  // src === "local"
+  // local
   return `/data/worldstate/${plat}.json`;
 }
 
 // Fetch unifié
 async function get(section){
-  // Bounties seulement en Live (WarframeStatus)
   if (section === "syndicateMissions" && currentSource() !== "live") {
     throw new Error("syndicateMissions non disponible sur cette source");
   }
@@ -118,7 +117,6 @@ async function get(section){
     return data;
   }
 
-  // Vercel ou Live : on va directement chercher l’endpoint construit
   const r = await fetch(buildURL(section), { cache: "no-store" });
   if (!r.ok) throw new Error(section + " " + r.status);
   return r.json();
@@ -414,8 +412,7 @@ if ($source) {
   $source.addEventListener("change", async () => {
     const canon = canonicalSource($source.value);
     settings.source = canon;
-    // remet la valeur canonique dans l'UI au cas où l'option ait un label exotique
-    $source.value = canon;
+    $source.value = canon; // normalise visuellement
     saveSettings(settings);
     localCache = { platform: null, data: null, at: 0 };
     await renderAll();
@@ -425,7 +422,7 @@ if ($source) {
 // ---- Démarrage
 await renderAll();
 drawNow();
-setInterval(drawNow, 1000);     // horloge locale
-setInterval(tickTimers, 1000);  // compte à rebours
-setInterval(renderAll, 60_000); // re-fetch périodique
+setInterval(drawNow, 1000);
+setInterval(tickTimers, 1000);
+setInterval(renderAll, 60_000);
 console.log("Hub prêt.", settings);
