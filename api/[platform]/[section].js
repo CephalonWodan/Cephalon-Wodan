@@ -1,4 +1,3 @@
-// api/[platform]/[section].js
 import {
   ALLOWED_PLATFORMS,
   ALLOWED_SECTIONS,
