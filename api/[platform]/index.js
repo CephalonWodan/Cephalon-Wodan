@@ -1,4 +1,3 @@
-// api/[platform]/index.js
 import {
   ALLOWED_PLATFORMS,
   getAggregated,
