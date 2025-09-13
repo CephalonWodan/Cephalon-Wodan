@@ -17,16 +17,11 @@ export default async function handler(req, res) {
     const lang = normalizeLang(req.query.lang);
     const debug = 'debug' in req.query;
 
-    // Cache: désactivé si debug, sinon 60s
-    if (debug) {
-      res.setHeader('Cache-Control', 'no-store');
-    } else {
-      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
-    }
+    if (debug) res.setHeader('Cache-Control', 'no-store');
+    else res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
 
     const data = await getAggregated(p, lang);
 
-    // En-têtes debug
     const meta = getParserMeta();
     if (meta) {
       res.setHeader('X-WS-Parser', meta.path);
@@ -35,9 +30,7 @@ export default async function handler(req, res) {
       res.setHeader('X-WS-SourceLen', String(meta.len));
     }
 
-    if (debug) {
-      return res.status(200).json({ ...data, _meta: meta });
-    }
+    if (debug) return res.status(200).json({ ...data, _meta: meta });
     return res.status(200).json(data);
   } catch (err) {
     console.error('index handler error:', err);
