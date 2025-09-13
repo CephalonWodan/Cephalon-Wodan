@@ -1,4 +1,3 @@
-// /api/[platform]/[section].js
 import {
   getSection,
   ALLOWED_PLATFORMS,
@@ -32,8 +31,9 @@ export default async function handler(req, res) {
     if (meta) {
       res.setHeader('X-WS-Parser', meta.path);
       res.setHeader('X-WS-Lang', meta.locale);
-      res.setHeader('X-WS-LangLoaded', String(meta.hasLanguage));
-      res.setHeader('X-WS-SourceLen', String(meta.len));
+      res.setHeader('X-WS-LangLoaded', String(!!meta.hasLanguage));
+      res.setHeader('X-WS-SourceLen', String(meta.len ?? 0));
+      if (meta.firstError) res.setHeader('X-WS-FirstError', String(meta.firstError));
     }
 
     if (debug) return res.status(200).json({ data, _meta: meta });
