@@ -1,9 +1,9 @@
+// /api/[platform]/[section].js
 import {
   getSection,
   ALLOWED_PLATFORMS,
   ALLOWED_SECTIONS,
-  normalizeLang,
-  getParserMeta
+  normalizeLang
 } from '../../lib/worldstate.js';
 
 export default async function handler(req, res) {
@@ -26,17 +26,6 @@ export default async function handler(req, res) {
     else res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
 
     const data = await getSection(p, s, lang);
-
-    const meta = getParserMeta();
-    if (meta) {
-      res.setHeader('X-WS-Parser', meta.path);
-      res.setHeader('X-WS-Lang', meta.locale);
-      res.setHeader('X-WS-LangLoaded', String(!!meta.hasLanguage));
-      res.setHeader('X-WS-SourceLen', String(meta.len ?? 0));
-      if (meta.firstError) res.setHeader('X-WS-FirstError', String(meta.firstError));
-    }
-
-    if (debug) return res.status(200).json({ data, _meta: meta });
     return res.status(200).json(data);
   } catch (err) {
     console.error('section handler error:', err);
