@@ -1,37 +1,46 @@
-// /api/[platform]/index.js  (ESM, Vercel Node runtime)
-import { getAggregated, ALLOWED_PLATFORMS, normalizeLang } from "../../lib/worldstate.js";
+// /api/[platform]/index.js
+import {
+  getAggregated,
+  ALLOWED_PLATFORMS,
+  normalizeLang,
+  getParserMeta
+} from '../../lib/worldstate.js';
 
 export default async function handler(req, res) {
-  // Autoriser uniquement GET/HEAD
-  if (req.method !== "GET" && req.method !== "HEAD") {
-    res.setHeader("Allow", "GET, HEAD");
-    return res.status(405).json({ error: "method not allowed" });
-  }
-
   try {
-    const { platform } = req.query; // "pc", "ps4", ...
-    const p = String(platform || "").toLowerCase();
-
+    const { platform } = req.query;
+    const p = String(platform || '').toLowerCase();
     if (!ALLOWED_PLATFORMS.has(p)) {
-      return res.status(400).json({ error: "bad platform" });
+      return res.status(400).json({ error: 'bad platform' });
     }
 
-    // optionnel (si plus tard tu localises des strings)
     const lang = normalizeLang(req.query.lang);
+    const debug = 'debug' in req.query;
 
-    // cache CDN 60s
-    res.setHeader("Cache-Control", "s-maxage=60, stale-while-revalidate=30");
+    // Cache: désactivé si debug, sinon 60s
+    if (debug) {
+      res.setHeader('Cache-Control', 'no-store');
+    } else {
+      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
+    }
 
     const data = await getAggregated(p, lang);
 
-    if (req.method === "HEAD") {
-      // Pas de body pour HEAD (optimise un peu)
-      return res.status(204).end();
+    // En-têtes debug
+    const meta = getParserMeta();
+    if (meta) {
+      res.setHeader('X-WS-Parser', meta.path);
+      res.setHeader('X-WS-Lang', meta.locale);
+      res.setHeader('X-WS-LangLoaded', String(meta.hasLanguage));
+      res.setHeader('X-WS-SourceLen', String(meta.len));
     }
 
+    if (debug) {
+      return res.status(200).json({ ...data, _meta: meta });
+    }
     return res.status(200).json(data);
   } catch (err) {
-    console.error("index handler error:", err);
-    return res.status(502).json({ error: "worldstate upstream unavailable" });
+    console.error('index handler error:', err);
+    return res.status(502).json({ error: 'worldstate upstream unavailable' });
   }
 }
