@@ -23,11 +23,8 @@ export default async function handler(req, res) {
 
     const lang = normalizeLang(req.query.lang);
 
-    if (debug) {
-      res.setHeader('Cache-Control', 'no-store');
-    } else {
-      res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
-    }
+    if (debug) res.setHeader('Cache-Control', 'no-store');
+    else res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=30');
 
     const data = await getSection(p, s, lang);
 
@@ -39,9 +36,7 @@ export default async function handler(req, res) {
       res.setHeader('X-WS-SourceLen', String(meta.len));
     }
 
-    if (debug) {
-      return res.status(200).json({ data, _meta: meta });
-    }
+    if (debug) return res.status(200).json({ data, _meta: meta });
     return res.status(200).json(data);
   } catch (err) {
     console.error('section handler error:', err);
