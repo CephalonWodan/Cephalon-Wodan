@@ -1,4 +1,5 @@
 {
+  "name": "Cephalon-Wodan",
   "type": "module",
   "engines": { "node": "20.x" },
   "dependencies": {
