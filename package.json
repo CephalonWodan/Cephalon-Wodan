@@ -1,9 +1,8 @@
 {
-  "name": "cephalon-wodan",
-  "private": true,
   "type": "module",
   "engines": { "node": "20.x" },
   "dependencies": {
-    "warframe-worldstate-parser": "5.0.4"
+    "warframe-worldstate-parser": "5.0.4",
+    "warframe-worldstate-data": "^3.1.3"
   }
 }
