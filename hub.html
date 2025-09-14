@@ -6,12 +6,27 @@
   <meta name="color-scheme" content="dark light" />
   <title>Warframe Hub — Cephalon Wodan</title>
 
-  <!-- uniquement le CSS local pour éviter les chemins cassés -->
+  <!-- thèmes / styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
   <link rel="stylesheet" href="css/hub.css?v=4" />
+
+  <!-- script de navigation du site -->
   <script src="js/site_nav.js" defer></script>
+  <!-- Si site_nav.js expose window.renderSiteNav, on l’appelle au chargement -->
+  <script defer>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.renderSiteNav) {
+        window.renderSiteNav('#site-nav');
+      } else if (window.SiteNav?.render) {
+        window.SiteNav.render('#site-nav');
+      }
+    });
+  </script>
 </head>
 <body class="wf">
+  <!-- Barre de navigation (remplie par site_nav.js) -->
+  <div id="site-nav"></div>
+
   <header class="wf-toolbar">
     <div class="wf-toolbar__left">
       <h1 class="wf-title">Hub</h1>
@@ -101,6 +116,7 @@
     </section>
   </main>
 
+  <!-- script Hub -->
   <script type="module" src="./js/hub.js?v=6"></script>
 </body>
 </html>
