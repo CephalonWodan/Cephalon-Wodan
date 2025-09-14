@@ -356,8 +356,3 @@ body.wf { background: var(--bg); color: var(--ink); }
   z-index: 900;
 }
 
-/* Sur mobile la nav est souvent un peu plus haute */
-@media (max-width: 640px) {
-  .wf-toolbar { top: 56px; }
-}
-
