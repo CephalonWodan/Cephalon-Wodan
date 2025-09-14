@@ -3,19 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
   <title>Warframe Hub — Cephalon Wodan</title>
 
-  <!-- Ton thème global si besoin -->
-  <link rel="stylesheet" href="css/theme.css" />
-
-  <!-- Styles spécifiques Hub -->
-  <link rel="stylesheet" href="css/hub.css" />
+  <!-- uniquement le CSS local pour éviter les chemins cassés -->
+  <link rel="stylesheet" href="./hub.css?v=4" />
 </head>
 <body class="wf">
   <header class="wf-toolbar">
     <div class="wf-toolbar__left">
       <h1 class="wf-title">Hub</h1>
-      <span class="wf-now">Maintenant&nbsp;: <strong id="now">—</strong></span>
+      <span class="wf-now">Maintenant : <strong id="now">—</strong></span>
     </div>
     <div class="wf-toolbar__right">
       <label>Plateforme
@@ -39,17 +37,13 @@
   <main class="wf-grid">
     <!-- Cycles -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Cycles <small id="ctx-cycles" class="wf-ctx"></small>
-      </h2>
+      <h2 class="wf-card__title">Cycles <small id="ctx-cycles" class="wf-ctx"></small></h2>
       <ul id="cycles-list" class="wf-list"></ul>
     </section>
 
     <!-- Fissures -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Fissures <small id="ctx-fissures" class="wf-ctx"></small>
-      </h2>
+      <h2 class="wf-card__title">Fissures <small id="ctx-fissures" class="wf-ctx"></small></h2>
       <div class="wf-controls">
         <label>Tier
           <select id="fissure-tier">
@@ -75,47 +69,36 @@
 
     <!-- Sortie -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Sortie <small id="ctx-sorties" class="wf-ctx"></small>
-      </h2>
-      <div id="sortie"></div>
+      <h2 class="wf-card__title">Sortie <small id="ctx-sorties" class="wf-ctx"></small></h2>
+      <div id="sortie" class="wf-pad"></div>
     </section>
 
     <!-- Archon Hunt -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Archon Hunt <small class="wf-ctx"></small>
-      </h2>
-      <div id="archon"></div>
+      <h2 class="wf-card__title">Archon Hunt</h2>
+      <div id="archon" class="wf-pad"></div>
     </section>
 
     <!-- Nightwave -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Nightwave <small id="ctx-nightwave" class="wf-ctx"></small>
-      </h2>
+      <h2 class="wf-card__title">Nightwave <small id="ctx-nightwave" class="wf-ctx"></small></h2>
       <ul id="nightwave-list" class="wf-list"></ul>
     </section>
 
     <!-- Baro -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Baro Ki’Teer <small id="ctx-baro" class="wf-ctx"></small>
-      </h2>
-      <div id="baro-status"></div>
+      <h2 class="wf-card__title">Baro Ki’Teer <small id="ctx-baro" class="wf-ctx"></small></h2>
+      <div id="baro-status" class="wf-pad"></div>
       <ul id="baro-inventory" class="wf-list"></ul>
     </section>
 
-    <!-- Primes/bounties -->
+    <!-- Primes/Bounties -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Primes <small id="ctx-bounties" class="wf-ctx"></small>
-      </h2>
-      <div id="bounty-content"></div>
+      <h2 class="wf-card__title">Primes <small id="ctx-bounties" class="wf-ctx"></small></h2>
+      <div id="bounty-content" class="wf-pad"></div>
     </section>
   </main>
 
-  <script type="module" src="./js/hub.js"defer></script>
-   <script src="js/site_nav.js" defer></script>
+  <script type="module" src="./js/hub.js?v=6"></script>
 </body>
 </html>
