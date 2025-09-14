@@ -1,7 +1,8 @@
 /* =========================================================
-   HUB.JS v8 — Cephalon Wodan
+   HUB.JS v9 — Cephalon Wodan
    - Consomme l'API Railway /api/:platform?lang=xx
-   - Rendu : cycles, fissures, sortie, archon, nightwave, baro, primes, invasions
+   - Rendu : cycles, fissures, sortie, archon, duviri circuit,
+             nightwave, baro, invasions, bounties
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -10,20 +11,30 @@ const els = {
   now: document.getElementById('now'),
   platform: document.getElementById('platform'),
   lang: document.getElementById('lang'),
+
   cyclesList: document.getElementById('cycles-list'),
+  ctxCycles: document.getElementById('ctx-cycles'),
+
   fissuresList: document.getElementById('fissures-list'),
   ctxFissures: document.getElementById('ctx-fissures'),
+
   sortie: document.getElementById('sortie'),
   archon: document.getElementById('archon'),
+
+  duviri: document.getElementById('duviri-circuit'),
+  ctxDuviri: document.getElementById('ctx-duviri'),
+
   nightwaveList: document.getElementById('nightwave-list'),
+  ctxNightwave: document.getElementById('ctx-nightwave'),
+
   baroStatus: document.getElementById('baro-status'),
   baroInv: document.getElementById('baro-inventory'),
-  bounty: document.getElementById('bounty-content'),
+  ctxBaro: document.getElementById('ctx-baro'),
+
   invList: document.getElementById('invasions-list'),
   ctxInv: document.getElementById('ctx-invasions'),
-  ctxCycles: document.getElementById('ctx-cycles'),
-  ctxNightwave: document.getElementById('ctx-nightwave'),
-  ctxBaro: document.getElementById('ctx-baro'),
+
+  bounty: document.getElementById('bounty-content'),
 };
 
 function fmtDT(d) {
@@ -94,7 +105,7 @@ function renderCycles(data) {
   els.ctxCycles.textContent = count ? `${count} actifs` : '—';
 }
 
-/* ========== RENDER : FISSURES (déjà en place) ========== */
+/* ========== RENDER : FISSURES ========== */
 function renderFissures(data) {
   const list = data?.fissures || [];
   els.fissuresList.innerHTML = '';
@@ -121,7 +132,7 @@ function renderFissures(data) {
   }
 }
 
-/* ========== RENDER : SORTIE / ARCHON / NIGHTWAVE / BARO (inchangé) ========== */
+/* ========== RENDER : SORTIE / ARCHON ========== */
 function renderSortie(data) {
   const s = data?.sortie;
   els.sortie.innerHTML = '';
@@ -148,10 +159,8 @@ function renderSortie(data) {
     row.append(l);
     variants.append(row);
   }
-
   els.sortie.append(head, variants);
 }
-
 function renderArchon(data) {
   const a = data?.archonHunt;
   els.archon.innerHTML = '';
@@ -180,6 +189,58 @@ function renderArchon(data) {
   els.archon.append(head, variants);
 }
 
+/* ========== RENDER : DUVIRI CIRCUIT (NOUVEAU) ========== */
+function renderDuviri(data) {
+  const d = data?.duviriCycle || {};
+  els.duviri.innerHTML = '';
+
+  // En-tête (état + ETA)
+  const head = createEl('div', 'circuit-head');
+  head.append(createEl('span', 'badge-state', `État: ${d.state || '—'}`));
+  if (d.expiry) {
+    const ms = new Date(d.expiry).getTime() - Date.now();
+    const eta = createEl('span', 'wf-eta');
+    eta.append(createEl('span', 'label', 'Expire dans '));
+    eta.append(createEl('span', 'value', fmtETA(ms)));
+    head.append(eta);
+  }
+  els.duviri.append(head);
+
+  // Groupes Normal / Steel Path selon duviriCycle.choices
+  const choices = Array.isArray(d.choices) ? d.choices : [];
+  const normal = choices.find(c => (c.category || '').toLowerCase() === 'normal');
+  const hard   = choices.find(c => (c.category || '').toLowerCase() === 'hard');
+
+  function group(label, arr) {
+    const wrap = createEl('div', 'circuit-group');
+    wrap.append(createEl('div', 'circuit-title', label));
+    const chips = createEl('div', 'chips');
+    if (arr && Array.isArray(arr) && arr.length) {
+      for (const name of arr) chips.append(createEl('span', 'wf-chip', name));
+    } else {
+      chips.append(createEl('span', 'muted', '—'));
+    }
+    wrap.append(chips);
+    return wrap;
+  }
+
+  const container = createEl('div', 'circuit-wrap');
+  container.append(group('Normal', normal?.choices || []));
+  container.append(group('Steel Path', hard?.choices || []));
+  els.duviri.append(container);
+
+  // Contexte dans le titre (ex: 3 choix / 5 choix)
+  const nCount = (normal?.choices || []).length;
+  const hCount = (hard?.choices || []).length;
+  if (els.ctxDuviri) {
+    const parts = [];
+    if (nCount) parts.push(`${nCount} normal`);
+    if (hCount) parts.push(`${hCount} hard`);
+    els.ctxDuviri.textContent = parts.length ? parts.join(' • ') : '—';
+  }
+}
+
+/* ========== RENDER : NIGHTWAVE / BARO / INVASIONS / BOUNTIES ========== */
 function renderNightwave(data) {
   els.nightwaveList.innerHTML = '';
   const nw = data?.nightwave;
@@ -201,7 +262,6 @@ function renderNightwave(data) {
     els.nightwaveList.append(li);
   }
 }
-
 function renderBaro(data) {
   els.baroStatus.innerHTML = '';
   els.baroInv.innerHTML = '';
@@ -232,12 +292,10 @@ function renderBaro(data) {
     els.baroInv.append(li);
   }
 }
-
-/* ========== RENDER : INVASIONS (NOUVEAU) ========== */
 function rewardToText(rw) {
   if (!rw) return '';
   const parts = [];
-  if (Array.isArray(rw.countedItems) && rw.countedItems.length) {
+  if (Array.isArray(rw.countedItems)) {
     for (const ci of rw.countedItems) {
       const count = (ci.count ?? 1);
       const name = ci.type || ci.key || 'Item';
@@ -248,7 +306,6 @@ function rewardToText(rw) {
   if (Array.isArray(rw.items)) parts.push(...rw.items);
   return parts.join(', ');
 }
-
 function renderInvasions(data) {
   const inv = Array.isArray(data?.invasions) ? data.invasions : [];
   els.invList.innerHTML = '';
@@ -257,19 +314,16 @@ function renderInvasions(data) {
     els.invList.append(createEl('li', 'muted', 'Aucune invasion active'));
     return;
   }
-
   for (const v of inv) {
     const li = createEl('li', 'wf-row');
     const left = createEl('div', 'left');
     const right = createEl('div', 'right');
 
-    // Headline
     const head = createEl('div', 'inv-head');
     head.append(createEl('span', 'inv-node', v.node || '—'));
     if (v.desc) head.append(createEl('span','inv-desc', v.desc));
     left.append(head);
 
-    // VS line
     const vs = createEl('div', 'inv-vs');
     const fAtt = (v.attacker?.faction || '').trim() || 'Attacker';
     const fDef = (v.defender?.faction || '').trim() || 'Defender';
@@ -279,7 +333,6 @@ function renderInvasions(data) {
     if (v.vsInfestation) vs.append(createEl('span','inv-fac inv-infested','Infested'));
     left.append(vs);
 
-    // Rewards
     const rew = createEl('div','inv-rew');
     const attRw = rewardToText(v.attacker?.reward);
     const defRw = rewardToText(v.defender?.reward);
@@ -287,7 +340,6 @@ function renderInvasions(data) {
     if (defRw) rew.append(createEl('small', null, `Defender: ${defRw}`));
     if (rew.childNodes.length) left.append(rew);
 
-    // Progress
     const barWrap = createEl('div', 'wf-bar');
     const barFill = createEl('div', 'wf-bar__fill');
     const pct = typeof v.completion === 'number'
@@ -297,21 +349,15 @@ function renderInvasions(data) {
     barWrap.append(barFill);
     left.append(barWrap);
 
-    // label right
     const lbl = createEl('span','wf-bar__label', `${pct.toFixed(2)}%`);
     right.append(lbl);
 
-    if (v.completed) {
-      lbl.textContent = 'Terminé';
-    }
-
+    if (v.completed) lbl.textContent = 'Terminé';
     li.append(left, right);
     els.invList.append(li);
   }
 }
-
-/* ========== BOUNTIES (placeholder) ========== */
-function renderBounties(/*data*/) {
+function renderBounties() {
   els.bounty.textContent = '—';
 }
 
@@ -326,9 +372,10 @@ async function loadAndRender() {
     renderFissures(agg);
     renderSortie(agg);
     renderArchon(agg);
+    renderDuviri(agg);      // <— Duviri Circuit
     renderNightwave(agg);
     renderBaro(agg);
-    renderInvasions(agg);          
+    renderInvasions(agg);
     renderBounties(agg);
   } catch (e) {
     console.error('hub load error', e);
