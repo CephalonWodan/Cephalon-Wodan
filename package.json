@@ -1,7 +1,12 @@
 {
+  "name": "Cephalon-Wodan",
   "type": "module",
   "engines": { "node": "20.x" },
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
+    "express": "^4.19.2",
     "warframe-worldstate-parser": "5.0.4",
     "warframe-worldstate-data": "3.1.3"
   }
