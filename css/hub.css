@@ -342,3 +342,22 @@ body.wf { background: var(--bg); color: var(--ink); }
 .wf-bar{ position:relative; height:10px; width:100%; background:rgba(230,210,142,.12); border:1px solid rgba(230,210,142,.35); border-radius:999px; overflow:hidden; }
 .wf-bar__fill{ position:absolute; top:0; left:0; bottom:0; background:linear-gradient(90deg,#00e5ff,#e6d28e); width:0%; transition:width .35s ease; }
 .wf-bar__label{ font-variant-numeric:tabular-nums; color:var(--muted); }
+/* Barre de navigation du site */
+.site-nav {
+  position: sticky;       /* reste visible en haut lors du scroll */
+  top: 0;
+  z-index: 1000;
+}
+
+/* Le header "Hub" vient sous la nav */
+.wf-toolbar {
+  position: sticky;
+  top: 48px;              /* hauteur approximative de la nav */
+  z-index: 900;
+}
+
+/* Sur mobile la nav est souvent un peu plus haute */
+@media (max-width: 640px) {
+  .wf-toolbar { top: 56px; }
+}
+
