@@ -1,28 +1,31 @@
 /* =========================================================
-   HUB (Cephalon Wodan) — Thème Orokin
-   Dépend de css/theme.css (variables) mais inclut des fallbacks.
+   HUB (Cephalon Wodan) — Thème Orokin (FORCE DARK)
    ========================================================= */
 
-/* ---------- Fallback doux si theme.css n'est pas chargé ---------- */
+/* ---------- Variables forcées (fonctionnent même sans theme.css) ---------- */
 :root{
-  --bg: var(--bg, #0a0f1a);
-  --panel-1: var(--panel-1, #0f172a);
-  --panel-2: var(--panel-2, #0b1423);
-  --ink: var(--ink, #e6edf7);
-  --muted: var(--muted, #93a4b8);
-  --cyan: var(--cyan, #00e5ff);
-  --gold: var(--gold, #e6d28e);
-  --gold-2: var(--gold-2, #f2e6b1);
-  --shadow: var(--shadow, 0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03));
+  --bg:#0a0f1a;              /* fond global très sombre */
+  --panel-1:#0f172a;         /* carte/panneau */
+  --panel-2:#0b1423;         /* champs / variantes */
+  --ink:#e6edf7;             /* texte principal */
+  --muted:#93a4b8;           /* texte atténué */
+  --cyan:#00e5ff;            /* accent Tenno */
+  --gold:#e6d28e;            /* or Orokin */
+  --gold-2:#f2e6b1;          /* or clair pour hover/focus */
+  --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
 }
 
-/* ---------- Reset mineur utile ---------- */
+/* ---------- Reset mineur ---------- */
 .wf * { box-sizing: border-box; }
 .wf a { text-decoration: none; }
 
+/* ---------- Fond + couleur texte globale ---------- */
+html, body { background: var(--bg); color: var(--ink); }
+body.wf { background: var(--bg); color: var(--ink); }
+
 /* =========================================================
-   NAV (topbar) — rendu aligné au thème de ton site
-   (Utilise js/site_nav.js qui injecte <nav id="site-nav" class="cw-topbar">)
+   NAV (topbar) — alignée au thème de ton site
+   (js/site_nav.js injecte <nav id="site-nav" class="cw-topbar">)
    ========================================================= */
 .cw-topbar{
   position: sticky; top: 0; z-index: 1000;
@@ -231,29 +234,24 @@
 /* =========================================================
    BLOCS SPÉCIFIQUES
    ========================================================= */
-
-/* Sortie / Archon — liste interne */
 .sortie-variants{
   display:grid; gap:.4rem;
   margin-top:.35rem;
 }
 .sortie-variants .wf-row{ grid-template-columns: 1fr; }
 
-/* Baro inventaire */
 #baro-inventory .wf-row{ grid-template-columns: 1fr auto; }
 
-/* Nightwave challenges */
 #nightwave-list .wf-row .left{
   display:flex; flex-direction:column; align-items:flex-start; gap:.2rem;
 }
 .nw-title{ font-weight:600; }
 .nw-desc{ color:var(--muted); font-size:.86rem; }
 
-/* Bounties / Primes (contenu texte) */
 #bounty-content{ color:var(--muted); line-height:1.5; }
 
 /* =========================================================
-   PETITS UTILITAIRES
+   UTILITAIRES
    ========================================================= */
 .muted{ color: var(--muted); }
 .text-cyan{ color: var(--cyan); }
@@ -262,7 +260,6 @@
 .no-marg{ margin: 0 !important; }
 .center{ text-align:center; }
 
-/* Responsive micro-ajustements */
 @media (max-width: 560px){
   .wf-card__title{ padding:.75rem .85rem; }
   .wf-pad, .wf-list{ padding-left:.85rem; padding-right:.85rem; }
