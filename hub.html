@@ -6,34 +6,11 @@
   <meta name="color-scheme" content="dark light" />
   <title>Warframe Hub — Cephalon Wodan</title>
 
-  <!-- thèmes / styles -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/hub.css?v=5" />
-
-  <!-- nav du site -->
+  <link rel="stylesheet" href="css/hub.css?v=9" />
   <script src="js/site_nav.js" defer></script>
-  <script defer>
-    // Quand la nav est prête, essaie de la rendre dans #site-nav
-    window.addEventListener('DOMContentLoaded', () => {
-      const target = '#site-nav';
-      if (window.renderSiteNav) {
-        window.renderSiteNav(target);
-      } else if (window.SiteNav?.render) {
-        window.SiteNav.render(target);
-      }
-      // Marquer "Hub" comme actif si un lien mène à hub.html
-      const nav = document.querySelector(target);
-      if (nav) {
-        const a = nav.querySelector('a[href$="hub.html"]');
-        if (a) a.classList.add('active');
-      }
-    });
-  </script>
 </head>
 <body class="wf">
-  <!-- Barre de navigation (injectée par site_nav.js) -->
-  <nav id="site-nav" class="cw-topbar"></nav>
-
   <header class="wf-toolbar">
     <div class="wf-toolbar__left">
       <h1 class="wf-title">Hub</h1>
@@ -59,6 +36,7 @@
   </header>
 
   <main class="wf-grid">
+
     <!-- Cycles -->
     <section class="wf-card">
       <h2 class="wf-card__title">Cycles <small id="ctx-cycles" class="wf-ctx"></small></h2>
@@ -97,16 +75,16 @@
       <div id="sortie" class="wf-pad"></div>
     </section>
 
-    <!-- Invasions -->
-    <section class="wf-card">
-      <h2 class="wf-card__title">Invasions <small id="ctx-invasions" class="wf-ctx"></small></h2>
-      <ul id="invasions-list" class="wf-list"></ul>
-    </section>
-
     <!-- Archon Hunt -->
     <section class="wf-card">
       <h2 class="wf-card__title">Archon Hunt</h2>
       <div id="archon" class="wf-pad"></div>
+    </section>
+
+    <!-- Duviri Circuit (NOUVEAU) -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">Duviri Circuit <small id="ctx-duviri" class="wf-ctx"></small></h2>
+      <div id="duviri-circuit" class="wf-pad"></div>
     </section>
 
     <!-- Nightwave -->
@@ -122,13 +100,20 @@
       <ul id="baro-inventory" class="wf-list"></ul>
     </section>
 
+    <!-- Invasions -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">Invasions <small id="ctx-invasions" class="wf-ctx"></small></h2>
+      <ul id="invasions-list" class="wf-list"></ul>
+    </section>
+
     <!-- Primes/Bounties -->
     <section class="wf-card">
       <h2 class="wf-card__title">Primes <small id="ctx-bounties" class="wf-ctx"></small></h2>
       <div id="bounty-content" class="wf-pad"></div>
     </section>
+
   </main>
 
-  <script type="module" src="./js/hub.js?v=6"></script>
+  <script type="module" src="./js/hub.js?v=9"></script>
 </body>
 </html>
