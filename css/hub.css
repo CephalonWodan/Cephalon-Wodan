@@ -300,3 +300,45 @@ body.wf { background: var(--bg); color: var(--ink); }
   font-variant-numeric:tabular-nums;
   color:var(--muted);
 }
+/* ===== Duviri Circuit ===== */
+.circuit-head{
+  display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-bottom:.5rem;
+}
+.circuit-title{
+  font-weight:600;
+  margin-bottom:.35rem;
+}
+.circuit-wrap{
+  display:grid; gap:.75rem;
+}
+.circuit-group .chips{
+  display:flex; gap:.4rem; flex-wrap:wrap;
+}
+.circuit-group .chips .wf-chip{
+  padding:.25rem .55rem;
+}
+
+/* Petites pastilles d’état (reuse badge style existant) */
+.badge-state{
+  display:inline-block;
+  padding:.15rem .45rem;
+  border-radius:.45rem;
+  border:1px solid rgba(230,210,142,.45);
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.12));
+  font-size:.8rem;
+}
+
+/* (déjà présents, rappel) Invasions */
+.inv-head{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
+.inv-node{ font-weight:600; }
+.inv-desc{ color:var(--muted); }
+.inv-vs{ display:flex; align-items:center; gap:.35rem; flex-wrap:wrap; color:var(--muted); }
+.inv-fac{ padding:.1rem .4rem; border-radius:.4rem; border:1px solid rgba(230,210,142,.35); }
+.inv-att{ color:#ffb7b7; border-color:#ff8a8a; }
+.inv-def{ color:#bff7ff; border-color:#7de9ff; }
+.inv-infested{ color:#d0ffa6; border-color:#b2ff7d; }
+.inv-rew{ display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
+.inv-rew small{ color:var(--muted); }
+.wf-bar{ position:relative; height:10px; width:100%; background:rgba(230,210,142,.12); border:1px solid rgba(230,210,142,.35); border-radius:999px; overflow:hidden; }
+.wf-bar__fill{ position:absolute; top:0; left:0; bottom:0; background:linear-gradient(90deg,#00e5ff,#e6d28e); width:0%; transition:width .35s ease; }
+.wf-bar__label{ font-variant-numeric:tabular-nums; color:var(--muted); }
