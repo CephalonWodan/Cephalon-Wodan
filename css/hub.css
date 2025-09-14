@@ -351,7 +351,7 @@ body.wf { background: var(--bg); color: var(--ink); }
 
 /* Le header "Hub" vient sous la nav */
 .wf-toolbar {
-  position: sticky;
+  position: static;
   top: 48px;              /* hauteur approximative de la nav */
   z-index: 900;
 }
