@@ -1,8 +1,9 @@
 /* =========================================================
-   HUB.JS v10 — Cephalon Wodan
+   HUB.JS v11 — Cephalon Wodan
    - API Railway /api/:platform?lang=xx
    - Ticker ETA pour cycles, fissures, sortie, archon, baro
    - Duviri Circuit : affichage des choix (pas d'état/ETA)
+   - Compactage de layout (span + hide) pour réduire les trous
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -355,6 +356,50 @@ function renderBounties() {
   els.bounty.textContent = '—';
 }
 
+/* ------------------ Compactage de layout (span + hide) ------------------ */
+function _len(sel) { try { return document.querySelectorAll(sel).length; } catch { return 0; } }
+function _empty(el) { return !el || !el.textContent || el.textContent.trim().length === 0; }
+
+function compactLayout() {
+  const grid = document.querySelector('.wf-grid');
+  if (!grid) return;
+
+  // Enlève anciens réglages
+  grid.querySelectorAll('.wf-card').forEach(c => {
+    c.classList.remove('col-span-2', 'col-span-3', 'hidden');
+  });
+
+  // Récup cartes par conteneurs connus
+  const cardCycles = els.cyclesList?.closest('.wf-card');
+  const cardFiss   = els.fissuresList?.closest('.wf-card');
+  const cardSortie = els.sortie?.closest('.wf-card');
+  const cardArchon = els.archon?.closest('.wf-card');
+  const cardDuviri = els.duviri?.closest('.wf-card');
+  const cardNight  = els.nightwaveList?.closest('.wf-card');
+  const cardBaro   = els.baroStatus?.closest('.wf-card');
+  const cardInv    = els.invList?.closest('.wf-card');
+  const cardPrimes = els.bounty?.closest('.wf-card');
+
+  // Masquer cartes réellement vides
+  if (cardPrimes && _empty(els.bounty)) cardPrimes.classList.add('hidden');
+  if (cardBaro) {
+    const hasInv = _len('#baro-inventory > li') > 0;
+    const hasStatus = !_empty(els.baroStatus);
+    if (!hasInv && !hasStatus) cardBaro.classList.add('hidden');
+  }
+
+  // Desktop : étendre les blocs lourds
+  const w = window.innerWidth;
+  if (w >= 1200) {
+    if (cardFiss) cardFiss.classList.add('col-span-2');
+    if (cardInv && _len('#invasions-list > li') >= 6) cardInv.classList.add('col-span-2');
+    if (cardNight && _len('#nightwave-list > li') >= 6) cardNight.classList.add('col-span-2');
+    // Les autres (cycles / sortie / archon / duviri / baro / primes) restent en 1 colonne
+  }
+}
+function debounce(fn, t = 200){ let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=>fn(...a), t); }; }
+window.addEventListener('resize', debounce(compactLayout, 200));
+
 /* ------------------ Main ------------------ */
 async function loadAndRender() {
   try {
@@ -375,6 +420,9 @@ async function loadAndRender() {
 
     // 1er tick immédiat pour afficher les ETA sans attendre 1s
     tickETAs();
+
+    // Compacte / étend après rendu
+    compactLayout();
   } catch (e) {
     console.error('hub load error', e);
   }
@@ -382,4 +430,5 @@ async function loadAndRender() {
 
 els.platform.addEventListener('change', loadAndRender);
 els.lang.addEventListener('change', loadAndRender);
+window.addEventListener('load', compactLayout);
 loadAndRender();
