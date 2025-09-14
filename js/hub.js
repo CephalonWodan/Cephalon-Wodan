@@ -1,18 +1,26 @@
 /* =========================================================
-   HUB.JS v11 — Cephalon Wodan
+   HUB.JS v12 — Cephalon Wodan
    - API Railway /api/:platform?lang=xx
    - Ticker ETA pour cycles, fissures, sortie, archon, baro
+   - Filtres fissures (tier + difficulté)
    - Duviri Circuit : affichage des choix (pas d'état/ETA)
+   - Bounties (Cetus/Vallis/Cambion) depuis syndicateMissions
    - Compactage de layout (span + hide) pour réduire les trous
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
+let LAST = { agg: null }; // mémorise la dernière réponse pour re-filtrer sans re-fetch
 
 const els = {
   now: document.getElementById('now'),
   platform: document.getElementById('platform'),
   lang: document.getElementById('lang'),
 
+  // Filtres fissures
+  fTier: document.getElementById('fissure-tier'),
+  fHard: document.getElementById('fissure-hard'),
+
+  // Sections
   cyclesList: document.getElementById('cycles-list'),
   ctxCycles: document.getElementById('ctx-cycles'),
 
@@ -70,7 +78,6 @@ async function fetchAgg(platform, lang) {
 }
 
 /* ------------------ Ticker ETA ------------------ */
-/** Crée un bloc ETA avec label + value et enregistre la date dans data-exp */
 function makeEta(expiryIso, labelText = 'Expire dans ') {
   const wrap = createEl('span', 'wf-eta');
   const label = createEl('span', 'label', labelText);
@@ -80,7 +87,6 @@ function makeEta(expiryIso, labelText = 'Expire dans ') {
   wrap.append(label, value);
   return wrap;
 }
-/** Met à jour toutes les valeurs ETA présentes dans le DOM */
 function tickETAs() {
   const now = Date.now();
   document.querySelectorAll('.wf-eta .value[data-exp]').forEach((node) => {
@@ -117,17 +123,32 @@ function renderCycles(data) {
     left.append(createEl('span', 'wf-badge', stateFn(c)));
 
     const right = createEl('div', 'right');
-    right.append(makeEta(c.expiry)); // ← ticker
+    right.append(makeEta(c.expiry));
     li.append(left, right);
     els.cyclesList.append(li);
   }
   els.ctxCycles.textContent = count ? `${count} actifs` : '—';
 }
 
+/* ------------ Fissures + filtres ------------ */
+function applyFissureFilters(list) {
+  const tierSel = (els.fTier?.value || 'all').toLowerCase();
+  const hardSel = (els.fHard?.value || 'all'); // 'all' | 'normal' | 'hard'
+  return list.filter((f) => {
+    const tierOk = tierSel === 'all' || (String(f.tier || '').toLowerCase() === tierSel);
+    let hardOk = true;
+    if (hardSel === 'hard') hardOk = !!f.isHard;
+    else if (hardSel === 'normal') hardOk = !f.isHard;
+    return tierOk && hardOk;
+  });
+}
+
 function renderFissures(data) {
-  const list = data?.fissures || [];
+  const all = Array.isArray(data?.fissures) ? data.fissures : [];
+  const list = applyFissureFilters(all);
+
   els.fissuresList.innerHTML = '';
-  els.ctxFissures.textContent = `${list.length} actives`;
+  els.ctxFissures.textContent = `${list.length}/${all.length} actives`;
 
   for (const f of list) {
     const li = createEl('li', 'wf-row');
@@ -139,13 +160,13 @@ function renderFissures(data) {
     left.append(createEl('span', `wf-chip ${f.isHard ? 'tag-hard' : 'tag-normal'}`, f.isHard ? 'Steel Path' : 'Normal'));
     left.append(createEl('span', 'wf-chip', f.missionType || '—'));
 
-    right.append(makeEta(f.expiry)); // ← ticker
-
+    right.append(makeEta(f.expiry));
     li.append(left, right);
     els.fissuresList.append(li);
   }
 }
 
+/* ------------ Sortie / Archon ------------ */
 function renderSortie(data) {
   const s = data?.sortie;
   els.sortie.innerHTML = '';
@@ -156,7 +177,7 @@ function renderSortie(data) {
   const head = createEl('div', 'inv-head');
   head.append(createEl('span', 'inv-node', s.boss || 'Sortie'));
   head.append(createEl('span', 'wf-badge', s.faction || '—'));
-  head.append(makeEta(s.expiry)); // ← ticker
+  head.append(makeEta(s.expiry));
 
   const variants = createEl('div', 'sortie-variants');
   for (const v of s.variants) {
@@ -181,7 +202,7 @@ function renderArchon(data) {
   const head = createEl('div', 'inv-head');
   head.append(createEl('span', 'inv-node', a.boss || 'Archon Hunt'));
   head.append(createEl('span', 'wf-badge', a.faction || '—'));
-  head.append(makeEta(a.expiry)); // ← ticker
+  head.append(makeEta(a.expiry));
 
   const variants = createEl('div', 'sortie-variants');
   for (const m of a.missions) {
@@ -195,12 +216,11 @@ function renderArchon(data) {
   els.archon.append(head, variants);
 }
 
-/* ------------------ Duviri Circuit (choices only) ------------------ */
+/* ------------ Duviri (choices only) ------------ */
 function renderDuviri(data) {
   const d = data?.duviriCycle || {};
   els.duviri.innerHTML = '';
 
-  // Groupes Normal / Steel Path uniquement
   const choices = Array.isArray(d.choices) ? d.choices : [];
   const normal = choices.find(c => (c.category || '').toLowerCase() === 'normal');
   const hard   = choices.find(c => (c.category || '').toLowerCase() === 'hard');
@@ -233,7 +253,7 @@ function renderDuviri(data) {
   }
 }
 
-/* ------------------ Nightwave / Baro / Invasions / Bounties ------------------ */
+/* ------------ Nightwave / Baro ------------ */
 function renderNightwave(data) {
   els.nightwaveList.innerHTML = '';
   const nw = data?.nightwave;
@@ -246,9 +266,8 @@ function renderNightwave(data) {
   for (const c of nw.activeChallenges) {
     const li = createEl('li', 'wf-row');
     const left = createEl('div', 'left');
-    const title = createEl('div', 'nw-title', c.title || '—');
-    const desc = createEl('div', 'nw-desc', c.desc || '');
-    left.append(title, desc);
+    left.append(createEl('div', 'nw-title', c.title || '—'));
+    left.append(createEl('div', 'nw-desc', c.desc || ''));
     const right = createEl('div', 'right');
     right.append(createEl('span', 'wf-badge', c.isElite ? 'Elite' : 'Normal'));
     li.append(left, right);
@@ -265,11 +284,10 @@ function renderBaro(data) {
     return;
   }
   const msStart = new Date(b.activation).getTime() - Date.now();
-  const msEnd = new Date(b.expiry).getTime() - Date.now();
   if (msStart > 0) {
     const p = createEl('p');
     p.textContent = `Arrive à ${b.location || '—'} dans `;
-    p.append(makeEta(b.activation, '')); // ← ticker (sans label car phrase)
+    p.append(makeEta(b.activation, ''));
     els.baroStatus.append(p);
   } else {
     const p = createEl('p');
@@ -285,6 +303,7 @@ function renderBaro(data) {
   }
 }
 
+/* ------------ Invasions ------------ */
 function rewardToText(rw) {
   if (!rw) return '';
   const parts = [];
@@ -352,11 +371,82 @@ function renderInvasions(data) {
   }
 }
 
-function renderBounties() {
-  els.bounty.textContent = '—';
+/* ------------ Bounties (Cetus/Vallis/Cambion) ------------ */
+function renderBounties(data) {
+  const sms = Array.isArray(data?.syndicateMissions) ? data.syndicateMissions : [];
+  const host = els.bounty;
+  host.innerHTML = '';
+
+  if (!sms.length) {
+    host.textContent = 'Aucune bounty active';
+    return;
+  }
+
+  const groups = {
+    CetusSyndicate:   { title: 'Cetus',   jobs: [], expiry: null },
+    SolarisSyndicate: { title: 'Vallis',  jobs: [], expiry: null },
+    EntratiSyndicate: { title: 'Cambion', jobs: [], expiry: null },
+  };
+
+  for (const sm of sms) {
+    const g = groups[sm.syndicate];
+    if (!g) continue;
+    g.expiry = g.expiry || sm.expiry;
+    const jobs = Array.isArray(sm.jobs) ? sm.jobs : [];
+    g.jobs.push(...jobs);
+  }
+
+  function section(title, expiry, jobs) {
+    const wrap = document.createElement('div');
+    wrap.style.marginBottom = '0.75rem';
+
+    const header = document.createElement('div');
+    header.className = 'inv-head';
+    header.append(createEl('span', 'inv-node', title));
+    if (expiry) header.append(makeEta(expiry));
+    wrap.append(header);
+
+    if (!jobs.length) {
+      wrap.append(createEl('div', 'muted', '—'));
+      return wrap;
+    }
+
+    const list = document.createElement('ul');
+    list.className = 'wf-list no-pad';
+
+    for (const j of jobs) {
+      const li = createEl('li', 'wf-row');
+      const left = createEl('div', 'left');
+
+      const parts = [];
+      if (j.type || j.jobType) parts.push(j.type || j.jobType);
+      const lvl = (j.minLevel != null || j.maxLevel != null)
+        ? `Lvl ${j.minLevel ?? '?'}–${j.maxLevel ?? '?'}`
+        : null;
+      if (lvl) parts.push(lvl);
+      if (j.standing != null || j.reputation != null) {
+        parts.push(`${j.standing ?? j.reputation} Standing`);
+      }
+
+      left.append(createEl('span', 'wf-chip', parts.join(' • ') || 'Bounty'));
+
+      const rp = j.rewardPool || j.rewards?.pool || j.rewards?.rewardPool;
+      if (rp) left.append(createEl('span', 'wf-chip', rp));
+
+      li.append(left);
+      list.append(li);
+    }
+
+    wrap.append(list);
+    return wrap;
+  }
+
+  host.append(section(groups.CetusSyndicate.title,   groups.CetusSyndicate.expiry,   groups.CetusSyndicate.jobs));
+  host.append(section(groups.SolarisSyndicate.title, groups.SolarisSyndicate.expiry, groups.SolarisSyndicate.jobs));
+  host.append(section(groups.EntratiSyndicate.title, groups.EntratiSyndicate.expiry, groups.EntratiSyndicate.jobs));
 }
 
-/* ------------------ Compactage de layout (span + hide) ------------------ */
+/* ------------------ Compactage layout ------------------ */
 function _len(sel) { try { return document.querySelectorAll(sel).length; } catch { return 0; } }
 function _empty(el) { return !el || !el.textContent || el.textContent.trim().length === 0; }
 
@@ -364,23 +454,16 @@ function compactLayout() {
   const grid = document.querySelector('.wf-grid');
   if (!grid) return;
 
-  // Enlève anciens réglages
   grid.querySelectorAll('.wf-card').forEach(c => {
     c.classList.remove('col-span-2', 'col-span-3', 'hidden');
   });
 
-  // Récup cartes par conteneurs connus
-  const cardCycles = els.cyclesList?.closest('.wf-card');
   const cardFiss   = els.fissuresList?.closest('.wf-card');
-  const cardSortie = els.sortie?.closest('.wf-card');
-  const cardArchon = els.archon?.closest('.wf-card');
-  const cardDuviri = els.duviri?.closest('.wf-card');
   const cardNight  = els.nightwaveList?.closest('.wf-card');
   const cardBaro   = els.baroStatus?.closest('.wf-card');
   const cardInv    = els.invList?.closest('.wf-card');
   const cardPrimes = els.bounty?.closest('.wf-card');
 
-  // Masquer cartes réellement vides
   if (cardPrimes && _empty(els.bounty)) cardPrimes.classList.add('hidden');
   if (cardBaro) {
     const hasInv = _len('#baro-inventory > li') > 0;
@@ -388,13 +471,11 @@ function compactLayout() {
     if (!hasInv && !hasStatus) cardBaro.classList.add('hidden');
   }
 
-  // Desktop : étendre les blocs lourds
   const w = window.innerWidth;
   if (w >= 1200) {
     if (cardFiss) cardFiss.classList.add('col-span-2');
     if (cardInv && _len('#invasions-list > li') >= 6) cardInv.classList.add('col-span-2');
     if (cardNight && _len('#nightwave-list > li') >= 6) cardNight.classList.add('col-span-2');
-    // Les autres (cycles / sortie / archon / duviri / baro / primes) restent en 1 colonne
   }
 }
 function debounce(fn, t = 200){ let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=>fn(...a), t); }; }
@@ -407,26 +488,28 @@ async function loadAndRender() {
     const platform = els.platform.value;
     const lang = els.lang.value;
     const agg = await fetchAgg(platform, lang);
+    LAST.agg = agg;
 
     renderCycles(agg);
-    renderFissures(agg);
+    renderFissures(agg);   // respecte filtres courants
     renderSortie(agg);
     renderArchon(agg);
-    renderDuviri(agg);      // ← Duviri (choices only)
+    renderDuviri(agg);
     renderNightwave(agg);
     renderBaro(agg);
     renderInvasions(agg);
     renderBounties(agg);
 
-    // 1er tick immédiat pour afficher les ETA sans attendre 1s
-    tickETAs();
-
-    // Compacte / étend après rendu
-    compactLayout();
+    tickETAs();      // 1er tick immédiat
+    compactLayout(); // puis compactage
   } catch (e) {
     console.error('hub load error', e);
   }
 }
+
+/* — Filtres fissures → re-render local sans refetch */
+if (els.fTier) els.fTier.addEventListener('change', () => LAST.agg && renderFissures(LAST.agg));
+if (els.fHard) els.fHard.addEventListener('change', () => LAST.agg && renderFissures(LAST.agg));
 
 els.platform.addEventListener('change', loadAndRender);
 els.lang.addEventListener('change', loadAndRender);
