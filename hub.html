@@ -2,128 +2,119 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Warframe – Hub temps réel</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Warframe Hub — Cephalon Wodan</title>
 
-  <!-- Ton thème général si tu en as un -->
-  <link rel="stylesheet" href="css/theme.css" />
-  <!-- Styles du Hub -->
-  <link rel="stylesheet" href="css/hub.css" />
+  <!-- Ton thème global si besoin -->
+  <link rel="stylesheet" href="./theme.css" />
+
+  <!-- Styles spécifiques Hub -->
+  <link rel="stylesheet" href="./hub.css" />
 </head>
-<body>
+<body class="wf">
+  <header class="wf-toolbar">
+    <div class="wf-toolbar__left">
+      <h1 class="wf-title">Hub</h1>
+      <span class="wf-now">Maintenant&nbsp;: <strong id="now">—</strong></span>
+    </div>
+    <div class="wf-toolbar__right">
+      <label>Plateforme
+        <select id="platform">
+          <option value="pc" selected>PC</option>
+          <option value="ps4">PS4</option>
+          <option value="xb1">XB1</option>
+          <option value="swi">Switch</option>
+          <option value="mob">Mobile</option>
+        </select>
+      </label>
+      <label>Langue
+        <select id="lang">
+          <option value="en" selected>EN</option>
+          <option value="fr">FR</option>
+        </select>
+      </label>
+    </div>
+  </header>
 
-  <!-- Barre de navigation (contenu injecté par site_nav.js/nav_shim.js) -->
-  <header id="site-nav"></header>
-
-  <main class="container">
-    <h1 class="page-title">Warframe Hub</h1>
-
-    <!-- Contrôles -->
-    <section class="panel">
-      <div class="controls">
-        <label>Plateforme
-          <select id="platform">
-            <option value="pc">PC</option>
-            <option value="ps4">PS4</option>
-            <option value="xb1">Xbox</option>
-            <option value="swi">Switch</option>
-          </select>
-        </label>
-
-        <label>Langue
-          <select id="lang">
-            <option value="fr">FR</option>
-            <option value="en">EN</option>
-          </select>
-        </label>
-
-        <label>Source
-          <select id="source">
-            <option value="live">Live (WarframeStatus)</option>
-            <option value="vercel">Vercel API</option>
-            <option value="local">Local JSON</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="now">
-        <strong>Heure (Europe/Paris):</strong> <span id="now">—</span>
-      </div>
-    </section>
-
+  <main class="wf-grid">
     <!-- Cycles -->
-    <section class="block">
-      <h2>Cycles <small id="ctx-cycles"></small></h2>
-      <ul id="cycles-list" class="list"></ul>
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Cycles <small id="ctx-cycles" class="wf-ctx"></small>
+      </h2>
+      <ul id="cycles-list" class="wf-list"></ul>
     </section>
 
-    <!-- Primes -->
-    <section class="block">
-      <h2>Primes <small id="ctx-bounties"></small></h2>
-      <div class="tabs">
-        <button type="button" data-syn="Cetus">Cetus</button>
-        <button type="button" data-syn="Fortuna">Fortuna</button>
-        <button type="button" data-syn="Deimos">Deimos</button>
+    <!-- Fissures -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Fissures <small id="ctx-fissures" class="wf-ctx"></small>
+      </h2>
+      <div class="wf-controls">
+        <label>Tier
+          <select id="fissure-tier">
+            <option value="all" selected>All</option>
+            <option value="lith">Lith</option>
+            <option value="meso">Meso</option>
+            <option value="neo">Neo</option>
+            <option value="axi">Axi</option>
+            <option value="omnia">Omnia</option>
+            <option value="requiem">Requiem</option>
+          </select>
+        </label>
+        <label>Difficulté
+          <select id="fissure-hard">
+            <option value="all" selected>All</option>
+            <option value="normal">Normal</option>
+            <option value="hard">Steel Path</option>
+          </select>
+        </label>
       </div>
-      <div id="bounty-content"></div>
+      <ul id="fissures-list" class="wf-list"></ul>
     </section>
 
-    <!-- Fissures / Alertes & Invasions -->
-    <section class="block">
-  <h2>Fissures <small id="ctx-fissures"></small></h2>
+    <!-- Sortie -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Sortie <small id="ctx-sorties" class="wf-ctx"></small>
+      </h2>
+      <div id="sortie"></div>
+    </section>
 
-  <!-- Filtres -->
-  <div class="filters">
-    <label>Tier
-      <select id="fissure-tier">
-        <option value="all">Toutes / All</option>
-        <option value="lith">Lith</option>
-        <option value="meso">Meso</option>
-        <option value="neo">Neo</option>
-        <option value="axi">Axi</option>
-      </select>
-    </label>
+    <!-- Archon Hunt -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Archon Hunt <small class="wf-ctx"></small>
+      </h2>
+      <div id="archon"></div>
+    </section>
 
-    <label>Mode
-      <select id="fissure-hard">
-        <option value="all">Tous / All</option>
-        <option value="normal">Normal</option>
-        <option value="hard">Steel Path</option>
-      </select>
-    </label>
-  </div>
-
-  <ul id="fissures-list" class="list"></ul>
-</section>
-    
-    <!-- Nightwave / Sortie / Archon -->
-    <section class="grid-2">
-      <div class="block">
-        <h2>Nightwave <small id="ctx-nightwave"></small></h2>
-        <ul id="nightwave-list" class="list"></ul>
-      </div>
-      <div class="block">
-        <h2>Sortie & Archon Hunt <small id="ctx-sorties"></small></h2>
-        <div id="sortie" class="card"></div>
-        <div id="archon" class="card" style="margin-top:1rem;"></div>
-      </div>
+    <!-- Nightwave -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Nightwave <small id="ctx-nightwave" class="wf-ctx"></small>
+      </h2>
+      <ul id="nightwave-list" class="wf-list"></ul>
     </section>
 
     <!-- Baro -->
-    <section class="block">
-      <h2>Baro Ki’Teer <small id="ctx-baro"></small></h2>
-      <div id="baro-status" class="card"></div>
-      <h3 class="sub">Inventaire</h3>
-      <ul id="baro-inventory" class="list"></ul>
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Baro Ki’Teer <small id="ctx-baro" class="wf-ctx"></small>
+      </h2>
+      <div id="baro-status"></div>
+      <ul id="baro-inventory" class="wf-list"></ul>
+    </section>
+
+    <!-- Primes/bounties -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">
+        Primes <small id="ctx-bounties" class="wf-ctx"></small>
+      </h2>
+      <div id="bounty-content"></div>
     </section>
   </main>
 
-  <!-- barre de nav -->
-  <script defer src="js/site_nav.js"></script>
-    <!-- Shim qui monte la nav, ou fournit un fallback -->
-  <script defer src="js/nav_shim.js"></script>
-
-  <!-- Le Hub (module = différé) -->
-  <script type="module" src="js/hub.js"></script>
+  <script type="module" src="./js/hub.js"></script>
 </body>
 </html>
