@@ -6,35 +6,16 @@
   <meta name="color-scheme" content="dark light" />
   <title>Warframe Hub — Cephalon Wodan</title>
 
-  <!-- Thèmes locaux -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
   <link rel="stylesheet" href="css/hub.css?v=10" />
 
-  <!-- Barre de navigation du site -->
+  <!-- Script de la barre de navigation (injecte dans #site-nav) -->
   <script src="js/site_nav.js" defer></script>
-
-  <!-- Monte la nav si une API globale est dispo (fallback no-op) -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      // Ajoute un flag au body pour d’éventuelles règles CSS (.has-topnav)
-      document.body.classList.add('has-topnav');
-      // Si site_nav.js expose une fonction de rendu, on l’utilise
-      if (typeof window.renderSiteNav === 'function') {
-        try {
-          window.renderSiteNav('#site-nav', { active: 'Hub' });
-        } catch (e) {
-          console.warn('site_nav: renderSiteNav a échoué, on continue.', e);
-        }
-      }
-    });
-  </script>
 </head>
-
 <body class="wf" data-section="hub">
   <!-- Point d’ancrage pour la barre de navigation -->
-  <nav id="site-nav" class="site-nav" aria-label="Navigation principale"></nav>
+  <div id="site-nav"></div>
 
-  <!-- Header spécifique Hub -->
   <header class="wf-toolbar">
     <div class="wf-toolbar__left">
       <h1 class="wf-title">Hub</h1>
@@ -59,7 +40,8 @@
     </div>
   </header>
 
-  <main class="wf-grid" id="wf-hub-root">
+  <main class="wf-grid">
+
     <!-- Cycles -->
     <section class="wf-card">
       <h2 class="wf-card__title">Cycles <small id="ctx-cycles" class="wf-ctx"></small></h2>
@@ -134,9 +116,9 @@
       <h2 class="wf-card__title">Primes <small id="ctx-bounties" class="wf-ctx"></small></h2>
       <div id="bounty-content" class="wf-pad"></div>
     </section>
+
   </main>
 
-  <!-- Logique du Hub (timers, fetch API Railway, rendu) -->
   <script type="module" src="js/hub.js?v=10"></script>
 </body>
 </html>
