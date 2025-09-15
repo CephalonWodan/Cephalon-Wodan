@@ -132,8 +132,10 @@ body.wf { background: var(--bg); color: var(--ink); }
   border-bottom: 1px solid rgba(230,210,142,.25);
   background: linear-gradient(180deg, rgba(230,210,142,.06), rgba(0,0,0,0));
   border-top-left-radius: .9rem; border-top-right-radius: .9rem;
+  /* PATCH: contextes adaptatifs */
+  flex-wrap: wrap;
 }
-.wf-ctx{ color: var(--muted); font-weight: 400; }
+.wf-ctx{ color: var(--muted); font-weight: 400; /* PATCH: autoriser le retour à la ligne */ white-space: normal; }
 .wf-pad{ padding: .85rem 1rem 1rem; }
 
 /* =========================================================
@@ -248,7 +250,14 @@ body.wf { background: var(--bg); color: var(--ink); }
 .nw-title{ font-weight:600; }
 .nw-desc{ color:var(--muted); font-size:.86rem; }
 
+/* ---- PATCH: neutraliser les "chips dorées" dans PRIMES ---- */
 #bounty-content{ color:var(--muted); line-height:1.5; }
+#bounty-content .wf-chip{
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  color: var(--muted) !important;
+}
 
 /* =========================================================
    UTILITAIRES
@@ -279,7 +288,8 @@ body.wf { background: var(--bg); color: var(--ink); }
 .inv-fac{ padding:.1rem .4rem; border-radius:.4rem; border:1px solid rgba(230,210,142,.35); }
 .inv-att{ color:#ffb7b7; border-color:#ff8a8a; }
 .inv-def{ color:#bff7ff; border-color:#7de9ff; }
-.inv-infested{ color:#d0ffa6; border-color:#b2ff7d; }
+/* PATCH: masquer toute pastille "Infested" résiduelle */
+.inv-infested{ display:none !important; }
 
 .inv-rew{ display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
 .inv-rew small{ color:var(--muted); }
@@ -336,7 +346,6 @@ body.wf { background: var(--bg); color: var(--ink); }
 .inv-fac{ padding:.1rem .4rem; border-radius:.4rem; border:1px solid rgba(230,210,142,.35); }
 .inv-att{ color:#ffb7b7; border-color:#ff8a8a; }
 .inv-def{ color:#bff7ff; border-color:#7de9ff; }
-.inv-infested{ color:#d0ffa6; border-color:#b2ff7d; }
 .inv-rew{ display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
 .inv-rew small{ color:var(--muted); }
 .wf-bar{ position:relative; height:10px; width:100%; background:rgba(230,210,142,.12); border:1px solid rgba(230,210,142,.35); border-radius:999px; overflow:hidden; }
@@ -363,4 +372,3 @@ body.wf { background: var(--bg); color: var(--ink); }
 .col-span-2{ grid-column: span 2; }
 .col-span-3{ grid-column: 1 / -1; } /* plein largeur */
 .hidden{ display:none !important; }
-
