@@ -149,6 +149,67 @@ body{
 #bounty-cambion .wf-chip {
   border:none!important; background:none!important; padding:0!important; color:var(--muted)!important;
 }
+/* ===== PRIMES – agencement et lisibilité ===== */
+
+/* 1) Dans les 3 cartes, chaque ligne (= .wf-row) passe en 1 colonne, 2 rangées :
+      - rangée 1: .left (titre + chips)
+      - rangée 2: .right (récompenses + ETA) */
+#bounty-cetus .wf-row,
+#bounty-vallis .wf-row,
+#bounty-cambion .wf-row{
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "left"
+    "right";
+  row-gap: .45rem;
+  font-size: 1rem; /* texte un peu plus grand partout dans les primes */
+}
+#bounty-cetus .wf-row .left,
+#bounty-vallis .wf-row .left,
+#bounty-cambion .wf-row .left{
+  grid-area: left;
+}
+#bounty-cetus .wf-row .right,
+#bounty-vallis .wf-row .right,
+#bounty-cambion .wf-row .right{
+  grid-area: right;
+  justify-content: flex-start; /* on aligne les récompenses à gauche */
+}
+
+/* 2) Titre (première "chip" = type de mission) : une seule ligne + ellipsis,
+      un peu plus grand et gras pour ressortir */
+#bounty-cetus .wf-row .left .wf-chip:first-child,
+#bounty-vallis .wf-row .left .wf-chip:first-child,
+#bounty-cambion .wf-row .left .wf-chip:first-child{
+  display: block;
+  font-weight: 600;
+  font-size: 1.06rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: .1rem;
+}
+
+/* 3) Récompenses : occupe toute la largeur de la rangée */
+#bounty-cetus .wf-row .right .wf-badge,
+#bounty-vallis .wf-row .right .wf-badge,
+#bounty-cambion .wf-row .right .wf-badge{
+  display: block;
+  width: 100%;
+  font-size: .95rem;        /* un chouïa plus grand */
+  line-height: 1.35;
+}
+
+/* 4) On garde les chips neutralisées dans les primes (déjà en place) */
+#bounty-cetus .wf-chip,
+#bounty-vallis .wf-chip,
+#bounty-cambion .wf-chip{
+  border:none!important;
+  background:none!important;
+  padding:0!important;
+  color:var(--muted)!important;
+}
 
 /* Cycles centrés */
 #cycles-list .wf-row{grid-template-columns:1fr;justify-items:center;text-align:center}
