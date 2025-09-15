@@ -1,7 +1,7 @@
 /* =========================================================
    HUB.JS v13 — patches:
    - Masonry (remplit les “trous” verticaux)
-   - AUCUNE autre logique changée
+   - ETA: >=24h affiché en j/h/m/s
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -44,8 +44,30 @@ const els = {
 };
 
 /* Utils */
-function fmtDT(d){ const pad=n=>String(n).padStart(2,'0'); const dt=new Date(d); return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}:${pad(dt.getSeconds())}`; }
-function fmtETA(ms){ if(!ms||ms<0) return '0s'; const s=Math.floor(ms/1000); const h=Math.floor(s/3600); const m=Math.floor((s%3600)/60); const ss=s%60; const a=[]; if(h)a.push(`${h}h`); if(m)a.push(`${m}m`); a.push(`${ss}s`); return a.join(' '); }
+function fmtDT(d){
+  const pad=n=>String(n).padStart(2,'0');
+  const dt=new Date(d);
+  return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}:${pad(dt.getSeconds())}`;
+}
+
+/* -------- PATCH: ETA avec jours quand >= 24h -------- */
+function fmtETA(ms){
+  if(!ms || ms < 0) return '0s';
+  const totalSeconds = Math.floor(ms/1000);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  const parts = [];
+  if (days > 0) parts.push(`${days}j`);
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+  parts.push(`${seconds}s`);
+  return parts.join(' ');
+}
+/* ----------------------------------------------------- */
+
 function createEl(tag, cls, txt){ const el=document.createElement(tag); if(cls) el.className=cls; if(txt!=null) el.textContent=txt; return el; }
 async function fetchAgg(platform, lang){ const r=await fetch(`${API_BASE}/api/${platform}?lang=${encodeURIComponent(lang)}`,{cache:'no-store'}); if(!r.ok) throw new Error(r.status); return r.json(); }
 
@@ -54,7 +76,7 @@ function makeEta(expiryIso, label=''){ const s=createEl('span','wf-eta'); if(lab
 function tickETAs(){ const now=Date.now(); document.querySelectorAll('.wf-eta .value[data-exp]').forEach(n=>{ const ms=Number(n.dataset.exp||0)-now; n.textContent=fmtETA(ms); }); }
 setInterval(()=>{ const now=els.now; if(now) now.textContent=fmtDT(Date.now()); tickETAs(); },1000);
 
-/* Renders (identiques à ta version précédente — abrégés ici pour concision) */
+/* Renders */
 function renderCycles(data){
   const { earthCycle, cetusCycle, vallisCycle, cambionCycle, duviriCycle } = data || {};
   els.cyclesList.innerHTML='';
@@ -204,7 +226,7 @@ async function loadAndRender(){
     renderCycles(agg); renderFissures(agg); renderSortie(agg); renderArchon(agg);
     renderDuviri(agg); renderNightwave(agg); renderBaro(agg); renderInvasions(agg); renderBounties(agg);
     tickETAs();
-    debouncedMasonry();               // PATCH: masonry après rendu
+    debouncedMasonry();               // masonry après rendu
   }catch(e){ console.error('hub load error', e); }
 }
 
