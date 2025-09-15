@@ -2,7 +2,8 @@
    HUB.JS v13 — patches:
    - ETA: >=24h -> j/h/m/s
    - Masonry (remplit les “trous” verticaux)
-   - NEW: Guards sur tous les renders + listeners
+   - Guards sur les renders/listeners
+   - NEW: normalisation platform/lang en minuscules
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -68,14 +69,26 @@ function fmtETA(ms){
 }
 
 function createEl(tag, cls, txt){ const el=document.createElement(tag); if(cls) el.className=cls; if(txt!=null) el.textContent=txt; return el; }
-async function fetchAgg(platform, lang){ const r=await fetch(`${API_BASE}/api/${platform}?lang=${encodeURIComponent(lang)}`,{cache:'no-store'}); if(!r.ok) throw new Error(r.status); return r.json(); }
+
+/* ------- PATCH: normalise platform/lang en minuscules ------- */
+function normPlatform(v){ return (v||'pc').toString().trim().toLowerCase(); }
+function normLang(v){ return (v||'fr').toString().trim().toLowerCase(); }
+/* ------------------------------------------------------------ */
+
+async function fetchAgg(platform, lang){
+  const p = normPlatform(platform);
+  const l = normLang(lang);
+  const r = await fetch(`${API_BASE}/api/${p}?lang=${encodeURIComponent(l)}`, { cache:'no-store' });
+  if(!r.ok) throw new Error(r.status);
+  return r.json();
+}
 
 /* ETA DOM helpers */
 function makeEta(expiryIso, label=''){ const s=createEl('span','wf-eta'); if(label) s.append(createEl('span','label',label)); const v=createEl('span','value','—'); v.dataset.exp=String(new Date(expiryIso).getTime()); s.append(v); return s; }
 function tickETAs(){ const now=Date.now(); document.querySelectorAll('.wf-eta .value[data-exp]').forEach(n=>{ const ms=Number(n.dataset.exp||0)-now; n.textContent=fmtETA(ms); }); }
 setInterval(()=>{ if(els.now) els.now.textContent=fmtDT(Date.now()); tickETAs(); },1000);
 
-/* ---------- Renders (avec guards) ---------- */
+/* ---------- Renders (guards inclus) ---------- */
 function renderCycles(data){
   if(!els.cyclesList) return;
   const { earthCycle, cetusCycle, vallisCycle, cambionCycle, duviriCycle } = data || {};
@@ -229,8 +242,8 @@ const debouncedMasonry=(()=>{ let t=null; return ()=>{ clearTimeout(t); t=setTim
 async function loadAndRender(){
   try{
     if(els.now) els.now.textContent=fmtDT(Date.now());
-    const platform = els.platform?.value || 'pc';
-    const lang = els.lang?.value || 'fr';
+    const platform = normPlatform(els.platform?.value);
+    const lang = normLang(els.lang?.value);
     const agg=await fetchAgg(platform, lang);
     LAST.agg=agg;
 
@@ -242,11 +255,11 @@ async function loadAndRender(){
   }catch(e){ console.error('hub load error', e); }
 }
 
-/* Listeners avec guards */
+/* Listeners (normalisation aussi ici) */
 if(els.fTier) els.fTier.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); debouncedMasonry(); });
 if(els.fHard) els.fHard.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); debouncedMasonry(); });
-if(els.platform) els.platform.addEventListener('change', loadAndRender);
-if(els.lang) els.lang.addEventListener('change', loadAndRender);
+if(els.platform) els.platform.addEventListener('change',()=>{ loadAndRender(); });
+if(els.lang) els.lang.addEventListener('change',()=>{ loadAndRender(); });
 window.addEventListener('resize', debouncedMasonry);
 
 loadAndRender();
