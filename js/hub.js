@@ -16,24 +16,22 @@ const els = {
   platform: document.getElementById('platform'),
   lang: document.getElementById('lang'),
 
-  // Filtres fissures
-  fTier: document.getElementById('fissure-tier'),
-  fHard: document.getElementById('fissure-hard'),
-
-  // Sections
   cyclesList: document.getElementById('cycles-list'),
   ctxCycles: document.getElementById('ctx-cycles'),
 
   fissuresList: document.getElementById('fissures-list'),
+  fTier: document.getElementById('fissure-tier'),
+  fHard: document.getElementById('fissure-hard'),
   ctxFissures: document.getElementById('ctx-fissures'),
 
   sortie: document.getElementById('sortie'),
+
   archon: document.getElementById('archon'),
 
   duviri: document.getElementById('duviri-circuit'),
   ctxDuviri: document.getElementById('ctx-duviri'),
 
-  nightwaveList: document.getElementById('nightwave-list'),
+  nightwave: document.getElementById('nightwave-list'),
   ctxNightwave: document.getElementById('ctx-nightwave'),
 
   baroStatus: document.getElementById('baro-status'),
@@ -71,62 +69,23 @@ function createEl(tag, cls, txt) {
   if (txt != null) el.textContent = txt;
   return el;
 }
-async function fetchAgg(platform, lang) {
-  const url = `${API_BASE}/api/${platform}?lang=${encodeURIComponent(lang)}`;
-  const r = await fetch(url, { cache: 'no-store' });
-  if (!r.ok) throw new Error(`agg ${platform} ${r.status}`);
-  return await r.json();
-}
-
-// Helpers bounties
-function sum(arr) {
-  if (!Array.isArray(arr)) return 0;
-  return arr.reduce((a, b) => a + (Number(b) || 0), 0);
-}
-function lvlRangeTxtFromArray(levels) {
-  if (!Array.isArray(levels) || !levels.length) return '—';
-  const min = Math.min(...levels);
-  const max = Math.max(...levels);
-  if (!isFinite(min) || !isFinite(max)) return '—';
-  return `${min}-${max}`;
-}
-function shortenRewards(pool, limit = 5) {
-  if (!pool) return '';
-  if (typeof pool === 'string') return pool;
-  if (Array.isArray(pool)) {
-    const small = pool.slice(0, limit).join(', ');
-    return pool.length > limit ? `${small}…` : small;
-  }
-  if (pool && typeof pool === 'object') {
-    const arr = Object.keys(pool);
-    const small = arr.slice(0, limit).join(', ');
-    return arr.length > limit ? `${small}…` : small;
-  }
-  return '';
-}
-
-/* ------------------ Ticker ETA ------------------ */
-function makeEta(expiryIso, labelText = 'Expire dans ') {
-  const wrap = createEl('span', 'wf-eta');
-  const label = createEl('span', 'label', labelText);
-  const value = createEl('span', 'value', '—');
-  const ts = new Date(expiryIso).getTime();
-  value.dataset.exp = String(Number.isFinite(ts) ? ts : 0);
-  wrap.append(label, value);
+function makeEta(expiry) {
+  const wrap = createEl('span', 'eta');
+  wrap.dataset.expiry = expiry;
   return wrap;
 }
-function tickETAs() {
-  const now = Date.now();
-  document.querySelectorAll('.wf-eta .value[data-exp]').forEach((node) => {
-    const exp = Number(node.dataset.exp || '0');
-    const ms = exp - now;
-    node.textContent = fmtETA(ms);
-  });
+function setEta(el, expiry) {
+  const ms = new Date(expiry).getTime() - Date.now();
+  el.textContent = `expire dans ${fmtETA(ms)}`;
 }
-setInterval(() => {
-  els.now.textContent = fmtDT(Date.now());
-  tickETAs();
-}, 1000);
+
+/* ------------------ Fetch ------------------ */
+async function fetchAgg(platform, lang) {
+  const url = `${API_BASE}/api/${platform}?lang=${lang}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
 
 /* ------------------ Renders ------------------ */
 function renderCycles(data) {
@@ -158,166 +117,160 @@ function renderCycles(data) {
   els.ctxCycles.textContent = count ? `${count} actifs` : '—';
 }
 
-/* ------------ Fissures + filtres ------------ */
-function applyFissureFilters(list) {
-  const tierSel = (els.fTier?.value || 'all').toLowerCase();
-  const hardSel = (els.fHard?.value || 'all'); // 'all' | 'normal' | 'hard'
-  return list.filter((f) => {
-    const tierOk = tierSel === 'all' || (String(f.tier || '').toLowerCase() === tierSel);
-    let hardOk = true;
-    if (hardSel === 'hard') hardOk = !!f.isHard;
-    else if (hardSel === 'normal') hardOk = !f.isHard;
-    return tierOk && hardOk;
+/* ------------ Fissures ------------ */
+function filterFissures(raw) {
+  const tier = els.fTier?.value || 'all';
+  const hard = els.fHard?.value || 'all';
+  return raw.filter(f => {
+    if (tier !== 'all' && (f.tier || '').toLowerCase() !== tier) return false;
+    if (hard !== 'all') {
+      const isHard = !!f.isHard;
+      if (hard === 'normal' && isHard) return false;
+      if (hard === 'hard' && !isHard) return false;
+    }
+    return true;
   });
 }
 function renderFissures(data) {
-  const all = Array.isArray(data?.fissures) ? data.fissures : [];
-  const list = applyFissureFilters(all);
-
+  const fiss = Array.isArray(data?.fissures) ? data.fissures : [];
+  const filtered = filterFissures(fiss);
   els.fissuresList.innerHTML = '';
-  els.ctxFissures.textContent = `${list.length}/${all.length} actives`;
+  els.ctxFissures.textContent = `${filtered.length}/${fiss.length} actives`;
 
-  for (const f of list) {
+  for (const f of filtered) {
     const li = createEl('li', 'wf-row');
     const left = createEl('div', 'left');
-    const right = createEl('div', 'right');
-
-    left.append(createEl('span', 'inv-node', f.node || '—'));
     left.append(createEl('span', `wf-chip tier-${(f.tier||'').toLowerCase()}`, f.tier || '—'));
     left.append(createEl('span', `wf-chip ${f.isHard ? 'tag-hard' : 'tag-normal'}`, f.isHard ? 'Steel Path' : 'Normal'));
     left.append(createEl('span', 'wf-chip', f.missionType || '—'));
 
+    const right = createEl('div', 'right');
+    right.append(createEl('span', 'muted', f.node || '—'));
     right.append(makeEta(f.expiry));
     li.append(left, right);
     els.fissuresList.append(li);
   }
 }
 
-/* ------------ Sortie / Archon ------------ */
+/* ------------ Sortie ------------ */
 function renderSortie(data) {
   const s = data?.sortie;
-  els.sortie.innerHTML = '';
-  if (!s || !s.variants?.length) {
-    els.sortie.textContent = 'Aucune sortie active';
-    return;
-  }
-  const head = createEl('div', 'inv-head');
-  head.append(createEl('span', 'inv-node', s.boss || 'Sortie'));
-  head.append(createEl('span', 'wf-badge', s.faction || '—'));
-  head.append(makeEta(s.expiry));
+  const host = els.sortie;
+  host.innerHTML = '';
+  if (!s) return;
 
-  const variants = createEl('div', 'sortie-variants');
-  for (const v of s.variants) {
-    const row = createEl('div', 'wf-row');
-    const l = createEl('div', 'left');
-    l.append(createEl('span', 'wf-chip', v.missionType || v.type || '—'));
-    if (v.modifier) l.append(createEl('span', 'wf-chip', v.modifier));
-    if (v.node)     l.append(createEl('span', 'wf-chip', v.node));
-    row.append(l);
-    variants.append(row);
+  const box = createEl('div', 'wf-box');
+  const h = createEl('div', 'wf-box__head');
+  h.append(createEl('span', 'wf-chip', s.boss || '—'));
+  if (s.faction) h.append(createEl('span', 'wf-chip', s.faction));
+  h.append(makeEta(s.expiry));
+  box.append(h);
+
+  if (Array.isArray(s.variants)) {
+    const list = createEl('ul', 'wf-list');
+    for (const v of s.variants) {
+      const l = createEl('li', 'wf-row');
+      l.append(createEl('span', 'wf-chip', v.missionType || v.type || '—'));
+      if (v.modifier) l.append(createEl('span', 'wf-chip', v.modifier));
+      if (v.node)     l.append(createEl('span', 'wf-chip', v.node));
+      list.append(l);
+    }
+    box.append(list);
   }
-  els.sortie.append(head, variants);
+  host.append(box);
 }
+
+/* ------------ Archon Hunt ------------ */
 function renderArchon(data) {
   const a = data?.archonHunt;
-  els.archon.innerHTML = '';
-  if (!a || !a.missions?.length) {
-    els.archon.textContent = 'Aucune Archon Hunt active';
-    return;
-  }
-  const head = createEl('div', 'inv-head');
-  head.append(createEl('span', 'inv-node', a.boss || 'Archon Hunt'));
-  head.append(createEl('span', 'wf-badge', a.faction || '—'));
-  head.append(makeEta(a.expiry));
+  const host = els.archon;
+  host.innerHTML = '';
+  if (!a) return;
 
-  const variants = createEl('div', 'sortie-variants');
-  for (const m of a.missions) {
-    const row = createEl('div', 'wf-row');
-    const l = createEl('div', 'left');
-    l.append(createEl('span', 'wf-chip', m.type || '—'));
-    if (m.node) l.append(createEl('span', 'wf-chip', m.node));
-    row.append(l);
-    variants.append(row);
-  }
-  els.archon.append(head, variants);
-}
+  const box = createEl('div', 'wf-box');
+  const h = createEl('div', 'wf-box__head');
+  h.append(createEl('span', 'wf-chip', a.boss || '—'));
+  if (a.faction) h.append(createEl('span', 'wf-chip', a.faction));
+  h.append(makeEta(a.expiry));
+  box.append(h);
 
-/* ------------ Duviri (choices only) ------------ */
-function renderDuviri(data) {
-  const d = data?.duviriCycle || {};
-  els.duviri.innerHTML = '';
-
-  const choices = Array.isArray(d.choices) ? d.choices : [];
-  const normal = choices.find(c => (c.category || '').toLowerCase() === 'normal');
-  const hard   = choices.find(c => (c.category || '').toLowerCase() === 'hard');
-
-  function group(label, arr) {
-    const wrap = createEl('div', 'circuit-group');
-    wrap.append(createEl('div', 'circuit-title', label));
-    const chips = createEl('div', 'chips');
-    if (arr && Array.isArray(arr) && arr.length) {
-      for (const name of arr) chips.append(createEl('span', 'wf-chip', name));
-    } else {
-      chips.append(createEl('span', 'muted', '—'));
+  if (Array.isArray(a.missions)) {
+    const list = createEl('ul', 'wf-list');
+    for (const m of a.missions) {
+      const l = createEl('li', 'wf-row');
+      l.append(createEl('span', 'wf-chip', m.type || '—'));
+      if (m.node) l.append(createEl('span', 'wf-chip', m.node));
+      list.append(l);
     }
-    wrap.append(chips);
-    return wrap;
+    box.append(list);
   }
-
-  const container = createEl('div', 'circuit-wrap');
-  container.append(group('Normal', normal?.choices || []));
-  container.append(group('Steel Path', hard?.choices || []));
-  els.duviri.append(container);
-
-  const nCount = (normal?.choices || []).length;
-  const hCount = (hard?.choices || []).length;
-  if (els.ctxDuviri) {
-    const parts = [];
-    if (nCount) parts.push(`${nCount} normal`);
-    if (hCount) parts.push(`${hCount} hard`);
-    els.ctxDuviri.textContent = parts.length ? parts.join(' • ') : '—';
-  }
+  host.append(box);
 }
 
-/* ------------ Nightwave / Baro ------------ */
+/* ------------ Duviri Circuit (choix) ------------ */
+function renderDuviri(data) {
+  const c = data?.duviriCycle;
+  const host = els.duviri;
+  host.innerHTML = '';
+  if (!c) return;
+
+  const grp = (title, arr) => {
+    const g = createEl('div', 'circuit-group');
+    g.append(createEl('div', 'title', title));
+    const chips = createEl('div', 'chips');
+    if (Array.isArray(arr)) {
+      for (const name of arr) chips.append(createEl('span', 'wf-chip', name));
+    }
+    g.append(chips);
+    return g;
+  };
+
+  const wrap = createEl('div', 'circuit');
+  wrap.append(grp('Normal', c.choices?.normal));
+  wrap.append(grp('Steel Path', c.choices?.steel));
+  host.append(wrap);
+
+  const n = (c.choices?.normal || []).length;
+  const m = (c.choices?.steel || []).length;
+  if (els.ctxDuviri) els.ctxDuviri.textContent = `${n} normal • ${m} hard`;
+}
+
+/* ------------ Nightwave ------------ */
 function renderNightwave(data) {
-  els.nightwaveList.innerHTML = '';
-  const nw = data?.nightwave;
-  if (!nw || !nw.activeChallenges?.length) {
-    els.ctxNightwave.textContent = '—';
-    els.nightwaveList.append(createEl('li', 'muted', 'Aucun défi actif'));
-    return;
-  }
-  els.ctxNightwave.textContent = `${nw.activeChallenges.length} défis`;
-  for (const c of nw.activeChallenges) {
+  const n = data?.nightwave;
+  const host = els.nightwave;
+  host.innerHTML = '';
+  if (!n || !Array.isArray(n.activeChallenges)) return;
+
+  els.ctxNightwave.textContent = `${n.activeChallenges.length} actifs`;
+  for (const ch of n.activeChallenges) {
     const li = createEl('li', 'wf-row');
     const left = createEl('div', 'left');
-    left.append(createEl('div', 'nw-title', c.title || '—'));
-    left.append(createEl('div', 'nw-desc', c.desc || ''));
-    const right = createEl('div', 'right');
-    right.append(createEl('span', 'wf-badge', c.isElite ? 'Elite' : 'Normal'));
-    li.append(left, right);
-    els.nightwaveList.append(li);
+    left.append(createEl('strong', null, ch.title || ch.id || '—'));
+    if (ch.isElite) left.append(createEl('span', 'wf-badge', 'Elite'));
+    if (ch.desc) left.append(createEl('div', 'muted', ch.desc));
+    host.append(li);
+    li.append(left, createEl('div', 'right', ''));
   }
 }
+
+/* ------------ Baro ------------ */
 function renderBaro(data) {
+  const b = data?.voidTrader;
   els.baroStatus.innerHTML = '';
   els.baroInv.innerHTML = '';
-  const b = data?.voidTrader;
-  if (!b) {
-    els.baroStatus.textContent = 'Baro non disponible';
-    return;
-  }
-  const msStart = new Date(b.activation).getTime() - Date.now();
-  if (msStart > 0) {
-    const p = createEl('p');
-    p.textContent = `Arrive à ${b.location || '—'} dans `;
-    p.append(makeEta(b.activation, ''));
+  if (!b) return;
+
+  const p = createEl('p');
+  if (b.active) {
+    p.append(createEl('strong', null, 'Baro est là'));
+    p.append(createEl('span', 'muted', ` — depart dans `));
+    p.append(makeEta(b.endString || b.expiry));
     els.baroStatus.append(p);
   } else {
-    const p = createEl('p');
-    p.textContent = `Présent à ${b.location || '—'}, part dans `;
-    p.append(makeEta(b.expiry, ''));
+    p.append(createEl('strong', null, 'Prochaine arrivée'));
+    p.append(createEl('span', 'muted', ' — dans '));
+    p.append(makeEta(b.startString || b.activation));
     els.baroStatus.append(p);
   }
   const inv = Array.isArray(b.inventory) ? b.inventory : [];
@@ -367,7 +320,7 @@ function renderInvasions(data) {
     const att = createEl('span', 'inv-fac inv-att', fAtt);
     const def = createEl('span', 'inv-fac inv-def', fDef);
     vs.append(att, createEl('span', 'muted', 'vs'), def);
-    if (v.vsInfestation) vs.append(createEl('span','inv-fac inv-infested','Infested'));
+    /* removed at user request: Infested badge */
     left.append(vs);
 
     const rew = createEl('div','inv-rew');
@@ -404,11 +357,21 @@ function syndicateToZone(s) {
   if (k.includes('entrati')) return 'Cambion Drift';
   return null; // ignorer tout le reste
 }
-
+function levelRangeToText(arr) {
+  if (!Array.isArray(arr) || arr.length < 2) return '—';
+  const [a,b] = arr;
+  return `${a}-${b}`;
+}
+function sumStanding(stages) {
+  if (!Array.isArray(stages)) return 0;
+  return stages.reduce((acc, s) => acc + (s?.standing || 0), 0);
+}
 function renderBounties(data) {
   const sms = Array.isArray(data?.syndicateMissions) ? data.syndicateMissions : [];
   const host = els.bounty;
   host.innerHTML = '';
+  // Bounties: désactiver le style “chip” doré localement pour améliorer la lisibilité
+  if(host) host.classList.add('nochips');
 
   // Filtrer uniquement Ostrons / Solaris United / Entrati
   const filtered = sms.filter(sm => !!syndicateToZone(sm.syndicate));
@@ -419,135 +382,86 @@ function renderBounties(data) {
     return;
   }
 
-  // Regroupe par zone (Cetus / Orb Vallis / Cambion Drift)
-  const byZone = new Map(); // zone -> { title, expiry, jobs: [] }
-  for (const sm of filtered) {
-    const zone = syndicateToZone(sm.syndicate);
-    if (!byZone.has(zone)) {
-      byZone.set(zone, { title: zone, expiry: sm.expiry || null, jobs: [] });
-    }
-    const g = byZone.get(zone);
-    if (!g.expiry && sm.expiry) g.expiry = sm.expiry;
-    const jobs = Array.isArray(sm.jobs) ? sm.jobs : [];
-    g.jobs.push(...jobs);
+  // Contexte (compte par zone)
+  const counts = { 'Cetus':0, 'Orb Vallis':0, 'Cambion Drift':0 };
+  for (const j of filtered) counts[syndicateToZone(j.syndicate)]++;
+
+  if (els.ctxBounties) {
+    const c = [];
+    if (counts['Cetus']) c.push(`Cetus: ${counts['Cetus']}`);
+    if (counts['Orb Vallis']) c.push(`Orb Vallis: ${counts['Orb Vallis']}`);
+    if (counts['Cambion Drift']) c.push(`Cambion Drift: ${counts['Cambion Drift']}`);
+    els.ctxBounties.textContent = c.join(' • ');
   }
 
-  // Contexte (Cetus: x • Orb Vallis: y • Cambion Drift: z)
-  const desiredOrder = ['Cetus', 'Orb Vallis', 'Cambion Drift'];
-  const ctxParts = [];
-  for (const z of desiredOrder) {
-    const g = byZone.get(z);
-    if (g) ctxParts.push(`${z}: ${g.jobs.length}`);
-  }
-  if (els.ctxBounties) els.ctxBounties.textContent = ctxParts.join(' • ');
+  // Groupes par zone
+  for (const j of filtered) {
+    const zone = syndicateToZone(j.syndicate);
+    const wrap = createEl('div', 'bounty-group');
 
-  // Rendu dans l'ordre fixe
-  for (const zone of desiredOrder) {
-    const g = byZone.get(zone);
-    if (!g) continue;
+    const title = createEl('div', 'bounty-title');
+    title.append(createEl('strong', null, zone));
+    if (j.expiry) title.append(makeEta(j.expiry));
+    wrap.append(title);
 
-    const head = createEl('div', 'circuit-head');
-    head.append(createEl('div', 'circuit-title', g.title));
-    if (g.expiry) head.append(makeEta(g.expiry));
-    host.append(head);
+    if (Array.isArray(j.jobs)) {
+      for (const jb of j.jobs) {
+        const row = createEl('div', 'bounty-row');
 
-    if (!g.jobs.length) {
-      host.append(createEl('div', 'muted', '—'));
-      continue;
-    }
+        // “chips” allégées (neutralisées par .nochips dans le CSS)
+        const chips = [];
+        const type = jb.type || jb.jobType || '—';
+        const levelTxt = levelRangeToText(jb.enemyLevels);
+        const standingTotal = sumStanding(jb.standingStages);
+        const mr = jb.minMR || 0;
 
-    const list = document.createElement('ul');
-    list.className = 'wf-list no-pad';
+        chips.push(createEl('span', 'wf-chip', type));
+        if (levelTxt !== '—') chips.push(createEl('span', 'wf-chip', `Lv ${levelTxt}`));
+        if (standingTotal) chips.push(createEl('span', 'wf-chip', `${standingTotal} Standing`));
+        if (mr > 0) chips.push(createEl('span', 'wf-chip', `MR ${mr}+`));
+        if (j.timeBound) chips.push(createEl('span', 'wf-chip', `Time: ${j.timeBound}`));
 
-    for (const j of g.jobs) {
-      const li = createEl('li', 'wf-row');
-      const left = createEl('div', 'left');
-      const right = createEl('div', 'right');
+        for (const chip of chips) row.append(chip);
 
-      // Type
-      const type = j.type || j.jobType || 'Bounty';
-
-      // Niveaux (enemyLevels[])
-      const levelTxt = lvlRangeTxtFromArray(j.enemyLevels);
-
-      // Standing total (standingStages[])
-      const standingTotal = sum(j.standingStages);
-      const mr = Number(j.minMR || 0);
-
-      const chips = [];
-      chips.push(createEl('span', 'wf-chip', type));
-      if (levelTxt !== '—') chips.push(createEl('span', 'wf-chip', `Lv ${levelTxt}`));
-      if (standingTotal) chips.push(createEl('span', 'wf-chip', `${standingTotal} Standing`));
-      if (mr > 0) chips.push(createEl('span', 'wf-chip', `MR ${mr}+`));
-      if (j.timeBound) chips.push(createEl('span', 'wf-chip', `Time: ${j.timeBound}`));
-      chips.forEach(ch => left.append(ch));
-
-      // Aperçu récompenses
-      const rewards = shortenRewards(j.rewardPool || j.rewards?.pool || j.rewards?.rewardPool, 5);
-      right.append(createEl('span', 'wf-badge', rewards || '—'));
-
-      // ETA par job si présent et différent de l’expiry de la zone
-      if (j.expiry && (!g.expiry || j.expiry !== g.expiry)) {
-        right.append(makeEta(j.expiry, ''));
+        // Récompenses condensées (si présentes sur l’item)
+        if (Array.isArray(jb.rewardPool) && jb.rewardPool.length) {
+          const pool = createEl('div', 'bounty-pool');
+          pool.textContent = jb.rewardPool.slice(0, 8).join(' • ');
+          row.append(pool);
+        }
+        if (j.expiry) row.append(makeEta(j.expiry));
+        wrap.append(row);
       }
-
-      li.append(left, right);
-      list.append(li);
     }
-
-    host.append(list);
+    host.append(wrap);
   }
 }
 
-/* ------------------ Compactage layout ------------------ */
-function _len(sel) { try { return document.querySelectorAll(sel).length; } catch { return 0; } }
-function _empty(el) { return !el || !el.textContent || el.textContent.trim().length === 0; }
+/* ------------------ ETA Ticker ------------------ */
+function tickETAs() {
+  const etas = document.querySelectorAll('[data-expiry]');
+  for (const el of etas) setEta(el, el.dataset.expiry);
+}
+setInterval(tickETAs, 1000);
 
+/* ------------------ Compact Layout ------------------ */
 function compactLayout() {
-  const grid = document.querySelector('.wf-grid');
-  if (!grid) return;
-
-  grid.querySelectorAll('.wf-card').forEach(c => {
-    c.classList.remove('col-span-2', 'col-span-3', 'hidden');
-  });
-
-  const cardFiss   = els.fissuresList?.closest('.wf-card');
-  const cardNight  = els.nightwaveList?.closest('.wf-card');
-  const cardBaro   = els.baroStatus?.closest('.wf-card');
-  const cardInv    = els.invList?.closest('.wf-card');
-  const cardPrimes = els.bounty?.closest('.wf-card');
-
-  if (cardPrimes) {
-    const hasBounties = _len('#bounty-content .wf-row') > 0;
-    if (!hasBounties) cardPrimes.classList.add('hidden');
-  }
-  if (cardBaro) {
-    const hasInv = _len('#baro-inventory > li') > 0;
-    const hasStatus = !_empty(els.baroStatus);
-    if (!hasInv && !hasStatus) cardBaro.classList.add('hidden');
-  }
-
-  const w = window.innerWidth;
-  if (w >= 1200) {
-    if (cardFiss) cardFiss.classList.add('col-span-2');
-    if (cardInv && _len('#invasions-list > li') >= 6) cardInv.classList.add('col-span-2');
-    if (cardNight && _len('#nightwave-list > li') >= 6) cardNight.classList.add('col-span-2');
-  }
+  // Laisser le JS décider des spans, mais rien n’empêche le wrapping des titres (cf. CSS)
 }
-function debounce(fn, t = 200){ let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=>fn(...a), t); }; }
-window.addEventListener('resize', debounce(compactLayout, 200));
 
-/* ------------------ Main ------------------ */
+/* ------------------ Load & Wire ------------------ */
 async function loadAndRender() {
+  const platform = els.platform?.value || 'pc';
+  const lang = els.lang?.value || 'fr';
+
   try {
-    els.now.textContent = fmtDT(Date.now());
-    const platform = els.platform.value;
-    const lang = els.lang.value;
     const agg = await fetchAgg(platform, lang);
     LAST.agg = agg;
 
+    els.now.textContent = fmtDT(new Date());
+
     renderCycles(agg);
-    renderFissures(agg);   // respecte filtres courants
+    renderFissures(agg);
     renderSortie(agg);
     renderArchon(agg);
     renderDuviri(agg);
