@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB — Thème Orokin (consolidé, sans doublons)
+   HUB — Thème Orokin (safe mode: pas de masonry)
    ========================================================= */
 
 :root{
@@ -10,9 +10,6 @@
   --muted:#93a4b8;
   --gold:#e6d28e;
   --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
-
-  /* hauteur d’une ligne masonry – activée par JS seulement */
-  --masonry-row: 8px;
 }
 
 html,body{background:var(--bg);color:var(--ink)}
@@ -34,14 +31,13 @@ body{
   border-radius:.5rem;padding:.35rem .6rem
 }
 
-/* ===== Grille : Fallback auto (JS activera le masonry) ===== */
+/* ===== Grille classique sans masonry ===== */
 .wf-grid{
   display:grid;
   gap:1rem;
   padding:.9rem 1rem 1.25rem;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  grid-auto-flow:row dense;
-  grid-auto-rows:auto;            /* *** pas de coupe sans le JS *** */
+  /* pas de grid-auto-rows fixe => chaque carte prend sa hauteur réelle */
   max-width:1400px;margin:0 auto
 }
 @media (max-width:1200px){.wf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -49,7 +45,6 @@ body{
 
 /* Cartes */
 .wf-card{
-  grid-column:span 1 / span 1;
   background:var(--panel-1);border-radius:.9rem;overflow:hidden;
   border:1px solid rgba(230,210,142,.45);box-shadow:var(--shadow);
   min-height:48px
