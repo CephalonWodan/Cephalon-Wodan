@@ -148,3 +148,24 @@ body{ font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,C
 .muted{ color:var(--muted); }
 .no-pad{ padding:0!important; }
 .hidden{ display:none!important; }
+
+/* GARANTIE #1 : une carte doit toujours être visible */
+.wf-card{
+  display:block;            /* évite tout display:none résiduel */
+  min-height: 48px;         /* empêche une carte de s’écraser à 0 */
+}
+
+/* GARANTIE #2 : la grille ne peut pas “collapser” */
+.wf-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 1rem;
+  padding: .9rem 1rem 1.25rem;
+}
+
+/* responsive intact */
+@media (max-width:1200px){ .wf-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width:720px){  .wf-grid{ grid-template-columns: 1fr; } }
+
+
+
