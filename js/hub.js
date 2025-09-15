@@ -1,13 +1,5 @@
 /* =========================================================
-   HUB.JS v13 (patch)
-   - API Railway /api/:platform?lang=xx
-   - Ticker ETA pour cycles, fissures, sortie, archon, baro
-   - Filtres fissures (tier + difficulté)
-   - Duviri Circuit : affichage des choix (pas d'état/ETA)
-   - Bounties (Ostrons / Solaris / Entrati) depuis syndicateMissions
-   - Invasions : retrait du badge Infested (inutile ici)
-   - Primes : les "chips" dorées sont neutralisées via CSS avec .nochips
-   - mini patch Baro
+   HUB.JS v13 (complet) — + mini patch Baro + Masonry
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -18,6 +10,7 @@ const els = {
   now: document.getElementById('now'),
   platform: document.getElementById('platform'),
   lang: document.getElementById('lang'),
+  grid: document.getElementById('grid'),
 
   cyclesList: document.getElementById('cycles-list'),
   ctxCycles: document.getElementById('ctx-cycles'),
@@ -90,7 +83,6 @@ function renderCycles(data){
   els.ctxCycles.textContent = count?`${count} actifs`:'—';
 }
 
-/* Fissures */
 function filterFissures(raw){
   const tier=els.fTier?.value||'all';
   const hard=els.fHard?.value||'all';
@@ -123,7 +115,6 @@ function renderFissures(data){
   }
 }
 
-/* Sortie */
 function renderSortie(data){
   const s=data?.sortie; const host=els.sortie; host.innerHTML=''; if(!s) return;
   const box=createEl('div','wf-box'); const h=createEl('div','wf-box__head');
@@ -145,7 +136,6 @@ function renderSortie(data){
   host.append(box);
 }
 
-/* Archon */
 function renderArchon(data){
   const a=data?.archonHunt; const host=els.archon; host.innerHTML=''; if(!a) return;
   const box=createEl('div','wf-box'); const h=createEl('div','wf-box__head');
@@ -166,7 +156,6 @@ function renderArchon(data){
   host.append(box);
 }
 
-/* Duviri */
 function renderDuviri(data){
   const c=data?.duviriCycle; const host=els.duviri; host.innerHTML=''; if(!c) return;
   const grp=(title,arr)=>{ const g=createEl('div','circuit-group'); g.append(createEl('div','title',title)); const chips=createEl('div','chips'); if(Array.isArray(arr)){ for(const name of arr) chips.append(createEl('span','wf-chip',name)); } g.append(chips); return g; };
@@ -178,7 +167,6 @@ function renderDuviri(data){
   if(els.ctxDuviri) els.ctxDuviri.textContent=`${n} normal • ${m} hard`;
 }
 
-/* Nightwave */
 function renderNightwave(data){
   const n=data?.nightwave; const host=els.nightwave; host.innerHTML=''; if(!n||!Array.isArray(n.activeChallenges)) return;
   els.ctxNightwave.textContent=`${n.activeChallenges.length} actifs`;
@@ -192,7 +180,6 @@ function renderNightwave(data){
   }
 }
 
-/* Baro (mini patch: ETA sur activation/expiry ISO) */
 function renderBaro(data){
   const b=data?.voidTrader; els.baroStatus.innerHTML=''; els.baroInv.innerHTML=''; if(!b) return;
   const p=createEl('p');
@@ -215,7 +202,6 @@ function renderBaro(data){
   }
 }
 
-/* Invasions */
 function rewardToText(rw){
   if(!rw) return '';
   const parts=[];
@@ -271,70 +257,53 @@ function renderInvasions(data){
   }
 }
 
-/* Bounties */
-function syndicateToZone(s){ const k=(s||'').toLowerCase(); if(k.includes('ostron')) return 'Cetus'; if(k.includes('solaris')) return 'Orb Vallis'; if(k.includes('entrati')) return 'Cambion Drift'; return null; }
-function levelRangeToText(arr){ if(!Array.isArray(arr)||arr.length<2) return '—'; const [a,b]=arr; return `${a}-${b}`; }
-function sumStanding(stages){ if(!Array.isArray(stages)) return 0; return stages.reduce((acc,s)=>acc+(s?.standing||0),0); }
-function renderBounties(data){
-  const sms=Array.isArray(data?.syndicateMissions)?data.syndicateMissions:[]; const host=els.bounty; host.innerHTML='';
-  const filtered=sms.filter(sm=>!!syndicateToZone(sm.syndicate));
-  if(!filtered.length){ host.textContent='Aucune bounty active'; if(els.ctxBounties) els.ctxBounties.textContent='—'; return; }
-  const counts={ 'Cetus':0,'Orb Vallis':0,'Cambion Drift':0 };
-  for(const j of filtered) counts[syndicateToZone(j.syndicate)]++;
-  if(els.ctxBounties){
-    const c=[]; if(counts['Cetus']) c.push(`Cetus: ${counts['Cetus']}`);
-    if(counts['Orb Vallis']) c.push(`Orb Vallis: ${counts['Orb Vallis']}`);
-    if(counts['Cambion Drift']) c.push(`Cambion Drift: ${counts['Cambion Drift']}`);
-    els.ctxBounties.textContent=c.join(' • ');
-  }
-  for(const j of filtered){
-    const zone=syndicateToZone(j.syndicate);
-    const wrap=createEl('div','bounty-group');
-    const title=createEl('div','bounty-title');
-    title.append(createEl('strong',null,zone));
-    if(j.expiry) title.append(makeEta(j.expiry));
-    wrap.append(title);
-    if(Array.isArray(j.jobs)){
-      for(const jb of j.jobs){
-        const row=createEl('div','bounty-row');
-        const type=jb.type||jb.jobType||'—';
-        const lvl=levelRangeToText(jb.enemyLevels);
-        const standing=sumStanding(jb.standingStages);
-        const mr=jb.minMR||0;
-        row.append(createEl('span','wf-chip',type));
-        if(lvl!=='—') row.append(createEl('span','wf-chip',`Lv ${lvl}`));
-        if(standing) row.append(createEl('span','wf-chip',`${standing} Standing`));
-        if(mr>0) row.append(createEl('span','wf-chip',`MR ${mr}+`));
-        if(Array.isArray(jb.rewardPool)&&jb.rewardPool.length){
-          const pool=createEl('div','bounty-pool'); pool.textContent=jb.rewardPool.slice(0,8).join(' • '); row.append(pool);
-        }
-        if(j.expiry) row.append(makeEta(j.expiry));
-        wrap.append(row);
-      }
-    }
-    host.append(wrap);
-  }
+/* ---------- Masonry ---------- */
+function applyMasonry(){
+  const grid = els.grid;
+  if(!grid) return;
+  const row = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--masonry-row')) || 8;
+  const gap = parseFloat(getComputedStyle(grid).rowGap) || 0;
+  const cards = grid.querySelectorAll('.wf-card');
+  cards.forEach(card=>{
+    card.style.gridRowEnd = 'span 1'; // reset pour mesure fiable
+    const h = card.getBoundingClientRect().height;
+    const rows = Math.ceil((h + gap) / (row + gap));
+    card.style.gridRowEnd = `span ${rows}`;
+  });
+}
+const applyMasonryDebounced = (() => {
+  let t=null;
+  return () => { clearTimeout(t); t=setTimeout(applyMasonry, 60); };
+})();
+
+/* ---------- ETA ticker ---------- */
+function tickETAs(){
+  const etas=document.querySelectorAll('[data-expiry]');
+  for(const el of etas) setEta(el,el.dataset.expiry);
 }
 
-/* ETA ticker */
-function tickETAs(){ const etas=document.querySelectorAll('[data-expiry]'); for(const el of etas) setEta(el,el.dataset.expiry); }
-setInterval(tickETAs,1000);
-
-/* Load */
+/* ---------- Load ---------- */
 async function loadAndRender(){
   try{
     els.now.textContent=fmtDT(Date.now());
     const agg=await fetchAgg(els.platform.value||'pc', els.lang.value||'fr');
     LAST.agg=agg;
+
     renderCycles(agg); renderFissures(agg); renderSortie(agg); renderArchon(agg);
     renderDuviri(agg); renderNightwave(agg); renderBaro(agg); renderInvasions(agg); renderBounties(agg);
+
     tickETAs();
+    applyMasonryDebounced();
   }catch(e){ console.error('hub load error',e); }
 }
 
-/* Wire */
-if(els.fTier) els.fTier.addEventListener('change',()=>LAST.agg&&renderFissures(LAST.agg));
-if(els.fHard) els.fHard.addEventListener('change',()=>LAST.agg&&renderFissures(LAST.agg));
-els.platform.addEventListener('change',loadAndRender);
-els.lang.addEventListener('change',loadAndRender);
+/* ---------- Wire ---------- */
+if(els.fTier) els.fTier.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); applyMasonryDebounced(); });
+if(els.fHard) els.fHard.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); applyMasonryDebounced(); });
+els.platform.addEventListener('change',()=>{ loadAndRender(); });
+els.lang.addEventListener('change',()=>{ loadAndRender(); });
+window.addEventListener('resize', applyMasonryDebounced);
+
+setInterval(()=>{ tickETAs(); /* les ETAs ne changent pas la hauteur en général */ }, 1000);
+
 loadAndRender();
