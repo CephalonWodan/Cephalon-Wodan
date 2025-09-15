@@ -1,8 +1,7 @@
 /* =========================================================
-   HUB (Cephalon Wodan) — Thème Orokin (patch)
+   HUB (Cephalon Wodan) — Thème Orokin (v16)
    ========================================================= */
 
-/* ---------- Variables ---------- */
 :root{
   --bg:#0a0f1a;
   --panel-1:#0f172a;
@@ -13,30 +12,30 @@
   --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
 }
 
-/* ---------- Base ---------- */
+/* Base */
 *{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial; }
+html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial; }
 img{ max-width:100%; }
 
-/* ---------- Toolbar ---------- */
+/* Toolbar */
 .wf-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding:.6rem .9rem; max-width:1400px; margin:0 auto 1rem; }
 .wf-toolbar__right{ display:flex; align-items:center; gap:.75rem; }
 .wf-toolbar label{ display:flex; align-items:center; gap:.35rem; color:var(--muted); }
 .wf-toolbar select{ background:var(--panel-2); color:var(--ink); border:1px solid rgba(230,210,142,.30); border-radius:.6rem; padding:.35rem .6rem; }
 
-/* ---------- Grid ---------- */
+/* Grid (FIX: pas de "dense" → ordre DOM, 3 colonnes stables) */
 .wf-grid{
   display:grid; gap:1rem;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-flow: row dense;
+  grid-auto-flow: row;               /* <-- FIX ICI : plus de "row dense" */
   max-width: 1400px; margin: 0 auto;
 }
 @media (max-width: 1200px){ .wf-grid{ grid-template-columns: repeat(8, minmax(0,1fr)); } }
 @media (max-width: 860px){ .wf-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
 
-/* ---------- Card ---------- */
+/* Card */
 .wf-card{
-  grid-column: span 4 / span 4;
+  grid-column: span 4 / span 4;      /* 3 cartes par rangée (12/4) */
   background: var(--panel-1);
   border-radius: .9rem;
   border: 1px solid rgba(230,210,142,.45);
@@ -47,23 +46,24 @@ img{ max-width:100%; }
   padding:.85rem 1rem; border-bottom:1px solid rgba(230,210,142,.25);
   background: linear-gradient(180deg, rgba(230,210,142,.06), rgba(0,0,0,0));
   border-top-left-radius:.9rem; border-top-right-radius:.9rem;
-  flex-wrap: wrap; /* PATCH: le titre + contexte peuvent passer à la ligne */
+  flex-wrap: wrap;                    /* contexte peut wrap */
 }
 .wf-ctx{
   color: var(--muted);
-  margin-left: auto;           /* PATCH: pousse à droite si ça tient */
-  white-space: normal;         /* PATCH: autorise le wrap */
+  margin-left: auto;
+  white-space: normal;
   line-height: 1.25;
 }
-.wf-pad{ padding: .85rem 1rem 1rem; }
+.wf-pad{ padding:.85rem 1rem 1rem; }
 
-/* ---------- Lists/rows ---------- */
+/* Lists / rows */
 .wf-list{ list-style:none; margin:0; padding:.6rem 1rem 1rem; }
 .wf-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:.8rem; padding:.45rem 0; border-bottom:1px dashed rgba(230,210,142,.15); }
 .wf-row:last-child{ border-bottom:none; }
 .left{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
 .right{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
 
+/* Chips/badges */
 .wf-chip{
   display:inline-flex; align-items:center; gap:.35rem;
   padding:.2rem .5rem; border:1px solid rgba(230,210,142,.40);
@@ -72,7 +72,20 @@ img{ max-width:100%; }
 }
 .wf-badge{ padding:.18rem .45rem; border-radius:.45rem; border:1px solid rgba(230,210,142,.35); font-size:.72rem; color:var(--muted); }
 
-/* ---------- Invasions ---------- */
+/* Fissures tiers */
+.tier-lith{ color:#c8ffd7; border-color:#92f2b0; }
+.tier-meso{ color:#b8e1ff; border-color:#8cc8ff; }
+.tier-neo{ color:#d8c8ff; border-color:#b6a4ff; }
+.tier-axi{ color:#ffe1b8; border-color:#ffd08f; }
+.tier-omnia{ color:#ffd8f0; border-color:#ffbde8; }
+.tag-hard{ color:#ffb4b4; border-color:#ff8a8a; }
+.tag-normal{ color:#cbe7ff; border-color:#8cc8ff; }
+
+/* Sortie / Archon */
+.wf-box{ border:1px solid rgba(230,210,142,.35); border-radius:.6rem; overflow:clip; }
+.wf-box__head{ display:flex; align-items:center; justify-content:space-between; gap:.5rem; padding:.5rem .6rem; background:var(--panel-2); }
+
+/* Invasions */
 .inv-head{ display:flex; align-items:center; gap:.5rem; }
 .inv-node{ font-weight:600; }
 .inv-desc{ color:var(--muted); }
@@ -81,7 +94,7 @@ img{ max-width:100%; }
 .inv-att{ color:#a8e1ff; border-color:#8cc8ff; }
 .inv-def{ color:#ffd8b8; border-color:#ffd08f; }
 
-/* PATCH: masquer tout badge/capsule “Infested” quelle que soit la variante DOM */
+/* Masquer tout badge “Infested” */
 .inv-infested,
 .inv-fac.infested,
 .wf-badge.infested,
@@ -89,33 +102,27 @@ img{ max-width:100%; }
 .inv-fac[data-faction="Infested"],
 [data-faction="Infested"],
 .tag-infested{
-  display: none !important;
+  display:none !important;
 }
 
-/* ---------- Duviri ---------- */
-.circuit-group{ margin-bottom:.5rem; }
-.circuit-group .title{ font-weight:600; margin-bottom:.25rem; }
-.circuit-group .chips{ display:flex; flex-wrap:wrap; gap:.35rem; }
-
-/* ---------- Bounties ---------- */
-#bounty-content{ padding: .5rem 1rem 1rem; }
-
-/* PATCH: neutraliser visuellement les “chips” dans Primes uniquement */
-#bounty-content .wf-chip{
-  border: none;
-  background: none;
-  padding: 0;
-  color: var(--muted);
-  font-size: .82rem;
-}
-
-/* ---------- Progress bar ---------- */
+/* Progress bar */
 .wf-bar{ position:relative; height:8px; background:rgba(255,255,255,.08); border-radius:999px; overflow:hidden; margin-top:.35rem; }
 .wf-bar__fill{ position:absolute; inset:0 auto 0 0; width:0%; background:linear-gradient(90deg, rgba(0,229,255,.9), rgba(0,229,255,.2)); }
 .wf-bar__label{ color:var(--muted); }
 
-/* ---------- Responsives ---------- */
-@media (max-width: 720px){
+/* Duviri */
+.circuit-group{ margin-bottom:.5rem; }
+.circuit-group .title{ font-weight:600; margin-bottom:.25rem; }
+.circuit-group .chips{ display:flex; flex-wrap:wrap; gap:.35rem; }
+
+/* Primes (chips neutralisées) */
+#bounty-content{ padding:.5rem 1rem 1rem; }
+#bounty-content .wf-chip{
+  border:none; background:none; padding:0; color:var(--muted); font-size:.82rem;
+}
+
+/* Responsive tweaks */
+@media (max-width:720px){
   .wf-toolbar__right label{ gap:.25rem; }
   .wf-toolbar select{ padding:.3rem .5rem; }
 }
