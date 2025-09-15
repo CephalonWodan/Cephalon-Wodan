@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB (Cephalon Wodan) — Thème Orokin (v16)
+   HUB (Cephalon Wodan) — Thème Orokin (v17, Masonry)
    ========================================================= */
 
 :root{
@@ -10,6 +10,7 @@
   --muted:#93a4b8;
   --gold:#e6d28e;
   --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
+  --masonry-row: 8px; /* unité de hauteur pour le masonry */
 }
 
 /* Base */
@@ -23,30 +24,34 @@ img{ max-width:100%; }
 .wf-toolbar label{ display:flex; align-items:center; gap:.35rem; color:var(--muted); }
 .wf-toolbar select{ background:var(--panel-2); color:var(--ink); border:1px solid rgba(230,210,142,.30); border-radius:.6rem; padding:.35rem .6rem; }
 
-/* Grid (FIX: pas de "dense" → ordre DOM, 3 colonnes stables) */
+/* Masonry Grid */
 .wf-grid{
   display:grid; gap:1rem;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-auto-flow: row;               /* <-- FIX ICI : plus de "row dense" */
+  grid-auto-rows: var(--masonry-row);     /* hauteur base */
+  grid-auto-flow: row dense;              /* remplissage sans gros trous */
   max-width: 1400px; margin: 0 auto;
 }
 @media (max-width: 1200px){ .wf-grid{ grid-template-columns: repeat(8, minmax(0,1fr)); } }
-@media (max-width: 860px){ .wf-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
+@media (max-width: 860px){  .wf-grid{ grid-template-columns: repeat(4, minmax(0,1fr)); } }
 
 /* Card */
 .wf-card{
-  grid-column: span 4 / span 4;      /* 3 cartes par rangée (12/4) */
+  grid-column: span 4 / span 4;          /* 3 cartes par rangée (12/4) */
+  /* la hauteur “span” est fixée en JS (grid-row-end: span N) */
   background: var(--panel-1);
   border-radius: .9rem;
   border: 1px solid rgba(230,210,142,.45);
   box-shadow: var(--shadow);
+  overflow: hidden;
+  contain: layout;                        /* perf: évite reflow coûteux */
 }
 .wf-card__title{
   display:flex; align-items:center; gap:.4rem 1rem;
   padding:.85rem 1rem; border-bottom:1px solid rgba(230,210,142,.25);
   background: linear-gradient(180deg, rgba(230,210,142,.06), rgba(0,0,0,0));
   border-top-left-radius:.9rem; border-top-right-radius:.9rem;
-  flex-wrap: wrap;                    /* contexte peut wrap */
+  flex-wrap: wrap;                        /* contexte peut wrap */
 }
 .wf-ctx{
   color: var(--muted);
