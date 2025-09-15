@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB — Thème Orokin (safe mode: pas de masonry)
+   HUB — Thème Orokin (masonry CSS en colonnes)
    ========================================================= */
 
 :root{
@@ -10,6 +10,9 @@
   --muted:#93a4b8;
   --gold:#e6d28e;
   --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
+
+  /* largeur mini d’une carte (utilisé par column-width) */
+  --card-min: 420px;
 }
 
 html,body{background:var(--bg);color:var(--ink)}
@@ -31,24 +34,30 @@ body{
   border-radius:.5rem;padding:.35rem .6rem
 }
 
-/* ===== Grille classique sans masonry ===== */
+/* ===== Masonry COLONNES (propre, sans JS) =====
+   - Le conteneur crée des colonnes automatiques (~ --card-min)
+   - Chaque carte devient un bloc inline qui "tombe" dans la colonne
+   - break-inside évite la casse au milieu d'une carte
+*/
 .wf-grid{
-  display:grid;
-  gap:1rem;
-  padding:.9rem 1rem 1.25rem;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  /* pas de grid-auto-rows fixe => chaque carte prend sa hauteur réelle */
-  max-width:1400px;margin:0 auto
+  column-width: var(--card-min);
+  column-gap: 1rem;
+  padding: .9rem 1rem 1.25rem;
+  max-width: 1400px;
+  margin: 0 auto;
 }
-@media (max-width:1200px){.wf-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:720px){.wf-grid{grid-template-columns:1fr}}
 
-/* Cartes */
+/* Carte : bloc inline qui s’insère dans les colonnes */
 .wf-card{
+  display:inline-block;        /* clé du masonry colonnes */
+  width:100%;
+  margin: 0 0 1rem;            /* espace vertical entre cartes */
+  vertical-align: top;
+  break-inside: avoid;         /* pas de scission de carte */
   background:var(--panel-1);border-radius:.9rem;overflow:hidden;
   border:1px solid rgba(230,210,142,.45);box-shadow:var(--shadow);
-  min-height:48px
 }
+
 .wf-card__title{
   display:flex;align-items:center;justify-content:space-between;gap:.6rem 1rem;
   padding:.85rem 1rem;border-bottom:1px solid rgba(230,210,142,.25);
@@ -147,3 +156,14 @@ body{
 #hub-debug .hd-head{padding:.5rem .7rem;border-bottom:1px solid rgba(230,210,142,.25);font-weight:700}
 #hub-debug .hd-body{padding:.6rem .7rem .7rem;line-height:1.35}
 #hub-debug b{color:#f2e6b1}
+
+/* ===== Responsive colonnes ===== */
+@media (max-width:1300px){
+  :root{ --card-min: 380px; }
+}
+@media (max-width:1024px){
+  :root{ --card-min: 340px; }
+}
+@media (max-width:720px){
+  :root{ --card-min: 100%; }  /* 1 colonne */
+}
