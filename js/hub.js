@@ -372,78 +372,70 @@ function renderInvasions(data) {
 }
 
 /* ------------ Bounties (Cetus/Vallis/Cambion) ------------ */
-function renderBounties(data) {
-  const sms = Array.isArray(data?.syndicateMissions) ? data.syndicateMissions : [];
+function renderBounties(agg) {
+  const list = Array.isArray(agg?.syndicateMissions) ? agg.syndicateMissions : [];
   const host = els.bounty;
   host.innerHTML = '';
 
-  if (!sms.length) {
-    host.textContent = 'Aucune bounty active';
+  if (!list.length) {
+    host.textContent = 'Aucune Prime disponible';
     return;
   }
 
-  const groups = {
-    CetusSyndicate:   { title: 'Cetus',   jobs: [], expiry: null },
-    SolarisSyndicate: { title: 'Vallis',  jobs: [], expiry: null },
-    EntratiSyndicate: { title: 'Cambion', jobs: [], expiry: null },
-  };
+  // Groupes utiles : Cetus / Vallis / Deimos
+  const groups = [
+    { tag: 'CetusSyndicate', label: 'Cetus / Ostron' },
+    { tag: 'SolarisSyndicate', label: 'Orb Vallis / Solaris' },
+    { tag: 'EntratiSyndicate', label: 'Cambion Drift / Entrati' },
+  ];
 
-  for (const sm of sms) {
-    const g = groups[sm.syndicate];
-    if (!g) continue;
-    g.expiry = g.expiry || sm.expiry;
-    const jobs = Array.isArray(sm.jobs) ? sm.jobs : [];
-    g.jobs.push(...jobs);
-  }
+  for (const g of groups) {
+    const grp = list.find(s => s.Tag === g.tag);
+    if (!grp) continue;
 
-  function section(title, expiry, jobs) {
     const wrap = document.createElement('div');
-    wrap.style.marginBottom = '0.75rem';
+    wrap.className = 'wf-pad';
+    const title = document.createElement('h3');
+    title.className = 'circuit-title';
+    title.textContent = g.label;
+    wrap.append(title);
 
-    const header = document.createElement('div');
-    header.className = 'inv-head';
-    header.append(createEl('span', 'inv-node', title));
-    if (expiry) header.append(makeEta(expiry));
-    wrap.append(header);
-
-    if (!jobs.length) {
-      wrap.append(createEl('div', 'muted', '—'));
-      return wrap;
+    // Expiry du pool de primes (compte à rebours global)
+    if (grp.Expiry) {
+      const eta = makeEta(grp.Expiry, 'Expire dans ');
+      wrap.append(eta);
     }
 
-    const list = document.createElement('ul');
-    list.className = 'wf-list no-pad';
-
-    for (const j of jobs) {
-      const li = createEl('li', 'wf-row');
-      const left = createEl('div', 'left');
-
-      const parts = [];
-      if (j.type || j.jobType) parts.push(j.type || j.jobType);
-      const lvl = (j.minLevel != null || j.maxLevel != null)
-        ? `Lvl ${j.minLevel ?? '?'}–${j.maxLevel ?? '?'}`
-        : null;
-      if (lvl) parts.push(lvl);
-      if (j.standing != null || j.reputation != null) {
-        parts.push(`${j.standing ?? j.reputation} Standing`);
+    // Liste des jobs si exposée (selon parser)
+    if (Array.isArray(grp.Jobs) && grp.Jobs.length) {
+      const ul = document.createElement('ul');
+      ul.className = 'wf-list';
+      for (const job of grp.Jobs) {
+        const li = document.createElement('li');
+        li.className = 'wf-row';
+        const left = document.createElement('div');
+        left.className = 'left';
+        left.appendChild(createEl('span', 'inv-node', job.type || 'Bounty'));
+        if (Array.isArray(job.enemyLevels) && job.enemyLevels.length) {
+          left.appendChild(createEl('span', 'wf-chip', `Lv ${job.enemyLevels.join('-')}`));
+        }
+        if (job.standingStages) {
+          left.appendChild(createEl('span', 'wf-badge', `Standing: ${job.standingStages}`));
+        }
+        li.appendChild(left);
+        ul.appendChild(li);
       }
-
-      left.append(createEl('span', 'wf-chip', parts.join(' • ') || 'Bounty'));
-
-      const rp = j.rewardPool || j.rewards?.pool || j.rewards?.rewardPool;
-      if (rp) left.append(createEl('span', 'wf-chip', rp));
-
-      li.append(left);
-      list.append(li);
+      wrap.append(ul);
+    } else {
+      // Fallback si pas de détails par job disponibles
+      const p = document.createElement('p');
+      p.className = 'muted';
+      p.textContent = 'Primes actives (détails non fournis par la source).';
+      wrap.append(p);
     }
 
-    wrap.append(list);
-    return wrap;
+    host.append(wrap);
   }
-
-  host.append(section(groups.CetusSyndicate.title,   groups.CetusSyndicate.expiry,   groups.CetusSyndicate.jobs));
-  host.append(section(groups.SolarisSyndicate.title, groups.SolarisSyndicate.expiry, groups.SolarisSyndicate.jobs));
-  host.append(section(groups.EntratiSyndicate.title, groups.EntratiSyndicate.expiry, groups.EntratiSyndicate.jobs));
 }
 
 /* ------------------ Compactage layout ------------------ */
