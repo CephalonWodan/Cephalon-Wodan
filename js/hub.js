@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB.JS — affichage Hub (division Primes en 3 cartes)
+   HUB.JS — affichage Hub (Invasions fix + Primes en 3 cartes)
    ========================================================= */
 
 const API_BASE = 'https://cephalon-wodan-production.up.railway.app';
@@ -33,7 +33,7 @@ const els = {
   invList: document.getElementById('invasions-list'),
   ctxInv: document.getElementById('ctx-invasions'),
 
-  // === nouveaux conteneurs pour Primes
+  // Primes en 3 cartes
   bountyCetus:   document.getElementById('bounty-cetus'),
   bountyVallis:  document.getElementById('bounty-vallis'),
   bountyCambion: document.getElementById('bounty-cambion'),
@@ -184,6 +184,64 @@ function renderDuviri(d){
   if(els.ctxDuviri) els.ctxDuviri.textContent=[n?`${n} normal`:null,h?`${h} hard`:null].filter(Boolean).join(' • ')||'—';
 }
 
+/* ===== Invasions (PATCH : on ne supprime QUE la pilule "Infested") ===== */
+function rewardText(r){ if(!r) return '';
+  const a=[]; (r.countedItems||[]).forEach(ci=>a.push(`${ci.count??1}× ${ci.type||ci.key||'Item'}`));
+  if(r.credits) a.push(`${r.credits.toLocaleString()}c`);
+  if(Array.isArray(r.items)) a.push(...r.items);
+  return a.join(', ');
+}
+function renderInvasions(d){
+  if(!els.invList) return; const list=Array.isArray(d?.invasions)?d.invasions:[]; els.invList.innerHTML='';
+  if(els.ctxInv) els.ctxInv.textContent=`${list.length} actives`;
+  if(!list.length){ els.invList.append(createEl('li','muted','Aucune invasion active')); return; }
+
+  list.forEach(v=>{
+    const li=createEl('li','wf-row');
+    const L=createEl('div','left'), R=createEl('div','right');
+
+    // Titre + description
+    const head=createEl('div','inv-head');
+    head.append(createEl('span','inv-node',v.node||'—'));
+    if(v.desc) head.append(createEl('span','inv-desc',v.desc));
+    L.append(head);
+
+    // Factions (on masque UNIQUEMENT la pilule "Infested")
+    const vs=createEl('div','inv-vs');
+    const fAtt=(v.attacker?.faction||'').trim();
+    const fDef=(v.defender?.faction||'').trim();
+    const attPill=createEl('span','inv-fac inv-att',fAtt||'Attacker');
+    const defPill=createEl('span','inv-fac inv-def',fDef||'Defender');
+
+    if((fAtt||'').toLowerCase()==='infested') attPill.classList.add('inv-infested-pill');
+    if((fDef||'').toLowerCase()==='infested') defPill.classList.add('inv-infested-pill');
+
+    // Ajout conditionnel du "vs" si les deux pilules sont visibles
+    const bothVisible = !attPill.classList.contains('inv-infested-pill') && !defPill.classList.contains('inv-infested-pill');
+    vs.append(attPill);
+    if(bothVisible) vs.append(createEl('span','muted','vs'));
+    vs.append(defPill);
+    L.append(vs);
+
+    // Récompenses (NE SONT PAS masquées)
+    const rew=createEl('div','inv-rew');
+    const ra=rewardText(v.attacker?.reward);
+    const rd=rewardText(v.defender?.reward);
+    if(ra) rew.append(createEl('small',null,`Attacker: ${ra}`));
+    if(rd) rew.append(createEl('small',null,`Defender: ${rd}`));
+    if(rew.childNodes.length) L.append(rew);
+
+    // Barre de progression + %
+    const bar=createEl('div','wf-bar'), fill=createEl('div','wf-bar__fill');
+    const pct=typeof v.completion==='number'?Math.max(0,Math.min(100,v.completion)):0;
+    fill.style.width=`${pct}%`; bar.append(fill); L.append(bar);
+    R.append(createEl('span','wf-bar__label', v.completed?'Terminé':`${pct.toFixed(2)}%`));
+
+    li.append(L,R); els.invList.append(li);
+  });
+}
+
+/* ===== Nightwave ===== */
 function renderNightwave(d){
   if(!els.nightwaveList) return; const host=els.nightwaveList; host.innerHTML='';
   const nw=d?.nightwave;
@@ -199,6 +257,7 @@ function renderNightwave(d){
   });
 }
 
+/* ===== Baro ===== */
 function renderBaro(d){
   if(!els.baroStatus||!els.baroInv) return;
   els.baroStatus.innerHTML=''; els.baroInv.innerHTML='';
@@ -212,12 +271,7 @@ function renderBaro(d){
   });
 }
 
-function rewardText(r){ if(!r) return '';
-  const a=[]; (r.countedItems||[]).forEach(ci=>a.push(`${ci.count??1}× ${ci.type||ci.key||'Item'}`));
-  if(r.credits) a.push(`${r.credits.toLocaleString()}c`);
-  if(Array.isArray(r.items)) a.push(...r.items);
-  return a.join(', ');
-}
+/* ===== Primes en 3 cartes ===== */
 function lvlTxt(levels){ if(!Array.isArray(levels)||!levels.length) return '—'; const mi=Math.min(...levels), ma=Math.max(...levels); return `${mi}-${ma}`; }
 const sum=a=>(a||[]).reduce((x,y)=>x+(+y||0),0);
 function shorten(pool,limit=5){
@@ -227,21 +281,16 @@ function shorten(pool,limit=5){
   if(typeof pool==='object'){const k=Object.keys(pool); const s=k.slice(0,limit).join(', '); return k.length>limit?`${s}…`:s;}
   return '';
 }
-
-/* === PRIMES réparties en 3 cartes */
 function renderBounties(d){
   const sms = Array.isArray(d?.syndicateMissions) ? d.syndicateMissions : [];
 
-  // Préparer les zones (host + contexte)
   const zones = {
     'Cetus': { el: els.bountyCetus, ctx: els.ctxCetus, jobs: [], expiry: null },
     'Orb Vallis': { el: els.bountyVallis, ctx: els.ctxVallis, jobs: [], expiry: null },
     'Cambion Drift': { el: els.bountyCambion, ctx: els.ctxCambion, jobs: [], expiry: null },
   };
-  // Clear
   Object.values(zones).forEach(z => { if(z.el){ z.el.innerHTML=''; } if(z.ctx){ z.ctx.textContent='—'; } });
 
-  // Dispatcher par syndicat
   sms.forEach(sm=>{
     const s = (sm.syndicate||'').toLowerCase();
     let Z = null;
@@ -249,33 +298,23 @@ function renderBounties(d){
     else if(s.includes('solaris')) Z='Orb Vallis';
     else if(s.includes('entrati')) Z='Cambion Drift';
     if(!Z) return;
-    const zone = zones[Z];
-    if(!zone) return;
-    if(sm.expiry) zone.expiry = zone.expiry || sm.expiry; // garder un expiry de groupe si dispo
-    (sm.jobs||[]).forEach(j=>zone.jobs.push(j));
+    const z = zones[Z];
+    if(!z) return;
+    if(sm.expiry && !z.expiry) z.expiry = sm.expiry;
+    (sm.jobs||[]).forEach(j=>z.jobs.push(j));
   });
 
-  // Rendu de chaque carte
-  Object.entries(zones).forEach(([name,zone])=>{
-    const host=zone.el; const ctx=zone.ctx;
+  Object.entries(zones).forEach(([name,z])=>{
+    const host=z.el, ctx=z.ctx;
     if(!host) return;
+    if(!z.jobs.length){ host.textContent='Aucune prime active'; if(ctx) ctx.textContent='—'; return; }
+    if(ctx) ctx.textContent=`${z.jobs.length}`;
 
-    if(!zone.jobs.length){
-      host.textContent = 'Aucune prime active';
-      if(ctx) ctx.textContent='—';
-      return;
-    }
-    if(ctx) ctx.textContent = `${zone.jobs.length}`;
+    // ETA group (si dispo)
+    if(z.expiry){ const head=createEl('div','circuit-head'); head.append(makeEta(z.expiry,'')); host.append(head); }
 
-    // En-tête optionnelle ETA de la zone
-    if(zone.expiry){
-      const head = createEl('div','circuit-head');
-      head.append(makeEta(zone.expiry,''));
-      host.append(head);
-    }
-
-    const ul = createEl('ul','wf-list no-pad');
-    zone.jobs.forEach(j=>{
+    const ul=createEl('ul','wf-list no-pad');
+    z.jobs.forEach(j=>{
       const li=createEl('li','wf-row'), L=createEl('div','left'), R=createEl('div','right');
       const type=j.type||j.jobType||'Bounty', lv=lvlTxt(j.enemyLevels), st=sum(j.standingStages), mr=+j.minMR||0;
       L.append(createEl('span','wf-chip',type));
@@ -284,12 +323,14 @@ function renderBounties(d){
       if(mr>0) L.append(createEl('span','wf-chip',`MR ${mr}+`));
       const rewards=shorten(j.rewardPool||j.rewards?.pool||j.rewards?.rewardPool,5);
       R.append(createEl('span','wf-badge',rewards||'—'));
-      if(j.expiry && (!zone.expiry || j.expiry!==zone.expiry)) R.append(makeEta(j.expiry,''));
+      if(j.expiry && (!z.expiry || j.expiry!==z.expiry)) R.append(makeEta(j.expiry,''));
       li.append(L,R); ul.append(li);
     });
     host.append(ul);
   });
 }
+
+/* ===== Nightwave déjà plus haut ===== */
 
 /* ===== Main ===== */
 async function loadAndRender(){
