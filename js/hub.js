@@ -1,10 +1,10 @@
-/* =========================================================
-   HUB.JS v12 — Cephalon Wodan
+/* ========================================================= 
+   HUB.JS v12 — Cephalon Wodan (patch)
    - API Railway /api/:platform?lang=xx
    - Ticker ETA pour cycles, fissures, sortie, archon, baro
    - Filtres fissures (tier + difficulté)
    - Duviri Circuit : affichage des choix (pas d'état/ETA)
-   - Bounties (Cetus/Vallis/Cambion) depuis syndicateMissions
+   - Bounties (Cetus/Vallis/Cambion/…) depuis syndicateMissions
    - Compactage de layout (span + hide) pour réduire les trous
    ========================================================= */
 
@@ -44,6 +44,7 @@ const els = {
   ctxInv: document.getElementById('ctx-invasions'),
 
   bounty: document.getElementById('bounty-content'),
+  ctxBounties: document.getElementById('ctx-bounties'),
 };
 
 /* ------------------ Utils ------------------ */
@@ -75,6 +76,47 @@ async function fetchAgg(platform, lang) {
   const r = await fetch(url, { cache: 'no-store' });
   if (!r.ok) throw new Error(`agg ${platform} ${r.status}`);
   return await r.json();
+}
+
+/* ---------- petites utils bounty ---------- */
+function sum(arr) {
+  return Array.isArray(arr) ? arr.reduce((a,b)=>a + (Number(b)||0), 0) : 0;
+}
+function lvlRangeTxtFromArray(levels) {
+  if (!Array.isArray(levels) || levels.length === 0) return '—';
+  const min = Math.min(...levels);
+  const max = Math.max(...levels);
+  if (!Number.isFinite(min) || !Number.isFinite(max)) return '—';
+  return (min === max) ? String(min) : `${min}-${max}`;
+}
+function shortenRewards(pool, max = 5) {
+  if (!Array.isArray(pool) || pool.length === 0) return '—';
+  const score = (s='') => {
+    const t = s.toLowerCase();
+    if (t.includes('aya')) return 10;
+    if (t.includes('blueprint')) return 9;
+    if (t.includes('lens')) return 8;
+    if (t.includes('endo')) return 7;
+    if (t.includes('credit')) return 6;
+    if (t.includes('matrix')) return 5;
+    if (t.includes('arcane')) return 4;
+    return 0;
+  };
+  const ranked = pool
+    .map(s => String(s))
+    .map(s => ({ s, sc: score(s) }))
+    .sort((a,b) => b.sc - a.sc || a.s.localeCompare(b.s));
+  return ranked.slice(0, max).map(x => x.s).join(', ');
+}
+function syndicateToZone(s) {
+  const k = (s || '').toLowerCase();
+  if (k.includes('ostron')) return 'Cetus';
+  if (k.includes('solaris')) return 'Orb Vallis';
+  if (k.includes('entrati')) return 'Cambion Drift';
+  if (k.includes('cavia')) return 'Albrecht’s Labs';
+  if (k.includes('holdfast') || k.includes('zarium') || k.includes('zariman')) return 'Zariman';
+  if (k.includes('hex')) return 'Whispers in the Walls';
+  return s || 'Syndicate';
 }
 
 /* ------------------ Ticker ETA ------------------ */
@@ -131,18 +173,28 @@ function renderCycles(data) {
 }
 
 /* ------------ Fissures + filtres ------------ */
+function tierNumToKey(n) {
+  // secours si f.tier est absent : 1 Lith, 2 Meso, 3 Neo, 4 Axi, 5 Requiem, 6 Omnia
+  const map = { 1:'lith', 2:'meso', 3:'neo', 4:'axi', 5:'requiem', 6:'omnia' };
+  return map[Number(n)] || '';
+}
+function normalizeTierKey(f) {
+  const s = String(f?.tier || '').trim().toLowerCase();
+  if (s) return s; 
+  return tierNumToKey(f?.tierNum);
+}
 function applyFissureFilters(list) {
-  const tierSel = (els.fTier?.value || 'all').toLowerCase();
-  const hardSel = (els.fHard?.value || 'all'); // 'all' | 'normal' | 'hard'
+  const tierSel = (els.fTier?.value || 'all').toLowerCase();   // 'all'|'lith'|...
+  const hardSel = (els.fHard?.value || 'all');                 // 'all'|'normal'|'hard'
   return list.filter((f) => {
-    const tierOk = tierSel === 'all' || (String(f.tier || '').toLowerCase() === tierSel);
+    const tKey = normalizeTierKey(f);
+    const tierOk = tierSel === 'all' || (tKey === tierSel);
     let hardOk = true;
     if (hardSel === 'hard') hardOk = !!f.isHard;
     else if (hardSel === 'normal') hardOk = !f.isHard;
     return tierOk && hardOk;
   });
 }
-
 function renderFissures(data) {
   const all = Array.isArray(data?.fissures) ? data.fissures : [];
   const list = applyFissureFilters(all);
@@ -155,8 +207,11 @@ function renderFissures(data) {
     const left = createEl('div', 'left');
     const right = createEl('div', 'right');
 
+    const tKey = normalizeTierKey(f);
+    const tierClass = tKey ? ` tier-${tKey}` : '';
+
     left.append(createEl('span', 'inv-node', f.node || '—'));
-    left.append(createEl('span', `wf-chip tier-${(f.tier||'').toLowerCase()}`, f.tier || '—'));
+    left.append(createEl('span', `wf-chip${tierClass}`, f.tier || (tKey ? tKey.toUpperCase() : '—')));
     left.append(createEl('span', `wf-chip ${f.isHard ? 'tag-hard' : 'tag-normal'}`, f.isHard ? 'Steel Path' : 'Normal'));
     left.append(createEl('span', 'wf-chip', f.missionType || '—'));
 
@@ -191,7 +246,6 @@ function renderSortie(data) {
   }
   els.sortie.append(head, variants);
 }
-
 function renderArchon(data) {
   const a = data?.archonHunt;
   els.archon.innerHTML = '';
@@ -274,7 +328,6 @@ function renderNightwave(data) {
     els.nightwaveList.append(li);
   }
 }
-
 function renderBaro(data) {
   els.baroStatus.innerHTML = '';
   els.baroInv.innerHTML = '';
@@ -318,7 +371,6 @@ function rewardToText(rw) {
   if (Array.isArray(rw.items)) parts.push(...rw.items);
   return parts.join(', ');
 }
-
 function renderInvasions(data) {
   const inv = Array.isArray(data?.invasions) ? data.invasions : [];
   els.invList.innerHTML = '';
@@ -371,7 +423,7 @@ function renderInvasions(data) {
   }
 }
 
-/* ------------ Bounties (Cetus/Vallis/Cambion) ------------ */
+/* ------------ Bounties (Cetus/Vallis/Cambion/…) ------------ */
 function renderBounties(data) {
   const sms = Array.isArray(data?.syndicateMissions) ? data.syndicateMissions : [];
   const host = els.bounty;
@@ -379,71 +431,85 @@ function renderBounties(data) {
 
   if (!sms.length) {
     host.textContent = 'Aucune bounty active';
+    if (els.ctxBounties) els.ctxBounties.textContent = '—';
     return;
   }
 
-  const groups = {
-    CetusSyndicate:   { title: 'Cetus',   jobs: [], expiry: null },
-    SolarisSyndicate: { title: 'Vallis',  jobs: [], expiry: null },
-    EntratiSyndicate: { title: 'Cambion', jobs: [], expiry: null },
-  };
-
+  // Regroupe par "zone" dérivée du nom de syndicat
+  const byZone = new Map(); // zone -> { title, expiry, jobs: [] }
   for (const sm of sms) {
-    const g = groups[sm.syndicate];
-    if (!g) continue;
-    g.expiry = g.expiry || sm.expiry;
+    const zone = syndicateToZone(sm.syndicate);
+    if (!byZone.has(zone)) {
+      byZone.set(zone, { title: zone, expiry: sm.expiry || null, jobs: [] });
+    }
+    const g = byZone.get(zone);
+    // expire de groupe (si plusieurs SM pour la même zone, garde la plus proche)
+    if (!g.expiry) g.expiry = sm.expiry || null;
     const jobs = Array.isArray(sm.jobs) ? sm.jobs : [];
     g.jobs.push(...jobs);
   }
 
-  function section(title, expiry, jobs) {
-    const wrap = document.createElement('div');
-    wrap.style.marginBottom = '0.75rem';
+  // Contexte (ex: Cetus: 6 • Orb Vallis: 6 • Cambion Drift: 8)
+  const ctxParts = [];
+  for (const [zone, g] of byZone.entries()) {
+    ctxParts.push(`${zone}: ${g.jobs.length}`);
+  }
+  if (els.ctxBounties) els.ctxBounties.textContent = ctxParts.join(' • ');
 
-    const header = document.createElement('div');
-    header.className = 'inv-head';
-    header.append(createEl('span', 'inv-node', title));
-    if (expiry) header.append(makeEta(expiry));
-    wrap.append(header);
+  // Rendu
+  for (const [zone, g] of byZone.entries()) {
+    const head = createEl('div', 'circuit-head');
+    head.append(createEl('div', 'circuit-title', g.title));
+    if (g.expiry) head.append(makeEta(g.expiry));
+    host.append(head);
 
-    if (!jobs.length) {
-      wrap.append(createEl('div', 'muted', '—'));
-      return wrap;
+    if (!g.jobs.length) {
+      host.append(createEl('div', 'muted', '—'));
+      continue;
     }
 
     const list = document.createElement('ul');
     list.className = 'wf-list no-pad';
 
-    for (const j of jobs) {
+    for (const j of g.jobs) {
       const li = createEl('li', 'wf-row');
       const left = createEl('div', 'left');
+      const right = createEl('div', 'right');
 
-      const parts = [];
-      if (j.type || j.jobType) parts.push(j.type || j.jobType);
-      const lvl = (j.minLevel != null || j.maxLevel != null)
-        ? `Lvl ${j.minLevel ?? '?'}–${j.maxLevel ?? '?'}`
-        : null;
-      if (lvl) parts.push(lvl);
-      if (j.standing != null || j.reputation != null) {
-        parts.push(`${j.standing ?? j.reputation} Standing`);
+      // Type
+      const type = j.type || j.jobType || 'Bounty';
+
+      // Niveaux (enemyLevels[])
+      const levelTxt = lvlRangeTxtFromArray(j.enemyLevels);
+
+      // Standing total (standingStages[])
+      const standingTotal = sum(j.standingStages);
+      const mr = Number(j.minMR || 0);
+
+      const chips = [];
+      chips.push(createEl('span', 'wf-chip', type));
+      if (levelTxt !== '—') chips.push(createEl('span', 'wf-chip', `Lv ${levelTxt}`));
+      if (standingTotal) chips.push(createEl('span', 'wf-chip', `${standingTotal} Standing`));
+      if (mr > 0) chips.push(createEl('span', 'wf-chip', `MR ${mr}+`));
+      // timeBound ?
+      if (j.timeBound) chips.push(createEl('span', 'wf-chip', `Time: ${j.timeBound}`));
+      chips.forEach(ch => left.append(ch));
+
+      // Rewards (aperçu)
+      const rewards = shortenRewards(j.rewardPool, 5);
+      right.append(createEl('span', 'wf-badge', rewards));
+
+      // ETA si différent de l'expiry de groupe
+      if (j.expiry && j.expiry !== g.expiry) {
+        right.append(makeEta(j.expiry, ''));
       }
 
-      left.append(createEl('span', 'wf-chip', parts.join(' • ') || 'Bounty'));
-
-      const rp = j.rewardPool || j.rewards?.pool || j.rewards?.rewardPool;
-      if (rp) left.append(createEl('span', 'wf-chip', rp));
-
-      li.append(left);
+      li.append(left, right);
       list.append(li);
     }
 
-    wrap.append(list);
-    return wrap;
+    host.append(list);
   }
-
-  host.append(section(groups.CetusSyndicate.title,   groups.CetusSyndicate.expiry,   groups.CetusSyndicate.jobs));
-  host.append(section(groups.SolarisSyndicate.title, groups.SolarisSyndicate.expiry, groups.SolarisSyndicate.jobs));
-  host.append(section(groups.EntratiSyndicate.title, groups.EntratiSyndicate.expiry, groups.EntratiSyndicate.jobs));
 }
 
 /* ------------------ Compactage layout ------------------ */
