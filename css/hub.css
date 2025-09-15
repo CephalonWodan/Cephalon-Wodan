@@ -136,6 +136,12 @@ body{
 /* PRIMES — pas de chips dorées */
 #bounty-content{color:var(--muted);line-height:1.5}
 #bounty-content .wf-chip{border:none!important;background:none!important;padding:0!important;color:var(--muted)!important}
+#bounty-cetus .wf-chip,
+#bounty-vallis .wf-chip,
+#bounty-cambion .wf-chip {
+  border:none!important; background:none!important; padding:0!important; color:var(--muted)!important;
+}
+
 
 /* Cycles centrés */
 #cycles-list .wf-row{grid-template-columns:1fr;justify-items:center;text-align:center}
