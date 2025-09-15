@@ -3,7 +3,7 @@
    - ETA: >=24h -> j/h/m/s
    - Guards + normalisation pc/en
    - Debug panel (?debug=1)
-   - PATCH: Masonry sûr (fallback auto + activation après RAF)
+   - PATCH: Masonry sûr + fallback si span=1 (cartes "pilules")
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -62,7 +62,7 @@ function makeEta(expiryIso,label=''){ const s=createEl('span','wf-eta'); if(labe
 function tickETAs(){ const now=Date.now(); document.querySelectorAll('.wf-eta .value[data-exp]').forEach(n=>{ const ms=Number(n.dataset.exp||0)-now; n.textContent=fmtETA(ms); }); }
 setInterval(()=>{ if(els.now) els.now.textContent=fmtDT(Date.now()); tickETAs(); },1000);
 
-/* Renders (identiques à avant, gardés ici) */
+/* Renders (inchangés) */
 function renderCycles(data){ if(!els.cyclesList) return;
   const { earthCycle, cetusCycle, vallisCycle, cambionCycle, duviriCycle }=data||{}; els.cyclesList.innerHTML='';
   const rows=[['Earth',earthCycle,c=>c?.isDay?'day':'night'],['Cetus',cetusCycle,c=>c?.isDay?'day':'night'],['Vallis',vallisCycle,c=>c?.isWarm?'warm':'cold'],['Cambion',cambionCycle,c=>c?.state||'—'],['Duviri',duviriCycle,c=>c?.state||'—']];
@@ -133,27 +133,36 @@ function renderBounties(data){ if(!els.bounty) return;
   });
 }
 
-/* ===== PATCH Masonry sûr ===== */
+/* ===== PATCH Masonry sûr + auto-fallback ===== */
 function applyMasonry(){
   const grid=els.grid; if(!grid) return;
 
-  // 1) activer la hauteur fixe des lignes au moment de l’application
+  // Activer masonry
   grid.style.gridAutoRows = 'var(--masonry-row)';
 
-  // 2) attendre un RAF pour garantir un layout à jour
   requestAnimationFrame(()=>{
     const row=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--masonry-row'))||8;
     const gap=parseFloat(getComputedStyle(grid).rowGap)||0;
-    grid.querySelectorAll('.wf-card').forEach(card=>{
+    const cards=[...grid.querySelectorAll('.wf-card')];
+
+    let span1=0;
+    cards.forEach(card=>{
       card.style.gridRowEnd='span 1';
       const h=card.getBoundingClientRect().height;
       const rows=Math.ceil((h+gap)/(row+gap));
-      card.style.gridRowEnd=`span ${rows}`;
+      card.style.gridRowEnd=`span ${Math.max(1, rows)}`;
+      if(rows<=1) span1++;
     });
+
+    // Si la majorité des cartes restent à 1 ligne, on FALLEBACK en auto
+    if(cards.length && span1/cards.length > 0.7){
+      // désactiver masonry pour garantir l’affichage complet
+      grid.style.gridAutoRows = 'auto';
+      cards.forEach(card=>{ card.style.gridRowEnd = 'auto'; });
+      if(DEBUG) console.warn('[HUB] Masonry fallback: auto (span=1 détecté)');
+    }
   });
 }
-
-/* debounce léger + rafraîchit masonry après redimensionnement */
 const debouncedMasonry=(()=>{ let t=null; return ()=>{ clearTimeout(t); t=setTimeout(applyMasonry,80); }; })();
 
 /* Main */
