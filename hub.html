@@ -5,12 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Warframe – Hub</title>
 
-  <!-- Tailwind pour la barre de nav (comme avant) -->
+  <!-- Tailwind optionnel (nav). Tu peux le retirer si tu veux. -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <link rel="stylesheet" href="css/theme.css" />
-  <link rel="stylesheet" href="css/hub.css?v=20" />
-
+  <link rel="stylesheet" href="css/hub.css?v=21" />
   <script src="js/site_nav.js" defer></script>
 </head>
 <body>
@@ -18,11 +17,8 @@
 
   <!-- Toolbar -->
   <div class="wf-toolbar">
-    <div class="wf-toolbar__left">
-      <strong>Hub</strong>
-      <small id="now" class="muted" style="margin-left:.6rem;"></small>
-    </div>
-    <div class="wf-toolbar__right">
+    <div><strong>Hub</strong> <small id="now" class="muted" style="margin-left:.6rem;"></small></div>
+    <div style="display:flex;gap:.7rem;align-items:center">
       <label>Plateforme
         <select id="platform">
           <option value="pc" selected>PC</option>
@@ -112,13 +108,25 @@
       <ul id="invasions-list" class="wf-list"></ul>
     </section>
 
-    <!-- Primes -->
+    <!-- Primes — CETUS -->
     <section class="wf-card">
-      <h2 class="wf-card__title">Primes <small id="ctx-bounties" class="wf-ctx"></small></h2>
-      <div id="bounty-content" class="wf-pad"></div>
+      <h2 class="wf-card__title">Primes — Cetus <small id="ctx-bounties-cetus" class="wf-ctx"></small></h2>
+      <div id="bounty-cetus" class="wf-pad"></div>
+    </section>
+
+    <!-- Primes — ORB VALLIS -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">Primes — Orb Vallis <small id="ctx-bounties-vallis" class="wf-ctx"></small></h2>
+      <div id="bounty-vallis" class="wf-pad"></div>
+    </section>
+
+    <!-- Primes — CAMBION DRIFT -->
+    <section class="wf-card">
+      <h2 class="wf-card__title">Primes — Cambion Drift <small id="ctx-bounties-cambion" class="wf-ctx"></small></h2>
+      <div id="bounty-cambion" class="wf-pad"></div>
     </section>
   </main>
 
-  <script type="module" src="js/hub.js?v=20"></script>
+  <script type="module" src="js/hub.js?v=21"></script>
 </body>
 </html>
