@@ -54,6 +54,11 @@ body{
   margin: 0 0 1rem;            /* espace vertical entre cartes */
   vertical-align: top;
   break-inside: avoid;         /* pas de scission de carte */
+  /* PATCH: robustesse masonry (navigateurs) */
+  -webkit-column-break-inside: avoid;
+  page-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+
   background:var(--panel-1);border-radius:.9rem;overflow:hidden;
   border:1px solid rgba(230,210,142,.45);box-shadow:var(--shadow);
 }
@@ -119,8 +124,10 @@ body{
 .inv-fac{padding:.1rem .4rem;border-radius:.4rem;border:1px solid rgba(230,210,142,.35)}
 .inv-att{color:#ffb7b7;border-color:#ff8a8a}
 .inv-def{color:#bff7ff;border-color:#7de9ff}
-/* masquer Infested */
+/* masquer Infested (ancienne classe, si encore utilisée) */
 .inv-infested{display:none!important}
+/* PATCH: ne masquer que la pastille "Infested" utilisée par le JS */
+.inv-infested-pill{display:none!important}
 
 .inv-rew{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
 .wf-bar{position:relative;height:10px;width:100%;background:rgba(230,210,142,.12);border:1px solid rgba(230,210,142,.35);border-radius:999px;overflow:hidden}
@@ -136,12 +143,12 @@ body{
 /* PRIMES — pas de chips dorées */
 #bounty-content{color:var(--muted);line-height:1.5}
 #bounty-content .wf-chip{border:none!important;background:none!important;padding:0!important;color:var(--muted)!important}
+/* PATCH: appliquer la neutralisation aux 3 cartes séparées */
 #bounty-cetus .wf-chip,
 #bounty-vallis .wf-chip,
 #bounty-cambion .wf-chip {
   border:none!important; background:none!important; padding:0!important; color:var(--muted)!important;
 }
-
 
 /* Cycles centrés */
 #cycles-list .wf-row{grid-template-columns:1fr;justify-items:center;text-align:center}
