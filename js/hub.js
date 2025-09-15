@@ -367,7 +367,10 @@ function renderInvasions(data) {
     const att = createEl('span', 'inv-fac inv-att', fAtt);
     const def = createEl('span', 'inv-fac inv-def', fDef);
     vs.append(att, createEl('span', 'muted', 'vs'), def);
-    if (v.vsInfestation) vs.append(createEl('span','inv-fac inv-infested','Infested'));
+
+    // PATCH: ne plus afficher la pastille "Infested" supplémentaire
+    // if (v.vsInfestation) vs.append(createEl('span','inv-fac inv-infested','Infested'));
+
     left.append(vs);
 
     const rew = createEl('div','inv-rew');
