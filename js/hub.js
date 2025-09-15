@@ -1,10 +1,10 @@
-/* ========================================================= 
-   HUB.JS v12 — Cephalon Wodan (patch)
+/* =========================================================
+   HUB.JS v13 — Cephalon Wodan
    - API Railway /api/:platform?lang=xx
    - Ticker ETA pour cycles, fissures, sortie, archon, baro
    - Filtres fissures (tier + difficulté)
    - Duviri Circuit : affichage des choix (pas d'état/ETA)
-   - Bounties (Cetus/Vallis/Cambion/…) depuis syndicateMissions
+   - Bounties (Ostrons / Solaris / Entrati) depuis syndicateMissions
    - Compactage de layout (span + hide) pour réduire les trous
    ========================================================= */
 
@@ -78,45 +78,31 @@ async function fetchAgg(platform, lang) {
   return await r.json();
 }
 
-/* ---------- petites utils bounty ---------- */
+// Helpers bounties
 function sum(arr) {
-  return Array.isArray(arr) ? arr.reduce((a,b)=>a + (Number(b)||0), 0) : 0;
+  if (!Array.isArray(arr)) return 0;
+  return arr.reduce((a, b) => a + (Number(b) || 0), 0);
 }
 function lvlRangeTxtFromArray(levels) {
-  if (!Array.isArray(levels) || levels.length === 0) return '—';
+  if (!Array.isArray(levels) || !levels.length) return '—';
   const min = Math.min(...levels);
   const max = Math.max(...levels);
-  if (!Number.isFinite(min) || !Number.isFinite(max)) return '—';
-  return (min === max) ? String(min) : `${min}-${max}`;
+  if (!isFinite(min) || !isFinite(max)) return '—';
+  return `${min}-${max}`;
 }
-function shortenRewards(pool, max = 5) {
-  if (!Array.isArray(pool) || pool.length === 0) return '—';
-  const score = (s='') => {
-    const t = s.toLowerCase();
-    if (t.includes('aya')) return 10;
-    if (t.includes('blueprint')) return 9;
-    if (t.includes('lens')) return 8;
-    if (t.includes('endo')) return 7;
-    if (t.includes('credit')) return 6;
-    if (t.includes('matrix')) return 5;
-    if (t.includes('arcane')) return 4;
-    return 0;
-  };
-  const ranked = pool
-    .map(s => String(s))
-    .map(s => ({ s, sc: score(s) }))
-    .sort((a,b) => b.sc - a.sc || a.s.localeCompare(b.s));
-  return ranked.slice(0, max).map(x => x.s).join(', ');
-}
-function syndicateToZone(s) {
-  const k = (s || '').toLowerCase();
-  if (k.includes('ostron')) return 'Cetus';
-  if (k.includes('solaris')) return 'Orb Vallis';
-  if (k.includes('entrati')) return 'Cambion Drift';
-  if (k.includes('cavia')) return 'Albrecht’s Labs';
-  if (k.includes('holdfast') || k.includes('zarium') || k.includes('zariman')) return 'Zariman';
-  if (k.includes('hex')) return 'Whispers in the Walls';
-  return s || 'Syndicate';
+function shortenRewards(pool, limit = 5) {
+  if (!pool) return '';
+  if (typeof pool === 'string') return pool;
+  if (Array.isArray(pool)) {
+    const small = pool.slice(0, limit).join(', ');
+    return pool.length > limit ? `${small}…` : small;
+  }
+  if (pool && typeof pool === 'object') {
+    const arr = Object.keys(pool);
+    const small = arr.slice(0, limit).join(', ');
+    return arr.length > limit ? `${small}…` : small;
+  }
+  return '';
 }
 
 /* ------------------ Ticker ETA ------------------ */
@@ -173,22 +159,11 @@ function renderCycles(data) {
 }
 
 /* ------------ Fissures + filtres ------------ */
-function tierNumToKey(n) {
-  // secours si f.tier est absent : 1 Lith, 2 Meso, 3 Neo, 4 Axi, 5 Requiem, 6 Omnia
-  const map = { 1:'lith', 2:'meso', 3:'neo', 4:'axi', 5:'requiem', 6:'omnia' };
-  return map[Number(n)] || '';
-}
-function normalizeTierKey(f) {
-  const s = String(f?.tier || '').trim().toLowerCase();
-  if (s) return s; 
-  return tierNumToKey(f?.tierNum);
-}
 function applyFissureFilters(list) {
-  const tierSel = (els.fTier?.value || 'all').toLowerCase();   // 'all'|'lith'|...
-  const hardSel = (els.fHard?.value || 'all');                 // 'all'|'normal'|'hard'
+  const tierSel = (els.fTier?.value || 'all').toLowerCase();
+  const hardSel = (els.fHard?.value || 'all'); // 'all' | 'normal' | 'hard'
   return list.filter((f) => {
-    const tKey = normalizeTierKey(f);
-    const tierOk = tierSel === 'all' || (tKey === tierSel);
+    const tierOk = tierSel === 'all' || (String(f.tier || '').toLowerCase() === tierSel);
     let hardOk = true;
     if (hardSel === 'hard') hardOk = !!f.isHard;
     else if (hardSel === 'normal') hardOk = !f.isHard;
@@ -207,11 +182,8 @@ function renderFissures(data) {
     const left = createEl('div', 'left');
     const right = createEl('div', 'right');
 
-    const tKey = normalizeTierKey(f);
-    const tierClass = tKey ? ` tier-${tKey}` : '';
-
     left.append(createEl('span', 'inv-node', f.node || '—'));
-    left.append(createEl('span', `wf-chip${tierClass}`, f.tier || (tKey ? tKey.toUpperCase() : '—')));
+    left.append(createEl('span', `wf-chip tier-${(f.tier||'').toLowerCase()}`, f.tier || '—'));
     left.append(createEl('span', `wf-chip ${f.isHard ? 'tag-hard' : 'tag-normal'}`, f.isHard ? 'Steel Path' : 'Normal'));
     left.append(createEl('span', 'wf-chip', f.missionType || '—'));
 
@@ -423,41 +395,57 @@ function renderInvasions(data) {
   }
 }
 
-/* ------------ Bounties (Cetus/Vallis/Cambion/…) ------------ */
+/* ------------ Bounties (Ostrons / Solaris / Entrati) ------------ */
+function syndicateToZone(s) {
+  const k = (s || '').toLowerCase();
+  // ——— SEULES zones qu'on veut garder
+  if (k.includes('ostron')) return 'Cetus';
+  if (k.includes('solaris')) return 'Orb Vallis';
+  if (k.includes('entrati')) return 'Cambion Drift';
+  return null; // ignorer tout le reste
+}
+
 function renderBounties(data) {
   const sms = Array.isArray(data?.syndicateMissions) ? data.syndicateMissions : [];
   const host = els.bounty;
   host.innerHTML = '';
 
-  if (!sms.length) {
+  // Filtrer uniquement Ostrons / Solaris United / Entrati
+  const filtered = sms.filter(sm => !!syndicateToZone(sm.syndicate));
+
+  if (!filtered.length) {
     host.textContent = 'Aucune bounty active';
     if (els.ctxBounties) els.ctxBounties.textContent = '—';
     return;
   }
 
-  // Regroupe par "zone" dérivée du nom de syndicat
+  // Regroupe par zone (Cetus / Orb Vallis / Cambion Drift)
   const byZone = new Map(); // zone -> { title, expiry, jobs: [] }
-  for (const sm of sms) {
+  for (const sm of filtered) {
     const zone = syndicateToZone(sm.syndicate);
     if (!byZone.has(zone)) {
       byZone.set(zone, { title: zone, expiry: sm.expiry || null, jobs: [] });
     }
     const g = byZone.get(zone);
-    // expire de groupe (si plusieurs SM pour la même zone, garde la plus proche)
-    if (!g.expiry) g.expiry = sm.expiry || null;
+    if (!g.expiry && sm.expiry) g.expiry = sm.expiry;
     const jobs = Array.isArray(sm.jobs) ? sm.jobs : [];
     g.jobs.push(...jobs);
   }
 
-  // Contexte (ex: Cetus: 6 • Orb Vallis: 6 • Cambion Drift: 8)
+  // Contexte (Cetus: x • Orb Vallis: y • Cambion Drift: z)
+  const desiredOrder = ['Cetus', 'Orb Vallis', 'Cambion Drift'];
   const ctxParts = [];
-  for (const [zone, g] of byZone.entries()) {
-    ctxParts.push(`${zone}: ${g.jobs.length}`);
+  for (const z of desiredOrder) {
+    const g = byZone.get(z);
+    if (g) ctxParts.push(`${z}: ${g.jobs.length}`);
   }
   if (els.ctxBounties) els.ctxBounties.textContent = ctxParts.join(' • ');
 
-  // Rendu
-  for (const [zone, g] of byZone.entries()) {
+  // Rendu dans l'ordre fixe
+  for (const zone of desiredOrder) {
+    const g = byZone.get(zone);
+    if (!g) continue;
+
     const head = createEl('div', 'circuit-head');
     head.append(createEl('div', 'circuit-title', g.title));
     if (g.expiry) head.append(makeEta(g.expiry));
@@ -491,16 +479,15 @@ function renderBounties(data) {
       if (levelTxt !== '—') chips.push(createEl('span', 'wf-chip', `Lv ${levelTxt}`));
       if (standingTotal) chips.push(createEl('span', 'wf-chip', `${standingTotal} Standing`));
       if (mr > 0) chips.push(createEl('span', 'wf-chip', `MR ${mr}+`));
-      // timeBound ?
       if (j.timeBound) chips.push(createEl('span', 'wf-chip', `Time: ${j.timeBound}`));
       chips.forEach(ch => left.append(ch));
 
-      // Rewards (aperçu)
-      const rewards = shortenRewards(j.rewardPool, 5);
-      right.append(createEl('span', 'wf-badge', rewards));
+      // Aperçu récompenses
+      const rewards = shortenRewards(j.rewardPool || j.rewards?.pool || j.rewards?.rewardPool, 5);
+      right.append(createEl('span', 'wf-badge', rewards || '—'));
 
-      // ETA si différent de l'expiry de groupe
-      if (j.expiry && j.expiry !== g.expiry) {
+      // ETA par job si présent et différent de l’expiry de la zone
+      if (j.expiry && (!g.expiry || j.expiry !== g.expiry)) {
         right.append(makeEta(j.expiry, ''));
       }
 
@@ -530,7 +517,10 @@ function compactLayout() {
   const cardInv    = els.invList?.closest('.wf-card');
   const cardPrimes = els.bounty?.closest('.wf-card');
 
-  if (cardPrimes && _empty(els.bounty)) cardPrimes.classList.add('hidden');
+  if (cardPrimes) {
+    const hasBounties = _len('#bounty-content .wf-row') > 0;
+    if (!hasBounties) cardPrimes.classList.add('hidden');
+  }
   if (cardBaro) {
     const hasInv = _len('#baro-inventory > li') > 0;
     const hasStatus = !_empty(els.baroStatus);
