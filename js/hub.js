@@ -1,7 +1,8 @@
 /* =========================================================
    HUB.JS v13 — patches:
+   - ETA: >=24h -> j/h/m/s
    - Masonry (remplit les “trous” verticaux)
-   - ETA: >=24h affiché en j/h/m/s
+   - NEW: Guards sur tous les renders + listeners
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -40,7 +41,7 @@ const els = {
   bounty: document.getElementById('bounty-content'),
   ctxBounties: document.getElementById('ctx-bounties'),
 
-  grid: document.querySelector('.wf-grid'), // PATCH masonry
+  grid: document.querySelector('.wf-grid'),
 };
 
 /* Utils */
@@ -50,7 +51,7 @@ function fmtDT(d){
   return `${pad(dt.getDate())}/${pad(dt.getMonth()+1)}/${dt.getFullYear()} ${pad(dt.getHours())}:${pad(dt.getMinutes())}:${pad(dt.getSeconds())}`;
 }
 
-/* -------- PATCH: ETA avec jours quand >= 24h -------- */
+/* ETA avec jours quand >= 24h */
 function fmtETA(ms){
   if(!ms || ms < 0) return '0s';
   const totalSeconds = Math.floor(ms/1000);
@@ -58,7 +59,6 @@ function fmtETA(ms){
   const hours = Math.floor((totalSeconds % 86400) / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
-
   const parts = [];
   if (days > 0) parts.push(`${days}j`);
   if (hours > 0) parts.push(`${hours}h`);
@@ -66,18 +66,18 @@ function fmtETA(ms){
   parts.push(`${seconds}s`);
   return parts.join(' ');
 }
-/* ----------------------------------------------------- */
 
 function createEl(tag, cls, txt){ const el=document.createElement(tag); if(cls) el.className=cls; if(txt!=null) el.textContent=txt; return el; }
 async function fetchAgg(platform, lang){ const r=await fetch(`${API_BASE}/api/${platform}?lang=${encodeURIComponent(lang)}`,{cache:'no-store'}); if(!r.ok) throw new Error(r.status); return r.json(); }
 
-/* ETA */
+/* ETA DOM helpers */
 function makeEta(expiryIso, label=''){ const s=createEl('span','wf-eta'); if(label) s.append(createEl('span','label',label)); const v=createEl('span','value','—'); v.dataset.exp=String(new Date(expiryIso).getTime()); s.append(v); return s; }
 function tickETAs(){ const now=Date.now(); document.querySelectorAll('.wf-eta .value[data-exp]').forEach(n=>{ const ms=Number(n.dataset.exp||0)-now; n.textContent=fmtETA(ms); }); }
-setInterval(()=>{ const now=els.now; if(now) now.textContent=fmtDT(Date.now()); tickETAs(); },1000);
+setInterval(()=>{ if(els.now) els.now.textContent=fmtDT(Date.now()); tickETAs(); },1000);
 
-/* Renders */
+/* ---------- Renders (avec guards) ---------- */
 function renderCycles(data){
+  if(!els.cyclesList) return;
   const { earthCycle, cetusCycle, vallisCycle, cambionCycle, duviriCycle } = data || {};
   els.cyclesList.innerHTML='';
   const rows=[
@@ -99,13 +99,14 @@ function renderCycles(data){
     li.append(left,right);
     els.cyclesList.append(li);
   }
-  els.ctxCycles.textContent = n? `${n} actifs` : '—';
+  if(els.ctxCycles) els.ctxCycles.textContent = n? `${n} actifs` : '—';
 }
 
 function filterFiss(list){ const tier=(els.fTier?.value||'all').toLowerCase(); const hard=(els.fHard?.value||'all'); return list.filter(f=>{ if(tier!=='all' && (String(f.tier||'').toLowerCase()!==tier)) return false; if(hard==='hard' && !f.isHard) return false; if(hard==='normal' && f.isHard) return false; return true; }); }
 function renderFissures(data){
+  if(!els.fissuresList) return;
   const all=Array.isArray(data?.fissures)?data.fissures:[]; const list=filterFiss(all);
-  els.fissuresList.innerHTML=''; els.ctxFissures.textContent=`${list.length}/${all.length} actives`;
+  els.fissuresList.innerHTML=''; if(els.ctxFissures) els.ctxFissures.textContent=`${list.length}/${all.length} actives`;
   for(const f of list){
     const li=createEl('li','wf-row'), L=createEl('div','left'), R=createEl('div','right');
     L.append(createEl('span',`wf-chip tier-${(f.tier||'').toLowerCase()}`,f.tier||'—'));
@@ -118,6 +119,7 @@ function renderFissures(data){
 }
 
 function renderSortie(data){
+  if(!els.sortie) return;
   els.sortie.innerHTML=''; const s=data?.sortie; if(!s) return;
   const head=createEl('div','inv-head');
   head.append(createEl('span','inv-node',s.boss||'Sortie'));
@@ -127,7 +129,9 @@ function renderSortie(data){
   (s.variants||[]).forEach(v=>{ const r=createEl('div','wf-row'), L=createEl('div','left'); L.append(createEl('span','wf-chip',v.missionType||v.type||'—')); if(v.modifier)L.append(createEl('span','wf-chip',v.modifier)); if(v.node)L.append(createEl('span','wf-chip',v.node)); r.append(L); box.append(r); });
   els.sortie.append(head,box);
 }
+
 function renderArchon(data){
+  if(!els.archon) return;
   els.archon.innerHTML=''; const a=data?.archonHunt; if(!a) return;
   const head=createEl('div','inv-head');
   head.append(createEl('span','inv-node',a.boss||'Archon Hunt'));
@@ -151,13 +155,15 @@ function renderDuviri(data){
 }
 
 function renderNightwave(data){
+  if(!els.nightwaveList) return;
   const host=els.nightwaveList; host.innerHTML=''; const nw=data?.nightwave;
-  if(!nw||!nw.activeChallenges?.length){ els.ctxNightwave.textContent='—'; host.append(createEl('li','muted','Aucun défi actif')); return; }
-  els.ctxNightwave.textContent=`${nw.activeChallenges.length} défis`;
+  if(!nw||!nw.activeChallenges?.length){ if(els.ctxNightwave) els.ctxNightwave.textContent='—'; host.append(createEl('li','muted','Aucun défi actif')); return; }
+  if(els.ctxNightwave) els.ctxNightwave.textContent=`${nw.activeChallenges.length} défis`;
   nw.activeChallenges.forEach(c=>{ const li=createEl('li','wf-row'), L=createEl('div','left'), R=createEl('div','right'); L.append(createEl('div','nw-title',c.title||'—')); if(c.desc)L.append(createEl('div','nw-desc',c.desc)); R.append(createEl('span','wf-badge',c.isElite?'Elite':'Normal')); li.append(L,R); host.append(li); });
 }
 
 function renderBaro(data){
+  if(!els.baroStatus || !els.baroInv) return;
   els.baroStatus.innerHTML=''; els.baroInv.innerHTML='';
   const b=data?.voidTrader; if(!b){ els.baroStatus.textContent='Baro non disponible'; return; }
   const arriving = (new Date(b.activation).getTime() - Date.now()) > 0;
@@ -168,7 +174,8 @@ function renderBaro(data){
 
 function rewardText(r){ if(!r) return ''; const a=[]; (r.countedItems||[]).forEach(ci=>a.push(`${ci.count??1}× ${ci.type||ci.key||'Item'}`)); if(r.credits) a.push(`${r.credits.toLocaleString()}c`); if(Array.isArray(r.items)) a.push(...r.items); return a.join(', '); }
 function renderInvasions(data){
-  const list=Array.isArray(data?.invasions)?data.invasions:[]; els.invList.innerHTML=''; els.ctxInv.textContent=`${list.length} actives`; if(!list.length){ els.invList.append(createEl('li','muted','Aucune invasion active')); return; }
+  if(!els.invList) return;
+  const list=Array.isArray(data?.invasions)?data.invasions:[]; els.invList.innerHTML=''; if(els.ctxInv) els.ctxInv.textContent=`${list.length} actives`; if(!list.length){ els.invList.append(createEl('li','muted','Aucune invasion active')); return; }
   list.forEach(v=>{
     const li=createEl('li','wf-row'), L=createEl('div','left'), R=createEl('div','right');
     const head=createEl('div','inv-head'); head.append(createEl('span','inv-node',v.node||'—')); if(v.desc) head.append(createEl('span','inv-desc',v.desc)); L.append(head);
@@ -186,6 +193,7 @@ function lvlTxt(levels){ if(!Array.isArray(levels)||!levels.length) return '—'
 function sum(a){ return (a||[]).reduce((x,y)=>x+(+y||0),0); }
 function shorten(pool,limit=5){ if(!pool) return ''; if(Array.isArray(pool)){ const s=pool.slice(0,limit).join(', '); return pool.length>limit?`${s}…`:s; } if(typeof pool==='string') return pool; if(typeof pool==='object'){ const k=Object.keys(pool); const s=k.slice(0,limit).join(', '); return k.length>limit?`${s}…`:s; } return ''; }
 function renderBounties(data){
+  if(!els.bounty) return;
   const sms=Array.isArray(data?.syndicateMissions)?data.syndicateMissions:[]; const host=els.bounty; host.innerHTML='';
   const filtered=sms.filter(sm=>!!syndicateToZone(sm.syndicate)); if(!filtered.length){ host.textContent='Aucune bounty active'; if(els.ctxBounties) els.ctxBounties.textContent='—'; return; }
   const zones=['Cetus','Orb Vallis','Cambion Drift']; const map=new Map();
@@ -203,13 +211,13 @@ function renderBounties(data){
   });
 }
 
-/* ========== PATCH Masonry ========== */
+/* ========== Masonry ========== */
 function applyMasonry(){
   const grid = els.grid; if(!grid) return;
   const row = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--masonry-row')) || 8;
   const gap = parseFloat(getComputedStyle(grid).rowGap) || 0;
   grid.querySelectorAll('.wf-card').forEach(card=>{
-    card.style.gridRowEnd = 'span 1';   // reset
+    card.style.gridRowEnd = 'span 1';
     const h = card.getBoundingClientRect().height;
     const rows = Math.ceil((h + gap) / (row + gap));
     card.style.gridRowEnd = `span ${rows}`;
@@ -217,23 +225,28 @@ function applyMasonry(){
 }
 const debouncedMasonry=(()=>{ let t=null; return ()=>{ clearTimeout(t); t=setTimeout(applyMasonry,60); }; })();
 
-/* Main */
+/* ---------- Main ---------- */
 async function loadAndRender(){
   try{
     if(els.now) els.now.textContent=fmtDT(Date.now());
-    const agg=await fetchAgg(els.platform.value, els.lang.value);
+    const platform = els.platform?.value || 'pc';
+    const lang = els.lang?.value || 'fr';
+    const agg=await fetchAgg(platform, lang);
     LAST.agg=agg;
+
     renderCycles(agg); renderFissures(agg); renderSortie(agg); renderArchon(agg);
     renderDuviri(agg); renderNightwave(agg); renderBaro(agg); renderInvasions(agg); renderBounties(agg);
+
     tickETAs();
-    debouncedMasonry();               // masonry après rendu
+    debouncedMasonry();
   }catch(e){ console.error('hub load error', e); }
 }
 
+/* Listeners avec guards */
 if(els.fTier) els.fTier.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); debouncedMasonry(); });
 if(els.fHard) els.fHard.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); debouncedMasonry(); });
-els.platform.addEventListener('change', loadAndRender);
-els.lang.addEventListener('change', loadAndRender);
+if(els.platform) els.platform.addEventListener('change', loadAndRender);
+if(els.lang) els.lang.addEventListener('change', loadAndRender);
 window.addEventListener('resize', debouncedMasonry);
 
 loadAndRender();
