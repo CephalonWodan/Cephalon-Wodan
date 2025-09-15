@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB.JS v13 (complet) — + mini patch Baro + Masonry
+   HUB.JS v13 (complet) — + mini patch Baro + Masonry + guards
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -58,6 +58,7 @@ async function fetchAgg(platform, lang){
 
 /* ---------- Renders ---------- */
 function renderCycles(data){
+  if(!els.cyclesList) return;
   const { earthCycle, cetusCycle, vallisCycle, cambionCycle, duviriCycle } = data || {};
   els.cyclesList.innerHTML='';
   const cycles = [
@@ -80,7 +81,7 @@ function renderCycles(data){
     li.append(left,right);
     els.cyclesList.append(li);
   }
-  els.ctxCycles.textContent = count?`${count} actifs`:'—';
+  if(els.ctxCycles) els.ctxCycles.textContent = count?`${count} actifs`:'—';
 }
 
 function filterFissures(raw){
@@ -97,10 +98,11 @@ function filterFissures(raw){
   });
 }
 function renderFissures(data){
+  if(!els.fissuresList) return;
   const fiss=Array.isArray(data?.fissures)?data.fissures:[];
   const filtered=filterFissures(fiss);
   els.fissuresList.innerHTML='';
-  els.ctxFissures.textContent=`${filtered.length}/${fiss.length} actives`;
+  if(els.ctxFissures) els.ctxFissures.textContent=`${filtered.length}/${fiss.length} actives`;
   for(const f of filtered){
     const li=createEl('li','wf-row');
     const left=createEl('div','left');
@@ -116,7 +118,8 @@ function renderFissures(data){
 }
 
 function renderSortie(data){
-  const s=data?.sortie; const host=els.sortie; host.innerHTML=''; if(!s) return;
+  const host=els.sortie; if(!host) return;
+  const s=data?.sortie; host.innerHTML=''; if(!s) return;
   const box=createEl('div','wf-box'); const h=createEl('div','wf-box__head');
   h.append(createEl('span','wf-chip',s.boss||'—'));
   if(s.faction) h.append(createEl('span','wf-chip',s.faction));
@@ -137,7 +140,8 @@ function renderSortie(data){
 }
 
 function renderArchon(data){
-  const a=data?.archonHunt; const host=els.archon; host.innerHTML=''; if(!a) return;
+  const host=els.archon; if(!host) return;
+  const a=data?.archonHunt; host.innerHTML=''; if(!a) return;
   const box=createEl('div','wf-box'); const h=createEl('div','wf-box__head');
   h.append(createEl('span','wf-chip',a.boss||'—'));
   if(a.faction) h.append(createEl('span','wf-chip',a.faction));
@@ -157,19 +161,32 @@ function renderArchon(data){
 }
 
 function renderDuviri(data){
-  const c=data?.duviriCycle; const host=els.duviri; host.innerHTML=''; if(!c) return;
-  const grp=(title,arr)=>{ const g=createEl('div','circuit-group'); g.append(createEl('div','title',title)); const chips=createEl('div','chips'); if(Array.isArray(arr)){ for(const name of arr) chips.append(createEl('span','wf-chip',name)); } g.append(chips); return g; };
+  const host=els.duviri; if(!host) return;              // << guard
+  const c=data?.duviriCycle; host.innerHTML=''; if(!c) return;
+
+  const grp=(title,arr)=>{
+    const g=createEl('div','circuit-group');
+    g.append(createEl('div','title',title));
+    const chips=createEl('div','chips');
+    if(Array.isArray(arr)){ for(const name of arr) chips.append(createEl('span','wf-chip',name)); }
+    g.append(chips);
+    return g;
+  };
+
   const wrap=createEl('div','circuit');
   wrap.append(grp('Normal',c.choices?.normal));
   wrap.append(grp('Steel Path',c.choices?.steel));
   host.append(wrap);
-  const n=(c.choices?.normal||[]).length; const m=(c.choices?.steel||[]).length;
+
+  const n=(c.choices?.normal||[]).length;
+  const m=(c.choices?.steel||[]).length;
   if(els.ctxDuviri) els.ctxDuviri.textContent=`${n} normal • ${m} hard`;
 }
 
 function renderNightwave(data){
-  const n=data?.nightwave; const host=els.nightwave; host.innerHTML=''; if(!n||!Array.isArray(n.activeChallenges)) return;
-  els.ctxNightwave.textContent=`${n.activeChallenges.length} actifs`;
+  const host=els.nightwave; if(!host) return;
+  const n=data?.nightwave; host.innerHTML=''; if(!n||!Array.isArray(n.activeChallenges)) return;
+  if(els.ctxNightwave) els.ctxNightwave.textContent=`${n.activeChallenges.length} actifs`;
   for(const ch of n.activeChallenges){
     const li=createEl('li','wf-row'); const left=createEl('div','left');
     left.append(createEl('strong',null,ch.title||ch.id||'—'));
@@ -181,24 +198,25 @@ function renderNightwave(data){
 }
 
 function renderBaro(data){
-  const b=data?.voidTrader; els.baroStatus.innerHTML=''; els.baroInv.innerHTML=''; if(!b) return;
+  const st=els.baroStatus, inv=els.baroInv; if(!st||!inv) return;
+  const b=data?.voidTrader; st.innerHTML=''; inv.innerHTML=''; if(!b) return;
   const p=createEl('p');
   if(b.active){
     p.append(createEl('strong',null,'Baro est là'));
     p.append(createEl('span','muted',' — depart dans '));
     if(b.expiry) p.append(makeEta(b.expiry));
-    els.baroStatus.append(p);
+    st.append(p);
   }else{
     p.append(createEl('strong',null,'Prochaine arrivée'));
     p.append(createEl('span','muted',' — dans '));
     if(b.activation) p.append(makeEta(b.activation));
-    els.baroStatus.append(p);
+    st.append(p);
   }
-  const inv=Array.isArray(b.inventory)?b.inventory:[];
-  for(const it of inv){
+  const items=Array.isArray(b.inventory)?b.inventory:[];
+  for(const it of items){
     const li=createEl('li','wf-row');
     li.append(createEl('div','left',it.item||it.uniqueName||'—'));
-    els.baroInv.append(li);
+    inv.append(li);
   }
 }
 
@@ -217,7 +235,9 @@ function rewardToText(rw){
   return parts.join(', ');
 }
 function renderInvasions(data){
-  const inv=Array.isArray(data?.invasions)?data.invasions:[]; els.invList.innerHTML=''; els.ctxInv.textContent=`${inv.length} actives`;
+  if(!els.invList) return;
+  const inv=Array.isArray(data?.invasions)?data.invasions:[]; els.invList.innerHTML='';
+  if(els.ctxInv) els.ctxInv.textContent=`${inv.length} actives`;
   if(!inv.length){ els.invList.append(createEl('li','muted','Aucune invasion active')); return; }
   for(const v of inv){
     const li=createEl('li','wf-row'); const left=createEl('div','left'); const right=createEl('div','right');
@@ -257,6 +277,51 @@ function renderInvasions(data){
   }
 }
 
+function syndicateToZone(s){ const k=(s||'').toLowerCase(); if(k.includes('ostron')) return 'Cetus'; if(k.includes('solaris')) return 'Orb Vallis'; if(k.includes('entrati')) return 'Cambion Drift'; return null; }
+function levelRangeToText(arr){ if(!Array.isArray(arr)||arr.length<2) return '—'; const [a,b]=arr; return `${a}-${b}`; }
+function sumStanding(stages){ if(!Array.isArray(stages)) return 0; return stages.reduce((acc,s)=>acc+(s?.standing||0),0); }
+function renderBounties(data){
+  const host=els.bounty; if(!host) return;
+  const sms=Array.isArray(data?.syndicateMissions)?data.syndicateMissions:[]; host.innerHTML='';
+  const filtered=sms.filter(sm=>!!syndicateToZone(sm.syndicate));
+  if(!filtered.length){ host.textContent='Aucune bounty active'; if(els.ctxBounties) els.ctxBounties.textContent='—'; return; }
+  const counts={ 'Cetus':0,'Orb Vallis':0,'Cambion Drift':0 };
+  for(const j of filtered) counts[syndicateToZone(j.syndicate)]++;
+  if(els.ctxBounties){
+    const c=[]; if(counts['Cetus']) c.push(`Cetus: ${counts['Cetus']}`);
+    if(counts['Orb Vallis']) c.push(`Orb Vallis: ${counts['Orb Vallis']}`);
+    if(counts['Cambion Drift']) c.push(`Cambion Drift: ${counts['Cambion Drift']}`);
+    els.ctxBounties.textContent=c.join(' • ');
+  }
+  for(const j of filtered){
+    const zone=syndicateToZone(j.syndicate);
+    const wrap=createEl('div','bounty-group');
+    const title=createEl('div','bounty-title');
+    title.append(createEl('strong',null,zone));
+    if(j.expiry) title.append(makeEta(j.expiry));
+    wrap.append(title);
+    if(Array.isArray(j.jobs)){
+      for(const jb of j.jobs){
+        const row=createEl('div','bounty-row');
+        const type=jb.type||jb.jobType||'—';
+        const lvl=levelRangeToText(jb.enemyLevels);
+        const standing=sumStanding(jb.standingStages);
+        const mr=jb.minMR||0;
+        row.append(createEl('span','wf-chip',type));
+        if(lvl!=='—') row.append(createEl('span','wf-chip',`Lv ${lvl}`));
+        if(standing) row.append(createEl('span','wf-chip',`${standing} Standing`));
+        if(mr>0) row.append(createEl('span','wf-chip',`MR ${mr}+`));
+        if(Array.isArray(jb.rewardPool)&&jb.rewardPool.length){
+          const pool=createEl('div','bounty-pool'); pool.textContent=jb.rewardPool.slice(0,8).join(' • '); row.append(pool);
+        }
+        if(j.expiry) row.append(makeEta(j.expiry));
+        wrap.append(row);
+      }
+    }
+    host.append(wrap);
+  }
+}
+
 /* ---------- Masonry ---------- */
 function applyMasonry(){
   const grid = els.grid;
@@ -265,16 +330,13 @@ function applyMasonry(){
   const gap = parseFloat(getComputedStyle(grid).rowGap) || 0;
   const cards = grid.querySelectorAll('.wf-card');
   cards.forEach(card=>{
-    card.style.gridRowEnd = 'span 1'; // reset pour mesure fiable
+    card.style.gridRowEnd = 'span 1'; // reset
     const h = card.getBoundingClientRect().height;
     const rows = Math.ceil((h + gap) / (row + gap));
     card.style.gridRowEnd = `span ${rows}`;
   });
 }
-const applyMasonryDebounced = (() => {
-  let t=null;
-  return () => { clearTimeout(t); t=setTimeout(applyMasonry, 60); };
-})();
+const applyMasonryDebounced = (() => { let t=null; return () => { clearTimeout(t); t=setTimeout(applyMasonry, 60); }; })();
 
 /* ---------- ETA ticker ---------- */
 function tickETAs(){
@@ -285,8 +347,8 @@ function tickETAs(){
 /* ---------- Load ---------- */
 async function loadAndRender(){
   try{
-    els.now.textContent=fmtDT(Date.now());
-    const agg=await fetchAgg(els.platform.value||'pc', els.lang.value||'fr');
+    if(els.now) els.now.textContent=fmtDT(Date.now());
+    const agg=await fetchAgg(els.platform?.value||'pc', els.lang?.value||'fr');
     LAST.agg=agg;
 
     renderCycles(agg); renderFissures(agg); renderSortie(agg); renderArchon(agg);
@@ -300,10 +362,10 @@ async function loadAndRender(){
 /* ---------- Wire ---------- */
 if(els.fTier) els.fTier.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); applyMasonryDebounced(); });
 if(els.fHard) els.fHard.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); applyMasonryDebounced(); });
-els.platform.addEventListener('change',()=>{ loadAndRender(); });
-els.lang.addEventListener('change',()=>{ loadAndRender(); });
+if(els.platform) els.platform.addEventListener('change',()=>{ loadAndRender(); });
+if(els.lang) els.lang.addEventListener('change',()=>{ loadAndRender(); });
 window.addEventListener('resize', applyMasonryDebounced);
 
-setInterval(()=>{ tickETAs(); /* les ETAs ne changent pas la hauteur en général */ }, 1000);
+setInterval(()=>{ tickETAs(); }, 1000);
 
 loadAndRender();
