@@ -1,344 +1,118 @@
 /* =========================================================
-   HUB (Cephalon Wodan) — Thème Orokin (FORCE DARK)
+   HUB (Cephalon Wodan) — Thème Orokin
    ========================================================= */
 
-/* ---------- Variables forcées (fonctionnent même sans theme.css) ---------- */
 :root{
-  --bg:#0a0f1a;              /* fond global très sombre */
-  --panel-1:#0f172a;         /* carte/panneau */
-  --panel-2:#0b1423;         /* champs / variantes */
-  --ink:#e6edf7;             /* texte principal */
-  --muted:#93a4b8;           /* texte atténué */
-  --cyan:#00e5ff;            /* accent Tenno */
-  --gold:#e6d28e;            /* or Orokin */
-  --gold-2:#f2e6b1;          /* or clair pour hover/focus */
+  --bg:#0a0f1a;
+  --panel-1:#0f172a;
+  --panel-2:#0b1423;
+  --ink:#e6edf7;
+  --muted:#93a4b8;
+  --cyan:#00e5ff;
+  --gold:#e6d28e;
   --shadow:0 12px 30px rgba(0,229,255,.06), inset 0 1px 0 rgba(255,255,255,.03);
+
+  /* PATCH masonry */
+  --masonry-row: 8px;
 }
 
-/* ---------- Reset mineur ---------- */
-.wf * { box-sizing: border-box; }
-.wf a { text-decoration: none; }
-
-/* ---------- Fond + couleur texte globale ---------- */
-html, body { background: var(--bg); color: var(--ink); }
-body.wf { background: var(--bg); color: var(--ink); }
-
-/* =========================================================
-   NAV (topbar) — alignée au thème de ton site
-   (js/site_nav.js injecte <nav id="site-nav" class="cw-topbar">)
-   ========================================================= */
-.cw-topbar{
-  position: sticky; top: 0; z-index: 1000;
-  display: flex; align-items: center; gap: 18px;
-  padding: 10px 16px;
-  background: var(--bg);
-  color: var(--ink);
-  border-bottom: 1px solid rgba(230,210,142,.25);
-  box-shadow: 0 8px 18px rgba(0,0,0,.25);
-}
-.cw-topbar__left, .cw-topbar__right{
-  display:flex; align-items:center; gap:12px;
-}
-.cw-topbar a{
-  color: var(--ink);
-  padding: 6px 10px;
-  border-radius: 10px;
-  opacity: .92;
-  transition: color .15s ease, background .15s ease, border-color .2s ease, opacity .15s ease;
-}
-.cw-topbar a:hover{
-  opacity: 1;
-  background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.12));
-  border: 1px solid rgba(230,210,142,.35);
-}
-.cw-topbar a.active{
-  color: #0b0e14;
-  font-weight: 600;
-  background: linear-gradient(180deg, rgba(230,210,142,.18), rgba(230,210,142,.06));
-  border: 1px solid var(--gold);
-  box-shadow: 0 0 0 1px rgba(230,210,142,.15) inset;
-}
-.cw-topbar a.btn,
-.cw-topbar a[href*="github.com"]{
-  border: 1px solid rgba(230,210,142,.45);
-  padding: 6px 12px;
-  border-radius: 12px;
-  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.14));
-}
-.cw-topbar a.btn:hover,
-.cw-topbar a[href*="github.com"]:hover{
-  border-color: var(--gold);
-  box-shadow: 0 0 0 1px rgba(230,210,142,.08) inset;
+/* base */
+html, body{ background:var(--bg); color:var(--ink); }
+body{ font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;
+  /* PATCH lisibilité */
+  font-size:15px;
 }
 
-/* =========================================================
-   HEADER HUB (barre filtres + date)
-   ========================================================= */
+/* Top toolbar */
 .wf-toolbar{
   display:flex; align-items:center; justify-content:space-between;
-  gap: 12px;
-  margin: .5rem 1rem 0;
-  padding: .75rem 1rem;
-  background: var(--panel-1);
-  border: 1px solid rgba(230,210,142,.35);
-  border-radius: .75rem;
-  box-shadow: var(--shadow);
+  gap:12px; margin:.5rem 1rem 0; padding:.75rem 1rem;
+  background:var(--panel-1); border:1px solid rgba(230,210,142,.35);
+  border-radius:.75rem; box-shadow:var(--shadow);
 }
-.wf-toolbar__left{ display:flex; align-items:baseline; gap:12px; }
-.wf-title{ font-weight:600; letter-spacing:.2px; }
-.wf-now{ color: var(--muted); }
-
-.wf-toolbar label{
-  color: var(--muted);
-  margin-left: .5rem;
-  display:inline-flex; align-items:center; gap:.4rem;
-}
+.wf-toolbar label{ color:var(--muted); display:inline-flex; gap:.4rem; align-items:center; }
 .wf-toolbar select{
-  background: var(--panel-2);
-  color: var(--ink);
-  border: 1px solid rgba(230,210,142,.35);
-  border-radius:.5rem;
-  padding:.35rem .6rem;
-  transition:border-color .2s ease, box-shadow .2s ease;
-}
-.wf-toolbar select:focus{
-  outline:none;
-  box-shadow:0 0 0 3px rgba(230,210,142,.3), 0 0 0 1px rgba(230,210,142,.8) inset;
-  border-color: var(--gold);
+  background:var(--panel-2); color:var(--ink); border:1px solid rgba(230,210,142,.35);
+  border-radius:.5rem; padding:.35rem .6rem;
 }
 
-/* =========================================================
-   GRID & CARDS
-   ========================================================= */
+/* GRID — PATCH: masonry (auto-rows + dense) */
 .wf-grid{
-  display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: .9rem;
-  padding: .9rem 1rem 1.25rem;
+  display:grid; gap:1rem; padding: .9rem 1rem 1.25rem;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  grid-auto-flow: row dense;
+  grid-auto-rows: var(--masonry-row);
+  max-width:1400px; margin:0 auto;
 }
-@media (max-width: 1200px){ .wf-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-@media (max-width: 720px){ .wf-grid{ grid-template-columns: 1fr; } }
+@media (max-width:1200px){ .wf-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width:720px){  .wf-grid{ grid-template-columns: 1fr; } }
 
+/* Card */
 .wf-card{
-  background: var(--panel-1);
-  color: var(--ink);
-  border-radius: .9rem;
-  border: 1px solid rgba(230,210,142,.45);
-  box-shadow: var(--shadow);
+  grid-column: span 1 / span 1;            /* une colonne par carte */
+  background:var(--panel-1); border-radius:.9rem;
+  border:1px solid rgba(230,210,142,.45); box-shadow:var(--shadow);
+  overflow:hidden;
 }
 .wf-card__title{
-  display:flex; align-items:center; justify-content:space-between;
-  padding: .85rem 1rem;
-  border-bottom: 1px solid rgba(230,210,142,.25);
-  background: linear-gradient(180deg, rgba(230,210,142,.06), rgba(0,0,0,0));
-  border-top-left-radius: .9rem; border-top-right-radius: .9rem;
-  /* PATCH: contextes adaptatifs */
-  flex-wrap: wrap;
+  display:flex; align-items:center; justify-content:space-between; gap:.6rem 1rem;
+  padding:.85rem 1rem; border-bottom:1px solid rgba(230,210,142,.25);
+  background:linear-gradient(180deg, rgba(230,210,142,.06), rgba(0,0,0,0));
+  border-top-left-radius:.9rem; border-top-right-radius:.9rem;
+  /* PATCH contextes adaptatifs */
+  flex-wrap:wrap;
+  /* PATCH lisibilité */
+  font-size:1rem;
 }
-.wf-ctx{ color: var(--muted); font-weight: 400; /* PATCH: autoriser le retour à la ligne */ white-space: normal; }
-.wf-pad{ padding: .85rem 1rem 1rem; }
+.wf-ctx{ color:var(--muted); white-space:normal; }
+.wf-pad{ padding:.85rem 1rem 1rem; }
 
-/* =========================================================
-   LISTES & LIGNES
-   ========================================================= */
-.wf-list{ list-style: none; margin: 0; padding: .6rem 1rem 1rem; }
-.wf-list > li + li{ margin-top:.35rem; }
-
-/* Ligne générique (titre à gauche, méta/compteur à droite) */
+/* Listes & lignes */
+.wf-list{ list-style:none; margin:0; padding:.6rem 1rem 1rem; }
 .wf-row{
-  display:grid;
-  grid-template-columns: 1fr auto;
-  align-items:center;
-  gap:.5rem;
-  padding:.55rem .7rem;
+  display:grid; grid-template-columns:1fr auto;
+  align-items:center; gap:.55rem; padding:.55rem .7rem;
   border:1px solid rgba(230,210,142,.25);
   border-radius:.6rem;
   background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.10));
+  /* PATCH lisibilité */
+  font-size:.95rem;
 }
-.wf-row .left{ display:flex; align-items:center; gap:.5rem; }
+.wf-row .left{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
 .wf-row .right{ display:flex; align-items:center; gap:.5rem; color:var(--muted); }
 
-/* =========================================================
-   CHIPS / TAGS / BADGES
-   ========================================================= */
-.wf-chip{
-  display:inline-flex; align-items:center; gap:.35rem;
-  padding:.2rem .5rem;
-  border:1px solid rgba(230,210,142,.40);
-  border-radius:999px;
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.12));
-  font-size:.78rem; color:var(--ink);
+/* Chips / badges */
+.wf-chip{ display:inline-flex; align-items:center; gap:.35rem;
+  padding:.2rem .5rem; border:1px solid rgba(230,210,142,.40);
+  border-radius:999px; background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.12));
+  font-size:.82rem; color:var(--ink);
 }
-.wf-chip .dot{ width:.45rem; height:.45rem; border-radius:50%; background:var(--gold); opacity:.9; }
-.wf-badge{
-  padding:.18rem .45rem; border-radius:.45rem;
-  border:1px solid rgba(230,210,142,.35);
-  font-size:.72rem; color:var(--muted);
+.wf-badge{ padding:.18rem .45rem; border-radius:.45rem; border:1px solid rgba(230,210,142,.35); font-size:.74rem; color:var(--muted); }
+
+/* Fissures tiers */
+.tier-lith{ color:#c8ffd7; border-color:#92f2b0; }
+.tier-meso{ color:#b8e1ff; border-color:#8cc8ff; }
+.tier-neo{ color:#d8c8ff; border-color:#b6a4ff; }
+.tier-axi{ color:#ffe6a8; border-color:#ffd77a; }
+.tier-omnia{ color:#bff7ff; border-color:#7de9ff; }
+.tier-requiem{ color:#ffb7b7; border-color:#ff8a8a; }
+.tag-hard{ color:#ffb7b7; border-color:#ff8a8a; }
+.tag-normal{ color:#bff7ff; border-color:#7de9ff; }
+
+/* ETA */
+.wf-eta{ display:inline-flex; align-items:center; gap:.35rem; padding:.18rem .5rem;
+  border-radius:.5rem; border:1px solid rgba(230,210,142,.35);
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.14));
+  font-variant-numeric:tabular-nums;
 }
-
-/* Tiers fissures */
-.tier-lith     { color:#c8ffd7; border-color:#92f2b0; }
-.tier-meso     { color:#b8e1ff; border-color:#8cc8ff; }
-.tier-neo      { color:#d8c8ff; border-color:#b6a4ff; }
-.tier-axi      { color:#ffe6a8; border-color:#ffd77a; }
-.tier-omnia    { color:#bff7ff; border-color:#7de9ff; }
-.tier-requiem  { color:#ffb7b7; border-color:#ff8a8a; }
-
-/* Difficile / normal */
-.tag-hard   { color:#ffb7b7; border-color:#ff8a8a; }
-.tag-normal { color:#bff7ff; border-color:#7de9ff; }
-
-/* =========================================================
-   COMPTEURS (ETA / Countdown)
-   ========================================================= */
-.wf-eta{
-  display:inline-flex; align-items:center; gap:.35rem;
-  padding:.18rem .5rem;
-  border-radius:.5rem;
-  border:1px solid rgba(230,210,142,.35);
-  color: var(--ink);
-  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.14));
-  font-variant-numeric: tabular-nums;
-}
-.wf-eta .label{ color: var(--muted); font-size:.72rem; }
+.wf-eta .label{ color:var(--muted); font-size:.74rem; }
 .wf-eta .value{ font-weight:600; }
 
-/* Variante accentuée (quand il reste peu de temps) */
-.wf-eta.warn{
-  border-color:#ff8a8a;
-  color:#ffdada;
-  box-shadow:0 0 0 1px rgba(255,138,138,.15) inset;
-}
+/* Nightwave / sortie boxes */
+.sortie-variants{ display:grid; gap:.4rem; margin-top:.35rem; }
+.sortie-variants .wf-row{ grid-template-columns:1fr; }
 
-/* =========================================================
-   CONTROLES locaux (ex: filtres fissures)
-   ========================================================= */
-.wf-controls{
-  display:flex; flex-wrap:wrap; align-items:center; gap:.5rem .8rem;
-  padding:.6rem 1rem 0;
-}
-.wf-controls label{
-  display:inline-flex; align-items:center; gap:.4rem; color:var(--muted);
-}
-.wf-controls select{
-  background: var(--panel-2);
-  color: var(--ink);
-  border: 1px solid rgba(230,210,142,.35);
-  border-radius:.5rem;
-  padding:.35rem .6rem;
-}
-.wf-controls select:focus{
-  outline:none;
-  box-shadow:0 0 0 3px rgba(230,210,142,.3), 0 0 0 1px rgba(230,210,142,.8) inset;
-  border-color: var(--gold);
-}
-
-/* =========================================================
-   BLOCS SPÉCIFIQUES
-   ========================================================= */
-.sortie-variants{
-  display:grid; gap:.4rem;
-  margin-top:.35rem;
-}
-.sortie-variants .wf-row{ grid-template-columns: 1fr; }
-
-#baro-inventory .wf-row{ grid-template-columns: 1fr auto; }
-
-#nightwave-list .wf-row .left{
-  display:flex; flex-direction:column; align-items:flex-start; gap:.2rem;
-}
-.nw-title{ font-weight:600; }
-.nw-desc{ color:var(--muted); font-size:.86rem; }
-
-/* ---- PATCH: neutraliser les "chips dorées" dans PRIMES ---- */
-#bounty-content{ color:var(--muted); line-height:1.5; }
-#bounty-content .wf-chip{
-  border: none !important;
-  background: none !important;
-  padding: 0 !important;
-  color: var(--muted) !important;
-}
-
-/* =========================================================
-   UTILITAIRES
-   ========================================================= */
-.muted{ color: var(--muted); }
-.text-cyan{ color: var(--cyan); }
-.text-gold{ color: var(--gold); }
-.no-pad{ padding: 0 !important; }
-.no-marg{ margin: 0 !important; }
-.center{ text-align:center; }
-
-@media (max-width: 560px){
-  .wf-card__title{ padding:.75rem .85rem; }
-  .wf-pad, .wf-list{ padding-left:.85rem; padding-right:.85rem; }
-  .wf-toolbar{ gap:8px; }
-}
-/* ===== Invasions ===== */
-.inv-head{
-  display:flex; align-items:center; gap:.5rem; flex-wrap:wrap;
-}
-.inv-node{ font-weight:600; }
-.inv-desc{ color:var(--muted); }
-
-.inv-vs{
-  display:flex; align-items:center; gap:.35rem; flex-wrap:wrap;
-  color:var(--muted);
-}
-.inv-fac{ padding:.1rem .4rem; border-radius:.4rem; border:1px solid rgba(230,210,142,.35); }
-.inv-att{ color:#ffb7b7; border-color:#ff8a8a; }
-.inv-def{ color:#bff7ff; border-color:#7de9ff; }
-/* PATCH: masquer toute pastille "Infested" résiduelle */
-.inv-infested{ display:none !important; }
-
-.inv-rew{ display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
-.inv-rew small{ color:var(--muted); }
-
-.wf-bar{
-  position:relative; height:10px; width:100%;
-  background:rgba(230,210,142,.12);
-  border:1px solid rgba(230,210,142,.35);
-  border-radius:999px; overflow:hidden;
-}
-.wf-bar__fill{
-  position:absolute; top:0; left:0; bottom:0;
-  background:linear-gradient(90deg, #00e5ff, #e6d28e);
-  width:0%;
-  transition:width .35s ease;
-}
-.wf-bar__label{
-  font-variant-numeric:tabular-nums;
-  color:var(--muted);
-}
-/* ===== Duviri Circuit ===== */
-.circuit-head{
-  display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-bottom:.5rem;
-}
-.circuit-title{
-  font-weight:600;
-  margin-bottom:.35rem;
-}
-.circuit-wrap{
-  display:grid; gap:.75rem;
-}
-.circuit-group .chips{
-  display:flex; gap:.4rem; flex-wrap:wrap;
-}
-.circuit-group .chips .wf-chip{
-  padding:.25rem .55rem;
-}
-
-/* Petites pastilles d’état (reuse badge style existant) */
-.badge-state{
-  display:inline-block;
-  padding:.15rem .45rem;
-  border-radius:.45rem;
-  border:1px solid rgba(230,210,142,.45);
-  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.12));
-  font-size:.8rem;
-}
-
-/* (déjà présents, rappel) Invasions */
+/* Invasions */
 .inv-head{ display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; }
 .inv-node{ font-weight:600; }
 .inv-desc{ color:var(--muted); }
@@ -346,29 +120,31 @@ body.wf { background: var(--bg); color: var(--ink); }
 .inv-fac{ padding:.1rem .4rem; border-radius:.4rem; border:1px solid rgba(230,210,142,.35); }
 .inv-att{ color:#ffb7b7; border-color:#ff8a8a; }
 .inv-def{ color:#bff7ff; border-color:#7de9ff; }
+/* (déjà demandé) masquer toute pastille "Infested" superflue */
+.inv-infested{ display:none !important; }
 .inv-rew{ display:flex; align-items:center; gap:.4rem; flex-wrap:wrap; }
-.inv-rew small{ color:var(--muted); }
 .wf-bar{ position:relative; height:10px; width:100%; background:rgba(230,210,142,.12); border:1px solid rgba(230,210,142,.35); border-radius:999px; overflow:hidden; }
-.wf-bar__fill{ position:absolute; top:0; left:0; bottom:0; background:linear-gradient(90deg,#00e5ff,#e6d28e); width:0%; transition:width .35s ease; }
-.wf-bar__label{ font-variant-numeric:tabular-nums; color:var(--muted); }
-/* Barre de navigation du site */
-.site-nav {
-  position: sticky;       /* reste visible en haut lors du scroll */
-  top: 0;
-  z-index: 1000;
-}
+.wf-bar__fill{ position:absolute; inset:0 auto 0 0; background:linear-gradient(90deg,#00e5ff,#e6d28e); width:0%; transition:width .35s ease; }
+.wf-bar__label{ color:var(--muted); font-variant-numeric:tabular-nums; }
 
-/* Le header "Hub" vient sous la nav */
-.wf-toolbar {
-  position: static;
-  top: 48px;              /* hauteur approximative de la nav */
-  z-index: 900;
-}
-/* === Grille dense & helpers de span/masquage === */
-.wf-grid{
-  grid-auto-flow: row dense;  /* remplit les trous */
-}
+/* Duviri */
+.circuit-title{ font-weight:600; margin-bottom:.35rem; }
+.circuit-wrap{ display:grid; gap:.75rem; }
+.circuit-group .chips{ display:flex; gap:.4rem; flex-wrap:wrap; }
+.circuit-group .chips .wf-chip{ padding:.25rem .55rem; }
 
-.col-span-2{ grid-column: span 2; }
-.col-span-3{ grid-column: 1 / -1; } /* plein largeur */
-.hidden{ display:none !important; }
+/* PRIMES — neutraliser les chips dorées (déjà demandé) */
+#bounty-content{ color:var(--muted); line-height:1.5; }
+#bounty-content .wf-chip{ border:none!important; background:none!important; padding:0!important; color:var(--muted)!important; }
+
+/* ===== PATCH: Centrage de la carte "Cycles" ===== */
+#cycles-list .wf-row{
+  grid-template-columns: 1fr;         /* on empile */
+  justify-items: center; text-align:center;
+}
+#cycles-list .wf-row .right{ justify-content:center; }
+
+/* Helpers */
+.muted{ color:var(--muted); }
+.no-pad{ padding:0!important; }
+.hidden{ display:none!important; }
