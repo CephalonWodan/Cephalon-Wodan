@@ -1,9 +1,10 @@
 /* =========================================================
-   HUB.JS v13 — patches:
+   HUB.JS v13+
    - ETA: >=24h -> j/h/m/s
-   - Masonry (remplit les “trous” verticaux)
-   - Guards sur les renders/listeners
-   - NEW: normalisation platform/lang en minuscules
+   - Masonry
+   - Guards (DOM sûr si ID manquant)
+   - Platform/lang normalisés en minuscules
+   - NEW: Debug panel activable avec ?debug=1 ou localStorage.hubDebug=1
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -45,7 +46,25 @@ const els = {
   grid: document.querySelector('.wf-grid'),
 };
 
-/* Utils */
+/* ---------- Debug panel (off par défaut) ---------- */
+const DEBUG = new URLSearchParams(location.search).has('debug')
+  || localStorage.getItem('hubDebug') === '1';
+
+let dbg;
+function dbgInit() {
+  if (!DEBUG) return;
+  dbg = document.createElement('div');
+  dbg.id = 'hub-debug';
+  dbg.innerHTML = `<div class="hd-head">Hub Debug</div><div class="hd-body"></div>`;
+  document.body.appendChild(dbg);
+}
+function dbgLog(lines) {
+  if (!DEBUG || !dbg) return;
+  const b = dbg.querySelector('.hd-body');
+  b.innerHTML = Array.isArray(lines) ? lines.join('<br/>') : String(lines);
+}
+
+/* ---------- Utils ---------- */
 function fmtDT(d){
   const pad=n=>String(n).padStart(2,'0');
   const dt=new Date(d);
@@ -70,16 +89,17 @@ function fmtETA(ms){
 
 function createEl(tag, cls, txt){ const el=document.createElement(tag); if(cls) el.className=cls; if(txt!=null) el.textContent=txt; return el; }
 
-/* ------- PATCH: normalise platform/lang en minuscules ------- */
+/* normalisation platform/lang */
 function normPlatform(v){ return (v||'pc').toString().trim().toLowerCase(); }
 function normLang(v){ return (v||'fr').toString().trim().toLowerCase(); }
-/* ------------------------------------------------------------ */
 
 async function fetchAgg(platform, lang){
   const p = normPlatform(platform);
   const l = normLang(lang);
-  const r = await fetch(`${API_BASE}/api/${p}?lang=${encodeURIComponent(l)}`, { cache:'no-store' });
-  if(!r.ok) throw new Error(r.status);
+  const url = `${API_BASE}/api/${p}?lang=${encodeURIComponent(l)}`;
+  if (DEBUG) console.log('[HUB] fetch', url);
+  const r = await fetch(url, { cache:'no-store' });
+  if(!r.ok) throw new Error(`fetch ${r.status}`);
   return r.json();
 }
 
@@ -241,9 +261,18 @@ const debouncedMasonry=(()=>{ let t=null; return ()=>{ clearTimeout(t); t=setTim
 /* ---------- Main ---------- */
 async function loadAndRender(){
   try{
+    dbgInit();
+
     if(els.now) els.now.textContent=fmtDT(Date.now());
     const platform = normPlatform(els.platform?.value);
     const lang = normLang(els.lang?.value);
+
+    const missing = [];
+    for (const [k,v] of Object.entries(els)) {
+      if (['now','platform','lang','fTier','fHard','grid'].includes(k)) continue;
+      if (v == null) missing.push(`#${k.replace(/[A-Z]/g, m => '-'+m.toLowerCase())}`);
+    }
+
     const agg=await fetchAgg(platform, lang);
     LAST.agg=agg;
 
@@ -252,10 +281,37 @@ async function loadAndRender(){
 
     tickETAs();
     debouncedMasonry();
-  }catch(e){ console.error('hub load error', e); }
+
+    if (DEBUG) {
+      const counts = {
+        fissures: (agg.fissures||[]).length,
+        invasions: (agg.invasions||[]).length,
+        nightwave: (agg.nightwave?.activeChallenges||[]).length,
+        sortie: agg.sortie ? 1 : 0,
+        archonHunt: agg.archonHunt ? 1 : 0,
+        baroInventory: (agg.voidTrader?.inventory||[]).length,
+        syndicateMissions: (agg.syndicateMissions||[]).length,
+      };
+      const lines = [
+        `<b>platform/lang:</b> ${platform} / ${lang}`,
+        `<b>fetch:</b> OK`,
+        `<b>counts:</b> ${Object.entries(counts).map(([k,v])=>`${k}:${v}`).join(' | ')}`,
+        missing.length ? `<b>missing IDs:</b> ${missing.join(', ')}` : `<b>missing IDs:</b> none`,
+      ];
+      dbgLog(lines);
+      console.table(counts);
+      if (missing.length) console.warn('Missing containers:', missing);
+    }
+  }catch(e){
+    console.error('hub load error', e);
+    if (DEBUG) dbgLog([
+      `<b>fetch:</b> ERROR`,
+      `<b>message:</b> ${e && e.message ? e.message : e}`
+    ]);
+  }
 }
 
-/* Listeners (normalisation aussi ici) */
+/* Listeners */
 if(els.fTier) els.fTier.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); debouncedMasonry(); });
 if(els.fHard) els.fHard.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); debouncedMasonry(); });
 if(els.platform) els.platform.addEventListener('change',()=>{ loadAndRender(); });
