@@ -2,48 +2,49 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
-    <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
   <title>Warframe Hub — Cephalon Wodan</title>
 
-  <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/hub.css?v=10" />
+  <!-- Tailwind pour la barre de nav (comme avant) -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Script de la barre de navigation (injecte dans #site-nav) -->
+  <link rel="stylesheet" href="css/theme.css?v=1" />
+  <link rel="stylesheet" href="css/hub.css?v=18" />
+
+  <!-- Nav du site -->
   <script src="js/site_nav.js" defer></script>
 </head>
-<body class="wf" data-section="hub">
-  <!-- Point d’ancrage pour la barre de navigation -->
-  <div id="site-nav"></div>
+<body>
+  <header id="site-nav"></header>
 
-  <header class="wf-toolbar">
+  <!-- Toolbar -->
+  <div class="wf-toolbar">
     <div class="wf-toolbar__left">
-      <h1 class="wf-title">Hub</h1>
-      <span class="wf-now">Maintenant : <strong id="now">—</strong></span>
+      <span class="wf-title"><strong>Hub</strong></span>
+      <small id="now" class="wf-now"></small>
     </div>
     <div class="wf-toolbar__right">
       <label>Plateforme
         <select id="platform">
           <option value="pc" selected>PC</option>
-          <option value="ps4">PS4</option>
-          <option value="xb1">XB1</option>
+          <option value="ps4">PS</option>
+          <option value="xb1">Xbox</option>
           <option value="swi">Switch</option>
           <option value="mob">Mobile</option>
         </select>
       </label>
       <label>Langue
         <select id="lang">
-          <option value="en" selected>EN</option>
-          <option value="fr">FR</option>
+          <option value="fr" selected>FR</option>
+          <option value="en">EN</option>
         </select>
       </label>
     </div>
-  </header>
+  </div>
 
+  <!-- ===== Grille des cartes ===== -->
   <main class="wf-grid">
-
     <!-- Cycles -->
     <section class="wf-card">
       <h2 class="wf-card__title">Cycles <small id="ctx-cycles" class="wf-ctx"></small></h2>
@@ -52,8 +53,10 @@
 
     <!-- Fissures -->
     <section class="wf-card">
-      <h2 class="wf-card__title">Fissures <small id="ctx-fissures" class="wf-ctx"></small></h2>
-      <div class="wf-controls">
+      <h2 class="wf-card__title">
+        Fissures <small id="ctx-fissures" class="wf-ctx"></small>
+      </h2>
+      <div class="wf-controls wf-pad">
         <label>Tier
           <select id="fissure-tier">
             <option value="all" selected>All</option>
@@ -78,7 +81,7 @@
 
     <!-- Sortie -->
     <section class="wf-card">
-      <h2 class="wf-card__title">Sortie <small id="ctx-sorties" class="wf-ctx"></small></h2>
+      <h2 class="wf-card__title">Sortie</h2>
       <div id="sortie" class="wf-pad"></div>
     </section>
 
@@ -88,7 +91,7 @@
       <div id="archon" class="wf-pad"></div>
     </section>
 
-    <!-- Duviri Circuit -->
+    <!-- Duviri Circuit (choix) -->
     <section class="wf-card">
       <h2 class="wf-card__title">Duviri Circuit <small id="ctx-duviri" class="wf-ctx"></small></h2>
       <div id="duviri-circuit" class="wf-pad"></div>
@@ -113,14 +116,14 @@
       <ul id="invasions-list" class="wf-list"></ul>
     </section>
 
-    <!-- Primes/Bounties -->
+    <!-- Primes (Bounties) -->
     <section class="wf-card">
       <h2 class="wf-card__title">Primes <small id="ctx-bounties" class="wf-ctx"></small></h2>
       <div id="bounty-content" class="wf-pad"></div>
     </section>
-
   </main>
 
-  <script type="module" src="js/hub.js?v=13"></script>
+  <!-- JS (ta version patchée) -->
+  <script type="module" src="js/hub.js?v=18"></script>
 </body>
 </html>
