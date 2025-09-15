@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB.JS v13 (complet) — + mini patch Baro + Masonry + guards
+   HUB.JS v13 (complet) — + mini patch Baro + Masonry
    ========================================================= */
 
 const API_BASE = window.API_BASE || 'https://cephalon-wodan-production.up.railway.app';
@@ -58,7 +58,6 @@ async function fetchAgg(platform, lang){
 
 /* ---------- Renders ---------- */
 function renderCycles(data){
-  if(!els.cyclesList) return;
   const { earthCycle, cetusCycle, vallisCycle, cambionCycle, duviriCycle } = data || {};
   els.cyclesList.innerHTML='';
   const cycles = [
@@ -98,7 +97,6 @@ function filterFissures(raw){
   });
 }
 function renderFissures(data){
-  if(!els.fissuresList) return;
   const fiss=Array.isArray(data?.fissures)?data.fissures:[];
   const filtered=filterFissures(fiss);
   els.fissuresList.innerHTML='';
@@ -118,8 +116,7 @@ function renderFissures(data){
 }
 
 function renderSortie(data){
-  const host=els.sortie; if(!host) return;
-  const s=data?.sortie; host.innerHTML=''; if(!s) return;
+  const s=data?.sortie; const host=els.sortie; host.innerHTML=''; if(!s) return;
   const box=createEl('div','wf-box'); const h=createEl('div','wf-box__head');
   h.append(createEl('span','wf-chip',s.boss||'—'));
   if(s.faction) h.append(createEl('span','wf-chip',s.faction));
@@ -140,8 +137,7 @@ function renderSortie(data){
 }
 
 function renderArchon(data){
-  const host=els.archon; if(!host) return;
-  const a=data?.archonHunt; host.innerHTML=''; if(!a) return;
+  const a=data?.archonHunt; const host=els.archon; host.innerHTML=''; if(!a) return;
   const box=createEl('div','wf-box'); const h=createEl('div','wf-box__head');
   h.append(createEl('span','wf-chip',a.boss||'—'));
   if(a.faction) h.append(createEl('span','wf-chip',a.faction));
@@ -160,8 +156,12 @@ function renderArchon(data){
   host.append(box);
 }
 
+/* --------- PATCH MINIMAL ICI (2 lignes) ---------
+   Guard pour éviter host=null sur certaines pages */
 function renderDuviri(data){
-  const host=els.duviri; if(!host) return;              // << guard
+  const host = els.duviri;        // [PATCH] récupérer le nœud
+  if (!host) return;              // [PATCH] sortir si absent
+
   const c=data?.duviriCycle; host.innerHTML=''; if(!c) return;
 
   const grp=(title,arr)=>{
@@ -182,10 +182,10 @@ function renderDuviri(data){
   const m=(c.choices?.steel||[]).length;
   if(els.ctxDuviri) els.ctxDuviri.textContent=`${n} normal • ${m} hard`;
 }
+/* --------- FIN PATCH --------- */
 
 function renderNightwave(data){
-  const host=els.nightwave; if(!host) return;
-  const n=data?.nightwave; host.innerHTML=''; if(!n||!Array.isArray(n.activeChallenges)) return;
+  const n=data?.nightwave; const host=els.nightwave; host.innerHTML=''; if(!n||!Array.isArray(n.activeChallenges)) return;
   if(els.ctxNightwave) els.ctxNightwave.textContent=`${n.activeChallenges.length} actifs`;
   for(const ch of n.activeChallenges){
     const li=createEl('li','wf-row'); const left=createEl('div','left');
@@ -198,25 +198,24 @@ function renderNightwave(data){
 }
 
 function renderBaro(data){
-  const st=els.baroStatus, inv=els.baroInv; if(!st||!inv) return;
-  const b=data?.voidTrader; st.innerHTML=''; inv.innerHTML=''; if(!b) return;
+  const b=data?.voidTrader; els.baroStatus.innerHTML=''; els.baroInv.innerHTML=''; if(!b) return;
   const p=createEl('p');
   if(b.active){
     p.append(createEl('strong',null,'Baro est là'));
     p.append(createEl('span','muted',' — depart dans '));
     if(b.expiry) p.append(makeEta(b.expiry));
-    st.append(p);
+    els.baroStatus.append(p);
   }else{
     p.append(createEl('strong',null,'Prochaine arrivée'));
     p.append(createEl('span','muted',' — dans '));
     if(b.activation) p.append(makeEta(b.activation));
-    st.append(p);
+    els.baroStatus.append(p);
   }
-  const items=Array.isArray(b.inventory)?b.inventory:[];
-  for(const it of items){
+  const inv=Array.isArray(b.inventory)?b.inventory:[];
+  for(const it of inv){
     const li=createEl('li','wf-row');
     li.append(createEl('div','left',it.item||it.uniqueName||'—'));
-    inv.append(li);
+    els.baroInv.append(li);
   }
 }
 
@@ -235,9 +234,7 @@ function rewardToText(rw){
   return parts.join(', ');
 }
 function renderInvasions(data){
-  if(!els.invList) return;
-  const inv=Array.isArray(data?.invasions)?data.invasions:[]; els.invList.innerHTML='';
-  if(els.ctxInv) els.ctxInv.textContent=`${inv.length} actives`;
+  const inv=Array.isArray(data?.invasions)?data.invasions:[]; els.invList.innerHTML=''; if(els.ctxInv) els.ctxInv.textContent=`${inv.length} actives`;
   if(!inv.length){ els.invList.append(createEl('li','muted','Aucune invasion active')); return; }
   for(const v of inv){
     const li=createEl('li','wf-row'); const left=createEl('div','left'); const right=createEl('div','right');
@@ -281,8 +278,7 @@ function syndicateToZone(s){ const k=(s||'').toLowerCase(); if(k.includes('ostro
 function levelRangeToText(arr){ if(!Array.isArray(arr)||arr.length<2) return '—'; const [a,b]=arr; return `${a}-${b}`; }
 function sumStanding(stages){ if(!Array.isArray(stages)) return 0; return stages.reduce((acc,s)=>acc+(s?.standing||0),0); }
 function renderBounties(data){
-  const host=els.bounty; if(!host) return;
-  const sms=Array.isArray(data?.syndicateMissions)?data.syndicateMissions:[]; host.innerHTML='';
+  const sms=Array.isArray(data?.syndicateMissions)?data.syndicateMissions:[]; const host=els.bounty; host.innerHTML='';
   const filtered=sms.filter(sm=>!!syndicateToZone(sm.syndicate));
   if(!filtered.length){ host.textContent='Aucune bounty active'; if(els.ctxBounties) els.ctxBounties.textContent='—'; return; }
   const counts={ 'Cetus':0,'Orb Vallis':0,'Cambion Drift':0 };
@@ -336,7 +332,10 @@ function applyMasonry(){
     card.style.gridRowEnd = `span ${rows}`;
   });
 }
-const applyMasonryDebounced = (() => { let t=null; return () => { clearTimeout(t); t=setTimeout(applyMasonry, 60); }; })();
+const applyMasonryDebounced = (() => {
+  let t=null;
+  return () => { clearTimeout(t); t=setTimeout(applyMasonry, 60); };
+})();
 
 /* ---------- ETA ticker ---------- */
 function tickETAs(){
@@ -347,8 +346,8 @@ function tickETAs(){
 /* ---------- Load ---------- */
 async function loadAndRender(){
   try{
-    if(els.now) els.now.textContent=fmtDT(Date.now());
-    const agg=await fetchAgg(els.platform?.value||'pc', els.lang?.value||'fr');
+    els.now.textContent=fmtDT(Date.now());
+    const agg=await fetchAgg(els.platform.value||'pc', els.lang.value||'fr');
     LAST.agg=agg;
 
     renderCycles(agg); renderFissures(agg); renderSortie(agg); renderArchon(agg);
@@ -362,8 +361,8 @@ async function loadAndRender(){
 /* ---------- Wire ---------- */
 if(els.fTier) els.fTier.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); applyMasonryDebounced(); });
 if(els.fHard) els.fHard.addEventListener('change',()=>{ LAST.agg&&renderFissures(LAST.agg); applyMasonryDebounced(); });
-if(els.platform) els.platform.addEventListener('change',()=>{ loadAndRender(); });
-if(els.lang) els.lang.addEventListener('change',()=>{ loadAndRender(); });
+els.platform.addEventListener('change',()=>{ loadAndRender(); });
+els.lang.addEventListener('change',()=>{ loadAndRender(); });
 window.addEventListener('resize', applyMasonryDebounced);
 
 setInterval(()=>{ tickETAs(); }, 1000);
