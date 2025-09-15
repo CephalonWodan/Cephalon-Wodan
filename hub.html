@@ -2,17 +2,15 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="color-scheme" content="dark light" />
-  <title>Warframe Hub — Cephalon Wodan</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Warframe – Hub</title>
 
   <!-- Tailwind pour la barre de nav (comme avant) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/hub.css?v=18" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <link rel="stylesheet" href="css/hub.css?v=20" />
 
-  <!-- Nav du site -->
   <script src="js/site_nav.js" defer></script>
 </head>
 <body>
@@ -21,8 +19,8 @@
   <!-- Toolbar -->
   <div class="wf-toolbar">
     <div class="wf-toolbar__left">
-      <span class="wf-title"><strong>Hub</strong></span>
-      <small id="now" class="wf-now"></small>
+      <strong>Hub</strong>
+      <small id="now" class="muted" style="margin-left:.6rem;"></small>
     </div>
     <div class="wf-toolbar__right">
       <label>Plateforme
@@ -43,7 +41,7 @@
     </div>
   </div>
 
-  <!-- ===== Grille des cartes ===== -->
+  <!-- Grille -->
   <main class="wf-grid">
     <!-- Cycles -->
     <section class="wf-card">
@@ -53,10 +51,8 @@
 
     <!-- Fissures -->
     <section class="wf-card">
-      <h2 class="wf-card__title">
-        Fissures <small id="ctx-fissures" class="wf-ctx"></small>
-      </h2>
-      <div class="wf-controls wf-pad">
+      <h2 class="wf-card__title">Fissures <small id="ctx-fissures" class="wf-ctx"></small></h2>
+      <div class="wf-pad" style="display:flex;gap:.6rem;flex-wrap:wrap">
         <label>Tier
           <select id="fissure-tier">
             <option value="all" selected>All</option>
@@ -91,7 +87,7 @@
       <div id="archon" class="wf-pad"></div>
     </section>
 
-    <!-- Duviri Circuit (choix) -->
+    <!-- Duviri Circuit -->
     <section class="wf-card">
       <h2 class="wf-card__title">Duviri Circuit <small id="ctx-duviri" class="wf-ctx"></small></h2>
       <div id="duviri-circuit" class="wf-pad"></div>
@@ -116,14 +112,13 @@
       <ul id="invasions-list" class="wf-list"></ul>
     </section>
 
-    <!-- Primes (Bounties) -->
+    <!-- Primes -->
     <section class="wf-card">
       <h2 class="wf-card__title">Primes <small id="ctx-bounties" class="wf-ctx"></small></h2>
       <div id="bounty-content" class="wf-pad"></div>
     </section>
   </main>
 
-  <!-- JS (ta version patchée) -->
-  <script type="module" src="js/hub.js?v=18"></script>
+  <script type="module" src="js/hub.js?v=20"></script>
 </body>
 </html>
