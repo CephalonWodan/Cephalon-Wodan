@@ -167,5 +167,30 @@ body{ font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,C
 @media (max-width:1200px){ .wf-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
 @media (max-width:720px){  .wf-grid{ grid-template-columns: 1fr; } }
 
+/* Debug panel (affiché uniquement en ?debug=1) */
+#hub-debug{
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  width: 320px;
+  max-width: 90vw;
+  background: rgba(15,23,42,.96);
+  color: #e6edf7;
+  border: 1px solid rgba(230,210,142,.45);
+  border-radius: .6rem;
+  box-shadow: 0 12px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
+  font-size: 12.5px;
+  z-index: 2000;
+}
+#hub-debug .hd-head{
+  padding: .5rem .7rem;
+  border-bottom: 1px solid rgba(230,210,142,.25);
+  font-weight: 700;
+}
+#hub-debug .hd-body{
+  padding: .6rem .7rem .7rem;
+  line-height: 1.35;
+}
+#hub-debug b{ color: #f2e6b1; }
 
 
