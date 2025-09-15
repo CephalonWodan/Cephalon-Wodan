@@ -1,5 +1,5 @@
 /* =========================================================
-   HUB.JS — rendu Hub (robuste)
+   HUB.JS — Safe mode (pas de masonry) : tout s'affiche, point.
    ========================================================= */
 
 const API_BASE = 'https://cephalon-wodan-production.up.railway.app';
@@ -28,18 +28,15 @@ const els = {
 
   baroStatus: document.getElementById('baro-status'),
   baroInv: document.getElementById('baro-inventory'),
-  ctxBaro: document.getElementById('ctx-baro'),
 
   invList: document.getElementById('invasions-list'),
   ctxInv: document.getElementById('ctx-invasions'),
 
   bounty: document.getElementById('bounty-content'),
   ctxBounties: document.getElementById('ctx-bounties'),
-
-  grid: document.querySelector('.wf-grid'),
 };
 
-/* ===== Debug optionnel ===== */
+/* Debug optionnel */
 const DEBUG = new URLSearchParams(location.search).has('debug') || localStorage.getItem('hubDebug')==='1';
 let dbg;
 function dbgInit(){ if(!DEBUG) return;
@@ -47,12 +44,12 @@ function dbgInit(){ if(!DEBUG) return;
   dbg.innerHTML='<div class="hd-head">Hub Debug</div><div class="hd-body"></div>';
   document.body.appendChild(dbg);
 }
-function dbgLog(lines){ if(DEBUG && dbg){ dbg.querySelector('.hd-body').innerHTML = Array.isArray(lines)?lines.join('<br/>'):String(lines); }}
+function dbgLog(x){ if(DEBUG&&dbg){ dbg.querySelector('.hd-body').innerHTML=Array.isArray(x)?x.join('<br/>'):String(x); }}
 
-/* ===== Utils ===== */
-function pad(n){return String(n).padStart(2,'0')}
-function fmtDT(d){const t=new Date(d);return `${pad(t.getDate())}/${pad(t.getMonth()+1)}/${t.getFullYear()} ${pad(t.getHours())}:${pad(t.getMinutes())}:${pad(t.getSeconds())}`}
-/* ETA avec j/h/m/s si ≥ 24h */
+/* Utils */
+const pad=n=>String(n).padStart(2,'0');
+const fmtDT=d=>{const t=new Date(d);return `${pad(t.getDate())}/${pad(t.getMonth()+1)}/${t.getFullYear()} ${pad(t.getHours())}:${pad(t.getMinutes())}:${pad(t.getSeconds())}`};
+/* ETA j/h/m/s */
 function fmtETA(ms){
   if(!ms||ms<0) return '0s';
   const s=Math.floor(ms/1000), d=Math.floor(s/86400), h=Math.floor((s%86400)/3600), m=Math.floor((s%3600)/60), ss=s%60;
@@ -60,20 +57,19 @@ function fmtETA(ms){
   return parts.join(' ');
 }
 function createEl(tag,cls,txt){const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e;}
-function normPlatform(v){return (v||'pc').toLowerCase().trim()}
-function normLang(v){return (v||'fr').toLowerCase().trim()}
+const normPlatform=v=>(v||'pc').toLowerCase().trim();
+const normLang=v=>(v||'fr').toLowerCase().trim();
 async function fetchAgg(p,l){
   const url=`${API_BASE}/api/${normPlatform(p)}?lang=${encodeURIComponent(normLang(l))}`;
-  const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error(`fetch ${r.status}`);
-  return r.json();
+  const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error(`fetch ${r.status}`); return r.json();
 }
 
 /* ETA ticking */
-function makeEta(expiryIso,label=''){const span=createEl('span','wf-eta'); if(label) span.append(createEl('span','label',label)); const v=createEl('span','value','—'); v.dataset.exp=String(new Date(expiryIso).getTime()); span.append(v); return span;}
-function tickETAs(){const now=Date.now(); document.querySelectorAll('.wf-eta .value[data-exp]').forEach(n=>{const ms=Number(n.dataset.exp||0)-now; n.textContent=fmtETA(ms);});}
+function makeEta(expiryIso,label=''){const s=createEl('span','wf-eta'); if(label) s.append(createEl('span','label',label)); const v=createEl('span','value','—'); v.dataset.exp=String(new Date(expiryIso).getTime()); s.append(v); return s;}
+function tickETAs(){const now=Date.now(); document.querySelectorAll('.wf-eta .value[data-exp]').forEach(n=>{n.textContent=fmtETA(Number(n.dataset.exp||0)-now);});}
 setInterval(()=>{ if(els.now) els.now.textContent=fmtDT(Date.now()); tickETAs(); },1000);
 
-/* ===== Renders ===== */
+/* Renders */
 function renderCycles(d){
   if(!els.cyclesList) return;
   const {earthCycle,cetusCycle,vallisCycle,cambionCycle,duviriCycle}=d||{};
@@ -93,7 +89,7 @@ function renderCycles(d){
     const R=createEl('div','right'); R.append(makeEta(c.expiry,''));
     li.append(L,R); els.cyclesList.append(li);
   }
-  if(els.ctxCycles) els.ctxCycles.textContent = n?`${n} actifs`:'—';
+  if(els.ctxCycles) els.ctxCycles.textContent=n?`${n} actifs`:'—';
 }
 
 function filterFiss(list){
@@ -162,19 +158,17 @@ function renderArchon(d){
 
 function renderDuviri(d){
   if(!els.duviri) return; els.duviri.innerHTML='';
-  const cyc=d?.duviriCycle||{};
-  const arr=Array.isArray(cyc.choices)?cyc.choices:[];
+  const cyc=d?.duviriCycle||{}; const arr=Array.isArray(cyc.choices)?cyc.choices:[];
   const normal=arr.find(c=>(c.category||'').toLowerCase()==='normal');
   const hard=arr.find(c=>(c.category||'').toLowerCase()==='hard');
   const wrap=createEl('div','circuit-wrap');
 
-  const grp=(label,items)=>{ const g=createEl('div','circuit-group');
+  const grp=(label,items)=>{const g=createEl('div','circuit-group');
     g.append(createEl('div','circuit-title',label));
     const chips=createEl('div','chips');
     (items||[]).forEach(n=>chips.append(createEl('span','wf-chip',n)));
     if(!items||!items.length) chips.append(createEl('span','muted','—'));
-    g.append(chips); return g;
-  };
+    g.append(chips);return g;};
 
   wrap.append(grp('Normal',normal?.choices||[]));
   wrap.append(grp('Steel Path',hard?.choices||[]));
@@ -206,8 +200,7 @@ function renderBaro(d){
   const arriving=(new Date(b.activation).getTime()-Date.now())>0;
   const p=createEl('p');
   p.textContent=arriving?`Arrive à ${b.location||'—'} dans `:`Présent à ${b.location||'—'}, part dans `;
-  p.append(makeEta(arriving?b.activation:b.expiry,''));
-  els.baroStatus.append(p);
+  p.append(makeEta(arriving?b.activation:b.expiry,'')); els.baroStatus.append(p);
   (b.inventory||[]).forEach(it=>{
     const li=createEl('li','wf-row'); li.append(createEl('div','left',it.item||it.uniqueName||'—')); els.baroInv.append(li);
   });
@@ -224,13 +217,8 @@ function renderInvasions(d){
   if(els.ctxInv) els.ctxInv.textContent=`${list.length} actives`;
   if(!list.length){ els.invList.append(createEl('li','muted','Aucune invasion active')); return; }
   list.forEach(v=>{
-    const li=createEl('li','wf-row');
-    const L=createEl('div','left');
-    const head=createEl('div','inv-head');
-    head.append(createEl('span','inv-node',v.node||'—'));
-    if(v.desc) head.append(createEl('span','inv-desc',v.desc));
-    L.append(head);
-
+    const li=createEl('li','wf-row'), L=createEl('div','left'), R=createEl('div','right');
+    const head=createEl('div','inv-head'); head.append(createEl('span','inv-node',v.node||'—')); if(v.desc) head.append(createEl('span','inv-desc',v.desc)); L.append(head);
     const vs=createEl('div','inv-vs');
     const fAtt=(v.attacker?.faction||'').trim()||'Attacker';
     const fDef=(v.defender?.faction||'').trim()||'Defender';
@@ -238,8 +226,7 @@ function renderInvasions(d){
     const def=createEl('span','inv-fac inv-def',fDef);
     if(fAtt.toLowerCase()==='infested') att.classList.add('inv-infested');
     if(fDef.toLowerCase()==='infested') def.classList.add('inv-infested');
-    vs.append(att,createEl('span','muted','vs'),def);
-    L.append(vs);
+    vs.append(att,createEl('span','muted','vs'),def); L.append(vs);
 
     const rew=createEl('div','inv-rew');
     const ra=rewardText(v.attacker?.reward), rd=rewardText(v.defender?.reward);
@@ -247,21 +234,21 @@ function renderInvasions(d){
     if(rd) rew.append(createEl('small',null,`Defender: ${rd}`));
     if(rew.childNodes.length) L.append(rew);
 
-    const R=createEl('div','right');
     const bar=createEl('div','wf-bar'), fill=createEl('div','wf-bar__fill');
     const pct=typeof v.completion==='number'?Math.max(0,Math.min(100,v.completion)):0;
     fill.style.width=`${pct}%`; bar.append(fill); L.append(bar);
-    R.append(createEl('span','wf-bar__label',v.completed?'Terminé':`${pct.toFixed(2)}%`));
 
+    R.append(createEl('span','wf-bar__label',v.completed?'Terminé':`${pct.toFixed(2)}%`));
     li.append(L,R); els.invList.append(li);
   });
 }
 
 function syndicateToZone(s){const k=(s||'').toLowerCase(); if(k.includes('ostron'))return 'Cetus'; if(k.includes('solaris'))return 'Orb Vallis'; if(k.includes('entrati'))return 'Cambion Drift'; return null;}
 function lvlTxt(levels){ if(!Array.isArray(levels)||!levels.length) return '—'; const mi=Math.min(...levels), ma=Math.max(...levels); return `${mi}-${ma}`; }
-function sum(a){ return (a||[]).reduce((x,y)=>x+(+y||0),0); }
+const sum=a=>(a||[]).reduce((x,y)=>x+(+y||0),0);
 function shorten(pool,limit=5){
-  if(!pool) return ''; if(Array.isArray(pool)){const s=pool.slice(0,limit).join(', '); return pool.length>limit?`${s}…`:s;}
+  if(!pool) return '';
+  if(Array.isArray(pool)){const s=pool.slice(0,limit).join(', '); return pool.length>limit?`${s}…`:s;}
   if(typeof pool==='string') return pool;
   if(typeof pool==='object'){const k=Object.keys(pool); const s=k.slice(0,limit).join(', '); return k.length>limit?`${s}…`:s;}
   return '';
@@ -307,42 +294,7 @@ function renderBounties(d){
   });
 }
 
-/* ===== Masonry sûr + auto-fallback ===== */
-function applyMasonry(){
-  const grid=els.grid; if(!grid) return;
-
-  // Activer masonry
-  grid.style.gridAutoRows = 'var(--masonry-row)';
-
-  requestAnimationFrame(()=>{
-    const row=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--masonry-row'))||8;
-    const gap=parseFloat(getComputedStyle(grid).rowGap)||0;
-    const cards=[...grid.querySelectorAll('.wf-card')];
-
-    let span1=0;
-    cards.forEach(card=>{
-      card.style.gridRowEnd='span 1';
-      const h=card.getBoundingClientRect().height;
-      const rows=Math.ceil((h+gap)/(row+gap));
-      card.style.gridRowEnd=`span ${Math.max(1,rows)}`;
-      if(rows<=1) span1++;
-    });
-
-    // Si trop de cartes restent à 1 ligne => fallback stable
-    if(cards.length && span1/cards.length>0.7){
-      grid.style.gridAutoRows='auto';
-      cards.forEach(c=>c.style.gridRowEnd='auto');
-      if(DEBUG) console.warn('[HUB] Masonry fallback: auto (span=1 détecté)');
-    }
-  });
-}
-const debouncedMasonry=(()=>{let t=null;return()=>{clearTimeout(t);t=setTimeout(applyMasonry,80);};})();
-
-/* Recalc si la taille d'une carte change (ETA, filtres, etc.) */
-const ro = new ResizeObserver(debouncedMasonry);
-window.addEventListener('load', ()=>{ document.querySelectorAll('.wf-card').forEach(el=>ro.observe(el)); });
-
-/* ===== Main ===== */
+/* Main */
 async function loadAndRender(){
   try{
     dbgInit();
@@ -364,7 +316,6 @@ async function loadAndRender(){
     renderBounties(agg);
 
     tickETAs();
-    debouncedMasonry();
 
     if(DEBUG){
       const counts={
@@ -387,11 +338,10 @@ async function loadAndRender(){
   }
 }
 
-/* Listeners (filtres & sélecteurs) */
-els.fTier && els.fTier.addEventListener('change',()=>{ loadAndRender(); });
-els.fHard && els.fHard.addEventListener('change',()=>{ loadAndRender(); });
-els.platform && els.platform.addEventListener('change',()=>{ loadAndRender(); });
-els.lang && els.lang.addEventListener('change',()=>{ loadAndRender(); });
-window.addEventListener('resize', debouncedMasonry);
+/* Listeners */
+els.fTier && els.fTier.addEventListener('change',loadAndRender);
+els.fHard && els.fHard.addEventListener('change',loadAndRender);
+els.platform && els.platform.addEventListener('change',loadAndRender);
+els.lang && els.lang.addEventListener('change',loadAndRender);
 
 loadAndRender();
