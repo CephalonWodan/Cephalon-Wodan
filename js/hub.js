@@ -95,3 +95,67 @@ function renderBaro(data) {
 
   const p = createEl('p');
   if (b.active) {
+    p.append(createEl('strong', null, 'Baro est là'));
+    p.append(createEl('span', 'muted', ` — depart dans `));
+    // PATCH: utiliser b.expiry (ISO) pour l’ETA
+    if (b.expiry) p.append(makeEta(b.expiry));
+    els.baroStatus.append(p);
+  } else {
+    p.append(createEl('strong', null, 'Prochaine arrivée'));
+    p.append(createEl('span', 'muted', ' — dans '));
+    // PATCH: utiliser b.activation (ISO) pour l’ETA
+    if (b.activation) p.append(makeEta(b.activation));
+    els.baroStatus.append(p);
+  }
+  const inv = Array.isArray(b.inventory) ? b.inventory : [];
+  for (const it of inv) {
+    const li = createEl('li', 'wf-row');
+    li.append(createEl('div','left', it.item || it.uniqueName || '—'));
+    els.baroInv.append(li);
+  }
+}
+
+/* ------------ Invasions (garde ta logique — pas de suppression ici) ------------ */
+// …………………………………………
+// (Garde ton rendu invasions v13 tel quel — l’encadré “Infested” sera masqué côté CSS)
+// …………………………………………
+
+/* ------------ Bounties (garde ta logique v13) ------------ */
+// …………………………………………
+// (Aucune modif JS — les “chips dorées” sont neutralisées côté CSS dans la section Primes)
+// …………………………………………
+
+/* ------------------ ETA ticker ------------------ */
+function tickETAs() {
+  const etas = document.querySelectorAll('[data-expiry]');
+  for (const el of etas) setEta(el, el.dataset.expiry);
+}
+setInterval(tickETAs, 1000);
+
+/* ------------------ Main ------------------ */
+async function loadAndRender() {
+  try {
+    els.now.textContent = fmtDT(Date.now());
+    const platform = els.platform.value;
+    const lang = els.lang.value;
+    const agg = await fetchAgg(platform, lang);
+    LAST.agg = agg;
+
+    // Appelle ici tes fonctions de rendu v13
+    // ex:
+    // renderCycles(agg); renderFissures(agg); renderSortie(agg); renderArchon(agg);
+    // renderDuviri(agg); renderNightwave(agg); renderBaro(agg); renderInvasions(agg); renderBounties(agg);
+
+    tickETAs();
+  } catch (e) {
+    console.error('hub load error', e);
+  }
+}
+
+/* — Filtres fissures → re-render local */
+if (els.fTier) els.fTier.addEventListener('change', () => LAST.agg && renderFissures(LAST.agg));
+if (els.fHard) els.fHard.addEventListener('change', () => LAST.agg && renderFissures(LAST.agg));
+
+els.platform.addEventListener('change', loadAndRender);
+els.lang.addEventListener('change', loadAndRender);
+loadAndRender();
