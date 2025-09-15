@@ -114,4 +114,8 @@ img{ max-width:100%; }
 .wf-bar__fill{ position:absolute; inset:0 auto 0 0; width:0%; background:linear-gradient(90deg, rgba(0,229,255,.9), rgba(0,229,255,.2)); }
 .wf-bar__label{ color:var(--muted); }
 
-/
+/* ---------- Responsives ---------- */
+@media (max-width: 720px){
+  .wf-toolbar__right label{ gap:.25rem; }
+  .wf-toolbar select{ padding:.3rem .5rem; }
+}
