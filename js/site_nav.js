@@ -44,12 +44,6 @@
               ${l.label}
             </a>
           `).join("")}
-          <a href="https://github.com/CephalonWodan/Cephalon-Wodan" target="_blank" rel="noopener"
-             aria-label="Ouvrir le dépôt GitHub Cephalon Wodan (nouvel onglet)"
-             class="ml-2 px-3 py-1.5 rounded-lg border border-[rgba(255,255,255,.12)]
-                    hover:bg-[rgba(255,255,255,.06)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60">
-            GitHub
-          </a>
         </nav>
       </div>
     </header>
