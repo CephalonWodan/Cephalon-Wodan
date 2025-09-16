@@ -35,7 +35,7 @@
     if (!p) return null;
     const cleaned = String(p).trim();
     const k = cleaned.toLowerCase().replace(/[^a-z]/g, "");
-    const alias = { universal: "Any", any: "Any", none: "Any", v: "Madurai", d: "Vazarin", dash: "Naramon", bar: "Zenurik", u: "Umbra" };
+    const alias = { universal: "Any", any: "Any", none: "Any", aura: "Any", v: "Madurai", d: "Vazarin", dash: "Naramon", bar: "Zenurik", u: "Umbra" };
     const ali = alias[k] || k;
     return CANON[ali] || cleaned;
   }
