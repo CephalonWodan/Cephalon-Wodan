@@ -31,7 +31,7 @@
        <a href="index.html" class="flex items-center gap-2 text-lg font-semibold
   focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60 rounded-lg">
   <img src="/img/CephalonWodan/favicon-64.png" alt="Cephalon Wodan"
-       class="inline-block w-6 h-6 rounded-md shadow-[0_0_8px_rgba(124,77,255,.65)]" width="24" height="24" />
+       class="inline-block w-6 h-6 rounded-md shadow-[0_0_8px_rgba(124,77,255,.65)]" width="32" height="32" />
   <span>Cephalon Wodan</span>
 </a>
         <div class="flex-1"></div>
