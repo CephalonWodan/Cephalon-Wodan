@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # -------------------- ETAPE PYTHON : FETCH PUBLIC EXPORT --------------------
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -125,7 +126,7 @@ jobs:
           fi
 
           python - <<'PY'
-          import lzma, sys, pathlib
+          import lzma, pathlib
           raw = pathlib.Path("index_en.txt.lzma").read_bytes()
           pathlib.Path("index_en.txt").write_bytes(lzma.decompress(raw))
           print("Index decompressed → index_en.txt")
@@ -144,17 +145,48 @@ jobs:
             echo "→ $f  ==>  $base"
           done
 
-      # ---------- WFCD: génération des datasets *.wfcd.json ----------
-      - name: Setup Node
+      # -------------------- ETAPE NODE : LOCKFILE + WFCD DATASETS --------------------
+      # 1) Installer Node (sans cache) pour pouvoir générer le lockfile s'il n'existe pas
+      - name: Setup Node (no cache, for lockfile creation)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # 2) Créer le package-lock.json si absent (et ignorer les scripts)
+      - name: Ensure npm lockfile
+        run: |
+          if [ ! -f package-lock.json ]; then
+            npm install --package-lock-only --ignore-scripts
+            echo "Lockfile created."
+          else
+            echo "Lockfile already present."
+          fi
+
+      # 3) Commit du lockfile s'il vient d'être créé (utile pour les prochains runs + cache)
+      - name: Commit lockfile if created
+        run: |
+          if git status --porcelain | grep -q "package-lock.json"; then
+            git add package-lock.json
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: add package-lock.json (CI)"
+            git push
+          else
+            echo "No new lockfile to commit."
+          fi
+
+      # 4) Ré-installer Node avec cache npm activé (le lockfile existe maintenant)
+      - name: Setup Node (with npm cache)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
-      - name: Install WFCD deps (no-save)
-        run: |
-          npm install --no-save @wfcd/items warframe-patchlogs
+      # 5) Installer les dépendances (reproductible)
+      - name: Install npm deps (npm ci)
+        run: npm ci
 
+      # 6) Écrire le script WFCD (génère *.wfcd.json)
       - name: Write build_items.js (WFCD → *.wfcd.json)
         run: |
           mkdir -p tools data_build
@@ -164,7 +196,7 @@ jobs:
           import { resolve } from 'node:path';
           import Items from '@wfcd/items';
 
-          const OUT = 'data_build';
+          const OUT = 'data';
           const FN = {
             warframes: 'warframes.wfcd.json',
             weapons:   'weapons.wfcd.json',
@@ -172,7 +204,7 @@ jobs:
             arcanes:   'arcanes.wfcd.json',
             companions:'companions.wfcd.json',
             relics:    'relics.wfcd.json',
-            unified:   'items.unified.wfcd.json',
+            unified:   'items.unified.wfcd.json', // optionnel
           };
 
           const keep = (obj, keys) => Object.fromEntries(
@@ -229,6 +261,7 @@ jobs:
 
           async function main() {
             const items = new Items().items;
+
             const warframes = items.filter(i => i.category === 'Warframes').map(normalizeWarframe);
             const weapons   = items.filter(i => ['Primary','Secondary','Melee','Arch-Gun','Arch-Melee','Crewship Weapon']
                                                 .includes(i.category)).map(normalizeWeapon);
@@ -247,7 +280,7 @@ jobs:
               [FN.arcanes,    arcanes],
               [FN.companions, companions],
               [FN.relics,     relics],
-              [FN.unified,    items], // optionnel: dataset complet WFCD
+              [FN.unified,    items], // optionnel : dataset complet
             ].map(async ([file, data]) => {
               await writeFile(resolve(OUT, file), JSON.stringify(data, null, 2), 'utf-8');
               console.log(`✔ ${OUT}/${file}`, data.length);
@@ -266,7 +299,7 @@ jobs:
         run: |
           git add -A data_build/*.wfcd.json
           if git diff --cached --quiet; then
-            echo "No dataset changes."
+            echo "No WFCD dataset changes."
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -274,11 +307,12 @@ jobs:
             git push
           fi
 
-      - name: Commit if changed
+      # -------------------- COMMIT DES EXPORTS BRUTS --------------------
+      - name: Commit PublicExport if changed
         run: |
           git add -A data/
           if git diff --cached --quiet; then
-            echo "Aucun changement à committer."
+            echo "Aucun changement à committer (PublicExport)."
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
