@@ -26,7 +26,8 @@
     Exilus:  "Exilus_Pol.svg",
     Any:       "Any_Pol.svg",
     Universal: "Any_Pol.svg",
-    None:      "Any_Pol.svg"
+    None:      "Any_Pol.svg",
+    Aura:      "Any_Pol.svg"
   };
 
   const CANON = Object.fromEntries(Object.keys(FILES).map(k => [k.toLowerCase(), k]));
