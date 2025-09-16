@@ -30,7 +30,7 @@
       <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
        <a href="index.html" class="flex items-center gap-2 text-lg font-semibold
   focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/60 rounded-lg">
-  <img src="/img/CephalonWodan/favicon-32.png" alt="Cephalon Wodan"
+  <img src="/img/CephalonWodan/favicon-64.png" alt="Cephalon Wodan"
        class="inline-block w-6 h-6 rounded-md shadow-[0_0_8px_rgba(124,77,255,.65)]" width="24" height="24" />
   <span>Cephalon Wodan</span>
 </a>
