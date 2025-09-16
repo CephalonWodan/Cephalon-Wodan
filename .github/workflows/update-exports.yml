@@ -46,6 +46,7 @@ jobs:
               "recipes":      "ExportRecipes_{lang}.json",
               "flavour":      "ExportFlavour_{lang}.json",
               "sortierewards":"ExportSortieRewards_{lang}.json",
+              "fullimages":   "ExportManifest.json"
           }
 
           def http_get(url: str) -> bytes:
