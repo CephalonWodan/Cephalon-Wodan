@@ -145,14 +145,14 @@ jobs:
             echo "→ $f  ==>  $base"
           done
 
-      # -------------------- ETAPE NODE : LOCKFILE + WFCD DATASETS --------------------
+      # -------------------- ETAPE NODE : LOCKFILE + WFCD + DROPS --------------------
       # 1) Installer Node (sans cache) pour pouvoir générer le lockfile s'il n'existe pas
       - name: Setup Node (no cache, for lockfile creation)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      # 2) Créer le package-lock.json si absent (et ignorer les scripts)
+      # 2) Créer package-lock.json si absent (sans exécuter de scripts)
       - name: Ensure npm lockfile
         run: |
           if [ ! -f package-lock.json ]; then
@@ -162,7 +162,7 @@ jobs:
             echo "Lockfile already present."
           fi
 
-      # 3) Commit du lockfile s'il vient d'être créé (utile pour les prochains runs + cache)
+      # 3) Commit du lockfile s'il vient d'être créé
       - name: Commit lockfile if created
         run: |
           if git status --porcelain | grep -q "package-lock.json"; then
@@ -175,28 +175,40 @@ jobs:
             echo "No new lockfile to commit."
           fi
 
-      # 4) Ré-installer Node avec cache npm activé (le lockfile existe maintenant)
+      # 4) Ré-installer Node avec cache npm
       - name: Setup Node (with npm cache)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: "npm"
 
-      # 5) Installer les dépendances (reproductible)
+      # 5) Install (repro) pour tes deps existantes
       - name: Install npm deps (npm ci)
         run: npm ci
 
-      # 6) Écrire le script WFCD (génère *.wfcd.json)
+      # 6) Installer WFCD deps (sans toucher à ton package.json)
+      - name: Install WFCD deps (no-save)
+        run: |
+          npm install --no-save @wfcd/items@latest warframe-patchlogs@latest
+
+      # 7) Fetch des Drop Tables WFCD (slim)
+      - name: Fetch WFCD drop data (slim)
+        run: |
+          mkdir -p data
+          curl -fsSL https://drops.warframestat.us/data/all.slim.json -o data/drops_all.slim.wfcd.json
+          echo "✓ Saved data/drops_all.slim.wfcd.json"
+
+      # 8) Ecrire le script WFCD (sortie dans data/*.wfcd.json)
       - name: Write build_items.js (WFCD → *.wfcd.json)
         run: |
-          mkdir -p tools data_build
+          mkdir -p tools
           cat > tools/build_items.js <<'JS'
           /* eslint-disable no-console */
           import { mkdir, writeFile } from 'node:fs/promises';
           import { resolve } from 'node:path';
           import Items from '@wfcd/items';
 
-          const OUT = 'data';
+          const OUT = 'data'; // on regroupe tout dans data/
           const FN = {
             warframes: 'warframes.wfcd.json',
             weapons:   'weapons.wfcd.json',
@@ -295,27 +307,15 @@ jobs:
       - name: Build WFCD datasets (*.wfcd.json)
         run: node tools/build_items.js
 
-      - name: Commit WFCD datasets if changed
-        run: |
-          git add -A data_build/*.wfcd.json
-          if git diff --cached --quiet; then
-            echo "No WFCD dataset changes."
-          else
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: build WFCD datasets ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
-            git push
-          fi
-
-      # -------------------- COMMIT DES EXPORTS BRUTS --------------------
-      - name: Commit PublicExport if changed
+      # -------------------- COMMIT UNIQUE DE TOUT data/ --------------------
+      - name: Commit data if changed
         run: |
           git add -A data/
           if git diff --cached --quiet; then
-            echo "Aucun changement à committer (PublicExport)."
+            echo "Aucun changement à committer."
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: update PublicExport JSONs ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+            git commit -m "chore: update data (PublicExport + WFCD) ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
