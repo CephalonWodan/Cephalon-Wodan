@@ -182,10 +182,6 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      # 5) Install (repro) pour tes deps existantes
-      - name: Install npm deps (npm ci)
-        run: npm ci
-
       # 6) Installer WFCD deps (sans toucher à ton package.json)
         - name: Install WFCD deps (no-save)
       run: |
