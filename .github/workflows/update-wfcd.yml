@@ -1,0 +1,99 @@
+name: Update WFCD datasets (items + drops)
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # toutes les 6h
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wfcd-datasets
+  cancel-in-progress: false
+
+jobs:
+  build-wfcd:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # -------- Node pour les builds WFCD --------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Ensure data folders
+        run: |
+          mkdir -p data/wfcd_items data/wfcd_drops
+
+      # ========== WFCD / warframe-items ==========
+      - name: Clone WFCD/warframe-items
+        run: |
+          rm -rf tmp_wi
+          git clone --depth=1 https://github.com/WFCD/warframe-items.git tmp_wi
+
+      - name: Build warframe-items (official) with fallback
+        run: |
+          set -e
+          cd tmp_wi
+          echo "Installing deps for warframe-items..."
+          npm ci || { echo "npm ci failed"; exit 2; }
+
+          echo "Running build..."
+          if npm run build; then
+            echo "Build OK → copying data/json to repo"
+            cd ..
+            rsync -a tmp_wi/data/json/ ./data/wfcd_items/
+          else
+            echo "⚠️ Build failed. Using NPM package fallback for items."
+            cd ..
+            npm install --no-save @wfcd/items@latest
+            PKG_DIR="$(node -e "console.log(require.resolve('@wfcd/items/package.json').replace(/package\.json$/, ''))")"
+            rsync -a "$PKG_DIR/data/json/" ./data/wfcd_items/
+          fi
+
+      # ========== WFCD / warframe-drop-data ==========
+      - name: Clone WFCD/warframe-drop-data
+        run: |
+          rm -rf tmp_wdd
+          git clone --depth=1 https://github.com/WFCD/warframe-drop-data.git tmp_wdd
+
+      - name: Build warframe-drop-data (official) with fallback
+        run: |
+          set -e
+          cd tmp_wdd
+          echo "Installing deps for warframe-drop-data..."
+          npm ci || { echo "npm ci failed"; exit 2; }
+
+          echo "Generating drops data..."
+          if node generateData.js; then
+            echo "Drops build OK → copying data/*.json"
+            cd ..
+            rsync -a tmp_wdd/data/ ./data/wfcd_drops/
+          else
+            echo "⚠️ Drops build failed. Using WFCD published slim JSON fallback."
+            cd ..
+            curl -fsSL https://drops.warframestat.us/data/all.slim.json -o ./data/wfcd_drops/all.slim.json
+          fi
+
+      # -------- Résumé + commit --------
+      - name: List produced files
+        run: |
+          echo "=== wfcd_items ==="
+          ls -l data/wfcd_items | head -n 50 || true
+          echo "=== wfcd_drops ==="
+          ls -l data/wfcd_drops | head -n 50 || true
+
+      - name: Commit data if changed
+        run: |
+          git add -A data/
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: update WFCD datasets (items + drops) $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi
