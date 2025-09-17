@@ -187,9 +187,9 @@ jobs:
         run: npm ci
 
       # 6) Installer WFCD deps (sans toucher à ton package.json)
-      - name: Install WFCD deps (no-save)
-        run: |
-          npm install --no-save @wfcd/items@latest warframe-patchlogs@latest
+        - name: Install WFCD deps (no-save)
+      run: |
+      npm install --no-save @wfcd/items@latest warframe-patchlogs@latest
 
       # 7) Fetch des Drop Tables WFCD (slim)
       - name: Fetch WFCD drop data (slim)
