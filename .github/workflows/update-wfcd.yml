@@ -1,15 +1,15 @@
-name: Update Warframe Data (PublicExport + WFCD + Merge)
+name: Update WFCD datasets + Merge with PublicExport
 
 on:
   schedule:
-    - cron: "0 */6 * * *"   # toutes les 6h
+    - cron: "15 */6 * * *"   # décalé de ton autre job
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
-  group: warframe-data
+  group: warframe-wfcd
   cancel-in-progress: false
 
 jobs:
@@ -19,144 +19,72 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # -------------------- 1) PUBLIC EXPORT (DE) --------------------
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
+      - name: Prepare folders
+        run: mkdir -p data data/wfcd_items data/wfcd_drops data/unified tools
 
-      - name: Write fetch_wf_exports.py
-        run: |
-          mkdir -p tools data
-          cat > tools/fetch_wf_exports.py <<'PY'
-          #!/usr/bin/env python3
-          import argparse, lzma, urllib.request, pathlib, sys
-          ORIGIN_INDEX = "https://origin.warframe.com/PublicExport/index_{lang}.txt.lzma"
-          CONTENT_ROOT = "http://content.warframe.com/PublicExport/Manifest/"
-          ASSETS = {
-            "companions":"ExportSentinels_{lang}.json",
-            "warframes":"ExportWarframes_{lang}.json",
-            "weapons":"ExportWeapons_{lang}.json",
-            "upgrades":"ExportUpgrades_{lang}.json",
-            "relicarcanes":"ExportRelicArcane_{lang}.json",
-            "resources":"ExportResources_{lang}.json",
-            "customs":"ExportCustoms_{lang}.json",
-            "gear":"ExportGear_{lang}.json",
-            "regions":"ExportRegions_{lang}.json",
-            "recipes":"ExportRecipes_{lang}.json",
-            "flavour":"ExportFlavour_{lang}.json",
-            "sortierewards":"ExportSortieRewards_{lang}.json",
-            "fullimages":"ExportManifest.json",
-            "drones":"ExportDrones_{lang}.json",
-            "fusionbundles":"ExportFusionBundles_{lang}.json"
-          }
-          def http_get(url: str) -> bytes:
-            req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (Actions Bot); WarframeExport","Accept":"*/*"})
-            with urllib.request.urlopen(req) as r: return r.read()
-          def fetch_index(lang: str, index_file: str | None = None) -> str:
-            if index_file: return pathlib.Path(index_file).read_text(encoding="utf-8")
-            raw = http_get(ORIGIN_INDEX.format(lang=lang))
-            try: return lzma.decompress(raw).decode("utf-8","replace")
-            except lzma.LZMAError as e: sys.exit(f"Failed to decompress index: {e}")
-          def find_hashed_url(index_txt: str, asset_basename: str) -> str:
-            pref = asset_basename + "!"
-            for line in index_txt.splitlines():
-              if line.startswith(pref): return CONTENT_ROOT + line.strip()
-            raise SystemExit(f"Asset not found in index: {asset_basename}")
-          def save(url: str, out: pathlib.Path):
-            data = http_get(url); out.parent.mkdir(parents=True, exist_ok=True); out.write_bytes(data)
-            print(f"✓ Saved {out} ({len(data):,} bytes)")
-          def main():
-            p = argparse.ArgumentParser()
-            p.add_argument("what", nargs="+"); p.add_argument("-l","--lang", default="en")
-            p.add_argument("-o","--out", default="."); p.add_argument("--index")
-            a = p.parse_args()
-            want = list(ASSETS.keys()) if "all" in a.what else a.what
-            unk = [w for w in want if w not in ASSETS]
-            if unk: sys.exit(f"Unknown asset(s): {', '.join(unk)}\nValid: {', '.join(ASSETS)}")
-            index_txt = fetch_index(a.lang, a.index); out_dir = pathlib.Path(a.out)
-            for k in want:
-              base = ASSETS[k].format(lang=a.lang); url = find_hashed_url(index_txt, base)
-              fname = url.rsplit("/", 1)[1]; save(url, out_dir / fname)
-          if __name__ == "__main__": main()
-          PY
-          chmod +x tools/fetch_wf_exports.py
-
-      - name: Download DE index (origin → CDN fallback)
-        run: |
-          set -e
-          UA="Mozilla/5.0 (Actions Bot); WarframeExport"
-          O="https://origin.warframe.com/PublicExport/index_en.txt.lzma"
-          C="https://content.warframe.com/PublicExport/index_en.txt.lzma"
-          if ! curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$O" -o index_en.txt.lzma; then
-            curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$C" -o index_en.txt.lzma
-          fi
-          python - <<'PY'
-          import lzma, pathlib
-          raw = pathlib.Path("index_en.txt.lzma").read_bytes()
-          pathlib.Path("index_en.txt").write_bytes(lzma.decompress(raw))
-          print("Index decompressed → index_en.txt")
-          PY
-
-      - name: Fetch PublicExport JSONs
-        run: python tools/fetch_wf_exports.py all -l en -o data --index index_en.txt
-
-      - name: Rename hashed filenames
-        run: |
-          shopt -s nullglob
-          for f in data/*.json\!00_*; do base="${f%%!00_*}"; mv "$f" "$base"; echo "→ $f ==> $base"; done
-
-      # -------------------- 2) WFCD ITEMS (build officiel + fallback NPM) --------------------
+      # ---------- WFCD ITEMS : Build → fallback repo data → fallback npm ----------
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      - name: Ensure output folders
-        run: mkdir -p data/wfcd_items data/wfcd_drops data/unified
+      - name: Install system deps for warframe-items build
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.3 liblua5.3-dev luarocks build-essential \
+                                  libpng-dev zlib1g-dev jq
 
       - name: Clone WFCD/warframe-items
         run: |
           rm -rf tmp_wi
           git clone --depth=1 https://github.com/WFCD/warframe-items.git tmp_wi
 
-      - name: Build warframe-items (with fallback to NPM package)
+      - name: Build warframe-items (source) or fallback to repo/npm
         run: |
           set -e
           cd tmp_wi
-          npm ci || { echo "npm ci failed"; exit 2; }
-          if npm run build; then
-            echo "✓ warframe-items build OK"
+          if npm ci && npm run build; then
+            echo "✓ warframe-items built"
             cd ..
             rsync -a tmp_wi/data/json/ ./data/wfcd_items/
           else
-            echo "⚠️ build failed, fallback to NPM package"
+            echo "⚠️ build failed, trying repo tracked data…"
             cd ..
-            npm install --no-save @wfcd/items@latest
-            PKG_DIR="$(node -e "console.log(require.resolve('@wfcd/items/package.json').replace(/package\.json$/, ''))")"
-            rsync -a "$PKG_DIR/data/json/" ./data/wfcd_items/
+            if [ -d tmp_wi/data/json ]; then
+              rsync -a tmp_wi/data/json/ ./data/wfcd_items/
+            else
+              echo "⚠️ repo has no data/json, using npm package fallback"
+              npm install --no-save @wfcd/items@latest
+              PKG_DIR="$(node -e "console.log(require.resolve('@wfcd/items/package.json').replace(/package\.json$/, ''))")"
+              rsync -a "$PKG_DIR/data/json/" ./data/wfcd_items/
+            fi
           fi
 
-      # -------------------- 3) WFCD DROPS (build officiel + fallback slim) --------------------
+      # ---------- WFCD DROPS : Build → fallback repo data → fallback slim ----------
       - name: Clone WFCD/warframe-drop-data
         run: |
           rm -rf tmp_wdd
           git clone --depth=1 https://github.com/WFCD/warframe-drop-data.git tmp_wdd
 
-      - name: Build warframe-drop-data (with fallback to published slim)
+      - name: Build warframe-drop-data (source) or fallback to repo/slim
         run: |
           set -e
           cd tmp_wdd
-          npm ci || { echo "npm ci failed"; exit 2; }
-          if node generateData.js; then
-            echo "✓ drops build OK"
+          if npm ci && node generateData.js; then
+            echo "✓ drops built"
             cd ..
             rsync -a tmp_wdd/data/ ./data/wfcd_drops/
           else
-            echo "⚠️ drops build failed, using WFCD slim JSON"
+            echo "⚠️ drops build failed, trying repo tracked data…"
             cd ..
-            curl -fsSL https://drops.warframestat.us/data/all.slim.json -o ./data/wfcd_drops/all.slim.json
+            if [ -d tmp_wdd/data ]; then
+              rsync -a tmp_wdd/data/ ./data/wfcd_drops/
+            else
+              echo "⚠️ repo has no data folder, using slim JSON fallback"
+              curl -fsSL https://drops.warframestat.us/data/all.slim.json -o ./data/wfcd_drops/all.slim.json
+            fi
           fi
 
-      # -------------------- 4) MERGE (DE + WFCD + tes fichiers) --------------------
+      # ---------- MERGE (DE + WFCD + TES JSON) ----------
       - name: Write merge_datasets.js
         run: |
           cat > tools/merge_datasets.js <<'JS'
@@ -166,11 +94,11 @@ jobs:
 
           const PATHS = {
             DE: {
-              warframes: 'data/ExportWarframes_en.json',
-              weapons:   'data/ExportWeapons_en.json',
-              upgrades:  'data/ExportUpgrades_en.json',     // mods
-              relics:    'data/ExportRelicArcane_en.json',  // reliques + arcanes
-              companions:'data/ExportSentinels_en.json',
+              warframes:  'data/ExportWarframes_en.json',
+              weapons:    'data/ExportWeapons_en.json',
+              upgrades:   'data/ExportUpgrades_en.json',
+              relicArc:   'data/ExportRelicArcane_en.json',
+              companions: 'data/ExportSentinels_en.json',
             },
             WFCD_ITEMS: {
               all:        'data/wfcd_items/All.json',
@@ -181,150 +109,241 @@ jobs:
               relics:     'data/wfcd_items/Relics.json',
               arcanes:    'data/wfcd_items/Arcanes.json',
             },
-            WFCD_DROPS: {
-              slim: 'data/wfcd_drops/all.slim.json',
-            },
+            WFCD_DROPS: { slim: 'data/wfcd_drops/all.slim.json' },
             MINE: {
-              warframes: 'data/warframes.json',
-              weapons:   'data/weapons.json',
-              mods:      'data/mods.json',
-              relics:    'data/relics.json',
-              companions:'data/companions.json',
+              wfAbilities:   'data/warframe_abilities.json',
+              abilitiesByWF: 'data/abilities_by_warframe.json',
+              abilities:     'data/abilities.json',
+              arcanes:       'data/arcanes.json',
+              arcanesList:   'data/arcanes_list.json',
+              arcanesMap:    'data/arcanes_map.json',
+              companions:    'data/companions.json',
+              polarities:    'data/polarity_overrides.json',
+              awOverrides:   'data/aw_overrides.json',
             },
             OUT_DIR: 'data/unified',
           };
 
-          async function loadJson(p, optional = false) {
-            try { return JSON.parse(await readFile(p, 'utf-8')); }
-            catch (e) { if (optional) return null; throw new Error(`Read ${p} failed: ${e.message}`); }
+          async function loadJson(p, optional=false){
+            try { return JSON.parse(await readFile(p,'utf-8')); }
+            catch(e){ if(optional) return null; throw new Error(`Read ${p} failed: ${e.message}`); }
           }
-          function normalizeDEArrayMaybe(obj) {
-            if (Array.isArray(obj)) return obj;
-            if (obj && typeof obj === 'object') {
-              const k = Object.keys(obj)[0];
-              if (k && Array.isArray(obj[k])) return obj[k];
+          function normalizeDEArrayMaybe(obj){
+            if(Array.isArray(obj)) return obj;
+            if(obj && typeof obj==='object'){
+              const k=Object.keys(obj)[0]; if(k && Array.isArray(obj[k])) return obj[k];
             }
             return [];
           }
-          const indexBy = (arr, key) => {
-            const m = new Map(); for (const it of arr||[]) { const k = it?.[key]; if (k) m.set(k, it); } return m;
-          };
-          const byName = (arr) => {
-            const m = new Map(); for (const it of arr||[]) { const k = it?.name; if (k) m.set(k, it); } return m;
-          };
-          const keep = (obj, keys)=>Object.fromEntries(Object.entries(obj||{}).filter(([k])=>keys.includes(k)));
-          function mergeMissing(t, s, fields){ if(!t||!s) return; for(const f of fields){ if(t[f]==null && s[f]!=null) t[f]=s[f]; } }
-          function attachArray(t, s, f){
-            if(!t||!s) return;
-            if (Array.isArray(s[f]) && s[f].length) {
-              if (!Array.isArray(t[f]) || !t[f].length) t[f] = s[f];
-              else {
-                const seen = new Set(t[f].map(x=>JSON.stringify(x)));
-                for (const x of s[f]) { const key = JSON.stringify(x); if (!seen.has(key)) { t[f].push(x); seen.add(key);} }
+          const idxBy=(arr,key)=>{const m=new Map(); for(const it of arr||[]){const k=it?.[key]; if(k) m.set(k,it);} return m;};
+          const idxByName=(arr)=>{const m=new Map(); for(const it of arr||[]){const k=it?.name; if(k) m.set(k,it);} return m;};
+          function mergeMissing(t,s,fields){ if(!t||!s) return; for(const f of fields){ if(t[f]==null && s[f]!=null) t[f]=s[f]; } }
+          function overrideFields(t,from,fields){ if(!t||!from) return; for(const f of fields){ if(from[f]!=null) t[f]=from[f]; } }
+          function attachArrayUnion(t,s,f){ if(!t||!s) return; if(Array.isArray(s[f])&&s[f].length){ if(!Array.isArray(t[f])) t[f]=[]; const seen=new Set(t[f].map(x=>JSON.stringify(x))); for(const x of s[f]){ const k=JSON.stringify(x); if(!seen.has(k)){ t[f].push(x); seen.add(k);} } } }
+          const pick=(o,keys)=>Object.fromEntries(Object.entries(o||{}).filter(([k])=>keys.includes(k)));
+
+          function buildPolarityOverrideFn(map){
+            if(!map) return ()=>{};
+            const byKey=new Map(Object.entries(map));
+            return (item)=>{
+              const key = (item.uniqueName && byKey.has(item.uniqueName)) ? item.uniqueName :
+                          (byKey.has(item.name) ? item.name : null);
+              if(!key) return;
+              const v=byKey.get(key);
+              if(Array.isArray(v)&&v.length) item.polarities=v;
+            };
+          }
+          function buildAWOverrideFn(map){
+            if(!map) return ()=>{};
+            const byKey=new Map(Object.entries(map));
+            return (item)=>{
+              const key = (item.uniqueName && byKey.has(item.uniqueName)) ? item.uniqueName :
+                          (byKey.has(item.name) ? item.name : null);
+              if(!key) return;
+              const src=byKey.get(key);
+              for(const [k,v] of Object.entries(src)) item[k]=v;
+            };
+          }
+          function buildWFAbilitiesLookup(wfAbilities, abilitiesByWF, abilities){
+            const m=new Map();
+            if(wfAbilities && typeof wfAbilities==='object' && !Array.isArray(wfAbilities)){
+              for(const [k,v] of Object.entries(wfAbilities)) if(Array.isArray(v)) m.set(k,v);
+            }
+            if(abilitiesByWF && typeof abilitiesByWF==='object' && !Array.isArray(abilitiesByWF)){
+              for(const [k,v] of Object.entries(abilitiesByWF)) if(Array.isArray(v) && !m.has(k)) m.set(k,v);
+            }
+            if(Array.isArray(abilities)){
+              for(const ab of abilities){
+                const wf=ab.warframe||ab.frame||ab.owner||ab.wf||ab.warframeName;
+                if(!wf) continue;
+                if(!m.has(wf)) m.set(wf,[]);
+                m.get(wf).push(pick(ab,['name','description']));
               }
             }
+            return m;
           }
-          function overrideFields(t, m, fields){ if(!t||!m) return; for(const f of fields){ if(m[f]!=null) t[f]=m[f]; } }
+          function attachWFAbilities(merged, lookup){
+            if(!merged||!lookup) return;
+            const list = lookup.get(merged.name);
+            if(Array.isArray(list)&&list.length) merged.abilities = list.map(a=>pick(a,['name','description']));
+          }
+          function mergeArcanesFromMine(unified, mineArr, mineMapByName, mineList){
+            if(!Array.isArray(unified)) return;
+            const byName=idxByName(unified);
+            const apply=(name, src)=>{
+              const t=byName.get(name); if(!t) return;
+              overrideFields(t, src, ['wikiaUrl','description','rarity','rankMax','effects','type']);
+            };
+            if(Array.isArray(mineArr)) for(const a of mineArr) if(a?.name) apply(a.name,a);
+            if(mineMapByName && typeof mineMapByName==='object') for(const [n,o] of Object.entries(mineMapByName)) apply(n,o);
+            if(Array.isArray(mineList)) for(const a of mineList) if(a?.name) apply(a.name,a);
+          }
 
-          function mergeKind({ kind, deList, wfcdList, dropsSlim, mineList }) {
-            const out = [], report = [];
+          function mergeKind({ kind, deList, wfcdList, dropsSlim, mineList, wfAbilitiesLookup, applyPolarityOverride, applyAWOverride }){
+            const out=[];
             const de = normalizeDEArrayMaybe(deList);
-            const idxDE_unique = indexBy(de,'uniqueName');
-            const idxDE_name   = byName(de);
-            const wfcd = wfcdList || [];
-            const idxW_unique = indexBy(wfcd,'uniqueName');
-            const idxW_name   = byName(wfcd);
-            const idxM_unique = indexBy(mineList||[],'uniqueName');
-            const idxM_name   = byName(mineList||[]);
+            const idxWu=idxBy(wfcdList||[],'uniqueName'), idxWn=idxByName(wfcdList||[]);
+            const idxMu=idxBy(mineList||[],'uniqueName'), idxMn=idxByName(mineList||[]);
 
-            const WFCD_COMMON = ['wikiaUrl','polarities','exilus','aura','color','type','category'];
-            const WFCD_WF     = ['helminth','abilities'];
-            const WFCD_MOD    = ['rarity','polarity','baseDrain','fusionLimit','compatName','levelStats'];
+            const WFCD_COMMON=['wikiaUrl','polarities','exilus','aura','color','type','category'];
+            const WFCD_WF=['helminth','abilities'];
+            const WFCD_MOD=['rarity','polarity','baseDrain','fusionLimit','compatName','levelStats'];
 
-            const OVERRIDE_COMMON = ['name','description','wikiaUrl'];
-            const OVERRIDE_WF     = ['helminth','polarities','aura','exilus'];
-            const OVERRIDE_MOD    = ['polarity','rarity','baseDrain','fusionLimit'];
+            const OVERRIDE_COMMON=['name','description','wikiaUrl'];
+            const OVERRIDE_WF=['helminth','polarities','aura','exilus'];
+            const OVERRIDE_WPN=['polarities'];
+            const OVERRIDE_MOD=['polarity','rarity','baseDrain','fusionLimit'];
 
-            for (const base of de) {
-              const merged = { ...base };
-              const wf = (base.uniqueName && idxW_unique.get(base.uniqueName)) || idxW_name.get(base.name);
-              const mine = (base.uniqueName && idxM_unique.get(base.uniqueName)) || idxM_name.get(base.name);
+            for(const base of de){
+              const merged={...base};
+              const wfcd=(base.uniqueName && idxWu.get(base.uniqueName)) || idxWn.get(base.name);
+              const mine =(base.uniqueName && idxMu.get(base.uniqueName)) || idxMn.get(base.name);
 
-              mergeMissing(merged, wf, WFCD_COMMON);
-              if (kind==='warframes') mergeMissing(merged, wf, WFCD_WF);
-              if (kind==='mods')      mergeMissing(merged, wf, WFCD_MOD);
+              mergeMissing(merged,wfcd,WFCD_COMMON);
+              if(kind==='warframes') mergeMissing(merged,wfcd,WFCD_WF);
+              if(kind==='mods')      mergeMissing(merged,wfcd,WFCD_MOD);
 
-              attachArray(merged, wf, 'drops');
-              attachArray(merged, wf, 'patchlogs');
+              attachArrayUnion(merged,wfcd,'drops');
+              attachArrayUnion(merged,wfcd,'patchlogs');
 
-              if ((!merged.drops || !merged.drops.length) && dropsSlim) {
-                const arr = dropsSlim[merged.name];
-                if (Array.isArray(arr) && arr.length) merged.drops = arr.map(d=>keep(d,['location','rarity','chance']));
+              if((!merged.drops||!merged.drops.length) && dropsSlim && dropsSlim[merged.name]){
+                merged.drops = dropsSlim[merged.name].map(d=>pick(d,['location','rarity','chance']));
               }
 
-              if (mine) {
-                overrideFields(merged, mine, OVERRIDE_COMMON);
-                if (kind==='warframes') overrideFields(merged, mine, OVERRIDE_WF);
-                if (kind==='mods')      overrideFields(merged, mine, OVERRIDE_MOD);
+              if(mine){
+                overrideFields(merged,mine,OVERRIDE_COMMON);
+                if(kind==='warframes') overrideFields(merged,mine,OVERRIDE_WF);
+                if(kind==='weapons')   overrideFields(merged,mine,OVERRIDE_WPN);
+                if(kind==='mods')      overrideFields(merged,mine,OVERRIDE_MOD);
               }
+
+              if(applyPolarityOverride) applyPolarityOverride(merged);
+              if(applyAWOverride && (kind==='weapons'||kind==='warframes'||kind==='companions')) applyAWOverride(merged);
+
+              if(kind==='warframes' && wfAbilitiesLookup) attachWFAbilities(merged, wfAbilitiesLookup);
 
               out.push(merged);
             }
-            return { out, report };
+            return out;
           }
 
           async function main(){
-            await mkdir(PATHS.OUT_DIR, { recursive: true });
+            await mkdir(PATHS.OUT_DIR,{recursive:true});
 
             // DE
-            const deWarframes = await loadJson(PATHS.DE.warframes, true);
-            const deWeapons   = await loadJson(PATHS.DE.weapons,   true);
-            const deUpgrades  = await loadJson(PATHS.DE.upgrades,  true);
-            const deRelicsArc = await loadJson(PATHS.DE.relics,    true);
-            const deComp      = await loadJson(PATHS.DE.companions,true);
+            const deWF   = await loadJson(PATHS.DE.warframes,  true);
+            const deWPN  = await loadJson(PATHS.DE.weapons,    true);
+            const deMOD  = await loadJson(PATHS.DE.upgrades,   true);
+            const deRA   = await loadJson(PATHS.DE.relicArc,   true);
+            const deCOMP = await loadJson(PATHS.DE.companions, true);
 
             // WFCD items
-            const allItems = await loadJson(PATHS.WFCD_ITEMS.all, true);
-            const pickCat = (pred)=> (allItems||[]).filter(pred);
-            const wfcdWarframes = (await loadJson(PATHS.WFCD_ITEMS.warframes, true)) || pickCat(i=>i.category==='Warframes');
-            const wfcdWeapons   = (await loadJson(PATHS.WFCD_ITEMS.weapons,   true)) || pickCat(i=>['Primary','Secondary','Melee','Arch-Gun','Arch-Melee','Crewship Weapon'].includes(i.category));
-            const wfcdMods      = (await loadJson(PATHS.WFCD_ITEMS.mods,      true)) || pickCat(i=>i.category==='Mods');
-            const wfcdRelics    = (await loadJson(PATHS.WFCD_ITEMS.relics,    true)) || pickCat(i=>i.category==='Relics');
-            const wfcdComp      = (await loadJson(PATHS.WFCD_ITEMS.companions,true)) || pickCat(i=>['Companions','Sentinels','Beasts'].includes(i.category));
+            const all = await loadJson(PATHS.WFCD_ITEMS.all, true);
+            const pickCat = (p)=> (all||[]).filter(p);
+            const wfiWF   = (await loadJson(PATHS.WFCD_ITEMS.warframes,  true)) || pickCat(i=>i.category==='Warframes');
+            const wfiWPN  = (await loadJson(PATHS.WFCD_ITEMS.weapons,    true)) || pickCat(i=>['Primary','Secondary','Melee','Arch-Gun','Arch-Melee','Crewship Weapon'].includes(i.category));
+            const wfiMOD  = (await loadJson(PATHS.WFCD_ITEMS.mods,       true)) || pickCat(i=>i.category==='Mods');
+            const wfiREL  = (await loadJson(PATHS.WFCD_ITEMS.relics,     true)) || pickCat(i=>i.category==='Relics');
+            const wfiARC  = (await loadJson(PATHS.WFCD_ITEMS.arcanes,    true)) || pickCat(i=>i.category==='Arcanes');
+            const wfiCOMP = (await loadJson(PATHS.WFCD_ITEMS.companions, true)) || pickCat(i=>['Companions','Sentinels','Beasts'].includes(i.category));
 
-            // Drops slim (facultatif)
-            const dropsSlim = await loadJson(PATHS.WFCD_DROPS.slim, true) || {};
+            // Drops slim
+            const slim = await loadJson(PATHS.WFCD_DROPS.slim, true) || {};
 
-            // Tes fichiers (facultatifs)
-            const mineWF  = await loadJson(PATHS.MINE.warframes, true);
-            const mineWpn = await loadJson(PATHS.MINE.weapons,   true);
-            const mineMod = await loadJson(PATHS.MINE.mods,      true);
-            const mineRel = await loadJson(PATHS.MINE.relics,    true);
-            const mineCom = await loadJson(PATHS.MINE.companions,true);
+            // Tes fichiers
+            const mineAbilities      = await loadJson(PATHS.MINE.abilities,     true);
+            const mineWFAbilities    = await loadJson(PATHS.MINE.wfAbilities,   true);
+            const mineAbilitiesByWF  = await loadJson(PATHS.MINE.abilitiesByWF, true);
+            const mineArcanes        = await loadJson(PATHS.MINE.arcanes,       true);
+            const mineArcanesList    = await loadJson(PATHS.MINE.arcanesList,   true);
+            const mineArcanesMap     = await loadJson(PATHS.MINE.arcanesMap,    true);
+            const mineCompanions     = await loadJson(PATHS.MINE.companions,    true);
+            const minePolarityMap    = await loadJson(PATHS.MINE.polarities,    true);
+            const mineAWOverrides    = await loadJson(PATHS.MINE.awOverrides,   true);
 
-            // Merge par catégorie (si présent côté DE)
-            if (deWarframes) {
-              const { out } = mergeKind({kind:'warframes', deList:deWarframes, wfcdList:wfcdWarframes, dropsSlim:dropsSlim.Warframes||null, mineList:mineWF});
-              await writeFile(resolve(PATHS.OUT_DIR, 'warframes.unified.json'), JSON.stringify(out, null, 2));
-            }
-            if (deWeapons) {
-              const { out } = mergeKind({kind:'weapons', deList:deWeapons, wfcdList:wfcdWeapons, dropsSlim:dropsSlim.Weapons||null, mineList:mineWpn});
-              await writeFile(resolve(PATHS.OUT_DIR, 'weapons.unified.json'), JSON.stringify(out, null, 2));
-            }
-            if (deUpgrades) {
-              const { out } = mergeKind({kind:'mods', deList:deUpgrades, wfcdList:wfcdMods, dropsSlim:dropsSlim.Mods||null, mineList:mineMod});
-              await writeFile(resolve(PATHS.OUT_DIR, 'mods.unified.json'), JSON.stringify(out, null, 2));
-            }
-            if (deRelicsArc) {
-              const { out } = mergeKind({kind:'relics', deList:deRelicsArc, wfcdList:wfcdRelics, dropsSlim:dropsSlim.Relics||null, mineList:mineRel});
-              await writeFile(resolve(PATHS.OUT_DIR, 'relics.unified.json'), JSON.stringify(out, null, 2));
-            }
-            if (deComp) {
-              const { out } = mergeKind({kind:'companions', deList:deComp, wfcdList:wfcdComp, dropsSlim:dropsSlim.Compat||null, mineList:mineCom});
-              await writeFile(resolve(PATHS.OUT_DIR, 'companions.unified.json'), JSON.stringify(out, null, 2));
+            const wfAbilitiesLookup  = (mineWFAbilities||mineAbilitiesByWF||mineAbilities) ? 
+              buildWFAbilitiesLookup(mineWFAbilities, mineAbilitiesByWF, mineAbilities) : null;
+            const applyPolarityOverride = buildPolarityOverrideFn(minePolarityMap);
+            const applyAWOverride       = buildAWOverrideFn(mineAWOverrides);
+
+            // Warframes
+            if(deWF){
+              const merged = mergeKind({
+                kind:'warframes', deList:deWF, wfcdList:wfiWF,
+                dropsSlim:slim.Warframes||null, mineList:null,
+                wfAbilitiesLookup, applyPolarityOverride, applyAWOverride
+              });
+              await writeFile(resolve(PATHS.OUT_DIR,'warframes.unified.json'), JSON.stringify(merged,null,2));
             }
 
-            console.log('✔ Unified datasets written to', PATHS.OUT_DIR)
+            // Weapons (inclut AW/Necramech via aw_overrides.json)
+            if(deWPN){
+              const merged = mergeKind({
+                kind:'weapons', deList:deWPN, wfcdList:wfiWPN,
+                dropsSlim:slim.Weapons||null, mineList:null,
+                wfAbilitiesLookup:null, applyPolarityOverride, applyAWOverride
+              });
+              await writeFile(resolve(PATHS.OUT_DIR,'weapons.unified.json'), JSON.stringify(merged,null,2));
+            }
+
+            // Mods
+            if(deMOD){
+              const merged = mergeKind({
+                kind:'mods', deList:deMOD, wfcdList:wfiMOD,
+                dropsSlim:slim.Mods||null, mineList:null,
+                wfAbilitiesLookup:null, applyPolarityOverride, applyAWOverride:null
+              });
+              await writeFile(resolve(PATHS.OUT_DIR,'mods.unified.json'), JSON.stringify(merged,null,2));
+            }
+
+            // Companions (tes overrides pris en compte)
+            if(deCOMP){
+              const merged = mergeKind({
+                kind:'companions', deList:deCOMP, wfcdList:wfiCOMP,
+                dropsSlim:slim.Companions||null, mineList:mineCompanions,
+                wfAbilitiesLookup:null, applyPolarityOverride, applyAWOverride
+              });
+              await writeFile(resolve(PATHS.OUT_DIR,'companions.unified.json'), JSON.stringify(merged,null,2));
+            }
+
+            // Relics + Arcanes
+            if(deRA){
+              const relicsDE = normalizeDEArrayMaybe(deRA)?.filter(x=>/Relic/i.test(x?.name||''));
+              const mergedRelics = mergeKind({
+                kind:'relics', deList:relicsDE, wfcdList:wfiREL,
+                dropsSlim:slim.Relics||null, mineList:null,
+                wfAbilitiesLookup:null, applyPolarityOverride:null, applyAWOverride:null
+              });
+              await writeFile(resolve(PATHS.OUT_DIR,'relics.unified.json'), JSON.stringify(mergedRelics,null,2));
+
+              let arcanesBase = (Array.isArray(wfiARC)&&wfiARC.length) ? wfiARC :
+                                normalizeDEArrayMaybe(deRA)?.filter(x=>/Arcane/i.test(x?.name||'')||/Arcane/i.test(x?.type||'')) || [];
+              const mineMapByName = (mineArcanesMap && typeof mineArcanesMap==='object') ? mineArcanesMap : null;
+              mergeArcanesFromMine(arcanesBase, mineArcanes, mineMapByName, mineArcanesList);
+              await writeFile(resolve(PATHS.OUT_DIR,'arcanes.unified.json'), JSON.stringify(arcanesBase,null,2));
+            }
+
+            console.log('✔ Unified datasets written to', PATHS.OUT_DIR);
           }
           main().catch(e=>{ console.error(e); process.exit(1); });
           JS
@@ -332,7 +351,6 @@ jobs:
       - name: Merge datasets (DE + WFCD + Mine)
         run: node tools/merge_datasets.js
 
-      # -------------------- 5) COMMIT FINAL --------------------
       - name: Commit data if changed
         run: |
           git add -A data/
@@ -341,6 +359,6 @@ jobs:
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: update data (DE + WFCD + unified) $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git commit -m "chore: update WFCD datasets + unified ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
