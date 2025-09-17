@@ -19,12 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # -------------------- ETAPE PYTHON : FETCH PUBLIC EXPORT --------------------
+      # -------------------- PYTHON : FETCH PUBLIC EXPORT --------------------
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Write fetch script (your code + tiny --index option)
+      - name: Write fetch script (index → hashed → files)
         run: |
           mkdir -p tools data
           cat > tools/fetch_wf_exports.py <<'PY'
@@ -103,8 +103,7 @@ jobs:
               for key in want:
                   basename = ASSETS[key].format(lang=args.lang)
                   url = find_hashed_url(index_txt, basename)
-                  # keep hashed filename (we’ll rename after)
-                  fname = url.rsplit("/", 1)[1]
+                  fname = url.rsplit("/", 1)[1]  # keep hashed filename (we’ll rename after)
                   save(url, out_dir / fname)
 
           if __name__ == "__main__":
@@ -116,15 +115,13 @@ jobs:
         run: |
           set -e
           UA="Mozilla/5.0 (Actions Bot); WarframeExport"
-          URL_ORIGIN="https://origin.warframe.com/PublicExport/index_en.txt.lzma"
-          URL_CONTENT="https://content.warframe.com/PublicExport/index_en.txt.lzma"
-
+          O="https://origin.warframe.com/PublicExport/index_en.txt.lzma"
+          C="https://content.warframe.com/PublicExport/index_en.txt.lzma"
           echo "Trying origin…"
-          if ! curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$URL_ORIGIN" -o index_en.txt.lzma; then
-            echo "Origin blocked (likely 403). Trying content CDN…"
-            curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$URL_CONTENT" -o index_en.txt.lzma
+          if ! curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$O" -o index_en.txt.lzma; then
+            echo "Origin blocked. Trying content CDN…"
+            curl -fsSL -A "$UA" --retry 5 --retry-all-errors "$C" -o index_en.txt.lzma
           fi
-
           python - <<'PY'
           import lzma, pathlib
           raw = pathlib.Path("index_en.txt.lzma").read_bytes()
@@ -133,8 +130,7 @@ jobs:
           PY
 
       - name: Fetch all exports with your script (using the downloaded index)
-        run: |
-          python tools/fetch_wf_exports.py all -l en -o data --index index_en.txt
+        run: python tools/fetch_wf_exports.py all -l en -o data --index index_en.txt
 
       - name: Rename hashed files to stable basenames
         run: |
@@ -145,57 +141,27 @@ jobs:
             echo "→ $f  ==>  $base"
           done
 
-      # -------------------- ETAPE NODE : LOCKFILE + WFCD + DROPS --------------------
-      # 1) Installer Node (sans cache) pour pouvoir générer le lockfile s'il n'existe pas
-      - name: Setup Node (no cache, for lockfile creation)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-
-      # 2) Créer package-lock.json si absent (sans exécuter de scripts)
-      - name: Ensure npm lockfile
+      # -------------------- PYTHON : TON SCRIPT DE DROPS --------------------
+      - name: Install Python deps for drop parser
         run: |
-          if [ ! -f package-lock.json ]; then
-            npm install --package-lock-only --ignore-scripts
-            echo "Lockfile created."
-          else
-            echo "Lockfile already present."
-          fi
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4
 
-      # 3) Commit du lockfile s'il vient d'être créé
-      - name: Commit lockfile if created
-        run: |
-          if git status --porcelain | grep -q "package-lock.json"; then
-            git add package-lock.json
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: add package-lock.json (CI)"
-            git push
-          else
-            echo "No new lockfile to commit."
-          fi
-
-      # 4) Ré-installer Node avec cache npm
-      - name: Setup Node (with npm cache)
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "npm"
-
-      # 6) Installer WFCD deps (sans toucher à ton package.json)
-        - name: Install WFCD deps (no-save)
-      run: |
-      npm install --no-save @wfcd/items@latest warframe-patchlogs@latest
-
-      # 7) Fetch des Drop Tables WFCD (slim)
-      - name: Fetch WFCD drop data (slim)
+      - name: Fetch drop data via repo script
         run: |
           mkdir -p data
-          curl -fsSL https://drops.warframestat.us/data/all.slim.json -o data/drops_all.slim.wfcd.json
-          echo "✓ Saved data/drops_all.slim.wfcd.json"
+          python tools/fetch_drop_data.py --output data/drops_all.slim.wfcd.json
 
-      # 8) Ecrire le script WFCD (sortie dans data/*.wfcd.json)
-      - name: Write build_items.js (WFCD → *.wfcd.json)
+      # -------------------- NODE : WFCD DATASETS (*.wfcd.json) --------------------
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install WFCD deps (no-save)
+        run: npm install --no-save @wfcd/items@latest warframe-patchlogs@latest
+
+      - name: Write build_items.js (WFCD → data/*.wfcd.json)
         run: |
           mkdir -p tools
           cat > tools/build_items.js <<'JS'
@@ -288,7 +254,7 @@ jobs:
               [FN.arcanes,    arcanes],
               [FN.companions, companions],
               [FN.relics,     relics],
-              [FN.unified,    items], // optionnel : dataset complet
+              [FN.unified,    items], // optionnel
             ].map(async ([file, data]) => {
               await writeFile(resolve(OUT, file), JSON.stringify(data, null, 2), 'utf-8');
               console.log(`✔ ${OUT}/${file}`, data.length);
@@ -312,6 +278,6 @@ jobs:
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: update data (PublicExport + WFCD) ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+            git commit -m "chore: update data (PublicExport + Drops + WFCD) ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
