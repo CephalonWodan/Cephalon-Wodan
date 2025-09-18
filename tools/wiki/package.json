@@ -1,0 +1,10 @@
+{
+  "name": "cw-wiki-scraper",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "scrape": "node run.mjs"
+  },
+  "dependencies": {}
+}
