@@ -1,0 +1,67 @@
+name: Update Official Wiki (Warframes Module → JSON + WFCD-like scrape)
+
+on:
+  schedule:
+    - cron: "17 */12 * * *"  # 2x/jour, décalé de tes autres jobs
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wiki-warframes-module
+  cancel-in-progress: false
+
+jobs:
+  wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure folders
+        run: |
+          mkdir -p tools data/wiki/modules data/wiki/json
+
+      # 1) DUMP intégral via Lua (Option “tout récupérer d’abord”)
+      - name: Install Lua + Luarocks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lua5.3 liblua5.3-dev luarocks
+          sudo luarocks install dkjson
+
+      - name: Fetch Module:Warframes/data (robuste)
+        run: |
+          python3 tools/fetch_official_module.py \
+            --title "Module:Warframes/data" \
+            --out "data/wiki/modules/Module_Warframes_data.lua"
+
+      - name: Evaluate Lua → JSON (full dump)
+        run: |
+          lua tools/eval_lua_to_json.lua \
+            data/wiki/modules/Module_Warframes_data.lua \
+            data/wiki/json/warframes.module.json
+
+      # 2) SCRAPE WFCD-like (action=edit + Cheerio + transformer lite)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Node deps
+        run: npm ci || npm i
+
+      - name: Run WFCD-like scraper (Subsumed/Progenitor)
+        run: npm run scrape:wiki
+
+      # Commit si changements
+      - name: Commit if changed
+        run: |
+          git add -A data/wiki
+          if git diff --cached --quiet; then
+            echo "Aucun changement à committer."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: update official wiki (warframes module JSON + helminth/progenitor) $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git push
+          fi
