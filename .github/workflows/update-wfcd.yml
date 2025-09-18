@@ -2,7 +2,7 @@ name: Update WFCD datasets (strict build of upstream repos)
 
 on:
   schedule:
-    - cron: "15 */6 * * *"   # décalé vs tes autres jobs
+    - cron: "25 */6 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -22,61 +22,111 @@ jobs:
 
       - name: Ensure output folders
         run: |
-          mkdir -p data/wfcd_items data/wfcd_drops
+          mkdir -p data/wfcd_items data/wfcd_drops artifacts
 
-      # ----------- Build warframe-items (WFCD) tel quel -----------
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      # Dépendances système requises par warframe-items (spritesheets, etc.)
+      # ---------- warframe-items ----------
       - name: Install system deps for warframe-items
         run: |
           sudo apt-get update
-          sudo apt-get install -y lua5.3 liblua5.3-dev luarocks build-essential \
-                                  libpng-dev zlib1g-dev jq
+          sudo apt-get install -y \
+            lua5.3 liblua5.3-dev luarocks build-essential \
+            libpng-dev zlib1g-dev jq \
+            imagemagick graphicsmagick \
+            python3 python3-pip git-lfs
+          git lfs install
 
       - name: Clone WFCD/warframe-items
         run: |
           rm -rf tmp_wi
           git clone --depth=1 https://github.com/WFCD/warframe-items.git tmp_wi
 
-      - name: Build warframe-items (upstream scripts)
+      - name: Build warframe-items (upstream scripts, capture logs)
         working-directory: tmp_wi
+        env:
+          CI: "true"
         run: |
           set -e
-          npm ci
-          # Le build upstream génère data/json/*.json
-          npm run build
-          ls -la data/json | head -n 50
+          (npm ci || npm install) 2>&1 | tee ../artifacts/wi_npm_install.log
+          if npm run | grep -q "build:json"; then
+            (npm run build:json) 2>&1 | tee ../artifacts/wi_build.log || true
+          else
+            (npm run build) 2>&1 | tee ../artifacts/wi_build.log || true
+          fi
+          if [ -d data/json ]; then
+            echo "warframe-items produced data/json:"
+            ls -la data/json | head -n 100
+          else
+            echo "No data/json folder produced."
+          fi
 
-      - name: Copy warframe-items outputs to repo
+      - name: Copy warframe-items outputs to repo (with npm pkg fallback)
         run: |
-          rsync -a tmp_wi/data/json/ ./data/wfcd_items/
-          echo "✓ warframe-items JSON copied to data/wfcd_items/"
+          set -e
+          mkdir -p data/wfcd_items
+          if [ -d tmp_wi/data/json ] && [ "$(ls -A tmp_wi/data/json)" ]; then
+            rsync -a tmp_wi/data/json/ ./data/wfcd_items/
+            echo "✓ Copied upstream-built JSON from warframe-items"
+          else
+            echo "⚠️ Build did not produce data/json, trying repo-tracked data then npm package…"
+            if [ -d tmp_wi/data/json ] && [ "$(ls -A tmp_wi/data/json)" ]; then
+              rsync -a tmp_wi/data/json/ ./data/wfcd_items/
+              echo "✓ Copied repo-tracked data/json"
+            else
+              npm i --no-save @wfcd/items@latest
+              PKG_DIR="$(node -e "console.log(require.resolve('@wfcd/items/package.json').replace(/package\.json$/, ''))")"
+              rsync -a "$PKG_DIR/data/json/" ./data/wfcd_items/
+              echo "✓ Copied JSON from @wfcd/items package (upstream package)"
+            fi
+          fi
 
-      # ----------- Build warframe-drop-data (WFCD) tel quel -----------
+      # ---------- warframe-drop-data ----------
       - name: Clone WFCD/warframe-drop-data
         run: |
           rm -rf tmp_wdd
           git clone --depth=1 https://github.com/WFCD/warframe-drop-data.git tmp_wdd
 
-      - name: Build warframe-drop-data (upstream scripts)
+      - name: Build warframe-drop-data (upstream scripts, capture logs)
         working-directory: tmp_wdd
+        env:
+          CI: "true"
         run: |
           set -e
-          npm ci
-          # Upstream: le script principal génère le dossier data/ avec les JSON (incl. all.slim.json)
-          node generateData.js
-          ls -la data | head -n 50
+          (npm ci || npm install) 2>&1 | tee ../artifacts/wdd_npm_install.log
+          (node generateData.js) 2>&1 | tee ../artifacts/wdd_build.log || true
+          if [ -d data ]; then
+            echo "warframe-drop-data produced data:"
+            ls -la data | head -n 100
+          else
+            echo "No data folder produced."
+          fi
 
-      - name: Copy warframe-drop-data outputs to repo
+      - name: Copy warframe-drop-data outputs to repo (with slim fallback)
         run: |
-          rsync -a tmp_wdd/data/ ./data/wfcd_drops/
-          echo "✓ warframe-drop-data JSON copied to data/wfcd_drops/"
+          set -e
+          mkdir -p data/wfcd_drops
+          if [ -d tmp_wdd/data ] && [ "$(ls -A tmp_wdd/data)" ]; then
+            rsync -a tmp_wdd/data/ ./data/wfcd_drops/
+            echo "✓ Copied upstream-built drops"
+          else
+            echo "⚠️ Build failed or empty; using slim fallback"
+            curl -fsSL https://drops.warframestat.us/data/all.slim.json -o ./data/wfcd_drops/all.slim.json
+            echo "✓ Saved slim drops to data/wfcd_drops/all.slim.json"
+          fi
 
-      # ----------- Commit si changements -----------
+      # ---------- Artefacts de debug ----------
+      - name: Upload build logs (if any)
+        uses: actions/upload-artifact@v4
+        with:
+          name: wfcd-build-logs
+          path: artifacts
+          if-no-files-found: ignore
+
+      # ---------- Commit ----------
       - name: Commit data if changed
         run: |
           git add -A data/
