@@ -1,54 +1,39 @@
-name: Update Official Wiki (Warframes Module → JSON + WFCD-like scrape)
+name: Update Official Wiki (Warframes → JSON)
 
 on:
   schedule:
-    - cron: "17 */12 * * *"   # 2×/jour, décalé
+    - cron: "23 */12 * * *"   # 2×/jour, décallé pour éviter les collisions
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 concurrency:
-  group: wiki-warframes-module
+  group: wiki-warframes
   cancel-in-progress: false
 
 jobs:
-  wiki:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      # 0) Checkout
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Ensure folders
+      # 1) Dossiers de sortie
+      - name: Ensure output folders
         run: |
-          mkdir -p tools data/wiki/modules data/wiki/json
+          mkdir -p tools data/wiki
 
-      # ---- DUMP complet du module Lua (facultatif mais utile) ----
-      - name: Install Lua + Luarocks
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lua5.3 liblua5.3-dev luarocks
-          sudo luarocks install dkjson
-
-      - name: Fetch Module:Warframes/data (robuste)
-        run: |
-          python3 tools/fetch_official_module.py \
-            --title "Module:Warframes/data" \
-            --out "data/wiki/modules/Module_Warframes_data.lua"
-
-      - name: Evaluate Lua → JSON (full dump)
-        run: |
-          lua tools/eval_lua_to_json.lua \
-            data/wiki/modules/Module_Warframes_data.lua \
-            data/wiki/json/warframes.module.json
-
-      # ---- PATCH npm : lockfile + install + run ----
+      # 2) Node + cache
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
 
+      # 3) Générer un package-lock.json si absent (et le committer)
       - name: Ensure npm lockfile
         run: |
           if [ ! -f package-lock.json ]; then
@@ -68,12 +53,15 @@ jobs:
             git push
           fi
 
+      # 4) Installer les dépendances
       - name: Install deps
         run: npm ci || npm i
 
-      - name: Run WFCD-like scraper (Subsumed/Progenitor)
+      # 5) Lancer le scraper Wiki officiel (Module:Warframes/data → JSON)
+      - name: Run official-wiki scraper (Warframes)
         run: npm run scrape:wiki
 
+      # 6) Commit des données si modifiées
       - name: Commit data if changed
         run: |
           git add -A data/wiki
@@ -82,6 +70,6 @@ jobs:
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: update wiki data ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+            git commit -m "chore: update wiki warframes ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
