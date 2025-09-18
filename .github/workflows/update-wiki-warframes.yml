@@ -2,7 +2,7 @@ name: Update Official Wiki (Warframes → JSON)
 
 on:
   schedule:
-    - cron: "23 */12 * * *"   # 2×/jour
+    - cron: "23 */12 * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -15,60 +15,56 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      # 0) Checkout
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 1) Dossiers de sortie
-      - name: Ensure output folders
+      - name: Ensure folders
         run: |
-          mkdir -p tools data/wiki
+          mkdir -p tools/wiki data/wiki
 
-      # 2) Setup Node (SANS cache) pour pouvoir créer le lockfile
-      - name: Setup Node (no cache - to create lockfile)
+      # First pass: no cache, create lockfile inside tools/wiki
+      - name: Setup Node (no cache)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
 
-      # 3) Générer un package-lock.json si absent (et le committer)
-      - name: Ensure npm lockfile
+      - name: Ensure npm lockfile (tools/wiki)
+        working-directory: tools/wiki
         run: |
           if [ ! -f package-lock.json ]; then
-            echo "No package-lock.json → generating one…"
-            npm install --package-lock-only
+            echo "No lockfile in tools/wiki → generating…"
+            npm install --package-lock-only --no-audit --fund=false
           else
-            echo "package-lock.json already present."
+            echo "Lockfile already present in tools/wiki."
           fi
 
       - name: Commit lockfile if created
         run: |
-          if git ls-files --others --exclude-standard | grep -q '^package-lock.json$'; then
-            git add package-lock.json
+          if git ls-files --others --exclude-standard | grep -q '^tools/wiki/package-lock.json$'; then
+            git add tools/wiki/package-lock.json
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: add package-lock.json"
+            git commit -m "chore(wiki): add package-lock.json"
             git push
           fi
 
-      # 4) Setup Node (AVEC cache) maintenant que le lockfile existe
+      # Second pass: with cache, now that lockfile exists
       - name: Setup Node (with npm cache)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: package-lock.json
+          cache-dependency-path: tools/wiki/package-lock.json
 
-      # 5) Installer les dépendances
-      - name: Install deps
-        run: npm ci || npm i
+      - name: Install (tools/wiki)
+        working-directory: tools/wiki
+        run: npm ci --no-audit --fund=false || npm i --no-audit --fund=false
 
-      # 6) Lancer le scraper Wiki officiel (Module:Warframes/data → JSON)
       - name: Run official-wiki scraper (Warframes)
-        run: npm run scrape:wiki
+        working-directory: tools/wiki
+        run: npm run scrape
 
-      # 7) Commit des données si modifiées
       - name: Commit data if changed
         run: |
           git add -A data/wiki
@@ -77,6 +73,6 @@ jobs:
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: update wiki warframes ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+            git commit -m "chore(wiki): update warframes data ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
