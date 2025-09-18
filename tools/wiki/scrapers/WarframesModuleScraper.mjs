@@ -1,11 +1,9 @@
 import WikiaDataScraper from '../WikiaDataScraper.mjs';
-import transformWarframeLite from '../transformers/transformWarframeLite.mjs';
+import transformWarframe from '../transformers/transformWarframe.mjs';
 
+// On passe juste le titre du module ; la base construit RAW/EXPORT/EDIT
 export default class WarframesModuleScraper extends WikiaDataScraper {
   constructor() {
-    // Priorité action=edit (WFCD-style), avec fallbacks gérés par la base
-    super('https://wiki.warframe.com/w/Module:Warframes/data?action=edit',
-          'Warframes',
-          transformWarframeLite);
+    super('Module:Warframes/data', 'Warframes', transformWarframe);
   }
 }
