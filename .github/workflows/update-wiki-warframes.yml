@@ -2,7 +2,7 @@ name: Update Official Wiki (Warframes → JSON)
 
 on:
   schedule:
-    - cron: "23 */12 * * *"   # 2×/jour, décallé pour éviter les collisions
+    - cron: "23 */12 * * *"   # 2×/jour
   workflow_dispatch: {}
 
 permissions:
@@ -26,12 +26,11 @@ jobs:
         run: |
           mkdir -p tools data/wiki
 
-      # 2) Node + cache
-      - name: Setup Node
+      # 2) Setup Node (SANS cache) pour pouvoir créer le lockfile
+      - name: Setup Node (no cache - to create lockfile)
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: npm
 
       # 3) Générer un package-lock.json si absent (et le committer)
       - name: Ensure npm lockfile
@@ -53,15 +52,23 @@ jobs:
             git push
           fi
 
-      # 4) Installer les dépendances
+      # 4) Setup Node (AVEC cache) maintenant que le lockfile existe
+      - name: Setup Node (with npm cache)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      # 5) Installer les dépendances
       - name: Install deps
         run: npm ci || npm i
 
-      # 5) Lancer le scraper Wiki officiel (Module:Warframes/data → JSON)
+      # 6) Lancer le scraper Wiki officiel (Module:Warframes/data → JSON)
       - name: Run official-wiki scraper (Warframes)
         run: npm run scrape:wiki
 
-      # 6) Commit des données si modifiées
+      # 7) Commit des données si modifiées
       - name: Commit data if changed
         run: |
           git add -A data/wiki
