@@ -2,81 +2,49 @@ name: Update Official Wiki (Warframes → JSON)
 
 on:
   schedule:
-    - cron: "7 */6 * * *"     # toutes les 6h (à 07 min pour lisser la charge)
+    - cron: "0 */12 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: wiki-warframes
+  group: wiki-scrape
   cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Ensure folders
-        run: |
-          mkdir -p tools/wiki
-          mkdir -p data/wiki
+        run: mkdir -p data/wiki
 
-      # Node pour la partie scraper
-      - name: Setup Node (no cache)
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20.x"
+          node-version: 20
+          cache: npm
 
-      # Génère un lockfile dans tools/wiki si absent (pratique si tu n'en commits pas)
-      - name: Ensure npm lockfile (tools/wiki)
-        working-directory: tools/wiki
-        run: |
-          if [ ! -f package-lock.json ]; then
-            echo "No package-lock.json → generating one…"
-            npm install --package-lock-only --no-audit --fund=false
-          else
-            echo "package-lock.json already present."
-          fi
-
-      - name: Commit lockfile if created
-        run: |
-          if git status --porcelain | grep -E "tools/wiki/package-lock.json"; then
-            git add tools/wiki/package-lock.json
-            git -c user.name="github-actions[bot]" \
-                -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-                commit -m "chore(wiki): add/update tools/wiki/package-lock.json"
-          fi
-
-      # ⬇⬇⬇ Les deux étapes que tu citais ⬇⬇⬇
       - name: Install (tools/wiki)
         working-directory: tools/wiki
-        run: npm ci --no-audit --fund=false || npm i --no-audit --fund=false
+        run: |
+          npm ci --no-audit --fund=false || npm i --no-audit --fund=false
 
+      # Lance le scraper (qui essaie action=raw d’abord)
       - name: Run official-wiki scraper (Warframes)
         working-directory: tools/wiki
-        env:
-          PROXY_TYPE: ${{ secrets.PROXY_TYPE }}
-          PROXY_HTTPS_STRING: ${{ secrets.PROXY_HTTPS_STRING }}
-          PROXY_SOCKS5_HOST: ${{ secrets.PROXY_SOCKS5_HOST }}
-          PROXY_SOCKS5_PORT: ${{ secrets.PROXY_SOCKS5_PORT }}
-          PROXY_SOCKS5_USER: ${{ secrets.PROXY_SOCKS5_USER }}
-          PROXY_SOCKS5_PASS: ${{ secrets.PROXY_SOCKS5_PASS }}
         run: npm run scrape
-      # ⬆⬆⬆ Fin du bloc scraper ⬆⬆⬆
 
-      # Commit des JSON générés (ex: data/wiki/warframes.module.json, etc.)
       - name: Commit data if changed
         run: |
           git add -A data/wiki
           if git diff --cached --quiet; then
-            echo "No changes."
+            echo "No changes"
           else
-            git -c user.name="github-actions[bot]" \
-                -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
-                commit -m "chore(wiki): refresh warframes module JSON ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore(wiki): update Warframes module JSON ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
