@@ -2,7 +2,7 @@ name: Update Official Wiki (Warframes Module → JSON + WFCD-like scrape)
 
 on:
   schedule:
-    - cron: "17 */12 * * *"  # 2x/jour, décalé de tes autres jobs
+    - cron: "17 */12 * * *"   # 2×/jour, décalé
   workflow_dispatch: {}
 
 permissions:
@@ -15,6 +15,7 @@ concurrency:
 jobs:
   wiki:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -22,7 +23,7 @@ jobs:
         run: |
           mkdir -p tools data/wiki/modules data/wiki/json
 
-      # 1) DUMP intégral via Lua (Option “tout récupérer d’abord”)
+      # ---- DUMP complet du module Lua (facultatif mais utile) ----
       - name: Install Lua + Luarocks
         run: |
           sudo apt-get update
@@ -41,20 +42,39 @@ jobs:
             data/wiki/modules/Module_Warframes_data.lua \
             data/wiki/json/warframes.module.json
 
-      # 2) SCRAPE WFCD-like (action=edit + Cheerio + transformer lite)
+      # ---- PATCH npm : lockfile + install + run ----
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: npm
 
-      - name: Install Node deps
+      - name: Ensure npm lockfile
+        run: |
+          if [ ! -f package-lock.json ]; then
+            echo "No package-lock.json → generating one…"
+            npm install --package-lock-only
+          else
+            echo "package-lock.json already present."
+          fi
+
+      - name: Commit lockfile if created
+        run: |
+          if git ls-files --others --exclude-standard | grep -q '^package-lock.json$'; then
+            git add package-lock.json
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: add package-lock.json"
+            git push
+          fi
+
+      - name: Install deps
         run: npm ci || npm i
 
       - name: Run WFCD-like scraper (Subsumed/Progenitor)
         run: npm run scrape:wiki
 
-      # Commit si changements
-      - name: Commit if changed
+      - name: Commit data if changed
         run: |
           git add -A data/wiki
           if git diff --cached --quiet; then
@@ -62,6 +82,6 @@ jobs:
           else
             git config user.name  "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git commit -m "chore: update official wiki (warframes module JSON + helminth/progenitor) $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+            git commit -m "chore: update wiki data ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
