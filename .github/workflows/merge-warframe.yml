@@ -21,15 +21,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          # ❌ on enlève le cache: 'npm' qui plante sans lockfile
+          # pas de cache npm, pas d'installation
 
-      - name: Install (if package.json present)
-        run: |
-          if [ -f package.json ]; then
-            npm i --no-audit --no-fund
-          fi
-
-      - name: Run merge
+      - name: Run merge (no install needed)
         run: |
           node tools/merge_warframe_v3.js ./data ./data/merged_warframe.json
           test -f ./data/merged_warframe.json && echo "Merged file created."
