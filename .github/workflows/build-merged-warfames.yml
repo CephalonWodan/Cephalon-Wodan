@@ -1,0 +1,61 @@
+name: Build merged_warframe.json
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/merge_warframe_final.js'
+      - 'data/**'
+      - '!data/merged_warframe.json'
+
+permissions:
+  contents: write   # nécessaire pour pousser le fichier généré
+
+concurrency:
+  group: build-merged-warfames
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: List data files (debug)
+        run: |
+          echo "Repository root:"
+          ls -la
+          echo "data/:"
+          ls -la data || true
+          echo "tools/:"
+          ls -la tools || true
+
+      - name: Run merge script
+        run: |
+          node tools/merge_warframe_final.js ./data ./data/merged_warframe.json
+          test -f ./data/merged_warframe.json
+
+      - name: Upload artifact (for inspection)
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged_warframe.json
+          path: data/merged_warframe.json
+
+      - name: Commit merged_warframe.json back to repo
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/merged_warframe.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore(data): update merged_warframe.json [skip ci]"
+            git push
+          fi
