@@ -1,4 +1,4 @@
-// tools/merge_warframe_final.js (ESM) — FIX lookup <ARCHWING> prefix & AW/Mech aura optional
+// tools/merge_warframe_final.js (ESM)
 // Génère: ./data/merged_warframe.json
 
 import { readFile, writeFile } from 'node:fs/promises';
@@ -6,15 +6,12 @@ import { resolve, join } from 'node:path';
 
 async function J(p){ try { return JSON.parse(await readFile(p,'utf8')); } catch { return null; } }
 const stripTags=(s)=> s==null? s : String(s).replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
-const coalesce=(...v)=>v.find(x=>!(x==null || (typeof x==='string'&&x.trim()==='')));
 
-// --- NEW: canonicalisation du nom pour lookup overrides/wiki ---
+// ---------- helpers ----------
 function cleanEntityName(name){
   if(!name) return name;
-  // retire un tag d'en-tête "<...>" + espace, ex. "<ARCHWING> Amesha" -> "Amesha"
-  return String(name).replace(/^<[^>]+>\s*/i, '').trim();
+  return String(name).replace(/^<[^>]+>\s*/i, '').trim(); // "<ARCHWING> Amesha" -> "Amesha"
 }
-
 const typeFrom=(pc,t)=>{
   const p=String(pc||'').toLowerCase(), tt=String(t||'').toLowerCase();
   if (p.includes('spacesuits')||tt.includes('archwing')) return 'archwing';
@@ -22,20 +19,46 @@ const typeFrom=(pc,t)=>{
   return 'warframe';
 };
 
-function computeRank30FromR0(statsR0) {
+// Exceptions ponctuelles sur l'incrément R30 (facile à étendre)
+const R30_EXCEPTIONS = {
+  'Inaros':        { health: 200, shields: 0,   energy: 50 },
+  'Inaros Prime':  { health: 200, shields: 0,   energy: 50 },
+  'Hildryn':       { health: 100, shields: 500, energy: 0  },
+  'Hildryn Prime': { health: 100, shields: 500, energy: 0  },
+  'Lavos':         { health: 100, shields: 100, energy: 0  }
+};
+// Règles par défaut (wiki): +100 HP, +100 Shields, +50 Energy (ou +100 si pool élevé ≥200)
+// Armor & SprintSpeed inchangés
+function computeRank30FromR0(statsR0, frameName) {
   if (!statsR0) return null;
-  const round = (x) => (x == null ? null : Math.round(x));
+  const ex = frameName ? R30_EXCEPTIONS[frameName] : null;
+
+  const incHealth  = ex?.health  ?? (statsR0.health  != null ? 100 : null);
+  const incShields = ex?.shields ?? (statsR0.shields != null ? 100 : null);
+  let   incEnergy;
+  if (ex?.energy != null) {
+    incEnergy = ex.energy;
+  } else if (statsR0.energy == null) {
+    incEnergy = null;
+  } else if (statsR0.energy >= 200) {
+    incEnergy = 100;
+  } else {
+    incEnergy = 50;
+  }
+
+  const add = (v, inc) => (inc == null || v == null) ? (v ?? null) : (v + inc);
+
   return {
-    health:       round((statsR0.health ?? null)  * 3),
-    shields:      round((statsR0.shields ?? null) * 3),
-    energy:       round((statsR0.energy ?? null)  * 1.5),
-    armor:        statsR0.armor ?? null,
-    sprintSpeed:  statsR0.sprintSpeed ?? null,
-    masteryReq:   statsR0.masteryReq ?? null,
+    health:      add(statsR0.health, incHealth),
+    shields:     add(statsR0.shields, incShields),
+    energy:      add(statsR0.energy, incEnergy),
+    armor:       statsR0.armor ?? null,
+    sprintSpeed: statsR0.sprintSpeed ?? null,
+    masteryReq:  statsR0.masteryReq ?? null
   };
 }
 
-/* ---- abilities.json ---- */
+// ---------- abilities.json helpers ----------
 function indexAbilities(abilitiesJson){
   const byName=new Map(), byPath=new Map();
   const arr = Array.isArray(abilitiesJson)? abilitiesJson : (abilitiesJson?.abilities||[]);
@@ -93,7 +116,7 @@ function cleanRows(details){
   }));
 }
 
-/* ---- warframe_abilities.json ---- */
+// ---------- warframe_abilities.json helper ----------
 function mapFrameEntryList(wfAbilities, frameName){
   let list = [];
   if (Array.isArray(wfAbilities)) {
@@ -119,7 +142,7 @@ function mapFrameEntryList(wfAbilities, frameName){
   })).filter(x=>x.name);
 }
 
-/* ---- aw_overrides.json ---- */
+// ---------- aw_overrides.json helpers ----------
 function applyAwBaseFromOverride(baseS, baseR, pol, awo){
   if(!awo?.base) return {stats:baseS, statsR30:baseR, polarities:pol, aura:null};
   const b=awo.base;
@@ -131,32 +154,8 @@ function applyAwBaseFromOverride(baseS, baseR, pol, awo){
   if(b.SprintSpeed!=null){ S.sprintSpeed=b.SprintSpeed; R.sprintSpeed=b.SprintSpeed; }
   if(b.Mastery!=null){ S.masteryReq=b.Mastery; R.masteryReq=b.Mastery; }
   const polOut = Array.isArray(b.Polarities)? b.Polarities : pol;
-  // NEW: aura éventuelle si tu l’ajoutes dans overrides (sinon null)
-  const aura = b.Aura ?? null;
+  const aura = b.Aura ?? null; // Archwings n'ont pas d'aura par défaut
   return {stats:S, statsR30:R, polarities:polOut||[], aura};
-}
-function buildAwAbilityFromOverride(ov, A){
-  const byName = A.byName.get(String(ov.name||'').toLowerCase()) || null;
-  const summary = {
-    costType: 'Energy',
-    costEnergy: ov.cost ?? byName?.summary?.costEnergy ?? null,
-    strength: null, duration: null, range: null, efficiency: null, affectedBy: []
-  };
-  const rows = byName ? cleanRows(byName) : [];
-  const st = ov.stats || {};
-  const map={Strength:'strength', Duration:'duration', Range:'range', Efficiency:'efficiency'};
-  for(const k of Object.keys(map)){
-    const v = st[k]; if(v!=null){ summary[map[k]] = summary[map[k]] ?? v; if(!summary.affectedBy.includes(map[k])) summary.affectedBy.push(map[k]); }
-  }
-  if(st.Misc) summary.misc = st.Misc;
-  return {
-    name: ov.name,
-    description: stripTags(ov.desc || (byName?.description ?? byName?.Description) || ''),
-    subsumable: null,
-    augments: [],
-    summary,
-    rows
-  };
 }
 
 async function main(){
@@ -187,7 +186,7 @@ async function main(){
   for(const x of exportAll.ExportWarframes){
     const rawName = x.name || x.Name; if(!rawName) continue;
     const name = rawName;
-    const canon = cleanEntityName(rawName);      // NEW: "Amesha" pour "<ARCHWING> Amesha"
+    const canon = cleanEntityName(rawName);
     const type = typeFrom(x.productCategory, x.type);
 
     // ---------- base R0 ----------
@@ -219,7 +218,7 @@ async function main(){
       baseStats = applied.stats;
       baseStatsRank30 = applied.statsR30;
       polarities = applied.polarities;
-      if (applied.aura != null) aura = applied.aura; // Archwings n'ont pas d'aura, restera null sauf si tu ajoutes base.Aura
+      if (applied.aura != null) aura = applied.aura;
     }
 
     // ---------- Abilities ----------
@@ -251,10 +250,14 @@ async function main(){
         if(exAb) desc = stripTags(exAb.description || exAb.desc || null);
       }
 
-      const det = A.byPath.get(meta?.path || a.path || '') || A.byName.get(nameA.toLowerCase()) || null;
+      const det = (meta?.path && A.byPath.get(meta.path))
+               || (a.path && A.byPath.get(a.path))
+               || A.byName.get(nameA.toLowerCase())
+               || null;
       const summary = buildSummary(det);
       const rows    = cleanRows(det);
 
+      // Pas besoin d'injecter overrides ability pour Warframes
       if (type !== 'warframe' && awo?.abilities) {
         const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
         if(o){
@@ -276,7 +279,7 @@ async function main(){
     });
 
     // ---------- baseStatsRank30 (Warframes calculé) ----------
-    if (type === 'warframe') baseStatsRank30 = computeRank30FromR0(baseStats);
+    if (type === 'warframe') baseStatsRank30 = computeRank30FromR0(baseStats, canon);
 
     const description = stripTags(w0?.description ?? x.description ?? null);
     const passive = (type === 'warframe')
