@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node server.js",
     "build:items": "node tools/build_items.js",
-    "scrape:wiki": "node tools/wiki/run.mjs"
+    "scrape:wiki": "node tools/wiki/run.mjs",
+    "merge:warframe": "node tools/merge_warframe_v3.js ./data ./data/merged_warframe.json",
+    "postinstall": "npm run -s merge:warframe || true"
   },
   "dependencies": {
     "express": "^4.19.2",
