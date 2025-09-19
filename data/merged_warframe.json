@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-09-19T14:31:30.216Z",
+  "generatedAt": "2025-09-19T14:47:32.153Z",
   "count": 117,
   "entities": [
     {
@@ -1331,9 +1331,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -1792,8 +1792,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
+        "health": 465,
+        "shields": 370,
         "energy": 300,
         "armor": 160,
         "sprintSpeed": 1.15,
@@ -2247,9 +2247,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1650,
-        "energy": 323,
+        "health": 370,
+        "shields": 650,
+        "energy": 315,
         "armor": 105,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -2689,8 +2689,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 300,
         "armor": 105,
         "sprintSpeed": 1,
@@ -3135,9 +3135,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 705,
-        "energy": 210,
+        "health": 370,
+        "shields": 335,
+        "energy": 190,
         "armor": 160,
         "sprintSpeed": 0.95,
         "masteryReq": 0
@@ -3561,9 +3561,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 185,
         "sprintSpeed": 0.95,
         "masteryReq": 0
@@ -3984,8 +3984,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
+        "health": 370,
+        "shields": 370,
         "energy": 300,
         "armor": 210,
         "sprintSpeed": 1.25,
@@ -4505,8 +4505,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 540,
+        "health": 370,
+        "shields": 280,
         "energy": 300,
         "armor": 185,
         "sprintSpeed": 1.2,
@@ -5031,8 +5031,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 810,
+        "health": 555,
+        "shields": 370,
         "energy": 150,
         "armor": 200,
         "sprintSpeed": 0.95,
@@ -5096,8 +5096,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 300,
         "armor": 135,
         "sprintSpeed": 1,
@@ -5438,8 +5438,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 150,
         "armor": 105,
         "sprintSpeed": 1,
@@ -5788,9 +5788,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
-        "energy": 263,
+        "health": 370,
+        "shields": 555,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -6166,9 +6166,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -6550,9 +6550,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 210,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -7124,9 +7124,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 540,
-        "energy": 263,
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
         "armor": 160,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -7703,9 +7703,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 1365,
-        "energy": 263,
+        "health": 555,
+        "shields": 555,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -8045,8 +8045,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 1365,
+        "health": 555,
+        "shields": 555,
         "energy": 150,
         "armor": 105,
         "sprintSpeed": 1.1,
@@ -8393,9 +8393,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1215,
-        "shields": 675,
-        "energy": 248,
+        "health": 505,
+        "shields": 325,
+        "energy": 215,
         "armor": 325,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -8454,9 +8454,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1650,
-        "energy": 210,
+        "health": 370,
+        "shields": 650,
+        "energy": 190,
         "armor": 290,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -8913,9 +8913,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1920,
-        "energy": 263,
+        "health": 370,
+        "shields": 740,
+        "energy": 225,
         "armor": 290,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -9368,8 +9368,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
+        "health": 465,
+        "shields": 370,
         "energy": 300,
         "armor": 315,
         "sprintSpeed": 1,
@@ -9836,9 +9836,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
-        "energy": 263,
+        "health": 465,
+        "shields": 370,
+        "energy": 225,
         "armor": 240,
         "sprintSpeed": 0.95,
         "masteryReq": 0
@@ -10310,7 +10310,7 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 6330,
+        "health": 2310,
         "shields": 0,
         "energy": 150,
         "armor": 240,
@@ -10634,9 +10634,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 6645,
+        "health": 2415,
         "shields": 0,
-        "energy": 210,
+        "energy": 190,
         "armor": 240,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -10953,9 +10953,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
-        "energy": 263,
+        "health": 370,
+        "shields": 555,
+        "energy": 225,
         "armor": 185,
         "sprintSpeed": 1.4,
         "masteryReq": 0
@@ -11485,9 +11485,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1650,
-        "energy": 263,
+        "health": 370,
+        "shields": 650,
+        "energy": 225,
         "armor": 185,
         "sprintSpeed": 1.5,
         "masteryReq": 0
@@ -12014,8 +12014,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 150,
         "armor": 290,
         "sprintSpeed": 1,
@@ -12292,8 +12292,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 150,
         "armor": 240,
         "sprintSpeed": 0.95,
@@ -12577,9 +12577,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 2475,
-        "energy": 263,
+        "health": 370,
+        "shields": 925,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -12999,9 +12999,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 2205,
-        "energy": 210,
+        "health": 370,
+        "shields": 835,
+        "energy": 190,
         "armor": 135,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -13426,9 +13426,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 810,
-        "energy": 323,
+        "health": 280,
+        "shields": 370,
+        "energy": 315,
         "armor": 105,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -13782,9 +13782,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 1365,
-        "energy": 375,
+        "health": 280,
+        "shields": 555,
+        "energy": 350,
         "armor": 135,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -14130,8 +14130,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 150,
         "armor": 185,
         "sprintSpeed": 1,
@@ -14449,9 +14449,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1920,
-        "energy": 210,
+        "health": 370,
+        "shields": 740,
+        "energy": 190,
         "armor": 185,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -14763,9 +14763,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1095,
-        "energy": 210,
+        "health": 370,
+        "shields": 465,
+        "energy": 190,
         "armor": 240,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -15178,9 +15178,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1650,
-        "energy": 263,
+        "health": 370,
+        "shields": 650,
+        "energy": 225,
         "armor": 290,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -15492,9 +15492,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 3015,
-        "shields": 0,
-        "energy": 263,
+        "health": 1105,
+        "shields": 100,
+        "energy": 225,
         "armor": 550,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -15557,9 +15557,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
-        "energy": 323,
+        "health": 465,
+        "shields": 370,
+        "energy": 315,
         "armor": 240,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -15982,9 +15982,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
-        "energy": 263,
+        "health": 465,
+        "shields": 370,
+        "energy": 225,
         "armor": 185,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -16413,8 +16413,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 900,
-        "shields": 450,
+        "health": 400,
+        "shields": 250,
         "energy": 300,
         "armor": 145,
         "sprintSpeed": 1.15,
@@ -16474,8 +16474,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 810,
+        "health": 280,
+        "shields": 370,
         "energy": 300,
         "armor": 185,
         "sprintSpeed": 1.2,
@@ -16816,8 +16816,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 1095,
+        "health": 280,
+        "shields": 465,
         "energy": 300,
         "armor": 240,
         "sprintSpeed": 1.2,
@@ -17153,9 +17153,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1725,
-        "shields": 375,
-        "energy": 225,
+        "health": 675,
+        "shields": 225,
+        "energy": 200,
         "armor": 125,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -17214,8 +17214,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
+        "health": 370,
+        "shields": 555,
         "energy": 300,
         "armor": 185,
         "sprintSpeed": 1.2,
@@ -17727,9 +17727,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
-        "energy": 263,
+        "health": 370,
+        "shields": 555,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -18245,8 +18245,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 810,
+        "health": 555,
+        "shields": 370,
         "energy": 150,
         "armor": 105,
         "sprintSpeed": 1.15,
@@ -18526,8 +18526,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 1095,
+        "health": 555,
+        "shields": 465,
         "energy": 150,
         "armor": 185,
         "sprintSpeed": 1.2,
@@ -18800,9 +18800,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 405,
-        "energy": 263,
+        "health": 465,
+        "shields": 235,
+        "energy": 225,
         "armor": 265,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -19195,9 +19195,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 405,
-        "energy": 263,
+        "health": 465,
+        "shields": 235,
+        "energy": 225,
         "armor": 200,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -19597,9 +19597,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
-        "energy": 210,
+        "health": 370,
+        "shields": 555,
+        "energy": 190,
         "armor": 135,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -19900,8 +19900,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 705,
+        "health": 370,
+        "shields": 335,
         "energy": 150,
         "armor": 105,
         "sprintSpeed": 1.1,
@@ -20210,9 +20210,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 1035,
-        "energy": 218,
+        "health": 555,
+        "shields": 445,
+        "energy": 195,
         "armor": 290,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -20531,9 +20531,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 810,
-        "energy": 195,
+        "health": 555,
+        "shields": 370,
+        "energy": 180,
         "armor": 265,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -20857,9 +20857,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 540,
-        "energy": 263,
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -21212,9 +21212,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 323,
+        "health": 370,
+        "shields": 370,
+        "energy": 315,
         "armor": 135,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -21563,9 +21563,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1365,
-        "energy": 323,
+        "health": 370,
+        "shields": 555,
+        "energy": 315,
         "armor": 135,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -21981,9 +21981,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 1365,
-        "energy": 210,
+        "health": 280,
+        "shields": 555,
+        "energy": 190,
         "armor": 105,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -22406,9 +22406,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 540,
-        "energy": 323,
+        "health": 280,
+        "shields": 280,
+        "energy": 315,
         "armor": 135,
         "sprintSpeed": 1.25,
         "masteryReq": 0
@@ -22635,9 +22635,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 540,
-        "energy": 263,
+        "health": 280,
+        "shields": 280,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1.25,
         "masteryReq": 0
@@ -22872,9 +22872,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1032,
-        "shields": 366,
-        "energy": 183,
+        "health": 444,
+        "shields": 222,
+        "energy": 172,
         "armor": 444,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -22935,9 +22935,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 1095,
-        "energy": 263,
+        "health": 465,
+        "shields": 465,
+        "energy": 225,
         "armor": 345,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -23346,9 +23346,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
-        "energy": 210,
+        "health": 465,
+        "shields": 370,
+        "energy": 190,
         "armor": 290,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -23762,9 +23762,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1095,
-        "energy": 263,
+        "health": 370,
+        "shields": 465,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.125,
         "masteryReq": 0
@@ -24102,9 +24102,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -24450,8 +24450,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 4140,
+        "health": 370,
+        "shields": 1880,
         "energy": 0,
         "armor": 315,
         "sprintSpeed": 1.05,
@@ -24747,8 +24747,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 540,
-        "shields": 3840,
+        "health": 280,
+        "shields": 1780,
         "energy": 0,
         "armor": 315,
         "sprintSpeed": 1,
@@ -25049,9 +25049,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1650,
-        "shields": 0,
-        "energy": 210,
+        "health": 650,
+        "shields": 100,
+        "energy": 190,
         "armor": 425,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -25381,8 +25381,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1365,
-        "shields": 0,
+        "health": 555,
+        "shields": 100,
         "energy": 150,
         "armor": 350,
         "sprintSpeed": 1,
@@ -25720,9 +25720,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 2475,
-        "energy": 263,
+        "health": 370,
+        "shields": 925,
+        "energy": 225,
         "armor": 265,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -25785,9 +25785,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 600,
-        "shields": 930,
-        "energy": 263,
+        "health": 300,
+        "shields": 410,
+        "energy": 225,
         "armor": 185,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -26190,9 +26190,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 600,
-        "shields": 600,
-        "energy": 263,
+        "health": 300,
+        "shields": 300,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -26601,9 +26601,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1650,
-        "energy": 285,
+        "health": 370,
+        "shields": 650,
+        "energy": 240,
         "armor": 105,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -27032,9 +27032,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 160,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -27496,9 +27496,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1035,
-        "shields": 810,
-        "energy": 263,
+        "health": 445,
+        "shields": 370,
+        "energy": 225,
         "armor": 200,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -27955,9 +27955,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1200,
-        "shields": 810,
-        "energy": 195,
+        "health": 500,
+        "shields": 370,
+        "energy": 180,
         "armor": 265,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -28078,9 +28078,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 330,
+        "health": 370,
+        "shields": 370,
+        "energy": 320,
         "armor": 420,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -28480,9 +28480,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 210,
+        "health": 370,
+        "shields": 370,
+        "energy": 190,
         "armor": 315,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -28887,9 +28887,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 675,
-        "shields": 405,
-        "energy": 270,
+        "health": 325,
+        "shields": 235,
+        "energy": 230,
         "armor": 150,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -28948,8 +28948,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1650,
+        "health": 370,
+        "shields": 650,
         "energy": 150,
         "armor": 315,
         "sprintSpeed": 0.95,
@@ -29315,8 +29315,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
+        "health": 370,
+        "shields": 370,
         "energy": 150,
         "armor": 315,
         "sprintSpeed": 0.95,
@@ -29689,9 +29689,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 810,
-        "energy": 323,
+        "health": 465,
+        "shields": 370,
+        "energy": 315,
         "armor": 135,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -30129,9 +30129,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -30574,9 +30574,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 315,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -30853,9 +30853,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 315,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -31121,8 +31121,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
+        "health": 370,
+        "shields": 370,
         "energy": 150,
         "armor": 240,
         "sprintSpeed": 1,
@@ -31398,9 +31398,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 1095,
-        "energy": 263,
+        "health": 370,
+        "shields": 465,
+        "energy": 225,
         "armor": 160,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -31804,9 +31804,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 135,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -32219,9 +32219,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 370,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -32730,8 +32730,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
+        "health": 370,
+        "shields": 370,
         "energy": 300,
         "armor": 450,
         "sprintSpeed": 1,
@@ -33234,8 +33234,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 3285,
-        "shields": 285,
+        "health": 1195,
+        "shields": 195,
         "energy": 300,
         "armor": 400,
         "sprintSpeed": 0.95,
@@ -33633,9 +33633,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 3285,
-        "shields": 285,
-        "energy": 263,
+        "health": 1195,
+        "shields": 195,
+        "energy": 225,
         "armor": 370,
         "sprintSpeed": 0.95,
         "masteryReq": 0
@@ -34039,9 +34039,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1698,
-        "shields": 450,
-        "energy": 263,
+        "health": 666,
+        "shields": 250,
+        "energy": 225,
         "armor": 125,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -34102,9 +34102,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1200,
-        "shields": 540,
-        "energy": 210,
+        "health": 500,
+        "shields": 280,
+        "energy": 190,
         "armor": 135,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -34433,8 +34433,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 540,
+        "health": 465,
+        "shields": 280,
         "energy": 150,
         "armor": 105,
         "sprintSpeed": 1.1,
@@ -34770,9 +34770,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1800,
-        "shields": 600,
-        "energy": 225,
+        "health": 700,
+        "shields": 300,
+        "energy": 200,
         "armor": 875,
         "sprintSpeed": 0.9,
         "masteryReq": 0
@@ -34835,9 +34835,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1095,
-        "shields": 1350,
-        "energy": 225,
+        "health": 465,
+        "shields": 550,
+        "energy": 200,
         "armor": 135,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -34897,9 +34897,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 807,
-        "shields": 789,
-        "energy": 272,
+        "health": 369,
+        "shields": 363,
+        "energy": 231,
         "armor": 167,
         "sprintSpeed": 1.07,
         "masteryReq": 0
@@ -35366,9 +35366,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 807,
-        "shields": 717,
-        "energy": 240,
+        "health": 369,
+        "shields": 339,
+        "energy": 210,
         "armor": 146,
         "sprintSpeed": 1.02,
         "masteryReq": 0
@@ -35838,9 +35838,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 475,
         "sprintSpeed": 0.9,
         "masteryReq": 0
@@ -36324,9 +36324,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1650,
-        "shields": 1665,
-        "energy": 323,
+        "health": 650,
+        "shields": 655,
+        "energy": 315,
         "armor": 500,
         "sprintSpeed": 1,
         "masteryReq": 0
@@ -36802,9 +36802,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1950,
-        "shields": 405,
-        "energy": 263,
+        "health": 750,
+        "shields": 235,
+        "energy": 225,
         "armor": 1000,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -37107,8 +37107,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1950,
-        "shields": 405,
+        "health": 750,
+        "shields": 235,
         "energy": 150,
         "armor": 855,
         "sprintSpeed": 1.1,
@@ -37420,9 +37420,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 323,
+        "health": 370,
+        "shields": 370,
+        "energy": 315,
         "armor": 160,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -37772,9 +37772,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 540,
-        "energy": 263,
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
         "armor": 160,
         "sprintSpeed": 1.05,
         "masteryReq": 0
@@ -38127,9 +38127,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 323,
+        "health": 370,
+        "shields": 370,
+        "energy": 315,
         "armor": 135,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -38368,9 +38368,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 263,
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1.1,
         "masteryReq": 0
@@ -38616,9 +38616,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 810,
-        "energy": 323,
+        "health": 370,
+        "shields": 370,
+        "energy": 315,
         "armor": 135,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -38956,9 +38956,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 810,
-        "shields": 540,
-        "energy": 263,
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
         "armor": 105,
         "sprintSpeed": 1.2,
         "masteryReq": 0
@@ -39303,9 +39303,9 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1800,
-        "shields": 930,
-        "energy": 0,
+        "health": 700,
+        "shields": 410,
+        "energy": 50,
         "armor": 575,
         "sprintSpeed": 1.15,
         "masteryReq": 0
@@ -39568,8 +39568,8 @@
         "masteryReq": 0
       },
       "baseStatsRank30": {
-        "health": 1620,
-        "shields": 810,
+        "health": 640,
+        "shields": 370,
         "energy": 0,
         "armor": 575,
         "sprintSpeed": 1.15,
@@ -40168,8 +40168,38 @@
           "description": "Raise Bonewidow's shield to block incoming forward damage. While active, bash enemies with a Maiden's Kiss.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": null,
+            "costEnergy": 25,
+            "strength": 2000,
+            "duration": null,
+            "range": null,
+            "efficiency": 25,
+            "affectedBy": [
+              "strength",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 25",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Shield Health: |val1|",
+              "filledLabel": "Shield Health: 2000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2000
+              },
+              "mainNumeric": 2000
+            }
+          ]
         },
         {
           "name": "Firing Line",
