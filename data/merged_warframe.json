@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-09-19T14:09:38.134Z",
+  "generatedAt": "2025-09-19T14:31:30.216Z",
   "count": 117,
   "entities": [
     {
@@ -15,8 +15,19 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "baseStatsRank30": null,
-      "polarities": [],
+      "baseStatsRank30": {
+        "energy": 270,
+        "health": 900,
+        "shields": 270,
+        "armor": 195,
+        "sprintSpeed": 1.1,
+        "masteryReq": 0
+      },
+      "polarities": [
+        "Naramon",
+        "Madurai",
+        "Vazarin"
+      ],
       "aura": null,
       "abilities": [
         {
@@ -25,16 +36,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 15,
-            "duration": null,
+            "duration": "N/A",
             "range": 250,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency"
+              "efficiency",
+              "duration"
             ]
           },
           "rows": [
@@ -73,7 +85,56 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
+            "costEnergy": 25,
+            "strength": 50,
+            "duration": "10 / 15 / 20 / 25 s",
+            "range": 400,
+            "efficiency": 25,
+            "affectedBy": [
+              "strength",
+              "range",
+              "efficiency",
+              "duration"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 25",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Slow: |val1|%",
+              "filledLabel": "Slow: 50%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 400m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 400
+              },
+              "mainNumeric": 400
+            }
+          ]
+        },
+        {
+          "name": "Warding Grace",
+          "description": "Renders the Warframe and nearby allies immune to Status Effects, while slowing nearby enemies.",
+          "subsumable": null,
+          "augments": [],
+          "summary": {
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": 1.5,
             "duration": 25,
@@ -135,60 +196,12 @@
           ]
         },
         {
-          "name": "Warding Grace",
-          "description": "Renders the Warframe and nearby allies immune to Status Effects, while slowing nearby enemies.",
-          "subsumable": null,
-          "augments": [],
-          "summary": {
-            "costType": null,
-            "costEnergy": 25,
-            "strength": 50,
-            "duration": null,
-            "range": 400,
-            "efficiency": 25,
-            "affectedBy": [
-              "strength",
-              "range",
-              "efficiency"
-            ]
-          },
-          "rows": [
-            {
-              "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 25",
-              "modifier": "AVATAR_ABILITY_EFFICIENCY",
-              "values": {
-                "Val1": 25
-              },
-              "mainNumeric": 25
-            },
-            {
-              "label": "Slow: |val1|%",
-              "filledLabel": "Slow: 50%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 50
-              },
-              "mainNumeric": 50
-            },
-            {
-              "label": "Range: |val1|m",
-              "filledLabel": "Range: 400m",
-              "modifier": "AVATAR_ABILITY_RANGE",
-              "values": {
-                "Val1": 400
-              },
-              "mainNumeric": 400
-            }
-          ]
-        },
-        {
           "name": "Vengeful Rush",
-          "description": "All damage taken is transformed into Energy, while abilities gain enhanced Range, Duration and Power. Affects the Warframe and nearby allies.",
+          "description": "All damage taken is transformed into Energy, while abilities gain enhanced range, duration and power. Affects the caster and nearby allies.",
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 100,
             "duration": 30,
@@ -264,8 +277,19 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "baseStatsRank30": null,
-      "polarities": [],
+      "baseStatsRank30": {
+        "energy": 270,
+        "health": 450,
+        "shields": 420,
+        "armor": 50,
+        "sprintSpeed": 1.2,
+        "masteryReq": 0
+      },
+      "polarities": [
+        "Vazarin",
+        "Naramon",
+        "Madurai"
+      ],
       "aura": null,
       "abilities": [
         {
@@ -274,7 +298,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 600,
             "duration": 1,
@@ -329,7 +353,7 @@
         {
           "name": "Penumbra",
           "description": "Activates a cloaking field that hides the Warframe and any nearby allies who remain stationary.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
             "costType": null,
@@ -379,16 +403,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 1500,
-            "duration": null,
+            "duration": "N/A",
             "range": 140,
             "efficiency": 75,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency"
+              "efficiency",
+              "duration"
             ]
           },
           "rows": [
@@ -436,7 +461,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 8,
             "duration": 30,
@@ -514,34 +539,47 @@
       "description": "The systems built into this Archwing balance offensive capabilities with defensive countermeasures.",
       "passive": null,
       "baseStats": {
-        "health": 425,
+        "health": 675,
         "shields": 430,
         "energy": 85,
         "armor": 100,
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "baseStatsRank30": null,
-      "polarities": [],
+      "baseStatsRank30": {
+        "energy": 135,
+        "health": 775,
+        "shields": 630,
+        "armor": 100,
+        "sprintSpeed": 1,
+        "masteryReq": 0
+      },
+      "polarities": [
+        "Naramon",
+        "Madurai",
+        "Vazarin"
+      ],
       "aura": null,
       "abilities": [
         {
           "name": "Energy Shell",
-          "description": "Forms a protective energy shell around the Warframe",
+          "description": "Forms a protective energy shell around the Warframe.",
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 50,
             "duration": 22,
-            "range": null,
+            "range": "N/A",
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "duration",
-              "efficiency"
-            ]
+              "efficiency",
+              "range"
+            ],
+            "misc": "50% Heat bonus • 2× Crit multiplier"
           },
           "rows": [
             {
@@ -588,17 +626,19 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
-            "strength": null,
+            "strength": "N/A",
             "duration": 8,
             "range": 180,
             "efficiency": 50,
             "affectedBy": [
               "duration",
               "range",
-              "efficiency"
-            ]
+              "efficiency",
+              "strength"
+            ],
+            "misc": "20 / 30 / 40 / 50 (flares)"
           },
           "rows": [
             {
@@ -636,17 +676,19 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 8,
-            "duration": null,
+            "duration": "N/A",
             "range": 480,
             "efficiency": 75,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency"
-            ]
+              "efficiency",
+              "duration"
+            ],
+            "misc": "300 (initial Blast) • 40 (area Blast)"
           },
           "rows": [
             {
@@ -702,7 +744,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 1500,
             "duration": 11,
@@ -769,8 +811,20 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "baseStatsRank30": null,
-      "polarities": [],
+      "baseStatsRank30": {
+        "energy": 135,
+        "health": 900,
+        "shields": 840,
+        "armor": 100,
+        "sprintSpeed": 1.05,
+        "masteryReq": 0
+      },
+      "polarities": [
+        "Naramon",
+        "Naramon",
+        "Madurai",
+        "Vazarin"
+      ],
       "aura": null,
       "abilities": [
         {
@@ -779,17 +833,19 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 50,
             "duration": 22,
-            "range": null,
+            "range": "N/A",
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "duration",
-              "efficiency"
-            ]
+              "efficiency",
+              "range"
+            ],
+            "misc": "50% Heat bonus • 2× Crit multiplier"
           },
           "rows": [
             {
@@ -836,17 +892,19 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
-            "strength": null,
+            "strength": "N/A",
             "duration": 8,
             "range": 180,
             "efficiency": 50,
             "affectedBy": [
               "duration",
               "range",
-              "efficiency"
-            ]
+              "efficiency",
+              "strength"
+            ],
+            "misc": "20 / 30 / 40 / 50 (flares)"
           },
           "rows": [
             {
@@ -884,17 +942,19 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 8,
-            "duration": null,
+            "duration": "N/A",
             "range": 480,
             "efficiency": 75,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency"
-            ]
+              "efficiency",
+              "duration"
+            ],
+            "misc": "300 (initial Blast) • 40 (area Blast)"
           },
           "rows": [
             {
@@ -950,7 +1010,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 1500,
             "duration": 11,
@@ -1014,11 +1074,22 @@
         "shields": 745,
         "energy": 120,
         "armor": 145,
-        "sprintSpeed": 0.89999998,
+        "sprintSpeed": 0.9,
         "masteryReq": 0
       },
-      "baseStatsRank30": null,
-      "polarities": [],
+      "baseStatsRank30": {
+        "energy": 170,
+        "health": 1015,
+        "shields": 945,
+        "armor": 145,
+        "sprintSpeed": 0.9,
+        "masteryReq": 0
+      },
+      "polarities": [
+        "Vazarin",
+        "Vazarin",
+        "Naramon"
+      ],
       "aura": null,
       "abilities": [
         {
@@ -1027,16 +1098,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 1000,
-            "duration": null,
+            "duration": "N/A",
             "range": 240,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency"
+              "efficiency",
+              "duration"
             ]
           },
           "rows": [
@@ -1075,15 +1147,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
-            "strength": null,
+            "strength": "—",
             "duration": 16,
-            "range": null,
+            "range": "N/A",
             "efficiency": 50,
             "affectedBy": [
               "duration",
-              "efficiency"
+              "efficiency",
+              "strength",
+              "range"
             ]
           },
           "rows": [
@@ -1122,7 +1196,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 500,
             "duration": 3,
@@ -1198,16 +1272,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 1750,
-            "duration": null,
+            "duration": "N/A",
             "range": 240,
             "efficiency": 100,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency"
+              "efficiency",
+              "duration"
             ]
           },
           "rows": [
@@ -39776,7 +39851,7 @@
         {
           "name": "Necraweb",
           "description": "Hurl a canister of gravitation fluids to create a wide mire that will significantly slow enemies traveling across it. Alternatively, the canister can be shot in mid-air to create a fiery conflagration.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
@@ -39844,7 +39919,7 @@
         {
           "name": "Storm Shroud",
           "description": "Swathe the Necramech in a powerful electrical field that greatly enhances survivability in close combat. Enemies that strike the shroud will suffer for their impudence.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
@@ -39912,7 +39987,7 @@
         {
           "name": "Gravemines",
           "description": "Launch a pattern of charged mines all around you. Each mine detonates in a violent blast when touched, damaging enemies in a three-meter radius.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
@@ -39971,7 +40046,7 @@
         {
           "name": "Guard Mode",
           "description": "Take a stationary stance to deploy maximum firepower and gain increased structural integrity for a time.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
@@ -40041,7 +40116,7 @@
         {
           "name": "Meathook",
           "description": "Skewer and hold a target. Use again to hurl the victim damaging them and anyone near the impact site.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
@@ -40099,7 +40174,7 @@
         {
           "name": "Firing Line",
           "description": "Sweep surrounding enemies into the line of fire with a force beam.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
@@ -40149,7 +40224,7 @@
         {
           "name": "Exalted Ironbride",
           "description": "Summon a devastating exalted blade.",
-          "subsumable": false,
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "Energy",
