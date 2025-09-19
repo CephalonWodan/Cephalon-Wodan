@@ -1,17 +1,17 @@
-// tools/merge_warframe_v3.js (ESM)
-// FINAL: builds `data/merged_warframe.json` by default.
+// tools/merge_warframe_v4.js (ESM)
+// Version robuste: tolère noms de fichiers variables & formats objet/tableau.
+// Génère: data/merged_warframe.json
 //
-// Inputs (all in ./data):
-// - ExportWarframes_en.json           (base frames/archwings/necramechs)
-// - abilities.json                    (primary detailed ability dataset)   [IMPORTANT]
-// - warframe_abilities.json           (per-frame abilities: SlotKey, Subsumable, Augments, optional path)
-// - abilities_by_warframe.json        (fallback list of ability names per frame)
-// - polarity_overrides.json           (if polarities empty/null -> use overrides[name])
-// - aw_overrides.json                 (Archwing/Necramech overrides: base + abilities by name)
-// Optional:
-// - progenitors.json                  (map Warframe -> progenitor element; used when present)
+// Entrées possibles sous ./data (toutes optionnelles sauf l'export):
+// - ExportWarframes_en.json  (ou ExportWarframes.json / warframes.json / frames.json / export_warframes.json)
+// - abilities.json
+// - warframe_abilities.json
+// - abilities_by_warframe.json
+// - polarity_overrides.json
+// - aw_overrides.json
+// - progenitors.json
 //
-// Usage: node tools/merge_warframe_v3.js ./data ./data/merged_warframe.json
+// Usage: node tools/merge_warframe_v4.js ./data ./data/merged_warframe.json
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
@@ -42,7 +42,6 @@ function kindFromProductCategory(pc, type) {
   if (p.includes('mechsuits') || t.includes('necramech') || t.includes('vehicle')) return 'necramech';
   return 'warframe';
 }
-
 function extractBaseStats(x) {
   const hp = coalesce(x.health, x.Health, x.baseHealth);
   const sh = coalesce(x.shield, x.shields, x.Shield, x.baseShield);
@@ -57,17 +56,14 @@ function extractBaseStatsR30(x) {
   const sh = coalesce(x.ShieldR30, x.shieldR30);
   const en = coalesce(x.EnergyR30, x.energyR30, x.PowerR30, x.powerR30);
   const ar = coalesce(x.ArmorR30, x.armourR30, x.armorR30);
-  // sprint speed doesn't change at 30; reuse same
   const sp = coalesce(x.sprintSpeed, x.SprintSpeed, x.sprint);
   const mr = coalesce(x.Mastery, x.masteryReq, x.MasteryReq, x.masteryRank, 0);
   return { health: hp, shields: sh, energy: en, armor: ar, sprintSpeed: sp, masteryReq: mr };
 }
-
 function stripTags(s) {
   if (s == null) return s;
   return String(s).replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
 }
-
 function normalizeAffected(label) {
   const L = String(label || '').toLowerCase();
   if (/strength|force/.test(L)) return 'strength';
@@ -84,7 +80,6 @@ function normalizeModifier(mod) {
   if (m.includes('EFFICIENCY')) return 'efficiency';
   return null;
 }
-
 function buildAbilityIndices(abilitiesJson) {
   const byName = new Map();
   const byPath = new Map();
@@ -98,7 +93,6 @@ function buildAbilityIndices(abilitiesJson) {
   }
   return { byName, byPath };
 }
-
 function buildSummaryFromDetails(details) {
   if (!details) return null;
   const summary = {
@@ -121,7 +115,6 @@ function buildSummaryFromDetails(details) {
   }
   return summary;
 }
-
 function parseFrameAbilitiesEntry(entry) {
   if (!entry) return null;
   const abilities = entry.abilities || entry.Abilities || entry.ability || [];
@@ -140,7 +133,6 @@ function parseFrameAbilitiesEntry(entry) {
   }
   return map;
 }
-
 function overrideBaseFromAW(baseStats, baseStatsR30, polarities, override) {
   if (!override) return { baseStats, baseStatsR30, polarities };
   const b = override.base || {};
@@ -152,7 +144,6 @@ function overrideBaseFromAW(baseStats, baseStatsR30, polarities, override) {
   if (b.Armor != null) out.armor = b.Armor;
   if (b.SprintSpeed != null) { out.sprintSpeed = b.SprintSpeed; outR.sprintSpeed = b.SprintSpeed; }
   if (b.Mastery != null) { out.masteryReq = b.Mastery; outR.masteryReq = b.Mastery; }
-  // R30 fields
   if (b.EnergyR30 != null) outR.energy = b.EnergyR30;
   if (b.HealthR30 != null) outR.health = b.HealthR30;
   if (b.ShieldR30 != null) outR.shields = b.ShieldR30;
@@ -160,15 +151,11 @@ function overrideBaseFromAW(baseStats, baseStatsR30, polarities, override) {
   const pol = Array.isArray(b.Polarities) ? b.Polarities : polarities;
   return { baseStats: out, baseStatsR30: outR, polarities: pol || [] };
 }
-
 function applyAbilityOverrideFromAW(abilityObj, ov) {
   if (!ov) return abilityObj;
   const copy = { ...abilityObj, summary: abilityObj.summary || { costType: null, costEnergy: null, strength: null, duration: null, range: null, efficiency: null, affectedBy: [] } };
   if (ov.desc) copy.description = stripTags(ov.desc);
-  if (ov.cost != null) {
-    copy.summary.costEnergy = ov.cost; // keep string if like '75 + 10/s'
-    copy.summary.costType = 'Energy';
-  }
+  if (ov.cost != null) { copy.summary.costEnergy = ov.cost; copy.summary.costType = 'Energy'; }
   const st = ov.stats || {};
   const map = { Strength: 'strength', Duration: 'duration', Range: 'range', Efficiency: 'efficiency' };
   for (const k of Object.keys(map)) {
@@ -180,11 +167,51 @@ function applyAbilityOverrideFromAW(abilityObj, ov) {
   return copy;
 }
 
+/* ---------- CHARGEMENT ROBUSTE DES WARFRAMES (objet/array/noms variables) ---------- */
+async function loadWarframesArray(dataDir) {
+  const candidates = [
+    'ExportWarframes_en.json',
+    'ExportWarframes.json',
+    'warframes.json',
+    'frames.json',
+    'export_warframes.json'
+  ];
+  for (const name of candidates) {
+    const p = join(dataDir, name);
+    const j = await loadJsonSafe(p);
+    if (!j) continue;
+
+    // cas 1: déjà un tableau
+    if (Array.isArray(j)) return j;
+
+    // cas 2: un objet -> regarder les clés communes
+    const keys = Object.keys(j);
+    // 2a) liste directement sous une clé connue
+    for (const k of ['ExportWarframes', 'warframes', 'frames', 'items', 'entities', 'data']) {
+      if (Array.isArray(j[k])) return j[k];
+    }
+    // 2b) objet indexé par ID -> le transformer en array
+    if (keys.length && typeof j[keys[0]] === 'object') {
+      return Object.values(j);
+    }
+  }
+  return null; // introuvable
+}
+
 async function main() {
-  const dataDir = resolve(process.argv[2] || './data');
+  const dataDir = resolve(process.argv[1] ? process.argv[2] || './data' : './data');
   const outPath = resolve(process.argv[3] || './data/merged_warframe.json');
 
-  const exportWarframes = await loadJsonSafe(join(dataDir, 'ExportWarframes_en.json')) || [];
+  const exportWarframes = await loadWarframesArray(dataDir);
+  if (!exportWarframes || !Array.isArray(exportWarframes)) {
+    console.error(
+      '[merge] ERREUR: impossible de charger les Warframes.\n' +
+      'Cherché fichiers: ExportWarframes_en.json | ExportWarframes.json | warframes.json | frames.json | export_warframes.json\n' +
+      'Assure-toi qu’un de ces fichiers existe sous ./data et contient la liste.'
+    );
+    process.exit(1);
+  }
+
   const abilitiesJson = await loadJsonSafe(join(dataDir, 'abilities.json')) || null;
   const warframeAbilities = await loadJsonSafe(join(dataDir, 'warframe_abilities.json')) || null;
   const abilitiesByFrame = await loadJsonSafe(join(dataDir, 'abilities_by_warframe.json')) || {};
@@ -193,7 +220,6 @@ async function main() {
   const progenitors = await loadJsonSafe(join(dataDir, 'progenitors.json')) || {};
 
   const abilityIdx = buildAbilityIndices(abilitiesJson);
-
   const entities = [];
 
   for (const x of exportWarframes) {
@@ -205,21 +231,19 @@ async function main() {
     let baseStats = extractBaseStats(x);
     let baseStatsR30 = extractBaseStatsR30(x);
 
-    // Polarities with override when empty
     let polarities = Array.isArray(x.polarities) ? x.polarities : null;
     if (!polarities || polarities.length === 0) {
       const ov = polarityOverrides[name] || polarityOverrides[name?.toLowerCase()] || null;
-      if (Array.isArray(ov) && ov.length) polarities = ov; else polarities = [];
+      polarities = Array.isArray(ov) && ov.length ? ov : [];
     }
 
-    // Apply Archwing/Necramech overrides if present (or frames if file has them)
     const awOv = awOverrides[name] || awOverrides[String(name).toLowerCase()] || null;
     if (awOv) {
       const res = overrideBaseFromAW(baseStats, baseStatsR30, polarities, awOv);
       baseStats = res.baseStats; baseStatsR30 = res.baseStatsR30; polarities = res.polarities;
     }
 
-    // Abilities raw (prefer SlotKey)
+    // abilities: SlotKey si présent
     let raw = [];
     if (Array.isArray(x.abilities)) {
       for (const ab of x.abilities) {
@@ -229,7 +253,7 @@ async function main() {
         if (nm) raw.push({ name: nm, slot, path });
       }
     }
-    // Merge frame abilities meta (Subsumable, Augments, path)
+    // merge meta
     let frameEntry = null;
     if (warframeAbilities) {
       if (Array.isArray(warframeAbilities)) {
@@ -240,7 +264,6 @@ async function main() {
     }
     const frameMap = parseFrameAbilitiesEntry(frameEntry);
 
-    // Fallback to abilities_by_warframe
     if (!raw.length) {
       const list = abilitiesByFrame[name] || abilitiesByFrame[String(name).toLowerCase()] || [];
       raw = list.map((n, i) => ({ name: n, slot: i + 1, path: null }));
@@ -260,16 +283,16 @@ async function main() {
           explicitPath = info.path || null;
         }
       }
-      let details = abilityIdx.byName.get(String(a.name).toLowerCase()) || null;
+      const keyByName = String(a.name).toLowerCase();
+      let details = abilityIdx.byName.get(keyByName) || null;
       if (!details && (explicitPath || a.path)) {
         details = abilityIdx.byPath.get(explicitPath || a.path) || null;
       }
       let description = details?.description ?? details?.Description ?? null;
       description = stripTags(description);
       let summary = buildSummaryFromDetails(details);
-      // Apply AW ability overrides by name
       if (awOv && Array.isArray(awOv.abilities)) {
-        const ov = awOv.abilities.find(u => String(u.name).toLowerCase() === String(a.name).toLowerCase());
+        const ov = awOv.abilities.find(u => String(u.name).toLowerCase() === keyByName);
         if (ov) {
           const tmp = applyAbilityOverrideFromAW({ name: a.name, description, subsumable, augments, details, summary }, ov);
           description = tmp.description; summary = tmp.summary;
@@ -285,7 +308,7 @@ async function main() {
       description: stripTags(coalesce(x.description, x.Description) || null),
       passive: stripTags(coalesce(x.passiveDescription, x.passive) || null),
       baseStats,
-      baseStatsRank30: baseStatsR30,
+      baseStatsRank30: extractBaseStatsR30(x),
       polarities,
       aura: x.aura || null,
       abilities,
@@ -294,7 +317,7 @@ async function main() {
   }
 
   await writeFile(outPath, JSON.stringify({ generatedAt: new Date().toISOString(), count: entities.length, entities }, null, 2), 'utf-8');
-  console.log(`Merged ${entities.length} entities -> ${outPath}`);
+  console.log(`[merge] OK: ${entities.length} entities -> ${outPath}`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
