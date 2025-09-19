@@ -1,0 +1,695 @@
+{
+  "generatedAt": "2025-09-19T16:11:39.979197Z",
+  "count": 43,
+  "byName": {
+    "Ash": {
+      "r0": {
+        "health": 455,
+        "shields": 270,
+        "energy": 100,
+        "armor": 105,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 555,
+        "shields": 370,
+        "energy": 150,
+        "armor": 105,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Atlas": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 475,
+        "sprintSpeed": 0.9
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 475,
+        "sprintSpeed": 0.9
+      }
+    },
+    "Banshee": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Baruuk": {
+      "r0": {
+        "health": 180,
+        "shields": 270,
+        "energy": 200,
+        "armor": 185,
+        "sprintSpeed": 1.2
+      },
+      "r30": {
+        "health": 280,
+        "shields": 370,
+        "energy": 300,
+        "armor": 185,
+        "sprintSpeed": 1.2
+      }
+    },
+    "Caliban": {
+      "r0": {
+        "health": 270,
+        "shields": 550,
+        "energy": 140,
+        "armor": 290,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 650,
+        "energy": 190,
+        "armor": 290,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Chroma": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 4,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 4,
+        "sprintSpeed": 1
+      }
+    },
+    "Citrine": {
+      "r0": {
+        "health": 400,
+        "shields": 270,
+        "energy": 130,
+        "armor": 265,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 500,
+        "shields": 370,
+        "energy": 180,
+        "armor": 265,
+        "sprintSpeed": 1
+      }
+    },
+    "Cyte-09": {
+      "r0": {
+        "health": 225,
+        "shields": 135,
+        "energy": 180,
+        "armor": 150,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 325,
+        "shields": 235,
+        "energy": 230,
+        "armor": 150,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Dagath": {
+      "r0": {
+        "health": 566,
+        "shields": 150,
+        "energy": 175,
+        "armor": 125,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 666,
+        "shields": 250,
+        "energy": 225,
+        "armor": 125,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Dante": {
+      "r0": {
+        "health": 300,
+        "shields": 150,
+        "energy": 200,
+        "armor": 145,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 390,
+        "shields": 240,
+        "energy": 270,
+        "armor": 145,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Ember": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 135,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 135,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Equinox": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 135,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 135,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Excalibur": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 100,
+        "armor": 240,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 150,
+        "armor": 240,
+        "sprintSpeed": 1
+      }
+    },
+    "Frost": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 100,
+        "armor": 315,
+        "sprintSpeed": 0.95
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 150,
+        "armor": 315,
+        "sprintSpeed": 0.95
+      }
+    },
+    "Gara": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 160,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 160,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Garuda": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 140,
+        "armor": 315,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 240,
+        "armor": 315,
+        "sprintSpeed": 1
+      }
+    },
+    "Gauss": {
+      "r0": {
+        "health": 270,
+        "shields": 455,
+        "energy": 175,
+        "armor": 185,
+        "sprintSpeed": 1.4
+      },
+      "r30": {
+        "health": 370,
+        "shields": 555,
+        "energy": 225,
+        "armor": 185,
+        "sprintSpeed": 1.4
+      }
+    },
+    "Grendel": {
+      "r0": {
+        "health": 1095,
+        "shields": 95,
+        "energy": 175,
+        "armor": 370,
+        "sprintSpeed": 0.95
+      },
+      "r30": {
+        "health": 1295,
+        "shields": 95,
+        "energy": 225,
+        "armor": 370,
+        "sprintSpeed": 0.95
+      }
+    },
+    "Gyre": {
+      "r0": {
+        "health": 270,
+        "shields": 550,
+        "energy": 190,
+        "armor": 105,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 650,
+        "energy": 240,
+        "armor": 105,
+        "sprintSpeed": 1
+      }
+    },
+    "Harrow": {
+      "r0": {
+        "health": 270,
+        "shields": 455,
+        "energy": 100,
+        "armor": 185,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 555,
+        "energy": 150,
+        "armor": 185,
+        "sprintSpeed": 1
+      }
+    },
+    "Hildryn": {
+      "r0": {
+        "health": 180,
+        "shields": 1280,
+        "energy": 0,
+        "armor": 315,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 280,
+        "shields": 1780,
+        "energy": 0,
+        "armor": 315,
+        "sprintSpeed": 1
+      }
+    },
+    "Hydroid": {
+      "r0": {
+        "health": 270,
+        "shields": 365,
+        "energy": 140,
+        "armor": 240,
+        "sprintSpeed": 1.05
+      },
+      "r30": {
+        "health": 370,
+        "shields": 465,
+        "energy": 190,
+        "armor": 240,
+        "sprintSpeed": 1.05
+      }
+    },
+    "Inaros": {
+      "r0": {
+        "health": 2110,
+        "shields": 0,
+        "energy": 100,
+        "armor": 240,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 2310,
+        "shields": 0,
+        "energy": 150,
+        "armor": 240,
+        "sprintSpeed": 1
+      }
+    },
+    "Ivara": {
+      "r0": {
+        "health": 180,
+        "shields": 270,
+        "energy": 215,
+        "armor": 105,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 280,
+        "shields": 370,
+        "energy": 265,
+        "armor": 105,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Jade": {
+      "r0": {
+        "health": 365,
+        "shields": 450,
+        "energy": 150,
+        "armor": 135,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 465,
+        "shields": 550,
+        "energy": 200,
+        "armor": 135,
+        "sprintSpeed": 1
+      }
+    },
+    "Khora": {
+      "r0": {
+        "health": 365,
+        "shields": 270,
+        "energy": 140,
+        "armor": 290,
+        "sprintSpeed": 1.05
+      },
+      "r30": {
+        "health": 465,
+        "shields": 370,
+        "energy": 190,
+        "armor": 290,
+        "sprintSpeed": 1.05
+      }
+    },
+    "Koumei": {
+      "r0": {
+        "health": 344,
+        "shields": 122,
+        "energy": 122,
+        "armor": 444,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 444,
+        "shields": 222,
+        "energy": 222,
+        "armor": 444,
+        "sprintSpeed": 1
+      }
+    },
+    "Kullervo": {
+      "r0": {
+        "health": 1005,
+        "shields": 0,
+        "energy": 175,
+        "armor": 550,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 1205,
+        "shields": 0,
+        "energy": 225,
+        "armor": 550,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Lavos": {
+      "r0": {
+        "health": 540,
+        "shields": 270,
+        "energy": 0,
+        "armor": 575,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 740,
+        "shields": 370,
+        "energy": 0,
+        "armor": 575,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Limbo": {
+      "r0": {
+        "health": 270,
+        "shields": 180,
+        "energy": 175,
+        "armor": 105,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
+        "armor": 105,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Loki": {
+      "r0": {
+        "health": 180,
+        "shields": 180,
+        "energy": 175,
+        "armor": 105,
+        "sprintSpeed": 1.25
+      },
+      "r30": {
+        "health": 280,
+        "shields": 280,
+        "energy": 225,
+        "armor": 105,
+        "sprintSpeed": 1.25
+      }
+    },
+    "Mag": {
+      "r0": {
+        "health": 180,
+        "shields": 455,
+        "energy": 140,
+        "armor": 105,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 280,
+        "shields": 555,
+        "energy": 190,
+        "armor": 105,
+        "sprintSpeed": 1
+      }
+    },
+    "Mesa": {
+      "r0": {
+        "health": 365,
+        "shields": 180,
+        "energy": 100,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 465,
+        "shields": 280,
+        "energy": 150,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Mirage": {
+      "r0": {
+        "health": 200,
+        "shields": 200,
+        "energy": 175,
+        "armor": 105,
+        "sprintSpeed": 1.2
+      },
+      "r30": {
+        "health": 300,
+        "shields": 300,
+        "energy": 225,
+        "armor": 105,
+        "sprintSpeed": 1.2
+      }
+    },
+    "Nekros": {
+      "r0": {
+        "health": 270,
+        "shields": 235,
+        "energy": 100,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 335,
+        "energy": 150,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Nezha": {
+      "r0": {
+        "health": 365,
+        "shields": 135,
+        "energy": 175,
+        "armor": 200,
+        "sprintSpeed": 1.15
+      },
+      "r30": {
+        "health": 465,
+        "shields": 185,
+        "energy": 225,
+        "armor": 200,
+        "sprintSpeed": 1.15
+      }
+    },
+    "Nidus": {
+      "r0": {
+        "health": 455,
+        "shields": 0,
+        "energy": 100,
+        "armor": 350,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 555,
+        "shields": 0,
+        "energy": 150,
+        "armor": 350,
+        "sprintSpeed": 1
+      }
+    },
+    "Nova": {
+      "r0": {
+        "health": 270,
+        "shields": 180,
+        "energy": 175,
+        "armor": 105,
+        "sprintSpeed": 1.2
+      },
+      "r30": {
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
+        "armor": 105,
+        "sprintSpeed": 1.2
+      }
+    },
+    "Nyx": {
+      "r0": {
+        "health": 270,
+        "shields": 270,
+        "energy": 175,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      },
+      "r30": {
+        "health": 370,
+        "shields": 370,
+        "energy": 225,
+        "armor": 105,
+        "sprintSpeed": 1.1
+      }
+    },
+    "Oberon": {
+      "r0": {
+        "health": 365,
+        "shields": 270,
+        "energy": 175,
+        "armor": 185,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 465,
+        "shields": 370,
+        "energy": 225,
+        "armor": 185,
+        "sprintSpeed": 1
+      }
+    },
+    "Octavia": {
+      "r0": {
+        "health": 270,
+        "shields": 180,
+        "energy": 175,
+        "armor": 160,
+        "sprintSpeed": 1.05
+      },
+      "r30": {
+        "health": 370,
+        "shields": 280,
+        "energy": 225,
+        "armor": 160,
+        "sprintSpeed": 1.05
+      }
+    },
+    "Oraxia": {
+      "r0": {
+        "health": 575,
+        "shields": 125,
+        "energy": 150,
+        "armor": 125,
+        "sprintSpeed": 1
+      },
+      "r30": {
+        "health": 675,
+        "shields": 225,
+        "energy": 200,
+        "armor": 125,
+        "sprintSpeed": 1
+      }
+    },
+    "Protea": {
+      "r0": {
+        "health": 270,
+        "shields": 455,
+        "energy": 175,
+        "armor": 135,
+        "sprintSpeed": 1.2
+      },
+      "r30": {
+        "health": 370,
+        "shields": 555,
+        "energy": 225,
+        "armor": 135,
+        "sprintSpeed": 1.2
+      }
+    }
+  },
+  "parseErrors": []
+}
