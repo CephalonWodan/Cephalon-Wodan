@@ -3,7 +3,7 @@
   "count": 117,
   "entities": [
     {
-      "name": "<ARCHWING> Amesha",
+      "name": "Amesha",
       "type": "archwing",
       "description": "Transform into a winged guardian.",
       "passive": null,
@@ -265,7 +265,7 @@
       ]
     },
     {
-      "name": "<ARCHWING> Itzal",
+      "name": "Itzal",
       "type": "archwing",
       "description": "Designed for quick clandestine attacks, the Itzal Archwing excels at striking from the darkness of space.",
       "passive": null,
@@ -534,7 +534,7 @@
       ]
     },
     {
-      "name": "<ARCHWING> Odonata",
+      "name": "Odonata",
       "type": "archwing",
       "description": "The systems built into this Archwing balance offensive capabilities with defensive countermeasures.",
       "passive": null,
@@ -799,7 +799,7 @@
       ]
     },
     {
-      "name": "<ARCHWING> Odonata Prime",
+      "name": "Odonata Prime",
       "type": "archwing",
       "description": "This enhanced version of the first Archwing prototype takes the design to its theoretical limits.",
       "passive": null,
@@ -1065,7 +1065,7 @@
       ]
     },
     {
-      "name": "<ARCHWING> Elytron",
+      "name": "Elytron",
       "type": "archwing",
       "description": "This heavy duty Archwing was designed for one purpose, destruction.",
       "passive": null,
