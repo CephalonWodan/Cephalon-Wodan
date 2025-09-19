@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'tools/merge_warframe_v3.js'
+      - 'tools/merge_warframe_v4.js'
       - 'data/**'
       - '!data/merged_warframe.json'
   schedule:
@@ -23,9 +23,18 @@ jobs:
           node-version: '20'
           # pas de cache npm, pas d'installation
 
+      - name: List repo (debug)
+        run: |
+          echo "::group::tree"
+          ls -la
+          echo
+          echo "data/:"
+          ls -la data || true
+          echo "::endgroup::"
+
       - name: Run merge (no install needed)
         run: |
-          node tools/merge_warframe_v3.js ./data ./data/merged_warframe.json
+          node tools/merge_warframe_v4.js ./data ./data/merged_warframe.json
           test -f ./data/merged_warframe.json && echo "Merged file created."
 
       - name: Upload artifact
