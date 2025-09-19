@@ -21,12 +21,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
+          # ❌ on enlève le cache: 'npm' qui plante sans lockfile
 
-      - name: Install (if needed)
+      - name: Install (if package.json present)
         run: |
           if [ -f package.json ]; then
-            npm ci || npm i
+            npm i --no-audit --no-fund
           fi
 
       - name: Run merge
