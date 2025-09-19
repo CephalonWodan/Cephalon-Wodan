@@ -1,46 +1,19 @@
-// tools/merge_warframe_final.js (ESM)
+// tools/merge_warframe_final.js (ESM) — FIX lookup <ARCHWING> prefix & AW/Mech aura optional
 // Génère: ./data/merged_warframe.json
-//
-// Sources REQUISES
-// - ./data/ExportWarframes_en.json
-// - ./data/warframe_abilities.json
-// - ./data/abilities.json
-// - ./data/aw_overrides.json
-//
-// Sources OPTIONNELLES (fallbacks/correctifs)
-// - ./data/Warframes_wikia.json
-// - ./data/abilities_by_warframe.json
-// - ./data/polarity_overrides.json
-//
-// Choix & règles:
-// - Warframes:
-//    • baseStats = R0 depuis Warframes_wikia.json.stats si dispo, sinon ExportWarframes (R0 estimé, voir notes)
-//    • baseStatsRank30 = calculé depuis R0 (formules ci-dessous)
-//    • description des pouvoirs = PRIORITÉ à warframe_abilities.json
-//    • subsumable/augments = warframe_abilities.json
-//    • summary chiffré (cost/strength/duration/range/affectedBy) = abilities.json (affectedBy FR→EN)
-//    • polarities/aura: wikia si dispo, sinon polarity_overrides, sinon laissé vide
-// - Archwings / Necramechs:
-//    • baseStats et baseStatsRank30 = aw_overrides.json (source de vérité)
-//    • abilities (nom/desc/cost/stats) = aw_overrides.json, enrichi par abilities.json quand dispo
-// - Si une frame manque dans warframe_abilities.json, on utilise export (nom/desc) + abilities.json.
-//
-// Formules R30 (Warframe):
-//   health_R30  = round(health_R0  * 3)
-//   shields_R30 = round(shields_R0 * 3)
-//   energy_R30  = round(energy_R0  * 1.5)
-//   armor_R30 = armor_R0 (constante)
-//   sprintSpeed_R30 = sprintSpeed_R0 (constante)
-//
-// NB: Ces formules reproduisent la progression standard (et donnent des valeurs cohérentes in-game).
-//     Si un jour tu veux désactiver le calcul R30 : remplace computeRank30FromR0(...) par null.
 
 import { readFile, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 
 async function J(p){ try { return JSON.parse(await readFile(p,'utf8')); } catch { return null; } }
+const stripTags=(s)=> s==null? s : String(s).replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
 const coalesce=(...v)=>v.find(x=>!(x==null || (typeof x==='string'&&x.trim()==='')));
-const strip=(s)=> s==null? s : String(s).replace(/<[^>]+>/g,'').replace(/\s+/g,' ').trim();
+
+// --- NEW: canonicalisation du nom pour lookup overrides/wiki ---
+function cleanEntityName(name){
+  if(!name) return name;
+  // retire un tag d'en-tête "<...>" + espace, ex. "<ARCHWING> Amesha" -> "Amesha"
+  return String(name).replace(/^<[^>]+>\s*/i, '').trim();
+}
 
 const typeFrom=(pc,t)=>{
   const p=String(pc||'').toLowerCase(), tt=String(t||'').toLowerCase();
@@ -112,8 +85,8 @@ function buildSummary(details){
 function cleanRows(details){
   const rows = Array.isArray(details?.rows)? details.rows: [];
   return rows.map(r=>({
-    label: strip(r.label),
-    filledLabel: strip(r.filledLabel),
+    label: stripTags(r.label),
+    filledLabel: stripTags(r.filledLabel),
     modifier: r.modifier ?? null,
     values: r.values ?? null,
     mainNumeric: r.mainNumeric ?? null
@@ -122,14 +95,12 @@ function cleanRows(details){
 
 /* ---- warframe_abilities.json ---- */
 function mapFrameEntryList(wfAbilities, frameName){
-  // accepte fichier en array ou dictionnaire groupé
   let list = [];
   if (Array.isArray(wfAbilities)) {
     list = wfAbilities.filter(e => String(e.Powersuit||e.Warframe||e.name||'').toLowerCase() === String(frameName).toLowerCase());
   } else if (wfAbilities && wfAbilities[frameName]) {
     list = wfAbilities[frameName]?.abilities || [];
   }
-  // normaliser
   return list.map(ab => ({
     slot: Number(ab.SlotKey ?? ab.slot ?? ab.Slot ?? null) || null,
     name: String(ab.Name || ab.name || '').trim(),
@@ -150,7 +121,7 @@ function mapFrameEntryList(wfAbilities, frameName){
 
 /* ---- aw_overrides.json ---- */
 function applyAwBaseFromOverride(baseS, baseR, pol, awo){
-  if(!awo?.base) return {stats:baseS, statsR30:baseR, polarities:pol};
+  if(!awo?.base) return {stats:baseS, statsR30:baseR, polarities:pol, aura:null};
   const b=awo.base;
   const S={...baseS}, R={...baseR};
   if(b.Energy!=null){ S.energy=b.Energy; R.energy=b.EnergyR30??R.energy; }
@@ -160,7 +131,9 @@ function applyAwBaseFromOverride(baseS, baseR, pol, awo){
   if(b.SprintSpeed!=null){ S.sprintSpeed=b.SprintSpeed; R.sprintSpeed=b.SprintSpeed; }
   if(b.Mastery!=null){ S.masteryReq=b.Mastery; R.masteryReq=b.Mastery; }
   const polOut = Array.isArray(b.Polarities)? b.Polarities : pol;
-  return {stats:S, statsR30:R, polarities:polOut||[]};
+  // NEW: aura éventuelle si tu l’ajoutes dans overrides (sinon null)
+  const aura = b.Aura ?? null;
+  return {stats:S, statsR30:R, polarities:polOut||[], aura};
 }
 function buildAwAbilityFromOverride(ov, A){
   const byName = A.byName.get(String(ov.name||'').toLowerCase()) || null;
@@ -178,7 +151,7 @@ function buildAwAbilityFromOverride(ov, A){
   if(st.Misc) summary.misc = st.Misc;
   return {
     name: ov.name,
-    description: strip(ov.desc || (byName?.description ?? byName?.Description) || ''),
+    description: stripTags(ov.desc || (byName?.description ?? byName?.Description) || ''),
     subsumable: null,
     augments: [],
     summary,
@@ -191,7 +164,7 @@ async function main(){
   const outPath=resolve(process.argv[3]||'./data/merged_warframe.json');
 
   const exportAll   = await J(join(dataDir,'ExportWarframes_en.json'));
-  const wikia       = await J(join(dataDir,'Warframes_wikia.json'));              // optional (Warframes only)
+  const wikia       = await J(join(dataDir,'Warframes_wikia.json'));              // optional
   const wfAbilities = await J(join(dataDir,'warframe_abilities.json'));           // required
   const abilities   = await J(join(dataDir,'abilities.json'));                    // required
   const awOverrides = await J(join(dataDir,'aw_overrides.json'));                 // required
@@ -212,12 +185,13 @@ async function main(){
   const entities = [];
 
   for(const x of exportAll.ExportWarframes){
-    const name = x.name || x.Name; if(!name) continue;
+    const rawName = x.name || x.Name; if(!rawName) continue;
+    const name = rawName;
+    const canon = cleanEntityName(rawName);      // NEW: "Amesha" pour "<ARCHWING> Amesha"
     const type = typeFrom(x.productCategory, x.type);
 
-    // ---------- base & polarities ----------
-    // Warframe: R0 préféré depuis wikia.stats ; Archwing/Mech: sera supersédé par overrides
-    const w0 = wikiaByName.get(String(name).toLowerCase());
+    // ---------- base R0 ----------
+    const w0 = wikiaByName.get(canon.toLowerCase()); // Warframes uniquement
     let baseStats = {
       health:      w0?.stats?.health ?? x.health ?? x.Health ?? null,
       shields:     w0?.stats?.shield ?? x.shield ?? x.Shield ?? null,
@@ -226,12 +200,12 @@ async function main(){
       sprintSpeed: w0?.stats?.sprintSpeed ?? x.sprintSpeed ?? x.SprintSpeed ?? null,
       masteryReq:  x.masteryReq ?? x.MasteryReq ?? 0
     };
-    let baseStatsRank30 = null; // sera rempli pour Warframes (calcul) ou AW/Mechs (overrides)
+    let baseStatsRank30 = null;
     let polarities = Array.isArray(w0?.polarities) ? w0.polarities.slice() : null;
     let aura = w0?.aura ?? null;
 
-    if((!polarities || polarities.length===0) && polOverrides[name]) {
-      const ov = polOverrides[name];
+    if((!polarities || polarities.length===0) && polOverrides[canon]) {
+      const ov = polOverrides[canon];
       if(Array.isArray(ov)) polarities = ov;
       if(Array.isArray(ov?.polarities)) polarities = ov.polarities;
       if(ov?.aura) aura = ov.aura;
@@ -239,17 +213,17 @@ async function main(){
     if(!Array.isArray(polarities)) polarities = [];
 
     // ---------- Archwing/Necramech: overrides de vérité ----------
-    const awo = awOverrides[name] || awOverrides[String(name).toLowerCase()];
+    const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
     if (type !== 'warframe' && awo) {
       const applied = applyAwBaseFromOverride(baseStats, {}, polarities, awo);
       baseStats = applied.stats;
-      baseStatsRank30 = applied.statsR30;     // présent
+      baseStatsRank30 = applied.statsR30;
       polarities = applied.polarities;
+      if (applied.aura != null) aura = applied.aura; // Archwings n'ont pas d'aura, restera null sauf si tu ajoutes base.Aura
     }
 
     // ---------- Abilities ----------
-    const wfList = mapFrameEntryList(wfAbilities, name);
-    // fallback noms si besoin
+    const wfList = mapFrameEntryList(wfAbilities, canon);
     let raw = [];
     if (type === 'warframe' && wfList.length) {
       raw = wfList.map(a => ({ slot: a.slot, name: a.name, path: a.path }));
@@ -260,35 +234,30 @@ async function main(){
         path: ab.abilityUniqueName || ab.path || ab.Path || null
       }));
     } else {
-      const names = byFrameList[name] || byFrameList[String(name).toLowerCase()] || [];
+      const names = byFrameList[canon] || byFrameList[canon.toLowerCase()] || [];
       raw = names.map((n,i)=>({ slot:i+1, name:n, path:null }));
     }
     raw.sort((a,b)=>(a.slot||999)-(b.slot||999));
 
     const abilitiesOut = raw.map(a=>{
-      // base depuis wf_abilities si dispo (desc/subsumable/augments en priorité)
       const meta = wfList.find(m => (m.slot===a.slot) || (m.name.toLowerCase()===a.name.toLowerCase()));
       const nameA = meta?.name || a.name;
-      let desc = strip(meta?.desc) || null;
+      let desc = stripTags(meta?.desc) || null;
       let subsumable = (typeof meta?.subsumable === 'boolean') ? meta.subsumable : null;
       let aug = Array.isArray(meta?.augments) ? meta.augments : [];
 
-      // fallback desc depuis export si besoin
       if(!desc){
         const exAb = (x.abilities||[]).find(z => String(z.abilityName||z.name||'').toLowerCase() === nameA.toLowerCase());
-        if(exAb) desc = strip(exAb.description || exAb.desc || null);
+        if(exAb) desc = stripTags(exAb.description || exAb.desc || null);
       }
 
-      // summary chiffré via abilities.json (par path si dispo sinon par nom)
       const det = A.byPath.get(meta?.path || a.path || '') || A.byName.get(nameA.toLowerCase()) || null;
       const summary = buildSummary(det);
       const rows    = cleanRows(det);
 
-      // Archwing/Mech: si aw_override existe, fusionner/compléter
       if (type !== 'warframe' && awo?.abilities) {
         const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
         if(o){
-          // injecter override: cost/desc/stats textuels
           const sum = summary || { costType:null,costEnergy:null,strength:null,duration:null,range:null,efficiency:null,affectedBy:[] };
           if(o.cost!=null){ sum.costEnergy = sum.costEnergy ?? o.cost; sum.costType = sum.costType ?? 'Energy'; }
           if(o.stats){
@@ -298,8 +267,8 @@ async function main(){
             }
             if(o.stats.Misc) sum.misc = sum.misc ?? o.stats.Misc;
           }
-          if(!desc && o.desc) desc = strip(o.desc);
-          // rows reste ceux de abilities.json si dispo
+          if(!desc && o.desc) desc = stripTags(o.desc);
+          return { name: nameA, description: desc, subsumable: null, augments: [], summary: sum, rows };
         }
       }
 
@@ -307,15 +276,11 @@ async function main(){
     });
 
     // ---------- baseStatsRank30 (Warframes calculé) ----------
-    if (type === 'warframe') {
-      baseStatsRank30 = computeRank30FromR0(baseStats);
-    }
+    if (type === 'warframe') baseStatsRank30 = computeRank30FromR0(baseStats);
 
-    // ---------- description & passive ----------
-    // Warframes: privilégier wikia pour passive/description si dispo
-    const description = strip(w0?.description ?? x.description ?? null);
+    const description = stripTags(w0?.description ?? x.description ?? null);
     const passive = (type === 'warframe')
-      ? strip(w0?.passive ?? x.passiveDescription ?? null)
+      ? stripTags(w0?.passive ?? x.passiveDescription ?? null)
       : null;
 
     entities.push({
@@ -324,7 +289,7 @@ async function main(){
       description,
       passive,
       baseStats,
-      baseStatsRank30,        // présent pour Warframes (calculé) et AW/Mechs (override)
+      baseStatsRank30,
       polarities,
       aura: aura ?? null,
       abilities: abilitiesOut
