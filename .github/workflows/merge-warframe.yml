@@ -1,0 +1,47 @@
+name: Build merged warframe JSON
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tools/merge_warframe_v3.js'
+      - 'data/**'
+      - '!data/merged_warframe.json'
+  schedule:
+    - cron: '23 3 * * *'
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install (if needed)
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm i
+          fi
+
+      - name: Run merge
+        run: |
+          node tools/merge_warframe_v3.js ./data ./data/merged_warframe.json
+          test -f ./data/merged_warframe.json && echo "Merged file created."
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged_warframe.json
+          path: data/merged_warframe.json
+
+      - name: Commit & push if changed
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore(data): update merged_warframe.json [ci skip]'
+          file_pattern: data/merged_warframe.json
