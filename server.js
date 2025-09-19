@@ -63,6 +63,13 @@ function pickFields(obj, fieldsCsv) {
   return out;
 }
 
+function normName(s) {
+  return String(s || '')
+    .replace(/<[^>]+>\s*/g, '') // retire "<ARCHWING>", "<NECRAMECH>", etc.
+    .trim()
+    .toLowerCase();
+}
+
 /* -------------------------- Endpoint statique JSON ------------------------ */
 // GET /merged/warframe  -> renvoie le JSON fusionné brut
 app.get('/merged/warframe', async (req, res) => {
@@ -86,10 +93,20 @@ app.get('/entities', async (req, res) => {
 
     let filtered = all.filter(keywordMatch(req.query.q));
 
+    // match tolérant (noms / abilities normalisés)
+    if (req.query.q) {
+      const qn = normName(req.query.q);
+      filtered = filtered.filter(
+        (e) =>
+          normName(e.name).includes(qn) ||
+          (e.abilities || []).some((a) => normName(a.name).includes(qn))
+      );
+    }
+
     const type = String(req.query.type || '').toLowerCase();
     if (type) filtered = filtered.filter((e) => String(e.type || '').toLowerCase() === type);
 
-    // selection de champs (optionnelle)
+    // sélection de champs (optionnelle)
     const fields = req.query.fields;
     const shaped = fields ? filtered.map((e) => pickFields(e, fields)) : filtered;
 
@@ -106,13 +123,13 @@ app.get('/entities', async (req, res) => {
   }
 });
 
-/** Détail par nom exact (case-insensitive) */
+/** Détail par nom exact (case-insensitive, tags supprimés) */
 app.get('/entities/:name', async (req, res) => {
   try {
     const merged = await loadMergedWarframe();
     const all = Array.isArray(merged?.entities) ? merged.entities : [];
-    const name = String(req.params.name || '').toLowerCase();
-    const one = all.find((e) => String(e.name || '').toLowerCase() === name);
+    const key = normName(req.params.name);
+    const one = all.find((e) => normName(e.name) === key);
     if (!one) return res.status(404).json({ error: 'not found' });
     res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
     res.json(one);
@@ -132,9 +149,9 @@ for (const [route, t] of [
     try {
       const merged = await loadMergedWarframe();
       const all = Array.isArray(merged?.entities) ? merged.entities : [];
-      const name = String(req.params.name || '').toLowerCase();
+      const key = normName(req.params.name);
       const one = all.find(
-        (e) => String(e.type || '').toLowerCase() === t && String(e.name || '').toLowerCase() === name
+        (e) => String(e.type || '').toLowerCase() === t && normName(e.name) === key
       );
       if (!one) return res.status(404).json({ error: 'not found' });
       res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
