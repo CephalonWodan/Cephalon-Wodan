@@ -1,0 +1,6163 @@
+[
+  {
+    "name": "Ash",
+    "description": "Behold the patron saint of the Orokin school of political assassination. Ash specializes in stealth. The edge of his blade is sooner felt than seen.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Ash.png?db305",
+    "stats": {
+      "health": 455,
+      "shield": 270,
+      "armor": 105,
+      "energy": 100,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Bleed effects inflicted on enemies do 25% increased damage and last 50% longer.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Ash Prime",
+    "description": "Distraction and subterfuge become lethal weapons with Ash Prime. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/AshPrime.png?373a7",
+    "stats": {
+      "health": 455,
+      "shield": 365,
+      "armor": 185,
+      "energy": 100,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Bleed effects inflicted on enemies do 25% increased damage and last 50% longer.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Atlas",
+    "description": "Enemies tremble before the brawler with fists as hard as stone. Atlas deals high damage. Command terrestrial elements that form the foundation of any battlefield.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Atlas.png?91499",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 475,
+      "energy": 175,
+      "sprintSpeed": 0.9
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Becomes immune to Knockdown effects while on the ground.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Atlas Prime",
+    "description": "In bygone ages, mountains were said to house warriors. In this age, the mountain has become the warrior.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/AtlasPrime.png?25c96",
+    "stats": {
+      "health": 550,
+      "shield": 555,
+      "armor": 500,
+      "energy": 215,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Becomes immune to Knockdown effects while on the ground.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Banshee",
+    "description": "Banshee's call heralds death. She maintains crowd control and identifies enemy weak points with sonic attacks. Few can hold their position when struck by her force.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Banshee.png?1f779",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Weapon noises are hushed so that enemies cannot hear them.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Banshee Prime",
+    "description": "Banshee Prime assails her foes by manipulating sonic forces to deadly effect. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/BansheePrime.png?5d57f",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 135,
+      "energy": 215,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Weapon noises are hushed so that enemies cannot hear them.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Baruuk",
+    "description": "Beware the fury of the truly patient. Baruuk boasts survivability and crowd control. Pushed beyond his restraint, he unleashes the storm within.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Baruuk.png?30a1c",
+    "stats": {
+      "health": 180,
+      "shield": 270,
+      "armor": 185,
+      "energy": 200,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Each projectile dodged, each enemy lulled or disarmed, erodes Baruuk's restraint and fuels the storm within. As Baruuk's restraint is diminished he becomes up to 50% more resistant to damage.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Baruuk Prime",
+    "description": "Doomed are the fools who attack the peace and exhaust the restraint of this reluctant warrior.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/BaruukPrime.png?b2420",
+    "stats": {
+      "health": 180,
+      "shield": 365,
+      "armor": 240,
+      "energy": 200,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Each projectile dodged, each enemy lulled or disarmed, erodes Baruuk's restraint and fuels the storm within. As Baruuk's restraint is diminished he becomes up to 50% more resistant to damage.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Caliban",
+    "description": "The heir of twin kingdoms ascends. Biological and Sentient life meet in Caliban. An adept monarch, he offers crowd control and survivability. His creator had more than one world in mind.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Caliban.png?c916e",
+    "stats": {
+      "health": 270,
+      "shield": 550,
+      "armor": 290,
+      "energy": 140,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Allies within Affinity range gain increased resistance to the types of damage they are currently taking.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Chroma",
+    "description": "Unleash the draconic. Chroma employs Heat, Electricity, Toxin, and Cold to deal high damage while maintaining survivability. Soar with winged fury.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Chroma.png?545f7",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 370,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Wings sprout for an additional jump and bullet jump.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Chroma Prime",
+    "description": "Bind the elements and unleash untold destruction with Chroma Prime. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/ChromaPrime.png?71048",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 450,
+      "energy": 200,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Wings sprout for an additional jump and bullet jump.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Citrine",
+    "description": "Gaze upon the Crystal Bastion. Citrine's crystalline might supports allies on the battlefield. Combat only enhances her fractal beauty.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Citrine.png?89b01",
+    "stats": {
+      "health": 400,
+      "shield": 270,
+      "armor": 265,
+      "energy": 130,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Citrine grants nearby allies 5 health regeneration per second. Pick up a Health Orb to increase regeneration by 0,1, up to a maximum of 25.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Cyte-09",
+    "description": "Move like a shadow, strike with force. The Orokin created a Warframe that marries damage and stealth to eliminate sensitive problems, but he disappeared in the chaos of their demise. All that remains is a batch name: Cyte-09.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Cyte-09.png?b161b",
+    "stats": {
+      "health": 225,
+      "shield": 135,
+      "armor": 150,
+      "energy": 180,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Weak Point Kills increase Cyte-09's Weak Point Critical Chance by 1% up to 300% for the duration of the current mission.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Dagath",
+    "description": "Never underestimate the power and wrath of sullen sadness. Dagath's malice deals high damage.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Dagath.png?4b231",
+    "stats": {
+      "health": 566,
+      "shield": 150,
+      "armor": 125,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "Zenurik",
+    "passive": "There is a 35% chance that Energy and Health Orbs will be 300% more effective on Dagath.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Dante",
+    "description": "Seeker of knowledge. Keeper of history. Daring researcher of Leverian lore. Dante composes arcane tales to support allies and devastate enemies.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Dante.png?c0761",
+    "stats": {
+      "health": 300,
+      "shield": 150,
+      "armor": 145,
+      "energy": 200,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "Madurai",
+      "Naramon"
+    ],
+    "aura": "aura",
+    "passive": "Noctua scans targets, recording information for your Codex. Status Chance increases by 50% on fully scanned targets.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Ember",
+    "description": "Harness the power of fire. Ember's heat deals high damage. She keeps a cool head when the battle is hot.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Ember.png?20dac",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "naramon",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Receive 5% Ability Strength for every enemy within Affinity Range affected by Heat.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Ember Prime",
+    "description": "Ember Prime offers the same potential for wanton destruction as Ember but provides unique mod polarities, allowing for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/EmberPrime.png?f1136",
+    "stats": {
+      "health": 270,
+      "shield": 365,
+      "armor": 160,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Receive 5% Ability Strength for every enemy within Affinity Range affected by Heat.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Equinox",
+    "description": "Equinox rises from the edge of day and night. Her Day form offers offensive support while her Night form offers defensive support. She thrives between realms.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Equinox.png?62279",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "10% of Health Orbs are converted into Energy, and 10% of Energy Orbs are converted into Health.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Equinox Prime",
+    "description": "Night and Day in final balance; the graceful perfection of the one that walks the borders.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/EquinoxPrime.png?7dc5f",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 160,
+      "energy": 200,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "10% of Health Orbs are converted into Energy, and 10% of Energy Orbs are converted into Health.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Excalibur",
+    "description": "Excalibur epitomizes the warrior spirit. His master swordsmanship deals high damage. He is the embodiment of martial excellence.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Excalibur.png?97103",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 240,
+      "energy": 100,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "None",
+    "passive": "Excalibur deals 10% increased damage and attacks 10% faster when wielding swords.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Excalibur Prime",
+    "description": "Excalibur Prime is the epitome of mobility and offense, and features the same abilities as Excalibur, but has unique mod polarities installed allowing for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/ExcaliburPrime.png?0ba1d",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 315,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Excalibur Prime deals 10% increased damage and attacks 10% faster when wielding swords.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Excalibur Umbra",
+    "description": "From the shadow of the long night emerges a new Excalibur.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/ExcaliburUmbra.png?73c5c",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 315,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "umbra",
+      "umbra",
+      "umbra"
+    ],
+    "aura": "madurai",
+    "passive": "Umbra exhibits sentience in combat without Transference control. Attacks 10% faster and deals 10% more damage while wielding swords.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Excalibur Umbra Prime",
+    "description": "",
+    "type": "Warframe",
+    "image": null,
+    "stats": {
+      "health": 100,
+      "shield": 100,
+      "armor": 250,
+      "energy": 150,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Excalibur deals 10% increased damage and attacks 10% faster when wielding swords.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Frost",
+    "description": "When Frost steps onto the battlefield, enemies experience a chill. Frost's attacks control crowds, protect objectives, and increase survivability. Wield the biting cold.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Frost.png?32f8e",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 315,
+      "energy": 100,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "vazarin",
+    "passive": "Cold Status Effects from Frost's Abilities last 100% longer. Frost gains 50 Armor per enemy afflicted with Cold Status within Affinity Range.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Frost Prime",
+    "description": "Frost Prime has the same chilling abilities as Frost but provides unique mod polarities, allowing for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/FrostPrime.png?d491e",
+    "stats": {
+      "health": 270,
+      "shield": 550,
+      "armor": 315,
+      "energy": 100,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "vazarin",
+    "passive": "Cold Status Effects from Frost's Abilities last 100% longer. Frost gains 50 Armor per enemy afflicted with Cold Status within Affinity Range.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Gara",
+    "description": "Enemies are made fragile by Gara's deadly touch. Gara's vitric abilities provide her and her allies with survivability and deal high damage. Shatter the foe.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Gara.png?1c84b",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 160,
+      "energy": 175,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "vazarin",
+    "passive": "A chance to create a radial blind lasting 10s when Gara casts abilities.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Gara Prime",
+    "description": "Continue the legend of the glass-armored warrior Gara. Dominate the battlefield with the power and purity of crystal.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/GaraPrime.png?08009",
+    "stats": {
+      "health": 345,
+      "shield": 270,
+      "armor": 200,
+      "energy": 175,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "naramon"
+    ],
+    "aura": "vazarin",
+    "passive": "A chance to create a radial blind lasting 10s when exposed to bright light.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Garuda",
+    "description": "Death's crimson maiden sharpens her talons. Garuda weaponizes the blood of her foes to deal high damage. Sanguine beauty complements her deadly power.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Garuda.png?0f856",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 315,
+      "energy": 140,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Garuda's damage temporarily increases with each enemy she kills, to a maximum of 100%.\r\nSlashes with her talons if no melee weapon is equipped.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Garuda Prime",
+    "description": "White, gold and deepest scarlet, the queen of gore in full regalia.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/GarudaPrime.png?13f16",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 420,
+      "energy": 220,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Garuda's damage temporarily increases with each enemy she kills, to a maximum of 100%.\r\nSlashes with her talons if no melee weapon is equipped.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Gauss",
+    "description": "Take charge with the Saint of Altra. Gauss is fast, deals high damage, and has strong survivability. Movement charges his powerful battery, so never stop moving.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Gauss.png?fb087",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 185,
+      "energy": 175,
+      "sprintSpeed": 1.4
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Moving generates an electrical current that fills Gauss' battery. Shields recharge up to 120% faster while the Recharge Delay is up to 80% shorter, based on the battery level.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Gauss Prime",
+    "description": "Quicksilver takes form. Gauss Prime brooks no talk of defeat.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/GaussPrime.png?aa6cc",
+    "stats": {
+      "health": 270,
+      "shield": 550,
+      "armor": 185,
+      "energy": 175,
+      "sprintSpeed": 1.5
+    },
+    "polarities": [
+      "madurai",
+      "Naramon",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Moving generates an electrical current that fills Gauss' battery. Shields recharge up to 120% faster while the Recharge Delay is up to 80% shorter, based on the battery level.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Grendel",
+    "description": "Grendel sees every battlefield as a smorgasbord. His insatiable appetite rewards him with high survivability. Enemies will be eaten. And regurgitated.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Grendel.png?f4a0b",
+    "stats": {
+      "health": 1095,
+      "shield": 95,
+      "armor": 370,
+      "energy": 175,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Each enemy consumed grants 250 bonus armor.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Grendel Prime",
+    "description": "Primal. Insatiable. Grendel Prime devours all who oppose him.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/GrendelPrime.png?62987",
+    "stats": {
+      "health": 1095,
+      "shield": 95,
+      "armor": 400,
+      "energy": 200,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "vazarin",
+      "Madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Each enemy consumed grants 250 bonus armor.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Gyre",
+    "description": "Annihilate enemies with the conductivity of coils and transmitters. Gyre's electric attacks provide crowd control. She is the embodiment of elegant theory.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Gyre.png?f7a7f",
+    "stats": {
+      "health": 270,
+      "shield": 550,
+      "armor": 105,
+      "energy": 190,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Gyre's abilities have a 10% chance to deal critical damage for each Electrical status that affects the enemy.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Harrow",
+    "description": "Achieve redemption through vengeance. The monastic Harrow increases damage to support allies. Defy enemies and ascend.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Harrow.png?6b992",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 185,
+      "energy": 100,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Overshield capacity doubled.\r\nStart missions at maximum energy.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Harrow Prime",
+    "description": "The Inquisitor Eternal arises, hallowed by the Void, preaching a gospel of iron and flame.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/HarrowPrime.png?9cd5a",
+    "stats": {
+      "health": 270,
+      "shield": 640,
+      "armor": 185,
+      "energy": 140,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Overshield capacity doubled.\r\nStart missions at maximum energy.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Hildryn",
+    "description": "Strength is Hildryn's virtue. Her unique high-damage abilities are powered by her Shields, which can be recharged with Energy. Hildryn proves that a strong offense is a good defense.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Hildryn.png?f6fc3",
+    "stats": {
+      "health": 180,
+      "shield": 1280,
+      "armor": 315,
+      "energy": 0,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Hildryn's full Shield Gate is high. After her Shields are depleted, she is invulnerable to damage up to 3.5s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Hildryn Prime",
+    "description": "Hildryn Prime proves that power is discipline's reward.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/HildrynPrime.png?36b86",
+    "stats": {
+      "health": 270,
+      "shield": 1380,
+      "armor": 315,
+      "energy": 0,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Hildryn's full Shield Gate is high. After her Shields are depleted, she is invulnerable to damage up to 3.5s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Hydroid",
+    "description": "Hydroid summons the power of the ocean depths. He provides crowd control with aqueous attacks. His enemies will meet a watery demise.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Hydroid.png?48637",
+    "stats": {
+      "health": 270,
+      "shield": 365,
+      "armor": 240,
+      "energy": 140,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Enemies damaged by Hydroid are more vulnerable to Corrosion Status, with initial status reducing armor by 50%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Hydroid Prime",
+    "description": "Command the ocean's fury with this king of gold and silver. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/HydroidPrime.png?170c3",
+    "stats": {
+      "health": 270,
+      "shield": 550,
+      "armor": 290,
+      "energy": 175,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "naramon",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Enemies damaged by Hydroid are more vulnerable to Corrosion Status, with initial status reducing armor by 50%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Inaros",
+    "description": "Inaros commands the fearsome desert. He survives like the ever-shifting sands that empower him. Legend recalls Inaros as the Fear-Eater.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Inaros.png?f5b59",
+    "stats": {
+      "health": 2110,
+      "shield": 0,
+      "armor": 240,
+      "energy": 100,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "When Inaros takes lethal damage, he entombs himself in a sarcophagus and incarnates as sand to attack enemies, draining their lifeforce to revive himself.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Inaros Prime",
+    "description": "Rise, eternal, to cast the fear of Inaros into them. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/InarosPrime.png?cd69a",
+    "stats": {
+      "health": 2215,
+      "shield": 0,
+      "armor": 240,
+      "energy": 140,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "When Inaros takes lethal damage, he entombs himself in a sarcophagus and incarnates as sand to attack enemies, draining their lifeforce to revive himself.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Ivara",
+    "description": "The huntress draws her bow. Ivara is stealth itself. Her enemies live in fear of her sudden attacks.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Ivara.png?3a915",
+    "stats": {
+      "health": 180,
+      "shield": 270,
+      "armor": 105,
+      "energy": 215,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Senses nearby enemies within 50m.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Ivara Prime",
+    "description": "As regal and lethal as a nighttime wood, this is the queen of the hunt in her ultimate form.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/IvaraPrime.png?59590",
+    "stats": {
+      "health": 180,
+      "shield": 455,
+      "armor": 135,
+      "energy": 250,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Senses nearby enemies within 50m.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Jade",
+    "description": "Become enraptured by the song of devastation. Through her, the Jade Light can be a force of destruction or a source of support.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Jade%28Warframe%29.png?532ac",
+    "stats": {
+      "health": 365,
+      "shield": 450,
+      "armor": 135,
+      "energy": 150,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "Naramon"
+    ],
+    "aura": "aura",
+    "passive": "Jade's profound understanding of the relationship between life and death grants her two Aura Mod Slots. Some of her Abilities apply Judgments, increasing enemy damage vulnerability by 50% for 10s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Khora",
+    "description": "Khora is red in whip and claw. She works together with her Kavat companion, Venari, to deal high damage and provide crowd control. Two bodies, one will.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Khora.png?28137",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 290,
+      "energy": 140,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "vazarin",
+    "passive": "The ferocious kavat, Venari, fights by Khora's side and provides her with a 15% speed boost while active. If killed, Venari will reappear after 45s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Khora Prime",
+    "description": "A harmony of mistress and monster. The gilded huntress and her loyal Kavat, Venari, dominate the battlefield with their will.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/KhoraPrime.png?730fb",
+    "stats": {
+      "health": 365,
+      "shield": 365,
+      "armor": 345,
+      "energy": 175,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "vazarin",
+    "passive": "The ferocious kavat, Venari, fights by Khora Prime's side and provides her with a 15% speed boost while active. If killed, Venari will reappear after 45s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Koumei",
+    "description": "Test your luck with the dice-maiden. Koumei weaves fate to unleash damage and ensure her survival. To the virtuous, she is an oracle. To the wicked, a perilous game of chance.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Koumei.png?2085e",
+    "stats": {
+      "health": 344,
+      "shield": 122,
+      "armor": 444,
+      "energy": 122,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Every 60 seconds, one of Koumei's weapons will inflict random Status Effects for 60 seconds",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Kullervo",
+    "description": "Kullervo answers for his sins and the sins of others. His daggers and melee prowess deal high damage. Seize the power of treachery to slake his thirst for revenge.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Kullervo.png?5e09b",
+    "stats": {
+      "health": 1005,
+      "shield": 0,
+      "armor": 550,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Kullervo boasts +75% Heavy Attack Efficiency and +100% Heavy Attack Wind Up Speed on all melee weapons.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Lavos",
+    "description": "The serpents of Lavos encourage him as he transmutes the battlefield. He uses Toxin, Cold, Electricity, and Heat to deal elemental damage. Harness the power of the dark alchemist.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Lavos.png?8996d",
+    "stats": {
+      "health": 540,
+      "shield": 270,
+      "armor": 575,
+      "energy": 0,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Energy and Universal Orbs give Lavos status immunity for 10s.\r\n\r\nHold any ability to imbue the next cast with additional Elemental Damage and Status.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Lavos Prime",
+    "description": "Some Warframes were Prime from the start. Others ascended. Lavos, the master of transmutation, bowed to no one as he forged his own path to valor.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/LavosPrime.png?b1901",
+    "stats": {
+      "health": 600,
+      "shield": 310,
+      "armor": 575,
+      "energy": 0,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "vazarin",
+      "naramon",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Energy and Universal Orbs give Lavos status immunity for 10s.\r\n\r\nHold any ability to imbue the next cast with additional Elemental Damage and Status.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Limbo",
+    "description": "Master the rift between shadow and substance. Limbo disrupts time-space to provide crowd control. He is at home where others struggle with what is real.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Limbo.png?5b51a",
+    "stats": {
+      "health": 270,
+      "shield": 180,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Dodge to enter and exit the Rift. Entering leaves behind a small Rift portal lasting 5s. Energy slowly recharges in the Rift, and each enemy killed in there also gives 10 Energy.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Limbo Prime",
+    "description": "Dance between realms with this golden rift walker. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/LimboPrime.png?081f6",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 135,
+      "energy": 215,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Dodge to enter and exit the Rift. Entering leaves behind a small Rift portal lasting 5s. Energy slowly recharges in the Rift, and each enemy killed in there also gives 10 Energy.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Loki",
+    "description": "Loki knows the art of deception. The trickster employs stealth to sabotage enemies. Sow confusion.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Loki.png?35af7",
+    "stats": {
+      "health": 180,
+      "shield": 180,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1.25
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Able to hang from walls 10x longer than normal.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Loki Prime",
+    "description": "Confuse, deceive and destroy with Loki Prime. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/LokiPrime.png?62a71",
+    "stats": {
+      "health": 180,
+      "shield": 180,
+      "armor": 135,
+      "energy": 215,
+      "sprintSpeed": 1.25
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "madurai",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Able to hang from walls 10x longer than normal.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Mag",
+    "description": "Take down your enemies with magnetic force. Mag alters magnetic fields to provide crowd control and strip enemy defenses. Few can resist her attraction or her repulsion.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Mag.png?3a64c",
+    "stats": {
+      "health": 180,
+      "shield": 455,
+      "armor": 105,
+      "energy": 140,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Nearby items gravitate towards Mag for easy collection.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Mag Prime",
+    "description": "The exquisite Mag Prime offers the same abilities as Mag but with unique mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/MagPrime.png?89603",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 135,
+      "energy": 215,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "naramon",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Nearby items gravitate towards Mag for easy collection.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Mesa",
+    "description": "The gunslinger has a steady deadly hand. Each shot deals high damage. Mesa is the fastest draw in the realm.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Mesa.png?fbb32",
+    "stats": {
+      "health": 365,
+      "shield": 180,
+      "armor": 105,
+      "energy": 100,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "naramon",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Shoot dual-wielded sidearms 15% faster and reload single-handed sidearms 25% more rapidly. Gain 50 Bonus Health when not using Melee Weapons.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Mesa Prime",
+    "description": "Cast a long shadow with this lethal enforcer. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/MesaPrime.png?c5a03",
+    "stats": {
+      "health": 400,
+      "shield": 180,
+      "armor": 135,
+      "energy": 140,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "naramon",
+      "naramon",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Shoot dual-wielded sidearms 15% faster and reload single-handed sidearms 25% more rapidly. Gain 50 Bonus Health when not using Melee Weapons.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Mirage",
+    "description": "Mirage's sleight of hand complements her might. Her dazzled foes take heavy damage. Doppelgangers, lasers, and traps are elements of her stagecraft.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Mirage.png?c6c07",
+    "stats": {
+      "health": 200,
+      "shield": 200,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Sliding lasts 85% longer and acrobatic maneuvers are 50% faster.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Mirage Prime",
+    "description": "Dazzle the opposition with this golden master of illusion and mayhem. Featuring altered mod polarities allow for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/MiragePrime.png?606b5",
+    "stats": {
+      "health": 200,
+      "shield": 310,
+      "armor": 185,
+      "energy": 175,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "naramon",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Sliding lasts 85% longer and acrobatic maneuvers are 50% faster.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nekros",
+    "description": "There is a reaper whose name is Nekros. He provides deathly crowd control. Erstwhile enemies become allies when Nekros calls up recruits from the dead.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Nekros.png?0fa45",
+    "stats": {
+      "health": 270,
+      "shield": 235,
+      "armor": 105,
+      "energy": 100,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "None",
+    "passive": "Restore 5 Health with every enemy death within 10m.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nekros Prime",
+    "description": "Death's new master. Featuring altered mod polarities allow for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/NekrosPrime.png?29f4a",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 135,
+      "energy": 140,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "None",
+    "passive": "Restore 5 Health with every enemy death within 10m.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nezha",
+    "description": "The mercurial firemonger protects the innocent. Nezha's multifaceted tactics give him high survivability as he inflicts damage and provides crowd control. His fire is the clarion of hope.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Nezha.png?23673",
+    "stats": {
+      "health": 365,
+      "shield": 135,
+      "armor": 200,
+      "energy": 175,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Slide 60% faster and go 35% farther.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nezha Prime",
+    "description": "Behold: the Scion of the Burning Wind, now before you in most courtly accoutrement. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/NezhaPrime.png?1d330",
+    "stats": {
+      "health": 365,
+      "shield": 135,
+      "armor": 265,
+      "energy": 175,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "vazarin",
+      "madurai",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Slide 60% faster and go 35% farther.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nidus",
+    "description": "Nidus draws strength from the Infestation. It bolsters him with survivability as he deals high damage and provides crowd control. Plague your enemies.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Nidus.png?d4fb6",
+    "stats": {
+      "health": 455,
+      "shield": 0,
+      "armor": 350,
+      "energy": 100,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "If Nidus is killed with at least 15 stacks of Mutation, those 15 stacks are consumed; this grants 5s of invulnerability and restores Health to 50%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nidus Prime",
+    "description": "Mutation is endless. The ravening plague-bearer returns in a long-unseen form, seething with a primal strain of the Infestation.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/NidusPrime.png?b61c5",
+    "stats": {
+      "health": 550,
+      "shield": 0,
+      "armor": 425,
+      "energy": 140,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "If Nidus is killed with at least 15 stacks of Mutation, those 15 stacks are consumed; this grants 5s of invulnerability and restores Health to 50%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nova",
+    "description": "Harness antimatter. Nova uses antiparticles to provide crowd control and amplify damage output. She obliterates enemies by destabilizing matter itself.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Nova.png?a8d96",
+    "stats": {
+      "health": 270,
+      "shield": 180,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Enemies killed while slowed down have 15% to drop health orbs. Enemies killed while sped up have 15% to drop energy orbs.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nova Prime",
+    "description": "Nova Prime wreaks devastation on her enemies using volatile antimatter. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/NovaPrime.png?34d15",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 135,
+      "energy": 215,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Enemies killed while slowed down have 15% to drop health orbs. Enemies killed while sped up have 15% to drop energy orbs.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nyx",
+    "description": "Psychic attacks make Nyx a dangerous foe. She reaches into enemy consciousness to provide crowd control and turn their attacks back on them. Such manipulation can turn the tide of battle.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Nyx.png?00908",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Nyx gains +40% Critical Chance on Primary and Secondary weapons per confused enemy within Affinity Range, up to +200%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Nyx Prime",
+    "description": "Infiltrate the minds of your enemies with Nyx Prime. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/NyxPrime.png?10995",
+    "stats": {
+      "health": 270,
+      "shield": 365,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.125
+    },
+    "polarities": [
+      "madurai",
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Nyx gains +40% Critical Chance on Primary and Secondary weapons per confused enemy within Affinity Range, up to +200%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Oberon",
+    "description": "Healing and suffering do Oberon's bidding. His command of the natural world supports allies. Boon to his friends, bane of his foes.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Oberon.png?ea604",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 185,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Allied pets receive 25% Health, Armor and Shield links. In addition, your pet receives an instant revive per mission.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Oberon Prime",
+    "description": "Protect the balance with this regal forest guardian. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/OberonPrime.png?bd523",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 240,
+      "energy": 215,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "naramon",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Allied pets receive 25% Health, Armor and Shield links. In addition, your pet receives an instant revive per mission.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Octavia",
+    "description": "Octavia turns bass, beat, and melody into a symphony of devastation. The music of her Mandachord gives her high survivability and supports allies. Her composition means the enemy's destruction.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Octavia.png?aa13e",
+    "stats": {
+      "health": 270,
+      "shield": 180,
+      "armor": 160,
+      "energy": 175,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "naramon",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Replenish 30 energy over 30s for Octavia and allies within 15m when abilities are activated.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Octavia Prime",
+    "description": "Strike up a symphony of destruction with the mistress of music, Octavia, in her grandest and most spectacular form. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/OctaviaPrime.png?5a09d",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 160,
+      "energy": 215,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "vazarin",
+      "naramon",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Replenish 30 energy over 30s for Octavia and allies within 15m when abilities are activated.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Oraxia",
+    "description": "Sinister grace interwoven with lethal versatility; the evolution of a perfect predator. Fear's name is Oraxia.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Oraxia.png?f2ec1",
+    "stats": {
+      "health": 575,
+      "shield": 125,
+      "armor": 125,
+      "energy": 150,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "Madurai",
+      "Naramon"
+    ],
+    "aura": "Madurai",
+    "passive": "Wall Latching grants Predator's Lurk, rendering Oraxia invisible for 8s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Protea",
+    "description": "Protea knows all about protection. Her vast arsenal inflicts damage and provides ally support. She can even manipulate time itself.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Protea.png?5aaec",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "aura",
+    "passive": "Every 4th Power Cast is granted +100% Ability Strength.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Protea Prime",
+    "description": "Behold the child of two fathers. Protea Prime once fulfilled Parvos Granum's vision of a time-wielding guardian. Now she upholds the Tenno ideal of defending the defenseless.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/ProteaPrime.png?56831",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 185,
+      "energy": 200,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "madurai",
+      "naramon",
+      "naramon"
+    ],
+    "aura": "aura",
+    "passive": "Every 4th Power Cast is granted +100% Ability Strength.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Qorvex",
+    "description": "Albrecht Entrati designed Qorvex to protect a Chosen Operator from the unique hazards of his lab. A Crucible Core gives Qorvex high survivability as he provides crowd control.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Qorvex.png?815ba",
+    "stats": {
+      "health": 600,
+      "shield": 200,
+      "armor": 875,
+      "energy": 150,
+      "sprintSpeed": 0.9
+    },
+    "polarities": [
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "vazarin",
+    "passive": "Weapons wield by Qorvex have an additional +3 Punch Through.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Revenant",
+    "description": "Macabre spectral power has risen. Infused with the essence of the Eidolon, Revenant has strong survivability and deals high damage. Enemies become his thralls.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Revenant.png?fd975",
+    "stats": {
+      "health": 270,
+      "shield": 735,
+      "armor": 135,
+      "energy": 140,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Shield depletion smashes enemies within 7.5m with a 100 Damage knockdown shockwave.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Revenant Prime",
+    "description": "The lost one rises. Reify the essence of the Eidolon as you wield Revenant Prime’s power.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/RevenantPrime.png?e4097",
+    "stats": {
+      "health": 270,
+      "shield": 825,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Shield depletion smashes enemies within 7.5m with a 100 Damage knockdown shockwave.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Rhino",
+    "description": "Rhino packs a punch. He boasts high survivability and crowd control. The wise would do well to stand clear when he charges.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Rhino.png?ae954",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 240,
+      "energy": 100,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Emit a shockwave dealing 100 damage after landing from a great height.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Rhino Prime",
+    "description": "Takes Rhino's ground-shaking abilities to the next level with altered mod polarities that offer greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/RhinoPrime.png?b18c1",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 290,
+      "energy": 100,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Emit a shockwave dealing 100 damage after landing from a great height.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Saryn",
+    "description": "Toxicity is Saryn's strength. Her serpentine powers deal heavy damage. For Saryn, venom is a virtue.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Saryn.png?74464",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 240,
+      "energy": 175,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "vazarin",
+    "passive": "Status Effects inflicted upon enemies last 25% longer.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Saryn Prime",
+    "description": "A golden blossom conceals deadly nectar. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/SarynPrime.png?f437a",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 315,
+      "energy": 200,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "vazarin",
+    "passive": "Status Effects inflicted upon enemies last 25% longer.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Sevagoth",
+    "description": "No longer adrift in the Void, Sevagoth has returned. He and his Shadow deal heavy damage and have high survivability. They are sustained by the reaping of wayward souls.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Sevagoth.png?6863b",
+    "stats": {
+      "health": 270,
+      "shield": 235,
+      "armor": 160,
+      "energy": 140,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
+    "passive": "On death, become Sevagoth's Shadow and fight to resurrect him by collecting the souls needed to rebuild his tombstone.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Sevagoth Prime",
+    "description": "The gilded helmsman emerges from the tempest, his shadow a lure for doomed souls.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/SevagothPrime.png?2552c",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 185,
+      "energy": 175,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "Vazarin",
+      "Naramon",
+      "Madurai"
+    ],
+    "passive": "On death, become Sevagoth's Shadow and fight to resurrect him by collecting the souls needed to rebuild his tombstone.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Sevagoth Prime's Shadow",
+    "description": "When the Tempestarii became a void phantom, Sevagoth set aside his body and became a Shadow, to continue his solemn duty of saving lives.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/SevagothPrime%27sShadow.png?61df7",
+    "stats": {
+      "health": 270,
+      "shield": 135,
+      "armor": 475,
+      "energy": 100,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "Vazarin",
+      "Naramon",
+      "Madurai",
+      "Madurai"
+    ],
+    "aura": "Madurai",
+    "passive": "None",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Sevagoth's Shadow",
+    "description": "Sevagoth's roving spirit, formed from concentrated Void energy.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Sevagoth%27sShadow.png?b7f2c",
+    "stats": {
+      "health": 270,
+      "shield": 135,
+      "armor": 475,
+      "energy": 100,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "None",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Stalker",
+    "description": "An ally from an unknown time and place. Stalker is a powerful force within the shadows.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Stalker.png?74815",
+    "stats": {
+      "health": 1554,
+      "shield": 560,
+      "armor": 135,
+      "energy": 67,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [],
+    "aura": "None",
+    "passive": "Stalker's attacks have +300% Critical Chance against enemies who do not see him.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Styanax",
+    "description": "Styanax never wonders how many enemies he will face, only where he can find them. The hoplite deals high damage. Enemies tremble before his spear and shield.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Styanax.png?60e60",
+    "stats": {
+      "health": 270,
+      "shield": 825,
+      "armor": 265,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Styanax's critical chance increases with his shields and doubles for spearguns.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Temple",
+    "description": "Blazing with glamor and armed with an Infested guitar, Lizzie. Temple's power chords light the flames of revolution.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Temple.png?1e14f",
+    "stats": {
+      "health": 405,
+      "shield": 225,
+      "armor": 325,
+      "energy": 165,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "Madurai",
+      "Vazarin"
+    ],
+    "aura": "Naramon",
+    "passive": "Play abilities in sync with the Backbeat metronome to invigorate ability effects while increasing Ability Efficiency by 50%.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Titania",
+    "description": "Titania's fairy-like appearance belies her formidable regal power. The enchantress deals high damage and provides crowd control. She forces opponents to pay homage or perish.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Titania.png?58f33",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Titania generates Health for herself and nearby allies every time she casts an Ability.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Titania Prime",
+    "description": "Tempting and terrifying, this is Titania in her ultimate form.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/TitaniaPrime.png?a33ec",
+    "stats": {
+      "health": 365,
+      "shield": 270,
+      "armor": 135,
+      "energy": 215,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Titania generates Health for herself and nearby allies every time she casts an Ability.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Trinity",
+    "description": "Trinity embodies redemption and health. Her extraordinary healing powers support allies. Where others destroy, she restores.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Trinity.png?ee30d",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 105,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "vazarin",
+    "passive": "Allies in Affinity Range gain 50% of Trinity's Max Energy as Health.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Trinity Prime",
+    "description": "Become the bastion that defends allies using powerful healing abilities with Trinity Prime. Featuring altered mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/TrinityPrime.png?277fd",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "madurai",
+      "naramon"
+    ],
+    "aura": "vazarin",
+    "passive": "Allies in Affinity Range gain 50% of Trinity's Max Energy as Health.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Valkyr",
+    "description": "Valkyr was modified into a highly motivated and fearsome killer. She is adept at dealing damage and surviving. Her battle cry strikes terror into all who hear it.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Valkyr.png?d633f",
+    "stats": {
+      "health": 650,
+      "shield": 135,
+      "armor": 855,
+      "energy": 100,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Valkyr accumulates Rage when hitting or killing enemies with melee weapons, increasing her Melee Damage up to 300%. Taking fatal damage when the Rage meter is above 150% consumes the meter, preventing death and granting 5s of invulnerability.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Valkyr Prime",
+    "description": "A proud fighter emerges unscarred by time or malice. Featuring altered mod polarities allow for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/ValkyrPrime.png?63221",
+    "stats": {
+      "health": 650,
+      "shield": 135,
+      "armor": 1000,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Valkyr accumulates Rage when hitting or killing enemies with melee weapons, increasing her Melee Damage up to 300%. Taking fatal damage when the Rage meter is above 150% consumes the meter, preventing death and granting 5s of invulnerability.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Vauban",
+    "description": "Vauban is the model of innovative technology. He deploys clever inventions to provide crowd control. His tenacity and focus make him formidable.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Vauban.png?4d2ec",
+    "stats": {
+      "health": 270,
+      "shield": 180,
+      "armor": 160,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Deal 25% Extra Damage to incapacitated enemies.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Vauban Prime",
+    "description": "Transform the battlefield into a weapon with this gilded tactician. Features unique mod polarities for extended customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/VaubanPrime.png?d347f",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 210,
+      "energy": 175,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Deal 25% Extra Damage to incapacitated enemies.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Volt",
+    "description": "Electricity flows through Volt. His attacks deal high damage. Enemies will be shocked.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Volt.png?6e107",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 105,
+      "energy": 100,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Grounded movement generates an electrical charge building up 1000 Damage per meter that is unleashed with the next attack.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Volt Prime",
+    "description": "A glorious warrior from the past, Volt Prime features the same abilities as Volt but with unique mod polarities for greater customization.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/VoltPrime.png?35509",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 135,
+      "energy": 200,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "Grounded movement generates an electrical charge building up 1000 Damage per meter that is unleashed with the next attack.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Voruna",
+    "description": "Four beasts, one heart. Voruna's loyal wolf pack makes for a deadly combination of strength and stealth. Beware the monstrous howl that heralds fangs of vengeance.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Voruna.png?3ec67",
+    "stats": {
+      "health": 455,
+      "shield": 270,
+      "armor": 200,
+      "energy": 100,
+      "sprintSpeed": 0.95
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "vazarin",
+    "passive": "Voruna never fights alone. In mission, hold Abilities to call upon each wolf's unique Passive power.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Wisp",
+    "description": "Wisp floats between the material and the ethereal. She accesses multiple dimensions to support her allies. Her countenance is mysterious and enigmatic.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Wisp.png?e6cde",
+    "stats": {
+      "health": 270,
+      "shield": 180,
+      "armor": 185,
+      "energy": 200,
+      "sprintSpeed": 1.2
+    },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "Flowing between dimensions Wisp becomes invisible to enemies while in the air.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Wisp Prime",
+    "description": "Wisp Prime's gilded splendor haunts the battlefield. Allies welcome her interdimensional beauty.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/WispPrime.png?faa01",
+    "stats": {
+      "health": 270,
+      "shield": 270,
+      "armor": 210,
+      "energy": 200,
+      "sprintSpeed": 1.25
+    },
+    "polarities": [
+      "madurai",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "naramon",
+    "passive": "Flowing between dimensions Wisp becomes invisible to enemies while in the air.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Wukong",
+    "description": "The simian warrior is a mountain of strength. Wukong deals heavy damage and has high survivability. His quick trickster tactics are unforgettable.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Wukong.png?abcbf",
+    "stats": {
+      "health": 455,
+      "shield": 270,
+      "armor": 265,
+      "energy": 130,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "After taking fatal damage Wukong automatically uses one of his mastered survival techniques. These techniques can only be invoked three times per mission.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Wukong Prime",
+    "description": "The trickster-warrior ascends to his ultimate incarnation.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/WukongPrime.png?7544f",
+    "stats": {
+      "health": 455,
+      "shield": 345,
+      "armor": 290,
+      "energy": 145,
+      "sprintSpeed": 1.05
+    },
+    "polarities": [
+      "naramon",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "madurai",
+    "passive": "After taking fatal damage Wukong automatically uses one of his mastered survival techniques. These techniques can only be invoked three times per mission.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Xaku",
+    "description": "Broken Warframes adrift in the Void converged to create Xaku. Together, they deal high damage. Xaku proves that the sum of the whole is greater than its parts.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Xaku.png?eb470",
+    "stats": {
+      "health": 269,
+      "shield": 239,
+      "armor": 146,
+      "energy": 160,
+      "sprintSpeed": 1.02
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin"
+    ],
+    "aura": "naramon",
+    "passive": "25% Damage Reduction on AOE attacks and chance to avoid incoming weapon damage.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Xaku Prime",
+    "description": "The child of war and void is reborn in gold. That which was once shattered may rise stronger than that which was never broken.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/XakuPrime.png?ea7e1",
+    "stats": {
+      "health": 269,
+      "shield": 263,
+      "armor": 167,
+      "energy": 181,
+      "sprintSpeed": 1.07
+    },
+    "polarities": [
+      "vazarin",
+      "vazarin",
+      "madurai"
+    ],
+    "aura": "naramon",
+    "passive": "25% Damage Reduction on AOE attacks and chance to avoid incoming weapon damage.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Yareli",
+    "description": "The waverider can unleash a flood of destruction on the battlefield. Yareli’s aqueous attacks deal high damage. Surf’s up. Enemies down.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Yareli.png?a9e7b",
+    "stats": {
+      "health": 270,
+      "shield": 455,
+      "armor": 105,
+      "energy": 200,
+      "sprintSpeed": 1
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Yareli gains +200% Critical Chance for Secondary weapons when she has been moving for at least 1.5s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Yareli Prime",
+    "description": "The Waverider arises, reborn from the ocean foam. In her original Orokin-era splendor she embodies the undying vigor of youth.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/YareliPrime.png?a28ee",
+    "stats": {
+      "health": 270,
+      "shield": 550,
+      "armor": 105,
+      "energy": 215,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "naramon",
+      "vazarin"
+    ],
+    "aura": "madurai",
+    "passive": "Yareli gains +200% Critical Chance for Secondary weapons when she has been moving for at least 1.5s.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Zephyr",
+    "description": "Command the power of the wind. Zephyr's cyclonic abilities protect her, deal high damage, and provide crowd control. She swoops in from above and leaves a path of destruction.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Zephyr.png?d427c",
+    "stats": {
+      "health": 455,
+      "shield": 455,
+      "armor": 105,
+      "energy": 100,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "vazarin",
+    "passive": "Zephyr moves faster and falls slower while airborne. Also gain 150% Critical Hit chance with weapons while airborne.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
+    "name": "Zephyr Prime",
+    "description": "Take to the skies with this golden bird of destruction.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/ZephyrPrime.png?192c6",
+    "stats": {
+      "health": 455,
+      "shield": 455,
+      "armor": 135,
+      "energy": 175,
+      "sprintSpeed": 1.15
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "vazarin",
+      "naramon"
+    ],
+    "aura": "vazarin",
+    "passive": "Zephyr moves faster and falls slower while airborne. Also gain 150% Critical Hit chance with weapons while airborne.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  }
+]
