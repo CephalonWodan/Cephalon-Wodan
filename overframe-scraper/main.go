@@ -12,22 +12,20 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"sort"
 	"strconv"
 	"time"
 )
 
 const (
-	defaultBaseURL      = "https://overframe.gg/items/arsenal/%d"
-	defaultStartID      = 1
-	defaultGrowthWindow = 300 // nombre d'IDs au-delà du max connu à explorer à chaque run
-	defaultRateMs       = 1000 // 1 req/s
-	defaultJitterMs     = 200  // +/- jitter pour éviter un rythme trop régulier
+	defaultBaseURL  = "https://overframe.gg/items/arsenal/%d"
+	defaultStartID  = 1
+	defaultRateMs   = 1000 // 1 req/s
+	defaultJitterMs = 200  // ± jitter pour lisser
 )
 
 var (
 	reNextData = regexp.MustCompile(`<script[^>]*id="__NEXT_DATA__"[^>]*>(?s:(.*?))</script>`)
-	httpClient = &http.Client{Timeout: 15 * time.Second}
+	httpClient = &http.Client{Timeout: 20 * time.Second}
 )
 
 type Item struct {
@@ -35,6 +33,14 @@ type Item struct {
 	Name string `json:"name"`
 }
 
+// -------- helpers env --------
+func getenvStr(key, def string) string {
+	v := os.Getenv(key)
+	if v == "" {
+		return def
+	}
+	return v
+}
 func getenvInt(key string, def int) int {
 	v := os.Getenv(key)
 	if v == "" {
@@ -46,170 +52,168 @@ func getenvInt(key string, def int) int {
 	}
 	return i
 }
-
-func getenvStr(key, def string) string {
+func getenvIntPtr(key string) *int {
 	v := os.Getenv(key)
 	if v == "" {
-		return def
+		return nil
 	}
-	return v
+	i, err := strconv.Atoi(v)
+	if err != nil {
+		return nil
+	}
+	return &i
 }
 
-func loadExisting() (map[int]string, int) {
-	known := map[int]string{}
-	maxID := 0
-
-	f, err := os.Open("items.json")
-	if err != nil {
-		return known, 0
+// -------- tiny JSON path (generic map) --------
+func asMap(v any) map[string]any {
+	if m, ok := v.(map[string]any); ok {
+		return m
 	}
-	defer f.Close()
-
-	var arr []Item
-	if err := json.NewDecoder(f).Decode(&arr); err != nil {
-		return known, 0
+	return nil
+}
+func s(m map[string]any, k string) string {
+	if m == nil {
+		return ""
 	}
-	for _, it := range arr {
-		known[it.ID] = it.Name
-		if it.ID > maxID {
-			maxID = it.ID
-		}
+	if v, ok := m[k].(string); ok {
+		return v
 	}
-	return known, maxID
+	return ""
 }
 
-func fetchName(url string) (string, error) {
-	resp, err := httpClient.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		return "", fmt.Errorf("HTTP %d", resp.StatusCode)
-	}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	m := reNextData.FindSubmatch(body)
-	if len(m) < 2 {
-		return "", errors.New("no __NEXT_DATA__")
-	}
-
-	var next struct {
-		Props struct {
-			PageProps struct {
-				Item struct {
-					Name string `json:"name"`
-				} `json:"item"`
-			} `json:"pageProps"`
-		} `json:"props"`
-	}
-
-	if err := json.NewDecoder(bytes.NewReader(m[1])).Decode(&next); err != nil {
-		return "", err
-	}
-	return next.Props.PageProps.Item.Name, nil
-}
-
-func writeOutputs(items map[int]string) error {
-	// CSV
-	csvf, err := os.Create("items.csv")
-	if err != nil {
-		return err
-	}
-	defer csvf.Close()
-	cw := csv.NewWriter(csvf)
-	defer cw.Flush()
-	_ = cw.Write([]string{"id", "name"})
-
-	// JSON (écriture atomique)
-	jsonTmp := filepath.Join(".", "items.tmp.json")
-	jsonFinal := filepath.Join(".", "items.json")
-	jf, err := os.Create(jsonTmp)
-	if err != nil {
-		return err
-	}
-	defer jf.Close()
-	enc := json.NewEncoder(jf)
-	enc.SetIndent("", "  ")
-
-	// tri par ID
-	ids := make([]int, 0, len(items))
-	for id := range items {
-		ids = append(ids, id)
-	}
-	sort.Ints(ids)
-
-	arr := make([]Item, 0, len(ids))
-	for _, id := range ids {
-		name := items[id]
-		_ = cw.Write([]string{strconv.Itoa(id), name})
-		if name != "" {
-			arr = append(arr, Item{ID: id, Name: name})
-		}
-	}
-
-	if err := enc.Encode(arr); err != nil {
-		return err
-	}
-	return os.Rename(jsonTmp, jsonFinal)
-}
-
+// -------- main scrape --------
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	baseURL := getenvStr("BASE_URL", defaultBaseURL)
 	startID := getenvInt("START_ID", defaultStartID)
-	growth := getenvInt("GROWTH_WINDOW", defaultGrowthWindow)
+	endIDPtr := getenvIntPtr("END_ID")
+	if endIDPtr == nil {
+		fmt.Fprintln(os.Stderr, "END_ID est requis pour un one-shot brut. Ex: END_ID=7468")
+		os.Exit(2)
+	}
+	endID := *endIDPtr
+	if endID < startID {
+		endID = startID
+	}
+
 	rateMs := getenvInt("RATE_MS", defaultRateMs)
 	jitterMs := getenvInt("JITTER_MS", defaultJitterMs)
 
-	known, maxKnown := loadExisting()
-	targetMax := maxKnown + growth
-	if targetMax < startID {
-		targetMax = startID + growth
+	// sorties
+	if err := os.MkdirAll("raw", 0o755); err != nil {
+		fmt.Fprintf(os.Stderr, "mk raw: %v\n", err)
+		os.Exit(1)
 	}
-
-	fmt.Printf("Scraper — startID=%d, maxKnown=%d, targetMax=%d, rate=%dms±%dms\n",
-		startID, maxKnown, targetMax, rateMs, jitterMs)
-
-	// Calcul des IDs à récupérer
-	toFetch := make([]int, 0, targetMax-startID+1)
-	for id := startID; id <= targetMax; id++ {
-		if _, ok := known[id]; ok {
-			continue
-		}
-		toFetch = append(toFetch, id)
+	idxf, err := os.Create("index.csv")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "index.csv: %v\n", err)
+		os.Exit(1)
 	}
-	fmt.Printf("IDs à récupérer: %d\n", len(toFetch))
+	defer idxf.Close()
+	idxw := csv.NewWriter(idxf)
+	defer idxw.Flush()
+	_ = idxw.Write([]string{"id", "http", "status", "has_next_data", "name"})
 
-	// Boucle de scraping
-	for i, id := range toFetch {
+	itemsCSV, err := os.Create("items.csv")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "items.csv: %v\n", err)
+		os.Exit(1)
+	}
+	defer itemsCSV.Close()
+	cw := csv.NewWriter(itemsCSV)
+	defer cw.Flush()
+	_ = cw.Write([]string{"id", "name"})
+
+	items := make([]Item, 0, endID-startID+1)
+
+	fmt.Printf("One-shot RAW dump: %d → %d (rate=%dms±%dms)\n", startID, endID, rateMs, jitterMs)
+
+	for id := startID; id <= endID; id++ {
 		url := fmt.Sprintf(baseURL, id)
-		name, err := fetchName(url)
-		if err != nil {
-			known[id] = "" // on marque vide pour éviter des retries infinis
-		} else {
-			known[id] = name
+		httpCode, hasNext, name := fetchAndDump(id, url)
+		_ = idxw.Write([]string{
+			strconv.Itoa(id),
+			url,
+			strconv.Itoa(httpCode),
+			boolToStr(hasNext),
+			name,
+		})
+		if name != "" {
+			_ = cw.Write([]string{strconv.Itoa(id), name})
+			items = append(items, Item{ID: id, Name: name})
 		}
 
-		// log de progression doux
-		if (i+1)%50 == 0 {
-			fmt.Printf("Progress: %d/%d (dernier id=%d, name=%q)\n", i+1, len(toFetch), id, known[id])
+		if (id-startID+1)%50 == 0 {
+			fmt.Printf("Progress: %d/%d (last id=%d, http=%d, hasNext=%v, name=%q)\n",
+				id-startID+1, endID-startID+1, id, httpCode, hasNext, name)
 		}
 
-		// rate limit 1 req/s ± jitter
+		// rate limit
 		sleep := time.Duration(rateMs+rand.Intn(2*jitterMs)-jitterMs) * time.Millisecond
 		time.Sleep(sleep)
 	}
 
-	if err := writeOutputs(known); err != nil {
-		fmt.Fprintf(os.Stderr, "Erreur écriture outputs: %v\n", err)
+	// items.json (id+name) en plus de l’index CSV
+	jf, err := os.Create("items.json")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "items.json: %v\n", err)
+		os.Exit(1)
+	}
+	defer jf.Close()
+	enc := json.NewEncoder(jf)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(items); err != nil {
+		fmt.Fprintf(os.Stderr, "encode items.json: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Println("OK — items.csv et items.json mis à jour.")
+	fmt.Println("OK — RAW dump dans raw/*.json (si Next.js présent), index.csv, items.csv, items.json générés.")
+}
+
+func boolToStr(b bool) string {
+	if b {
+		return "true"
+	}
+	return "false"
+}
+
+func fetchAndDump(id int, url string) (httpCode int, hasNext bool, name string) {
+	resp, err := httpClient.Get(url)
+	if err != nil {
+		return 0, false, ""
+	}
+	defer resp.Body.Close()
+	httpCode = resp.StatusCode
+
+	body, _ := io.ReadAll(resp.Body)
+	if resp.StatusCode != 200 || len(body) == 0 {
+		return httpCode, false, ""
+	}
+
+	m := reNextData.FindSubmatch(body)
+	if len(m) < 2 {
+		return httpCode, false, ""
+	}
+	hasNext = true
+
+	// dump brut
+	out := filepath.Join("raw", fmt.Sprintf("%d.json", id))
+	_ = os.WriteFile(out, m[1], 0o644)
+
+	// essai d’extraire le name pour l’index
+	name = tryReadName(m[1])
+	return httpCode, hasNext, name
+}
+
+func tryReadName(buf []byte) string {
+	// Parse en map générique pour être robuste
+	var root map[string]any
+	if err := json.NewDecoder(bytes.NewReader(buf)).Decode(&root); err != nil {
+		return ""
+	}
+	props := asMap(root["props"])
+	pageProps := asMap(props["pageProps"])
+	item := asMap(pageProps["item"])
+	return s(item, "name")
 }
