@@ -1,0 +1,74 @@
+name: Scrape Overframe (gentle)
+
+on:
+  schedule:
+    # Tous les jours à 03:17 UTC (≈ 05:17 à Paris en hiver / 05:17 ou 04:17 selon DST)
+    - cron: "17 3 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Build
+        working-directory: overframe-scraper
+        run: go build -o scraper
+
+      - name: Run scraper (polite)
+        working-directory: overframe-scraper
+        env:
+          # Ajustables si besoin :
+          BASE_URL: "https://overframe.gg/items/arsenal/%d"
+          START_ID: "1"
+          GROWTH_WINDOW: "300"   # explore seulement +300 IDs au-delà du max connu
+          RATE_MS: "1000"        # 1 requête/sec
+          JITTER_MS: "200"       # petit jitter pour lisser
+        run: ./scraper
+
+      - name: Prepare site data folder
+        run: mkdir -p data/overframe
+
+      - name: Copy outputs to site data
+        run: |
+          cp overframe-scraper/items.csv data/overframe/items.csv
+          cp overframe-scraper/items.json data/overframe/items.json
+
+      - name: Detect changes
+        id: diff
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit & push if changed
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git add overframe-scraper/items.csv overframe-scraper/items.json data/overframe/items.csv data/overframe/items.json
+          git commit -m "chore(scrape): update Overframe items ($(date -u +'%Y-%m-%d'))"
+          git push
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: overframe-items
+          path: |
+            overframe-scraper/items.csv
+            overframe-scraper/items.json
+            data/overframe/items.csv
+            data/overframe/items.json
