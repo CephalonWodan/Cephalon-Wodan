@@ -1,56 +1,80 @@
-name: Scrape Overframe One-Shot RAW (1..7468)
+name: Overframe — Pages & Chunks
 
 on:
+  schedule:
+    - cron: "17 3 * * *"     # quotidien pour pages (si tu veux)
+    - cron: "13 4 * * 1"     # hebdo pour chunks (hash qui changent)
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  scrape_raw:
+  pages_scrape:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-go@v5
         with:
           go-version: "1.22"
 
-      - name: Build
+      - name: Build page scraper
         working-directory: overframe-scraper
         run: go build -o scraper
 
-      - name: Run one-shot RAW dump (this can be long)
+      - name: Run page scraper (polite incremental)
         working-directory: overframe-scraper
         env:
           BASE_URL: "https://overframe.gg/items/arsenal/%d"
           START_ID: "1"
-          END_ID: "7468"    # <= plafond que tu m'as donné
-          RATE_MS: "1000"   # 1 req/s (≈ 2h10 si tout était 200)
+          GROWTH_WINDOW: "300"   # ajuste si besoin
+          RATE_MS: "1000"
           JITTER_MS: "200"
         run: ./scraper
 
-      - name: Prepare site data folder
+      - name: Prepare site data
         run: mkdir -p data/overframe
 
-      - name: Copy indexes to site data (not raw dump)
+      - name: Copy page outputs
         run: |
           cp overframe-scraper/items.json data/overframe/items.json
           cp overframe-scraper/items.csv  data/overframe/items.csv
           cp overframe-scraper/index.csv  data/overframe/index.csv
 
-      - name: Commit & push indexes if changed
+      - name: Commit page outputs if changed
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
             git add overframe-scraper/items.json overframe-scraper/items.csv overframe-scraper/index.csv data/overframe/items.json data/overframe/items.csv data/overframe/index.csv
-            git commit -m "chore(scrape one-shot): update items & index"
+            git commit -m "chore(pages): update scraped items"
             git push
           fi
 
-      - name: Upload RAW dump as artifact (raw/*.json)
-        uses: actions/upload-artifact@v4
+  chunk_extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
         with:
-          name: overframe-raw-json
-          path: overframe-scraper/raw
+          go-version: "1.22"
+
+      - name: Build chunk extractor
+        working-directory: overframe-scraper/chunks
+        run: go build -o overframe-chunks
+
+      - name: Run extractor (auto-discovery; fallback sur URLs fixes)
+        working-directory: overframe-scraper/chunks
+        env:
+          OUT: "../../data/overframe"
+        run: ./overframe-chunks -auto=true -out "$OUT"
+
+      - name: Commit chunk JSON if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add data/overframe/overframe-*.json
+            git commit -m "chore(chunks): refresh Overframe JSON"
+            git push
+          fi
