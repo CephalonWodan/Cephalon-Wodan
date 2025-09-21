@@ -1,0 +1,4644 @@
+{
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "DonationStandingBonus": 100,
+      "LocalizeDescTag": "",
+      "LocalizeTag": "",
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_ENGINE"
+    },
+    "id": 4752,
+    "parent": "/Lotus/Types/Game/MoaPetParts/LotusMoaPetEngine",
+    "parents": [
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetEngine"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase": {
+    "data": {
+      "LocalizeDescTag": "",
+      "LocalizeTag": "",
+      "PartType": "LWPT_MOA_LEG"
+    },
+    "id": 4753,
+    "parent": "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg",
+    "parents": [
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "DonationStandingBonus": 100,
+      "LocalizeDescTag": "",
+      "LocalizeTag": "",
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD"
+    },
+    "id": 4754,
+    "parent": "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload",
+    "parents": [
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MeleeMoaPetEngine": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/EngineMeleeAttachment",
+      "DonationStandingBonus": 300,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/PetMoaMeleeBack.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetEngineMeleeDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetEngineMelee",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.15,
+      "MaxHealthModifier": 0.15,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_ENGINE",
+      "PremiumPrice": 55,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaDBack/PetMoaDBackUntint",
+      "UngildedMaxArmourModifier": 0.075,
+      "UngildedMaxHealthModifier": 0.075
+    },
+    "id": 4756,
+    "name": "Lehan Core",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetEngine"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MeleeMoaPetEngine",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/PetMoaMeleeBack.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/PetMoaMeleeBack.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MeleeMoaPetPayload": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaMeleePayloadAttachment",
+      "DonationStandingBonus": 300,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/PetMoaMeleeChest.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadMeleeDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadMelee",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.1,
+      "MaxHealthModifier": 0.1,
+      "MaxShieldModifier": -0.1,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadPrecept": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaAegronShieldPrecept",
+      "PremiumPrice": 40,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaHChest/PetMoaHChestUntint",
+      "UngildedMaxArmourModifier": 0.05,
+      "UngildedMaxHealthModifier": 0.05,
+      "UngildedMaxShieldModifier": -0.05
+    },
+    "id": 4757,
+    "name": "Tyli Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MeleeMoaPetPayload",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/PetMoaMeleeChest.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/PetMoaMeleeChest.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetEngineArcotek": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/EngineArcotekAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaBackC.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetEngineArcotekDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetEngineArcotek",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.1,
+      "MaxHealthModifier": 0.1,
+      "MaxShieldModifier": 0.1,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_ENGINE",
+      "PremiumPrice": 45,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaCUntint",
+      "UngildedMaxArmourModifier": 0.05,
+      "UngildedMaxHealthModifier": 0.05,
+      "UngildedMaxShieldModifier": 0.05
+    },
+    "id": 4758,
+    "name": "Alcrom Core",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetEngine"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetEngineArcotek",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaBackC.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaBackC.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetEngineKrisys": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/EngineKrisysAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaBackB.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetEngineKrisysDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetEngineKrisys",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.15,
+      "MaxHealthModifier": 0.1,
+      "MaxShieldModifier": 0.05,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_ENGINE",
+      "PremiumPrice": 50,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaBUntint",
+      "UngildedMaxArmourModifier": 0.075,
+      "UngildedMaxHealthModifier": 0.05,
+      "UngildedMaxShieldModifier": 0.025
+    },
+    "id": 4755,
+    "name": "Krisys Core",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetEngine"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetEngineKrisys",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaBackB.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaBackB.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetEngineThricore": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/EngineThricoreAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaBackA.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetEngineThricoreDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetEngineThricore",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.05,
+      "MaxHealthModifier": 0.1,
+      "MaxShieldModifier": 0.15,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_ENGINE",
+      "PremiumPrice": 55,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaAUntint",
+      "UngildedMaxArmourModifier": 0.025,
+      "UngildedMaxHealthModifier": 0.05,
+      "UngildedMaxShieldModifier": 0.075
+    },
+    "id": 4759,
+    "name": "Drex Core",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetEngineBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetEngine"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetEngineThricore",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaBackA.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaBackA.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegA": {
+    "data": {
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/LegAttachmentA",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsA.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetLegADesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetLegA",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_MOA_LEG",
+      "PremiumPrice": 30,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaBodyUntint"
+    },
+    "id": 4760,
+    "name": "Drimper Bracket",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegA",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaLegsA.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsA.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegB": {
+    "data": {
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/LegAttachmentB",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsB.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetLegBDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetLegB",
+      "MarketMode": "MM_HIDDEN",
+      "OverridePolarity": "AP_DEFENSE",
+      "PartType": "LWPT_MOA_LEG",
+      "PremiumPrice": 30,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaALegs/PetMoaALegsUntint"
+    },
+    "id": 4761,
+    "name": "Tian Bracket",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegB",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaLegsB.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsB.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegC": {
+    "data": {
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/LegAttachmentC",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsC.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetLegCDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetLegC",
+      "MarketMode": "MM_HIDDEN",
+      "OverridePolarity": "AP_ATTACK",
+      "PartType": "LWPT_MOA_LEG",
+      "PremiumPrice": 30,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaBLegs/PetMoaBLegsUntint"
+    },
+    "id": 4762,
+    "name": "Jonsin Bracket",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegC",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaLegsC.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsC.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegD": {
+    "data": {
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/LegAttachmentD",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsD.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetLegDDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetLegD",
+      "MarketMode": "MM_HIDDEN",
+      "OverridePolarity": "AP_TACTIC",
+      "PartType": "LWPT_MOA_LEG",
+      "PremiumPrice": 30,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaCLegs/PetMoaLegsCUntint"
+    },
+    "id": 4763,
+    "name": "Gauth Bracket",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegD",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaLegsD.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaLegsD.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegMelee": {
+    "data": {
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/LegAttachmentMelee",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/PetMoaMeleeLegs.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetLegMeleeDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetLegMelee",
+      "MarketMode": "MM_HIDDEN",
+      "OverridePolarity": "AP_TACTIC",
+      "PartType": "LWPT_MOA_LEG",
+      "PremiumPrice": 30,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaDLegs/PetMoaDLegsUntint"
+    },
+    "id": 4764,
+    "name": "Hona Bracket",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetLegBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetLeg"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetLegMelee",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/PetMoaMeleeLegs.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/PetMoaMeleeLegs.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadAegron": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/AegronAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestB.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadAegronDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadAegron",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.1,
+      "MaxHealthModifier": -0.05,
+      "MaxShieldModifier": 0.05,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadPrecept": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaAegronShieldPrecept",
+      "PremiumPrice": 40,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaBUntint",
+      "UngildedMaxArmourModifier": 0.05,
+      "UngildedMaxHealthModifier": -0.025,
+      "UngildedMaxShieldModifier": 0.025
+    },
+    "id": 4765,
+    "name": "Aegron Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadAegron",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestB.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestB.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadCryoxion": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/CryoxionAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestA.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadCryoxionDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadCryoxion",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.1,
+      "MaxHealthModifier": 0.05,
+      "MaxShieldModifier": -0.05,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadWeapon": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/CryoxionWeapon",
+      "PremiumPrice": 50,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaAUntint",
+      "UngildedMaxArmourModifier": 0.05,
+      "UngildedMaxHealthModifier": 0.025,
+      "UngildedMaxShieldModifier": -0.025
+    },
+    "id": 4766,
+    "name": "Trux Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadCryoxion",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestA.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestA.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadDarta": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/DartraAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestC.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadDartraDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadDartra",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": -0.05,
+      "MaxHealthModifier": 0.05,
+      "MaxShieldModifier": 0.1,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadPrecept": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaDartaGrabPrecept",
+      "PremiumPrice": 60,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaCUntint",
+      "UngildedMaxArmourModifier": -0.025,
+      "UngildedMaxHealthModifier": 0.025,
+      "UngildedMaxShieldModifier": 0.05
+    },
+    "id": 4767,
+    "name": "Harpen Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadDarta",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestC.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestC.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadHextra": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/HextraAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestD.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadHextraDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadHextra",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": -0.05,
+      "MaxHealthModifier": 0.1,
+      "MaxShieldModifier": 0.05,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadWeapon": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/HextraWeapon",
+      "PremiumPrice": 55,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaDChest/PetMoaChestDUntint",
+      "UngildedMaxArmourModifier": -0.025,
+      "UngildedMaxHealthModifier": 0.05,
+      "UngildedMaxShieldModifier": 0.025
+    },
+    "id": 4768,
+    "name": "Hextra Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadHextra",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestD.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestD.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadMunitron": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MunitronAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestE.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadMunitronDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadMunitron",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.05,
+      "MaxHealthModifier": 0.1,
+      "MaxShieldModifier": -0.05,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadPrecept": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaMunitronPrecept",
+      "PremiumPrice": 50,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaEChest/PetMoaChestEUntint",
+      "UngildedMaxArmourModifier": 0.025,
+      "UngildedMaxHealthModifier": 0.05,
+      "UngildedMaxShieldModifier": -0.025
+    },
+    "id": 4769,
+    "name": "Munit Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadMunitron",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestE.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestE.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadTazron": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/TazronAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestF.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadTazronDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadTazron",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": 0.05,
+      "MaxHealthModifier": -0.05,
+      "MaxShieldModifier": 0.1,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadWeapon": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/TazronWeapon",
+      "PremiumPrice": 60,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaFChest/PetMoaChestFUntint",
+      "UngildedMaxArmourModifier": 0.025,
+      "UngildedMaxHealthModifier": -0.025,
+      "UngildedMaxShieldModifier": 0.05
+    },
+    "id": 4770,
+    "name": "Phazor Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadTazron",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestF.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestF.png"
+  },
+  "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadThermocor": {
+    "data": {
+      "AttachBone": "GAME_C1_SPINE1",
+      "Attachment": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/ThermocorAttachment",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestG.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadThermocorDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/MoaPetPayloadThermocor",
+      "MarketMode": "MM_HIDDEN",
+      "MaxArmourRatingModifier": -0.05,
+      "MaxHealthModifier": 0.2,
+      "MaxShieldModifier": -0.05,
+      "ModifyBase": 1,
+      "PartType": "LWPT_MOA_PAYLOAD",
+      "PayloadWeapon": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/ThermocorMoaWeapon",
+      "PremiumPrice": 45,
+      "SellingPrice": 2000,
+      "UngildedMaterial": "/Lotus/Characters/Pets/PetMoa/PetMoaGChest/PetMoaChestGUntint",
+      "UngildedMaxArmourModifier": -0.025,
+      "UngildedMaxHealthModifier": 0.1,
+      "UngildedMaxShieldModifier": -0.025
+    },
+    "id": 4771,
+    "name": "Atheca Gyro",
+    "parent": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+    "parents": [
+      "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetComponents/MoaPetPayloadBase",
+      "/Lotus/Types/Game/MoaPetParts/LotusMoaPetPayload"
+    ],
+    "path": "/Lotus/Types/Friendly/Pets/MoaPets/MoaPetParts/MoaPetPayloadThermocor",
+    "texture": "/Lotus/Interface/Icons/Store/Pets/MoaChestG.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Companions/Moas/MoaChestG.png"
+  },
+  "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/InfModularClipBigCritStatPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/InfModularClipBigAttachment",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/ClipAttachments/InfClipAttachment/InfClipAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/ClipAttachments/InfClipAttachment/Ungilded/InfClipAttachmentUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipBigCritStat.png",
+      "LocalizeDescTag": "/Lotus/Language/Weapons/InfModularClipBigCritStatDesc",
+      "LocalizeTag": "/Lotus/Language/Weapons/InfModularClipBigCritStat",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 23,
+          "ProcChance": 0.24,
+          "ReloadTime": 2.9
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.27,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 35,
+          "ProcChance": 0.27,
+          "ReloadTime": 2.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.22,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 111,
+          "ProcChance": 0.22,
+          "ReloadTime": 2.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.28,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 85,
+          "ProcChance": 0.28,
+          "ReloadTime": 2.9
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 45,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/Ungilded/InfClipBigUngildedMat"
+    },
+    "id": 5319,
+    "name": "Macro Thymoid",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/InfModularClipBigCritStatPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/InfModular/InfClipBigCritStat.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipBigCritStat.png"
+  },
+  "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/InfModularClipBigPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/InfModularClipBigAttachment",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipBig.png",
+      "LocalizeDescTag": "/Lotus/Language/Weapons/InfModularClipBigDesc",
+      "LocalizeTag": "/Lotus/Language/Weapons/InfModularClipBig",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.21,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 39,
+          "ProcChance": 0.21,
+          "ReloadTime": 3.1
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 49,
+          "ProcChance": 0.24,
+          "ReloadTime": 3.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.19,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 153,
+          "ProcChance": 0.19,
+          "ReloadTime": 3.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.25,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 113,
+          "ProcChance": 0.25,
+          "ReloadTime": 3.1
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 45,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/Ungilded/InfClipBigUngildedMat"
+    },
+    "id": 5320,
+    "name": "Macro Arcroid",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfClipBig/InfModularClipBigPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/InfModular/InfClipBig.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipBig.png"
+  },
+  "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/InfModularClipSmallCritStatPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/InfModularClipSmallAttachment",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/ClipAttachments/InfClipAttachment/InfClipAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/ClipAttachments/InfClipAttachment/Ungilded/InfClipAttachmentUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipSmallCritStat.png",
+      "LocalizeDescTag": "/Lotus/Language/Weapons/InfModularClipSmallCritStatDesc",
+      "LocalizeTag": "/Lotus/Language/Weapons/InfModularClipSmallCritStat",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 9,
+          "ProcChance": 0.24,
+          "ReloadTime": 1.5
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.27,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 19,
+          "ProcChance": 0.27,
+          "ReloadTime": 1.5
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.22,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 57,
+          "ProcChance": 0.22,
+          "ReloadTime": 1.5
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.28,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 37,
+          "ProcChance": 0.28,
+          "ReloadTime": 1.5
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 30,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/Ungilded/InfClipSmallUngildedMat"
+    },
+    "id": 5321,
+    "name": "Arcroid",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/InfModularClipSmallCritStatPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/InfModular/InfClipSmallCritStat.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipSmallCritStat.png"
+  },
+  "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/InfModularClipSmallPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/InfModularClipSmallAttachment",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipSmall.png",
+      "LocalizeDescTag": "/Lotus/Language/Weapons/InfModularClipSmallDesc",
+      "LocalizeTag": "/Lotus/Language/Weapons/InfModularClipSmall",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.21,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 17,
+          "ProcChance": 0.21,
+          "ReloadTime": 2.3
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 31,
+          "ProcChance": 0.24,
+          "ReloadTime": 2.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.19,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 75,
+          "ProcChance": 0.19,
+          "ReloadTime": 2.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.25,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 49,
+          "ProcChance": 0.25,
+          "ReloadTime": 2.3
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 30,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/Ungilded/InfClipSmallUngildedMat"
+    },
+    "id": 5322,
+    "name": "Thymoid",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Clips/InfSmallClip/InfModularClipSmallPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/InfModular/InfClipSmall.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfClipSmall.png"
+  },
+  "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfPrimaryHandle/InfModularPrimaryHandlePart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfPrimaryHandle/InfModularPrimaryHandleAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfPrimaryHandle.png",
+      "LocalizeDescTag": "/Lotus/Language/Weapons/InfModularPrimaryHandleDesc",
+      "LocalizeTag": "/Lotus/Language/Weapons/InfModularPrimaryHandle",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Shotgun/LotusStandardShotgun",
+          "Damage": -18,
+          "FireRate": 310,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": -15,
+          "FireRate": 207,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": -1.5,
+          "FireRate": 930,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "",
+          "Damage": -3,
+          "FireRate": 480,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 28
+        }
+      ],
+      "PartType": "LWPT_GUN_PRIMARY_HANDLE",
+      "PremiumPrice": 20,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleAFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleASlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfPrimaryHandle/Ungilded/InfHandlePrimaryUngildedMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.2
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CHARGE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.59
+        }
+      ],
+      "UseGripOffset": 1
+    },
+    "id": 5323,
+    "name": "Palmaris",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+      "/Lotus/Types/Weapon/LotusGunPrimaryHandle"
+    ],
+    "path": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfPrimaryHandle/InfModularPrimaryHandlePart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/InfModular/InfPrimaryHandle.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfPrimaryHandle.png"
+  },
+  "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfSecondaryHandle/InfModularSecondaryHandlePart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfSecondaryHandle/InfModularSecondaryHandleAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DSReloadFastAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/Reload_anim.fbx",
+      "DSReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadLong_anim.fbx",
+      "DefaultOverride": {
+        "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun"
+      },
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfSecondaryHandle.png",
+      "LocalizeDescTag": "/Lotus/Language/Weapons/InfModularSecondaryHandleDesc",
+      "LocalizeTag": "/Lotus/Language/Weapons/InfModularSecondaryHandle",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 34,
+          "FireRate": 110,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 8,
+          "FireRate": 170,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 6,
+          "FireRate": 400,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 0,
+          "FireRate": 720,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 30
+        }
+      ],
+      "PartType": "LWPT_GUN_SECONDARY_HANDLE",
+      "PremiumPrice": 60,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleBFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleBSlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfSecondaryHandle/Ungilded/InfHandleSecondaryUngildedMat"
+    },
+    "id": 5324,
+    "name": "Ulnaris",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+      "/Lotus/Types/Weapon/LotusGunSecondaryHandle"
+    ],
+    "path": "/Lotus/Weapons/Infested/Pistols/InfKitGun/Handles/InfSecondaryHandle/InfModularSecondaryHandlePart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/InfModular/InfSecondaryHandle.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/InfModular/InfSecondaryHandle.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        }
+      ],
+      "DonationStandingBonus": 500,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceDamageDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceDamage",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 5,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        }
+      ]
+    },
+    "id": 2577,
+    "name": "Ruhang",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageICritI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        }
+      ],
+      "DonationStandingBonus": 750,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageICritI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceCritOneDamageOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceCritOneDamageOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2578,
+    "name": "Vargeet Ruhang",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageICritI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageICritI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageICritI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageICritII": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1000,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageICritII.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceCritTwoDamageOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceCritTwoDamageOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.08
+        }
+      ]
+    },
+    "id": 2579,
+    "name": "Vargeet II Ruhang",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageICritII",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageICritII.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageICritII.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageII": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        }
+      ],
+      "DonationStandingBonus": 500,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageII.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceDamageTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceDamageTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 28
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -8
+        }
+      ]
+    },
+    "id": 2580,
+    "name": "Ruhang II",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageII",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageII.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageII.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIICritI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1250,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIICritI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceCritOneDamageTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceCritOneDamageTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 15,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 28
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -8
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2581,
+    "name": "Vargeet Ruhang II",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIICritI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageIICritI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIICritI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIIStatusI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1250,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIIStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceStatusOneDamageTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceStatusOneDamageTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 15,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 28
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -8
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2582,
+    "name": "Ekwana Ruhang II",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIIStatusI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageIIStatusI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIIStatusI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIStatusI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        }
+      ],
+      "DonationStandingBonus": 750,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceStatusOneDamageOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceStatusOneDamageOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2583,
+    "name": "Ekwana Ruhang",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIStatusI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageIStatusI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIStatusI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIStatusII": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1000,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIStatusII.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceStatusTwoDamageOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceStatusTwoDamageOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.08
+        }
+      ]
+    },
+    "id": 2584,
+    "name": "Ekwana II Ruhang",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceDamageIStatusII",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceDamageIStatusII.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceDamageIStatusII.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        }
+      ],
+      "DonationStandingBonus": 500,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeed",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 5,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 5
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        }
+      ]
+    },
+    "id": 2585,
+    "name": "Jai",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedICritI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        }
+      ],
+      "DonationStandingBonus": 750,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedICritI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneCritOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneCritOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 5
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2586,
+    "name": "Vargeet Jai",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedICritI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedICritI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedICritI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedICritII": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1000,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedICritII.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneCritTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneCritTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 5
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.08
+        }
+      ]
+    },
+    "id": 2587,
+    "name": "Vargeet II Jai",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedICritII",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedICritII.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedICritII.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedII": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        }
+      ],
+      "DonationStandingBonus": 500,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedII.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 10
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -8
+        }
+      ]
+    },
+    "id": 2588,
+    "name": "Jai II",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedII",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedII.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedII.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIICritI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceCritAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1250,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIICritI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedTwoCritOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedTwoCritOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 15,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 10
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -8
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2589,
+    "name": "Vargeet Jai II",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIICritI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedIICritI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIICritI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIIStatusI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1250,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIIStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedTwoStatusOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedTwoStatusOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 15,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 10
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -8
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2590,
+    "name": "Ekwana Jai II",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIIStatusI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedIIStatusI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIIStatusI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIStatusI": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        }
+      ],
+      "DonationStandingBonus": 750,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneStatusOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneStatusOne",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 5
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.07
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.04
+        }
+      ]
+    },
+    "id": 2591,
+    "name": "Ekwana Jai",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIStatusI",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedIStatusI.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIStatusI.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIStatusII": {
+    "data": {
+      "AdditionalAttachments": [
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT2",
+          "Target": "LWPT_BLADE",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedAttachment"
+        },
+        {
+          "Bone": "GAME_WEAPON_WEIGHT1",
+          "Target": "LWPT_HILT",
+          "Type": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceStatusAttachment"
+        }
+      ],
+      "DonationStandingBonus": 1000,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIStatusII.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneStatusTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeBalanceSpeedOneStatusTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PartType": "LWPT_HILT_WEIGHT",
+      "PremiumPrice": 10,
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/TiredVersion/BalancesTiredVersionMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_FIRE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 5
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_PROC_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.14
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CRIT_CHANCE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.08
+        }
+      ]
+    },
+    "id": 2592,
+    "name": "Ekwana II Jai",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponWeight",
+      "/Lotus/Types/Weapon/LotusWeaponWeight"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Balance/BalanceSpeedIStatusII",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/BalanceSpeedIStatusII.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/BalanceSpeedIStatusII.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleFive": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleFiveAttachment",
+      "BaseFireRate": 55,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 350,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "GripType": "MELEE_TWO_HAND",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleFive.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleFiveDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleFive",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 125,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.3,
+          -0.015
+        ],
+        "RotOffset": [
+          0.5,
+          -0.5,
+          -0.5,
+          0.5
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/TiredVersion/HandleLong02TiredMat",
+      "Upgrades": [],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2593,
+    "name": "Jayap",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleFive",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleFive.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleFive.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleFour": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleFourAttachment",
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 250,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "GripType": "MELEE_TWO_HAND",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleFour.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleFourDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleFour",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 125,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.3,
+          -0.015
+        ],
+        "RotOffset": [
+          0.5,
+          -0.5,
+          -0.5,
+          0.5
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/TiredVersion/HandleLong01TiredMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2594,
+    "name": "Seekalla",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleFour",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleFour.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleFour.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleOne": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleOneAttachment",
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleOne.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleOne",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 75,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.02,
+          0.085
+        ],
+        "RotOffset": [
+          -0.37993,
+          0.59637,
+          -0.37993,
+          0.59637
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/TiredVersion/HandleSmall01TiredMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -4
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2595,
+    "name": "Peye",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleOne",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleOne.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleOne.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleSix": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleSixAttachment",
+      "BaseFireRate": 51,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 500,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "GripType": "MELEE_TWO_HAND",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleSix.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleSixDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleSix",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 125,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.3,
+          -0.037
+        ],
+        "RotOffset": [
+          0.5,
+          -0.5,
+          -0.5,
+          0.5
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/TiredVersion/HandleLong03TiredMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2596,
+    "name": "Kroostra",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleSix",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleSix.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleSix.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleThree": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleThreeAttachment",
+      "BaseFireRate": 51,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 400,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleThree.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleThreeDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleThree",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 75,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.185,
+          0
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/TiredVersion/HandleSmall03TiredMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 14
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2597,
+    "name": "Kwath",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleThree",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleThree.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleThree.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleTwo": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleTwoAttachment",
+      "BaseFireRate": 55,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 300,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleTwo.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleTwo",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 75,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.07,
+          -0.01
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/TiredVersion/HandleSmall02TiredMat",
+      "Upgrades": [],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2598,
+    "name": "Laka",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee01/Handle/HandleTwo",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleTwo.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleTwo.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/HandleNine": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/HandleNineAttachment",
+      "BaseFireRate": 47,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleNine.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleNineDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleNine",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 75,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.03,
+          -0.005
+        ],
+        "RotOffset": [
+          0,
+          0.70711,
+          0,
+          0.70711
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/TiredVersion/HandleSmall01TiredMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 28
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2599,
+    "name": "Korb",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/HandleNine",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleNine.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleNine.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/HandleTen": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/HandleTenAttachment",
+      "BaseFireRate": 47,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 250,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "GripType": "MELEE_TWO_HAND",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleTen.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeHandleTenDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeHandleTen",
+      "MarketMode": "MM_HIDDEN",
+      "PremiumPrice": 125,
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.3,
+          -0.015
+        ],
+        "RotOffset": [
+          0.5,
+          -0.5,
+          -0.5,
+          0.5
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/TiredVersion/HandleLong01TiredMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 28
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2600,
+    "name": "Shtung",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMelee02/Handle/HandleTen",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeHandleTen.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/HandleTen.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/InfestedHandleOne": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/InfestedHandleOneAttachment",
+      "BaseFireRate": 57,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/InfestedHandleOne.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeInfestedHandleOneDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeInfestedHandleOne",
+      "MarketMode": "MM_HIDDEN",
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.07,
+          0.02
+        ],
+        "RotOffset": [
+          -0.092296,
+          0.70106,
+          -0.092296,
+          0.70106
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/TiredVersion/HandleShortInfestedTired",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -2
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2601,
+    "name": "Plague Akwin",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/InfestedHandleOne",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeInfestedHandleOne.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/InfestedHandleOne.png"
+  },
+  "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/InfestedHandleTwo": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/InfestedHandleTwoAttachment",
+      "BaseFireRate": 53,
+      "BladeAttachBone": "GAME_WEAPON_BLADE1",
+      "DonationStandingBonus": 200,
+      "ExcludeFromCodex": 0,
+      "GripType": "MELEE_TWO_HAND",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/InfestedHandleTwo.png",
+      "LocalizeDescTag": "/Lotus/Language/OstronCrafting/MeleeInfestedHandleTwoDesc",
+      "LocalizeTag": "/Lotus/Language/OstronCrafting/MeleeInfestedHandleTwo",
+      "MarketMode": "MM_HIDDEN",
+      "SugatraOffset": {
+        "PosOffset": [
+          0,
+          -0.35,
+          0.01
+        ],
+        "RotOffset": [
+          0,
+          0.70711,
+          -0.70711,
+          0
+        ],
+        "UseSecondaryOffset": 0
+      },
+      "UngildedMaterial": "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/TiredVersion/HandleLongInfestedTired",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_MELEE_DAMAGE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 7
+        }
+      ],
+      "WeightAttachBone": "GAME_WEAPON_WEIGHT1"
+    },
+    "id": 2602,
+    "name": "Plague Bokwin",
+    "parent": "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+    "parents": [
+      "/Lotus/Weapons/Ostron/Melee/LotusWeaponHilt",
+      "/Lotus/Types/Weapon/LotusWeaponHilt"
+    ],
+    "path": "/Lotus/Weapons/Ostron/Melee/ModularMeleeInfested/Handles/InfestedHandleTwo",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/ModularMeleeInfestedHandleTwo.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/MeleeWeapons/Zaws/InfestedHandleTwo.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleAPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleAAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleAPart.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleADesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleA",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Shotgun/LotusStandardShotgun",
+          "Damage": -24,
+          "FireRate": 340,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": -20,
+          "FireRate": 226,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": -2,
+          "FireRate": 1020,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "",
+          "Damage": -4,
+          "FireRate": 480,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 30
+        }
+      ],
+      "PartType": "LWPT_GUN_PRIMARY_HANDLE",
+      "PremiumPrice": 20,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleAFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleASlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/Ungilded/SUModularPrimaryHandleAUn",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.2
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CHARGE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.59
+        }
+      ],
+      "UseGripOffset": 1
+    },
+    "id": 4299,
+    "name": "Brash",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+      "/Lotus/Types/Weapon/LotusGunPrimaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleAPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularPrimary/SUModularPrimaryHandleAPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleAPart.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleBPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleBAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleBPart.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleBDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleB",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Shotgun/LotusStandardShotgun",
+          "Damage": -12,
+          "FireRate": 280,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": -10,
+          "FireRate": 188,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": -1,
+          "FireRate": 840,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "",
+          "Damage": -2,
+          "FireRate": 480,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 26
+        }
+      ],
+      "PartType": "LWPT_GUN_PRIMARY_HANDLE",
+      "PremiumPrice": 20,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleBDFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleBDSlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/Ungilded/SUModularPrimaryHandleBUn",
+      "UseGripOffset": 1
+    },
+    "id": 4300,
+    "name": "Shrewd",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+      "/Lotus/Types/Weapon/LotusGunPrimaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleBPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularPrimary/SUModularPrimaryHandleBPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleBPart.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleCPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleCAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleCPart.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleCDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleC",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Shotgun/LotusStandardShotgun",
+          "Damage": 41,
+          "FireRate": 200,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": 29,
+          "FireRate": 139,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": 9,
+          "FireRate": 600,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "",
+          "Damage": 2,
+          "FireRate": 480,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 20
+        }
+      ],
+      "PartType": "LWPT_GUN_PRIMARY_HANDLE",
+      "PremiumPrice": 20,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleCFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleCSlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/Ungilded/SUModularPrimaryHandleCUn",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.1
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CHARGE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.27
+        }
+      ],
+      "UseGripOffset": 1
+    },
+    "id": 4301,
+    "name": "Steadyslam",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+      "/Lotus/Types/Weapon/LotusGunPrimaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleCPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularPrimary/SUModularPrimaryHandleCPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleCPart.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleDPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleDAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleDPart.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleDDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularPrimaryHandleD",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Shotgun/LotusStandardShotgun",
+          "Damage": 82,
+          "FireRate": 180,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": 58,
+          "FireRate": 128,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Rifle/LotusAssaultStandardRifle",
+          "Damage": 18,
+          "FireRate": 540,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "",
+          "Damage": 4,
+          "FireRate": 480,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 16
+        }
+      ],
+      "PartType": "LWPT_GUN_PRIMARY_HANDLE",
+      "PremiumPrice": 20,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleBDFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Rifle/PrimaryKitguns/ReloadSUModularPrimaryHandleBDSlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/Ungilded/SUModularPrimaryHandleDUn",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.2
+        },
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_CHARGE_RATE",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.43
+        }
+      ],
+      "UseGripOffset": 1
+    },
+    "id": 4302,
+    "name": "Tremor",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunPrimaryHandle",
+      "/Lotus/Types/Weapon/LotusGunPrimaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Primary/SUModularPrimarySet1/Handles/SUModularPrimaryHandleDPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularPrimary/SUModularPrimaryHandleDPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/ModularWeapons/Primary/SUModularPrimaryHandleDPart.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCapIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipA.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCapIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCapIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.21,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 11,
+          "ProcChance": 0.21,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 23,
+          "ProcChance": 0.24,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.19,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 67,
+          "ProcChance": 0.19,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.25,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 43,
+          "ProcChance": 0.25,
+          "ReloadTime": 1.7
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 30,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipBUngildedMat"
+    },
+    "id": 2603,
+    "name": "Deepbreath",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCapIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipAPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipA.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCapIIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipB.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCapIIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCapIIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.21,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 13,
+          "ProcChance": 0.21,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 29,
+          "ProcChance": 0.24,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.19,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 83,
+          "ProcChance": 0.19,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.25,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 51,
+          "ProcChance": 0.25,
+          "ReloadTime": 2.1
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 45,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipAUngildedMat"
+    },
+    "id": 2604,
+    "name": "Bellows",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCapIIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipBPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipB.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritICapIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/CritIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipACritI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCritICapIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCritICapIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.28,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 11,
+          "ProcChance": 0.17,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.31,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 23,
+          "ProcChance": 0.2,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.26,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 67,
+          "ProcChance": 0.15,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.32,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 43,
+          "ProcChance": 0.21,
+          "ReloadTime": 1.7
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 60,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipBUngildedMat"
+    },
+    "id": 2605,
+    "name": "Bashrack",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritICapIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipACritIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipACritI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritICapIIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/CritIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipBCritI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCritICapIIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCritICapIIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.28,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 13,
+          "ProcChance": 0.17,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.31,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 29,
+          "ProcChance": 0.2,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.26,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 83,
+          "ProcChance": 0.15,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.32,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 51,
+          "ProcChance": 0.21,
+          "ReloadTime": 2.1
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 75,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipAUngildedMat"
+    },
+    "id": 2606,
+    "name": "Stitch",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritICapIIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipBCritIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipBCritI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIICapIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/CritIIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipACritII.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCritIICapIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCritIICapIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.35,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 11,
+          "ProcChance": 0.13,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.38,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 23,
+          "ProcChance": 0.16,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.33,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 67,
+          "ProcChance": 0.11,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.39,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 43,
+          "ProcChance": 0.17,
+          "ReloadTime": 1.7
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 90,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipBUngildedMat"
+    },
+    "id": 2607,
+    "name": "Splat",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIICapIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipACritIIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipACritII.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIIReloadIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/CritIIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCCritII.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCritIIReloadIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCritIIReloadIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.35,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 7,
+          "ProcChance": 0.13,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.38,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 15,
+          "ProcChance": 0.16,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.33,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 45,
+          "ProcChance": 0.11,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.39,
+          "CritMultiplier": 2.3,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 31,
+          "ProcChance": 0.17,
+          "ReloadTime": 1.3
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 90,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipCUngildedMat"
+    },
+    "id": 2608,
+    "name": "Killstream",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIIReloadIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipCCritIIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCCritII.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIReloadIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/CritIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCCritI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCritIReloadIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCritIReloadIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.28,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 7,
+          "ProcChance": 0.17,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.31,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 15,
+          "ProcChance": 0.2,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.26,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 45,
+          "ProcChance": 0.15,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.32,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 31,
+          "ProcChance": 0.21,
+          "ReloadTime": 1.3
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 60,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipCUngildedMat"
+    },
+    "id": 2609,
+    "name": "Slapneedle",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIReloadIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipCCritIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCCritI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIReloadIIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/CritIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipDCritI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularCritIReloadIIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularCritIReloadIIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.28,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 5,
+          "ProcChance": 0.17,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.31,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 9,
+          "ProcChance": 0.2,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.26,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 29,
+          "ProcChance": 0.15,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.32,
+          "CritMultiplier": 2.1,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 23,
+          "ProcChance": 0.21,
+          "ReloadTime": 0.9
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 75,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipDUngildedMat"
+    },
+    "id": 2610,
+    "name": "Zipneedle",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularCritIReloadIIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipDCritIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipDCritI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularReloadIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipC.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularReloadIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularReloadIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.21,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 7,
+          "ProcChance": 0.21,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 15,
+          "ProcChance": 0.24,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.19,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 45,
+          "ProcChance": 0.19,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.25,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 31,
+          "ProcChance": 0.25,
+          "ReloadTime": 1.3
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 30,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipCUngildedMat"
+    },
+    "id": 2611,
+    "name": "Slap",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularReloadIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipCPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipC.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularReloadIIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipD.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularReloadIIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularReloadIIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.21,
+          "CritMultiplier": 2,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 5,
+          "ProcChance": 0.21,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.24,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 9,
+          "ProcChance": 0.24,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.19,
+          "CritMultiplier": 2,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 29,
+          "ProcChance": 0.19,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.25,
+          "CritMultiplier": 2,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 23,
+          "ProcChance": 0.25,
+          "ReloadTime": 0.9
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 45,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipDUngildedMat"
+    },
+    "id": 2612,
+    "name": "Zip",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularReloadIIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipDPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipD.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatICapIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/StatIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipAStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularStatICapIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularStatICapIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.17,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 11,
+          "ProcChance": 0.28,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.2,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 23,
+          "ProcChance": 0.31,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.15,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 67,
+          "ProcChance": 0.26,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.21,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 43,
+          "ProcChance": 0.32,
+          "ReloadTime": 1.7
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 60,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipBUngildedMat"
+    },
+    "id": 2613,
+    "name": "Sparkfire",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatICapIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipAStatusIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipAStatusI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatICapIIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/StatIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipBStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularStatICapIIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularStatICapIIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.17,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 13,
+          "ProcChance": 0.28,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.2,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 29,
+          "ProcChance": 0.31,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.15,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 83,
+          "ProcChance": 0.26,
+          "ReloadTime": 2.1
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.21,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 51,
+          "ProcChance": 0.32,
+          "ReloadTime": 2.1
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 75,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipAUngildedMat"
+    },
+    "id": 2614,
+    "name": "Thunderdrum",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatICapIIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipBStatusIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipBStatusI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIICapIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/CapIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/StatIIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipAStatusII.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularStatIICapIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularStatIICapIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.13,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 11,
+          "ProcChance": 0.35,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.16,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 23,
+          "ProcChance": 0.38,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.11,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 67,
+          "ProcChance": 0.33,
+          "ReloadTime": 1.7
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.17,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 43,
+          "ProcChance": 0.39,
+          "ReloadTime": 1.7
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 90,
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipBUngildedMat"
+    },
+    "id": 2615,
+    "name": "Ramflare",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIICapIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipAStatusIIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipAStatusII.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIIReloadIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/StatIIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCStatusII.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularStatIIReloadIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularStatIIReloadIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.13,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 7,
+          "ProcChance": 0.35,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.16,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 15,
+          "ProcChance": 0.38,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.11,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 45,
+          "ProcChance": 0.33,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.17,
+          "CritMultiplier": 1.7,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 31,
+          "ProcChance": 0.39,
+          "ReloadTime": 1.3
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 90,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipCUngildedMat"
+    },
+    "id": 2616,
+    "name": "Flutterfire",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIIReloadIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipCStatusIIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCStatusII.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIReloadIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/StatIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularStatIReloadIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularStatIReloadIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.17,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 7,
+          "ProcChance": 0.28,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.2,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 15,
+          "ProcChance": 0.31,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.15,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 45,
+          "ProcChance": 0.26,
+          "ReloadTime": 1.3
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.21,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 31,
+          "ProcChance": 0.32,
+          "ReloadTime": 1.3
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 60,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipCUngildedMat"
+    },
+    "id": 2617,
+    "name": "Swiftfire",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIReloadIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipCStatusIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipCStatusI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIReloadIIClipPart": {
+    "data": {
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ReloadIIAttachment",
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "ExtraAttachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/StatIAttachment",
+      "ExtraAttachmentUngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/ClipAttachment/Ungilded/SUAttachClipUngildedMat",
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipDStatusI.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularStatIReloadIIClipPartDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularStatIReloadIIClipPart",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.17,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_SHOTGUN",
+          "MagazineSize": 5,
+          "ProcChance": 0.28,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CritChance": 0.2,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 9,
+          "ProcChance": 0.31,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.15,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_RIFLE",
+          "MagazineSize": 29,
+          "ProcChance": 0.26,
+          "ReloadTime": 0.9
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CritChance": 0.21,
+          "CritMultiplier": 1.9,
+          "GunType": "GT_BEAM",
+          "MagazineSize": 23,
+          "ProcChance": 0.32,
+          "ReloadTime": 0.9
+        }
+      ],
+      "PartType": "LWPT_GUN_CLIP",
+      "PistolAmmoType": "/Lotus/Weapons/Ammo/PistolAmmoEx",
+      "PremiumPrice": 75,
+      "ReloadAnimSpeed": "RS_FAST",
+      "RifleAmmoType": "/Lotus/Weapons/Ammo/RifleAmmoEx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/Ungilded/SUModularSecondaryClipDUngildedMat"
+    },
+    "id": 2618,
+    "name": "Zipfire",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunClip",
+      "/Lotus/Types/Weapon/LotusGunClip"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Clip/SUModularStatIReloadIIClipPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryClipDStatusIPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryClipDStatusI.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleAPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleAAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DSReloadFastAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/Reload_anim.fbx",
+      "DSReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadLong_anim.fbx",
+      "DefaultOverride": {
+        "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun"
+      },
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleA.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleADesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleA",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -48,
+          "FireRate": 150,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -12,
+          "FireRate": 220,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -6,
+          "FireRate": 530,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -1,
+          "FireRate": 720,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 37
+        }
+      ],
+      "PartType": "LWPT_GUN_SECONDARY_HANDLE",
+      "PremiumPrice": 60,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleAFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleASlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/Ungilded/SUModularSecondaryHandleAUngildedMat"
+    },
+    "id": 2619,
+    "name": "Ramble",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+      "/Lotus/Types/Weapon/LotusGunSecondaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleAPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryHandleAPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleA.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleBPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleBAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DSReloadFastAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadBottomMag_anim.fbx",
+      "DSReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadBreakBarrel_anim.fbx",
+      "DefaultOverride": {
+        "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun"
+      },
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleB.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleBDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleB",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 102,
+          "FireRate": 90,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 24,
+          "FireRate": 150,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 19,
+          "FireRate": 310,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 1,
+          "FireRate": 720,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 24
+        }
+      ],
+      "PartType": "LWPT_GUN_SECONDARY_HANDLE",
+      "PremiumPrice": 60,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleBFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleBSlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/Ungilded/SUModularSecondaryHandleBUngildedMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 0.5
+        }
+      ]
+    },
+    "id": 2620,
+    "name": "Lovetap",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+      "/Lotus/Types/Weapon/LotusGunSecondaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleBPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryHandleBPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleB.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleCPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleCAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DSReloadFastAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadBottomMag_anim.fbx",
+      "DSReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadBreakBarrel_anim.fbx",
+      "DefaultOverride": {
+        "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun"
+      },
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleC.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleCDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleC",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 204,
+          "FireRate": 70,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 48,
+          "FireRate": 130,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 38,
+          "FireRate": 220,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": 2,
+          "FireRate": 720,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 21
+        }
+      ],
+      "PartType": "LWPT_GUN_SECONDARY_HANDLE",
+      "PremiumPrice": 70,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleBFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleBSlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/Ungilded/SUModularSecondaryHandleCUngildedMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": 1
+        }
+      ]
+    },
+    "id": 2621,
+    "name": "Haymaker",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+      "/Lotus/Types/Weapon/LotusGunSecondaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleCPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryHandleCPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleC.png"
+  },
+  "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleDPart": {
+    "data": {
+      "AttachBone": "GAME_R1_WEAPON1",
+      "Attachment": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleDAttachment",
+      "BarrelAttachBone": "GAME_C1_BARREL",
+      "ClipAttachBone": "GAME_C1_CLIP",
+      "DSReloadFastAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/Reload_anim.fbx",
+      "DSReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/GlaiveAndSecondary/ReloadLong_anim.fbx",
+      "DefaultOverride": {
+        "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun"
+      },
+      "DonationStandingBonus": 200,
+      "EligibleForDailyWeaponSale": 1,
+      "ExcludeFromCodex": 0,
+      "Icon": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleD.png",
+      "LocalizeDescTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleDDesc",
+      "LocalizeTag": "/Lotus/Language/SolarisVenus/SUModularSecondaryHandleD",
+      "MarketMode": "MM_HIDDEN",
+      "Overrides": [
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -96,
+          "FireRate": 190,
+          "GunType": "GT_SHOTGUN",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_SEMI_PROJECTILE",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -24,
+          "FireRate": 270,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -12,
+          "FireRate": 660,
+          "GunType": "GT_RIFLE",
+          "TraceDistance": 0
+        },
+        {
+          "BarrelType": "BT_AUTO_HITSCAN",
+          "CompatibleSkinType": "/Lotus/Weapons/Tenno/Pistol/LotusSinglePistolGun",
+          "Damage": -2,
+          "FireRate": 720,
+          "GunType": "GT_BEAM",
+          "TraceDistance": 40
+        }
+      ],
+      "PartType": "LWPT_GUN_SECONDARY_HANDLE",
+      "PremiumPrice": 80,
+      "ReloadFastAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleAFast_anim.fbx",
+      "ReloadSlowAnim": "/Lotus/Animations/Tenno/Movement/Pistol/ReloadSUModSecHandleASlow_anim.fbx",
+      "UngildedMaterial": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/Ungilded/SUModularSecondaryHandleDUngildedMat",
+      "Upgrades": [
+        {
+          "AutoType": 1,
+          "DamageType": "DT_ANY",
+          "OperationType": "ADD",
+          "SymbolFilter": "",
+          "UpgradeObject": "",
+          "UpgradeType": "WEAPON_RECOIL",
+          "ValidModifiers": [],
+          "ValidPostures": [],
+          "ValidProcTypes": [],
+          "ValidType": "",
+          "Value": -0.5
+        }
+      ]
+    },
+    "id": 2622,
+    "name": "Gibber",
+    "parent": "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+    "parents": [
+      "/Lotus/Weapons/SolarisUnited/LotusGunSecondaryHandle",
+      "/Lotus/Types/Weapon/LotusGunSecondaryHandle"
+    ],
+    "path": "/Lotus/Weapons/SolarisUnited/Secondary/SUModularSecondarySet1/Handle/SUModularSecondaryHandleDPart",
+    "texture": "/Lotus/Interface/Icons/Store/Weapons/Modular/SUModularSecondary/SUModularSecondaryHandleDPart.png",
+    "texture_new": "/Lotus/Interface/Icons/StoreIcons/Weapons/SecondaryWeapons/Kitguns/SUModularSecondaryHandleD.png"
+  }
+}
