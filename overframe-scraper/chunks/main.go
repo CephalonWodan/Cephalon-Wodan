@@ -145,9 +145,10 @@ func kindFromChunkPath(p string) string {
 func httpGet(client *http.Client, url string, retries int) ([]byte, error) {
 	var lastErr error
 	for i := 0; i < retries; i++ {
+		// 1) première tentative: demander gzip
 		req, _ := http.NewRequest("GET", url, nil)
 		req.Header.Set("User-Agent", "CephalonWodan-OverframeChunks/1.0 (+github.com/CephalonWodan/Cephalon-Wodan)")
-		req.Header.Set("Accept-Encoding", "gzip, deflate, br")
+		req.Header.Set("Accept-Encoding", "gzip") // ⬅ forcer gzip (pas de br)
 
 		resp, err := client.Do(req)
 		if err != nil {
@@ -163,7 +164,42 @@ func httpGet(client *http.Client, url string, retries int) ([]byte, error) {
 				defer gr.Close()
 				r = gr
 			}
+		} else if enc := resp.Header.Get("Content-Encoding"); enc == "br" {
+			// Le CDN a renvoyé brotli malgré tout → on retente en interdisant toute compression
+			resp.Body.Close()
+			req2, _ := http.NewRequest("GET", url, nil)
+			req2.Header.Set("User-Agent", "CephalonWodan-OverframeChunks/1.0 (+github.com/CephalonWodan/Cephalon-Wodan)")
+			// pas d'Accept-Encoding => Go demandera gzip par défaut, mais on préfère explicite
+			req2.Header.Set("Accept-Encoding", "gzip")
+			resp2, err2 := client.Do(req2)
+			if err2 != nil {
+				lastErr = err2
+				time.Sleep(time.Duration(500+100*i) * time.Millisecond)
+				continue
+			}
+			defer resp2.Body.Close()
+			var r2 io.Reader = resp2.Body
+			if resp2.Header.Get("Content-Encoding") == "gzip" {
+				gr2, gzErr2 := gzip.NewReader(resp2.Body)
+				if gzErr2 == nil {
+					defer gr2.Close()
+					r2 = gr2
+				}
+			}
+			if resp2.StatusCode != 200 {
+				lastErr = fmt.Errorf("http %d", resp2.StatusCode)
+				time.Sleep(time.Duration(500+100*i) * time.Millisecond)
+				continue
+			}
+			body2, rdErr2 := io.ReadAll(r2)
+			if rdErr2 != nil {
+				lastErr = rdErr2
+				time.Sleep(time.Duration(500+100*i) * time.Millisecond)
+				continue
+			}
+			return body2, nil
 		}
+
 		if resp.StatusCode != 200 {
 			resp.Body.Close()
 			lastErr = fmt.Errorf("http %d", resp.StatusCode)
@@ -181,6 +217,7 @@ func httpGet(client *http.Client, url string, retries int) ([]byte, error) {
 	}
 	return nil, lastErr
 }
+
 
 func extractJSON(js []byte) (any, error) {
 	txt := string(js)
