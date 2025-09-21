@@ -37,9 +37,9 @@ jobs:
 
       - name: Copy page outputs
         run: |
-          cp overframe-scraper/items.json data/overframe/items.json
-          cp overframe-scraper/items.csv  data/overframe/items.csv
-          cp overframe-scraper/index.csv  data/overframe/index.csv
+          cp overframe-scraper/items.json data/overframe/OFitems.json
+          cp overframe-scraper/items.csv  data/overframe/OFitems.csv
+          cp overframe-scraper/index.csv  data/overframe/OFindex.csv
 
       - name: Commit page outputs if changed
         run: |
