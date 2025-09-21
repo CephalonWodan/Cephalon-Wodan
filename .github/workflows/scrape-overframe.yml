@@ -11,6 +11,7 @@ permissions:
 
 jobs:
   pages_scrape:
+    name: Scrape pages (items/arsenal)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,23 +20,25 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.22.x"
 
       - name: Build page scraper
         working-directory: overframe-scraper
         run: go build -o scraper
 
+      # --- One-shot complet ---
+      # Si tu préfères l'incrémental, retire END_ID et ajoute GROWTH_WINDOW (ex: 300)
       - name: Run page scraper (polite one-shot)
         working-directory: overframe-scraper
         env:
           BASE_URL: "https://overframe.gg/items/arsenal/%d"
           START_ID: "1"
-          END_ID: "7468"        # ← requis pour le one-shot
-          RATE_MS: "1000"
-          JITTER_MS: "200"
+          END_ID: "7468"        # <- requis pour one-shot
+          RATE_MS: "1000"       # délai de base (ms)
+          JITTER_MS: "200"      # jitter anti-burst (ms)
         run: ./scraper
 
-      - name: Prepare site data dir
+      - name: Prepare data dir
         run: mkdir -p data/overframe
 
       - name: Copy small outputs (commit) + zip raw (artifact)
@@ -43,7 +46,7 @@ jobs:
           cp overframe-scraper/items.json data/overframe/OF_items.json
           cp overframe-scraper/items.csv  data/overframe/OF_items.csv
           cp overframe-scraper/index.csv  data/overframe/OF_index.csv
-          cd overframe-scraper && zip -r ../overframe-raw-json.zip raw || true
+          (cd overframe-scraper && zip -r ../overframe-raw-json.zip raw || true)
 
       - name: Commit small outputs if changed
         run: |
@@ -63,6 +66,7 @@ jobs:
           path: overframe-raw-json.zip
 
   chunk_extract:
+    name: Extract Next.js DB chunks
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -71,17 +75,19 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.22"
+          go-version: "1.22.x"
 
       - name: Build chunk extractor
         working-directory: overframe-scraper/chunks
         run: go build -o overframe-chunks
 
+      # -auto=true = autodécouverte des URLs hashées depuis la homepage
+      # Si tu veux forcer tes URLs fixes, passe -auto=false
       - name: Run extractor (auto-discovery)
         working-directory: overframe-scraper/chunks
         env:
           OUT: "../../data/overframe"
-        run: ./overframe-chunks -auto=true -out "$OUT"
+        run: ./overframe-chunks -auto=true -out "$OUT" -timeout=25s -retries=3 -sleep=600ms
 
       - name: Commit chunk JSON if changed
         run: |
