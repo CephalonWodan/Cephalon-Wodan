@@ -21,8 +21,9 @@ var (
 	// détecte les chunks DB depuis la homepage (hash variable)
 	reChunk = regexp.MustCompile(`/_next/static/chunks/db/(items|mods|modsets|abilities|abilitystats|modularparts)\.[a-f0-9]+\.js`)
 
-	// JSON.parse("…") ou JSON.parse('…')
-	reJSONParse = regexp.MustCompile(`JSON\.parse\(\s*(['"])(?P<blob>.*?)(\1)\s*\)`)
+	// JSON.parse('…') et JSON.parse("…") — SANS back-references (Go/RE2 ne les supporte pas)
+	reJSONParseS = regexp.MustCompile(`JSON\.parse\(\s*'(.*?)'\s*\)`)
+	reJSONParseD = regexp.MustCompile(`JSON\.parse\(\s*"(.*?)"\s*\)`)
 
 	// fallback: gros blobs {…} / […]
 	reJSONBlob = regexp.MustCompile(`(?s)(\{(?:[^{}]|\{[^{}]*\})*\}|\[(?:[^\[\]]|\[[^\[\]]*\])*\])`)
@@ -93,7 +94,7 @@ func main() {
 			continue
 		}
 
-		out := filepath.Join(*outDir, fmt.Sprintf("OF_%s.json", kind))
+		out := filepath.Join(*outDir, fmt.Sprintf("overframe-%s.json", kind))
 		if err := writeJSON(out, obj); err != nil {
 			fmt.Fprintf(os.Stderr, "   write KO: %v\n", err)
 			continue
@@ -184,17 +185,24 @@ func httpGet(client *http.Client, url string, retries int) ([]byte, error) {
 func extractJSON(js []byte) (any, error) {
 	txt := string(js)
 
-	// A) JSON.parse(...)
-	if m := reJSONParse.FindAllStringSubmatch(txt, -1); len(m) > 0 {
+	// A) JSON.parse('…') et JSON.parse("…")
+	var candidates [][]string
+	candidates = append(candidates, reJSONParseS.FindAllStringSubmatch(txt, -1)...)
+	candidates = append(candidates, reJSONParseD.FindAllStringSubmatch(txt, -1)...)
+	if len(candidates) > 0 {
 		best := ""
-		for _, mm := range m {
-			blob := mm[2] // groupe "blob"
-			if len(blob) > len(best) {
-				best = blob
+		for _, mm := range candidates {
+			if len(mm) >= 2 {
+				blob := mm[1] // groupe capturé
+				if len(blob) > len(best) {
+					best = blob
+				}
 			}
 		}
-		if obj, err := parsePossiblyEscaped(best); err == nil {
-			return obj, nil
+		if best != "" {
+			if obj, err := parsePossiblyEscaped(best); err == nil {
+				return obj, nil
+			}
 		}
 	}
 
