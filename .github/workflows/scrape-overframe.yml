@@ -23,15 +23,15 @@ jobs:
         run: go build -o scraper
 
       - name: Run page scraper (polite incremental)
-        working-directory: overframe-scraper
-        env:
-          BASE_URL: "https://overframe.gg/items/arsenal/%d"
-          START_ID: "1"
-          GROWTH_WINDOW: "300"   # ajuste si besoin
-          RATE_MS: "1000"
-          JITTER_MS: "200"
-        run: ./scraper
-
+  working-directory: overframe-scraper
+  env:
+    BASE_URL: "https://overframe.gg/items/arsenal/%d"
+    START_ID: "1"
+    END_ID: "7468"        
+    RATE_MS: "1000"
+    JITTER_MS: "200"
+  run: ./scraper
+  
       - name: Prepare site data
         run: mkdir -p data/overframe
 
