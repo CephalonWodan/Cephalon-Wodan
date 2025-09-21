@@ -2,8 +2,8 @@ name: Overframe — Pages & Chunks
 
 on:
   schedule:
-    - cron: "17 3 * * *"     # quotidien pour pages (si tu veux)
-    - cron: "13 4 * * 1"     # hebdo pour chunks (hash qui changent)
+    - cron: "17 3 * * *"    # scrape pages (quotidien)
+    - cron: "13 4 * * 1"    # extract chunks (hebdo)
   workflow_dispatch: {}
 
 permissions:
@@ -13,8 +13,11 @@ jobs:
   pages_scrape:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
           go-version: "1.22"
 
@@ -22,40 +25,51 @@ jobs:
         working-directory: overframe-scraper
         run: go build -o scraper
 
-      - name: Run page scraper (polite incremental)
-  working-directory: overframe-scraper
-  env:
-    BASE_URL: "https://overframe.gg/items/arsenal/%d"
-    START_ID: "1"
-    END_ID: "7468"        
-    RATE_MS: "1000"
-    JITTER_MS: "200"
-  run: ./scraper
-  
-      - name: Prepare site data
+      - name: Run page scraper (polite one-shot)
+        working-directory: overframe-scraper
+        env:
+          BASE_URL: "https://overframe.gg/items/arsenal/%d"
+          START_ID: "1"
+          END_ID: "7468"        # ← requis pour le one-shot
+          RATE_MS: "1000"
+          JITTER_MS: "200"
+        run: ./scraper
+
+      - name: Prepare site data dir
         run: mkdir -p data/overframe
 
-      - name: Copy page outputs
+      - name: Copy small outputs (commit) + zip raw (artifact)
         run: |
-          cp overframe-scraper/items.json data/overframe/OFitems.json
-          cp overframe-scraper/items.csv  data/overframe/OFitems.csv
-          cp overframe-scraper/index.csv  data/overframe/OFindex.csv
+          cp overframe-scraper/items.json data/overframe/OF_items.json
+          cp overframe-scraper/items.csv  data/overframe/OF_items.csv
+          cp overframe-scraper/index.csv  data/overframe/OF_index.csv
+          cd overframe-scraper && zip -r ../overframe-raw-json.zip raw || true
 
-      - name: Commit page outputs if changed
+      - name: Commit small outputs if changed
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
-            git add overframe-scraper/items.json overframe-scraper/items.csv overframe-scraper/index.csv data/overframe/items.json data/overframe/items.csv data/overframe/index.csv
-            git commit -m "chore(pages): update scraped items"
+            git add data/overframe/OF_items.json data/overframe/OF_items.csv data/overframe/OF_index.csv
+            git commit -m "chore(scrape): update items/index (no raw in git)"
             git push
           fi
+
+      - name: Upload RAW artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: overframe-raw-json
+          path: overframe-raw-json.zip
 
   chunk_extract:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
         with:
           go-version: "1.22"
 
@@ -63,7 +77,7 @@ jobs:
         working-directory: overframe-scraper/chunks
         run: go build -o overframe-chunks
 
-      - name: Run extractor (auto-discovery; fallback sur URLs fixes)
+      - name: Run extractor (auto-discovery)
         working-directory: overframe-scraper/chunks
         env:
           OUT: "../../data/overframe"
@@ -75,6 +89,6 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
             git add data/overframe/overframe-*.json
-            git commit -m "chore(chunks): refresh Overframe JSON"
+            git commit -m "chore(chunks): refresh Overframe DB JSON"
             git push
           fi
