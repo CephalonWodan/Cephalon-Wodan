@@ -18,21 +18,27 @@ import (
 )
 
 var (
-	reChunk     = regexp.MustCompile(`/_next/static/chunks/db/(items|mods|modsets|abilities|abilitystats|modularparts)\.[a-f0-9]+\.js`)
+	// détecte les chunks DB depuis la homepage (hash variable)
+	reChunk = regexp.MustCompile(`/_next/static/chunks/db/(items|mods|modsets|abilities|abilitystats|modularparts)\.[a-f0-9]+\.js`)
+
+	// JSON.parse("…") ou JSON.parse('…')
 	reJSONParse = regexp.MustCompile(`JSON\.parse\(\s*(['"])(?P<blob>.*?)(\1)\s*\)`)
-	reJSONBlob  = regexp.MustCompile(`(?s)(\{(?:[^{}]|\{[^{}]*\})*\}|\[(?:[^\[\]]|\[[^\[\]]*\])*\])`)
+
+	// fallback: gros blobs {…} / […]
+	reJSONBlob = regexp.MustCompile(`(?s)(\{(?:[^{}]|\{[^{}]*\})*\}|\[(?:[^\[\]]|\[[^\[\]]*\])*\])`)
 )
 
 func main() {
 	var (
 		outDir       = flag.String("out", "data/overframe", "Répertoire de sortie pour les JSON")
 		modeAuto     = flag.Bool("auto", true, "Auto-découvrir les URLs depuis la homepage d’Overframe")
-		timeout      = flag.Duration("timeout", 20*time.Second, "Timeout HTTP")
+		timeout      = flag.Duration("timeout", 25*time.Second, "Timeout HTTP")
 		retries      = flag.Int("retries", 3, "Retries HTTP")
-		sleepBetween = flag.Duration("sleep", 500*time.Millisecond, "Pause entre requêtes")
+		sleepBetween = flag.Duration("sleep", 600*time.Millisecond, "Pause entre requêtes")
 	)
 	flag.Parse()
 
+	// URLs fixes (fallback si autodiscovery échoue)
 	fixed := map[string]string{
 		"modsets":      "https://static.overframe.gg/_next/static/chunks/db/modsets.ab82d329faa2eb1f.js",
 		"mods":         "https://static.overframe.gg/_next/static/chunks/db/mods.c6fa01b90d917bee.js",
@@ -42,6 +48,7 @@ func main() {
 		"abilitystats": "https://static.overframe.gg/_next/static/chunks/db/abilitystats.1380563b4cdc91d9.js",
 	}
 
+	// 1) déterminer les URLs
 	var urls map[string]string
 	var err error
 	if *modeAuto {
@@ -54,33 +61,39 @@ func main() {
 		urls = fixed
 	}
 
+	// tri pour logs stables
+	kinds := make([]string, 0, len(urls))
+	for k := range urls {
+		kinds = append(kinds, k)
+	}
+	sort.Strings(kinds)
+
+	// 2) préparer sortie
 	if err := os.MkdirAll(*outDir, 0o755); err != nil {
 		die(err)
 	}
 
-	keys := make([]string, 0, len(urls))
-	for k := range urls {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
+	// 3) fetch + extract
 	client := &http.Client{Timeout: *timeout}
 	ok := 0
-	for _, kind := range keys {
+	for _, kind := range kinds {
 		u := urls[kind]
 		time.Sleep(*sleepBetween)
 		fmt.Printf(">> [%s] %s\n", kind, u)
-		b, err := httpGet(client, u, *retries)
+
+		body, err := httpGet(client, u, *retries)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "   err: %v\n", err)
+			fmt.Fprintf(os.Stderr, "   http KO: %v\n", err)
 			continue
 		}
-		obj, err := extractJSON(b)
+
+		obj, err := extractJSON(body)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "   extraction KO: %v\n", err)
 			continue
 		}
-		out := filepath.Join(*outDir, fmt.Sprintf("overframe-%s.json", kind))
+
+		out := filepath.Join(*outDir, fmt.Sprintf("OF_%s.json", kind))
 		if err := writeJSON(out, obj); err != nil {
 			fmt.Fprintf(os.Stderr, "   write KO: %v\n", err)
 			continue
@@ -88,7 +101,7 @@ func main() {
 		fmt.Printf("   OK → %s\n", out)
 		ok++
 	}
-	fmt.Printf("Terminé — %d/%d fichiers JSON écrits.\n", ok, len(keys))
+	fmt.Printf("Terminé — %d/%d fichiers JSON écrits.\n", ok, len(kinds))
 }
 
 func die(err error) {
@@ -134,103 +147,48 @@ func httpGet(client *http.Client, url string, retries int) ([]byte, error) {
 		req, _ := http.NewRequest("GET", url, nil)
 		req.Header.Set("User-Agent", "CephalonWodan-OverframeChunks/1.0 (+github.com/CephalonWodan/Cephalon-Wodan)")
 		req.Header.Set("Accept-Encoding", "gzip, deflate, br")
+
 		resp, err := client.Do(req)
 		if err != nil {
 			lastErr = err
 			time.Sleep(time.Duration(500+100*i) * time.Millisecond)
 			continue
 		}
-		func() {
-			defer resp.Body.Close()
-			if resp.StatusCode != 200 {
-				lastErr = fmt.Errorf("http %d", resp.StatusCode)
-				return
+
+		var r io.Reader = resp.Body
+		if resp.Header.Get("Content-Encoding") == "gzip" {
+			gr, gzErr := gzip.NewReader(resp.Body)
+			if gzErr == nil {
+				defer gr.Close()
+				r = gr
 			}
-			var r io.Reader = resp.Body
-			if resp.Header.Get("Content-Encoding") == "gzip" {
-				gr, e := gzip.NewReader(resp.Body)
-				if e == nil {
-					defer gr.Close()
-					r = gr
-				}
-			}
-			b, e := io.ReadAll(r)
-			if e != nil {
-				lastErr = e
-				return
-			}
-			lastErr = nil
-			// SUCCESS
-			// return value via named result: not used here, so just set out
-			req.Close = true
-			// Hack: capture via closure variable trick; simpler: just return b
-			// but we can't return inside closure; so store to outer and detect below.
-			// We'll instead store in a package variable? Not nice. Simpler: avoid closure.
-		}()
-		// Re-écrire sans closure pour la clarté :
-		resp2, err2 := client.Get(url)
-		if err2 != nil {
-			lastErr = err2
+		}
+		if resp.StatusCode != 200 {
+			resp.Body.Close()
+			lastErr = fmt.Errorf("http %d", resp.StatusCode)
+			time.Sleep(time.Duration(500+100*i) * time.Millisecond)
 			continue
 		}
-		func() {
-			defer resp2.Body.Close()
-			if resp2.StatusCode != 200 {
-				lastErr = fmt.Errorf("http %d", resp2.StatusCode)
-				return
-			}
-			var r io.Reader = resp2.Body
-			if resp2.Header.Get("Content-Encoding") == "gzip" {
-				gr, e := gzip.NewReader(resp2.Body)
-				if e == nil {
-					defer gr.Close()
-					r = gr
-				}
-			}
-			b, e := io.ReadAll(r)
-			if e != nil {
-				lastErr = e
-				return
-			}
-			lastErr = nil
-			// finally return
-			// (we can't return from here; break outer)
-			*new([]byte) = b
-		}()
-		// La logique ci-dessus est lourde; réécrivons proprement :
-	}
-
-	// version propre :
-	req, _ := http.NewRequest("GET", url, nil)
-	req.Header.Set("User-Agent", "CephalonWodan-OverframeChunks/1.0 (+github.com/CephalonWodan/Cephalon-Wodan)")
-	req.Header.Set("Accept-Encoding", "gzip, deflate, br")
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-	var r io.Reader = resp.Body
-	if resp.Header.Get("Content-Encoding") == "gzip" {
-		gr, e := gzip.NewReader(resp.Body)
-		if e == nil {
-			defer gr.Close()
-			r = gr
+		body, rdErr := io.ReadAll(r)
+		resp.Body.Close()
+		if rdErr != nil {
+			lastErr = rdErr
+			time.Sleep(time.Duration(500+100*i) * time.Millisecond)
+			continue
 		}
+		return body, nil
 	}
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("http %d", resp.StatusCode)
-	}
-	return io.ReadAll(r)
+	return nil, lastErr
 }
 
 func extractJSON(js []byte) (any, error) {
 	txt := string(js)
 
-	// 1) JSON.parse(...)
+	// A) JSON.parse(...)
 	if m := reJSONParse.FindAllStringSubmatch(txt, -1); len(m) > 0 {
 		best := ""
 		for _, mm := range m {
-			blob := mm[2]
+			blob := mm[2] // groupe "blob"
 			if len(blob) > len(best) {
 				best = blob
 			}
@@ -240,7 +198,7 @@ func extractJSON(js []byte) (any, error) {
 		}
 	}
 
-	// 2) Fallback blobs
+	// B) Fallback gros blobs {…} / […]
 	blobs := reJSONBlob.FindAllString(txt, -1)
 	sort.Slice(blobs, func(i, j int) bool { return len(blobs[i]) > len(blobs[j]) })
 	for _, b := range blobs {
@@ -255,22 +213,27 @@ func extractJSON(js []byte) (any, error) {
 }
 
 func parsePossiblyEscaped(s string) (any, error) {
+	// 1) direct
 	if obj, err := tryJSON(s); err == nil {
 		return obj, nil
 	}
-	// déséchapper via JSON string
+	// 2) déséchapper via une string JSON
 	var unescaped string
 	if err := json.Unmarshal([]byte(`"`+s+`"`), &unescaped); err == nil {
-		// corriger backslashes invalides (\X)
+		if obj, err := tryJSON(unescaped); err == nil {
+			return obj, nil
+		}
+		// 3) corriger les backslashes invalides
 		fixed := fixInvalidBackslashes(unescaped)
 		if obj, err := tryJSON(fixed); err == nil {
 			return obj, nil
 		}
-	}
-	// dernier essai: fixer et parser direct
-	fixed := fixInvalidBackslashes(s)
-	if obj, err := tryJSON(fixed); err == nil {
-		return obj, nil
+	} else {
+		// 4) dernier essai: fixer + parser direct
+		fixed := fixInvalidBackslashes(s)
+		if obj, err := tryJSON(fixed); err == nil {
+			return obj, nil
+		}
 	}
 	return nil, errors.New("parsePossiblyEscaped: échec")
 }
@@ -285,10 +248,10 @@ func tryJSON(s string) (any, error) {
 	return v, nil
 }
 
+// remplace \X où X n’est pas un escape JSON valide par \\X
 func fixInvalidBackslashes(s string) string {
-	// remplace \X où X n’est pas un escape JSON valide par \\X
-	re := regexp.MustCompile(`\\(?!["\\/bfnrtu])`)
-	return re.ReplaceAllString(s, `\\$0`)[1:] // $0 = "\" + lettre; on re-préfixe un backslash
+	re := regexp.MustCompile(`\\([^"\\/bfnrtu])`)
+	return re.ReplaceAllString(s, `\\$1`)
 }
 
 func writeJSON(path string, v any) error {
@@ -298,6 +261,7 @@ func writeJSON(path string, v any) error {
 		return err
 	}
 	defer f.Close()
+
 	enc := json.NewEncoder(f)
 	enc.SetIndent("", "  ")
 	if err := enc.Encode(v); err != nil {
