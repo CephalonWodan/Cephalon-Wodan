@@ -42,20 +42,32 @@ jobs:
         run: mkdir -p data/overframe
 
       - name: Copy small outputs (commit) + zip raw (artifact)
+        shell: bash
         run: |
+          set -e
           cp overframe-scraper/items.json data/overframe/OF_items.json
           cp overframe-scraper/items.csv  data/overframe/OF_items.csv
           cp overframe-scraper/index.csv  data/overframe/OF_index.csv
           (cd overframe-scraper && zip -r ../overframe-raw-json.zip raw || true)
+          echo "Preview data/overframe:"
+          ls -la data/overframe || true
 
-      - name: Commit small outputs if changed
+      - name: Commit page outputs if changed
+        shell: bash
         run: |
+          set -e
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if [[ -n "$(git status --porcelain)" ]]; then
             git add data/overframe/OF_items.json data/overframe/OF_items.csv data/overframe/OF_index.csv
-            git commit -m "chore(scrape): update items/index (no raw in git)"
-            git push
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(scrape): update items/index (no raw in git)"
+              git push
+            else
+              echo "No changes to commit for page outputs."
+            fi
+          else
+            echo "Working tree clean (pages)."
           fi
 
       - name: Upload RAW artifact
@@ -82,19 +94,42 @@ jobs:
         run: go build -o overframe-chunks
 
       # -auto=true = autodécouverte des URLs hashées depuis la homepage
-      # Si tu veux forcer tes URLs fixes, passe -auto=false
+      # Si tu veux forcer tes URLs fixes, commente ce step et décommente le suivant.
       - name: Run extractor (auto-discovery)
         working-directory: overframe-scraper/chunks
         env:
           OUT: "../../data/overframe"
         run: ./overframe-chunks -auto=true -out "$OUT" -timeout=25s -retries=3 -sleep=600ms
 
-      - name: Commit chunk JSON if changed
+      # --- Alternative : forcer les URLs fixes ---
+      # - name: Run extractor (forced URLs)
+      #   working-directory: overframe-scraper/chunks
+      #   env:
+      #     OUT: "../../data/overframe"
+      #   run: ./overframe-chunks -auto=false -out "$OUT" -timeout=25s -retries=3 -sleep=600ms
+
+      - name: Post-extract sanity check
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git add data/overframe/overframe-*.json
-            git commit -m "chore(chunks): refresh Overframe DB JSON"
-            git push
+          echo "Listing generated files in data/overframe:"
+          ls -la data/overframe || true
+
+      - name: Commit chunk JSON if changed
+        shell: bash
+        run: |
+          set -e
+          echo "Commit overframe-*.json if present…"
+          shopt -s nullglob
+          files=(data/overframe/overframe-*.json)
+          if (( ${#files[@]} )); then
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add "${files[@]}"
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(chunks): refresh Overframe DB JSON"
+              git push
+            else
+              echo "No changes to commit for chunk JSON."
+            fi
+          else
+            echo "No overframe-*.json produced; skipping commit."
           fi
