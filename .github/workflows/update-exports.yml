@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "0 */6 * * *"   # toutes les 6h
   workflow_dispatch:        # lancement manuel
+  workflow_call: {}         # <-- ajouté pour permettre l'appel par un orchestrateur
 
 permissions:
   contents: write
@@ -99,6 +100,7 @@ jobs:
               main()
           PY
           chmod +x tools/fetch_wf_exports.py
+
       - name: Download index (origin → content fallback)
         run: |
           set -e
@@ -116,9 +118,11 @@ jobs:
           pathlib.Path("index_en.txt").write_bytes(lzma.decompress(raw))
           print("Index decompressed → index_en.txt")
           PY
+
       - name: Fetch all exports with your script (using the downloaded index)
         run: |
           python tools/fetch_wf_exports.py all -l en -o data --index index_en.txt
+
       - name: Rename hashed files to stable basenames
         run: |
           shopt -s nullglob
@@ -127,6 +131,7 @@ jobs:
             mv "$f" "$base"
             echo "→ $f  ==>  $base"
           done
+
       - name: Commit if changed
         run: |
           git add -A data/
@@ -134,7 +139,7 @@ jobs:
             echo "Aucun changement à committer."
           else
             git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
             git commit -m "chore: update PublicExport JSONs ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
             git push
           fi
