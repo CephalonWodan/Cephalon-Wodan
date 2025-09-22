@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: "25 */6 * * *"
   workflow_dispatch: {}
+  workflow_call: {}   # <-- ajouté pour pouvoir l'appeler depuis l'orchestrateur
 
 permissions:
   contents: write
