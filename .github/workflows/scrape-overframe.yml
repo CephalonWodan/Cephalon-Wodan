@@ -5,9 +5,14 @@ on:
     - cron: "17 3 * * *"    # scrape pages (quotidien)
     - cron: "13 4 * * 1"    # extract chunks (hebdo)
   workflow_dispatch: {}
+  workflow_call: {}         # <-- ajouté pour permettre l'appel depuis un orchestrateur
 
 permissions:
   contents: write
+
+concurrency:
+  group: overframe-scrape
+  cancel-in-progress: false
 
 jobs:
   pages_scrape:
