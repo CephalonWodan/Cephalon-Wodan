@@ -1,0 +1,104 @@
+name: Enrich mods (merge multiple sources)
+
+on:
+  # lancement manuel
+  workflow_dispatch: {}
+
+  # toutes les 6h (tu peux ajuster)
+  schedule:
+    - cron: "10 */6 * * *"
+
+  # se relance si une des sources d'entrée change
+  push:
+    paths:
+      - "tools/enrich_mods.js"
+      - "data/ExportUpgrades_en.json"
+      - "data/modwarframestat.json"
+      - "data/Mods.json"
+      - "data/overframe/overframe-mods.json"
+      - "data/overframe/overframe-modsets.json"
+      - ".github/workflows/enrich-mods.yml"
+      # IMPORTANT : on évite toute boucle inutile
+      - "!data/enriched_mods.json"
+      - "!data/enriched_mods_report.json"
+      - "!data/enriched_mods.csv"
+
+  # permet l'appel par l'orchestrateur (pipeline)
+  workflow_call: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: enrich-mods
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build enriched_mods from all sources
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: List inputs (debug)
+        run: |
+          echo "Inputs in data/:"
+          ls -la data || true
+          echo "Inputs in data/overframe/:"
+          ls -la data/overframe || true
+
+      - name: Sanity check (presence des sources connues)
+        shell: bash
+        run: |
+          set -e
+          missing=0
+          for f in \
+            "data/ExportUpgrades_en.json" \
+            "data/modwarframestat.json" \
+            "data/overframe/overframe-mods.json" \
+            "data/overframe/overframe-modsets.json" \
+            "data/Mods.json"
+          do
+            if [ ! -f "$f" ]; then
+              echo "⚠️  Manquant (non bloquant): $f"
+              missing=$((missing+1))
+            fi
+          done
+          echo "Sources manquantes: $missing (le script gère les absences via readIf)."
+
+      - name: Run enrich_mods.js
+        run: |
+          node tools/enrich_mods.js
+          test -f data/enriched_mods.json
+          test -f data/enriched_mods_report.json
+          test -f data/enriched_mods.csv
+
+      - name: Upload artifacts (enriched outputs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: enriched-mods
+          path: |
+            data/enriched_mods.json
+            data/enriched_mods_report.json
+            data/enriched_mods.csv
+
+      - name: Commit enriched mods if changed
+        shell: bash
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/enriched_mods.json data/enriched_mods_report.json data/enriched_mods.csv
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(mods): refresh enriched_mods from Export/Overframe/WStat/Mods.json [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
