@@ -7,6 +7,7 @@ on:
       - 'tools/merge_warframe_final.js'
       - 'data/**'
       - '!data/merged_warframe.json'
+  workflow_call: {}   # <-- ajouté pour permettre l'appel par un orchestrateur
 
 permissions:
   contents: write   # nécessaire pour pousser le fichier généré
