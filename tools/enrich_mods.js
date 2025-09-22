@@ -5,7 +5,7 @@
 import fs from "fs";
 import path from "path";
 
-// ---------- Utils ----------
+// ---------- Config ----------
 const DATA_DIR = path.resolve("data");
 const OF_DIR = path.join(DATA_DIR, "overframe");
 
@@ -19,6 +19,12 @@ const OUT_JSON = path.join(DATA_DIR, "enriched_mods.json");
 const OUT_REP  = path.join(DATA_DIR, "enriched_mods_report.json");
 const OUT_CSV  = path.join(DATA_DIR, "enriched_mods.csv");
 
+// langue cible (détermine si on évite le FR)
+const LANG_TARGET = process.env.LANG_TARGET || "en";
+// exclure les arcanes ? (par défaut oui)
+const EXCLUDE_ARCANES = String(process.env.EXCLUDE_ARCANES || "true") === "true";
+
+// ---------- Utils ----------
 const asArray = (v) => Array.isArray(v) ? v : (v && typeof v === "object" ? Object.values(v) : []);
 const readIf = (p) => fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf-8")) : null;
 
@@ -44,11 +50,22 @@ function keyifyName(name) {
     .trim();
 }
 
+// Détection rudimentaire FR (pour éviter de mixer les langues)
+function looksFrench(s) {
+  if (!s) return false;
+  const t = String(s).toLowerCase();
+  if (/[àâçéèêëîïôùûüÿœ]/.test(t)) return true;
+  const frWords = [" les ", " des ", " du ", " au ", " aux ", " une ", " un ", " et ", " pour ", " avec ", " dégâts ", "armure", "bouclier", "efficacité", "rechargement"];
+  return frWords.some(w => t.includes(w));
+}
+
 // Merge helper: take first non-empty by priority, record provenance
 function takeFirst(dst, srcs, field, srcNames, provenance) {
   for (let i = 0; i < srcs.length; i++) {
     const v = srcs[i]?.[field];
     if (v !== undefined && v !== null && String(v).trim() !== "") {
+      // si c'est un champ textuel et qu'on vise EN, on évite un candidat FR
+      if (LANG_TARGET === "en" && typeof v === "string" && looksFrench(v)) continue;
       dst[field] = v;
       provenance[field] = srcNames[i];
       return;
@@ -83,6 +100,27 @@ function nameOfMods(m) {
   return m?.name || m?.title || null;
 }
 
+// Détection Mods/Arcanes côté Overframe
+function isArcaneOF(m) {
+  const cat = (m?.categories || []).map(c => String(c).toLowerCase());
+  const tag = String(m?.tag || "").toLowerCase();
+  const pc  = String(m?.data?.ProductCategory || m?.ProductCategory || "").toLowerCase();
+  if (pc.includes("arcane") || cat.includes("arcane") || tag === "arcane") return true;
+  const path = String(m?.path || m?.storeItemType || "").toLowerCase();
+  if (path.includes("/arcanes/")) return true;
+  return false;
+}
+function isModOF(m) {
+  const cat = (m?.categories || []).map(c => String(c).toLowerCase());
+  const tag = String(m?.tag || "").toLowerCase();
+  const pc  = String(m?.data?.ProductCategory || m?.ProductCategory || "").toLowerCase();
+  if (isArcaneOF(m)) return false;
+  if (tag === "mod") return true;
+  if (cat.includes("mod")) return true;
+  if (pc === "upgrades") return true;
+  return false;
+}
+
 const mapExport = new Map();
 for (const u of A_export) {
   const n = nameOfExport(u);
@@ -94,6 +132,7 @@ const mapOfmods = new Map();
 for (const m of A_ofmods) {
   const n = nameOfOf(m);
   if (!n) continue;
+  if (!isModOF(m)) continue; // filtre arcanes & non-mods à la source
   mapOfmods.set(keyifyName(n), m);
 }
 
@@ -136,15 +175,13 @@ const allKeys = new Set([
 
 // ---------- Extraction des stats ----------
 function extractStatsFromExport(u) {
-  // ExportUpgrades a souvent une structure: { name, rank, stats/effects/upgradeEntries... }
-  // On normalise en [{stat, type, values, atRank, maxRank, unit?}]
+  // Normalise en [{stat, type, values, atRank, maxRank, unit?}]
   const out = [];
   if (!u) return out;
 
   const maxRank = u?.maxRank ?? u?.max_level ?? u?.maxLevel ?? null;
   const entries = asArray(u.upgradeEntries || u.stats || u.effects || u.values || u.levelStats);
   for (const e of entries) {
-    // différents schémas possibles
     const stat = e?.stat || e?.name || e?.attribute || e?.type || e?.effect;
     if (!stat) continue;
     const type = e?.operation || e?.op || e?.type || "set";
@@ -203,20 +240,40 @@ for (const k of Array.from(allKeys).sort()) {
   const srcMods = mapMods.get(k);
 
   // Nom (priorité Overframe -> Export -> WStat -> Mods)
-  const name = clean(srcOf?.name || srcOf?.title || srcExp?.name || srcExp?.upgradeName || srcStat?.name || srcMods?.name);
+  const name =
+    clean(
+      srcOf?.name || srcOf?.title ||
+      srcExp?.name || srcExp?.upgradeName ||
+      srcStat?.name || srcMods?.name
+    );
   if (!name) continue; // Skip si impossible
   const slug = slugify(name);
   const provenance = {};
 
   const out = { id: slug, name, slug };
 
-  // Description
-  takeFirst(out,
-    [srcOf, srcExp, srcStat, srcMods],
-    "description",
-    ["overframe", "export", "warframestat", "mods.json"],
-    provenance
-  );
+  // Description (avec garde de langue)
+  {
+    const cand = {
+      overframe: srcOf?.description,
+      export: srcExp?.description,
+      warframestat: srcStat?.description || srcStat?.desc,
+      mods: srcMods?.description
+    };
+    let chosen = cand.overframe ?? cand.export ?? cand.warframestat ?? cand.mods;
+    if (LANG_TARGET === "en" && looksFrench(chosen)) {
+      const alt = [cand.overframe, cand.export, cand.warframestat, cand.mods].find(v => v && !looksFrench(v));
+      if (alt) chosen = alt;
+    }
+    if (chosen) {
+      out.description = chosen;
+      if (chosen === cand.overframe) provenance.description = "overframe";
+      else if (chosen === cand.export) provenance.description = "export";
+      else if (chosen === cand.warframestat) provenance.description = "warframestat";
+      else if (chosen === cand.mods) provenance.description = "mods.json";
+    }
+  }
+
   // Rareté
   takeFirst(out,
     [srcOf, srcExp, srcStat, srcMods],
@@ -224,6 +281,7 @@ for (const k of Array.from(allKeys).sort()) {
     ["overframe", "export", "warframestat", "mods.json"],
     provenance
   );
+
   // Polarité (polarity/polaritySymbol)
   takeFirst(out,
     [{polarity: srcOf?.polarity ?? srcOf?.polaritySymbol}, srcExp, srcStat, srcMods],
@@ -231,6 +289,7 @@ for (const k of Array.from(allKeys).sort()) {
     ["overframe", "export", "warframestat", "mods.json"],
     provenance
   );
+
   // Drain (drain/baseDrain)
   takeFirst(out,
     [{drain: srcOf?.baseDrain ?? srcOf?.drain}, srcExp, srcStat, srcMods],
@@ -238,13 +297,21 @@ for (const k of Array.from(allKeys).sort()) {
     ["overframe", "export", "warframestat", "mods.json"],
     provenance
   );
+
   // Type / Tag
   const typeCandidate = srcOf?.type ?? srcOf?.tag ?? srcExp?.Type ?? srcStat?.type ?? srcMods?.type;
-  if (typeCandidate) { out.type = typeCandidate; provenance.type = (srcOf?.type || srcOf?.tag) ? "overframe" : (srcExp?.Type ? "export" : (srcStat?.type ? "warframestat" : "mods.json")); }
+  if (typeCandidate) {
+    out.type = typeCandidate;
+    provenance.type = (srcOf?.type || srcOf?.tag) ? "overframe" : (srcExp?.Type ? "export" : (srcStat?.type ? "warframestat" : "mods.json"));
+  }
 
   // Compat (compatName/compat)
   const compatCandidate = srcOf?.compatName ?? srcOf?.compat ?? srcExp?.Compat ?? srcStat?.compat ?? srcMods?.compat;
-  if (compatCandidate) { out.compat = compatCandidate; provenance.compat = (srcOf?.compatName || srcOf?.compat) ? "overframe" : (srcExp?.Compat ? "export" : (srcStat?.compat ? "warframestat" : "mods.json")); }
+  if (compatCandidate) {
+    // garde langue inutile ici (termes système)
+    out.compat = compatCandidate;
+    provenance.compat = (srcOf?.compatName || srcOf?.compat) ? "overframe" : (srcExp?.Compat ? "export" : (srcStat?.compat ? "warframestat" : "mods.json"));
+  }
 
   // Tags / Categories
   const tags = Array.isArray(srcOf?.tags) ? srcOf.tags : (Array.isArray(srcStat?.tags) ? srcStat.tags : (Array.isArray(srcMods?.tags) ? srcMods.tags : null));
@@ -269,8 +336,7 @@ for (const k of Array.from(allKeys).sort()) {
   const statsOf  = extractStatsFromOverframe(srcOf);
   let stats = [];
   if (statsExp.length && statsOf.length) {
-    // simple concat; on pourrait dédupliquer par (stat,type)
-    stats = [...statsExp, ...statsOf];
+    stats = [...statsExp, ...statsOf]; // simple concat (peut être dédupliquée plus tard)
     provenance.stats = "export|overframe";
   } else if (statsExp.length) {
     stats = statsExp; provenance.stats = "export";
@@ -280,15 +346,24 @@ for (const k of Array.from(allKeys).sort()) {
   if (stats.length) out.stats = stats;
 
   // Source globale la plus contributive (pour info)
-  const score = {
-    overframe: 0, export: 0, warframestat: 0, "mods.json": 0, "overframe-modsets": 0
-  };
+  const score = { overframe: 0, export: 0, warframestat: 0, "mods.json": 0, "overframe-modsets": 0 };
   for (const [f, src] of Object.entries(provenance)) {
     if (score[src] !== undefined) score[src] += 1;
-    if (src.includes("|")) src.split("|").forEach(s => { if (score[s]!==undefined) score[s]+=1; });
+    if (src.includes && src.includes("|")) src.split("|").forEach(s => { if (score[s]!==undefined) score[s]+=1; });
   }
   let topSrc = Object.entries(score).sort((a,b)=>b[1]-a[1])[0][0];
   out.source = { ...provenance, name: topSrc };
+
+  // --- Barrière anti-Arcane (sécurité finale) ---
+  const looksArcane =
+    /\barcane\b/i.test(out.name) ||
+    String(out.type||"").toLowerCase().includes("arcane") ||
+    (Array.isArray(out.categories) && out.categories.map(c=>String(c).toLowerCase()).includes("arcane"));
+
+  if (EXCLUDE_ARCANES && looksArcane) {
+    report.push({ slug, name: out.name, excluded: "arcane-detected", provenance });
+    continue;
+  }
 
   result.push(out);
   report.push({ slug, name: out.name, provenance, mergedFrom: {
@@ -296,7 +371,7 @@ for (const k of Array.from(allKeys).sort()) {
   }});
 }
 
-// ---------- Tri stable + sorties ----------
+// ---------- Tri & sorties ----------
 result.sort((a,b)=>a.name.localeCompare(b.name));
 fs.writeFileSync(OUT_JSON, JSON.stringify(result, null, 2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify(report,  null, 2), "utf-8");
