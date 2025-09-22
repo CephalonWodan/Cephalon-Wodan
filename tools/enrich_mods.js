@@ -1,4 +1,4 @@
-// tools/enrich_mods.js
+// tools/enrich_mods.js (v2)
 // Fusionne ExportUpgrades_en.json + modwarframestat.json + overframe-mods.json + overframe-modsets.json + Mods.json
 // Produit: data/enriched_mods.json, data/enriched_mods_report.json, data/enriched_mods.csv
 
@@ -19,7 +19,7 @@ const OUT_JSON = path.join(DATA_DIR, "enriched_mods.json");
 const OUT_REP  = path.join(DATA_DIR, "enriched_mods_report.json");
 const OUT_CSV  = path.join(DATA_DIR, "enriched_mods.csv");
 
-// langue cible (détermine si on évite le FR)
+// langue cible (évite d’injecter du FR si on veut EN)
 const LANG_TARGET = process.env.LANG_TARGET || "en";
 // exclure les arcanes ? (par défaut oui)
 const EXCLUDE_ARCANES = String(process.env.EXCLUDE_ARCANES || "true") === "true";
@@ -42,12 +42,17 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
 function keyifyName(name) {
   return clean(name).toLowerCase()
     .replace(/[\s\-–_'"`]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+function uniq(arr) {
+  return Array.from(new Set((arr || []).filter(Boolean)));
+}
+function toLowerArray(arr) {
+  return uniq((arr || []).map(x => String(x).toLowerCase()));
 }
 
 // Détection rudimentaire FR (pour éviter de mixer les langues)
@@ -59,17 +64,16 @@ function looksFrench(s) {
   return frWords.some(w => t.includes(w));
 }
 
-// Merge helper: take first non-empty by priority, record provenance
-function takeFirst(dst, srcs, field, srcNames, provenance) {
+// Merge helper: prend le 1er non-vide par priorité + provenance, avec garde langue si string
+function takeFirst(dst, srcs, field, srcNames, provenance, {langFilter = true} = {}) {
   for (let i = 0; i < srcs.length; i++) {
     const v = srcs[i]?.[field];
-    if (v !== undefined && v !== null && String(v).trim() !== "") {
-      // si c'est un champ textuel et qu'on vise EN, on évite un candidat FR
-      if (LANG_TARGET === "en" && typeof v === "string" && looksFrench(v)) continue;
-      dst[field] = v;
-      provenance[field] = srcNames[i];
-      return;
-    }
+    if (v === undefined || v === null) continue;
+    if (typeof v === "string" && v.trim() === "") continue;
+    if (langFilter && LANG_TARGET === "en" && typeof v === "string" && looksFrench(v)) continue;
+    dst[field] = v;
+    provenance[field] = srcNames[i];
+    return;
   }
 }
 
@@ -81,12 +85,12 @@ const S_ofsets = readIf(P_OFSETS);
 const S_mods   = readIf(P_MODS);
 
 const A_export = asArray(S_export);
-const A_wstat  = asArray(S_wstat);
+const A_wstat  = Array.isArray(S_wstat?.data) ? S_wstat.data : asArray(S_wstat); // accepte format { _meta, data }
 const A_ofmods = asArray(S_ofmods);
 const A_ofsets = asArray(S_ofsets);
 const A_mods   = asArray(S_mods);
 
-// ---------- Index par nom (clé normalisée) ----------
+// ---------- Aides nom ----------
 function nameOfExport(u) {
   return u?.name || u?.upgradeName || u?.displayName || null;
 }
@@ -102,7 +106,7 @@ function nameOfMods(m) {
 
 // Détection Mods/Arcanes côté Overframe
 function isArcaneOF(m) {
-  const cat = (m?.categories || []).map(c => String(c).toLowerCase());
+  const cat = toLowerArray(m?.categories);
   const tag = String(m?.tag || "").toLowerCase();
   const pc  = String(m?.data?.ProductCategory || m?.ProductCategory || "").toLowerCase();
   if (pc.includes("arcane") || cat.includes("arcane") || tag === "arcane") return true;
@@ -111,16 +115,17 @@ function isArcaneOF(m) {
   return false;
 }
 function isModOF(m) {
-  const cat = (m?.categories || []).map(c => String(c).toLowerCase());
+  if (isArcaneOF(m)) return false;
+  const cat = toLowerArray(m?.categories);
   const tag = String(m?.tag || "").toLowerCase();
   const pc  = String(m?.data?.ProductCategory || m?.ProductCategory || "").toLowerCase();
-  if (isArcaneOF(m)) return false;
   if (tag === "mod") return true;
   if (cat.includes("mod")) return true;
   if (pc === "upgrades") return true;
   return false;
 }
 
+// ---------- Index par nom (clé normalisée) ----------
 const mapExport = new Map();
 for (const u of A_export) {
   const n = nameOfExport(u);
@@ -175,7 +180,6 @@ const allKeys = new Set([
 
 // ---------- Extraction des stats ----------
 function extractStatsFromExport(u) {
-  // Normalise en [{stat, type, values, atRank, maxRank, unit?}]
   const out = [];
   if (!u) return out;
 
@@ -203,7 +207,6 @@ function extractStatsFromExport(u) {
   }
   return out;
 }
-
 function extractStatsFromOverframe(m) {
   const out = [];
   if (!m) return out;
@@ -229,9 +232,30 @@ function extractStatsFromOverframe(m) {
   return out;
 }
 
+// ---------- Heuristiques Augment ----------
+function detectAugment({ name, description, tags, categories, compat, type }) {
+  const t = String(type || "").toLowerCase();
+  const cats = toLowerArray(categories);
+  const tgs  = toLowerArray(tags);
+  const txt  = (name + " " + (description || "")).toLowerCase();
+
+  if (tgs.includes("augment") || cats.includes("augment")) return true;
+  if (t.includes("augment")) return true;
+  if (/['’]s augment\b/i.test(name)) return true;
+  if (/\baugment\b/.test(txt)) return true;
+
+  // Augments de Warframes: compat = nom de Warframe souvent
+  if (compat && !/melee|rifle|pistol|shotgun|archgun|sentinel|exilus/i.test(String(compat))) {
+    // compat ressemble à un nom propre de warframe
+    if (/^[A-Z][a-z]+(\sPrime)?$/.test(String(compat))) return true;
+  }
+  return false;
+}
+
 // ---------- Fusion principale ----------
 const result = [];
 const report = [];
+const seenIds = new Set();
 
 for (const k of Array.from(allKeys).sort()) {
   const srcOf   = mapOfmods.get(k);
@@ -246,19 +270,21 @@ for (const k of Array.from(allKeys).sort()) {
       srcExp?.name || srcExp?.upgradeName ||
       srcStat?.name || srcMods?.name
     );
-  if (!name) continue; // Skip si impossible
+  if (!name) continue;
   const slug = slugify(name);
-  const provenance = {};
+  if (seenIds.has(slug)) continue; // anti-doublon
+  seenIds.add(slug);
 
+  const provenance = {};
   const out = { id: slug, name, slug };
 
-  // Description (avec garde de langue)
+  // Description : on tente plusieurs clés possibles, avec garde de langue
   {
     const cand = {
-      overframe: srcOf?.description,
-      export: srcExp?.description,
+      overframe: srcOf?.description || srcOf?.desc || srcOf?.effect || srcOf?.longDescription,
+      export: srcExp?.description || srcExp?.Desc || srcExp?.desc,
       warframestat: srcStat?.description || srcStat?.desc,
-      mods: srcMods?.description
+      mods: srcMods?.description || srcMods?.desc
     };
     let chosen = cand.overframe ?? cand.export ?? cand.warframestat ?? cand.mods;
     if (LANG_TARGET === "en" && looksFrench(chosen)) {
@@ -298,37 +324,52 @@ for (const k of Array.from(allKeys).sort()) {
     provenance
   );
 
-  // Type / Tag
+  // Type / Tag (normalise vers 'mod' si on reconnait un mod)
   const typeCandidate = srcOf?.type ?? srcOf?.tag ?? srcExp?.Type ?? srcStat?.type ?? srcMods?.type;
   if (typeCandidate) {
-    out.type = typeCandidate;
+    const t = String(typeCandidate).toLowerCase();
+    out.type = (t === "mod" || t === "mods" || t.includes("upgrade")) ? "Mod" : typeCandidate;
     provenance.type = (srcOf?.type || srcOf?.tag) ? "overframe" : (srcExp?.Type ? "export" : (srcStat?.type ? "warframestat" : "mods.json"));
+  } else {
+    out.type = "Mod";
   }
 
   // Compat (compatName/compat)
   const compatCandidate = srcOf?.compatName ?? srcOf?.compat ?? srcExp?.Compat ?? srcStat?.compat ?? srcMods?.compat;
   if (compatCandidate) {
-    // garde langue inutile ici (termes système)
     out.compat = compatCandidate;
     provenance.compat = (srcOf?.compatName || srcOf?.compat) ? "overframe" : (srcExp?.Compat ? "export" : (srcStat?.compat ? "warframestat" : "mods.json"));
   }
 
   // Tags / Categories
-  const tags = Array.isArray(srcOf?.tags) ? srcOf.tags : (Array.isArray(srcStat?.tags) ? srcStat.tags : (Array.isArray(srcMods?.tags) ? srcMods.tags : null));
-  if (tags) { out.tags = tags; provenance.tags = (Array.isArray(srcOf?.tags) ? "overframe" : (Array.isArray(srcStat?.tags) ? "warframestat" : "mods.json")); }
-  const cat = Array.isArray(srcOf?.categories) ? srcOf.categories : (Array.isArray(srcStat?.categories) ? srcStat.categories : (Array.isArray(srcMods?.categories) ? srcMods.categories : null));
-  if (cat) { out.categories = cat; provenance.categories = (Array.isArray(srcOf?.categories) ? "overframe" : (Array.isArray(srcStat?.categories) ? "warframestat" : "mods.json")); }
+  const tags = Array.isArray(srcOf?.tags) ? srcOf.tags :
+               (Array.isArray(srcStat?.tags) ? srcStat.tags :
+               (Array.isArray(srcMods?.tags) ? srcMods.tags : null));
+  if (tags?.length) { out.tags = uniq(tags); provenance.tags = Array.isArray(srcOf?.tags) ? "overframe" : (Array.isArray(srcStat?.tags) ? "warframestat" : "mods.json"); }
 
-  // Augment ?
-  const isAug = /augment/i.test(out.name) || /augment/i.test(String(out.description||""));
-  out.isAugment = !!isAug;
-  provenance.isAugment = "derived";
+  const cat = Array.isArray(srcOf?.categories) ? srcOf.categories :
+              (Array.isArray(srcStat?.categories) ? srcStat.categories :
+              (Array.isArray(srcMods?.categories) ? srcMods.categories : null));
+  if (cat?.length) { out.categories = uniq(cat); provenance.categories = Array.isArray(srcOf?.categories) ? "overframe" : (Array.isArray(srcStat?.categories) ? "warframestat" : "mods.json"); }
 
   // Set membership
   const setName = setByMod.get(k);
   if (setName) {
-    out.set = setMeta.get(setName) || { name: setName };
+    const meta = setMeta.get(setName) || { name: setName };
+    out.set = { name: meta.name, size: meta.size ?? null, bonus: meta.bonus ?? undefined };
     provenance.set = "overframe-modsets";
+  }
+
+  // maxRank / rankCaps (si trouvés)
+  const ranksCandidates = [
+    srcOf?.maxRank, srcOf?.max_level, srcOf?.maxLevel,
+    srcExp?.maxRank, srcExp?.max_level, srcExp?.maxLevel,
+    srcStat?.maxRank, srcStat?.max_level, srcStat?.maxLevel,
+    srcMods?.maxRank, srcMods?.max_level, srcMods?.maxLevel
+  ].filter(v => typeof v === "number");
+  if (ranksCandidates.length) {
+    out.maxRank = Math.max(...ranksCandidates);
+    provenance.maxRank = "mixed";
   }
 
   // Stats (merge export + overframe)
@@ -336,7 +377,7 @@ for (const k of Array.from(allKeys).sort()) {
   const statsOf  = extractStatsFromOverframe(srcOf);
   let stats = [];
   if (statsExp.length && statsOf.length) {
-    stats = [...statsExp, ...statsOf]; // simple concat (peut être dédupliquée plus tard)
+    stats = [...statsExp, ...statsOf];
     provenance.stats = "export|overframe";
   } else if (statsExp.length) {
     stats = statsExp; provenance.stats = "export";
@@ -345,14 +386,29 @@ for (const k of Array.from(allKeys).sort()) {
   }
   if (stats.length) out.stats = stats;
 
-  // Source globale la plus contributive (pour info)
-  const score = { overframe: 0, export: 0, warframestat: 0, "mods.json": 0, "overframe-modsets": 0 };
-  for (const [f, src] of Object.entries(provenance)) {
-    if (score[src] !== undefined) score[src] += 1;
-    if (src.includes && src.includes("|")) src.split("|").forEach(s => { if (score[s]!==undefined) score[s]+=1; });
+  // Icône / images (si dispo dans Overframe)
+  const icon = srcOf?.icon || srcOf?.image || srcOf?.iconUrl || srcOf?.imageUrl;
+  if (icon) { out.icon = icon; provenance.icon = "overframe"; }
+
+  // URL Overframe (si slug connu)
+  if (srcOf?.slug || srcOf?.url || srcOf?.path) {
+    const ofSlug = srcOf.slug || (String(srcOf.url || srcOf.path).split("/").filter(Boolean).pop());
+    if (ofSlug) {
+      out.urls = { ...(out.urls||{}), overframe: `https://overframe.gg/items/arsenal/${ofSlug}` };
+      provenance.urls = "overframe";
+    }
   }
-  let topSrc = Object.entries(score).sort((a,b)=>b[1]-a[1])[0][0];
-  out.source = { ...provenance, name: topSrc };
+
+  // Augment ?
+  out.isAugment = detectAugment({
+    name: out.name,
+    description: out.description,
+    tags: out.tags,
+    categories: out.categories,
+    compat: out.compat,
+    type: out.type
+  });
+  provenance.isAugment = "derived";
 
   // --- Barrière anti-Arcane (sécurité finale) ---
   const looksArcane =
@@ -365,10 +421,19 @@ for (const k of Array.from(allKeys).sort()) {
     continue;
   }
 
+  // Stockage
   result.push(out);
-  report.push({ slug, name: out.name, provenance, mergedFrom: {
-    overframe: !!srcOf, export: !!srcExp, warframestat: !!srcStat, mods_json: !!srcMods
-  }});
+  report.push({
+    slug,
+    name: out.name,
+    provenance,
+    mergedFrom: {
+      overframe: !!srcOf,
+      export: !!srcExp,
+      warframestat: !!srcStat,
+      mods_json: !!srcMods
+    }
+  });
 }
 
 // ---------- Tri & sorties ----------
@@ -376,13 +441,13 @@ result.sort((a,b)=>a.name.localeCompare(b.name));
 fs.writeFileSync(OUT_JSON, JSON.stringify(result, null, 2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify(report,  null, 2), "utf-8");
 
-// CSV rapide
-const headers = ["id","name","rarity","polarity","drain","type","compat","isAugment","set.name","set.size"];
+// CSV rapide (aperçu)
+const headers = ["id","name","rarity","polarity","drain","type","compat","isAugment","maxRank","set.name","set.size"];
 const lines = [headers.join(",")];
 for (const m of result) {
   const line = [
     m.id, m.name, m.rarity||"", m.polarity||"", m.drain??"", m.type||"", m.compat||"",
-    m.isAugment ? "1":"0", m.set?.name||"", m.set?.size??""
+    m.isAugment ? "1":"0", m.maxRank ?? "", m.set?.name||"", m.set?.size??""
   ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(",");
   lines.push(line);
 }
