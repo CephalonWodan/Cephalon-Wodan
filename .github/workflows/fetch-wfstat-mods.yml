@@ -1,0 +1,83 @@
+name: Fetch WarframeStat Mods (EN)
+
+on:
+  # Lancement manuel
+  workflow_dispatch: {}
+
+  # Planification (toutes les 6h)
+  schedule:
+    - cron: "5 */6 * * *"
+
+  # Relance si le script change
+  push:
+    paths:
+      - "tools/fetch_warframestat_mods.js"
+      - ".github/workflows/fetch-wfstat-mods.yml"
+      # éviter les boucles
+      - "!data/modwarframestat.json"
+
+  # Pour l'orchestrateur/pipeline
+  workflow_call: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-wfstat-mods
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    name: Download mods (EN) from WarframeStat
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Ensure data directory
+        run: mkdir -p data
+
+      # Si le script n'est pas encore versionné, on peut l'écrire à la volée (désactive si déjà présent)
+      # - name: Write fetch script (optional bootstrap)
+      #   run: |
+      #     mkdir -p tools
+      #     cat > tools/fetch_warframestat_mods.js <<'JS'
+      #     (colle ici le contenu du script si tu veux le générer dynamiquement)
+      #     JS
+
+      - name: Fetch WarframeStat mods (EN)
+        env:
+          WS_LANG: en
+        run: node tools/fetch_warframestat_mods.js
+
+      - name: Show result (quick stats)
+        run: |
+          echo "Head of data/modwarframestat.json:"
+          head -n 40 data/modwarframestat.json || true
+          echo
+          echo "Size:"
+          stat -c '%n %s bytes' data/modwarframestat.json || true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wfstat-mods-en
+          path: data/modwarframestat.json
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/modwarframestat.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(wfstat): refresh modwarframestat.json (EN) [skip ci]"
+            git push
+          fi
