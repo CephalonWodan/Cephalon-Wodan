@@ -1,8 +1,6 @@
 name: Update Warframe Public Export JSONs
 
 on:
-  schedule:
-    - cron: "0 */6 * * *"   # toutes les 6h
   workflow_dispatch:        # lancement manuel
   workflow_call: {}         # <-- ajouté pour permettre l'appel par un orchestrateur
 
