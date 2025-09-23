@@ -3,19 +3,7 @@ name: Fetch WarframeStat Mods (EN)
 on:
   # Lancement manuel
   workflow_dispatch: {}
-
-  # Planification (toutes les 6h)
-  schedule:
-    - cron: "5 */6 * * *"
-
-  # Relance si le script change
-  push:
-    paths:
-      - "tools/fetch_warframestat_mods.js"
-      - ".github/workflows/fetch-wfstat-mods.yml"
-      # éviter les boucles
-      - "!data/modwarframestat.json"
-
+  
   # Pour l'orchestrateur/pipeline
   workflow_call: {}
 
