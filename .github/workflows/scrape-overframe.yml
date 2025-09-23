@@ -1,9 +1,6 @@
 name: Overframe — Pages & Chunks
 
 on:
-  schedule:
-    - cron: "17 3 * * *"    # scrape pages (quotidien)
-    - cron: "13 4 * * 1"    # extract chunks (hebdo)
   workflow_dispatch: {}
   workflow_call: {}         # <-- ajouté pour permettre l'appel depuis un orchestrateur
 
