@@ -1,0 +1,60 @@
+name: Build enriched_relics.json
+
+on:
+  workflow_dispatch: {}
+  push:
+    paths:
+      - "tools/enrich_relics.js"
+      - "data/ExportRelicArcane_en.json"
+      - "data/wfcd_drops/**"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-relics
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Ensure data dir
+        run: mkdir -p data
+
+      - name: Build enriched_relics
+        run: node tools/enrich_relics.js
+
+      - name: Show head
+        run: |
+          head -n 40 data/enriched_relics.json || true
+          wc -l data/enriched_relics.csv || true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enriched_relics
+          path: |
+            data/enriched_relics.json
+            data/enriched_relics.csv
+            data/enriched_relics_report.json
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/enriched_relics.json data/enriched_relics.csv data/enriched_relics_report.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore(relics): update enriched relics"
+            git push
+          fi
