@@ -1,0 +1,80 @@
+name: Orchestrator (full data pipeline)
+
+on:
+  workflow_dispatch:
+    inputs:
+      allowPartial:
+        description: "Continuer même si un job non-critique échoue (scrape Overframe, WFCD)"
+        type: boolean
+        default: true
+  schedule:
+    - cron: "5 */6 * * *"   # lance la chaîne toutes les 6h (après les autres crons si tu en as)
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pipeline-orchestrator
+  cancel-in-progress: false
+
+jobs:
+  # 1) Exports officiels DE (PublicExport)
+  update_exports:
+    name: 1) Update DE Public Export
+    uses: ./.github/workflows/update-exports.yml
+    secrets: inherit
+    permissions:
+      contents: write
+
+  # 2) Jeux de données WFCD
+  update_wfcd:
+    name: 2) Update WFCD datasets
+    uses: ./.github/workflows/update-wfcd.yml
+    needs: [update_exports]
+    if: ${{ (success() || (inputs.allowPartial && always())) }}
+    continue-on-error: ${{ inputs.allowPartial }}
+    secrets: inherit
+    permissions:
+      contents: write
+
+  # 3) Overframe (pages + chunks)
+  scrape_overframe:
+    name: 3) Scrape Overframe (pages & chunks)
+    uses: ./.github/workflows/scrape-overframe.yml
+    needs: [update_exports, update_wfcd]
+    if: ${{ (success() || (inputs.allowPartial && always())) }}
+    continue-on-error: ${{ inputs.allowPartial }}
+    secrets: inherit
+    permissions:
+      contents: write
+
+  # 4) Enrich mods (fusion multi-sources)
+  enrich_mods:
+    name: 4) Build enriched_mods
+    uses: ./.github/workflows/enrich-mods.yml
+    needs: [update_exports, update_wfcd, scrape_overframe]
+    # si Overframe a échoué mais allowPartial=true, on continue pour utiliser DE/WFCD
+    if: ${{ (success() || (inputs.allowPartial && always())) }}
+    secrets: inherit
+    permissions:
+      contents: write
+
+  # 5) Build reliques (DE + WFCD drops)
+  build_relics:
+    name: 5) Build enriched_relics
+    uses: ./.github/workflows/build-relics.yml
+    needs: [update_exports, update_wfcd]
+    if: ${{ (success() || (inputs.allowPartial && always())) }}
+    secrets: inherit
+    permissions:
+      contents: write
+
+  # 6) Merge Warframes final (ton merged_warframe.json)
+  build_merged_warframes:
+    name: 6) Build merged_warframe.json
+    uses: ./.github/workflows/build-merged-warfames.yml
+    needs: [enrich_mods, build_relics]
+    if: ${{ (success() || (inputs.allowPartial && always())) }}
+    secrets: inherit
+    permissions:
+      contents: write
