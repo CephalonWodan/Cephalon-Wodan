@@ -4,25 +4,6 @@ on:
   # lancement manuel
   workflow_dispatch: {}
 
-  # toutes les 6h (tu peux ajuster)
-  schedule:
-    - cron: "10 */6 * * *"
-
-  # se relance si une des sources d'entrée change
-  push:
-    paths:
-      - "tools/enrich_mods.js"
-      - "data/ExportUpgrades_en.json"
-      - "data/modwarframestat.json"
-      - "data/Mods.json"
-      - "data/overframe/overframe-mods.json"
-      - "data/overframe/overframe-modsets.json"
-      - ".github/workflows/enrich-mods.yml"
-      # IMPORTANT : on évite toute boucle inutile
-      - "!data/enriched_mods.json"
-      - "!data/enriched_mods_report.json"
-      - "!data/enriched_mods.csv"
-
   # permet l'appel par l'orchestrateur (pipeline)
   workflow_call: {}
 
