@@ -7,7 +7,9 @@ on:
       - "tools/enrich_relics.js"
       - "data/ExportRelicArcane_en.json"
       - "data/wfcd_drops/**"
-
+      
+ workflow_call: {}
+ 
 permissions:
   contents: write
 
