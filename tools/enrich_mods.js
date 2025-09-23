@@ -1,6 +1,6 @@
-// tools/enrich_mods.js (v2 + patches)
-// Fusionne ExportUpgrades_en.json + modwarframestat.json + overframe-mods.json + overframe-modsets.json + Mods.json
-// Produit: data/enriched_mods.json, data/enriched_mods_report.json, data/enriched_mods.csv
+// tools/enrich_mods.js (v3 — clean fields, WStat priority, no URLs/slug/isAugment)
+// Sources : ExportUpgrades_en.json + modwarframestat.json + overframe-mods.json + overframe-modsets.json + Mods.json
+// Sorties : data/enriched_mods.json, data/enriched_mods_report.json, data/enriched_mods.csv
 
 import fs from "fs";
 import path from "path";
@@ -155,7 +155,7 @@ for (const m of A_mods) {
   mapMods.set(keyifyName(n), m);
 }
 
-// ---------- Sets: mod -> set meta ----------
+// ---------- Sets: mod -> set meta (depuis overframe-modsets.json) ----------
 const setByMod = new Map();
 const setMeta  = new Map();
 for (const s of A_ofsets) {
@@ -170,11 +170,10 @@ for (const s of A_ofsets) {
   });
 }
 
-// ---------- Helpers: génération d'effets textuels ----------
+// ---------- Effects helpers (lisibles) ----------
 function fmtVal(v) {
   if (v == null) return "";
   if (typeof v === "number") {
-    // Heuristique simple : petits nombres => pourcentages plausibles
     return Math.abs(v) <= 5 ? `${(v * 100).toFixed(0)}%` : `${v}`;
   }
   return String(v);
@@ -188,17 +187,7 @@ function pushEffect(arr, label, values, unit) {
     arr.push(unit ? `${label} ${unit}`.trim() : `${label}`);
   }
 }
-function effectFromExportEntry(e) {
-  const stat = e?.stat || e?.name || e?.attribute || e?.type || e?.effect;
-  if (!stat) return null;
-  const unit = e?.unit || e?.suffix || undefined;
-  let values = null;
-  if (Array.isArray(e?.values)) values = e.values;
-  else if (Array.isArray(e?.levels)) values = e.levels;
-  else if (typeof e?.value === "number" || typeof e?.value === "string") values = [e.value];
-  return { stat: String(stat), values: values ?? [], unit };
-}
-function effectFromOverframeBlock(b) {
+function effectFromBlock(b) {
   const stat = b?.stat || b?.name || b?.attribute || b?.type || b?.effect;
   if (!stat) return null;
   const unit = b?.unit || b?.suffix || undefined;
@@ -208,39 +197,9 @@ function effectFromOverframeBlock(b) {
   else if (typeof b?.value === "number" || typeof b?.value === "string") values = [b.value];
   return { stat: String(stat), values: values ?? [], unit };
 }
-
-// ---------- Heuristiques Augment ----------
-function detectAugment({ name, description, tags, categories, compat, type }) {
-  const t = String(type || "").toLowerCase();
-  const cats = toLowerArray(categories);
-  const tgs  = toLowerArray(tags);
-  const txt  = (name + " " + (description || "")).toLowerCase();
-
-  if (tgs.includes("augment") || cats.includes("augment")) return true;
-  if (t.includes("augment")) return true;
-  if (/['’]s augment\b/i.test(name)) return true;
-  if (/\baugment\b/.test(txt)) return true;
-
-  // Augments de Warframes: compat = nom de Warframe souvent
-  if (compat && !/melee|rifle|pistol|shotgun|archgun|sentinel|exilus/i.test(String(compat))) {
-    if (/^[A-Z][a-z]+(\sPrime)?$/.test(String(compat))) return true;
-  }
-  return false;
-}
-
-// ---------- Union des noms ----------
-const allKeys = new Set([
-  ...mapExport.keys(),
-  ...mapOfmods.keys(),
-  ...mapWstat.keys(),
-  ...mapMods.keys()
-]);
-
-// ---------- Extraction des stats structurées ----------
 function extractStatsFromExport(u) {
   const out = [];
   if (!u) return out;
-  const maxRank = u?.maxRank ?? u?.max_level ?? u?.maxLevel ?? null;
   const entries = asArray(u.upgradeEntries || u.stats || u.effects || u.values || u.levelStats);
   for (const e of entries) {
     const stat = e?.stat || e?.name || e?.attribute || e?.type || e?.effect;
@@ -255,8 +214,6 @@ function extractStatsFromExport(u) {
       stat: String(stat),
       type: String(type),
       values: Array.isArray(values) ? values : undefined,
-      atRank: (typeof e?.rank === "number") ? e.rank : undefined,
-      maxRank: (typeof maxRank === "number") ? maxRank : undefined,
       unit: e?.unit || e?.suffix || undefined
     });
   }
@@ -285,6 +242,14 @@ function extractStatsFromOverframe(m) {
   return out;
 }
 
+// ---------- Union des noms ----------
+const allKeys = new Set([
+  ...mapExport.keys(),
+  ...mapOfmods.keys(),
+  ...mapWstat.keys(),
+  ...mapMods.keys()
+]);
+
 // ---------- Fusion principale ----------
 const result = [];
 const report = [];
@@ -304,12 +269,12 @@ for (const k of Array.from(allKeys).sort()) {
       srcStat?.name || srcMods?.name
     );
   if (!name) continue;
-  const slug = slugify(name);
-  if (seenIds.has(slug)) continue; // anti-doublon
-  seenIds.add(slug);
+  const id = slugify(name);
+  if (seenIds.has(id)) continue;
+  seenIds.add(id);
 
   const provenance = {};
-  const out = { id: slug, name, slug };
+  const out = { id, name }; // pas de slug (redondant)
 
   // Description (garde langue)
   {
@@ -319,186 +284,123 @@ for (const k of Array.from(allKeys).sort()) {
       warframestat: srcStat?.description || srcStat?.desc,
       mods: srcMods?.description || srcMods?.desc
     };
-    let chosen = cand.overframe ?? cand.export ?? cand.warframestat ?? cand.mods;
+    let chosen = cand.warframestat ?? cand.overframe ?? cand.export ?? cand.mods; // priorité WStat si dispo
     if (LANG_TARGET === "en" && looksFrench(chosen)) {
-      const alt = [cand.overframe, cand.export, cand.warframestat, cand.mods].find(v => v && !looksFrench(v));
+      const alt = [cand.warframestat, cand.overframe, cand.export, cand.mods].find(v => v && !looksFrench(v));
       if (alt) chosen = alt;
     }
     if (chosen) {
       out.description = chosen;
-      if (chosen === cand.overframe) provenance.description = "overframe";
+      if (chosen === cand.warframestat) provenance.description = "warframestat";
+      else if (chosen === cand.overframe) provenance.description = "overframe";
       else if (chosen === cand.export) provenance.description = "export";
-      else if (chosen === cand.warframestat) provenance.description = "warframestat";
       else if (chosen === cand.mods) provenance.description = "mods.json";
     }
   }
 
-  // Rareté
+  // Rareté / Polarité / Type (priorité WStat si présent, sinon autres)
   takeFirst(out,
-    [srcOf, srcExp, srcStat, srcMods],
+    [srcStat, srcOf, srcExp, srcMods],
     "rarity",
-    ["overframe", "export", "warframestat", "mods.json"],
+    ["warframestat", "overframe", "export", "mods.json"],
     provenance
   );
-
-  // Polarité
   takeFirst(out,
-    [{ polarity: srcOf?.polarity ?? srcOf?.polaritySymbol }, srcExp, srcStat, srcMods],
+    [srcStat, { polarity: srcOf?.polarity ?? srcOf?.polaritySymbol }, srcExp, srcMods],
     "polarity",
-    ["overframe", "export", "warframestat", "mods.json"],
+    ["warframestat", "overframe", "export", "mods.json"],
     provenance
   );
+  // Type : normalise en "Mod" si besoin, mais on laisse le type WStat s'il est précis (ex: "Warframe Mod", "Primary Mod", etc.)
+  {
+    const tCand = srcStat?.type ?? srcOf?.type ?? srcOf?.tag ?? srcExp?.Type ?? srcMods?.type;
+    if (tCand) {
+      out.type = tCand;
+      provenance.type = srcStat?.type ? "warframestat" : (srcOf?.type || srcOf?.tag) ? "overframe" : (srcExp?.Type ? "export" : "mods.json");
+    } else {
+      out.type = "Mod";
+    }
+  }
 
-  // Drain
+  // Compat / Tags / Categories
   takeFirst(out,
-    [{ drain: srcOf?.baseDrain ?? srcOf?.drain }, srcExp, srcStat, srcMods],
-    "drain",
-    ["overframe", "export", "warframestat", "mods.json"],
+    [{ compatName: srcStat?.compatName }, srcOf, srcExp, srcMods],
+    "compatName",
+    ["warframestat", "overframe", "export", "mods.json"],
     provenance
   );
-
-  // Type / Tag (normalize vers "Mod" si reconnu)
-  const typeCandidate = srcOf?.type ?? srcOf?.tag ?? srcExp?.Type ?? srcStat?.type ?? srcMods?.type;
-  if (typeCandidate) {
-    const t = String(typeCandidate).toLowerCase();
-    out.type = (t === "mod" || t === "mods" || t.includes("upgrade")) ? "Mod" : typeCandidate;
-    provenance.type = (srcOf?.type || srcOf?.tag) ? "overframe" : (srcExp?.Type ? "export" : (srcStat?.type ? "warframestat" : "mods.json"));
-  } else {
-    out.type = "Mod";
-  }
-
-  // Compat
-  const compatCandidate = srcOf?.compatName ?? srcOf?.compat ?? srcExp?.Compat ?? srcStat?.compat ?? srcMods?.compat;
-  if (compatCandidate) {
-    out.compat = compatCandidate;
-    provenance.compat = (srcOf?.compatName || srcOf?.compat) ? "overframe" : (srcExp?.Compat ? "export" : (srcStat?.compat ? "warframestat" : "mods.json"));
-  }
-
-  // Tags / Categories
   const tags = Array.isArray(srcOf?.tags) ? srcOf.tags :
                (Array.isArray(srcStat?.tags) ? srcStat.tags :
                (Array.isArray(srcMods?.tags) ? srcMods.tags : null));
-  if (tags?.length) { out.tags = uniq(tags); provenance.tags = Array.isArray(srcOf?.tags) ? "overframe" : (Array.isArray(srcStat?.tags) ? "warframestat" : "mods.json"); }
+  if (tags?.length) { out.tags = uniq(tags); provenance.tags = Array.isArray(srcStat?.tags) ? "warframestat" : Array.isArray(srcOf?.tags) ? "overframe" : "mods.json"; }
 
   const cat = Array.isArray(srcOf?.categories) ? srcOf.categories :
               (Array.isArray(srcStat?.categories) ? srcStat.categories :
               (Array.isArray(srcMods?.categories) ? srcMods.categories : null));
-  if (cat?.length) { out.categories = uniq(cat); provenance.categories = Array.isArray(srcOf?.categories) ? "overframe" : (Array.isArray(srcStat?.categories) ? "warframestat" : "mods.json"); }
+  if (cat?.length) { out.categories = uniq(cat); provenance.categories = Array.isArray(srcStat?.categories) ? "warframestat" : Array.isArray(srcOf?.categories) ? "overframe" : "mods.json"; }
 
-  // ---------- RAW par source (pour rendu précis) ----------
-  if (srcExp && (srcExp.upgradeEntries || srcExp.levelStats || srcExp.stats)) {
-    out.raw = out.raw || {};
-    out.raw.export = {
-      upgradeEntries: asArray(srcExp.upgradeEntries),
-      levelStats: asArray(srcExp.levelStats),
-      stats: asArray(srcExp.stats),
-      maxRank: srcExp?.maxRank ?? srcExp?.max_level ?? srcExp?.maxLevel ?? null
-    };
-  }
-  if (srcOf && (srcOf.stats || srcOf.effects || srcOf.values)) {
-    out.raw = out.raw || {};
-    out.raw.overframe = {
-      stats: asArray(srcOf.stats),
-      effects: asArray(srcOf.effects),
-      values: asArray(srcOf.values),
-      maxRank: srcOf?.maxRank ?? srcOf?.max_level ?? srcOf?.maxLevel ?? null
-    };
-  }
-  if (srcStat && (srcStat.effects || srcStat.stats || srcStat.levelStats)) {
-    out.raw = out.raw || {};
-    out.raw.warframestat = {
-      effects: asArray(srcStat.effects),
-      stats: asArray(srcStat.stats),
-      levelStats: asArray(srcStat.levelStats),
-      maxRank: srcStat?.maxRank ?? srcStat?.max_level ?? srcStat?.maxLevel ?? null
-    };
+  // Champs spécifiques WarframeStat (prioritaires)
+  if (typeof srcStat?.baseDrain === "number") { out.baseDrain = srcStat.baseDrain; provenance.baseDrain = "warframestat"; }
+  if (typeof srcStat?.fusionLimit === "number") { out.fusionLimit = srcStat.fusionLimit; provenance.fusionLimit = "warframestat"; }
+  if (Array.isArray(srcStat?.drops) && srcStat.drops.length) { out.drops = srcStat.drops; provenance.drops = "warframestat"; }
+
+  // Drain générique si pas de baseDrain (fallback OF/Export/Mods)
+  if (out.baseDrain == null) {
+    const candidate = srcOf?.baseDrain ?? srcOf?.drain ?? srcExp?.baseDrain ?? srcMods?.drain ?? null;
+    if (candidate != null) { out.baseDrain = candidate; provenance.baseDrain = provenance.baseDrain || "mixed"; }
   }
 
-  // maxRank + drainByRank
-  const ranksFrom =
-    out.raw?.export?.maxRank ?? out.raw?.overframe?.maxRank ?? out.raw?.warframestat?.maxRank ?? null;
-  if (typeof ranksFrom === "number") {
-    out.maxRank = ranksFrom;
-    provenance.maxRank = "mixed";
-  }
-  const drainVals = Array.isArray(srcOf?.drainByRank) ? srcOf.drainByRank
-                    : Array.isArray(srcExp?.drainByRank) ? srcExp.drainByRank
-                    : null;
-  if (drainVals && drainVals.length) {
-    out.drainByRank = drainVals;
-    provenance.drainByRank = "mixed";
-  }
-
-  // ---------- Effects normalisés (lisibles) ----------
+  // ---------- Effects lisibles ----------
   const effects = [];
-  const expEntries = asArray(srcExp?.upgradeEntries || srcExp?.stats || srcExp?.levelStats);
-  for (const e of expEntries) {
-    const eff = effectFromExportEntry(e);
+  // Export-based
+  for (const e of asArray(srcExp?.upgradeEntries || srcExp?.stats || srcExp?.levelStats)) {
+    const eff = effectFromBlock(e);
     if (eff) pushEffect(effects, eff.stat, eff.values, eff.unit);
   }
-  const ofBlocks = asArray(srcOf?.stats || srcOf?.effects || srcOf?.values);
-  for (const b of ofBlocks) {
-    const eff = effectFromOverframeBlock(b);
+  // Overframe-based
+  for (const b of asArray(srcOf?.stats || srcOf?.effects || srcOf?.values)) {
+    const eff = effectFromBlock(b);
     if (eff) pushEffect(effects, eff.stat, eff.values, eff.unit);
   }
+  // Warframestat (seulement si rien d’autre n’a donné des effets structurés)
   if (effects.length === 0) {
-    const wsBlocks = asArray(srcStat?.effects || srcStat?.stats || srcStat?.levelStats);
-    for (const b of wsBlocks) {
-      const eff = effectFromOverframeBlock(b);
+    for (const b of asArray(srcStat?.effects || srcStat?.stats || srcStat?.levelStats)) {
+      const eff = effectFromBlock(b);
       if (eff) pushEffect(effects, eff.stat, eff.values, eff.unit);
     }
   }
   if (effects.length) {
     out.effects = effects;
-    provenance.effects =
-      expEntries.length && ofBlocks.length ? "export|overframe"
-      : (expEntries.length ? "export"
-        : (ofBlocks.length ? "overframe" : "warframestat"));
+    provenance.effects = "auto";
   }
 
-  // ---------- Stats (structure) conservées pour compat technique ----------
-  const statsExp = extractStatsFromExport(srcExp);
-  const statsOf  = extractStatsFromOverframe(srcOf);
-  let stats = [];
-  if (statsExp.length && statsOf.length) {
-    stats = [...statsExp, ...statsOf];
-    provenance.stats = "export|overframe";
-  } else if (statsExp.length) {
-    stats = statsExp; provenance.stats = "export";
-  } else if (statsOf.length) {
-    stats = statsOf; provenance.stats = "overframe";
+  // ---------- LevelStats texte par rang (depuis WarframeStat si dispo) ----------
+  if (Array.isArray(srcStat?.levelStats) && srcStat.levelStats.length) {
+    out.levelStats = srcStat.levelStats;
+    provenance.levelStats = "warframestat";
   }
-  if (stats.length) out.stats = stats;
+  // NB: on n’écrit pas maxRank si null, de toute façon levelStats suffit.
 
-  // ---------- URL Overframe : uniquement si fiable ----------
-  {
-    const pathish = String(srcOf?.url || srcOf?.path || "").toLowerCase();
-    const numericId = /^\d+$/.test(String(srcOf?.id || srcOf?.arsenalId || "").trim())
-      ? String(srcOf.id || srcOf.arsenalId).trim()
-      : null;
+  // ---------- RAW (uniquement si non vide) ----------
+  const raw = {};
+  const rx = asArray(srcExp?.upgradeEntries || srcExp?.stats || srcExp?.levelStats);
+  if (rx.length) raw.export = { upgradeEntries: rx };
+  const ro = asArray(srcOf?.stats || srcOf?.effects || srcOf?.values);
+  if (ro.length) raw.overframe = { stats: ro };
+  const rw = (Array.isArray(srcStat?.effects) && srcStat.effects.length) ||
+             (Array.isArray(srcStat?.stats)   && srcStat.stats.length)   ? {
+               effects: asArray(srcStat.effects),
+               stats:   asArray(srcStat.stats)
+             } : null;
+  if (rw) raw.warframestat = rw;
+  if (Object.keys(raw).length) out.raw = raw; // sinon pas de raw.*
 
-    let url = null;
-    if (numericId) {
-      url = `https://overframe.gg/items/arsenal/${numericId}/`;
-    } else if (pathish.includes("/items/arsenal/")) {
-      url = srcOf.url || srcOf.path;
-    }
-    if (url) {
-      out.urls = { ...(out.urls || {}), overframe: url };
-      provenance.urls = "overframe";
-    }
+  // ---------- Set (depuis OF sets)
+  const setName = setByMod.get(k);
+  if (setName) {
+    out.set = setMeta.get(setName) || { name: setName };
+    provenance.set = "overframe-modsets";
   }
-
-  // Augment ?
-  out.isAugment = detectAugment({
-    name: out.name,
-    description: out.description,
-    tags: out.tags,
-    categories: out.categories,
-    compat: out.compat,
-    type: out.type
-  });
-  provenance.isAugment = "derived";
 
   // --- Barrière anti-Arcane (sécurité finale) ---
   const looksArcane =
@@ -506,14 +408,14 @@ for (const k of Array.from(allKeys).sort()) {
     String(out.type || "").toLowerCase().includes("arcane") ||
     (Array.isArray(out.categories) && out.categories.map(c => String(c).toLowerCase()).includes("arcane"));
   if (EXCLUDE_ARCANES && looksArcane) {
-    report.push({ slug, name: out.name, excluded: "arcane-detected", provenance });
+    report.push({ id, name: out.name, excluded: "arcane-detected", provenance });
     continue;
   }
 
   // Stockage
   result.push(out);
   report.push({
-    slug,
+    id,
     name: out.name,
     provenance,
     mergedFrom: {
@@ -530,14 +432,20 @@ result.sort((a, b) => a.name.localeCompare(b.name));
 fs.writeFileSync(OUT_JSON, JSON.stringify(result, null, 2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify(report,  null, 2), "utf-8");
 
-// CSV rapide (aperçu)
-const headers = ["id","name","rarity","polarity","drain","type","compat","isAugment","maxRank","set.name","set.size"];
+// ---------- CSV (aperçu ciblé) ----------
+const headers = [
+  "id","name","type","polarity","rarity",
+  "baseDrain","fusionLimit","compatName",
+  "hasLevelStats","dropsCount"
+];
 const lines = [headers.join(",")];
 for (const m of result) {
   const line = [
-    m.id, m.name, m.rarity || "", m.polarity || "", m.drain ?? "", m.type || "", m.compat || "",
-    m.isAugment ? "1" : "0", m.maxRank ?? "", m.set?.name || "", m.set?.size ?? ""
-  ].map(v => `"${String(v).replace(/"/g, '""')}"`).join(",");
+    m.id, m.name, m.type||"", m.polarity||"", m.rarity||"",
+    m.baseDrain ?? "", m.fusionLimit ?? "", m.compatName || "",
+    Array.isArray(m.levelStats) && m.levelStats.length ? "1":"0",
+    Array.isArray(m.drops) ? m.drops.length : 0
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(",");
   lines.push(line);
 }
 fs.writeFileSync(OUT_CSV, lines.join("\n"), "utf-8");
