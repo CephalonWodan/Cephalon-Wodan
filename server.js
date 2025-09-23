@@ -35,6 +35,32 @@ async function loadMergedWarframe() {
   return _mergedCache.json;
 }
 
+/* -------------------- Ajout : loaders Mods & Relics ----------------------- */
+const MODS_PATH   = resolve(process.cwd(), 'data/enriched_mods.json');
+const RELICS_PATH = resolve(process.cwd(), 'data/enriched_relics.json');
+
+let _modsCache   = { mtimeMs: 0, json: null };
+let _relicsCache = { mtimeMs: 0, json: null };
+
+async function loadMods() {
+  const st = await stat(MODS_PATH);
+  if (!_modsCache.json || _modsCache.mtimeMs !== st.mtimeMs) {
+    const txt = await readFile(MODS_PATH, 'utf-8');
+    _modsCache = { mtimeMs: st.mtimeMs, json: JSON.parse(txt) };
+  }
+  return _modsCache.json;
+}
+
+async function loadRelics() {
+  const st = await stat(RELICS_PATH);
+  if (!_relicsCache.json || _relicsCache.mtimeMs !== st.mtimeMs) {
+    const txt = await readFile(RELICS_PATH, 'utf-8');
+    _relicsCache = { mtimeMs: st.mtimeMs, json: JSON.parse(txt) };
+  }
+  return _relicsCache.json;
+}
+
+/* ------------------------------ Helpers ---------------------------------- */
 function paginate(arr, { page = 1, per_page = 25 } = {}) {
   const p = Math.max(1, Number(page) || 1);
   const pp = Math.min(200, Math.max(1, Number(per_page) || 25));
@@ -69,6 +95,9 @@ function normName(s) {
     .trim()
     .toLowerCase();
 }
+
+const contains = (a, b) => String(a ?? '').toLowerCase().includes(String(b ?? '').toLowerCase());
+const eq       = (a, b) => String(a ?? '').toLowerCase() === String(b ?? '').toLowerCase();
 
 /* -------------------------- Endpoint statique JSON ------------------------ */
 // GET /merged/warframe  -> renvoie le JSON fusionné brut
@@ -162,6 +191,117 @@ for (const [route, t] of [
     }
   });
 }
+
+/* --------------------------- Nouvelles routes : MODS ---------------------- */
+// GET /mods?search=&type=&compat=&polarity=&rarity=&augment=0|1&set=&tag=&limit=
+app.get('/mods', async (req, res) => {
+  try {
+    let mods = await loadMods();
+
+    const q        = req.query.search ?? '';
+    const type     = req.query.type;
+    const compat   = req.query.compat;
+    const pol      = req.query.polarity;
+    const rarity   = req.query.rarity;
+    const tag      = req.query.tag;
+    const setName  = req.query.set;
+    const augment  = req.query.augment; // "1"|"0"
+    const limit    = Math.min(parseInt(req.query.limit || '0', 10) || 0, 5000);
+
+    if (q)       mods = mods.filter(m => contains(m.name, q));
+    if (type)    mods = mods.filter(m => eq(m.type, type));
+    if (compat)  mods = mods.filter(m => eq(m.compat, compat));
+    if (pol)     mods = mods.filter(m => eq(m.polarity, pol));
+    if (rarity)  mods = mods.filter(m => eq(m.rarity, rarity));
+    if (tag)     mods = mods.filter(m => (m.tags||[]).some(t => eq(t, tag)));
+    if (setName) mods = mods.filter(m => eq(m.set?.name, setName));
+    if (augment === '1' || augment === '0') {
+      const want = augment === '1';
+      mods = mods.filter(m => !!m.isAugment === want);
+    }
+    if (limit) mods = mods.slice(0, limit);
+
+    res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+    res.json(mods);
+  } catch (e) {
+    res.status(500).json({ error: 'failed to read enriched_mods.json' });
+  }
+});
+
+// GET /mods/:slug
+app.get('/mods/:slug', async (req, res) => {
+  try {
+    const mods = await loadMods();
+    const m = mods.find(x => x.slug === req.params.slug || x.id === req.params.slug);
+    if (!m) return res.status(404).json({ error: 'mod not found' });
+    res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+    res.json(m);
+  } catch (e) {
+    res.status(500).json({ error: 'failed to read enriched_mods.json' });
+  }
+});
+
+/* ------------------------- Nouvelles routes : RELICS ---------------------- */
+// GET /relics?era=&code=&vaulted=1|0&requiem=1|0&refine=Radiant&search=&limit=
+app.get('/relics', async (req, res) => {
+  try {
+    let relics = await loadRelics();
+
+    const era     = req.query.era;
+    const code    = req.query.code;
+    const vaulted = req.query.vaulted;   // "1"|"0"
+    const requiem = req.query.requiem;   // "1"|"0"
+    const refine  = req.query.refine;    // Intact|Exceptional|Flawless|Radiant
+    const q       = req.query.search ?? '';
+    const limit   = Math.min(parseInt(req.query.limit || '0', 10) || 0, 5000);
+
+    if (era)   relics = relics.filter(r => eq(r.era, era));
+    if (code)  relics = relics.filter(r => eq(r.code, code));
+    if (q)     relics = relics.filter(r => contains(r.name, q));
+
+    if (vaulted === '1' || vaulted === '0') {
+      const want = vaulted === '1';
+      relics = relics.filter(r => (r.isVaulted === undefined ? false : r.isVaulted) === want);
+    }
+    if (requiem === '1' || requiem === '0') {
+      const want = requiem === '1';
+      relics = relics.filter(r => !!r.isRequiem === want);
+    }
+    if (refine) {
+      relics = relics
+        .map(r => ({ ...r, rewards: { [refine]: r.rewards?.[refine] || [] } }))
+        .filter(r => (r.rewards?.[refine] || []).length > 0);
+    }
+    if (limit) relics = relics.slice(0, limit);
+
+    res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+    res.json(relics);
+  } catch (e) {
+    res.status(500).json({ error: 'failed to read enriched_relics.json' });
+  }
+});
+
+// GET /relics/:era and GET /relics/:era/:code
+app.get('/relics/:era/:code?', async (req, res) => {
+  try {
+    const relics = await loadRelics();
+    const { era, code } = req.params;
+
+    if (code) {
+      const r = relics.find(x => eq(x.era, era) && eq(x.code, code));
+      if (!r) return res.status(404).json({ error: 'relic not found' });
+      res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+      return res.json(r);
+    }
+
+    const list = relics.filter(x => eq(x.era, era));
+    if (!list.length) return res.status(404).json({ error: 'no relics for era' });
+    res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+    res.json(list);
+  } catch (e) {
+    res.status(500).json({ error: 'failed to read enriched_relics.json' });
+  }
+});
 
 /* ---------------------------- Tes routes existantes ----------------------- */
 app.get('/api/:platform', async (req, res) => {
