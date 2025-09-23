@@ -1,15 +1,19 @@
 name: Build enriched_relics.json
 
 on:
+  # appelé par l'orchestrateur
+  workflow_call: {}
+
+  # lancement manuel (optionnel)
   workflow_dispatch: {}
+
+  # relance automatique si les sources changent (optionnel)
   push:
     paths:
       - "tools/enrich_relics.js"
       - "data/ExportRelicArcane_en.json"
       - "data/wfcd_drops/**"
-      
- workflow_call: {}
- 
+
 permissions:
   contents: write
 
@@ -20,6 +24,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
