@@ -1,12 +1,5 @@
 {
-  "total": 0,
-  "skipped": 704,
-  "wfcdRelicsSeen": 2821,
-  "merge": {
-    "addedRefinements": 0,
-    "addedItems": 0,
-    "patchedRarity": 0,
-    "patchedChance": 0,
-    "samples": []
-  }
+  "total": 704,
+  "skipped_noRewards": 0,
+  "activeIndexUsed": true
 }
