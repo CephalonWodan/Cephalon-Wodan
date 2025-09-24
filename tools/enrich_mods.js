@@ -1,6 +1,5 @@
-// tools/enrich_mods.js (V6)
-// Fusionne: ExportUpgrades_en.json + modwarframestat.json + overframe-mods.json + overframe-modsets.json + Mods.json
-// Sorties: data/enriched_mods.json, data/enriched_mods.csv, data/enriched_mods_report.json
+// tools/enrich_mods.js (V7)
+// Objectif : id pris d’Overframe si dispo, pas de redondance id/slug/name, et stats par rang présentes.
 
 import fs from "fs";
 import path from "path";
@@ -47,30 +46,21 @@ const slugify = (s) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 
-const uniq = (arr) => Array.from(new Set(arr.filter(Boolean)));
+const uniq = (arr) => Array.from(new Set((arr || []).filter(Boolean)));
 
 const POLARITY_MAP = new Map([
-  ["madurai", "madurai"],
-  ["v", "madurai"],
-  ["naramon", "naramon"],
-  ["dash", "naramon"],
-  ["zenurik", "zenurik"],
-  ["d", "zenurik"],
-  ["vazarin", "vazarin"],
-  ["bar", "vazarin"],
+  ["madurai", "madurai"], ["v", "madurai"], ["mad", "madurai"],
+  ["naramon", "naramon"], ["-", "naramon"], ["dash", "naramon"],
+  ["zenurik", "zenurik"], ["d", "zenurik"],
+  ["vazarin", "vazarin"], ["bar", "vazarin"], ["|", "vazarin"],
   ["unairu", "unairu"],
-  ["umbra", "umbra"], // au cas où
+  ["umbra", "umbra"],
 ]);
 
 const normPolarity = (p) => {
   const s = String(p ?? "").toLowerCase().trim();
   if (!s) return undefined;
   if (POLARITY_MAP.has(s)) return POLARITY_MAP.get(s);
-  // quelques symboles/aliases fréquents
-  if (["v", "mad"].includes(s)) return "madurai";
-  if (["-", "dash"].includes(s)) return "naramon";
-  if (["d"].includes(s)) return "zenurik";
-  if (["bar", "|"].includes(s)) return "vazarin";
   return s;
 };
 
@@ -152,10 +142,8 @@ const allKeys = uniq([
 ]);
 
 /* ---------------------------- Level stats extraction --------------------- */
-// WFStat lvl stats: prefer textual per rank if present
 const extractLevelStatsWFStat = (m) => {
   const ls = asArray(m?.levelStats);
-  // format attendu: [{ stats: ["text rank 0"]}, { stats: ["text rank 1"]}, ...]
   const out = [];
   for (const e of ls) {
     const stats = asArray(e?.stats).map((s) => clean(s));
@@ -164,14 +152,12 @@ const extractLevelStatsWFStat = (m) => {
   return out.length ? out : null;
 };
 
-// fallback using DE/OF structures (best-effort)
 const extractLevelStatsGeneric = (src) => {
   if (!src) return null;
   const blocks = asArray(
     src.levelStats || src.upgradeEntries || src.stats || src.values || src.effects
   );
   if (!blocks.length) return null;
-  // on construit des lignes humaines si possible
   const out = [];
   for (const e of blocks) {
     const stats = [];
@@ -180,18 +166,13 @@ const extractLevelStatsGeneric = (src) => {
     let values = null;
     if (Array.isArray(e?.values)) values = e.values;
     else if (Array.isArray(e?.levels)) values = e.levels;
-    else if (typeof e?.value === "number" || typeof e?.value === "string")
-      values = [e.value];
-    // si pas de valeur, on essaie la description directe
+    else if (typeof e?.value === "number" || typeof e?.value === "string") values = [e.value];
+
     if (!values && e?.description) {
       stats.push(clean(e.description));
     } else if (s && values) {
       stats.push(
-        clean(
-          `${s}: ${values
-            .map((v) => (typeof v === "number" ? String(v) : v))
-            .join(" / ")}${unit ? " " + unit : ""}`
-        )
+        clean(`${s}: ${values.map((v) => (typeof v === "number" ? String(v) : v)).join(" / ")}${unit ? " " + unit : ""}`)
       );
     }
     if (stats.length) out.push(stats);
@@ -199,15 +180,31 @@ const extractLevelStatsGeneric = (src) => {
   return out.length ? out : null;
 };
 
+/* ---------------------- Helper: compute canonical id --------------------- */
+function overframeIdCandidate(of) {
+  if (!of) return null;
+  // priorité: of.id → of.slug → dernier segment "key" (si url/route)
+  if (of.id && String(of.id).trim()) return String(of.id).trim();
+  if (of.slug && String(of.slug).trim()) return String(of.slug).trim();
+  // tenter de dériver depuis un chemin/route connu s'il existe
+  const urlish = of.url || of.href || of.path || of.route;
+  if (typeof urlish === "string") {
+    const m = urlish.trim().match(/\/items\/arsenal\/([^/]+)\/?$/i);
+    if (m && m[1]) return m[1];
+  }
+  return null;
+}
+
 /* ------------------------------ Merge logic ------------------------------ */
 const out = [];
 const report = {
   total: 0,
   excluded_arcanes: 0,
-  merged_from: { export: 0, warframestat: 0, overframe: 0, modsjson: 0 },
   with_set: 0,
   with_levelStats: 0,
   with_drops: 0,
+  id_from_overframe: 0,
+  id_fallback_slug: 0,
   samples: [],
 };
 
@@ -221,26 +218,35 @@ for (const k of allKeys) {
     clean(o?.name || o?.title || w?.name || e?.name || e?.upgradeName || m?.name);
   if (!name) continue;
 
-  // Détection Arcane (exclusion)
+  // Exclure Arcanes
   const typeHint = w?.type || o?.type || e?.Type || m?.type;
-  const tagsHint = (w?.tags || o?.tags || m?.tags || []).map(String);
+  const tagsHint = uniq([...(w?.tags || []), ...(o?.tags || []), ...(m?.tags || [])]);
   if (looksArcane(name, typeHint, tagsHint)) {
     report.excluded_arcanes += 1;
     continue;
   }
 
-  // Polarity
-  const pol =
+  // id canonique → préférer Overframe
+  const idOf = overframeIdCandidate(o);
+  const id = idOf || slugify(name);
+  if (idOf) report.id_from_overframe += 1;
+  else report.id_fallback_slug += 1;
+
+  // slug : seulement si différent de id (évite la redondance)
+  const slug = (() => {
+    const s = slugify(name);
+    return s !== id ? s : undefined;
+  })();
+
+  // Polarity / Rarity / Type / Compat / Drain / Fusion
+  const polarity =
     normPolarity(o?.polarity ?? o?.polaritySymbol) ||
     normPolarity(w?.polarity) ||
     normPolarity(e?.polarity) ||
     undefined;
 
-  // Rarity
-  const rarity =
-    o?.rarity || w?.rarity || e?.rarity || m?.rarity || undefined;
+  const rarity = o?.rarity || w?.rarity || e?.rarity || m?.rarity || undefined;
 
-  // Type (IMPORTANT : conservé)
   const type =
     (w?.type && clean(w.type)) ||
     (o?.type && clean(o.type)) ||
@@ -248,19 +254,18 @@ for (const k of allKeys) {
     (m?.type && clean(m.type)) ||
     undefined;
 
-  // Compat (pour filtrer: "Warframe", "Rifle", etc. + compatName spécifique)
   const compatName =
     o?.compatName || w?.compat || e?.Compat || m?.compat || undefined;
 
-  // Base drain & fusion limit (WFStat prioritaire)
   const baseDrain =
     (typeof w?.baseDrain === "number" ? w.baseDrain : o?.baseDrain ?? e?.baseDrain ?? m?.baseDrain);
+
   const fusionLimit =
     (typeof w?.fusionLimit === "number"
       ? w.fusionLimit
       : o?.fusionLimit ?? e?.fusionLimit ?? m?.fusionLimit);
 
-  // Tags/Categories
+  // Tags / Categories
   const tags = uniq([...(o?.tags || []), ...(w?.tags || []), ...(m?.tags || [])].map(clean));
   const categories = uniq([...(o?.categories || []), ...(w?.categories || []), ...(m?.categories || [])].map(clean));
 
@@ -272,13 +277,16 @@ for (const k of allKeys) {
     report.with_set += 1;
   }
 
-  // Level stats
+  // Level stats (WFStat prioritaire)
   let levelStats =
     extractLevelStatsWFStat(w) ||
     extractLevelStatsGeneric(e) ||
     extractLevelStatsGeneric(o) ||
     null;
   if (levelStats) report.with_levelStats += 1;
+
+  // Nombre de rangs (utile côté front)
+  const ranks = levelStats ? levelStats.length : undefined;
 
   // Drops (WFStat)
   let drops = null;
@@ -292,38 +300,26 @@ for (const k of allKeys) {
     report.with_drops += 1;
   }
 
-  // isAugment infer (minimal, pas de champ si incertain)
-  const isAugment =
-    /augment/i.test(name) || /augment/i.test(String(o?.description || "")) || undefined;
-
-  // Build objet final (sans redondances inutiles)
+  // Build objet final minimal mais utile (pas d’URL, pas de champs vides)
   const obj = {
-    id: slugify(name),          // stable id
+    id,
     name,
-    slug: slugify(name),        // pratique côté front
-    rarity: rarity || undefined,
-    polarity: pol || undefined,
-    type: type || undefined,        // << garder absolument
-    compatName: compatName || undefined,
-    categories: categories.length ? categories : undefined,
-    tags: tags.length ? tags : undefined,
-    baseDrain: typeof baseDrain === "number" ? baseDrain : undefined,
-    fusionLimit: typeof fusionLimit === "number" ? fusionLimit : undefined,
-    set: set || undefined,
-    levelStats: levelStats || undefined,
-    drops: drops || undefined,
+    ...(slug ? { slug } : {}),
+    ...(rarity ? { rarity } : {}),
+    ...(polarity ? { polarity } : {}),
+    ...(type ? { type } : {}),
+    ...(compatName ? { compatName } : {}),
+    ...(categories.length ? { categories } : {}),
+    ...(tags.length ? { tags } : {}),
+    ...(typeof baseDrain === "number" ? { baseDrain } : {}),
+    ...(typeof fusionLimit === "number" ? { fusionLimit } : {}),
+    ...(set ? { set } : {}),
+    ...(levelStats ? { levelStats } : {}),
+    ...(typeof ranks === "number" ? { ranks } : {}),
+    ...(drops ? { drops } : {}),
   };
 
-  // Nettoyage des undefined
-  for (const k of Object.keys(obj)) if (obj[k] === undefined) delete obj[k];
-
   out.push(obj);
-
-  // Stats rapport
-  report.merged_from.export   += e ? 1 : 0;
-  report.merged_from.warframestat += w ? 1 : 0;
-  report.merged_from.overframe += o ? 1 : 0;
-  report.merged_from.modsjson += m ? 1 : 0;
   if (report.samples.length < 5) report.samples.push(obj.name);
 }
 
@@ -333,7 +329,7 @@ report.total = out.length;
 /* --------------------------------- Write --------------------------------- */
 fs.writeFileSync(OUT_JSON, JSON.stringify(out, null, 2), "utf-8");
 
-// CSV condensé
+// CSV condensé (debug/BI)
 {
   const headers = [
     "id",
@@ -346,6 +342,7 @@ fs.writeFileSync(OUT_JSON, JSON.stringify(out, null, 2), "utf-8");
     "fusionLimit",
     "set.name",
     "set.size",
+    "ranks"
   ];
   const lines = [headers.join(",")];
   for (const m of out) {
@@ -360,12 +357,14 @@ fs.writeFileSync(OUT_JSON, JSON.stringify(out, null, 2), "utf-8");
       m.fusionLimit ?? "",
       m.set?.name || "",
       m.set?.size ?? "",
+      m.ranks ?? ""
     ].map((v) => `"${String(v).replace(/"/g, '""')}"`);
     lines.push(row.join(","));
   }
   fs.writeFileSync(OUT_CSV, lines.join("\n"), "utf-8");
 }
 
+// Rapport build
 fs.writeFileSync(OUT_REP, JSON.stringify(report, null, 2), "utf-8");
 
 console.log(`OK → ${OUT_JSON} (${out.length} mods)`);
