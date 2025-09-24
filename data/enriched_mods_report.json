@@ -1,9 +1,144 @@
 {
-  "total": 1469,
-  "inputs": {
-    "overframe_mods": true,
-    "overframe_sets": true,
-    "export_upgrades": true,
-    "warframestat": true
-  }
+  "total": 1581,
+  "wfMatches": 1282,
+  "samples": [
+    {
+      "key": "/Lotus/Animations/FlightSuit/TestMeleeAttacks/FairyMeleeTree",
+      "name": "Razorwing",
+      "matchedWFStat": false,
+      "hasLevelStats": false,
+      "hasDrops": false
+    },
+    {
+      "key": "/Lotus/Powersuits/Alchemist/AlchemistPassiveAugmentCard",
+      "name": "Valence Formation",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Alchemist/SerpentAugmentCard",
+      "name": "Swift Bite",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/AntiMatter/AntiMatterDropAugmentCard",
+      "name": "Antimatter Absorb",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/AntiMatter/AntiMatterDropBaseAugmentCard",
+      "matchedWFStat": false,
+      "hasLevelStats": false,
+      "hasDrops": false
+    },
+    {
+      "key": "/Lotus/Powersuits/AntiMatter/AntiMatterDropPvPAugmentCard",
+      "name": "Antimatter Mine",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/AntiMatter/MolecularPrimeAugmentCard",
+      "name": "Molecular Fission",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/AntiMatter/NullStarAugmentCard",
+      "name": "Neutron Star",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/AntiMatter/WormHoleAugmentCard",
+      "name": "Escape Velocity",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Archwing/DemolitionJetPack/ExhaustTrailAugmentCard",
+      "name": "Afterburner",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": false
+    },
+    {
+      "key": "/Lotus/Powersuits/Archwing/StandardJetPack/FireShieldAugmentCard",
+      "name": "Energy Field",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": false
+    },
+    {
+      "key": "/Lotus/Powersuits/Archwing/StealthJetPack/GravInstabilityAugmentCard",
+      "name": "Cold Snap",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": false
+    },
+    {
+      "key": "/Lotus/Powersuits/Banshee/EarthQuakeAugmentCard",
+      "name": "Resonating Quake",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Banshee/PushAugmentCard",
+      "name": "Sonic Fracture",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Banshee/SilenceAugmentCard",
+      "name": "Savage Silence",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Banshee/SonarAugmentCard",
+      "name": "Resonance",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Banshee/SonarBaseAugmentCard",
+      "matchedWFStat": false,
+      "hasLevelStats": false,
+      "hasDrops": false
+    },
+    {
+      "key": "/Lotus/Powersuits/Bard/BardCharmAugmentCard",
+      "name": "Conductor",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Bard/BardMusicAugmentCard",
+      "name": "Partitioned Mallet",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Berserker/GrappleAugmentCard",
+      "name": "Swing Line",
+      "matchedWFStat": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    }
+  ]
 }
