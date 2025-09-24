@@ -100,8 +100,8 @@ const contains = (a, b) => String(a ?? '').toLowerCase().includes(String(b ?? ''
 const eq       = (a, b) => String(a ?? '').toLowerCase() === String(b ?? '').toLowerCase();
 
 /* -------------------------- Endpoint statique JSON ------------------------ */
-// GET /merged/warframe  -> renvoie le JSON fusionné brut
-app.get('/merged/warframe', async (req, res) => {
+// GET /warframe  -> renvoie le JSON fusionné brut
+app.get('/warframe', async (req, res) => {
   try {
     const txt = await readFile(MERGED_PATH, 'utf-8');
     res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
