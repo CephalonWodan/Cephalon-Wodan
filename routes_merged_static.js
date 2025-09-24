@@ -34,7 +34,7 @@ const eq = (a,b) => String(a??'').toLowerCase() === String(b??'').toLowerCase();
 
 export function mountMergedStatic(app) {
   // existant
-  app.get('/merged/warframe', async (req, res) => {
+  app.get('/warframe', async (req, res) => {
     try { send(res, JSON.stringify(await loadMergedWarframe())); }
     catch { res.status(404).json({ error: 'merged_warframe.json not found' }); }
   });
