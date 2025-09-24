@@ -1,16 +1,9 @@
 {
-  "total": 1417,
-  "excluded_arcanes": 52,
-  "with_set": 0,
-  "with_levelStats": 0,
-  "with_drops": 0,
-  "id_from_overframe": 1417,
-  "id_fallback_slug": 0,
-  "samples": [
-    "Razorwing",
-    "Valence Formation",
-    "Swift Bite",
-    "Antimatter Absorb",
-    "Antimatter Mine"
-  ]
+  "total": 1469,
+  "inputs": {
+    "overframe_mods": true,
+    "overframe_sets": true,
+    "export_upgrades": true,
+    "warframestat": true
+  }
 }
