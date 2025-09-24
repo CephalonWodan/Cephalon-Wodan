@@ -1,15 +1,11 @@
 {
   "total": 1417,
   "excluded_arcanes": 52,
-  "merged_from": {
-    "export": 0,
-    "warframestat": 0,
-    "overframe": 1417,
-    "modsjson": 0
-  },
   "with_set": 0,
   "with_levelStats": 0,
   "with_drops": 0,
+  "id_from_overframe": 1417,
+  "id_fallback_slug": 0,
   "samples": [
     "Razorwing",
     "Valence Formation",
