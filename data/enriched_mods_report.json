@@ -1,15 +1,20 @@
 {
-  "total": 1320,
-  "byAugment": {
-    "true": 0,
-    "false": 1320
+  "total": 1417,
+  "excluded_arcanes": 52,
+  "merged_from": {
+    "export": 0,
+    "warframestat": 0,
+    "overframe": 1417,
+    "modsjson": 0
   },
-  "missing": {
-    "type": 5,
-    "rarity": 1320,
-    "compat": 1320,
-    "polarity": 1320,
-    "baseDrain": 1320,
-    "fusionLimit": 1320
-  }
+  "with_set": 0,
+  "with_levelStats": 0,
+  "with_drops": 0,
+  "samples": [
+    "Razorwing",
+    "Valence Formation",
+    "Swift Bite",
+    "Antimatter Absorb",
+    "Antimatter Mine"
+  ]
 }
