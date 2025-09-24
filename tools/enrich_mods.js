@@ -1,101 +1,80 @@
 // tools/enrich_mods.js
-// Inputs (tous sous ./data) :
-//   - ExportUpgrades_en.json
-//   - modwarframestat.json
-//   - overframe-mods.json
-//   - overframe-modsets.json
-// Outputs :
-//   - data/enriched_mods.json
-//   - data/enriched_mods_report.json
-//   - data/enriched_mods.csv
+// Fusionne Overframe + DE Export + WarframeStat pour produire un JSON "propre"
+// Entrées :
+//   data/overframe/overframe-mods.json
+//   data/overframe/overframe-modsets.json
+//   data/ExportUpgrades_en.json
+//   data/modwarframestat.json
+// Sorties :
+//   data/enriched_mods.json
+//   data/enriched_mods_report.json
+//   data/enriched_mods.csv
 
-import fs from 'fs';
-import path from 'path';
+import fs from "node:fs";
+import path from "node:path";
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-const DATA_DIR = path.resolve('data');
-const P_EXPORT = path.join(DATA_DIR, 'ExportUpgrades_en.json');
-const P_WSTAT  = path.join(DATA_DIR, 'modwarframestat.json');
-const P_OFMODS = path.join(DATA_DIR, 'overframe-mods.json');
-const P_OFSETS = path.join(DATA_DIR, 'overframe-modsets.json');
+// ------------------------------ Helpers -----------------------------------
+const DATA_DIR = path.resolve("data");
+const OF_DIR   = path.join(DATA_DIR, "overframe");
 
-const OUT_JSON = path.join(DATA_DIR, 'enriched_mods.json');
-const OUT_REP  = path.join(DATA_DIR, 'enriched_mods_report.json');
-const OUT_CSV  = path.join(DATA_DIR, 'enriched_mods.csv');
+const P_OFMODS = path.join(OF_DIR,   "overframe-mods.json");
+const P_OFSETS = path.join(OF_DIR,   "overframe-modsets.json");
+const P_EXPORT = path.join(DATA_DIR, "ExportUpgrades_en.json");
+const P_WSTAT  = path.join(DATA_DIR, "modwarframestat.json");
 
-const readJSON = p => JSON.parse(fs.readFileSync(p, 'utf-8'));
-const asArray  = v => Array.isArray(v) ? v : (v && typeof v === 'object' ? Object.values(v) : []);
+const OUT_JSON = path.join(DATA_DIR, "enriched_mods.json");
+const OUT_REP  = path.join(DATA_DIR, "enriched_mods_report.json");
+const OUT_CSV  = path.join(DATA_DIR, "enriched_mods.csv");
 
-const norm = s => String(s ?? '').trim();
-const clean = s =>
-  norm(s)
-    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/\u00A0/g, ' ')
-    .replace(/\s+/g, ' ')
-    .replace(/–/g, '-')
-    .trim();
-
-const slugify = s =>
-  clean(s).toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-
-const keyName = s =>
-  clean(s).toLowerCase().replace(/[\s\-–_'"`]+/g, ' ').replace(/\s+/g, ' ');
-
-// provenance helper
-function takeFirst(dst, srcs, field, srcNames, prov) {
-  for (let i = 0; i < srcs.length; i++) {
-    const v = srcs[i]?.[field];
-    if (v !== undefined && v !== null && String(v).trim() !== '') {
-      dst[field] = v;
-      prov[field] = srcNames[i];
-      return;
-    }
-  }
+function readJsonIf(p) {
+  if (!fs.existsSync(p)) return null;
+  const txt = fs.readFileSync(p, "utf-8");
+  try { return JSON.parse(txt); }
+  catch (e) { throw new Error(`JSON invalide: ${p}\n${e.message}`); }
 }
+const asArray = (v) => Array.isArray(v) ? v : (v && typeof v === "object" ? Object.values(v) : []);
 
-// ---------------------------------------------------------------------------
-// Load sources
-// ---------------------------------------------------------------------------
-const S_export = readJSON(P_EXPORT);                // array-ish
-const S_wstat  = readJSON(P_WSTAT);                 // array-ish
-const S_ofmods = readJSON(P_OFMODS);                // array-ish
-const S_ofsets = readJSON(P_OFSETS);                // array-ish
+const clean = (s) => String(s ?? "")
+  .normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+  .replace(/\u00A0/g, " ").replace(/\s+/g, " ").trim();
 
+const keyName = (s) => clean(s).toLowerCase().replace(/[\s'`"_-]+/g, " ").replace(/\s+/g, " ").trim();
+const slugify = (s) => clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+// ------------------------- Charger les sources -----------------------------
+const S_ofmods = readJsonIf(P_OFMODS) ?? [];
+const S_ofsets = readJsonIf(P_OFSETS) ?? [];
+const S_export = readJsonIf(P_EXPORT) ?? [];
+const S_wstat  = readJsonIf(P_WSTAT)  ?? [];
+
+const A_ofmods = asArray(S_ofmods);
+const A_ofsets = asArray(S_ofsets);
 const A_export = asArray(S_export);
 const A_wstat  = asArray(S_wstat);
-const A_ofmods = asArray(S_ofmods);
-const A_ofsets = asArray(S_ofSETS);
 
-// ---------------------------------------------------------------------------
-// Indexation par nom normalisé
-// ---------------------------------------------------------------------------
-const nameOfExport = u => u?.name || u?.upgradeName || u?.displayName || null;
-const nameOfOf     = m => m?.name || m?.title || m?.displayName || null;
-const nameOfWstat  = m => m?.name || m?.displayName || null;
+// ---------------------- Index par nom normalisé ---------------------------
+const mapOF = new Map();
+for (const m of A_ofmods) {
+  const n = m?.name || m?.title || m?.displayName;
+  if (!n) continue;
+  mapOF.set(keyName(n), m);
+}
 
 const mapExport = new Map();
 for (const u of A_export) {
-  const n = nameOfExport(u);
-  if (n) mapExport.set(keyName(n), u);
+  const n = u?.name || u?.upgradeName || u?.displayName;
+  if (!n) continue;
+  mapExport.set(keyName(n), u);
 }
 
-const mapWstat = new Map();
+const mapW = new Map();
 for (const m of A_wstat) {
-  const n = nameOfWstat(m);
-  if (n) mapWstat.set(keyName(n), m);
+  const n = m?.name || m?.displayName;
+  if (!n) continue;
+  mapW.set(keyName(n), m);
 }
 
-const mapOf = new Map();
-for (const m of A_ofmods) {
-  const n = nameOfOf(m);
-  if (n) mapOf.set(keyName(n), m);
-}
-
-// Sets (OF)
+// ---------- Sets Overframe : modName -> meta du set ----------
 const setByMod = new Map();
 const setMeta  = new Map();
 for (const s of A_ofsets) {
@@ -105,151 +84,160 @@ for (const s of A_ofsets) {
   for (const m of members) setByMod.set(keyName(m), setName);
   setMeta.set(setName, {
     name: setName,
-    size: members.length || null,
-    bonus: s?.bonus || s?.description || s?.effect || null,
+    size: members.length || undefined,
+    bonus: s?.bonus || s?.description || s?.effect || undefined,
   });
 }
 
-// Union des clefs (par nom)
-const allKeys = new Set([...mapExport.keys(), ...mapWstat.keys(), ...mapOf.keys()]);
-
-// ---------------------------------------------------------------------------
-// Extraction levelStats (texte par rang) depuis ExportUpgrades
-// ---------------------------------------------------------------------------
-function extractLevelStats(exp) {
-  const res = [];
-  if (!exp) return res;
-
-  // cas fréquents: levelStats: [{ stats: ["text", ...] }, ...]
-  const levels = asArray(exp.levelStats || exp.stats || exp.effects);
-  if (levels.length && levels[0] && (levels[0].stats || levels[0].text)) {
-    for (const lv of levels) {
-      const arr = Array.isArray(lv?.stats) ? lv.stats : (lv?.text ? [lv.text] : []);
-      if (arr.length) res.push({ stats: arr.map(String) });
-    }
-    return res;
-  }
-
-  // fallback : upgradeEntries/values/… — on agglomère en texte
-  const entries = asArray(exp.upgradeEntries || exp.values);
-  if (entries.length) {
-    const txt = entries.map(e => {
-      const n = e?.name || e?.stat || e?.attribute || e?.type || 'Effect';
-      const v = e?.value ?? (Array.isArray(e?.values) ? e.values.join('/') : '');
-      return `${n}: ${v}`;
-    }).filter(Boolean);
-    if (txt.length) res.push({ stats: [txt.join(' • ')] });
-  }
-  return res;
+// ------------------ Extraction des stats par rang --------------------------
+function statsFromWarframeStat(w) {
+  // w.levelStats: [{ stats: ["+10% Ability Duration"], ... }, ...]
+  const lv = asArray(w?.levelStats);
+  if (!lv.length) return null;
+  // on garde tel quel (utile côté front)
+  return lv.map(x => ({ stats: asArray(x?.stats).map(String) }))
+           .filter(x => (x.stats?.length));
 }
 
-// Augment detector (plus robuste)
-function isAugment({ of, wstat, name, desc }) {
-  const s = (name + ' ' + (desc||'')).toLowerCase();
-  if (/\baugment\b/.test(s)) return true;
-  if (of?.tags && of.tags.some(t => /augment/i.test(String(t)))) return true;
-  if (/augment/i.test(String(wstat?.type||''))) return true;
-  return false;
+function statsFromExport(u) {
+  // On essaie d’aplatir en textes lisibles si pas de levelStats côté WFStat
+  if (!u) return null;
+  const entries = asArray(u.upgradeEntries || u.levelStats || u.stats || u.effects || u.values);
+  if (!entries.length) return null;
+
+  const linesPerRank = new Map(); // rank -> [strings]
+  for (const e of entries) {
+    const rank = typeof e?.rank === "number" ? e.rank : null;
+    const name = e?.stat || e?.name || e?.attribute || e?.type || e?.effect;
+    if (!name) continue;
+    const unit = e?.unit || e?.suffix || "";
+    let values = null;
+    if (Array.isArray(e?.values)) values = e.values;
+    else if (Array.isArray(e?.levels)) values = e.levels;
+    else if (typeof e?.value === "number" || typeof e?.value === "string") values = [e.value];
+
+    const txt = `${name}${values ? `: ${values.join(" / ")}` : ""}${unit ? ` ${unit}` : ""}`;
+    const target = rank ?? -1; // -1 pour "non classé"
+    if (!linesPerRank.has(target)) linesPerRank.set(target, []);
+    linesPerRank.get(target).push(txt);
+  }
+
+  if (!linesPerRank.size) return null;
+
+  // ordonner par rang croissant, -1 en premier si présent
+  const ranks = [...linesPerRank.keys()].sort((a,b)=>a-b);
+  return ranks.map(r => ({ stats: linesPerRank.get(r) }));
 }
 
-// ---------------------------------------------------------------------------
-// Merge
-// ---------------------------------------------------------------------------
-const result = [];
+// ------------------------ Merge principal ----------------------------------
+const allKeys = new Set([...mapOF.keys(), ...mapW.keys(), ...mapExport.keys()]);
+const out = [];
 const report = [];
 
-for (const k of Array.from(allKeys).sort()) {
-  const of   = mapOf.get(k)     || null;
-  const exp  = mapExport.get(k) || null;
-  const ws   = mapWstat.get(k)  || null;
+for (const k of [...allKeys].sort()) {
+  const of = mapOF.get(k) || null;
+  const wf = mapW.get(k)  || null;
+  const ex = mapExport.get(k) || null;
 
-  const name = clean(of?.name || of?.title || exp?.name || exp?.upgradeName || ws?.name);
+  // Nom / slug (priorité Overframe, sinon WFStat, sinon Export)
+  const name = clean(of?.name || of?.title || wf?.name || ex?.name || ex?.upgradeName);
   if (!name) continue;
+  const slug = slugify(name);
 
-  const prov = {};
-  const out  = {
-    // id = ID Overframe si possible (sinon slug)
-    slug: of?.slug || slugify(name),
-  };
-  out.id = of?.id ? String(of.id) : out.slug;
-  out.name = name;
+  // id : on prend l’ID Overframe s’il existe (numérique en texte), sinon slug
+  const id = String(of?.id ?? slug);
 
-  // classes/categories
-  out.categories = ['mod'];
+  // Type & catégories : Overframe en priorité
+  const type = of?.type || wf?.type || ex?.Type || undefined;
+  const categories = Array.isArray(of?.categories) && of.categories.length ? of.categories
+                     : (Array.isArray(wf?.categories) ? wf.categories : undefined);
 
-  // Champs « factuals »
-  takeFirst(out, [{ type: of?.type || of?.tag }, ws], 'type', ['overframe', 'warframestat'], prov);
-  takeFirst(out, [{ compatName: of?.compatName || of?.compat }, ws], 'compatName', ['overframe', 'warframestat'], prov);
-  takeFirst(out, [ws, of], 'rarity', ['warframestat', 'overframe'], prov);
-  takeFirst(out, [{ polarity: of?.polarity ?? of?.polaritySymbol }, ws], 'polarity', ['overframe', 'warframestat'], prov);
-  takeFirst(out, [{ baseDrain: of?.baseDrain ?? of?.drain }, ws], 'baseDrain', ['overframe', 'warframestat'], prov);
-  takeFirst(out, [ws], 'fusionLimit', ['warframestat'], prov);
-  takeFirst(out, [ws], 'drops', ['warframestat'], prov);
+  // Polarity / rarity (Overframe puis WFStat puis Export)
+  const polarity = of?.polarity ?? of?.polaritySymbol ?? wf?.polarity ?? ex?.Polarity ?? undefined;
+  const rarity   = of?.rarity   ?? wf?.rarity          ?? ex?.Rarity   ?? undefined;
 
-  // Description la plus riche
-  takeFirst(out, [of, exp], 'description', ['overframe', 'export'], prov);
+  // Compat / drains / fusion
+  const compatName  = of?.compatName ?? wf?.compat ?? wf?.compatName ?? ex?.Compat ?? undefined;
+  const baseDrain   = of?.baseDrain  ?? wf?.baseDrain ?? ex?.baseDrain ?? undefined;
+  const fusionLimit = wf?.fusionLimit ?? ex?.fusionLimit ?? undefined;
 
-  // set
+  // Set
   const setName = setByMod.get(k);
-  if (setName) {
-    out.set = setMeta.get(setName) || { name: setName };
-    prov.set = 'overframe-modsets';
-  }
+  const set = setName ? (setMeta.get(setName) || { name: setName }) : undefined;
 
-  // levelStats
-  const levels = extractLevelStats(exp);
-  if (levels.length) { out.levelStats = levels; prov.levelStats = 'export'; }
+  // Augment ?
+  const isAugment =
+    (Array.isArray(of?.tags) && of.tags.some(t => /augment/i.test(String(t)))) ||
+    /augment/i.test(name) ||
+    /augment/i.test(String(of?.description || wf?.description || ex?.description || "")) || false;
 
-  // isAugment
-  out.isAugment = isAugment({ of, wstat: ws, name, desc: out.description });
-  prov.isAugment = 'derived';
+  // Stats par rang (WFStat prioritaire, sinon Export)
+  const levelStats = statsFromWarframeStat(wf) || statsFromExport(ex) || undefined;
 
-  // tags (facultatif mais utile au filtrage)
-  if (Array.isArray(of?.tags) && of.tags.length) { out.tags = of.tags; prov.tags = 'overframe'; }
+  // Drops (WFStat)
+  const drops = Array.isArray(wf?.drops) && wf.drops.length ? wf.drops.map(d => ({
+    chance: d?.chance ?? undefined,
+    location: d?.location ?? undefined,
+    rarity: d?.rarity ?? undefined,
+    type: d?.type ?? undefined,
+  })) : undefined;
 
-  // type normalisation simple (ex: "Mod" -> "Warframe Mod" si compatName est présent)
-  if (!out.type) {
-    if (out.compatName) out.type = 'Warframe Mod';
-    else out.type = 'Mod';
-  }
+  // Construction de l’objet final (sans champs vides/indéfinis)
+  const obj = { id, slug, name };
+  if (type) obj.type = type;
+  if (categories?.length) obj.categories = categories;
+  if (rarity) obj.rarity = rarity;
+  if (polarity) obj.polarity = polarity;
+  if (compatName) obj.compatName = compatName;
+  if (typeof baseDrain === "number") obj.baseDrain = baseDrain;
+  if (typeof fusionLimit === "number") obj.fusionLimit = fusionLimit;
+  obj.isAugment = !!isAugment;
+  if (set) obj.set = set;
+  if (levelStats) obj.levelStats = levelStats;
+  if (drops) obj.drops = drops;
 
-  // rapport
+  out.push(obj);
+
+  // Rapport
   report.push({
-    slug: out.slug,
-    name: out.name,
-    provenance: prov,
-    mergedFrom: {
+    slug, name, id,
+    sources: {
       overframe: !!of,
-      export: !!exp,
-      warframestat: !!ws,
+      warframestat: !!wf,
+      export: !!ex
     }
   });
-
-  result.push(out);
 }
 
-// tri alpha par name
-result.sort((a,b)=>a.name.localeCompare(b.name));
+// ----------------------------- Sorties -------------------------------------
+out.sort((a,b)=>a.name.localeCompare(b.name));
 
-// ---------------------------------------------------------------------------
-// Écritures
-// ---------------------------------------------------------------------------
-fs.writeFileSync(OUT_JSON, JSON.stringify(result, null, 2), 'utf-8');
-fs.writeFileSync(OUT_REP,  JSON.stringify(report,  null, 2), 'utf-8');
+fs.writeFileSync(OUT_JSON, JSON.stringify(out, null, 2), "utf-8");
+fs.writeFileSync(OUT_REP,  JSON.stringify({
+  total: out.length,
+  inputs: {
+    overframe_mods: !!S_ofmods,
+    overframe_sets: !!S_ofsets,
+    export_upgrades: !!S_export,
+    warframestat: !!S_wstat
+  }
+}, null, 2), "utf-8");
 
-// CSV léger
-const headers = ['id','slug','name','type','compatName','rarity','polarity','baseDrain','fusionLimit','isAugment','set.name','set.size'];
-const csv = [headers.join(',')];
-for (const m of result) {
+// CSV compact (quelques champs principaux)
+const headers = [
+  "id","slug","name","type","rarity","polarity","compatName","baseDrain","fusionLimit","isAugment","set.name","set.size"
+];
+const lines = [headers.join(",")];
+for (const m of out) {
   const row = [
-    m.id, m.slug, m.name, m.type||'', m.compatName||'', m.rarity||'', m.polarity||'',
-    m.baseDrain ?? '', m.fusionLimit ?? '', m.isAugment ? '1':'0',
-    m.set?.name || '', m.set?.size ?? ''
-  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
-  csv.push(row);
+    m.id, m.slug, m.name, m.type || "", m.rarity || "", m.polarity || "",
+    m.compatName || "", m.baseDrain ?? "", m.fusionLimit ?? "",
+    m.isAugment ? 1 : 0, m.set?.name || "", m.set?.size ?? ""
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(",");
+  lines.push(row);
 }
-fs.writeFileSync(OUT_CSV, csv.join('\n'), 'utf-8');
+fs.writeFileSync(OUT_CSV, lines.join("\n"), "utf-8");
 
-console.log(`OK → ${OUT_JSON} (${result.length} mods)`);
+console.log(`OK → ${OUT_JSON} (${out.length} mods)`);
 console.log(`OK → ${OUT_REP}`);
 console.log(`OK → ${OUT_CSV}`);
