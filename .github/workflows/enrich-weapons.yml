@@ -1,8 +1,44 @@
 name: Enrich Weapons
 
 on:
-  workflow_dispatch: {}
   workflow_call: {}
+  workflow_dispatch: {}
+  name: Enrich weapons (merge WFStat + complements)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "data/wfstat_weapons.json"
+      - "data/wfcd_items/**"
+      - "data/ExportWeapons_en.json"
+      - "data/overframe/overframe-items.json"
+      - "tools/enrich_weapons.js"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Enrich weapons
+        run: node tools/enrich_weapons.js
+      - name: Commit enriched files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/enriched_weapons.json data/enriched_weapons_report.json
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "chore(data): update enriched_weapons"
+            git push
+          fi_call: {}
   push:
     paths:
       - "data/overframe/**"
