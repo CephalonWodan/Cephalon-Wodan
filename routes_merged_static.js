@@ -27,6 +27,7 @@ const cachedJson = (absPath) => {
 const loadMergedWarframe = cachedJson(DATA('merged_warframe.json'));
 const loadMods = cachedJson(DATA('enriched_mods.json'));
 const loadRelics = cachedJson(DATA('enriched_relics.json'));
+const loadWeapons = cachedJson(DATA('enriched_weapons.json'));
 
 const send = (res, data) => {
   res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
@@ -143,6 +144,32 @@ export function mountMergedStatic(app) {
       res.status(500).json({ error: 'failed to load enriched_relics.json' });
     }
   });
+
+  /* ------------------- PRIMARY / SECONDARY/ MELEE/ ARCHMELEE / ARCHGUN / ZAW / KITGUN ------------------- */
+  // LISTES
+app.get('/weapons', async (req, res) => {
+  try {
+    const items = await loadWeapons();
+    // filtres : search, subtype, rarity, etc. à ajouter au besoin
+    res.set('Cache-Control','s-maxage=600, stale-while-revalidate=300');
+    res.json(items);
+  } catch {
+    res.status(500).json({error:'failed to load enriched_weapons.json'});
+  }
+});
+
+app.get('/weapons/:slug', async (req, res) => {
+  try {
+    const items = await loadWeapons();
+    const it = items.find(x => x.slug===req.params.slug || String(x.id)===req.params.slug);
+    if (!it) return res.status(404).json({error:'weapon not found'});
+    res.set('Cache-Control','s-maxage=600, stale-while-revalidate=300');
+    res.json(it);
+  } catch {
+    res.status(500).json({error:'failed to load enriched_weapons.json'});
+  }
+});
+
 
   /* ------------------- WARFRAMES / ARCHWINGS / NECRAMECHS ------------------- */
   // LISTES
