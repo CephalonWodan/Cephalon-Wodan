@@ -1,7 +1,8 @@
 name: Enrich Weapons
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: {}
+  workflow_call: {}
   push:
     paths:
       - "data/overframe/**"
