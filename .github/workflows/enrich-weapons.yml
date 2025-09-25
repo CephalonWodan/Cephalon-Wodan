@@ -1,0 +1,62 @@
+name: Build enriched_weapons.json
+
+on:
+  workflow_call: {}
+  push:
+    paths:
+      - "tools/enrich_weapons.js"
+      - "data/ExportWeapons_en.json"
+      - "data/overframe/*.json"
+      - "data/wfcd_items/**"
+      - "!data/enriched_weapons.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-weapons
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Ensure data dir exists
+        run: mkdir -p data
+
+      - name: Generate enriched weapons
+        run: node tools/enrich_weapons.js
+
+      - name: Show head
+        run: |
+          head -n 20 data/enriched_weapons.json || true
+          wc -l data/enriched_weapons.csv || true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enriched_weapons
+          path: |
+            data/enriched_weapons.json
+            data/enriched_weapons.csv
+            data/enriched_weapons_report.json
+
+      - name: Commit changes
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/enriched_weapons.json data/enriched_weapons.csv data/enriched_weapons_report.json
+          if git diff --cached --quiet; then
+            echo "Aucun changement."
+          else
+            git commit -m "chore(weapons): update enriched weapons"
+            git push
+          fi
