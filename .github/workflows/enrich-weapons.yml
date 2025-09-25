@@ -1,23 +1,13 @@
-name: Build enriched_weapons.json
+name: Enrich Weapons
 
 on:
-  workflow_dispatch: {}
-  workflow_call: {}
+  workflow_dispatch:
   push:
     paths:
-      - "tools/enrich_weapons.js"
-      - "data/ExportWeapons_en.json"
-      - "data/overframe/*.json"
+      - "data/overframe/**"
       - "data/wfcd_items/**"
-      - "!data/enriched_weapons.json"
- 
-
-permissions:
-  contents: write
-
-concurrency:
-  group: build-weapons
-  cancel-in-progress: false
+      - "data/ExportWeapons_en.json"
+      - "tools/enrich_weapons.js"
 
 jobs:
   build:
@@ -26,39 +16,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
 
-      - name: Ensure data dir exists
-        run: mkdir -p data
-
-      - name: Generate enriched weapons
+      - name: Run enrich_weapons
         run: node tools/enrich_weapons.js
 
-      - name: Show head
+      - name: Commit enriched files
         run: |
-          head -n 20 data/enriched_weapons.json || true
-          wc -l data/enriched_weapons.csv || true
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: enriched_weapons
-          path: |
-            data/enriched_weapons.json
-            data/enriched_weapons.csv
-            data/enriched_weapons_report.json
-
-      - name: Commit changes
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/enriched_weapons.json data/enriched_weapons_report.json
+          git diff --cached --quiet && echo "No changes." || git commit -m "chore(data): update enriched_weapons"
+      - name: Push
+        if: always()
         run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/enriched_weapons.json data/enriched_weapons.csv data/enriched_weapons_report.json
-          if git diff --cached --quiet; then
-            echo "Aucun changement."
-          else
-            git commit -m "chore(weapons): update enriched weapons"
-            git push
-          fi
+          git push || true
