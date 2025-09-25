@@ -1,6 +1,8 @@
 name: Fetch WFStat Weapons
 
 on:
+ workflow_call: {}
+workflow_dispatch: {}
   schedule:
     - cron: "12 3 * * *"   # tous les jours à 03:12 UTC
   workflow_dispatch:
