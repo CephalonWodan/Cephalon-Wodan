@@ -6349,7 +6349,7 @@ id,http,status,has_next_data,name
 6348,https://overframe.gg/items/arsenal/6348,404,false,
 6349,https://overframe.gg/items/arsenal/6349,200,true,Melee Fortification
 6350,https://overframe.gg/items/arsenal/6350,200,true,Melee Exposure
-6351,https://overframe.gg/items/arsenal/6351,200,true,Melee Animosity
+6351,https://overframe.gg/items/arsenal/6351,0,false,
 6352,https://overframe.gg/items/arsenal/6352,200,true,Melee Retaliation
 6353,https://overframe.gg/items/arsenal/6353,200,true,Melee Influence
 6354,https://overframe.gg/items/arsenal/6354,200,true,Melee Vortex
@@ -6900,7 +6900,7 @@ id,http,status,has_next_data,name
 6899,https://overframe.gg/items/arsenal/6899,404,false,
 6900,https://overframe.gg/items/arsenal/6900,404,false,
 6901,https://overframe.gg/items/arsenal/6901,404,false,
-6902,https://overframe.gg/items/arsenal/6902,404,false,
+6902,https://overframe.gg/items/arsenal/6902,0,false,
 6903,https://overframe.gg/items/arsenal/6903,404,false,
 6904,https://overframe.gg/items/arsenal/6904,404,false,
 6905,https://overframe.gg/items/arsenal/6905,404,false,
