@@ -1,6 +1,7 @@
 name: Build enriched_weapons.json
 
 on:
+  workflow_dispatch: {}
   workflow_call: {}
   push:
     paths:
@@ -9,6 +10,7 @@ on:
       - "data/overframe/*.json"
       - "data/wfcd_items/**"
       - "!data/enriched_weapons.json"
+ 
 
 permissions:
   contents: write
