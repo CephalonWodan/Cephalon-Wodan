@@ -39,12 +39,30 @@ jobs:
     permissions:
       contents: write
 
+  # 3b) Fetch WFStat weapons (après Overframe)
+  fetch_wfstat_weapons:
+    name: 3b) Fetch WFStat weapons
+    uses: ./.github/workflows/fetch-wfstat-weapons.yml
+    needs: [scrape_overframe]
+    secrets: inherit
+    permissions:
+      contents: write
+
   # 4) Enrich mods (fusion DE+WFCD; consomme Overframe si dispo)
   enrich_mods:
     name: 4) Build enriched_mods
     uses: ./.github/workflows/enrich-mods.yml
     # ne dépend PAS de scrape_overframe pour ne pas bloquer si ça échoue
     needs: [update_exports, update_wfcd]
+    secrets: inherit
+    permissions:
+      contents: write
+
+  # 4b) Enrich weapons (après enrich_mods + fetch WFStat)
+  enrich_weapons:
+    name: 4b) Build enriched_weapons
+    uses: ./.github/workflows/enrich-weapons.yml
+    needs: [enrich_mods, fetch_wfstat_weapons]
     secrets: inherit
     permissions:
       contents: write
@@ -62,7 +80,7 @@ jobs:
   build_merged_warframes:
     name: 6) Build merged_warframe.json
     uses: ./.github/workflows/build-merged-warfames.yml
-    needs: [enrich_mods, build_relics]
+    needs: [enrich_mods, build_relics, enrich_weapons]
     secrets: inherit
     permissions:
       contents: write
