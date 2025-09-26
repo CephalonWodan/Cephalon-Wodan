@@ -1035,7 +1035,7 @@ id,http,status,has_next_data,name
 1034,https://overframe.gg/items/arsenal/1034,200,true,Sancti Castanas
 1035,https://overframe.gg/items/arsenal/1035,200,true,Secura Penta
 1036,https://overframe.gg/items/arsenal/1036,200,true,Secura Lecta
-1037,https://overframe.gg/items/arsenal/1037,200,true,Secura Dual Cestra
+1037,https://overframe.gg/items/arsenal/1037,0,false,
 1038,https://overframe.gg/items/arsenal/1038,200,true,Rakta Cernos
 1039,https://overframe.gg/items/arsenal/1039,200,true,Rakta Dark Dagger
 1040,https://overframe.gg/items/arsenal/1040,200,true,Rakta Ballistica
