@@ -6576,6 +6576,10 @@
     "name": "Wukong"
   },
   {
+    "id": 2623,
+    "name": "Repair Kit"
+  },
+  {
     "id": 2676,
     "name": "Exposing Harpoon"
   },
@@ -12572,6 +12576,26 @@
     "name": "Bracoid"
   },
   {
+    "id": 4444,
+    "name": "Bracoid"
+  },
+  {
+    "id": 4445,
+    "name": "Carbides"
+  },
+  {
+    "id": 4446,
+    "name": "Carbides"
+  },
+  {
+    "id": 4447,
+    "name": "Cubic Diodes"
+  },
+  {
+    "id": 4448,
+    "name": "Cubic Diodes"
+  },
+  {
     "id": 4449,
     "name": "Fresnels"
   },
@@ -14974,6 +14998,30 @@
   {
     "id": 5569,
     "name": "Tenet Spirex"
+  },
+  {
+    "id": 5572,
+    "name": "Kuva Grattler"
+  },
+  {
+    "id": 5574,
+    "name": "Kuva Hek"
+  },
+  {
+    "id": 5576,
+    "name": "Kuva Zarr"
+  },
+  {
+    "id": 5578,
+    "name": "Cadus"
+  },
+  {
+    "id": 5579,
+    "name": "Cadus"
+  },
+  {
+    "id": 5580,
+    "name": "Tenet Exec"
   },
   {
     "id": 5582,
@@ -19234,6 +19282,38 @@
   {
     "id": 7402,
     "name": "Oraxia Chassis"
+  },
+  {
+    "id": 7403,
+    "name": "Oraxia Chassis"
+  },
+  {
+    "id": 7404,
+    "name": "Temporal Dust"
+  },
+  {
+    "id": 7405,
+    "name": "Oraxia Neuroptics"
+  },
+  {
+    "id": 7406,
+    "name": "Oraxia Neuroptics"
+  },
+  {
+    "id": 7407,
+    "name": "Oraxia Systems"
+  },
+  {
+    "id": 7408,
+    "name": "Oraxia Systems"
+  },
+  {
+    "id": 7409,
+    "name": "Scuttler Husk"
+  },
+  {
+    "id": 7410,
+    "name": "Dominus Aureus"
   },
   {
     "id": 7411,

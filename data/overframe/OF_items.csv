@@ -1643,6 +1643,7 @@ id,name
 2564,Rattleguts
 2565,Gaze
 2569,Wukong
+2623,Repair Kit
 2676,Exposing Harpoon
 2677,Meticulous Aim
 2678,Efficient Beams
@@ -3142,6 +3143,11 @@ id,name
 4441,Aucrux Capacitors
 4442,Aucrux Capacitors
 4443,Bracoid
+4444,Bracoid
+4445,Carbides
+4446,Carbides
+4447,Cubic Diodes
+4448,Cubic Diodes
 4449,Fresnels
 4450,Fresnels
 4451,Gallos Rods
@@ -3743,6 +3749,12 @@ id,name
 5565,Tenet Agendus
 5567,Tenet Diplos
 5569,Tenet Spirex
+5572,Kuva Grattler
+5574,Kuva Hek
+5576,Kuva Zarr
+5578,Cadus
+5579,Cadus
+5580,Tenet Exec
 5582,Kompressa
 5583,Kompressa
 5584,Merulina
@@ -4808,6 +4820,14 @@ id,name
 7400,Oraxia
 7401,Oraxia
 7402,Oraxia Chassis
+7403,Oraxia Chassis
+7404,Temporal Dust
+7405,Oraxia Neuroptics
+7406,Oraxia Neuroptics
+7407,Oraxia Systems
+7408,Oraxia Systems
+7409,Scuttler Husk
+7410,Dominus Aureus
 7411,Spinnerex
 7412,Spinnerex
 7413,Spinnerex Blade
