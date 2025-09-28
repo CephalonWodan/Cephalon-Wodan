@@ -3528,9 +3528,9 @@ id,http,status,has_next_data,name
 3527,https://overframe.gg/items/arsenal/3527,404,false,
 3528,https://overframe.gg/items/arsenal/3528,200,true,Diriga
 3529,https://overframe.gg/items/arsenal/3529,200,true,Carrier
-3530,https://overframe.gg/items/arsenal/3530,0,false,
-3531,https://overframe.gg/items/arsenal/3531,0,false,
-3532,https://overframe.gg/items/arsenal/3532,0,false,
+3530,https://overframe.gg/items/arsenal/3530,200,true,Dethcube
+3531,https://overframe.gg/items/arsenal/3531,200,true,Djinn
+3532,https://overframe.gg/items/arsenal/3532,200,true,Dual Ichor
 3533,https://overframe.gg/items/arsenal/3533,200,true,Torid
 3534,https://overframe.gg/items/arsenal/3534,200,true,Helios
 3535,https://overframe.gg/items/arsenal/3535,200,true,Lanka
