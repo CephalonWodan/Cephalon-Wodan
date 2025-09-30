@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
   workflow_call:
   schedule:
-    - cron: "17 4 * * *"  # tous les jours à 04:17 UTC (06:17 à Paris en été)
+    - cron: "17 4 * * *"  # tous les jours à 04:17 UTC
 
   # Relance si les scripts / données utiles changent (et évite les boucles de commit)
   push:
@@ -14,6 +14,7 @@ on:
       - "tools/enrich_weapons.js"
       - "data/overframe/**"
       - ".github/workflows/enrich-weapons.yml"
+      # éviter toute boucle
       - "!data/wfstat_weapons.json"
       - "!data/enriched_weapons.json"
       - "!data/enriched_weapons.csv"
@@ -33,6 +34,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # nécessaire pour rebase/pull propre
+          persist-credentials: true # utiliser le token par défaut
 
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
@@ -88,10 +92,9 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add data/wfstat_weapons.json \
-                  data/enriched_weapons.json \
-                  data/enriched_weapons.csv \
-                  data/enriched_weapons_report.json
+          # Suivre TOUT ce qui a été généré/modifié (évite 'untracked files present')
+          git add -A
+          git update-index -q --refresh
 
           if git diff --cached --quiet; then
             echo "Aucun changement à committer."
