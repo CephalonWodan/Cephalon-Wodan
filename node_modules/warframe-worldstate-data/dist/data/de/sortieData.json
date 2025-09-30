@@ -1,0 +1,4253 @@
+{
+  "modifierTypes": {
+    "SORTIE_MODIFIER_LOW_ENERGY": "reduzierte Energie",
+    "SORTIE_MODIFIER_IMPACT": "Feindliche Physikalverbesserung: Einschlag",
+    "SORTIE_MODIFIER_SLASH": "Feindliche Physikalverbesserung: Schnitt",
+    "SORTIE_MODIFIER_PUNCTURE": "Feindliche Physikalverbesserung: Durchschlag",
+    "SORTIE_MODIFIER_EXIMUS": "Eximus Festung",
+    "SORTIE_MODIFIER_MAGNETIC": "Feindliche Elementarverbesserung: Magnetismus",
+    "SORTIE_MODIFIER_CORROSIVE": "Feindliche Elementarverbesserung: Korrosion",
+    "SORTIE_MODIFIER_VIRAL": "Feindliche Elementarverbesserung: Virus",
+    "SORTIE_MODIFIER_ELECTRICITY": "Feindliche Elementarverbesserung: Elektrizität",
+    "SORTIE_MODIFIER_RADIATION": "Feindliche Elementarverbesserung: Strahlung",
+    "SORTIE_MODIFIER_GAS": "Feindliche Elementarverbesserung: Gas",
+    "SORTIE_MODIFIER_FIRE": "Feindliche Elementarverbesserung: Hitze",
+    "SORTIE_MODIFIER_EXPLOSION": "Feindliche Elementarverbesserung: Explosion",
+    "SORTIE_MODIFIER_FREEZE": "Feindliche Elementarverbesserung: Kälte",
+    "SORTIE_MODIFIER_TOXIN": "Feindliche Elementarverbesserung: Gift",
+    "SORTIE_MODIFIER_POISON": "Feindliche Elementarverbesserung: Gift",
+    "SORTIE_MODIFIER_HAZARD_RADIATION": "Umgebungsgefährdung: Strahlungsgefahr",
+    "SORTIE_MODIFIER_HAZARD_MAGNETIC": "Umgebungsgefährdung: Elektromagnetische Anomalien",
+    "SORTIE_MODIFIER_HAZARD_FOG": "Umgebungsgefährdung: Dichter Nebel",
+    "SORTIE_MODIFIER_HAZARD_FIRE": "Umgebungsgefährdung: Feuer",
+    "SORTIE_MODIFIER_HAZARD_ICE": "Umgebungsgefährdung: Kryogenes Leck",
+    "SORTIE_MODIFIER_HAZARD_COLD": "Umgebungsgefährdung: Extreme Kälte",
+    "SORTIE_MODIFIER_ARMOR": "Verbesserte feindliche Rüstung",
+    "SORTIE_MODIFIER_SHIELDS": "Verbesserte feindliche Schilde",
+    "SORTIE_MODIFIER_SECONDARY_ONLY": "Waffeneinschränkung: Nur Pistolen",
+    "SORTIE_MODIFIER_SHOTGUN_ONLY": "Waffeneinschränkung: Nur Shotguns",
+    "SORTIE_MODIFIER_SNIPER_ONLY": "Waffeneinschränkung: Nur Sniper",
+    "SORTIE_MODIFIER_RIFLE_ONLY": "Waffeneinschränkung: Nur Gewehre",
+    "SORTIE_MODIFIER_MELEE_ONLY": "Waffeneinschränkung: Nur Nahkampf",
+    "SORTIE_MODIFIER_BOW_ONLY": "Waffeneinschränkung: Nur Bögen"
+  },
+  "modifierDescriptions": {
+    "SORTIE_MODIFIER_LOW_ENERGY": "Du hast nur ein Viertel deiner maximalen Energie. Energieregeneration ist weniger effektiv.",
+    "SORTIE_MODIFIER_IMPACT": "Feinde können mehr Einschlagsschaden verursachen. Gegen Finisherdamage wird nicht widerstanden.",
+    "SORTIE_MODIFIER_SLASH": "Feinde können mehr Schnittschaden verursachen. Gegen Finisherdamage wird nicht widerstanden.",
+    "SORTIE_MODIFIER_PUNCTURE": "Feinde können mehr Durchschlagsschaden verursachen. Gegen Finisherdamage wird nicht widerstanden.",
+    "SORTIE_MODIFIER_EXIMUS": "Eximuseinheiten haben eine viel höhere Spawnchance in dieser Mission. Manche ihrer Auras addieren sich.",
+    "SORTIE_MODIFIER_MAGNETIC": "Feinde fügen mehr Magnetismusschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_CORROSIVE": "Feinde fügen mehr Korrosionsschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_VIRAL": "Feinde fügen mehr Virusschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_ELECTRICITY": "Feinde fügen mehr Elektrizitätsschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_RADIATION": "Feinde fügen mehr Strahlungsschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_GAS": "Feinde fügen mehr Gasschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_FIRE": "Feinde fügen mehr Hitzeschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_EXPLOSION": "Feinde fügen mehr Explosionsschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_FREEZE": "Feinde fügen mehr Kälteschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_TOXIN": "Feinde fügen mehr Giftschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_POISON": "Feinde fügen mehr Giftschaden zu und sind auch resistenter dagegen.",
+    "SORTIE_MODIFIER_HAZARD_RADIATION": "Jeder erlittene Schaden ist Strahlungsschaden. Ebenso erleidet man in den grünen Wolken in der Mission Strahlungsschaden.",
+    "SORTIE_MODIFIER_HAZARD_MAGNETIC": "Verringerte Gravitation. In der Mission sind blaue Blasen, die Magnetismusschaden verursachen.",
+    "SORTIE_MODIFIER_HAZARD_FOG": "Eingeschränkte Sicht in der Mission aufgrund von dichtem Nebel. Garantierte Nacht auf Planeten wie Erde.",
+    "SORTIE_MODIFIER_HAZARD_FIRE": "In der Mission gibt es Brandflächen. Die Leben des Warframes sind halbiert. Eine Kernschmelze steht unmittelbar bevor.",
+    "SORTIE_MODIFIER_HAZARD_ICE": "Maximale Schilde sind halbiert. Es gibt Eisflächen, die Kälteschaden verursachen.",
+    "SORTIE_MODIFIER_HAZARD_COLD": "Die Mobilität ist deutlich eingeschränkt. Sprinten ist in diesem Modus deaktiviert.",
+    "SORTIE_MODIFIER_ARMOR": "Feinde haben verbesserte/zusätzliche Rüstung. Korrosionsschaden ist nur halb so effektiv.",
+    "SORTIE_MODIFIER_SHIELDS": "Feinde haben deutlich verbesserte Schilde. Magnetismusschaden wird empfohlen.",
+    "SORTIE_MODIFIER_SECONDARY_ONLY": "Nur Sekundärwaffen sind in dieser Mission erlaubt. Jegliche anderen Waffen sind nicht erlaubt und werden, falls ausgerüstet, automatisch entfernt.",
+    "SORTIE_MODIFIER_SHOTGUN_ONLY": "Nur Shotguns sind in dieser Mission erlaubt. Jegliche anderen Waffen sind nicht erlaubt und werden, falls ausgerüstet, automatisch entfernt.",
+    "SORTIE_MODIFIER_SNIPER_ONLY": "Nur Snipergewehre sind in dieser Mission erlaubt. Jegliche anderen Waffen sind nicht erlaubt und werden, falls ausgerüstet, automatisch entfernt.",
+    "SORTIE_MODIFIER_RIFLE_ONLY": "Nur Gewehre sind in dieser Mission erlaubt. Überraschenderweise sind auch Werfer erlaubt. Jegliche anderen Waffen sind nicht erlaubt und werden, falls ausgerüstet, automatisch entfernt.",
+    "SORTIE_MODIFIER_MELEE_ONLY": "Nur Nahkampfwaffen sind in dieser Mission erlaubt. Jegliche anderen Waffen sind nicht erlaubt und werden, falls ausgerüstet, automatisch entfernt.",
+    "SORTIE_MODIFIER_BOW_ONLY": "Nur Bögen sind in dieser Mission erlaubt, allerdings gehen auch Armbrüste! Jegliche anderen Waffen sind nicht erlaubt und werden, falls ausgerüstet, automatisch entfernt."
+  },
+  "bosses": {
+    "SORTIE_BOSS_HYENA": {
+      "name": "Hyena Pack",
+      "faction": "Corpus"
+    },
+    "SORTIE_BOSS_KELA": {
+      "name": "Kela De Thaym",
+      "faction": "Grineer"
+    },
+    "SORTIE_BOSS_VOR": {
+      "name": "Captain Vor",
+      "faction": "Grineer"
+    },
+    "SORTIE_BOSS_RUK": {
+      "name": "General Sargas Ruk",
+      "faction": "Grineer"
+    },
+    "SORTIE_BOSS_HEK": {
+      "name": "Councilor Vay Hek",
+      "faction": "Grineer"
+    },
+    "SORTIE_BOSS_KRIL": {
+      "name": "Lech Kril",
+      "faction": "Grineer"
+    },
+    "SORTIE_BOSS_TYL": {
+      "name": "Tyl Regor",
+      "faction": "Grineer"
+    },
+    "SORTIE_BOSS_JACKAL": {
+      "name": "Jackal",
+      "faction": "Corpus"
+    },
+    "SORTIE_BOSS_ALAD": {
+      "name": "Alad V",
+      "faction": "Corpus"
+    },
+    "SORTIE_BOSS_AMBULAS": {
+      "name": "Ambulas",
+      "faction": "Corpus"
+    },
+    "SORTIE_BOSS_NEF": {
+      "name": "Nef Anyo",
+      "faction": "Corpus"
+    },
+    "SORTIE_BOSS_RAPTOR": {
+      "name": "Raptor",
+      "faction": "Corpus"
+    },
+    "SORTIE_BOSS_PHORID": {
+      "name": "Phorid",
+      "faction": "Befallene"
+    },
+    "SORTIE_BOSS_LEPHANTIS": {
+      "name": "Lephantis",
+      "faction": "Befallene"
+    },
+    "SORTIE_BOSS_INFALAD": {
+      "name": "Mutalist Alad V",
+      "faction": "Befallene"
+    },
+    "SORTIE_BOSS_CORRUPTED_VOR": {
+      "name": "Captain Vor (Korrumpiert)",
+      "faction": "Korrumpierte"
+    },
+    "SORTIE_BOSS_BOREAL": {
+      "name": "Archon Boreal",
+      "faction": "Narmer"
+    },
+    "SORTIE_BOSS_AMAR": {
+      "name": "Archon Amar",
+      "faction": "Narmer"
+    },
+    "SORTIE_BOSS_NIRA": {
+      "name": "Archon Nira",
+      "faction": "Narmer"
+    },
+    "SORTIE_BOSS_PAAZUL": {
+      "name": "Archon Paazul",
+      "faction": "Narmer"
+    }
+  },
+  "endStates": [
+    {
+      "bossName": "Captain Vor",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "16",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Vay Hek",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Sargas Ruk",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Verteidigung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Verteidigung",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Kela de Thaym",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Überleben",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Lech Kril",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Tyl Regor",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Jackal",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Alad V",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Ambulas",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Auslöschung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Hyena Pack",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Rettung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Sabotage",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Spionage",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Nef Anyo",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Raptor",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Phorid",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Hive",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Lephantis",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Spionage",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Spionage",
+            "Mobile Verteidigung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Hive",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    },
+    {
+      "bossName": "Mutalist Alad V",
+      "regions": [
+        {
+          "name": "0",
+          "missions": []
+        },
+        {
+          "name": "Merkur",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Venus",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Verteidigung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Erde",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Mars",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Abfangen",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Jupiter",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Saturn",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Uranus",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Neptun",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Ausgrabung",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Pluto",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Ceres",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Eris",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Überleben",
+            "Hive",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Sedna",
+          "missions": [
+            "Auslöschung",
+            "Überleben",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Spionage",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Europa",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Entführung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "14",
+          "missions": []
+        },
+        {
+          "name": "15",
+          "missions": []
+        },
+        {
+          "name": "Phobos",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "17",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Lua",
+          "missions": [
+            "Auslöschung",
+            "Ausgrabung",
+            "Rettung",
+            "Sabotage",
+            "Spionage",
+            "Verteidigung",
+            "Mobile Verteidigung",
+            "Abfangen",
+            "Auslöschung",
+            "Attentat"
+          ]
+        },
+        {
+          "name": "Kuva Festung",
+          "missions": [
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Auslöschung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Verteidigung",
+            "Attentat"
+          ]
+        }
+      ]
+    }
+  ],
+  "modifiers": [
+    "+ feindliche Rüstung/Schilde",
+    "Umgebungsgefährdung",
+    "Feindliche Schadensresistenz",
+    "reduzierte Energie",
+    "Eximus Festung",
+    "Waffeneinschränkung"
+  ]
+}

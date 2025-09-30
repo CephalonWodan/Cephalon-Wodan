@@ -1,0 +1,86 @@
+{
+  "ArbitersSyndicate": {
+    "name": "Les Arbitres de Hexis"
+  },
+  "CephalonSudaSyndicate": {
+    "name": "Le Cephalon Suda"
+  },
+  "NewLokaSyndicate": {
+    "name": "Le Nouveau Loka"
+  },
+  "PerrinSyndicate": {
+    "name": "La Séquence Perrin"
+  },
+  "SteelMeridianSyndicate": {
+    "name": "Le Méridien d'Acier"
+  },
+  "RedVeilSyndicate": {
+    "name": "Le Voile Rouge"
+  },
+  "CetusSyndicate": {
+    "name": "Ostron"
+  },
+  "QuillsSyndicate": {
+    "name": "Les Plumes"
+  },
+  "AssassinsSyndicate": {
+    "name": "Assassins"
+  },
+  "EventSyndicate": {
+    "name": "Opérations syndicales"
+  },
+  "SolarisSyndicate": {
+    "name": "Union Solaris"
+  },
+  "VoxSyndicate": {
+    "name": "Vox Solaris"
+  },
+  "VentKidsSyndicate": {
+    "name": "Orphelins des Conduits"
+  },
+  "EntratiSyndicate": {
+    "name": "Entrati"
+  },
+  "NecraloidSyndicate": {
+    "name": "Necraloïde"
+  },
+  "KahlSyndicate": {
+    "name": "Kahl's Garrison"
+  },
+  "ZarimanSyndicate": {
+    "name": "The Holdfasts"
+  },
+  "RadioLegionSyndicate": {
+    "name": "The Wolf of Saturn Six"
+  },
+  "RadioLegion2Syndicate": {
+    "name": "The Emissary"
+  },
+  "RadioLegion3Syndicate": {
+    "name": "Glassmaker"
+  },
+  "RadioLegionIntermissionSyndicate": {
+    "name": "Intermission"
+  },
+  "RadioLegionIntermission2Syndicate": {
+    "name": "Intermission II"
+  },
+  "RadioLegionIntermission3Syndicate": {
+    "name": "Intermission III"
+  },
+  "RadioLegionIntermission4Syndicate": {
+    "name": "Nora's Choice"
+  },
+  "RadioLegionIntermission5Syndicate": {
+    "name": "Nora's Mix Volume 1"
+  },
+  "RadioLegionIntermission6Syndicate": {
+    "name": "Nora's Mix Volume 2"
+  },
+  "EntratiLabSyndicate": {
+    "name": "Cavia"
+  },
+  "HexSyndicate": {
+    "name": "The Hex"
+  }
+}

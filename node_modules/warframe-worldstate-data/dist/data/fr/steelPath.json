@@ -1,0 +1,114 @@
+{
+  "rotation": [
+    {
+      "name": "Schéma Forma Umbra",
+      "cost": 150
+    },
+    {
+      "name": "50 000 X Kuva",
+      "cost": 55
+    },
+    {
+      "name": "Kitgun Riven Mod",
+      "cost": 75
+    },
+    {
+      "name": "3x Forma",
+      "cost": 75
+    },
+    {
+      "name": "Zaw Riven Mod",
+      "cost": 75
+    },
+    {
+      "name": "30 000 X Endo",
+      "cost": 150
+    },
+    {
+      "name": "Rifle Riven Mod",
+      "cost": 75
+    },
+    {
+      "name": "Shotgun Riven Mod",
+      "cost": 75
+    }
+  ],
+  "evergreen": [
+    {
+      "name": "Décodeur de Riven Voilé",
+      "cost": 20
+    },
+    {
+      "name": "Schéma Épaulières Bishamo",
+      "cost": 15
+    },
+    {
+      "name": "Schéma Cuirasse Bishamo",
+      "cost": 25
+    },
+    {
+      "name": "Schéma Casque Bishamo",
+      "cost": 20
+    },
+    {
+      "name": "Schéma Grèves Bishamo",
+      "cost": 25
+    },
+    {
+      "name": "10 000 X Kuva",
+      "cost": 15
+    },
+    {
+      "name": "Adaptateur D'Arcane Principale",
+      "cost": 15
+    },
+    {
+      "name": "Adaptateur D'Arcane Secondaire",
+      "cost": 15
+    },
+    {
+      "name": "Relic Pack",
+      "cost": 15
+    },
+    {
+      "name": "Forma Posture Schéma",
+      "cost": 10
+    },
+    {
+      "name": "Ephermera Trio Orbital",
+      "cost": 3
+    },
+    {
+      "name": "Ephemera Crania",
+      "cost": 85
+    },
+    {
+      "name": "Contrepoids",
+      "cost": 35
+    },
+    {
+      "name": "Statuette Noggle - Teshin",
+      "cost": 35
+    },
+    {
+      "name": "Glyphe Gauss En Action",
+      "cost": 15
+    },
+    {
+      "name": "Grendel en Action",
+      "cost": 15
+    },
+    {
+      "name": "Glyphe Protea En Action",
+      "cost": 15
+    },
+    {
+      "name": "Service À Thé Orokin",
+      "cost": 15
+    },
+    {
+      "name": "Glyphe Xaku En Action",
+      "cost": 15
+    }
+  ]
+}

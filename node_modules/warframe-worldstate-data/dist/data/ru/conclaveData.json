@@ -1,0 +1,425 @@
+{
+  "modes": {
+    "PVPMODE_ALL": {
+      "value": "Любой Режим"
+    },
+    "PVPMODE_DEATHMATCH": {
+      "value": "Истребление"
+    },
+    "PVPMODE_TEAMDEATHMATCH": {
+      "value": "Командное истребление"
+    },
+    "PVPMODE_NONE": {
+      "value": "Ничего"
+    },
+    "PVPMODE_CAPTURETHEFLAG": {
+      "value": "Захват Цефалона"
+    },
+    "PVPMODE_SPEEDBALL": {
+      "value": "Лунаро"
+    }
+  },
+  "categories": {
+    "PVPChallengeTypeCategory_WEEKLY": {
+      "value": "недельный",
+      "description": "Еженедельные"
+    },
+    "PVPChallengeTypeCategory_WEEKLY_ROOT": {
+      "value": "недельное испытание",
+      "description": "Еженедельная категория"
+    },
+    "PVPChallengeTypeCategory_DAILY": {
+      "value": "day",
+      "description": "Дневное"
+    },
+    "PVPChallengeTypeCategory_DAILY_ROOT": {
+      "value": "day_root",
+      "description": "Дневное испытание"
+    },
+    "PVPChallengeTypeCategory_MODEAFFECTOR": {
+      "value": "modified round",
+      "description": "Измененный раунд"
+    }
+  },
+  "challenges": {
+    "PVPTimedChallengeKillsPrimaryEASY": {
+      "title": "Основная Цель",
+      "description": "Убейте 1 оппонента, используя основное оружие",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPrimaryMEDIUM": {
+      "title": "Основная Цель",
+      "description": "Убейте 4 оппонента, используя основное оружие",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPrimaryHARD": {
+      "title": "Идеальная Основная Цель",
+      "description": "Убейте 3 оппонента, используя Основное Оружие, за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsSecondaryEASY": {
+      "title": "Вторичная Цель",
+      "description": "Убейте 1 оппонента, используя вторичное оружие",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsSecondaryMEDIUM": {
+      "title": "Вторичная Цель",
+      "description": "Убейте 4 оппонентов, используя вторичное оружие",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsSecondaryHARD": {
+      "title": "Идеальная Вторичная Цель",
+      "description": "Убейте 3 оппонентов, используя вторичное оружие, за один матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsWhileSlidingEASY": {
+      "title": "Удар в скольжении",
+      "description": "Убейте 1 оппонента, находясь в скольжении",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsWhileSlidingMEDIUM": {
+      "title": "Удар в скольжении",
+      "description": "Убейте 4 оппонентов, находясь в скольжении",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsWhileSlidingHARD": {
+      "title": "Идеальный Удар в скольжении",
+      "description": "Убейте 3 оппонентов, находясь в скольжении, за один матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsComboEASY": {
+      "title": "Ловкость",
+      "description": "Убейте 1 оппонента, используя любые два из: Оружие Ближнего Боя, Стрелковое Оружие, Способности",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsComboMEDIUM": {
+      "title": "Ловкость",
+      "description": "Убейте 4 оппонентов, используя любые два из: Оружие Ближнего Боя, Стрелковое Оружие, Способности",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsComboHARD": {
+      "title": "Идеальная Ловкость",
+      "description": "Убейте 3 оппонентов, используя любые два из: Оружие Ближнего Боя, Стрелковое Оружие, Способности за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsMultiEASY": {
+      "title": "Гибкость",
+      "description": "Убейте 1 оппонента, используя: Оружие Ближнего Боя, Стрелковое Оружие, Способности",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsMultiMEDIUM": {
+      "title": "Гибкость",
+      "description": "Убейте 4 оппонентов, используя: Оружие Ближнего Боя, Стрелковое Оружие, Способности",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsMultiHARD": {
+      "title": "Идеальная Гибкость",
+      "description": "Убейте 3 оппонентов, используя: Оружие Ближнего Боя, Стрелковое Оружие, Способности за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakEASY": {
+      "title": "Серия Убийств",
+      "description": "Совершите 1 серию убийств",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakMEDIUM": {
+      "title": "Серия Убийств",
+      "description": "Совершите серию из 3 Убийств",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakHARD": {
+      "title": "Идеальная Серия Убийств",
+      "description": "Совершите 2 серии убийств за один матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakStopped_EASY": {
+      "title": "Прерванная Серия",
+      "description": "Убейте 1 врага подряд",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakStoppedEASY": {
+      "title": "Прерванная Серия",
+      "description": "Убейте 1 врага подряд",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakStopped_MEDIUM": {
+      "title": "Прерванная Серия",
+      "description": "Убейте 3 врагов подряд",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakStoppedMEDIUM": {
+      "title": "Прерванная Серия",
+      "description": "Убейте 3 врагов подряд",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakStopped_HARD": {
+      "title": "Идеальная Прерванная Серия",
+      "description": "Убейте 2 врагов подряд за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakStoppedHARD": {
+      "title": "Идеальная Прерванная Серия",
+      "description": "Убейте 2 врагов подряд за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsTargetInAirEASY": {
+      "title": "Анти Воздушный Удар",
+      "description": "Убейте 1 оппонента, находящегося в воздухе",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsTargetInAirMEDIUM": {
+      "title": "Анти Воздушный Удар",
+      "description": "Убейте 4 оппонентов, которые находятся в воздухе",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsTargetInAirHARD": {
+      "title": "Идеальный Антивоздушный Удар",
+      "description": "Убейте 3 оппонентов, которые находятся в воздухе за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsWhileInAirEASY": {
+      "title": "Воздушный Удар",
+      "description": "Убейте 1 оппонента, находясь в воздухе",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsWhileInAirMEDIUM": {
+      "title": "Воздушный Удар",
+      "description": "Убейте 4 оппонентов, находясь в воздухе",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsWhileInAirHARD": {
+      "title": "Идеальный Воздушный Удар",
+      "description": "Убейте 3 оппонентов за матч, находясь в воздухе",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsMeleeEASY": {
+      "title": "Гладиатор",
+      "description": "Совершите 1 убийство оружием ближнего боя",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsMeleeMEDIUM": {
+      "title": "Гладиатор",
+      "description": "Совершите 4 убийства оружием ближнего боя",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsMeleeHARD": {
+      "title": "Идеальный Гладиатор",
+      "description": "Совершите 3 убийства оружием ближнего боя за один матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsPowerEASY": {
+      "title": "Художник Бездны",
+      "description": "Совершите 1 убийство Способностями",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPowerMEDIUM": {
+      "title": "Художник Бездны",
+      "description": "Совершите 4 убийства Способностями",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPowerHARD": {
+      "title": "Идеальный Художник Бездны",
+      "description": "Убейте 3 оппонентов Способностями за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsHeadShotsEASY": {
+      "title": "Стрелок",
+      "description": "Совершите 1 убийство попаданием в голову",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsHeadShotsMEDIUM": {
+      "title": "Стрелок",
+      "description": "Убейте 4 оппонентов в голову",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsHeadShotsHARD": {
+      "title": "Идеальный Стрелок",
+      "description": "Убейте 3 оппонентов в голову за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakDominationEASY": {
+      "title": "Превосходство",
+      "description": "Убейте 1 оппонента, не умирая",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakDominationMEDIUM": {
+      "title": "Превосходство",
+      "description": "Убейте 4 оппонентов, не умирая",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakDominationHARD": {
+      "title": "Идеальное Превосходство",
+      "description": "Убейте 3 оппонентов, не умирая, за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsPaybackEASY": {
+      "title": "Месть",
+      "description": "Убейте 1 оппонента, убившего вас",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPaybackMEDIUM": {
+      "title": "Месть",
+      "description": "Убейте 4 оппонентов, убивших вас",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPaybackHARD": {
+      "title": "Идеальное Мщение",
+      "description": "Убейте 3 оппонентов, убивших вас, за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeFlagReturnEASY": {
+      "title": "Освободитель",
+      "description": "Верните 1 Цефалон Вашей команды",
+      "standing": 500
+    },
+    "PVPTimedChallengeFlagReturnMEDIUM": {
+      "title": "Освободитель",
+      "description": "Верните 4 Цефалонов Вашей команды",
+      "standing": 1500
+    },
+    "PVPTimedChallengeFlagCaptureEASY": {
+      "title": "Бандит",
+      "description": "Захватите 1 Цефалон",
+      "standing": 500
+    },
+    "PVPTimedChallengeFlagCaptureMEDIUM": {
+      "title": "Бандит",
+      "description": "Захватите 4 Цефалонов",
+      "standing": 1500
+    },
+    "PVPTimedChallengeSpeedballCatchesEASY": {
+      "title": "Внимание!",
+      "description": "Поймайте 3 передачи от союзников",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballCatchesMEDIUM": {
+      "title": "Внимание!",
+      "description": "Поймайте 10 передач от союзников",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballCatchesHARD": {
+      "title": "Идеальное Внимание!",
+      "description": "Поймайте 6 передач от союзников за один матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsEASY": {
+      "title": "Перехват!",
+      "description": "Перехватите 3 передачи оппонентов",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsMEDIUM": {
+      "title": "Перехват!",
+      "description": "Перехватите 6 передач оппонентов",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsHARD": {
+      "title": "Идеальный Перехват!",
+      "description": "Перехватите 3 передачи оппонентов за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballStealsEASY": {
+      "title": "Хватай и держи",
+      "description": "Завладейте мячом 3 раза",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballStealsMEDIUM": {
+      "title": "Хватай и держи",
+      "description": "Завладейте мячом 6 раз",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballStealsHARD": {
+      "title": "Идеально Хватай и держи",
+      "description": "Завладейте мячом 3 раза за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballChecksEASY": {
+      "title": "Блокада",
+      "description": "Блокировать 3 раз оппонентов с мячом",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballChecksMEDIUM": {
+      "title": "Блокада",
+      "description": "Блокировать 10 раз оппонентов с мячом",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballChecksHARD": {
+      "title": "Идеальная Блокада",
+      "description": "Блокировать 6 раз оппонентов с мячом, за один матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballPassesEASY": {
+      "title": "Бросок!",
+      "description": "Передать 3 раз мяч товарищам по команде",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballPassesMEDIUM": {
+      "title": "Бросок!",
+      "description": "Передать 6 раз мяч товарищам по команде",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballPassesHARD": {
+      "title": "Идеальный Бросок!",
+      "description": "Передать 3 раз мяч товарищам по команде за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballGoalsEASY": {
+      "title": "Гол!",
+      "description": "Забить 2 Гола",
+      "standing": 1000
+    },
+    "PVPTimedChallengeMatchCompleteEASY": {
+      "title": "Видеть Насквозь",
+      "description": "Завершите 1 матч",
+      "standing": 500
+    },
+    "PVPTimedChallengeMatchCompleteMEDIUM": {
+      "title": "Видеть Насквозь",
+      "description": "Завершите 4 матча",
+      "standing": 1500
+    },
+    "PVPTimedChallengeWeeklyStandardSet": {
+      "title": "Еженедельная Миссия",
+      "description": "Еженедельная Миссия",
+      "standing": 50000
+    },
+    "PVPTimedChallengeGameModeWins": {
+      "title": "Матч выигран",
+      "description": "Выиграйте 6 матчей в любом игровом режиме",
+      "standing": 0
+    },
+    "PVPTimedChallengeGameModeComplete": {
+      "title": "Матч сыгран",
+      "description": "Завершите 20 матчей в любом игровом режиме",
+      "standing": 0
+    },
+    "PVPTimedChallengeOtherChallengeCompleteANY": {
+      "title": "В хорошей форме",
+      "description": "Завершите 10 ежедневных Испытаний",
+      "standing": 0
+    },
+    "PVPTimedChallengeSpeedballGoalsHARD": {
+      "title": "Идеальный Гол!",
+      "description": "Забейте 4 Гола за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeKillsPayback_MEDIUM": {
+      "title": "Месть",
+      "description": "Убейте 3 оппонентов, убивших вас",
+      "standing": 1500
+    }
+  },
+  "affectors": {
+    "PVPTimedAffectorSuperEnergy": {
+      "title": "Всплеск Энергии",
+      "description": "Всплеск Энергии - Восстанавливайте энергию быстрее"
+    },
+    "PVPTimedAffectorSuperMeleeDamage": {
+      "title": "Дополнительный Урон Оружия Ближнего Боя",
+      "description": "Дополнительный Урон Оружия Ближнего Боя - Урон Оружия Ближнего Боя увеличен"
+    },
+    "PVPTimedAffectorSuperEverything": {
+      "title": "Дополнительный Урон",
+      "description": "Дополнительный Урон - Урон увеличен"
+    }
+  }
+}

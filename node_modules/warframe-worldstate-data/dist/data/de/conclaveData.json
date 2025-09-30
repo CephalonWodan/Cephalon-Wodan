@@ -1,0 +1,425 @@
+{
+  "modes": {
+    "PVPMODE_ALL": {
+      "value": "Jeder Modus"
+    },
+    "PVPMODE_DEATHMATCH": {
+      "value": "Vernichtung"
+    },
+    "PVPMODE_TEAMDEATHMATCH": {
+      "value": "Team Vernichtung"
+    },
+    "PVPMODE_NONE": {
+      "value": "Keiner"
+    },
+    "PVPMODE_CAPTURETHEFLAG": {
+      "value": "Cephalon Eroberung"
+    },
+    "PVPMODE_SPEEDBALL": {
+      "value": "Lunaro"
+    }
+  },
+  "categories": {
+    "PVPChallengeTypeCategory_WEEKLY": {
+      "value": "week",
+      "description": "Wöchentlich"
+    },
+    "PVPChallengeTypeCategory_WEEKLY_ROOT": {
+      "value": "week_root",
+      "description": "Missionen"
+    },
+    "PVPChallengeTypeCategory_DAILY": {
+      "value": "day",
+      "description": "Tag"
+    },
+    "PVPChallengeTypeCategory_DAILY_ROOT": {
+      "value": "day_root",
+      "description": "Herausforderungen"
+    },
+    "PVPChallengeTypeCategory_MODEAFFECTOR": {
+      "value": "modified round",
+      "description": "Angepasste Runde"
+    }
+  },
+  "challenges": {
+    "PVPTimedChallengeKillsPrimaryEASY": {
+      "title": "Primärziel",
+      "description": "Töte 1 Gegner mit deiner primären Waffe",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPrimaryMEDIUM": {
+      "title": "Primärziel",
+      "description": "Töte 4 Gegner mit deiner primären Waffe",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPrimaryHARD": {
+      "title": "Fokussiertes Hauptziel",
+      "description": "Töte 3 Gegner mit deiner primären Waffe",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsSecondaryEASY": {
+      "title": "Sekundärziel",
+      "description": "Töte 1 Gegner mit deiner sekundären Waffe",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsSecondaryMEDIUM": {
+      "title": "Sekundärziel",
+      "description": "Töte 4 Gegner mit deiner sekundären Waffe",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsSecondaryHARD": {
+      "title": "Fokussiertes Sekundäres Ziel",
+      "description": "Töte 3 Gegner mit deiner sekundären Waffe",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsWhileSlidingEASY": {
+      "title": "Rutsch Angriff",
+      "description": "Töte einen Gegner während dem Rutschen",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsWhileSlidingMEDIUM": {
+      "title": "Rutsch Angriff",
+      "description": "Töte 4 Gegner während dem Rutschen",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsWhileSlidingHARD": {
+      "title": "Fokusierter Rutsch Angriff",
+      "description": "Töte 3 Gegner während dem Rutschen in einem Match",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsComboEASY": {
+      "title": "Geschicklichkeit",
+      "description": "Töte einen Gegner mit 2 der folgenden: Nahkampf, Waffen und Fähigkeiten",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsComboMEDIUM": {
+      "title": "Geschicklichkeit",
+      "description": "Töte 4 Gegner mit 2 der folgenden: Nahkampf, Waffen und Fähigkeiten",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsComboHARD": {
+      "title": "Fokussierte Geschicklichkeit",
+      "description": "Töte 3 Gegner mit 2 der folgenden: Nahkampf, Waffen und Fähigkeiten",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsMultiEASY": {
+      "title": "Vielseitigkeit",
+      "description": "Töte einen Gegner mit Nahkampf, Schusswaffen und Fähigkeiten",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsMultiMEDIUM": {
+      "title": "Vielseitigkeit",
+      "description": "Töte 4 Gegner mit Nahkampf, Schusswaffen und Fähigkeiten",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsMultiHARD": {
+      "title": "Fokussierte Vielseitigkeit",
+      "description": "Töte 3 Gegner mit Nahkampf, Schusswaffen und Fähigkeiten in einer Runde",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakEASY": {
+      "title": "Kill-Serie",
+      "description": "Erreiche eine 1 Kill Serie",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakMEDIUM": {
+      "title": "Kill-Serie",
+      "description": "Erreiche eine 3 Abschuss Serie",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakHARD": {
+      "title": "Fokussierte Kill-Serie",
+      "description": "Erreiche eine 2 Abschuss Serie in einer Runde",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakStopped_EASY": {
+      "title": "Killserie gestoppt",
+      "description": "Töte einen Gegner auf einer Killserie",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakStoppedEASY": {
+      "title": "Killserie gestoppt",
+      "description": "Töte einen Gegner auf einer Killserie",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakStopped_MEDIUM": {
+      "title": "Killserie gestoppt",
+      "description": "Töte 3 Gegner auf einer Killserie",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakStoppedMEDIUM": {
+      "title": "Killserie gestoppt",
+      "description": "Töte 3 Gegner auf einer Killserie",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakStopped_HARD": {
+      "title": "Fokussierte Serie gestoppt",
+      "description": "Töte 2 Gegner auf einer Killserie in einer Runde",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakStoppedHARD": {
+      "title": "Fokussierte Serie gestoppt",
+      "description": "Töte 2 Gegner auf einer Killserie in einer Runde",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsTargetInAirEASY": {
+      "title": "Luftangriff",
+      "description": "Töte 1 Feind in der Luft",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsTargetInAirMEDIUM": {
+      "title": "Luftangriff",
+      "description": "Töte 4 Feinde in der Luft",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsTargetInAirHARD": {
+      "title": "Fokussierter Luftschlag",
+      "description": "Töte 3 Gegner während sie in der Luft sind in einem Spiel",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsWhileInAirEASY": {
+      "title": "Luftschlag",
+      "description": "Töte einen Gegner aus der Luft",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsWhileInAirMEDIUM": {
+      "title": "Luftschlag",
+      "description": "Töte 4 Gegner aus der Luft",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsWhileInAirHARD": {
+      "title": "Fokussierter Luftschlag",
+      "description": "Töte 3 Gegner aus der Luft in einem Match",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsMeleeEASY": {
+      "title": "Gladiator",
+      "description": "Erziele einen Nahkampfkill",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsMeleeMEDIUM": {
+      "title": "Gladiator",
+      "description": "Erziele 4 Nahkampfkill's",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsMeleeHARD": {
+      "title": "Fokussierter Gladiator",
+      "description": "Erziele 3 Nahkampfkill's in einem Spiel",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsPowerEASY": {
+      "title": "Void-Maler",
+      "description": "Erziele einen Warframe Fähigkeitskill",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPowerMEDIUM": {
+      "title": "Void-Maler",
+      "description": "Erziele 4 Warframe Fähigkeitskill's",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPowerHARD": {
+      "title": "Fokussierter Void-Maler",
+      "description": "Erziele 3 Warframe Fähigkeitskill's in einer Runde",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsHeadShotsEASY": {
+      "title": "Schütze",
+      "description": "Erziele einen Kopfschusskill",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsHeadShotsMEDIUM": {
+      "title": "Schütze",
+      "description": "Erziele 4 Kopfschusskill's",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsHeadShotsHARD": {
+      "title": "Fokussierter Schütze",
+      "description": "Erziele 3 Headshotkill's in einem Spiel",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakDominationEASY": {
+      "title": "Herrschaft",
+      "description": "Töte einen Feind, ohne dass er dich tötet",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakDominationMEDIUM": {
+      "title": "Herrschaft",
+      "description": "Töte 4 Feinde, ohne dass sie dich töten",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakDominationHARD": {
+      "title": "Fokussierte Herrschaft",
+      "description": "Töte 3 Gegner in einer Runde ohne das du stirbst",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsPaybackEASY": {
+      "title": "Revenge",
+      "description": "Töte einen Gegner der dich getötet hat",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPaybackMEDIUM": {
+      "title": "Revenge",
+      "description": "Töte 4 Gegner, die dich getötet haben",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPaybackHARD": {
+      "title": "Fokussierte Rache",
+      "description": "Töte 3 Gegner in einer Runde die dich getötet haben",
+      "standing": 3000
+    },
+    "PVPTimedChallengeFlagReturnEASY": {
+      "title": "Befreier",
+      "description": "Bringe den Cephalon deines Teams einmal zurück",
+      "standing": 500
+    },
+    "PVPTimedChallengeFlagReturnMEDIUM": {
+      "title": "Befreier",
+      "description": "Bringe den Cephalon deines Teams 4 mal zurück",
+      "standing": 1500
+    },
+    "PVPTimedChallengeFlagCaptureEASY": {
+      "title": "Bandit",
+      "description": "Erobere 1 Cephalon",
+      "standing": 500
+    },
+    "PVPTimedChallengeFlagCaptureMEDIUM": {
+      "title": "Bandit",
+      "description": "Erobere 4 Cephalons",
+      "standing": 1500
+    },
+    "PVPTimedChallengeSpeedballCatchesEASY": {
+      "title": "Vorsicht!",
+      "description": "Fange 3 Pässe von Teammitgliedern",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballCatchesMEDIUM": {
+      "title": "Vorsicht!",
+      "description": "Fange 10 Pässe von Teammitgliedern",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballCatchesHARD": {
+      "title": "Fokussierte Vorsicht!",
+      "description": "Fange 6 Pässe von Teamkameraden in einem Spiel",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsEASY": {
+      "title": "Abfangen!",
+      "description": "3 Pässe von Gegnern abfangen",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsMEDIUM": {
+      "title": "Abfangen!",
+      "description": "6 Pässe von Gegnern abfangen",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsHARD": {
+      "title": "Fokussiertes Abfang!",
+      "description": "Fange 3 Pässe von Gegnern in einem Spiel ab",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballStealsEASY": {
+      "title": "Abnehmen und schnappen",
+      "description": "Stiehle den Ball 3 mal",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballStealsMEDIUM": {
+      "title": "Abnehmen und schnappen",
+      "description": "Stiehle den Ball 6 mal",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballStealsHARD": {
+      "title": "Fokussiertes abnehmen und schnappen",
+      "description": "Stiehle den Ball 3 mal in einem Spiel",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballChecksEASY": {
+      "title": "Blockade",
+      "description": "Treffe Gegner die den Ball tragen 3 mal",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballChecksMEDIUM": {
+      "title": "Blockade",
+      "description": "Treffe Gegner die den Ball tragen 10 mal",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballChecksHARD": {
+      "title": "Fokussierte Blockade",
+      "description": "Treffe Gegner die den Ball tragen 6 mal",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballPassesEASY": {
+      "title": "Werf ihn!",
+      "description": "Schließe 3 erfolgreiche Pässe an Teammitglieder ab",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballPassesMEDIUM": {
+      "title": "Werf ihn!",
+      "description": "Schließe 6 erfolgreiche Pässe an Teammitglieder ab",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballPassesHARD": {
+      "title": "Fokussierter Wurf!",
+      "description": "Schließe 3 erfolgreiche Pässe an Teammitglieder ab",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballGoalsEASY": {
+      "title": "Tor!",
+      "description": "Erziele 2 Tore",
+      "standing": 1000
+    },
+    "PVPTimedChallengeMatchCompleteEASY": {
+      "title": "Durchsehen",
+      "description": "Schließe 1 Spiel ab",
+      "standing": 500
+    },
+    "PVPTimedChallengeMatchCompleteMEDIUM": {
+      "title": "Durchsehen",
+      "description": "Schließe 4 Spiele ab",
+      "standing": 1500
+    },
+    "PVPTimedChallengeWeeklyStandardSet": {
+      "title": "Wöchentliche Mission",
+      "description": "Wöchentliche Mission",
+      "standing": 50000
+    },
+    "PVPTimedChallengeGameModeWins": {
+      "title": "Runde gewonnen",
+      "description": "Gewinne 6 Spiele eines beliebigen Spieltyps",
+      "standing": 0
+    },
+    "PVPTimedChallengeGameModeComplete": {
+      "title": "Runde abgeschlossen",
+      "description": "Gewinne 20 Spiele eines beliebigen Spieltyps",
+      "standing": 0
+    },
+    "PVPTimedChallengeOtherChallengeCompleteANY": {
+      "title": "Bedingungen",
+      "description": "Schließe 10 tägliche Herausforderungen ab",
+      "standing": 0
+    },
+    "PVPTimedChallengeSpeedballGoalsHARD": {
+      "title": "Focused Goal!",
+      "description": "Erziele 4 Tore in einem Spiel",
+      "standing": 6000
+    },
+    "PVPTimedChallengeKillsPayback_MEDIUM": {
+      "title": "Revenge",
+      "description": "Töte 3 Gegner, die dich getötet haben",
+      "standing": 1500
+    }
+  },
+  "affectors": {
+    "PVPTimedAffectorSuperEnergy": {
+      "title": "Energieschub",
+      "description": "Energieschub - Energie schneller zurückgewinnen"
+    },
+    "PVPTimedAffectorSuperMeleeDamage": {
+      "title": "Extra Nahkampfschaden",
+      "description": "Extra Nahkampfschaden - Nahkampfschaden ist erhöht"
+    },
+    "PVPTimedAffectorSuperEverything": {
+      "title": "Extra Schaden",
+      "description": "Extra Schaden - Aller Schaden ist erhöht"
+    }
+  }
+}

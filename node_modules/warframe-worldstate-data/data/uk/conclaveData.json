@@ -1,0 +1,425 @@
+{
+  "modes": {
+    "PVPMODE_ALL": {
+      "value": "Будь-який режим"
+    },
+    "PVPMODE_DEATHMATCH": {
+      "value": "Винищення"
+    },
+    "PVPMODE_TEAMDEATHMATCH": {
+      "value": "Командне винищення"
+    },
+    "PVPMODE_NONE": {
+      "value": "Нічого"
+    },
+    "PVPMODE_CAPTURETHEFLAG": {
+      "value": "Захоплення цефалона"
+    },
+    "PVPMODE_SPEEDBALL": {
+      "value": "Лунаро"
+    }
+  },
+  "categories": {
+    "PVPChallengeTypeCategory_WEEKLY": {
+      "value": "week",
+      "description": "Щотижневі"
+    },
+    "PVPChallengeTypeCategory_WEEKLY_ROOT": {
+      "value": "week_root",
+      "description": "Weekly Category"
+    },
+    "PVPChallengeTypeCategory_DAILY": {
+      "value": "day",
+      "description": "Щоденні"
+    },
+    "PVPChallengeTypeCategory_DAILY_ROOT": {
+      "value": "day_root",
+      "description": "Daily Category"
+    },
+    "PVPChallengeTypeCategory_MODEAFFECTOR": {
+      "value": "modified round",
+      "description": "Modified Round"
+    }
+  },
+  "challenges": {
+    "PVPTimedChallengeKillsPrimaryEASY": {
+      "title": "Основна ціль",
+      "description": "Убийте 1 ворога за допомогою основної зброї",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPrimaryMEDIUM": {
+      "title": "Основна ціль",
+      "description": "Убийте 4 ворогів за допомогою основної зброї",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPrimaryHARD": {
+      "title": "Виняткова основна ціль",
+      "description": "Убийте 3 ворогів за матч за допомогою основної зброї",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsSecondaryEASY": {
+      "title": "Другорядна ціль",
+      "description": "Убийте 1 ворога за допомогою допоміжної зброї",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsSecondaryMEDIUM": {
+      "title": "Другорядна ціль",
+      "description": "Убийте 4 ворогів за допомогою допоміжної зброї",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsSecondaryHARD": {
+      "title": "Виняткова другорядна ціль",
+      "description": "Убийте 3 ворогів за допомогою допоміжної зброї за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsWhileSlidingEASY": {
+      "title": "Удар під час ковзання",
+      "description": "Убийте 1 ворога під час ковзання",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsWhileSlidingMEDIUM": {
+      "title": "Удар під час ковзання",
+      "description": "Убийте 4 ворогів під час ковзання",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsWhileSlidingHARD": {
+      "title": "Винятковий удар під час ковзання",
+      "description": "Убийте 3 ворогів під час ковзання за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsComboEASY": {
+      "title": "Спритник",
+      "description": "Убийте 1 супротивника будь-якими двома способами — врукопаш, стрілецькою зброєю чи здібностями",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsComboMEDIUM": {
+      "title": "Спритник",
+      "description": "Убийте 4 супротивників будь-якими двома способами — врукопаш, стрілецькою зброєю чи здібностями",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsComboHARD": {
+      "title": "Винятковий спритник",
+      "description": "Убийте 3 супротивників будь-якими двома способами — врукопаш, стрілецькою зброєю чи здібностями за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsMultiEASY": {
+      "title": "Спеціаліст",
+      "description": "Убийте 1 ворогіа будь-яким способом — врукопаш, стрілецькою зброєю чи здібностями",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsMultiMEDIUM": {
+      "title": "Спеціаліст",
+      "description": "Убийте 4 ворогів будь-яким способом — врукопаш, стрілецькою зброєю чи здібностями",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsMultiHARD": {
+      "title": "Винятковий спеціаліст",
+      "description": "Убийте 3 ворогів будь-яким способом — врукопаш, стрілецькою зброєю чи здібностями за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakEASY": {
+      "title": "Серія вбивств",
+      "description": "Здійсніть 1 серію вбивств",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakMEDIUM": {
+      "title": "Серія вбивств",
+      "description": "Здійсніть 3 серії вбивств",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakHARD": {
+      "title": "Виняткова серія вбивств",
+      "description": "Здійсніть 2 серії вбивств за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakStopped_EASY": {
+      "title": "Руйнівник серії",
+      "description": "Убийте 1 ворога, який має серію вбивств",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakStoppedEASY": {
+      "title": "Руйнівник серії",
+      "description": "Убийте 1 ворога, який має серію вбивств",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakStopped_MEDIUM": {
+      "title": "Руйнівник серії",
+      "description": "Убийте 3 ворогів, які мають серію вбивств",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakStoppedMEDIUM": {
+      "title": "Руйнівник серії",
+      "description": "Убийте 3 ворогів, які мають серію вбивств",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakStopped_HARD": {
+      "title": "Винятковий руйнівник серії",
+      "description": "Убийте 2 ворогів, які мають серію вбивств за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakStoppedHARD": {
+      "title": "Винятковий руйнівник серії",
+      "description": "Убийте 2 ворогів, які мають серію вбивств за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsTargetInAirEASY": {
+      "title": "Протиповітряний залп",
+      "description": "Убийте 1 ворога, доки він в повітрі",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsTargetInAirMEDIUM": {
+      "title": "Протиповітряний залп",
+      "description": "Убийте 4 ворогів, доки вони в повітрі",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsTargetInAirHARD": {
+      "title": "Винятковий протиповітряний залп",
+      "description": "Убийте 3 ворогів, доки вони в повітрі за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsWhileInAirEASY": {
+      "title": "Повітряний удар",
+      "description": "Убийте 1 ворога, доки ви в повітрі",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsWhileInAirMEDIUM": {
+      "title": "Повітряний удар",
+      "description": "Убийте 4 ворогів, доки ви в повітрі",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsWhileInAirHARD": {
+      "title": "Винятковий повітряний удар",
+      "description": "Убийте 3 ворогів, доки ви в повітрі за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsMeleeEASY": {
+      "title": "Боєць",
+      "description": "Убийте 1 ворога врукопаш",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsMeleeMEDIUM": {
+      "title": "Боєць",
+      "description": "Убийте 4 ворогів врукопаш",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsMeleeHARD": {
+      "title": "Винятковий боєць",
+      "description": "Убийте 3 ворогів врукопаш за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsPowerEASY": {
+      "title": "Митець Порожнечі",
+      "description": "Убийте 1 ворога здібностями ворфрейма",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPowerMEDIUM": {
+      "title": "Митець Порожнечі",
+      "description": "Убийте 4 ворогів здібностями ворфрейма",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPowerHARD": {
+      "title": "Винятковий митець Порожнечі",
+      "description": "Убийте 3 ворогів здібностями ворфрейма за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsHeadShotsEASY": {
+      "title": "Стрілець",
+      "description": "Убийте 1 ворога влучанням у голову",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsHeadShotsMEDIUM": {
+      "title": "Стрілець",
+      "description": "Убийте 4 ворогів влучанням у голову",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsHeadShotsHARD": {
+      "title": "Вийнятковий стрілець",
+      "description": "Убийте 3 ворогів влучанням у голову за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsStreakDominationEASY": {
+      "title": "Панування",
+      "description": "Убийте 1 ворога і не дайте йому вбити вас",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsStreakDominationMEDIUM": {
+      "title": "Панування",
+      "description": "Убийте 4 ворогів і не дайте їм вбити вас",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsStreakDominationHARD": {
+      "title": "Виняткове панування",
+      "description": "Убийте 3 ворогів за матч і не дайте їм вбити вас",
+      "standing": 3000
+    },
+    "PVPTimedChallengeKillsPaybackEASY": {
+      "title": "Revenge",
+      "description": "Убийте 1 ворога, що вбив вас",
+      "standing": 500
+    },
+    "PVPTimedChallengeKillsPaybackMEDIUM": {
+      "title": "Revenge",
+      "description": "Убийте 4 ворогів, що вбили вас",
+      "standing": 1500
+    },
+    "PVPTimedChallengeKillsPaybackHARD": {
+      "title": "Виняткова помста",
+      "description": "Убийте 3 ворогів, що вбили вас за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeFlagReturnEASY": {
+      "title": "Визволитель",
+      "description": "Поверніть свого цефалона 1 раз",
+      "standing": 500
+    },
+    "PVPTimedChallengeFlagReturnMEDIUM": {
+      "title": "Визволитель",
+      "description": "Поверніть свого цефалона 4 рази",
+      "standing": 1500
+    },
+    "PVPTimedChallengeFlagCaptureEASY": {
+      "title": "Розбійник",
+      "description": "Захопіть цефалона 1 раз",
+      "standing": 500
+    },
+    "PVPTimedChallengeFlagCaptureMEDIUM": {
+      "title": "Розбійник",
+      "description": "Захопіть цефалона 4 рази",
+      "standing": 1500
+    },
+    "PVPTimedChallengeSpeedballCatchesEASY": {
+      "title": "Увага!",
+      "description": "Прийміть 3 паси від товаришів",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballCatchesMEDIUM": {
+      "title": "Увага!",
+      "description": "Прийміть 10 пасів від товаришів",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballCatchesHARD": {
+      "title": "Виняткова увага!",
+      "description": "Прийміть 6 пасів від товаришів за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsEASY": {
+      "title": "Перехоплення!",
+      "description": "Перехопіть 3 ворожих паси",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsMEDIUM": {
+      "title": "Перехоплення!",
+      "description": "Перехопіть 6 ворожих пасів",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballInterceptionsHARD": {
+      "title": "Виняткове перехоплення!",
+      "description": "Перехопіть 3 ворожих паси за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballStealsEASY": {
+      "title": "Викрадення м’яча",
+      "description": "Заволодійте м’ячем 3 рази",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballStealsMEDIUM": {
+      "title": "Викрадення м’яча",
+      "description": "Заволодійте м’ячем 6 разів",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballStealsHARD": {
+      "title": "Виняткове викрадення м’яча",
+      "description": "Заволодійте м’ячем 3 рази за матч",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballChecksEASY": {
+      "title": "Блокада",
+      "description": "Збийте 3 ворогів, що несуть м’яча",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballChecksMEDIUM": {
+      "title": "Блокада",
+      "description": "Збийте 10 ворогів, що несуть м’яча",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballChecksHARD": {
+      "title": "Виняткова блокада",
+      "description": "Збийте 6 ворогів, що несуть м’яча за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballPassesEASY": {
+      "title": "Передача!",
+      "description": "Здійсніть 3 паси",
+      "standing": 1000
+    },
+    "PVPTimedChallengeSpeedballPassesMEDIUM": {
+      "title": "Передача!",
+      "description": "Здійсніть 6 пасів",
+      "standing": 3000
+    },
+    "PVPTimedChallengeSpeedballPassesHARD": {
+      "title": "Виняткова передача!",
+      "description": "Здійсніть 3 паси за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeSpeedballGoalsEASY": {
+      "title": "Гол!",
+      "description": "Закиньте 2 голи",
+      "standing": 1000
+    },
+    "PVPTimedChallengeMatchCompleteEASY": {
+      "title": "Бачити наскрізь",
+      "description": "Зіграйте 1 матч",
+      "standing": 500
+    },
+    "PVPTimedChallengeMatchCompleteMEDIUM": {
+      "title": "Бачити наскрізь",
+      "description": "Зіграйте 4 матчі",
+      "standing": 1500
+    },
+    "PVPTimedChallengeWeeklyStandardSet": {
+      "title": "Weekly Mission",
+      "description": "Weekly Mission",
+      "standing": 50000
+    },
+    "PVPTimedChallengeGameModeWins": {
+      "title": "Перемога в матчі",
+      "description": "Виграйте 6 матчів у будь-якому режимі",
+      "standing": 0
+    },
+    "PVPTimedChallengeGameModeComplete": {
+      "title": "Матч зіграно",
+      "description": "Візьміть участь у 20 матчах будь-якого типу",
+      "standing": 0
+    },
+    "PVPTimedChallengeOtherChallengeCompleteANY": {
+      "title": "Загартування",
+      "description": "Виконайте 10 щоденних випробувань",
+      "standing": 0
+    },
+    "PVPTimedChallengeSpeedballGoalsHARD": {
+      "title": "Винятковий гол!",
+      "description": "Закиньте 4 голи за матч",
+      "standing": 6000
+    },
+    "PVPTimedChallengeKillsPayback_MEDIUM": {
+      "title": "Revenge",
+      "description": "Убийте 3 ворогів, що вбили вас",
+      "standing": 1500
+    }
+  },
+  "affectors": {
+    "PVPTimedAffectorSuperEnergy": {
+      "title": "Energy Surge",
+      "description": "Energy Surge - Regain energy at a faster pace"
+    },
+    "PVPTimedAffectorSuperMeleeDamage": {
+      "title": "Extra Melee Damage",
+      "description": "Extra Melee Damage - Melee Damage is increased"
+    },
+    "PVPTimedAffectorSuperEverything": {
+      "title": "Extra Damage",
+      "description": "Extra Damage - All damage is increased"
+    }
+  }
+}
