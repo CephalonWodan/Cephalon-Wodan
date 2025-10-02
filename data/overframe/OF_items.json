@@ -4572,10 +4572,6 @@
     "name": "Nami Solo"
   },
   {
-    "id": 1164,
-    "name": "Dark Sword"
-  },
-  {
     "id": 1165,
     "name": "Dark Split-Sword"
   },
@@ -12104,6 +12100,42 @@
     "name": "Ceti Lacera"
   },
   {
+    "id": 4303,
+    "name": "Dex Pixia Prime"
+  },
+  {
+    "id": 4304,
+    "name": "Diwata Prime"
+  },
+  {
+    "id": 4305,
+    "name": "Titania Prime"
+  },
+  {
+    "id": 4306,
+    "name": "Titania Prime"
+  },
+  {
+    "id": 4307,
+    "name": "Titania Prime Neuroptics"
+  },
+  {
+    "id": 4308,
+    "name": "Titania Prime Neuroptics"
+  },
+  {
+    "id": 4309,
+    "name": "Titania Prime Chassis"
+  },
+  {
+    "id": 4310,
+    "name": "Titania Prime Chassis"
+  },
+  {
+    "id": 4311,
+    "name": "Titania Prime Systems"
+  },
+  {
     "id": 4312,
     "name": "Titania Prime Systems"
   },
@@ -12156,6 +12188,10 @@
     "name": "Dex Pixia"
   },
   {
+    "id": 4325,
+    "name": "Catapult"
+  },
+  {
     "id": 4326,
     "name": "Spellbound Harvest"
   },
@@ -12188,6 +12224,10 @@
     "name": "Primed Cleanse Infested"
   },
   {
+    "id": 4355,
+    "name": "Genetic Code Template"
+  },
+  {
     "id": 4356,
     "name": "Genetic Code Template"
   },
@@ -12198,6 +12238,10 @@
   {
     "id": 4358,
     "name": "Incubator Power Core"
+  },
+  {
+    "id": 4359,
+    "name": "Nai-Zhen Kubrow Collar"
   },
   {
     "id": 4360,

@@ -1142,7 +1142,6 @@ id,name
 1161,Zenistar
 1162,Nami Skyla
 1163,Nami Solo
-1164,Dark Sword
 1165,Dark Split-Sword
 1166,Dex Dakra
 1167,Galatine
@@ -3025,6 +3024,15 @@ id,name
 4295,Nullstones
 4296,Ceti Lacera
 4297,Ceti Lacera
+4303,Dex Pixia Prime
+4304,Diwata Prime
+4305,Titania Prime
+4306,Titania Prime
+4307,Titania Prime Neuroptics
+4308,Titania Prime Neuroptics
+4309,Titania Prime Chassis
+4310,Titania Prime Chassis
+4311,Titania Prime Systems
 4312,Titania Prime Systems
 4313,Corinth Prime
 4314,Corinth Prime
@@ -3038,6 +3046,7 @@ id,name
 4322,Diwata
 4323,Titania
 4324,Dex Pixia
+4325,Catapult
 4326,Spellbound Harvest
 4327,Blazing Pillage
 4328,Tribunal
@@ -3046,9 +3055,11 @@ id,name
 4352,Primed Cleanse Orokin
 4353,Primed Cleanse Grineer
 4354,Primed Cleanse Infested
+4355,Genetic Code Template
 4356,Genetic Code Template
 4357,Incubator Power Core
 4358,Incubator Power Core
+4359,Nai-Zhen Kubrow Collar
 4360,DNA Stabilizers
 4361,Hemocyte Cystolith
 4362,Brilliant Eidolon Shard

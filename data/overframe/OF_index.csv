@@ -1162,7 +1162,7 @@ id,http,status,has_next_data,name
 1161,https://overframe.gg/items/arsenal/1161,200,true,Zenistar
 1162,https://overframe.gg/items/arsenal/1162,200,true,Nami Skyla
 1163,https://overframe.gg/items/arsenal/1163,200,true,Nami Solo
-1164,https://overframe.gg/items/arsenal/1164,200,true,Dark Sword
+1164,https://overframe.gg/items/arsenal/1164,0,false,
 1165,https://overframe.gg/items/arsenal/1165,200,true,Dark Split-Sword
 1166,https://overframe.gg/items/arsenal/1166,200,true,Dex Dakra
 1167,https://overframe.gg/items/arsenal/1167,200,true,Galatine
@@ -4301,15 +4301,15 @@ id,http,status,has_next_data,name
 4300,https://overframe.gg/items/arsenal/4300,404,false,
 4301,https://overframe.gg/items/arsenal/4301,404,false,
 4302,https://overframe.gg/items/arsenal/4302,404,false,
-4303,https://overframe.gg/items/arsenal/4303,0,false,
-4304,https://overframe.gg/items/arsenal/4304,0,false,
-4305,https://overframe.gg/items/arsenal/4305,0,false,
-4306,https://overframe.gg/items/arsenal/4306,0,false,
-4307,https://overframe.gg/items/arsenal/4307,0,false,
-4308,https://overframe.gg/items/arsenal/4308,0,false,
-4309,https://overframe.gg/items/arsenal/4309,0,false,
-4310,https://overframe.gg/items/arsenal/4310,0,false,
-4311,https://overframe.gg/items/arsenal/4311,0,false,
+4303,https://overframe.gg/items/arsenal/4303,200,true,Dex Pixia Prime
+4304,https://overframe.gg/items/arsenal/4304,200,true,Diwata Prime
+4305,https://overframe.gg/items/arsenal/4305,200,true,Titania Prime
+4306,https://overframe.gg/items/arsenal/4306,200,true,Titania Prime
+4307,https://overframe.gg/items/arsenal/4307,200,true,Titania Prime Neuroptics
+4308,https://overframe.gg/items/arsenal/4308,200,true,Titania Prime Neuroptics
+4309,https://overframe.gg/items/arsenal/4309,200,true,Titania Prime Chassis
+4310,https://overframe.gg/items/arsenal/4310,200,true,Titania Prime Chassis
+4311,https://overframe.gg/items/arsenal/4311,200,true,Titania Prime Systems
 4312,https://overframe.gg/items/arsenal/4312,200,true,Titania Prime Systems
 4313,https://overframe.gg/items/arsenal/4313,200,true,Corinth Prime
 4314,https://overframe.gg/items/arsenal/4314,200,true,Corinth Prime
@@ -4323,12 +4323,12 @@ id,http,status,has_next_data,name
 4322,https://overframe.gg/items/arsenal/4322,200,true,Diwata
 4323,https://overframe.gg/items/arsenal/4323,200,true,Titania
 4324,https://overframe.gg/items/arsenal/4324,200,true,Dex Pixia
-4325,https://overframe.gg/items/arsenal/4325,0,false,
+4325,https://overframe.gg/items/arsenal/4325,200,true,Catapult
 4326,https://overframe.gg/items/arsenal/4326,200,true,Spellbound Harvest
 4327,https://overframe.gg/items/arsenal/4327,200,true,Blazing Pillage
 4328,https://overframe.gg/items/arsenal/4328,200,true,Tribunal
 4329,https://overframe.gg/items/arsenal/4329,200,true,Ballista Measure
-4330,https://overframe.gg/items/arsenal/4330,0,false,
+4330,https://overframe.gg/items/arsenal/4330,200,true,
 4331,https://overframe.gg/items/arsenal/4331,200,true,
 4332,https://overframe.gg/items/arsenal/4332,200,true,
 4333,https://overframe.gg/items/arsenal/4333,200,true,
@@ -4337,9 +4337,9 @@ id,http,status,has_next_data,name
 4336,https://overframe.gg/items/arsenal/4336,200,true,
 4337,https://overframe.gg/items/arsenal/4337,200,true,
 4338,https://overframe.gg/items/arsenal/4338,200,true,
-4339,https://overframe.gg/items/arsenal/4339,0,false,
-4340,https://overframe.gg/items/arsenal/4340,0,false,
-4341,https://overframe.gg/items/arsenal/4341,0,false,
+4339,https://overframe.gg/items/arsenal/4339,200,true,
+4340,https://overframe.gg/items/arsenal/4340,200,true,
+4341,https://overframe.gg/items/arsenal/4341,200,true,
 4342,https://overframe.gg/items/arsenal/4342,200,true,
 4343,https://overframe.gg/items/arsenal/4343,200,true,
 4344,https://overframe.gg/items/arsenal/4344,200,true,
@@ -4353,11 +4353,11 @@ id,http,status,has_next_data,name
 4352,https://overframe.gg/items/arsenal/4352,200,true,Primed Cleanse Orokin
 4353,https://overframe.gg/items/arsenal/4353,200,true,Primed Cleanse Grineer
 4354,https://overframe.gg/items/arsenal/4354,200,true,Primed Cleanse Infested
-4355,https://overframe.gg/items/arsenal/4355,0,false,
+4355,https://overframe.gg/items/arsenal/4355,200,true,Genetic Code Template
 4356,https://overframe.gg/items/arsenal/4356,200,true,Genetic Code Template
 4357,https://overframe.gg/items/arsenal/4357,200,true,Incubator Power Core
 4358,https://overframe.gg/items/arsenal/4358,200,true,Incubator Power Core
-4359,https://overframe.gg/items/arsenal/4359,0,false,
+4359,https://overframe.gg/items/arsenal/4359,200,true,Nai-Zhen Kubrow Collar
 4360,https://overframe.gg/items/arsenal/4360,200,true,DNA Stabilizers
 4361,https://overframe.gg/items/arsenal/4361,200,true,Hemocyte Cystolith
 4362,https://overframe.gg/items/arsenal/4362,200,true,Brilliant Eidolon Shard
