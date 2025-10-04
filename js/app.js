@@ -10,7 +10,7 @@
 
 const CFG = {
   WF_URLS: [
-    "https://cephalon-wodan-production.up.railway.app/warframes",
+    "https://api.warframestat.us/warframes/?language=fr",
     "https://api.warframestat.us/warframes/?language=fr",
   ],
   ABILITIES_VALUES_URL: "data/abilities.json",
