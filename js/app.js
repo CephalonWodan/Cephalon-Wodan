@@ -23,7 +23,7 @@ const DT_ICONS = {
   DT_TOXIN_COLOR: "ToxinSymbol.png",
   DT_GAS_COLOR: "GasSymbol.png",
   DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RadiationSymbol.png",
+  DT_RADIATION_COLOR: "RADIATIONSymbol.png",
   DT_VIRAL_COLOR: "ViralSymbol.png",
   DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
   DT_BLAST_COLOR: "BlastSymbol.png",
@@ -124,10 +124,14 @@ async function fetchJson(url, what = "fetch") {
       .map((rec) => {
         // Nettoyer le nom (retirer les balises éventuelles comme <ARCHWING>)
         const name = (rec.name || "").replace(/<[^>]+>/g, "").trim();
+
+        // Image locale : "Ash Prime" -> "img/warframes/AshPrime.png"
+        const imageName = name.replace(/\s+/g, "");
+        const image = `img/warframes/${imageName}.png`;
+
         // Description
         const description = rec.description || "";
-        // Image (aucune donnée d'image dans le JSON custom, on peut laisser null)
-        const image = null; 
+
         // Stats de base
         const stats = {
           health: rec.baseStats?.health ?? "—",
@@ -274,7 +278,7 @@ async function fetchJson(url, what = "fetch") {
     }).filter(Boolean);
   }
 
-  // ---- PATCH : hoist via function declarations ----
+  // ---- hoist via function declarations ----
   function pill(label, value) {
     return `
     <div class="pill">
@@ -290,7 +294,7 @@ async function fetchJson(url, what = "fetch") {
       <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
     </div>`;
   }
-  // -------------------------------------------------
+  // -----------------------------------------
 
   function normalizeDesc(text) {
     let s = String(text ?? "");
