@@ -1,7 +1,7 @@
 // js/app.js
 // =====================================================
 // Aperçu Warframes — données API personnalisée
-// - Utilise le JSON enrichi via l'API 
+// - Utilise le JSON enrichi via l'API custom au lieu de warframestat.us
 // - Rendu identique (icônes, styles) en se basant sur merged_warframe.json
 // =====================================================
 
@@ -81,17 +81,19 @@ const escapeHtml = (s) =>
   );
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 
-// --------- PATCH AJOUTÉ : helper fetchJson ----------
+// --------- helper fetchJson (patch) ----------
 async function fetchJson(url, what = "fetch") {
   const r = await fetch(url, { headers: { "accept": "application/json" } });
   if (!r.ok) throw new Error(`${what} — HTTP ${r.status} @ ${url}`);
   return r.json();
 }
-/* --------------------------------------------------- */
+/* ------------------------------------------- */
 
 /* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
+  const card = $("#card"); // <-- déplacé ici (patch) : défini avant tout usage
+
   try {
     if (status) {
       status.textContent = "Loading Data…";
@@ -103,14 +105,13 @@ async function fetchJson(url, what = "fetch") {
     // Récupère le JSON des warframes via l'API custom
     const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
 
-    // --------- PATCH AJOUTÉ : compat objet {entities} OU tableau ----------
+    // compat objet {entities} OU tableau (patch)
     const wfRaw = Array.isArray(data)
       ? data
       : Array.isArray(data?.entities)
       ? data.entities
       : [];
-    // ---------------------------------------------------------------------
-
+    
     if (!wfRaw.length) {
       setStatus("No Warframes data loaded.", false);
       console.warn("[app] wfRaw vide ou introuvable", { wfRaw });
@@ -135,14 +136,14 @@ async function fetchJson(url, what = "fetch") {
           energy: rec.baseStats?.energy ?? "—",
           sprintSpeed: rec.baseStats?.sprintSpeed ?? "—"
         };
-        // Polarités et aura (mettre en TitleCase pour correspondre aux icônes éventuelles)
+        // Polarités et aura
         const aura = rec.aura
           ? (rec.aura.charAt(0).toUpperCase() + rec.aura.slice(1).toLowerCase())
           : null;
         const polarities = (rec.polarities || []).map(p =>
           p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()
         );
-        // Capacités (abilities) : transformer en format attendu
+        // Capacités
         const abilities = (rec.abilities || []).map((ab, i) => {
           const sum = ab.summary || {};
           return {
@@ -207,8 +208,6 @@ async function fetchJson(url, what = "fetch") {
   }
 
   /* ---------- UI Rendering Functions ---------- */
-
-  const card = $("#card");
 
   function splitFilledLabel(filled) {
     const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
