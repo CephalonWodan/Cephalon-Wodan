@@ -81,18 +81,18 @@ const escapeHtml = (s) =>
   );
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 
-// --------- helper fetchJson (patch) ----------
+// --------- helper fetchJson ----------
 async function fetchJson(url, what = "fetch") {
   const r = await fetch(url, { headers: { "accept": "application/json" } });
   if (!r.ok) throw new Error(`${what} — HTTP ${r.status} @ ${url}`);
   return r.json();
 }
-/* ------------------------------------------- */
+/* ------------------------------------ */
 
 /* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
-  const card = $("#card"); // <-- déplacé ici (patch) : défini avant tout usage
+  const card = $("#card"); // défini avant tout usage
 
   try {
     if (status) {
@@ -105,7 +105,7 @@ async function fetchJson(url, what = "fetch") {
     // Récupère le JSON des warframes via l'API custom
     const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
 
-    // compat objet {entities} OU tableau (patch)
+    // compat objet {entities} OU tableau
     const wfRaw = Array.isArray(data)
       ? data
       : Array.isArray(data?.entities)
@@ -273,17 +273,24 @@ async function fetchJson(url, what = "fetch") {
       return null;
     }).filter(Boolean);
   }
-  const pill = (label, value) => `
+
+  // ---- PATCH : hoist via function declarations ----
+  function pill(label, value) {
+    return `
     <div class="pill">
       <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
       <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
     </div>`;
+  }
 
-  const statBox = (label, value) => `
+  function statBox(label, value) {
+    return `
     <div class="stat">
       <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
       <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
     </div>`;
+  }
+  // -------------------------------------------------
 
   function normalizeDesc(text) {
     let s = String(text ?? "");
