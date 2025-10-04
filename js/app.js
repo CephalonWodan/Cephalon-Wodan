@@ -1,7 +1,7 @@
 // js/app.js
 // =====================================================
 // Aperçu Warframes — données API personnalisée
-// - Utilise le JSON enrichi via l'API custom au lieu de warframestat.us
+// - Utilise le JSON enrichi via l'API 
 // - Rendu identique (icônes, styles) en se basant sur merged_warframe.json
 // =====================================================
 
@@ -81,6 +81,14 @@ const escapeHtml = (s) =>
   );
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 
+// --------- PATCH AJOUTÉ : helper fetchJson ----------
+async function fetchJson(url, what = "fetch") {
+  const r = await fetch(url, { headers: { "accept": "application/json" } });
+  if (!r.ok) throw new Error(`${what} — HTTP ${r.status} @ ${url}`);
+  return r.json();
+}
+/* --------------------------------------------------- */
+
 /* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
@@ -94,8 +102,15 @@ const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 
     // Récupère le JSON des warframes via l'API custom
     const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
-    const wfRaw = Array.isArray(data.entities) ? data.entities : [];
-    
+
+    // --------- PATCH AJOUTÉ : compat objet {entities} OU tableau ----------
+    const wfRaw = Array.isArray(data)
+      ? data
+      : Array.isArray(data?.entities)
+      ? data.entities
+      : [];
+    // ---------------------------------------------------------------------
+
     if (!wfRaw.length) {
       setStatus("No Warframes data loaded.", false);
       console.warn("[app] wfRaw vide ou introuvable", { wfRaw });
