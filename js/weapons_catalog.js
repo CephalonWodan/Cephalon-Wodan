@@ -8,7 +8,7 @@
   /* -------------------- Config -------------------- */
   // mets à jour ce hash si besoin
   const EXPORT_WEAPONS_URL = "data/ExportWeapons_en.json";
-  const WFSTAT_API_URL = "https://api.warframestat.us/weapons/";
+  const WFSTAT_API_URL = "https://api.warframestat.us/weapons?language=en";
 
   // On NE GARDE que ces catégories
   const KEEP_API = new Set(["Primary", "Secondary", "Melee"]);
