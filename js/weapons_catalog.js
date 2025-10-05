@@ -23,35 +23,6 @@
   const wikiImage  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
   const cdnImage   = (name) => name ? `https://cdn.warframestat.us/img/${encodeURIComponent(name)}` : "";
   const localImage = (name) => name ? `img/weapons/${encodeURIComponent(name)}` : "";
-
-// --- Text Icons (DT_* + <br>) -> <img> inline (icônes locales)
-const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
-const DT_ICONS = {
-  DT_IMPACT_COLOR: "ImpactSymbol.png",
-  DT_PUNCTURE_COLOR: "PunctureSymbol.png",
-  DT_SLASH_COLOR: "SlashSymbol.png",
-  DT_FIRE_COLOR: "HeatSymbol.png",
-  DT_FREEZE_COLOR: "ColdSymbol.png",
-  DT_ELECTRICITY_COLOR: "ElectricitySymbol.png",
-  DT_POISON_COLOR: "ToxinSymbol.png",
-  DT_TOXIN_COLOR: "ToxinSymbol.png",
-  DT_GAS_COLOR: "GasSymbol.png",
-  DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RADIATIONSymbol.png",
-  DT_VIRAL_COLOR: "ViralSymbol.png",
-  DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
-  DT_BLAST_COLOR: "BlastSymbol.png",
-  DT_EXPLOSION_COLOR: "BlastSymbol.png",
-  DT_RADIANT_COLOR: "VoidSymbol.png",
-  DT_SENTIENT_COLOR: "SentientSymbol.png",
-  DT_RESIST_COLOR: "ResistSymbol.png",
-  DT_POSITIVE_COLOR: "PositiveSymbol.png",
-  DT_NEGATIVE_COLOR: "NegativeSymbol.png"
-};
-const EXTRA_ICONS = { ENERGY: "EnergySymbol.png" };
-
-function renderTextIcons(input) {
-  let s = String(input ?? "");
   
   /* -------------------- Utils -------------------- */
   const $ = (s) => document.querySelector(s);
