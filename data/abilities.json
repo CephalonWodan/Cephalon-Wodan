@@ -12091,6 +12091,40 @@
     ]
   },
   {
+  "path": "/Lotus/Powersuits/PowersuitAbilities/DagathHorseAbility",
+  "summary": {
+    "CostType": "Energy",
+    "costEnergy": 100,
+    "affectedBy": ["strength", "duration", "efficiency"]
+  },
+  "rows": [
+    {
+      "label": "Damage per Kaithes: |val1|",
+      "modifier": "STRENGTH",
+      "values": { "val1": 30000 },
+      "mainNumeric": 30000
+    },
+    {
+      "label": "Duration: |val1| s",
+      "modifier": "DURATION",
+      "values": { "val1": 3.0 },
+      "mainNumeric": 3.0
+    },
+    {
+      "label": "Defense Reduction: |val1|%",
+      "modifier": "STRENGTH",
+      "values": { "val1": 35.0 },
+      "mainNumeric": 35.0
+    },
+    {
+      "label": "Energy Cost: |val1|",
+      "modifier": "EFFICIENCY",
+      "values": { "val1": 100.0 },
+      "mainNumeric": 100.0
+    }
+  ]
+},
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/RangerBowAbility",
     "summary": {
       "costEnergy": 50,
