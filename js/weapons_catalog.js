@@ -160,7 +160,7 @@
     `).join("");
     return `
       <div class="mt-5">
-        <div class="text-sm muted mb-2">Détails des dégâts</div>
+        <div class="text-sm muted mb-2">Damage Details</div>
         <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
           ${rows}
         </div>
@@ -230,7 +230,7 @@
   function updateUI(){
     const arr = listForTabAndSearch();
     renderPicker(arr);
-    $("#status").textContent = `Catégorie ${STATE.tab} — ${arr.length} résultat(s)`;
+    $("#status").textContent = `Category ${STATE.tab} — ${arr.length} Result(s)`;
     if (arr.length) renderCard(arr[0]); else $("#card").innerHTML = `<div class="muted">No Result</div>`;
   }
 
