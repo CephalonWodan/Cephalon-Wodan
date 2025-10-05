@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-05T08:56:46.090Z",
+  "generatedAt": "2025-10-05T12:47:31.969Z",
   "count": 117,
   "entities": [
     {
@@ -5195,8 +5195,57 @@
           "description": "Citrine guards herself and nearby allies with a crystalline shell that gradually decays. Kills and assists increase the defensive power of the shell.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 50,
+            "strength": 40,
+            "duration": 25,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Preserving Shell Damage Redu: |val1|%",
+              "filledLabel": "Preserving Shell Damage Redu: 40%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 40
+              },
+              "mainNumeric": 40
+            },
+            {
+              "label": "Preserving Shell Damage Redu Per Kill: |val1|%",
+              "filledLabel": "Preserving Shell Damage Redu Per Kill: 6.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 6
+              },
+              "mainNumeric": 6
+            },
+            {
+              "label": "Preserving Shell Damage Redu Per Assist: |val1|%",
+              "filledLabel": "Preserving Shell Damage Redu Per Assist: 3.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Preserving Shell Duration: |val1|s",
+              "filledLabel": "Preserving Shell Duration: 25.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            }
+          ]
         },
         {
           "name": "Prismatic Gem",
@@ -5205,8 +5254,67 @@
           "augments": [
             "Prismatic Companion"
           ],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 75,
+            "strength": 1000,
+            "duration": 30,
+            "range": 15,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Prismatic Gem Range: |val1|m",
+              "filledLabel": "Prismatic Gem Range: 15.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              },
+              "mainNumeric": 15
+            },
+            {
+              "label": "Prismatic Gem Duration: |val1|s",
+              "filledLabel": "Prismatic Gem Duration: 30.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Prismatic Gem Damage: |val1|",
+              "filledLabel": "Prismatic Gem Damage: 1000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1000
+              },
+              "mainNumeric": 1000
+            },
+            {
+              "label": "Prismatic Gem Statut Chance: |val1|%",
+              "filledLabel": "Prismatic Gem Statut Chance: 100%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            },
+            {
+              "label": "Prismatic Gem Statut Duration: |val1|%",
+              "filledLabel": "Prismatic Gem Statut Duration: 100%",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            }
+          ]
         },
         {
           "name": "Crystallize",
@@ -5215,8 +5323,58 @@
           "augments": [
             "Recrystalize"
           ],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 100,
+            "strength": 500,
+            "duration": 8,
+            "range": 30,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Damage: |val1|",
+              "filledLabel": "Damage: 500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              },
+              "mainNumeric": 500
+            },
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 30.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 8.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              },
+              "mainNumeric": 8
+            },
+            {
+              "label": "Crit Chance: |val1|%",
+              "filledLabel": "Crit Chance: 300%",
+              "modifier": null,
+              "values": {
+                "Val1": 300
+              },
+              "mainNumeric": 300
+            }
+          ]
         }
       ]
     },
@@ -5252,32 +5410,283 @@
           "description": "Plant an antenna that projects a forward wave scan. Detected enemies take increased Weak Point Damage, and become visible through walls. Weapons gain Punch through.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 25,
+            "strength": 75,
+            "duration": 35,
+            "range": 60,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 60.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 60
+              },
+              "mainNumeric": 60
+            },
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 35.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 35
+              },
+              "mainNumeric": 35
+            },
+            {
+              "label": "Scan Duration: |val1|s",
+              "filledLabel": "Scan Duration: 5.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Punch Through: |val1|m",
+              "filledLabel": "Punch Through: 10m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Weak Point Damage: |val1|%",
+              "filledLabel": "Weak Point Damage: 75.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 75
+              },
+              "mainNumeric": 75
+            },
+            {
+              "label": "Max Antenna: |val1|",
+              "filledLabel": "Max Antenna: 3.0",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Angle: |val1|°",
+              "filledLabel": "Angle: 75.0°",
+              "modifier": null,
+              "values": {
+                "Val1": 75
+              },
+              "mainNumeric": 75
+            }
+          ]
         },
         {
           "name": "Resupply",
           "description": "Throw two Elemental Ammo Packs that instantly refill the active weapon's magazine, while granting the weapon an additional instance of the selected Elemental Damage and Status Effect. Reload clears the effect. Sniper Rifles gain extra damage.\\r\\n\\r\\nHold the ability to select the Elemental Damage type.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 50,
+            "strength": 25,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Weapon Damage Bonus: |val1|%",
+              "filledLabel": "Weapon Damage Bonus: 25.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Sniper Damage Bonus: |val1|%",
+              "filledLabel": "Sniper Damage Bonus: 50.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Maxpack: |val1|",
+              "filledLabel": "Maxpack: 6.0",
+              "modifier": null,
+              "values": {
+                "Val1": 6
+              },
+              "mainNumeric": 6
+            }
+          ]
         },
         {
           "name": "Evade",
           "description": "Jump backwards and become invisible for a short duration. Killing enemies on their Weak Points extends the duration and heals Cyte-09.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 75,
+            "strength": 100,
+            "duration": 10,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 10.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Durationper Weak Point Kill: |val1|s",
+              "filledLabel": "Durationper Weak Point Kill: 2.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            },
+            {
+              "label": "Health Per Kill: |val1|",
+              "filledLabel": "Health Per Kill: 100",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            },
+            {
+              "label": "Cool Down: |val1|s",
+              "filledLabel": "Cool Down: 60.0s",
+              "modifier": null,
+              "values": {
+                "Val1": 60
+              },
+              "mainNumeric": 60
+            },
+            {
+              "label": "Max Duration: |val1|s",
+              "filledLabel": "Max Duration: 30s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            }
+          ]
         },
         {
           "name": "Neutralize",
           "description": "Summon the Neutralizer, Cyte-09's exalted Sniper Rifle. Bullets ricochet off Weak Points to seek out other nearby Weak Points. Alt fire lobs a Cold grenade that completely freezes enemies.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": 1.25,
+            "duration": null,
+            "range": 10,
+            "efficiency": 5,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Drain: |val1|",
+              "filledLabel": "Drain: 5.0",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Drain Per Shot: |val1|",
+              "filledLabel": "Drain Per Shot: 10.0",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Alt Fire Drain: |val1|",
+              "filledLabel": "Alt Fire Drain: 20.0",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Damage Mult: |val1|",
+              "filledLabel": "Damage Mult: 1.25",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1.25
+              },
+              "mainNumeric": 1.25
+            },
+            {
+              "label": "Ricochet: |val1|",
+              "filledLabel": "Ricochet: 4",
+              "modifier": null,
+              "values": {
+                "Val1": 4
+              },
+              "mainNumeric": 4
+            },
+            {
+              "label": "Ricochet Range: |val1|m",
+              "filledLabel": "Ricochet Range: 10m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Damage Loss: |val1|%",
+              "filledLabel": "Damage Loss: 20.0%",
+              "modifier": null,
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            }
+          ]
         }
       ]
     },
