@@ -3080,8 +3080,8 @@
     },
     "rows": [
       {
-        "label": "Grave Spirit Crit Dam Bonus: |val1|%",
-        "filledLabel": "Grave Spirit Crit Dam Bonus: 50.0%",
+        "label": "Grave Spirit Crit Damage Bonus: |val1|%",
+        "filledLabel": "Grave Spirit Crit Damage Bonus: 50.0%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
           "Val1": 50.0
@@ -3089,8 +3089,8 @@
         "mainNumeric": 50.0
       },
       {
-        "label": "Doom Crit Dam Bonus: |val1|%",
-        "filledLabel": "Doom Crit Dam Bonus: 100%",
+        "label": "Doom Crit Damage Bonus: |val1|%",
+        "filledLabel": "Doom Crit Damage Bonus: 100%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
           "Val1": 100
@@ -3227,8 +3227,8 @@
         "mainNumeric": 1000
       },
       {
-        "label": "Wyrd Scythesslow Duration: |val1|s",
-        "filledLabel": "Wyrd Scythesslow Duration: 5.0s",
+        "label": "Wyrd Scythes slow Duration: |val1|s",
+        "filledLabel": "Wyrd Scythes slow Duration: 5.0s",
         "modifier": "AVATAR_ABILITY_DURATION",
         "values": {
           "Val1": 5.0
@@ -6288,8 +6288,8 @@
     },
     "rows": [
       {
-        "label": "Preserving Shell Damage Redu: |val1|%",
-        "filledLabel": "Preserving Shell Damage Redu: 40%",
+        "label": "Preserving Shell Damage Reduction: |val1|%",
+        "filledLabel": "Preserving Shell Damage Reduction: 40%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
           "Val1": 40
@@ -6297,8 +6297,8 @@
         "mainNumeric": 40
       },
       {
-        "label": "Preserving Shell Damage Redu Per Kill: |val1|%",
-        "filledLabel": "Preserving Shell Damage Redu Per Kill: 6.0%",
+        "label": "Preserving Shell Damage Reduction Per Kill: |val1|%",
+        "filledLabel": "Preserving Shell Damage Reduction Per Kill: 6.0%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
           "Val1": 6.0
@@ -6306,8 +6306,8 @@
         "mainNumeric": 6.0
       },
       {
-        "label": "Preserving Shell Damage Redu Per Assist: |val1|%",
-        "filledLabel": "Preserving Shell Damage Redu Per Assist: 3.0%",
+        "label": "Preserving Shell Damage Reduction Per Assist: |val1|%",
+        "filledLabel": "Preserving Shell Damage Reduction Per Assist: 3.0%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
           "Val1": 3.0
