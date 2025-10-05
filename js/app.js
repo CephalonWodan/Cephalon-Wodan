@@ -89,6 +89,28 @@ async function fetchJson(url, what = "fetch") {
 }
 /* ------------------------------------ */
 
+/* --------- Fallback data loader ---------- */
+async function getWarframesData() {
+  // 1) essaie l’API distante
+  try {
+    const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
+    const arr = Array.isArray(data) ? data : (Array.isArray(data?.entities) ? data.entities : []);
+    if (arr.length) return arr;
+    throw new Error("Empty payload from remote");
+  } catch (e) {
+    console.warn("[app] Remote API failed or empty, trying local file…", e);
+  }
+  // 2) fallback local (placer /data/merged_warframe.json côté site)
+  try {
+    const local = await fetchJson("data/merged_warframe.json", "Local merged_warframe.json");
+    return Array.isArray(local) ? local : (Array.isArray(local?.entities) ? local.entities : []);
+  } catch (e2) {
+    console.error("[app] Local fallback failed:", e2);
+    return [];
+  }
+}
+/* ---------------------------------------- */
+
 /* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
@@ -102,15 +124,8 @@ async function fetchJson(url, what = "fetch") {
       status.style.color = "#bfefff";
     }
 
-    // Récupère le JSON des warframes via l'API custom
-    const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
-
-    // compat objet {entities} OU tableau
-    const wfRaw = Array.isArray(data)
-      ? data
-      : Array.isArray(data?.entities)
-      ? data.entities
-      : [];
+    // Récupère le JSON des warframes via l'API custom (avec fallback local)
+    const wfRaw = await getWarframesData();
     
     if (!wfRaw.length) {
       setStatus("No Warframes data loaded.", false);
@@ -340,11 +355,16 @@ async function fetchJson(url, what = "fetch") {
         </div>
       </div>` : "";
 
+    const imgHtml = wf.image
+      ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain"
+              onerror="this.onerror=null;this.src='img/warframes/_placeholder.png'">`
+      : `<div class="muted">No Pictures</div>`;
+
     card.innerHTML = `
       <div class="flex flex-col md:flex-row gap-6">
         <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
           <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            ${wf.image ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain">` : `<div class="muted">No Pictures</div>`}
+            ${imgHtml}
           </div>
           <div class="w-full">
             <div class="aura-label">Aura polarity</div>
