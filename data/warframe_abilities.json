@@ -402,7 +402,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/MarionetteAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/KoumeiPuppetAbility",
     "Description": "Wield your foe’s fate threads like the strings of marionettes. Koumei’s dice determine how many Status Effects foes in front of Koumei will suffer. A roll of triple sixes maximizes Status Effect stacks and extends Bunraku to enemies behind Koumei."
   },
   {
@@ -486,7 +486,7 @@
     "Augments": "",
     "Subsumable": true,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcretePillar",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcretePillarAbility",
     "Description": "Summon a Chyrinka Pillar that slows enemies. It pulses Radiation Damage with a guaranteed Status Effect."
   },
   {
@@ -570,7 +570,7 @@
     "Augments": "Wrecking Wall",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcreteWall",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcreteWallAbility",
     "Description": "Contain the threat. Qorvex summons walls that slam together, damaging all enemies caught between them and inflicting Radiation Status."
   },
   {
@@ -612,7 +612,7 @@
     "Augments": "Lasting Covenant",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PriestRavageAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PriestPactAbility",
     "Description": "Protect nearby allies with an energy force that absorbs all damage and converts it to a Critical Chance bonus for all those under the Covenant. Headshots are amplified even further."
   },
   {
@@ -626,7 +626,7 @@
     "Augments": "Fused Crucible",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcreteBeam",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcreteLaserAbility",
     "Description": "Release a beam from Qorvex's Crucible Core. Each enemy struck suffers Radiation Damage with a guaranteed Status Effect. Enemies affected by Radiation Status explode in a chain reaction."
   },
   {
@@ -682,7 +682,7 @@
     "Augments": "",
     "Subsumable": true,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ScribeDarkAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PagemasterDeathAbility",
     "Description": "Dante’s composition draws blood from nearby enemies, inflicting Slash Damage upon them."
   },
   {
@@ -808,7 +808,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcreteAura",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ConcreteAuraAbility",
     "Description": "Guard yourself and nearby allies against Status Effects. Each time Qorvex kills or assists in killing an enemy affected by Radiation Status, the number of Status Effects Disometric Guard can prevent increases."
   },
   {
@@ -850,7 +850,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PaxTeleportAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DagathCurseAbility",
     "Description": "Condemn nearby enemies to their doom. A portion of the damage Dagath deals is revisited upon them by a Wyrd Scythe. They also suffer Viral damage."
   },
   {
@@ -892,7 +892,7 @@
     "Augments": "Guided Effigy",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DragonLuckAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DragonPeltAbility",
     "Description": "Chroma turns his pelt into a massive sentry that strengthens nearby allies and engulfs enemies in elemental attacks."
   },
   {
@@ -920,7 +920,7 @@
     "Augments": "Everlasting Ward",
     "Subsumable": true,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DragonPeltAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DragonLuckAbility",
     "Description": "Depending on Chroma's elemental alignment, an offensive area-of-effect is created. Chroma and his nearby allies are imbued with defensive energy."
   },
   {
@@ -1186,7 +1186,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ScribeChapterAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PagemasterFinalChapterAbility",
     "Description": "Dante must compose two other Verses before his Final Verse.\\r\\n\\r\\nTRIUMPH: Two Light Verses cast in succession invigorate allies with a buff that increases Health and grants Overguard. Kills and assists briefly regenerate Overguard.\\r\\n\\r\\nTRAGEDY: Two Dark Verses cast in succession attack enemies. Damage Over Time from Slash, Heat and Toxin Status Effects accumulates in a single blast.\\r\\n\\r\\nWORDWARDEN: A Light Verse followed by a Dark Verse supports allies with copies of Noctua. Noctua copies synchronize their attacks with their designated ally's attacks.\\r\\n\\r\\nPAGEFLIGHT: A Dark Verse followed by a Light Verse summons Paragrimms that swoop at enemies, making them vulnerable to Status Chance and Status Damage, as well as drawing enemy attacks away from allies."
   },
   {
@@ -1368,7 +1368,7 @@
     "Augments": "Spectral Spirit",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PaxTeleportAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DagathApparitionAbility",
     "Description": "Supercharge Dagath's weapons with extra Critical Damage. The effects are doubled on Doomed enemies. Escape fatal blows by briefly assuming a spectral form."
   },
   {
@@ -1606,7 +1606,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ThreadsAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/KoumeiStringsAbility",
     "Description": "Weave the threads of destiny. Enemies who touch the threads suffer a random Elemental Status Effect. A roll of triple sixes creates threads that inflict one of every Elemental Status Effect."
   },
   {
@@ -1676,7 +1676,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ScribeLightAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PagemasterLifeAbility",
     "Description": "Dante’s vitalizing composition grants him and his allies Overguard and increases their Health."
   },
   {
@@ -1788,7 +1788,7 @@
     "Augments": "Partitioned Mallet",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/BardJamAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/BardMusicAbility",
     "Description": "Rhythmically beats damage into nearby enemies and draws their fire. Damage inflicted on the Mallet increases its lethality."
   },
   {
@@ -1942,7 +1942,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/BardMusicAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/BardJamAbility",
     "Description": "Grants buffs to those who consistently perform actions in time to Octavia’s music. Timed jumps offer the Vivace speed buff. Crouching on the beat grants cloaking with the Nocturne buff. Firing rhythmically bestows Opera multishot buff. Timed melee swings give the Forte damage buff."
   },
   {
@@ -2068,7 +2068,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "Noctua (Weapon)",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/ScribeBookAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PagemasterBookAbility",
     "Description": "Open Noctua, Dante’s Exalted Tome, and unleash a tale of woe upon his enemies."
   },
   {
@@ -2110,7 +2110,7 @@
     "Augments": "",
     "Subsumable": true,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/CharmsAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/KoumeiBlockAbility",
     "Description": "Surround yourself with Omamori Charms, each with a chance to have enemy attacks heal you instead of damage you. The number of charms is determined by Koumei’s dice roll. A roll of triple sixes grants invulnerability for the duration of your Omamori Charms."
   },
   {
@@ -2124,7 +2124,7 @@
     "Augments": "Omikuji's Fortune",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DecreesAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/KoumeiFortuneAbility",
     "Description": "Koumei glimpses a favorable future and the precise steps needed to reach it. Complete the challenge to earn a Decree. A roll of triple sixes grants a Decree without a challenge."
   },
   {
@@ -2348,7 +2348,7 @@
     "Augments": "Rousing Plunder",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PirateArmourAbility",
     "Description": "Plunder Armor from nearby enemies and increase Corrosive Damage on your Abilities and weapons. Enemies affected by Corrosion Status offer a greater increase."
   },
   {
@@ -2562,47 +2562,47 @@
     "Description": "Let out a ferocious howl that stuns nearby enemies and causes Sentients to shed any built up resistances."
   },
   {
-  "AbilityKey": "Slash Dash",
-  "Name": "Slash Dash",
-  "Powersuit": "Excalibur Umbra",
-  "SlotKey": 1,
-  "Cost": 25,
-  "CostType": "energy",
-  "Introduced": "23",
-  "Augments": "Purging Slash, Surging Dash",
-  "Subsumable": true,
-  "Weapon": "",
-  "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraSlashDashNewAbility",
-  "Description": "Dash between enemies while slashing with the Exalted Blade."
-},
-{
-  "AbilityKey": "Radial Javelin",
-  "Name": "Radial Javelin",
-  "Powersuit": "Excalibur Umbra",
-  "SlotKey": 3,
-  "Cost": 75,
-  "CostType": "energy",
-  "Introduced": "23",
-  "Augments": "Furious Javelin",
-  "Subsumable": false,
-  "Weapon": "",
-  "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraRadialJavelinAbility",
-  "Description": "Launch javelins toward enemies, dealing high damage."
-},
-{
-  "AbilityKey": "Exalted Blade",
-  "Name": "Exalted Blade",
-  "Powersuit": "Excalibur Umbra",
-  "SlotKey": 4,
-  "Cost": 25,
-  "CostType": "energy",
-  "Introduced": "23",
-  "Augments": "Chromatic Blade",
-  "Subsumable": false,
-  "Weapon": "Exalted Blade",
-  "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraSwordOfDoomAbility",
-  "Description": "Summon a sword of pure light and immense power."
-},
+    "AbilityKey": "Slash Dash",
+    "Name": "Slash Dash",
+    "Powersuit": "Excalibur Umbra",
+    "SlotKey": 1,
+    "Cost": 25,
+    "CostType": "energy",
+    "Introduced": "23",
+    "Augments": "Purging Slash, Surging Dash",
+    "Subsumable": true,
+    "Weapon": "",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraSlashDashNewAbility",
+    "Description": "Dash between enemies while slashing with the Exalted Blade."
+  },
+  {
+    "AbilityKey": "Radial Javelin",
+    "Name": "Radial Javelin",
+    "Powersuit": "Excalibur Umbra",
+    "SlotKey": 3,
+    "Cost": 75,
+    "CostType": "energy",
+    "Introduced": "23",
+    "Augments": "Furious Javelin",
+    "Subsumable": false,
+    "Weapon": "",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraRadialJavelinAbility",
+    "Description": "Launch javelins toward enemies, dealing high damage."
+  },
+  {
+    "AbilityKey": "Exalted Blade",
+    "Name": "Exalted Blade",
+    "Powersuit": "Excalibur Umbra",
+    "SlotKey": 4,
+    "Cost": 25,
+    "CostType": "energy",
+    "Introduced": "23",
+    "Augments": "Chromatic Blade",
+    "Subsumable": false,
+    "Weapon": "Exalted Blade",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/UmbraSwordOfDoomAbility",
+    "Description": "Summon a sword of pure light and immense power."
+  },
   {
     "AbilityKey": "Radial Javelin",
     "Name": "Radial Javelin",
@@ -3566,7 +3566,7 @@
     "Augments": "Spellbound Harvest",
     "Subsumable": true,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/FairySoulAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/FairyDustAbility",
     "Description": "Enemies fumble their weapons as they tumble into the air. Nearby allies become immune to Status Effects."
   },
   {
@@ -3930,7 +3930,7 @@
     "Augments": "Warding Thurible",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PriestPactAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PriestRavageAbility",
     "Description": "Channel Harrow’s energy into the Thurible to generate a buff. Once finished, kill enemies to bestow nearby allies with bursts of energy. The more energy channeled the greater the reward for each kill. Headshots produce extra energy."
   },
   {
@@ -4028,7 +4028,7 @@
     "Augments": "",
     "Subsumable": false,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/FairyDustAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/FairySoulAbility",
     "Description": "Cycle through and extract one of the four Buffs when cast on an enemy. Thorns reduces incoming damage. Dust degrades enemy accuracy. Full Moon increases companion damage. Entangle slows enemies within range."
   },
   {
@@ -4336,7 +4336,7 @@
     "Augments": "",
     "Subsumable": true,
     "Weapon": "",
-    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/PaxTeleportAbility",
+    "InternalName": "/Lotus/Powersuits/PowersuitAbilities/DagathVolleyAbility",
     "Description": "Wyrd Scythes surround Dagath and seek out nearby enemies. Those struck are slowed and suffer Viral Damage with a guaranteed Status Effect. The scythes also spread Doom and extend its duration."
   },
   {
