@@ -5884,7 +5884,7 @@ id,http,status,has_next_data,name
 5883,https://overframe.gg/items/arsenal/5883,200,true,Khora Prime Neuroptics
 5884,https://overframe.gg/items/arsenal/5884,200,true,Khora Prime Chassis
 5885,https://overframe.gg/items/arsenal/5885,200,true,Khora Prime Chassis
-5886,https://overframe.gg/items/arsenal/5886,200,true,Khora Prime Systems
+5886,https://overframe.gg/items/arsenal/5886,0,false,
 5887,https://overframe.gg/items/arsenal/5887,200,true,Khora Prime Systems
 5888,https://overframe.gg/items/arsenal/5888,404,false,
 5889,https://overframe.gg/items/arsenal/5889,404,false,
