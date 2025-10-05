@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-05T13:01:11.511Z",
+  "generatedAt": "2025-10-05T14:03:39.936Z",
   "count": 117,
   "entities": [
     {
@@ -4187,170 +4187,6 @@
           "summary": {
             "costType": null,
             "costEnergy": 50,
-            "strength": 400,
-            "duration": null,
-            "range": null,
-            "efficiency": 50,
-            "affectedBy": [
-              "strength",
-              "efficiency"
-            ]
-          },
-          "rows": [
-            {
-              "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 50",
-              "modifier": "AVATAR_ABILITY_EFFICIENCY",
-              "values": {
-                "Val1": 50
-              },
-              "mainNumeric": 50
-            },
-            {
-              "label": "Energy Drain: |val1|",
-              "filledLabel": "Energy Drain: 10",
-              "modifier": "ENERGY_DRAIN",
-              "values": {
-                "Val1": 10
-              },
-              "mainNumeric": 10
-            },
-            {
-              "label": "Damage/Tick: |val1|",
-              "filledLabel": "Damage/Tick: 400",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 400
-              },
-              "mainNumeric": 400
-            },
-            {
-              "label": "Damage/Second: |val1|",
-              "filledLabel": "Damage/Second: 2000",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 2000
-              },
-              "mainNumeric": 2000
-            },
-            {
-              "label": "Health: |val1|",
-              "filledLabel": "Health: 8000",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 8000
-              },
-              "mainNumeric": 8000
-            },
-            {
-              "label": "Attack Range: |val1|m",
-              "filledLabel": "Attack Range: 20m",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 20
-              },
-              "mainNumeric": 20
-            },
-            {
-              "label": "Stun Radius: |val1|m",
-              "filledLabel": "Stun Radius: 30m",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 30
-              },
-              "mainNumeric": 30
-            },
-            {
-              "label": "Knockback Radius: |val1|m",
-              "filledLabel": "Knockback Radius: 5m",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 5
-              },
-              "mainNumeric": 5
-            }
-          ]
-        },
-        {
-          "name": "Vex Armor",
-          "description": "Chroma fortifies squad Armor when his Shields are damaged or he kills an enemy with a melee weapon. He increases squad Weapon Damage when he loses Health or kills an enemy with a ranged weapon, double the effect on weak point kills.",
-          "subsumable": false,
-          "augments": [
-            "Guardian Armor",
-            "Vexing Retaliation"
-          ],
-          "summary": {
-            "costType": null,
-            "costEnergy": 75,
-            "strength": 350,
-            "duration": 25,
-            "range": 18,
-            "efficiency": 75,
-            "affectedBy": [
-              "strength",
-              "duration",
-              "range",
-              "efficiency"
-            ]
-          },
-          "rows": [
-            {
-              "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 75",
-              "modifier": "AVATAR_ABILITY_EFFICIENCY",
-              "values": {
-                "Val1": 75
-              },
-              "mainNumeric": 75
-            },
-            {
-              "label": "Maximum Armor Bonus: |val1|%",
-              "filledLabel": "Maximum Armor Bonus: 350%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 350
-              },
-              "mainNumeric": 350
-            },
-            {
-              "label": "Maximum Damage Bonus: |val1|%",
-              "filledLabel": "Maximum Damage Bonus: 275%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 275
-              },
-              "mainNumeric": 275
-            },
-            {
-              "label": "Range: |val1|m",
-              "filledLabel": "Range: 18m",
-              "modifier": "AVATAR_ABILITY_RANGE",
-              "values": {
-                "Val1": 18
-              },
-              "mainNumeric": 18
-            },
-            {
-              "label": "Duration: |val1|s",
-              "filledLabel": "Duration: 25s",
-              "modifier": "AVATAR_ABILITY_DURATION",
-              "values": {
-                "Val1": 25
-              },
-              "mainNumeric": 25
-            }
-          ]
-        },
-        {
-          "name": "Effigy",
-          "description": "Chroma turns his pelt into a massive sentry that strengthens nearby allies and engulfs enemies in elemental attacks.",
-          "subsumable": false,
-          "augments": [
-            "Guided Effigy"
-          ],
-          "summary": {
-            "costType": null,
-            "costEnergy": 50,
             "strength": 100,
             "duration": 25,
             "range": 12,
@@ -4588,6 +4424,170 @@
                 "Val1": 12
               },
               "mainNumeric": 12
+            }
+          ]
+        },
+        {
+          "name": "Vex Armor",
+          "description": "Chroma fortifies squad Armor when his Shields are damaged or he kills an enemy with a melee weapon. He increases squad Weapon Damage when he loses Health or kills an enemy with a ranged weapon, double the effect on weak point kills.",
+          "subsumable": false,
+          "augments": [
+            "Guardian Armor",
+            "Vexing Retaliation"
+          ],
+          "summary": {
+            "costType": null,
+            "costEnergy": 75,
+            "strength": 350,
+            "duration": 25,
+            "range": 18,
+            "efficiency": 75,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 75",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              },
+              "mainNumeric": 75
+            },
+            {
+              "label": "Maximum Armor Bonus: |val1|%",
+              "filledLabel": "Maximum Armor Bonus: 350%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 350
+              },
+              "mainNumeric": 350
+            },
+            {
+              "label": "Maximum Damage Bonus: |val1|%",
+              "filledLabel": "Maximum Damage Bonus: 275%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 275
+              },
+              "mainNumeric": 275
+            },
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 18m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 18
+              },
+              "mainNumeric": 18
+            },
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 25s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            }
+          ]
+        },
+        {
+          "name": "Effigy",
+          "description": "Chroma turns his pelt into a massive sentry that strengthens nearby allies and engulfs enemies in elemental attacks.",
+          "subsumable": false,
+          "augments": [
+            "Guided Effigy"
+          ],
+          "summary": {
+            "costType": null,
+            "costEnergy": 50,
+            "strength": 400,
+            "duration": null,
+            "range": null,
+            "efficiency": 50,
+            "affectedBy": [
+              "strength",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 50",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Energy Drain: |val1|",
+              "filledLabel": "Energy Drain: 10",
+              "modifier": "ENERGY_DRAIN",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Damage/Tick: |val1|",
+              "filledLabel": "Damage/Tick: 400",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 400
+              },
+              "mainNumeric": 400
+            },
+            {
+              "label": "Damage/Second: |val1|",
+              "filledLabel": "Damage/Second: 2000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2000
+              },
+              "mainNumeric": 2000
+            },
+            {
+              "label": "Health: |val1|",
+              "filledLabel": "Health: 8000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 8000
+              },
+              "mainNumeric": 8000
+            },
+            {
+              "label": "Attack Range: |val1|m",
+              "filledLabel": "Attack Range: 20m",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Stun Radius: |val1|m",
+              "filledLabel": "Stun Radius: 30m",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Knockback Radius: |val1|m",
+              "filledLabel": "Knockback Radius: 5m",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
             }
           ]
         }
@@ -5722,16 +5722,134 @@
           "description": "Wyrd Scythes surround Dagath and seek out nearby enemies. Those struck are slowed and suffer Viral Damage with a guaranteed Status Effect. The scythes also spread Doom and extend its duration.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 25,
+            "strength": 35,
+            "duration": 5,
+            "range": 15,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Wyrd Scythes Slow: |val1|%",
+              "filledLabel": "Wyrd Scythes Slow: 35.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              },
+              "mainNumeric": 35
+            },
+            {
+              "label": "Wyrd Scythes Spin Damage: |val1|",
+              "filledLabel": "Wyrd Scythes Spin Damage: 500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              },
+              "mainNumeric": 500
+            },
+            {
+              "label": "Wyrd Scythes Throw Damage: |val1|",
+              "filledLabel": "Wyrd Scythes Throw Damage: 1000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1000
+              },
+              "mainNumeric": 1000
+            },
+            {
+              "label": "Wyrd Scythesslow Duration: |val1|s",
+              "filledLabel": "Wyrd Scythesslow Duration: 5.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Wyrd Scythes Range: |val1|m",
+              "filledLabel": "Wyrd Scythes Range: 15.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              },
+              "mainNumeric": 15
+            }
+          ]
         },
         {
           "name": "Doom",
           "description": "Condemn nearby enemies to their doom. A portion of the damage Dagath deals is revisited upon them by a Wyrd Scythe. They also suffer Viral damage.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 50,
+            "strength": 500,
+            "duration": 15,
+            "range": 15,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Doom Damage: |val1|",
+              "filledLabel": "Doom Damage: 500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              },
+              "mainNumeric": 500
+            },
+            {
+              "label": "Doom Duration: |val1|s",
+              "filledLabel": "Doom Duration: 15.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 15
+              },
+              "mainNumeric": 15
+            },
+            {
+              "label": "Doom Range: |val1|m",
+              "filledLabel": "Doom Range: 15.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              },
+              "mainNumeric": 15
+            },
+            {
+              "label": "Doom Angle: |val1|°",
+              "filledLabel": "Doom Angle: 40.0°",
+              "modifier": null,
+              "values": {
+                "Val1": 40
+              },
+              "mainNumeric": 40
+            },
+            {
+              "label": "Doom Damage Redirection: |val1|%",
+              "filledLabel": "Doom Damage Redirection: 35.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              },
+              "mainNumeric": 35
+            }
+          ]
         },
         {
           "name": "Grave Spirit",
@@ -5740,8 +5858,66 @@
           "augments": [
             "Spectral Spirit"
           ],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 75,
+            "strength": 50,
+            "duration": 10,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Grave Spirit Crit Dam Bonus: |val1|%",
+              "filledLabel": "Grave Spirit Crit Dam Bonus: 50.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Doom Crit Dam Bonus: |val1|%",
+              "filledLabel": "Doom Crit Dam Bonus: 100%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            },
+            {
+              "label": "Grave Spirit Cool Down: |val1|s",
+              "filledLabel": "Grave Spirit Cool Down: 25.0s",
+              "modifier": null,
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Time Invulnerable: |val1|s",
+              "filledLabel": "Time Invulnerable: 10s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Dodge Chance: |val1|%",
+              "filledLabel": "Dodge Chance: 100%",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            }
+          ]
         },
         {
           "name": "Rakhali's Cavalry",
@@ -5785,32 +5961,336 @@
           "description": "Open Noctua, Dante’s Exalted Tome, and unleash a tale of woe upon his enemies.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 5,
+            "strength": 250,
+            "duration": null,
+            "range": null,
+            "efficiency": 2,
+            "affectedBy": [
+              "strength",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Primary Fire: |val1|",
+              "filledLabel": "Primary Fire: 250.0",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              },
+              "mainNumeric": 250
+            },
+            {
+              "label": "Alt Fire Impact: |val1|",
+              "filledLabel": "Alt Fire Impact: 1100",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1100
+              },
+              "mainNumeric": 1100
+            },
+            {
+              "label": "Alt Fire Rad: |val1|",
+              "filledLabel": "Alt Fire Rad: 1650",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1650
+              },
+              "mainNumeric": 1650
+            },
+            {
+              "label": "Numb Of Fragments: |val1|",
+              "filledLabel": "Numb Of Fragments: 4",
+              "modifier": null,
+              "values": {
+                "Val1": 4
+              },
+              "mainNumeric": 4
+            },
+            {
+              "label": "Fragment Angle: |val1|°",
+              "filledLabel": "Fragment Angle: 60°",
+              "modifier": null,
+              "values": {
+                "Val1": 60
+              },
+              "mainNumeric": 60
+            },
+            {
+              "label": "Fragment Distance: |val1|m",
+              "filledLabel": "Fragment Distance: 20m",
+              "modifier": null,
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Drainpershot: |val1|",
+              "filledLabel": "Drainpershot: 2.0",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            }
+          ]
         },
         {
           "name": "Light Verse",
           "description": "Dante’s vitalizing composition grants him and his allies Overguard and increases their Health.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 25,
+            "strength": 350,
+            "duration": null,
+            "range": 20,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Light Verse Overguard: |val1|",
+              "filledLabel": "Light Verse Overguard: 350",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 350
+              },
+              "mainNumeric": 350
+            },
+            {
+              "label": "Light Verse Overguardcap: |val1|",
+              "filledLabel": "Light Verse Overguardcap: 15000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 15000
+              },
+              "mainNumeric": 15000
+            },
+            {
+              "label": "Light Verse Radius: |val1|m",
+              "filledLabel": "Light Verse Radius: 20.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Light Verse Health: |val1|%",
+              "filledLabel": "Light Verse Health: 20.0%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            }
+          ]
         },
         {
           "name": "Dark Verse",
           "description": "Dante’s composition draws blood from nearby enemies, inflicting Slash Damage upon them.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 25,
+            "strength": 1250,
+            "duration": null,
+            "range": 20,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Dark Verse Damage: |val1|",
+              "filledLabel": "Dark Verse Damage: 1250",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1250
+              },
+              "mainNumeric": 1250
+            },
+            {
+              "label": "Dark Verse Range: |val1|m",
+              "filledLabel": "Dark Verse Range: 20.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Dark Verse Angle: |val1|°",
+              "filledLabel": "Dark Verse Angle: 50.0°",
+              "modifier": null,
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            }
+          ]
         },
         {
           "name": "Final Verse",
           "description": "Dante must compose two other Verses before his Final Verse.\\r\\n\\r\\nTRIUMPH: Two Light Verses cast in succession invigorate allies with a buff that increases Health and grants Overguard. Kills and assists briefly regenerate Overguard.\\r\\n\\r\\nTRAGEDY: Two Dark Verses cast in succession attack enemies. Damage Over Time from Slash, Heat and Toxin Status Effects accumulates in a single blast.\\r\\n\\r\\nWORDWARDEN: A Light Verse followed by a Dark Verse supports allies with copies of Noctua. Noctua copies synchronize their attacks with their designated ally's attacks.\\r\\n\\r\\nPAGEFLIGHT: A Dark Verse followed by a Light Verse summons Paragrimms that swoop at enemies, making them vulnerable to Status Chance and Status Damage, as well as drawing enemy attacks away from allies.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 50,
+            "strength": 3000,
+            "duration": 45,
+            "range": 30,
+            "efficiency": null,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Final Verse Duration: |val1|s",
+              "filledLabel": "Final Verse Duration: 45.0s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 45
+              },
+              "mainNumeric": 45
+            },
+            {
+              "label": "Final Verse Radius: |val1|m",
+              "filledLabel": "Final Verse Radius: 30.0m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Triumph Overguard: |val1|",
+              "filledLabel": "Triumph Overguard: 3000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 3000
+              },
+              "mainNumeric": 3000
+            },
+            {
+              "label": "Triumph Overguard Cap: |val1|",
+              "filledLabel": "Triumph Overguard Cap: 15000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 15000
+              },
+              "mainNumeric": 15000
+            },
+            {
+              "label": "Triumph Overguard Reg: |val1|",
+              "filledLabel": "Triumph Overguard Reg: 100",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            },
+            {
+              "label": "Triumph Reg Duration: |val1|s",
+              "filledLabel": "Triumph Reg Duration: 2.0s",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            },
+            {
+              "label": "Tragedy Damage: |val1|",
+              "filledLabel": "Tragedy Damage: 6500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 6500
+              },
+              "mainNumeric": 6500
+            },
+            {
+              "label": "Tragedy Damage Mult: |val1|",
+              "filledLabel": "Tragedy Damage Mult: 3.0",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Wordwarden Damage: |val1|%",
+              "filledLabel": "Wordwarden Damage: 50.0%",
+              "modifier": null,
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Paragrimms: |val1|",
+              "filledLabel": "Paragrimms: 3.0",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Paragrimms Damage: |val1|",
+              "filledLabel": "Paragrimms Damage: 300",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 300
+              },
+              "mainNumeric": 300
+            },
+            {
+              "label": "Pageflight Statut Dam Inc: |val1|%",
+              "filledLabel": "Pageflight Statut Dam Inc: 50%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Pageflight Statut Dam Vul: |val1|%",
+              "filledLabel": "Pageflight Statut Dam Vul: 50%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Pageflight Vul Duration: |val1|s",
+              "filledLabel": "Pageflight Vul Duration: 30s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            }
+          ]
         }
       ]
     },
@@ -13578,6 +14058,75 @@
           ],
           "summary": {
             "costType": null,
+            "costEnergy": 25,
+            "strength": 10,
+            "duration": 35,
+            "range": 20,
+            "efficiency": 25,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 25",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Energy Convert: |val1|%",
+              "filledLabel": "Energy Convert: 10%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 35s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 35
+              },
+              "mainNumeric": 35
+            },
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 20m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Headshot Multiplier: |val1|x",
+              "filledLabel": "Headshot Multiplier: 4x",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 4
+              },
+              "mainNumeric": 4
+            }
+          ]
+        },
+        {
+          "name": "Covenant",
+          "description": "Protect nearby allies with an energy force that absorbs all damage and converts it to a Critical Chance bonus for all those under the Covenant. Headshots are amplified even further.",
+          "subsumable": false,
+          "augments": [
+            "Lasting Covenant"
+          ],
+          "summary": {
+            "costType": null,
             "costEnergy": 100,
             "strength": 100,
             "duration": 6,
@@ -13643,75 +14192,6 @@
                 "Val1": 50
               },
               "mainNumeric": 50
-            }
-          ]
-        },
-        {
-          "name": "Covenant",
-          "description": "Protect nearby allies with an energy force that absorbs all damage and converts it to a Critical Chance bonus for all those under the Covenant. Headshots are amplified even further.",
-          "subsumable": false,
-          "augments": [
-            "Lasting Covenant"
-          ],
-          "summary": {
-            "costType": null,
-            "costEnergy": 25,
-            "strength": 10,
-            "duration": 35,
-            "range": 20,
-            "efficiency": 25,
-            "affectedBy": [
-              "strength",
-              "duration",
-              "range",
-              "efficiency"
-            ]
-          },
-          "rows": [
-            {
-              "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 25",
-              "modifier": "AVATAR_ABILITY_EFFICIENCY",
-              "values": {
-                "Val1": 25
-              },
-              "mainNumeric": 25
-            },
-            {
-              "label": "Energy Convert: |val1|%",
-              "filledLabel": "Energy Convert: 10%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 10
-              },
-              "mainNumeric": 10
-            },
-            {
-              "label": "Duration: |val1|s",
-              "filledLabel": "Duration: 35s",
-              "modifier": "AVATAR_ABILITY_DURATION",
-              "values": {
-                "Val1": 35
-              },
-              "mainNumeric": 35
-            },
-            {
-              "label": "Range: |val1|m",
-              "filledLabel": "Range: 20m",
-              "modifier": "AVATAR_ABILITY_RANGE",
-              "values": {
-                "Val1": 20
-              },
-              "mainNumeric": 20
-            },
-            {
-              "label": "Headshot Multiplier: |val1|x",
-              "filledLabel": "Headshot Multiplier: 4x",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 4
-              },
-              "mainNumeric": 4
             }
           ]
         }
@@ -26370,11 +26850,11 @@
           ],
           "summary": {
             "costType": null,
-            "costEnergy": 75,
-            "strength": 35,
+            "costEnergy": 25,
+            "strength": 2.5,
             "duration": 20,
-            "range": 12,
-            "efficiency": 75,
+            "range": 10,
+            "efficiency": 25,
             "affectedBy": [
               "strength",
               "duration",
@@ -26385,52 +26865,25 @@
           "rows": [
             {
               "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 75",
+              "filledLabel": "Energy Cost: 25",
               "modifier": "AVATAR_ABILITY_EFFICIENCY",
               "values": {
-                "Val1": 75
+                "Val1": 25
               },
-              "mainNumeric": 75
+              "mainNumeric": 25
             },
             {
-              "label": "Armor Bonus: |val1|%",
-              "filledLabel": "Armor Bonus: 35%",
+              "label": "Damage Multiplier: |val1|x",
+              "filledLabel": "Damage Multiplier: 2.5x",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
-                "Val1": 35
+                "Val1": 2.5
               },
-              "mainNumeric": 35
+              "mainNumeric": 2.5
             },
             {
-              "label": "Speed Bonus: |val1|%",
-              "filledLabel": "Speed Bonus: 30%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 30
-              },
-              "mainNumeric": 30
-            },
-            {
-              "label": "Multishot Bonus: |val1|%",
-              "filledLabel": "Multishot Bonus: 30%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 30
-              },
-              "mainNumeric": 30
-            },
-            {
-              "label": "Melee Damage Bonus: |val1|%",
-              "filledLabel": "Melee Damage Bonus: 30%",
-              "modifier": "AVATAR_ABILITY_STRENGTH",
-              "values": {
-                "Val1": 30
-              },
-              "mainNumeric": 30
-            },
-            {
-              "label": "Ability Duration: |val1|s",
-              "filledLabel": "Ability Duration: 20s",
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 20s",
               "modifier": "AVATAR_ABILITY_DURATION",
               "values": {
                 "Val1": 20
@@ -26438,22 +26891,22 @@
               "mainNumeric": 20
             },
             {
-              "label": "Buff Duration: |val1|s",
-              "filledLabel": "Buff Duration: 15s",
-              "modifier": "AVATAR_ABILITY_DURATION",
-              "values": {
-                "Val1": 15
-              },
-              "mainNumeric": 15
-            },
-            {
               "label": "Range: |val1|m",
-              "filledLabel": "Range: 12m",
+              "filledLabel": "Range: 10m",
               "modifier": "AVATAR_ABILITY_RANGE",
               "values": {
-                "Val1": 12
+                "Val1": 10
               },
-              "mainNumeric": 12
+              "mainNumeric": 10
+            },
+            {
+              "label": "Limit Of Mallets: |val1|",
+              "filledLabel": "Limit Of Mallets: 1",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 1
+              },
+              "mainNumeric": 1
             }
           ]
         },
@@ -26551,11 +27004,11 @@
           "augments": [],
           "summary": {
             "costType": null,
-            "costEnergy": 25,
-            "strength": 2.5,
+            "costEnergy": 75,
+            "strength": 35,
             "duration": 20,
-            "range": 10,
-            "efficiency": 25,
+            "range": 12,
+            "efficiency": 75,
             "affectedBy": [
               "strength",
               "duration",
@@ -26566,25 +27019,52 @@
           "rows": [
             {
               "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 25",
+              "filledLabel": "Energy Cost: 75",
               "modifier": "AVATAR_ABILITY_EFFICIENCY",
               "values": {
-                "Val1": 25
+                "Val1": 75
               },
-              "mainNumeric": 25
+              "mainNumeric": 75
             },
             {
-              "label": "Damage Multiplier: |val1|x",
-              "filledLabel": "Damage Multiplier: 2.5x",
+              "label": "Armor Bonus: |val1|%",
+              "filledLabel": "Armor Bonus: 35%",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
-                "Val1": 2.5
+                "Val1": 35
               },
-              "mainNumeric": 2.5
+              "mainNumeric": 35
             },
             {
-              "label": "Duration: |val1|s",
-              "filledLabel": "Duration: 20s",
+              "label": "Speed Bonus: |val1|%",
+              "filledLabel": "Speed Bonus: 30%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Multishot Bonus: |val1|%",
+              "filledLabel": "Multishot Bonus: 30%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Melee Damage Bonus: |val1|%",
+              "filledLabel": "Melee Damage Bonus: 30%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              },
+              "mainNumeric": 30
+            },
+            {
+              "label": "Ability Duration: |val1|s",
+              "filledLabel": "Ability Duration: 20s",
               "modifier": "AVATAR_ABILITY_DURATION",
               "values": {
                 "Val1": 20
@@ -26592,22 +27072,22 @@
               "mainNumeric": 20
             },
             {
-              "label": "Range: |val1|m",
-              "filledLabel": "Range: 10m",
-              "modifier": "AVATAR_ABILITY_RANGE",
+              "label": "Buff Duration: |val1|s",
+              "filledLabel": "Buff Duration: 15s",
+              "modifier": "AVATAR_ABILITY_DURATION",
               "values": {
-                "Val1": 10
+                "Val1": 15
               },
-              "mainNumeric": 10
+              "mainNumeric": 15
             },
             {
-              "label": "Limit Of Mallets: |val1|",
-              "filledLabel": "Limit Of Mallets: 1",
-              "modifier": "NONE",
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 12m",
+              "modifier": "AVATAR_ABILITY_RANGE",
               "values": {
-                "Val1": 1
+                "Val1": 12
               },
-              "mainNumeric": 1
+              "mainNumeric": 12
             }
           ]
         },
@@ -32095,6 +32575,72 @@
           "summary": {
             "costType": null,
             "costEnergy": 25,
+            "strength": null,
+            "duration": 16,
+            "range": 5,
+            "efficiency": 25,
+            "affectedBy": [
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 25",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 16s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 16
+              },
+              "mainNumeric": 16
+            },
+            {
+              "label": "Area Radius: |val1|m",
+              "filledLabel": "Area Radius: 5m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Cast Range: |val1|m",
+              "filledLabel": "Cast Range: 50m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Status Cleanse And Immunity: |val1|%",
+              "filledLabel": "Status Cleanse And Immunity: 100%",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            }
+          ]
+        },
+        {
+          "name": "Tribute",
+          "description": "Cycle through and extract one of the four Buffs when cast on an enemy. Thorns reduces incoming damage. Dust degrades enemy accuracy. Full Moon increases companion damage. Entangle slows enemies within range.",
+          "subsumable": false,
+          "augments": [],
+          "summary": {
+            "costType": null,
+            "costEnergy": 25,
             "strength": 500,
             "duration": 12,
             "range": 25,
@@ -32223,72 +32769,6 @@
                 "Val1": 25
               },
               "mainNumeric": 25
-            }
-          ]
-        },
-        {
-          "name": "Tribute",
-          "description": "Cycle through and extract one of the four Buffs when cast on an enemy. Thorns reduces incoming damage. Dust degrades enemy accuracy. Full Moon increases companion damage. Entangle slows enemies within range.",
-          "subsumable": false,
-          "augments": [],
-          "summary": {
-            "costType": null,
-            "costEnergy": 25,
-            "strength": null,
-            "duration": 16,
-            "range": 5,
-            "efficiency": 25,
-            "affectedBy": [
-              "duration",
-              "range",
-              "efficiency"
-            ]
-          },
-          "rows": [
-            {
-              "label": "Energy Cost: |val1|",
-              "filledLabel": "Energy Cost: 25",
-              "modifier": "AVATAR_ABILITY_EFFICIENCY",
-              "values": {
-                "Val1": 25
-              },
-              "mainNumeric": 25
-            },
-            {
-              "label": "Duration: |val1|s",
-              "filledLabel": "Duration: 16s",
-              "modifier": "AVATAR_ABILITY_DURATION",
-              "values": {
-                "Val1": 16
-              },
-              "mainNumeric": 16
-            },
-            {
-              "label": "Area Radius: |val1|m",
-              "filledLabel": "Area Radius: 5m",
-              "modifier": "AVATAR_ABILITY_RANGE",
-              "values": {
-                "Val1": 5
-              },
-              "mainNumeric": 5
-            },
-            {
-              "label": "Cast Range: |val1|m",
-              "filledLabel": "Cast Range: 50m",
-              "modifier": "AVATAR_ABILITY_RANGE",
-              "values": {
-                "Val1": 50
-              },
-              "mainNumeric": 50
-            },
-            {
-              "label": "Status Cleanse And Immunity: |val1|%",
-              "filledLabel": "Status Cleanse And Immunity: 100%",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 100
-              },
-              "mainNumeric": 100
             }
           ]
         },
