@@ -3068,6 +3068,185 @@
     ]
   },
   {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/DagathApparitionAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 75,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Grave Spirit Crit Dam Bonus: |val1|%",
+        "filledLabel": "Grave Spirit Crit Dam Bonus: 50.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50.0
+        },
+        "mainNumeric": 50.0
+      },
+      {
+        "label": "Doom Crit Dam Bonus: |val1|%",
+        "filledLabel": "Doom Crit Dam Bonus: 100%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Grave Spirit Cool Down: |val1|s",
+        "filledLabel": "Grave Spirit Cool Down: 25.0s",
+        "modifier": null,
+        "values": {
+          "Val1": 25.0
+        },
+        "mainNumeric": 25.0
+      },
+      {
+        "label": "Time Invulnerable: |val1|s",
+        "filledLabel": "Time Invulnerable: 10s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Dodge Chance: |val1|%",
+        "filledLabel": "Dodge Chance: 100%",
+        "modifier": null,
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/DagathCurseAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 50,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Doom Damage: |val1|",
+        "filledLabel": "Doom Damage: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Doom Duration: |val1|s",
+        "filledLabel": "Doom Duration: 15.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 15.0
+        },
+        "mainNumeric": 15.0
+      },
+      {
+        "label": "Doom Range: |val1|m",
+        "filledLabel": "Doom Range: 15.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 15.0
+        },
+        "mainNumeric": 15.0
+      },
+      {
+        "label": "Doom Angle: |val1|°",
+        "filledLabel": "Doom Angle: 40.0°",
+        "modifier": null,
+        "values": {
+          "Val1": 40.0
+        },
+        "mainNumeric": 40.0
+      },
+      {
+        "label": "Doom Damage Redirection: |val1|%",
+        "filledLabel": "Doom Damage Redirection: 35.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 35.0
+        },
+        "mainNumeric": 35.0
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/DagathVolleyAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 25,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Wyrd Scythes Slow: |val1|%",
+        "filledLabel": "Wyrd Scythes Slow: 35.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 35.0
+        },
+        "mainNumeric": 35.0
+      },
+      {
+        "label": "Wyrd Scythes Spin Damage: |val1|",
+        "filledLabel": "Wyrd Scythes Spin Damage: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Wyrd Scythes Throw Damage: |val1|",
+        "filledLabel": "Wyrd Scythes Throw Damage: 1000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1000
+        },
+        "mainNumeric": 1000
+      },
+      {
+        "label": "Wyrd Scythesslow Duration: |val1|s",
+        "filledLabel": "Wyrd Scythesslow Duration: 5.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 5.0
+        },
+        "mainNumeric": 5.0
+      },
+      {
+        "label": "Wyrd Scythes Range: |val1|m",
+        "filledLabel": "Wyrd Scythes Range: 15.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 15.0
+        },
+        "mainNumeric": 15.0
+      }
+    ]
+  },
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/DaggerAbility",
     "summary": {
       "costEnergy": 50,
@@ -5318,6 +5497,261 @@
     ]
   },
   {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/FrumentariusAmmoAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 50,
+      "affectedBy": [
+        "strength",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Weapon Damage Bonus: |val1|%",
+        "filledLabel": "Weapon Damage Bonus: 25.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 25.0
+        },
+        "mainNumeric": 25.0
+      },
+      {
+        "label": "Sniper Damage Bonus: |val1|%",
+        "filledLabel": "Sniper Damage Bonus: 50.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50.0
+        },
+        "mainNumeric": 50.0
+      },
+      {
+        "label": "Maxpack: |val1|",
+        "filledLabel": "Maxpack: 6.0",
+        "modifier": null,
+        "values": {
+          "Val1": 6.0
+        },
+        "mainNumeric": 6.0
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/FrumentariusCloakAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 75,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 10.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 10.0
+        },
+        "mainNumeric": 10.0
+      },
+      {
+        "label": "Durationper Weak Point Kill: |val1|s",
+        "filledLabel": "Durationper Weak Point Kill: 2.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 2.0
+        },
+        "mainNumeric": 2.0
+      },
+      {
+        "label": "Health Per Kill: |val1|",
+        "filledLabel": "Health Per Kill: 100",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Cool Down: |val1|s",
+        "filledLabel": "Cool Down: 60.0s",
+        "modifier": null,
+        "values": {
+          "Val1": 60.0
+        },
+        "mainNumeric": 60.0
+      },
+      {
+        "label": "Max Duration: |val1|s",
+        "filledLabel": "Max Duration: 30s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 30
+        },
+        "mainNumeric": 30
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/FrumentariusScanAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 25,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Range: |val1|m",
+        "filledLabel": "Range: 60.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 60.0
+        },
+        "mainNumeric": 60.0
+      },
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 35.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 35.0
+        },
+        "mainNumeric": 35.0
+      },
+      {
+        "label": "Scan Duration: |val1|s",
+        "filledLabel": "Scan Duration: 5.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 5.0
+        },
+        "mainNumeric": 5.0
+      },
+      {
+        "label": "Punch Through: |val1|m",
+        "filledLabel": "Punch Through: 10m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Weak Point Damage: |val1|%",
+        "filledLabel": "Weak Point Damage: 75.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 75.0
+        },
+        "mainNumeric": 75.0
+      },
+      {
+        "label": "Max Antenna: |val1|",
+        "filledLabel": "Max Antenna: 3.0",
+        "modifier": null,
+        "values": {
+          "Val1": 3.0
+        },
+        "mainNumeric": 3.0
+      },
+      {
+        "label": "Angle: |val1|°",
+        "filledLabel": "Angle: 75.0°",
+        "modifier": null,
+        "values": {
+          "Val1": 75.0
+        },
+        "mainNumeric": 75.0
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/FrumentariusSniperAbility",
+    "summary": {
+      "CostType": null,
+      "costEnergy": null,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Drain: |val1|",
+        "filledLabel": "Drain: 5.0",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 5.0
+        },
+        "mainNumeric": 5.0
+      },
+      {
+        "label": "Drain Per Shot: |val1|",
+        "filledLabel": "Drain Per Shot: 10.0",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 10.0
+        },
+        "mainNumeric": 10.0
+      },
+      {
+        "label": "Alt Fire Drain: |val1|",
+        "filledLabel": "Alt Fire Drain: 20.0",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 20.0
+        },
+        "mainNumeric": 20.0
+      },
+      {
+        "label": "Damage Mult: |val1|",
+        "filledLabel": "Damage Mult: 1.25",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1.25
+        },
+        "mainNumeric": 1.25
+      },
+      {
+        "label": "Ricochet: |val1|",
+        "filledLabel": "Ricochet: 4",
+        "modifier": null,
+        "values": {
+          "Val1": 4
+        },
+        "mainNumeric": 4
+      },
+      {
+        "label": "Ricochet Range: |val1|m",
+        "filledLabel": "Ricochet Range: 10m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Damage Loss: |val1|%",
+        "filledLabel": "Damage Loss: 20.0%",
+        "modifier": null,
+        "values": {
+          "Val1": 20.0
+        },
+        "mainNumeric": 20.0
+      }
+    ]
+  },
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/GarudaBloodAbility",
     "summary": {
       "costEnergy": 0,
@@ -5669,7 +6103,118 @@
       }
     ]
   },
-   {
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GeodeCrystalAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 75,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Prismatic Gem Range: |val1|m",
+        "filledLabel": "Prismatic Gem Range: 15.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 15.0
+        },
+        "mainNumeric": 15.0
+      },
+      {
+        "label": "Prismatic Gem Duration: |val1|s",
+        "filledLabel": "Prismatic Gem Duration: 30.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 30.0
+        },
+        "mainNumeric": 30.0
+      },
+      {
+        "label": "Prismatic Gem Damage: |val1|",
+        "filledLabel": "Prismatic Gem Damage: 1000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1000
+        },
+        "mainNumeric": 1000
+      },
+      {
+        "label": "Prismatic Gem Statut Chance: |val1|%",
+        "filledLabel": "Prismatic Gem Statut Chance: 100%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Prismatic Gem Statut Duration: |val1|%",
+        "filledLabel": "Prismatic Gem Statut Duration: 100%",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GeodeGrowthsAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 100,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Damage: |val1|",
+        "filledLabel": "Damage: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Range: |val1|m",
+        "filledLabel": "Range: 30.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 30.0
+        },
+        "mainNumeric": 30.0
+      },
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 8.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 8.0
+        },
+        "mainNumeric": 8.0
+      },
+      {
+        "label": "Crit Chance: |val1|%",
+        "filledLabel": "Crit Chance: 300%",
+        "modifier": null,
+        "values": {
+          "Val1": 300
+        },
+        "mainNumeric": 300
+      }
+    ]
+  },
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/GeodeShardsAbility",
     "summary": {
       "costEnergy": 25,
@@ -5727,6 +6272,56 @@
           "Val1": 14
         },
         "mainNumeric": 14
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GeodeShellAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 50,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Preserving Shell Damage Redu: |val1|%",
+        "filledLabel": "Preserving Shell Damage Redu: 40%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 40
+        },
+        "mainNumeric": 40
+      },
+      {
+        "label": "Preserving Shell Damage Redu Per Kill: |val1|%",
+        "filledLabel": "Preserving Shell Damage Redu Per Kill: 6.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 6.0
+        },
+        "mainNumeric": 6.0
+      },
+      {
+        "label": "Preserving Shell Damage Redu Per Assist: |val1|%",
+        "filledLabel": "Preserving Shell Damage Redu Per Assist: 3.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 3.0
+        },
+        "mainNumeric": 3.0
+      },
+      {
+        "label": "Preserving Shell Duration: |val1|s",
+        "filledLabel": "Preserving Shell Duration: 25.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 25.0
+        },
+        "mainNumeric": 25.0
       }
     ]
   },
@@ -6336,6 +6931,382 @@
           "Val1": 15
         },
         "mainNumeric": 15
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreEnergizedAbility",
+    "summary": {
+      "costEnergy": 75,
+      "strength": 50,
+      "duration": 8,
+      "range": null,
+      "affectedBy": [
+        "Force",
+        "Durée",
+        "Cooldown",
+        "Efficacité"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 75",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 75
+        },
+        "mainNumeric": 75
+      },
+      {
+        "label": "Cooldown: |val1|",
+        "filledLabel": "Cooldown: 60",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 60
+        },
+        "mainNumeric": 60
+      },
+      {
+        "label": "Duration: |val1|s",
+        "filledLabel": "Duration: 8",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 8
+        },
+        "mainNumeric": 8
+      },
+      {
+        "label": "Duration Per Kill: +|val1|s",
+        "filledLabel": "Duration Per Kill: +3s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 3
+        },
+        "mainNumeric": 3
+      },
+      {
+        "label": "Energy Rate: +|val1| per second",
+        "filledLabel": "Energy Rate: +1.5 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1.5
+        },
+        "mainNumeric": 1.5
+      },
+      {
+        "label": "Weapon Critical Chance: x|val1|%",
+        "filledLabel": "Weapon Critical Chance: x50%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "ability Critical Chance: +|val1|%",
+        "filledLabel": "Weapon Critical Chance: +50%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreOverchargedAbility",
+    "summary": {
+      "costEnergy": 100,
+      "strength": 250,
+      "duration": 22,
+      "range": 4,
+      "affectedBy": [
+        "Force",
+        "Efficacité",
+        "Durée",
+        "Portée"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 100",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Electric Damage On Discharge: |val1|",
+        "filledLabel": "Electric Damage On Discharge: 500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 500
+        },
+        "mainNumeric": 500
+      },
+      {
+        "label": "Electric Damage Per Second On Field: |val1| per second",
+        "filledLabel": "Electric Damage Per Second On Field: 250 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 250
+        },
+        "mainNumeric": 250
+      },
+      {
+        "label": "Electric Field Radius: |val1|m",
+        "filledLabel": "Electric Field Radius: 4m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 4
+        },
+        "mainNumeric": 4
+      },
+      {
+        "label": "Discharge Range: |val1|m",
+        "filledLabel": "Discharge Range: 10m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Rotorswell Duration: |val1|s",
+        "filledLabel": "Rotorswell Duration: 22s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 22
+        },
+        "mainNumeric": 22
+      },
+      {
+        "label": "Move Speed Multiplier: |val1|x",
+        "filledLabel": "Move Speed Multiplier: 1.5x",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 1.5
+        },
+        "mainNumeric": 1.5
+      },
+      {
+        "label": "Discharge Chained Target: |val1|",
+        "filledLabel": "Discharge Chained Target: 5 enemies",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 5
+        },
+        "mainNumeric": 5
+      },
+      {
+        "label": "Simultaneous Discharges Cap: |val1|",
+        "filledLabel": "Active Spheres Cap: 2 discharges",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Ability Critical Chance: |val1|% to |val2|%",
+        "filledLabel": "Ability Critical Chance: 0% to 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0,
+          "Val2": 300
+        },
+        "mainNumeric": 300
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyrePulseAbility",
+    "summary": {
+      "costEnergy": 25,
+      "strength": 2000,
+      "duration": 10,
+      "range": 7,
+      "affectedBy": [
+        "Force",
+        "Efficacité",
+        "Durée",
+        "Portée"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 25",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 25
+        },
+        "mainNumeric": 25
+      },
+      {
+        "label": "Electric Damage On Deployment: |val1|",
+        "filledLabel": "Electric Damage On Deployment: 2000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 2000
+        },
+        "mainNumeric": 2000
+      },
+      {
+        "label": "Electric Damage Per Second On Field: |val1| per second",
+        "filledLabel": "Electric Damage Per Second On Field: 250 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 250
+        },
+        "mainNumeric": 250
+      },
+      {
+        "label": "Impact Radius: |val1|m",
+        "filledLabel": "Impact Radius: 4m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 4
+        },
+        "mainNumeric": 4
+      },
+      {
+        "label": "Field Radius: |val1|m",
+        "filledLabel": "Field Radius: 7m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 7
+        },
+        "mainNumeric": 7
+      },
+      {
+        "label": "ArcSphere Duration: |val1|s",
+        "filledLabel": "ArcSphere Duration: 10s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 10
+        },
+        "mainNumeric": 10
+      },
+      {
+        "label": "Enhanced Damage Multiplier: |val1|x",
+        "filledLabel": "Enhanced Damage Multiplier: 2.0x",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2.0
+        },
+        "mainNumeric": 2.0
+      },
+      {
+        "label": "Initial enemies hit for enhanced damage: |val1|",
+        "filledLabel": "Initial enemies hit for enhanced damage: 3 enemies",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 3
+        },
+        "mainNumeric": 3
+      },
+      {
+        "label": "Active Spheres Cap: |val1|",
+        "filledLabel": "Active Spheres Cap: 3 spheres",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 3
+        },
+        "mainNumeric": 3
+      },
+      {
+        "label": "Ability Critical Chance: |val1|% to |val2|%",
+        "filledLabel": "Ability Critical Chance: 0% to 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0,
+          "Val2": 300
+        },
+        "mainNumeric": 300
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreSphereAbility",
+    "summary": {
+      "costEnergy": 50,
+      "strength": 2000,
+      "duration": 10,
+      "range": 7,
+      "affectedBy": [
+        "Force",
+        "Efficacité",
+        "Portée"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Energy Cost: |val1|",
+        "filledLabel": "Energy Cost: 50",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "Electric Damage On Explosion: |val1|",
+        "filledLabel": "Electric Damage On Explosion: 1250",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1250
+        },
+        "mainNumeric": 1250
+      },
+      {
+        "label": "Contact Electric Damage Per Second: |val1| per second",
+        "filledLabel": "Electric Damage Per Second On Field: 1500 per second",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1500
+        },
+        "mainNumeric": 1500
+      },
+      {
+        "label": "Explosion Radius: |val1|m",
+        "filledLabel": "Explosion Radius: 12m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 12
+        },
+        "mainNumeric": 12
+      },
+      {
+        "label": "Sphere Lifetime: |val1|s",
+        "filledLabel": "Sphere Lifetime: 2s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Explosion Lifetime: |val1|s",
+        "filledLabel": "ArcSphere Duration: 2s",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 2
+        },
+        "mainNumeric": 2
+      },
+      {
+        "label": "Ability Critical Chance: |val1|% to |val2|%",
+        "filledLabel": "Ability Critical Chance: 0% to 300%",
+        "modifier": "NONE",
+        "values": {
+          "Val1": 0,
+          "Val2": 300
+        },
+        "mainNumeric": 300
       }
     ]
   },
@@ -10029,6 +11000,314 @@
     ]
   },
   {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/PagemasterBookAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 5,
+      "affectedBy": [
+        "strength",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Primary Fire: |val1|",
+        "filledLabel": "Primary Fire: 250.0",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 250.0
+        },
+        "mainNumeric": 250.0
+      },
+      {
+        "label": "Alt Fire Impact: |val1|",
+        "filledLabel": "Alt Fire Impact: 1100",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1100
+        },
+        "mainNumeric": 1100
+      },
+      {
+        "label": "Alt Fire Rad: |val1|",
+        "filledLabel": "Alt Fire Rad: 1650",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1650
+        },
+        "mainNumeric": 1650
+      },
+      {
+        "label": "Numb Of Fragments: |val1|",
+        "filledLabel": "Numb Of Fragments: 4",
+        "modifier": null,
+        "values": {
+          "Val1": 4
+        },
+        "mainNumeric": 4
+      },
+      {
+        "label": "Fragment  Angle: |val1|°",
+        "filledLabel": "Fragment  Angle: 60°",
+        "modifier": null,
+        "values": {
+          "Val1": 60
+        },
+        "mainNumeric": 60
+      },
+      {
+        "label": "Fragment  Distance: |val1|m",
+        "filledLabel": "Fragment  Distance: 20m",
+        "modifier": null,
+        "values": {
+          "Val1": 20
+        },
+        "mainNumeric": 20
+      },
+      {
+        "label": "Drainpershot: |val1|",
+        "filledLabel": "Drainpershot: 2.0",
+        "modifier": "AVATAR_ABILITY_EFFICIENCY",
+        "values": {
+          "Val1": 2.0
+        },
+        "mainNumeric": 2.0
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/PagemasterDeathAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 25,
+      "affectedBy": [
+        "strength",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Dark Verse Damage: |val1|",
+        "filledLabel": "Dark Verse Damage: 1250",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 1250
+        },
+        "mainNumeric": 1250
+      },
+      {
+        "label": "Dark Verse Range: |val1|m",
+        "filledLabel": "Dark Verse Range: 20.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 20.0
+        },
+        "mainNumeric": 20.0
+      },
+      {
+        "label": "Dark Verse Angle: |val1|°",
+        "filledLabel": "Dark Verse Angle: 50.0°",
+        "modifier": null,
+        "values": {
+          "Val1": 50.0
+        },
+        "mainNumeric": 50.0
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/PagemasterFinalChapterAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 50.0,
+      "affectedBy": [
+        "strength",
+        "duration",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Final Verse Duration: |val1|s",
+        "filledLabel": "Final Verse Duration: 45.0s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 45.0
+        },
+        "mainNumeric": 45.0
+      },
+      {
+        "label": "Final Verse Radius: |val1|m",
+        "filledLabel": "Final Verse Radius: 30.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 30.0
+        },
+        "mainNumeric": 30.0
+      },
+      {
+        "label": "Triumph Overguard: |val1|",
+        "filledLabel": "Triumph Overguard: 3000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 3000
+        },
+        "mainNumeric": 3000
+      },
+      {
+        "label": "Triumph Overguard Cap: |val1|",
+        "filledLabel": "Triumph Overguard Cap: 15000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 15000
+        },
+        "mainNumeric": 15000
+      },
+      {
+        "label": "Triumph Overguard Reg: |val1|",
+        "filledLabel": "Triumph Overguard Reg: 100",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 100
+        },
+        "mainNumeric": 100
+      },
+      {
+        "label": "Triumph Reg Duration: |val1|s",
+        "filledLabel": "Triumph Reg Duration: 2.0s",
+        "modifier": null,
+        "values": {
+          "Val1": 2.0
+        },
+        "mainNumeric": 2.0
+      },
+      {
+        "label": "Tragedy Damage: |val1|",
+        "filledLabel": "Tragedy Damage: 6500",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 6500
+        },
+        "mainNumeric": 6500
+      },
+      {
+        "label": "Tragedy Damage Mult: |val1|",
+        "filledLabel": "Tragedy Damage Mult: 3.0",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 3.0
+        },
+        "mainNumeric": 3.0
+      },
+      {
+        "label": "Wordwarden Damage: |val1|%",
+        "filledLabel": "Wordwarden Damage: 50.0%",
+        "modifier": null,
+        "values": {
+          "Val1": 50.0
+        },
+        "mainNumeric": 50.0
+      },
+      {
+        "label": "Paragrimms: |val1|",
+        "filledLabel": "Paragrimms: 3.0",
+        "modifier": null,
+        "values": {
+          "Val1": 3.0
+        },
+        "mainNumeric": 3.0
+      },
+      {
+        "label": "Paragrimms Damage: |val1|",
+        "filledLabel": "Paragrimms Damage: 300",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 300
+        },
+        "mainNumeric": 300
+      },
+      {
+        "label": "Pageflight Statut Dam Inc: |val1|%",
+        "filledLabel": "Pageflight Statut Dam Inc: 50%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "Pageflight Statut Dam Vul: |val1|%",
+        "filledLabel": "Pageflight Statut Dam Vul: 50%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 50
+        },
+        "mainNumeric": 50
+      },
+      {
+        "label": "Pageflight Vul Duration: |val1|s",
+        "filledLabel": "Pageflight Vul Duration: 30s",
+        "modifier": "AVATAR_ABILITY_DURATION",
+        "values": {
+          "Val1": 30
+        },
+        "mainNumeric": 30
+      }
+    ]
+  },
+  {
+    "path": "/Lotus/Powersuits/PowersuitAbilities/PagemasterLifeAbility",
+    "summary": {
+      "CostType": "Energy",
+      "costEnergy": 25,
+      "affectedBy": [
+        "strength",
+        "range",
+        "efficiency"
+      ]
+    },
+    "rows": [
+      {
+        "label": "Light Verse Overguard: |val1|",
+        "filledLabel": "Light Verse Overguard: 350",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 350
+        },
+        "mainNumeric": 350
+      },
+      {
+        "label": "Light Verse Overguardcap: |val1|",
+        "filledLabel": "Light Verse Overguardcap: 15000",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 15000
+        },
+        "mainNumeric": 15000
+      },
+      {
+        "label": "Light Verse Radius: |val1|m",
+        "filledLabel": "Light Verse Radius: 20.0m",
+        "modifier": "AVATAR_ABILITY_RANGE",
+        "values": {
+          "Val1": 20.0
+        },
+        "mainNumeric": 20.0
+      },
+      {
+        "label": "Light Verse Health: |val1|%",
+        "filledLabel": "Light Verse Health: 20.0%",
+        "modifier": "AVATAR_ABILITY_STRENGTH",
+        "values": {
+          "Val1": 20.0
+        },
+        "mainNumeric": 20.0
+      }
+    ]
+  },
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/PoisonAbility",
     "summary": {
       "costEnergy": 25,
@@ -13165,7 +14444,7 @@
       }
     ]
   },
-   {
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SentientBlastAbility",
     "summary": {
       "costEnergy": 100,
@@ -13281,7 +14560,7 @@
       }
     ]
   },
-   {
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SentientStompAbility",
     "summary": {
       "costEnergy": 50,
@@ -13343,7 +14622,7 @@
       }
     ]
   },
-   {
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SentientSummonAbility",
     "summary": {
       "costEnergy": 50,
@@ -13468,7 +14747,7 @@
       }
     ]
   },
-   {
+  {
     "path": "/Lotus/Powersuits/PowersuitAbilities/SentientWhirlwindAbility",
     "summary": {
       "costEnergy": 25,
@@ -17738,382 +19017,6 @@
           "Val1": 4
         },
         "mainNumeric": 4
-      }
-    ]
-  },
-  {
-    "path": "/Lotus/Powersuits/PowersuitAbilities/GyrePulseAbility",
-    "summary": {
-      "costEnergy": 25,
-      "strength": 2000,
-      "duration": 10,
-      "range": 7,
-      "affectedBy": [
-        "Force",
-        "Efficacité",
-        "Durée",
-        "Portée"
-      ]
-    },
-    "rows": [
-      {
-        "label": "Energy Cost: |val1|",
-        "filledLabel": "Energy Cost: 25",
-        "modifier": "AVATAR_ABILITY_EFFICIENCY",
-        "values": {
-          "Val1": 25
-        },
-        "mainNumeric": 25
-      },
-      {
-        "label": "Electric Damage On Deployment: |val1|",
-        "filledLabel": "Electric Damage On Deployment: 2000",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 2000
-        },
-        "mainNumeric": 2000
-      },
-      {
-        "label": "Electric Damage Per Second On Field: |val1| per second",
-        "filledLabel": "Electric Damage Per Second On Field: 250 per second",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 250
-        },
-        "mainNumeric": 250
-      },
-      {
-        "label": "Impact Radius: |val1|m",
-        "filledLabel": "Impact Radius: 4m",
-        "modifier": "AVATAR_ABILITY_RANGE",
-        "values": {
-          "Val1": 4
-        },
-        "mainNumeric": 4
-      },
-      {
-        "label": "Field Radius: |val1|m",
-        "filledLabel": "Field Radius: 7m",
-        "modifier": "AVATAR_ABILITY_RANGE",
-        "values": {
-          "Val1": 7
-        },
-        "mainNumeric": 7
-      },
-      {
-        "label": "ArcSphere Duration: |val1|s",
-        "filledLabel": "ArcSphere Duration: 10s",
-        "modifier": "AVATAR_ABILITY_DURATION",
-        "values": {
-          "Val1": 10
-        },
-        "mainNumeric": 10
-      },
-      {
-        "label": "Enhanced Damage Multiplier: |val1|x",
-        "filledLabel": "Enhanced Damage Multiplier: 2.0x",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 2.0
-        },
-        "mainNumeric": 2.0
-      },
-      {
-        "label": "Initial enemies hit for enhanced damage: |val1|",
-        "filledLabel": "Initial enemies hit for enhanced damage: 3 enemies",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 3
-        },
-        "mainNumeric": 3
-      },
-      {
-        "label": "Active Spheres Cap: |val1|",
-        "filledLabel": "Active Spheres Cap: 3 spheres",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 3
-        },
-        "mainNumeric": 3
-      },
-      {
-        "label": "Ability Critical Chance: |val1|% to |val2|%",
-        "filledLabel": "Ability Critical Chance: 0% to 300%",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 0,
-          "Val2": 300
-        },
-        "mainNumeric": 300
-      }
-    ]
-  },
-   {
-    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreSphereAbility",
-    "summary": {
-      "costEnergy": 50,
-      "strength": 2000,
-      "duration": 10,
-      "range": 7,
-      "affectedBy": [
-        "Force",
-        "Efficacité",
-        "Portée"
-      ]
-    },
-    "rows": [
-      {
-        "label": "Energy Cost: |val1|",
-        "filledLabel": "Energy Cost: 50",
-        "modifier": "AVATAR_ABILITY_EFFICIENCY",
-        "values": {
-          "Val1": 50
-        },
-        "mainNumeric": 50
-      },
-      {
-        "label": "Electric Damage On Explosion: |val1|",
-        "filledLabel": "Electric Damage On Explosion: 1250",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 1250
-        },
-        "mainNumeric": 1250
-      },
-      {
-        "label": "Contact Electric Damage Per Second: |val1| per second",
-        "filledLabel": "Electric Damage Per Second On Field: 1500 per second",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 1500
-        },
-        "mainNumeric": 1500
-      },
-      {
-        "label": "Explosion Radius: |val1|m",
-        "filledLabel": "Explosion Radius: 12m",
-        "modifier": "AVATAR_ABILITY_RANGE",
-        "values": {
-          "Val1": 12
-        },
-        "mainNumeric": 12
-      },
-      {
-        "label": "Sphere Lifetime: |val1|s",
-        "filledLabel": "Sphere Lifetime: 2s",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 2
-        },
-        "mainNumeric": 2
-      },
-      {
-        "label": "Explosion Lifetime: |val1|s",
-        "filledLabel": "ArcSphere Duration: 2s",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 2
-        },
-        "mainNumeric": 2
-      },
-      {
-        "label": "Ability Critical Chance: |val1|% to |val2|%",
-        "filledLabel": "Ability Critical Chance: 0% to 300%",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 0,
-          "Val2": 300
-        },
-        "mainNumeric": 300
-      }
-    ]
-  },
- {
-    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreOverchargedAbility",
-    "summary": {
-      "costEnergy": 100,
-      "strength": 250,
-      "duration": 22,
-      "range": 4,
-      "affectedBy": [
-        "Force",
-        "Efficacité",
-        "Durée",
-        "Portée"
-      ]
-    },
-    "rows": [
-      {
-        "label": "Energy Cost: |val1|",
-        "filledLabel": "Energy Cost: 100",
-        "modifier": "AVATAR_ABILITY_EFFICIENCY",
-        "values": {
-          "Val1": 100
-        },
-        "mainNumeric": 100
-      },
-      {
-        "label": "Electric Damage On Discharge: |val1|",
-        "filledLabel": "Electric Damage On Discharge: 500",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 500
-        },
-        "mainNumeric": 500
-      },
-      {
-        "label": "Electric Damage Per Second On Field: |val1| per second",
-        "filledLabel": "Electric Damage Per Second On Field: 250 per second",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 250
-        },
-        "mainNumeric": 250
-      },
-      {
-        "label": "Electric Field Radius: |val1|m",
-        "filledLabel": "Electric Field Radius: 4m",
-        "modifier": "AVATAR_ABILITY_RANGE",
-        "values": {
-          "Val1": 4
-        },
-        "mainNumeric": 4
-      },
-      {
-        "label": "Discharge Range: |val1|m",
-        "filledLabel": "Discharge Range: 10m",
-        "modifier": "AVATAR_ABILITY_RANGE",
-        "values": {
-          "Val1": 10
-        },
-        "mainNumeric": 10
-      },
-      {
-        "label": "Rotorswell Duration: |val1|s",
-        "filledLabel": "Rotorswell Duration: 22s",
-        "modifier": "AVATAR_ABILITY_DURATION",
-        "values": {
-          "Val1": 22
-        },
-        "mainNumeric": 22
-      },
-      {
-        "label": "Move Speed Multiplier: |val1|x",
-        "filledLabel": "Move Speed Multiplier: 1.5x",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 1.5
-        },
-        "mainNumeric": 1.5
-      },
-      {
-        "label": "Discharge Chained Target: |val1|",
-        "filledLabel": "Discharge Chained Target: 5 enemies",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 5
-        },
-        "mainNumeric": 5
-      },
-      {
-        "label": "Simultaneous Discharges Cap: |val1|",
-        "filledLabel": "Active Spheres Cap: 2 discharges",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 2
-        },
-        "mainNumeric": 2
-      },
-      {
-        "label": "Ability Critical Chance: |val1|% to |val2|%",
-        "filledLabel": "Ability Critical Chance: 0% to 300%",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 0,
-          "Val2": 300
-        },
-        "mainNumeric": 300
-      }
-    ]
-  },
-  {
-    "path": "/Lotus/Powersuits/PowersuitAbilities/GyreEnergizedAbility",
-    "summary": {
-      "costEnergy": 75,
-      "strength": 50,
-      "duration": 8,
-      "range": null,
-      "affectedBy": [
-        "Force",
-        "Durée",
-        "Cooldown",
-        "Efficacité"
-      ]
-    },
-    "rows": [
-      {
-        "label": "Energy Cost: |val1|",
-        "filledLabel": "Energy Cost: 75",
-        "modifier": "AVATAR_ABILITY_EFFICIENCY",
-        "values": {
-          "Val1": 75
-        },
-        "mainNumeric": 75
-      },
-      {
-        "label": "Cooldown: |val1|",
-        "filledLabel": "Cooldown: 60",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 60
-        },
-        "mainNumeric": 60
-      },
-      {
-        "label": "Duration: |val1|s",
-        "filledLabel": "Duration: 8",
-        "modifier": "AVATAR_ABILITY_DURATION",
-        "values": {
-          "Val1": 8
-        },
-        "mainNumeric": 8
-      },
-      {
-        "label": "Duration Per Kill: +|val1|s",
-        "filledLabel": "Duration Per Kill: +3s",
-        "modifier": "AVATAR_ABILITY_DURATION",
-        "values": {
-          "Val1": 3
-        },
-        "mainNumeric": 3
-      },
-      {
-        "label": "Energy Rate: +|val1| per second",
-        "filledLabel": "Energy Rate: +1.5 per second",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 1.5
-        },
-        "mainNumeric": 1.5
-      },
-      {
-        "label": "Weapon Critical Chance: x|val1|%",
-        "filledLabel": "Weapon Critical Chance: x50%",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 50
-        },
-        "mainNumeric": 50
-      },
-      {
-        "label": "ability Critical Chance: +|val1|%",
-        "filledLabel": "Weapon Critical Chance: +50%",
-        "modifier": "AVATAR_ABILITY_STRENGTH",
-        "values": {
-          "Val1": 50
-        },
-        "mainNumeric": 50
       }
     ]
   }
