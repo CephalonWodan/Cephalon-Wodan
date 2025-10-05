@@ -12099,7 +12099,7 @@
   },
   "rows": [
     {
-      "label": "Damage per Kaithes: |val1|",
+      "label": "Damage per Interval per Kaithes: |val1|",
       "modifier": "STRENGTH",
       "values": { "val1": 30000 },
       "mainNumeric": 30000
