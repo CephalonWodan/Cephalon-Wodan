@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-05T14:46:58.187Z",
+  "generatedAt": "2025-10-05T14:55:19.037Z",
   "count": 117,
   "entities": [
     {
@@ -5924,8 +5924,53 @@
           "description": "Phantom Kaithes charge forth, inflicting Viral Damage upon all in their path. Their attack strips the defenses of Doomed enemies.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": "Energy",
+            "costEnergy": 100,
+            "strength": 30000,
+            "duration": 3,
+            "range": null,
+            "efficiency": 100,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Damage per Kaithes: |val1|",
+              "modifier": "STRENGTH",
+              "values": {
+                "val1": 30000
+              },
+              "mainNumeric": 30000
+            },
+            {
+              "label": "Duration: |val1| s",
+              "modifier": "DURATION",
+              "values": {
+                "val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Defense Reduction: |val1|%",
+              "modifier": "STRENGTH",
+              "values": {
+                "val1": 35
+              },
+              "mainNumeric": 35
+            },
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "EFFICIENCY",
+              "values": {
+                "val1": 100
+              },
+              "mainNumeric": 100
+            }
+          ]
         }
       ]
     },
