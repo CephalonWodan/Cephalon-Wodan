@@ -193,12 +193,12 @@
           </div>
 
           <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
-            ${statBox("Dégâts", s.total ?? "—")}
+            ${statBox("Damage", s.total ?? "—")}
             ${statBox("Crit", toPct(s.critC))}
             ${statBox("Crit Mult.", toX(s.critM))}
             ${statBox("Statut", toPct(s.status))}
-            ${statBox("Cadence", num(s.fire))}
-            ${s.mag!=null ? statBox("Chargeur", num(s.mag)) : ""}
+            ${statBox("fire rate", num(s.fire))}
+            ${s.mag!=null ? statBox("Magazine", num(s.mag)) : ""}
             ${s.reload!=null ? statBox("Reload", num(s.reload)) : ""}
           </div>
 
