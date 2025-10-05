@@ -231,7 +231,7 @@
     const arr = listForTabAndSearch();
     renderPicker(arr);
     $("#status").textContent = `Catégorie ${STATE.tab} — ${arr.length} résultat(s)`;
-    if (arr.length) renderCard(arr[0]); else $("#card").innerHTML = `<div class="muted">Aucun résultat</div>`;
+    if (arr.length) renderCard(arr[0]); else $("#card").innerHTML = `<div class="muted">No Result</div>`;
   }
 
   function activateTab(cat){
@@ -247,13 +247,13 @@
   (async function boot(){
     const status = $("#status");
     try{
-      status.textContent = "Chargement des armes…";
+      status.textContent = "Weapons Loading…";
 
       const [eList, aList] = await Promise.all([loadExportWeapons(), loadApiWeapons()]);
       STATE.list = mergeLists(eList, aList); // Primary/Secondary/Melee uniquement
 
       if (!STATE.list.length){
-        status.textContent = "Aucune arme trouvée.";
+        status.textContent = "No Weapon Found.";
         status.style.background = "rgba(255,0,0,.08)";
         status.style.color = "#ffd1d1";
         return;
@@ -282,7 +282,7 @@
       status.style.color = "#bfefff";
     }catch(e){
       console.error("[weapons] load error:", e);
-      status.textContent = "Erreur de chargement des armes.";
+      status.textContent = "Weapons Loading Error.";
       status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
       status.style.background = "rgba(255,0,0,.08)";
       status.style.color = "#ffd1d1";
