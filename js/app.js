@@ -9,9 +9,8 @@
 // =====================================================
 
 const CFG = {
-  WF_URLS: [
-    "https://cephalon-wodan-production.up.railway.app/warframes",
-  ],
+  // Utilise ton endpoint (on conserve WF_URLS pour ne rien casser ailleurs)
+  WF_URLS: ["https://cephalon-wodan-production.up.railway.app/warframes"],
   ABILITIES_VALUES_URL: "data/abilities.json",
   ABILITIES_BY_WF_URL: "data/abilities_by_warframe.json", // optionnel
   ABILITIES_META_URL: "data/warframe_abilities.json",
@@ -104,9 +103,11 @@ async function fetchWarframesWithFailover() {
   for (const url of CFG.WF_URLS) {
     try {
       const data = await fetchJson(url, "Warframes API");
-      if (Array.isArray(data) && data.length) {
-        console.info(`[app] Warframes chargées via ${url} (${data.length})`);
-        return data;
+      // Ton endpoint renvoie { generatedAt, count, entities: [...] }
+      const arr = Array.isArray(data?.entities) ? data.entities : (Array.isArray(data) ? data : null);
+      if (arr && arr.length) {
+        console.info(`[app] Warframes chargées via ${url} (${arr.length})`);
+        return arr;
       }
       errors.push(`Réponse vide @ ${url}`);
     } catch (e) {
@@ -156,21 +157,25 @@ async function fetchWarframesWithFailover() {
     // ---- fallback liste noms par Warframe
     const namesByFrame = byWfRaw || {};
 
-    // ---- normalise la liste Warframes
+    // ---- normalise la liste Warframes (depuis ton endpoint)
     const list = (wfRaw || [])
-      .filter((wf) => wf && wf.type === "Warframe" && !["Bonewidow", "Voidrig"].includes(wf.name))
+      // garde uniquement les Warframes (exclut archwings, necramechs, etc.)
+      .filter((wf) => wf && String(wf.type || "").toLowerCase() === "warframe")
       .map((rec) => {
-        const img = rec.imageName ? `https://cdn.warframestat.us/img/${rec.imageName}` : null;
+        const bs = rec.baseStats || {};
+        // image locale : img/warframes/NomSansEspace.png (ex: "Ash Prime" -> "AshPrime.png")
+        const fileName = `${String(rec.name || "").replace(/\s+/g, "")}.png`;
+        const img = `img/warframes/${fileName}`;
         return {
           name: rec.name || "",
           description: rec.description || "",
           image: img,
           stats: {
-            health: rec.health ?? "—",
-            shield: rec.shield ?? "—",
-            armor: rec.armor ?? "—",
-            energy: rec.power ?? rec.energy ?? "—",
-            sprintSpeed: rec.sprintSpeed ?? "—",
+            health: bs.health ?? "—",
+            shield: bs.shields ?? bs.shield ?? "—",
+            armor:  bs.armor  ?? "—",
+            energy: bs.energy ?? bs.power ?? "—",
+            sprintSpeed: bs.sprintSpeed ?? "—",
           },
         };
       })
