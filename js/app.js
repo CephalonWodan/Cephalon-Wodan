@@ -23,7 +23,7 @@ const DT_ICONS = {
   DT_TOXIN_COLOR: "ToxinSymbol.png",
   DT_GAS_COLOR: "GasSymbol.png",
   DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RADIATIONSymbol.png",
+  DT_RADIATION_COLOR: "RadiationSymbol.png",
   DT_VIRAL_COLOR: "ViralSymbol.png",
   DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
   DT_BLAST_COLOR: "BlastSymbol.png",
@@ -38,36 +38,25 @@ const EXTRA_ICONS = { ENERGY: "EnergySymbol.png" };
 
 function renderTextIcons(input) {
   let s = String(input ?? "");
-
-  // normalise les retours à la ligne
   s = s.replace(/\r\n?|\r/g, "\n")
        .replace(/<\s*br\s*\/?>/gi, "\n")
        .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
-
-  // échappe le HTML
   s = s.replace(/[&<>"']/g, c =>
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
   );
-
-  // Remplace DT_* par icônes inline (avec style)
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = DT_ICONS[key];
     if (!file) return "";
     const src = ICON_BASE + file;
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
-
-  // Remplace tags simples (ex: <ENERGY>)
   s = s.replace(/\s*(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = EXTRA_ICONS[key];
     if (!file) return "";
     const src = ICON_BASE + file;
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
-
-  // Supprime les balises techniques restantes
   s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
-
   return s.replace(/\n/g, "<br>").trim();
 }
 
@@ -89,9 +78,67 @@ async function fetchJson(url, what = "fetch") {
 }
 /* ------------------------------------ */
 
+/* ====== Polarités : rendu via img/polarities/*.svg ====== */
+const POL_ICON_BASE = new URL("img/polarities/", document.baseURI).href;
+// Normalisation (baisse la casse, retire espaces/traits, etc.)
+function normPolKey(x){
+  return String(x||"")
+    .toLowerCase()
+    .replace(/\s+|[_-]+/g, "");
+}
+// Mapping vers fichiers .svg selon ta capture de repo
+const POL_FILE = {
+  madurai: "Madurai_Pol.svg",
+  naramon: "Naramon_Pol.svg",
+  vazarin: "Vazarin_Pol.svg",
+  zenurik: "Zenurik_Pol.svg",
+  unairu:  "Unairu_Pol.svg",
+  umbra:   "Umbra_Pol.svg",
+  penjaga: "Penjaga_Pol.svg",
+  exilus:  "Exilus_Pol.svg",
+  any:     "Any_Pol.svg",
+  aura:    "Any_Pol.svg",  // valeurs "aura" génériques -> Any
+  none:    "Any_Pol.svg"
+};
+function polImgHtml(key, title){
+  const k = normPolKey(key);
+  const file = POL_FILE[k];
+  if(!file){
+    // inconnu -> badge texte
+    return `<span class="chip">${escapeHtml(title || key || "—")}</span>`;
+  }
+  const src = POL_ICON_BASE + file;
+  const t = escapeHtml(title || key);
+  return `<img src="${src}" alt="${t}" title="${t}" style="width:22px;height:22px;object-fit:contain;vertical-align:middle">`;
+}
+function renderAuraAndPolarities(wf) {
+  try{
+    const cardEl = $("#card");
+    if (!cardEl) return;
+    const auraZone  = cardEl.querySelector('.polarity-row[data-zone="aura"]');
+    const otherZone = cardEl.querySelector('.polarity-row[data-zone="others"]');
+    if (!auraZone || !otherZone) return;
+
+    // --- Aura depuis l'API (ou 'aura' générique) ---
+    const auraRaw = wf.aura || "aura";
+    auraZone.innerHTML = polImgHtml(auraRaw, `Aura: ${auraRaw}`);
+
+    // --- Polarities depuis l'API ---
+    const list = Array.isArray(wf.polarities) ? wf.polarities : [];
+    if (!list.length) {
+      otherZone.innerHTML = `<span class="chip muted">—</span>`;
+    } else {
+      otherZone.innerHTML = list.map(p => polImgHtml(p, p)).join(" ");
+    }
+  }catch(err){
+    console.error("[polarity render] error:", err);
+  }
+}
+/* ======================================================== */
+
 /* --------- Fallback data loader ---------- */
 async function getWarframesData() {
-  // 1) essaie l’API distante
+  // 1) API distante
   try {
     const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
     const arr = Array.isArray(data) ? data : (Array.isArray(data?.entities) ? data.entities : []);
@@ -100,7 +147,7 @@ async function getWarframesData() {
   } catch (e) {
     console.warn("[app] Remote API failed or empty, trying local file…", e);
   }
-  // 2) fallback local (placer /data/merged_warframe.json côté site)
+  // 2) fallback local
   try {
     const local = await fetchJson("data/merged_warframe.json", "Local merged_warframe.json");
     return Array.isArray(local) ? local : (Array.isArray(local?.entities) ? local.entities : []);
@@ -114,7 +161,7 @@ async function getWarframesData() {
 /* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
-  const card = $("#card"); // défini avant tout usage
+  const card = $("#card");
 
   try {
     if (status) {
@@ -124,9 +171,7 @@ async function getWarframesData() {
       status.style.color = "#bfefff";
     }
 
-    // Récupère le JSON des warframes via l'API custom (avec fallback local)
     const wfRaw = await getWarframesData();
-    
     if (!wfRaw.length) {
       setStatus("No Warframes data loaded.", false);
       console.warn("[app] wfRaw vide ou introuvable", { wfRaw });
@@ -137,17 +182,13 @@ async function getWarframesData() {
     const list = wfRaw
       .filter((wf) => wf && wf.type && wf.type.toLowerCase() === "warframe")
       .map((rec) => {
-        // Nettoyer le nom (retirer les balises éventuelles comme <ARCHWING>)
         const name = (rec.name || "").replace(/<[^>]+>/g, "").trim();
 
         // Image locale : "Ash Prime" -> "img/warframes/AshPrime.png"
         const imageName = name.replace(/\s+/g, "");
         const image = `img/warframes/${imageName}.png`;
 
-        // Description
         const description = rec.description || "";
-
-        // Stats de base
         const stats = {
           health: rec.baseStats?.health ?? "—",
           shield: rec.baseStats?.shields ?? "—",
@@ -155,14 +196,10 @@ async function getWarframesData() {
           energy: rec.baseStats?.energy ?? "—",
           sprintSpeed: rec.baseStats?.sprintSpeed ?? "—"
         };
-        // Polarités et aura
-        const aura = rec.aura
-          ? (rec.aura.charAt(0).toUpperCase() + rec.aura.slice(1).toLowerCase())
-          : null;
-        const polarities = (rec.polarities || []).map(p =>
-          p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()
-        );
-        // Capacités
+        // PAS de normalisation agressive ici : on garde tel quel
+        const aura = rec.aura ?? null;
+        const polarities = Array.isArray(rec.polarities) ? rec.polarities.slice() : [];
+
         const abilities = (rec.abilities || []).map((ab, i) => {
           const sum = ab.summary || {};
           return {
@@ -180,21 +217,22 @@ async function getWarframesData() {
             rows: Array.isArray(ab.rows) ? ab.rows : []
           };
         });
+
         return { name, description, image, stats, aura, polarities, abilities };
       })
       .sort(byName);
 
-    // Crée le picker et la carte initiale
     if (!list.length) {
       setStatus("No Warframes to display.", false);
       console.warn("[app] liste Warframes vide", { list });
       return;
     }
+
     setStatus(`Dataset loaded : ${list.length} Warframes`);
     renderPicker(list);
     renderCard(list[0], 0);
 
-    // Gestion du changement de sélection
+    // Changement de sélection
     $("#picker").addEventListener("change", (e) => {
       const idx = parseInt(e.target.value, 10);
       const q = norm($("#search").value).toLowerCase();
@@ -205,7 +243,7 @@ async function getWarframesData() {
       renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
     });
 
-    // Recherche interactive
+    // Recherche
     $("#search").addEventListener("input", () => {
       const q = norm($("#search").value).toLowerCase();
       const filtered = !q ? list : list.filter((x) =>
@@ -293,7 +331,7 @@ async function getWarframesData() {
     }).filter(Boolean);
   }
 
-  // ---- hoist via function declarations ----
+  // helpers de rendu
   function pill(label, value) {
     return `
     <div class="pill">
@@ -309,7 +347,6 @@ async function getWarframesData() {
       <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
     </div>`;
   }
-  // -----------------------------------------
 
   function normalizeDesc(text) {
     let s = String(text ?? "");
@@ -405,12 +442,15 @@ async function getWarframesData() {
       </div>
     `;
 
-    // Boutons onglets d'aptitudes
+    // Rendu immédiat de l’aura et des polarités depuis l’API
+    renderAuraAndPolarities(wf);
+
+    // Tabs aptitudes
     card.querySelectorAll("[data-abi]").forEach((btn) => {
       btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
     });
 
-    // Notifier polarities.js qu'une carte est prête
+    // Event externe (facultatif)
     document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
   }
 
@@ -439,5 +479,4 @@ async function getWarframesData() {
       status.style.color = "#bfefff";
     }
   }
-  
 })();
