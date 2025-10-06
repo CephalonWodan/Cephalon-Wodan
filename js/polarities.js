@@ -1,13 +1,13 @@
 // js/polarities.js
 // Affiche les polarités avec TES SVG (img/polarities/*_Pol.svg)
 // - Préfère les données fournies par l'événement "wf:card-rendered"
-//   -> detail.wf = { name, auraPolarity, polarities: [...] }
+//   -> detail.wf = { name, auraPolarity, polarities: [...], exilus, exilusPolarity }
 // - Sinon (pages Warframes), utilise l'API WarframeStat + overrides.
 //
 // Classes CSS attendues :
 //   .pol-icon           (26x26 par défaut)
 //   .pol-icon.aura      (style accentué)
-//   .polarity-row[data-zone="aura"|"others"]
+//   .polarity-row[data-zone="aura"|"exilus"|"others"]
 //
 (function () {
   const API = "https://api.warframestat.us/warframes/?language=en";
@@ -35,7 +35,10 @@
     if (!p) return null;
     const cleaned = String(p).trim();
     const k = cleaned.toLowerCase().replace(/[^a-z]/g, "");
-    const alias = { universal: "Any", any: "Any", none: "Any", aura: "Any", v: "Madurai", d: "Vazarin", dash: "Naramon", bar: "Zenurik", u: "Umbra" };
+    const alias = {
+      universal: "Any", any: "Any", none: "Any", aura: "Any",
+      v: "Madurai", d: "Vazarin", dash: "Naramon", bar: "Zenurik", u: "Umbra"
+    };
     const ali = alias[k] || k;
     return CANON[ali] || cleaned;
   }
@@ -74,12 +77,23 @@
     return state.overrides;
   }
 
+  // Fusionne API + override; renvoie aussi exilus & exilusPolarity
   function mergePolarities(apiRec, override) {
     const auraApi  = apiRec?.auraPolarity || apiRec?.aura || null;
     const slotsApi = Array.isArray(apiRec?.polarities) ? apiRec.polarities : [];
     const aura  = override?.aura  || auraApi  || null;
     const slots = (Array.isArray(override?.slots) && override.slots.length) ? override.slots : slotsApi;
-    return { aura, slots };
+
+    // Exilus : override prioritaire, sinon API (si fournie)
+    const exilus = (override && typeof override.exilus !== "undefined")
+      ? !!override.exilus
+      : (typeof apiRec?.exilus === "boolean" ? apiRec.exilus : null);
+
+    const exilusPolarity = (override && override.exilusPolarity)
+      ? override.exilusPolarity
+      : (apiRec?.exilusPolarity ?? null);
+
+    return { aura, slots, exilus, exilusPolarity };
   }
 
   function fallbackIcon(polName, isAura=false) {
@@ -133,19 +147,26 @@
 
       const card = document.getElementById("card");
       const $aura   = card?.querySelector('.polarity-row[data-zone="aura"]');
+      const $exilus = card?.querySelector('.polarity-row[data-zone="exilus"]');
       const $others = card?.querySelector('.polarity-row[data-zone="others"]');
 
-      // 1) Préférence: données déjà fournies (Companions / Sentinelles)
+      // 1) Préférence: données déjà fournies par la carte/app.js
       const providedAura  = wf?.auraPolarity || detail.aura || null;
-      const providedSlots = Array.isArray(wf?.polarities) ? wf.polarities
+      let   providedSlots = Array.isArray(wf?.polarities) ? wf.polarities
                            : Array.isArray(detail.polarities) ? detail.polarities : null;
-      if (providedAura || providedSlots) {
+      const providedExilus    = (typeof wf?.exilus === "boolean") ? wf.exilus
+                               : (typeof detail.exilus === "boolean" ? detail.exilus : null);
+      const providedExilusPol = wf?.exilusPolarity ?? detail.exilusPolarity ?? null;
+
+      if (providedAura || providedSlots || providedExilus !== null) {
         renderRow($aura,  providedAura ? [providedAura] : [], true);
+        const exiRow = (providedExilus === true) ? [providedExilusPol || "Exilus"] : [];
+        renderRow($exilus, exiRow, false);
         renderRow($others, providedSlots || [], false);
         return;
       }
 
-      // 2) Sinon, logique Warframes (API + overrides)
+      // 2) Sinon, logique Warframes (API Warframestat + overrides locaux)
       if (!name) return;
       const idx = await ensureApiIndex();
       await ensureOverrides();
@@ -154,8 +175,10 @@
       for (const k of variantKeys(name)) { if (idx.has(k)) { rec = idx.get(k); break; } }
       const ovr = state.overrides[name] || null;
 
-      const { aura, slots } = mergePolarities(rec, ovr);
+      const { aura, slots, exilus, exilusPolarity } = mergePolarities(rec, ovr);
       renderRow($aura,  aura ? [aura] : [], true);
+      const exiRow = (exilus === true) ? [exilusPolarity || "Exilus"] : [];
+      renderRow($exilus, exiRow, false);
       renderRow($others, slots, false);
     } catch (err) {
       console.error("[polarities] error:", err);
