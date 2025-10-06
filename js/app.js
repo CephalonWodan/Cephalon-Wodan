@@ -6,6 +6,7 @@
 // =====================================================
 
 const CFG = {
+  // URL de l'API custom fournissant merged_warframe.json
   WARFRAMES_URL: "https://cephalon-wodan-production.up.railway.app/warframes"
 };
 
@@ -22,7 +23,7 @@ const DT_ICONS = {
   DT_TOXIN_COLOR: "ToxinSymbol.png",
   DT_GAS_COLOR: "GasSymbol.png",
   DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RadiationSymbol.png",
+  DT_RADIATION_COLOR: "RADIATIONSymbol.png",
   DT_VIRAL_COLOR: "ViralSymbol.png",
   DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
   DT_BLAST_COLOR: "BlastSymbol.png",
@@ -37,25 +38,36 @@ const EXTRA_ICONS = { ENERGY: "EnergySymbol.png" };
 
 function renderTextIcons(input) {
   let s = String(input ?? "");
+
+  // normalise les retours à la ligne
   s = s.replace(/\r\n?|\r/g, "\n")
        .replace(/<\s*br\s*\/?>/gi, "\n")
        .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+
+  // échappe le HTML
   s = s.replace(/[&<>"']/g, c =>
     ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
   );
+
+  // Remplace DT_* par icônes inline (avec style)
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = DT_ICONS[key];
     if (!file) return "";
     const src = ICON_BASE + file;
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
+
+  // Remplace tags simples (ex: <ENERGY>)
   s = s.replace(/\s*(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = EXTRA_ICONS[key];
     if (!file) return "";
     const src = ICON_BASE + file;
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
+
+  // Supprime les balises techniques restantes
   s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
+
   return s.replace(/\n/g, "<br>").trim();
 }
 
@@ -77,67 +89,9 @@ async function fetchJson(url, what = "fetch") {
 }
 /* ------------------------------------ */
 
-/* ====== Polarités : rendu via img/polarities/*.svg ====== */
-const POL_ICON_BASE = new URL("img/polarities/", document.baseURI).href;
-function normPolKey(x){
-  return String(x||"").toLowerCase().replace(/\s+|[_-]+/g, "");
-}
-const POL_FILE = {
-  madurai: "Madurai_Pol.svg",
-  naramon: "Naramon_Pol.svg",
-  vazarin: "Vazarin_Pol.svg",
-  zenurik: "Zenurik_Pol.svg",
-  unairu:  "Unairu_Pol.svg",
-  umbra:   "Umbra_Pol.svg",
-  penjaga: "Penjaga_Pol.svg",
-  exilus:  "Exilus_Pol.svg",
-  any:     "Any_Pol.svg",
-  aura:    "Any_Pol.svg",
-  none:    "Any_Pol.svg"
-};
-function polImgHtml(key, title){
-  const k = normPolKey(key);
-  const file = POL_FILE[k];
-  if(!file){
-    return `<span class="chip">${escapeHtml(title || key || "—")}</span>`;
-  }
-  const src = POL_ICON_BASE + file;
-  const t = escapeHtml(title || key);
-  return `<img src="${src}" alt="${t}" title="${t}" style="width:22px;height:22px;object-fit:contain;vertical-align:middle">`;
-}
-function renderAuraAndPolarities(wf) {
-  try{
-    const cardEl = $("#card");
-    if (!cardEl) return;
-    const auraZone  = cardEl.querySelector('.polarity-row[data-zone="aura"]');
-    const otherZone = cardEl.querySelector('.polarity-row[data-zone="others"]');
-    const exilusZone= cardEl.querySelector('.polarity-row[data-zone="exilus"]');
-    if (!auraZone || !otherZone) return;
-
-    const auraRaw = wf.aura || "aura";
-    auraZone.innerHTML = polImgHtml(auraRaw, `Aura: ${auraRaw}`);
-
-    const list = Array.isArray(wf.polarities) ? wf.polarities : [];
-    otherZone.innerHTML = list.length
-      ? list.map(p => polImgHtml(p, p)).join(" ")
-      : `<span class="chip muted">—</span>`;
-
-    if (exilusZone) {
-      if (wf.exilus) {
-        const exKey = (typeof wf.exilus === "string" && wf.exilus) ? wf.exilus : "exilus";
-        exilusZone.innerHTML = polImgHtml(exKey, exKey.charAt(0).toUpperCase()+exKey.slice(1));
-      } else {
-        exilusZone.innerHTML = `<span class="chip muted">—</span>`;
-      }
-    }
-  }catch(err){
-    console.error("[polarity render] error:", err);
-  }
-}
-/* ======================================================== */
-
 /* --------- Fallback data loader ---------- */
 async function getWarframesData() {
+  // 1) essaie l’API distante
   try {
     const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
     const arr = Array.isArray(data) ? data : (Array.isArray(data?.entities) ? data.entities : []);
@@ -146,6 +100,7 @@ async function getWarframesData() {
   } catch (e) {
     console.warn("[app] Remote API failed or empty, trying local file…", e);
   }
+  // 2) fallback local (placer /data/merged_warframe.json côté site)
   try {
     const local = await fetchJson("data/merged_warframe.json", "Local merged_warframe.json");
     return Array.isArray(local) ? local : (Array.isArray(local?.entities) ? local.entities : []);
@@ -156,92 +111,10 @@ async function getWarframesData() {
 }
 /* ---------------------------------------- */
 
-/* ---------- UI helpers (déclarées AVANT usage) ---------- */
-function pill(label, value) {
-  return `
-  <div class="pill">
-    <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
-    <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
-  </div>`;
-}
-function statBox(label, value) {
-  return `
-  <div class="stat">
-    <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
-    <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
-  </div>`;
-}
-function normalizeDesc(text) {
-  let s = String(text ?? "");
-  s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
-  s = s.replace(/\r\n?/g, "\n");
-  s = s.replace(/\n{2,}/g, "\n");
-  return s;
-}
-// rows templating
-function splitFilledLabel(filled) {
-  const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
-  return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
-}
-function buildTokenMap(row) {
-  const map = Object.create(null);
-  for (const k in row) {
-    if (/^val\d+$/i.test(k) && isFinite(Number(row[k]))) {
-      map[k.toLowerCase()] = row[k];
-    }
-  }
-  if (row.values && typeof row.values === "object") {
-    for (const k in row.values) {
-      if (/^val\d+$/i.test(k) && isFinite(Number(row.values[k]))) {
-        map[k.toLowerCase()] = row.values[k];
-      }
-    }
-  }
-  if (map.val1 == null && isFinite(Number(row.mainNumeric))) {
-    map.val1 = row.mainNumeric;
-  }
-  return map;
-}
-function fillTokens(template, tokenMap) {
-  return String(template || "").replace(/\|val(\d+)\|/gi, (_, n) => {
-    const key = ("val" + n).toLowerCase();
-    const v = tokenMap[key];
-    return v == null ? "" : String(v);
-  });
-}
-function fromTemplateToLabelValue(template, tokenMap) {
-  const filled = fillTokens(template, tokenMap).trim();
-  const m = filled.match(/^(.+?):\s*(.*)$/);
-  if (m) return { label: m[1], value: m[2] };
-  return { label: filled, value: "" };
-}
-function makeDetailRows(rows) {
-  return (rows || []).map(r => {
-    const mapTok = buildTokenMap(r);
-    const hasTokLabel = /\|val\d+\|/i.test(r.label || "");
-    const hasTokFilled = /\|val\d+\|/i.test(r.filledLabel || "");
-    if (hasTokLabel)  return fromTemplateToLabelValue(r.label, mapTok);
-    if (hasTokFilled) return fromTemplateToLabelValue(r.filledLabel, mapTok);
-    if (r.filledLabel) {
-      const p = splitFilledLabel(r.filledLabel);
-      return { label: p.label.trim(), value: p.value.trim() };
-    }
-    if ((r.label || "").trim()) {
-      const label = r.label.replace(/\s*:\s*$/, "");
-      if (r.mainNumeric != null && r.mainNumeric !== "") {
-        return { label, value: String(r.mainNumeric) };
-      }
-      return { label, value: "" };
-    }
-    return null;
-  }).filter(Boolean);
-}
-/* ------------------------------------------------------- */
-
 /* ---------------- boot ---------------- */
 (async function boot() {
   const status = $("#status");
-  const card = $("#card");
+  const card = $("#card"); // défini avant tout usage
 
   try {
     if (status) {
@@ -251,21 +124,30 @@ function makeDetailRows(rows) {
       status.style.color = "#bfefff";
     }
 
+    // Récupère le JSON des warframes via l'API custom (avec fallback local)
     const wfRaw = await getWarframesData();
+    
     if (!wfRaw.length) {
       setStatus("No Warframes data loaded.", false);
       console.warn("[app] wfRaw vide ou introuvable", { wfRaw });
       return;
     }
 
+    // Construire la liste des Warframes à afficher
     const list = wfRaw
       .filter((wf) => wf && wf.type && wf.type.toLowerCase() === "warframe")
       .map((rec) => {
+        // Nettoyer le nom (retirer les balises éventuelles comme <ARCHWING>)
         const name = (rec.name || "").replace(/<[^>]+>/g, "").trim();
+
+        // Image locale : "Ash Prime" -> "img/warframes/AshPrime.png"
         const imageName = name.replace(/\s+/g, "");
         const image = `img/warframes/${imageName}.png`;
 
+        // Description
         const description = rec.description || "";
+
+        // Stats de base
         const stats = {
           health: rec.baseStats?.health ?? "—",
           shield: rec.baseStats?.shields ?? "—",
@@ -273,11 +155,14 @@ function makeDetailRows(rows) {
           energy: rec.baseStats?.energy ?? "—",
           sprintSpeed: rec.baseStats?.sprintSpeed ?? "—"
         };
-        // on garde tel quel (l’API fournit déjà les bonnes valeurs/labels)
-        const aura = rec.aura ?? null;
-        const polarities = Array.isArray(rec.polarities) ? rec.polarities.slice() : [];
-        const exilus = rec.exilus ?? null;
-
+        // Polarités et aura
+        const aura = rec.aura
+          ? (rec.aura.charAt(0).toUpperCase() + rec.aura.slice(1).toLowerCase())
+          : null;
+        const polarities = (rec.polarities || []).map(p =>
+          p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()
+        );
+        // Capacités
         const abilities = (rec.abilities || []).map((ab, i) => {
           const sum = ab.summary || {};
           return {
@@ -295,21 +180,21 @@ function makeDetailRows(rows) {
             rows: Array.isArray(ab.rows) ? ab.rows : []
           };
         });
-
-        return { name, description, image, stats, aura, polarities, exilus, abilities };
+        return { name, description, image, stats, aura, polarities, abilities };
       })
       .sort(byName);
 
+    // Crée le picker et la carte initiale
     if (!list.length) {
       setStatus("No Warframes to display.", false);
       console.warn("[app] liste Warframes vide", { list });
       return;
     }
-
     setStatus(`Dataset loaded : ${list.length} Warframes`);
     renderPicker(list);
     renderCard(list[0], 0);
 
+    // Gestion du changement de sélection
     $("#picker").addEventListener("change", (e) => {
       const idx = parseInt(e.target.value, 10);
       const q = norm($("#search").value).toLowerCase();
@@ -320,6 +205,7 @@ function makeDetailRows(rows) {
       renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
     });
 
+    // Recherche interactive
     $("#search").addEventListener("input", () => {
       const q = norm($("#search").value).toLowerCase();
       const filtered = !q ? list : list.filter((x) =>
@@ -340,16 +226,105 @@ function makeDetailRows(rows) {
     }
   }
 
-  function renderCard(wf, iAbility = 0) {
-    const card = $("#card");
-    if (!card) return;
+  /* ---------- UI Rendering Functions ---------- */
 
+  function splitFilledLabel(filled) {
+    const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
+    return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
+  }
+  function buildTokenMap(row) {
+    const map = Object.create(null);
+    for (const k in row) {
+      if (/^val\d+$/i.test(k) && isFinite(Number(row[k]))) {
+        map[k.toLowerCase()] = row[k];
+      }
+    }
+    if (row.values && typeof row.values === "object") {
+      for (const k in row.values) {
+        if (/^val\d+$/i.test(k) && isFinite(Number(row.values[k]))) {
+          map[k.toLowerCase()] = row.values[k];
+        }
+      }
+    }
+    if (Array.isArray(row.numerics)) {
+      row.numerics.forEach((n, i) => {
+        if (isFinite(Number(n)) && map["val"+(i+1)] == null) {
+          map["val"+(i+1)] = n;
+        }
+      });
+    }
+    if (map.val1 == null && isFinite(Number(row.mainNumeric))) {
+      map.val1 = row.mainNumeric;
+    }
+    return map;
+  }
+  function fillTokens(template, tokenMap) {
+    return String(template || "").replace(/\|val(\d+)\|/gi, (_, n) => {
+      const key = ("val" + n).toLowerCase();
+      const v = tokenMap[key];
+      return v == null ? "" : String(v);
+    });
+  }
+  function fromTemplateToLabelValue(template, tokenMap) {
+    const filled = fillTokens(template, tokenMap).trim();
+    const m = filled.match(/^(.+?):\s*(.*)$/);
+    if (m) return { label: m[1], value: m[2] };
+    return { label: filled, value: "" };
+  }
+  function makeDetailRows(rows) {
+    return (rows || []).map(r => {
+      const mapTok = buildTokenMap(r);
+      const hasTokLabel = /\|val\d+\|/i.test(r.label || "");
+      const hasTokFilled = /\|val\d+\|/i.test(r.filledLabel || "");
+      if (hasTokLabel)  return fromTemplateToLabelValue(r.label, mapTok);
+      if (hasTokFilled) return fromTemplateToLabelValue(r.filledLabel, mapTok);
+      if (r.filledLabel) {
+        const p = splitFilledLabel(r.filledLabel);
+        return { label: p.label.trim(), value: p.value.trim() };
+      }
+      if ((r.label || "").trim()) {
+        const label = r.label.replace(/\s*:\s*$/, "");
+        if (r.mainNumeric != null && r.mainNumeric !== "") {
+          return { label, value: String(r.mainNumeric) };
+        }
+        return { label, value: "" };
+      }
+      return null;
+    }).filter(Boolean);
+  }
+
+  // ---- hoist via function declarations ----
+  function pill(label, value) {
+    return `
+    <div class="pill">
+      <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
+      <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
+    </div>`;
+  }
+
+  function statBox(label, value) {
+    return `
+    <div class="stat">
+      <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
+      <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
+    </div>`;
+  }
+  // -----------------------------------------
+
+  function normalizeDesc(text) {
+    let s = String(text ?? "");
+    s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
+    s = s.replace(/\r\n?/g, "\n");
+    s = s.replace(/\n{2,}/g, "\n");
+    return s;
+  }
+
+  function renderCard(wf, iAbility = 0) {
     const wfName = escapeHtml(wf.name);
     const wfDesc = escapeHtml(wf.description || "");
     const abilities = wf.abilities || [];
     const a = abilities[iAbility] || {};
     const s = a.summary || {};
-
     const tabs = abilities.map((ab, i) =>
       `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">
          ${escapeHtml(String(ab.slot ?? i + 1))}. ${escapeHtml(ab.name || "—")}
@@ -359,14 +334,12 @@ function makeDetailRows(rows) {
       .map((k) =>
         `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`
       ).join(" ");
-
     const detailRows = makeDetailRows(a.rows || []);
     const rowsHtml = detailRows.map(({label, value}) => `
       <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
         <div class="text-sm">${escapeHtml(label)}</div>
         <div class="font-medium">${escapeHtml(value || "—")}</div>
       </div>`).join("");
-
     const pillsHtml = !detailRows.length ? `
       <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
         ${pill("Cost", s.costEnergy)}
@@ -374,7 +347,6 @@ function makeDetailRows(rows) {
         ${pill("Duration", s.duration)}
         ${pill("Range", s.range)}
       </div>` : "";
-
     const detailsBlock = rowsHtml ? `
       <div class="mt-5">
         <div class="text-sm muted mb-2">Details</div>
@@ -399,8 +371,6 @@ function makeDetailRows(rows) {
             <div class="polarity-row" data-zone="aura"></div>
             <div class="polarity-label mt-3">Polarities</div>
             <div class="polarity-row" data-zone="others"></div>
-            <div class="polarity-label mt-3">Exilus</div>
-            <div class="polarity-row" data-zone="exilus"></div>
           </div>
         </div>
         <div class="flex-1 flex flex-col gap-4">
@@ -435,15 +405,12 @@ function makeDetailRows(rows) {
       </div>
     `;
 
-    // Rendu des polarités depuis l’API (+ fallback chips)
-    renderAuraAndPolarities(wf);
-
-    // Boutons des onglets abilities
+    // Boutons onglets d'aptitudes
     card.querySelectorAll("[data-abi]").forEach((btn) => {
       btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
     });
 
-    // Fallback externe : laisser polarities.js écouter si présent
+    // Notifier polarities.js qu'une carte est prête
     document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
   }
 
@@ -460,7 +427,6 @@ function makeDetailRows(rows) {
   }
 
   function setStatus(msg, ok = true) {
-    const status = $("#status");
     if (!status) return;
     status.textContent = msg;
     if (!ok) {
@@ -473,4 +439,5 @@ function makeDetailRows(rows) {
       status.style.color = "#bfefff";
     }
   }
+  
 })();
