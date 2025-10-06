@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T21:55:35.730Z",
+  "generatedAt": "2025-10-06T22:02:41.452Z",
   "count": 117,
   "entities": [
     {
@@ -29,6 +29,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Watchful Swarm",
@@ -287,6 +289,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shuriken",
@@ -565,6 +569,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shuriken",
@@ -835,6 +841,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Landslide",
@@ -1317,6 +1325,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Landslide",
@@ -1790,6 +1800,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sonic Boom",
@@ -2035,6 +2047,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sonic Boom",
@@ -2271,7 +2285,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Elude",
@@ -2610,7 +2626,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Elude",
@@ -2948,6 +2966,8 @@
         "Madurai"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Meathook",
@@ -3161,6 +3181,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Razor Gyre",
@@ -3618,6 +3640,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Razor Gyre",
@@ -4073,6 +4097,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spectral Scream",
@@ -4581,6 +4607,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spectral Scream",
@@ -5080,6 +5108,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fractured Blast",
@@ -5358,6 +5388,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Seek",
@@ -5666,7 +5698,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Zenurik",
+      "aura": null,
+      "exilus": false,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Wyrd Scythes",
@@ -5947,7 +5981,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Any",
+      "aura": null,
+      "exilus": false,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Noctua",
@@ -6314,6 +6350,8 @@
         "Naramon"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Bloomer",
@@ -6563,6 +6601,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fireball",
@@ -6975,6 +7015,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fireball",
@@ -7378,6 +7420,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Metamorphosis",
@@ -7836,6 +7880,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Metamorphosis",
@@ -8286,6 +8332,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Slash Dash",
@@ -8560,6 +8608,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Slash Dash",
@@ -8824,6 +8874,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Slash Dash",
@@ -9098,6 +9150,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Freeze",
@@ -9469,6 +9523,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Freeze",
@@ -9832,6 +9888,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shattered Lash",
@@ -10293,6 +10351,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shattered Lash",
@@ -10748,6 +10808,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Dread Mirror",
@@ -11152,6 +11214,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Dread Mirror",
@@ -11549,7 +11613,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Mach Rush",
@@ -12078,7 +12144,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Mach Rush",
@@ -12604,6 +12672,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Feast",
@@ -13006,6 +13076,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Feast",
@@ -13400,6 +13472,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Arcsphere",
@@ -13828,6 +13902,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Condemn",
@@ -14143,7 +14219,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": false,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Condemn",
@@ -14453,7 +14531,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Vazarin",
       "abilities": [
         {
           "name": "Balefire",
@@ -14752,7 +14832,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Vazarin",
       "abilities": [
         {
           "name": "Balefire",
@@ -15046,6 +15128,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tempest Barrage",
@@ -15458,6 +15542,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tempest Barrage",
@@ -15766,7 +15852,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Desiccation",
@@ -16087,7 +16175,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Desiccation",
@@ -16407,6 +16497,8 @@
         "Madurai"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Arch Line",
@@ -16672,6 +16764,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Quiver",
@@ -17025,6 +17119,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Quiver",
@@ -17369,6 +17465,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Light's Judgment",
@@ -17428,7 +17526,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Vazarin",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Whipclaw",
@@ -17841,7 +17941,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Vazarin",
+      "aura": null,
+      "exilus": true,
+      "exilusPolarity": "Naramon",
       "abilities": [
         {
           "name": "Whipclaw",
@@ -18249,6 +18351,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Kumihimo",
@@ -18309,6 +18413,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Wrathful Advance",
@@ -18371,6 +18477,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ophidian Bite",
@@ -18634,6 +18742,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ophidian Bite",
@@ -18895,6 +19005,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Banish",
@@ -19247,6 +19359,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Banish",
@@ -19593,6 +19707,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Decoy",
@@ -19827,6 +19943,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Decoy",
@@ -20051,6 +20169,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Pull",
@@ -20473,6 +20593,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Pull",
@@ -20887,6 +21009,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ballistic Battery",
@@ -21221,6 +21345,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ballistic Battery",
@@ -21547,6 +21673,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Hall of Mirrors",
@@ -21955,6 +22083,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Hall of Mirrors",
@@ -22355,6 +22485,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Soul Punch",
@@ -22662,6 +22794,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Soul Punch",
@@ -22961,6 +23095,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fire Walker",
@@ -23360,6 +23496,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fire Walker",
@@ -23751,6 +23889,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Virulence",
@@ -24087,6 +24227,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Virulence",
@@ -24415,6 +24557,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Null Star",
@@ -24759,6 +24903,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Null Star",
@@ -25095,6 +25241,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mind Control",
@@ -25440,6 +25588,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mind Control",
@@ -25776,6 +25926,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Smite",
@@ -26204,6 +26356,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Smite",
@@ -26624,6 +26778,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mallet",
@@ -26976,6 +27132,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mallet",
@@ -27328,6 +27486,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Energy Shell",
@@ -27594,6 +27754,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Energy Shell",
@@ -27855,6 +28017,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mercy's Kiss",
@@ -27913,6 +28077,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Grenade Fan",
@@ -28428,6 +28594,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Grenade Fan",
@@ -28936,7 +29104,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": false,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Chyrinka Pillar",
@@ -29275,6 +29445,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Enthrall",
@@ -29699,6 +29871,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Enthrall",
@@ -30117,6 +30291,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rhino Charge",
@@ -30399,6 +30575,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rhino Charge",
@@ -30673,6 +30851,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spores",
@@ -31144,6 +31324,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spores",
@@ -31608,6 +31790,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reap",
@@ -32031,6 +32215,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reap",
@@ -32450,6 +32636,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Axios Javelin",
@@ -32511,7 +32699,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Naramon",
+      "aura": null,
+      "exilus": false,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Pyrotechnics",
@@ -32570,6 +32760,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spellbind",
@@ -33012,6 +33204,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spellbind",
@@ -33447,6 +33641,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Well of Life",
@@ -33828,6 +34024,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Well of Life",
@@ -34201,6 +34399,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rip Line",
@@ -34511,6 +34711,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rip Line",
@@ -34812,6 +35014,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tesla Nervos",
@@ -35388,6 +35592,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tesla Nervos",
@@ -35962,6 +36168,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Necraweb",
@@ -36223,6 +36431,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shock",
@@ -36570,6 +36780,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shock",
@@ -36907,7 +37119,9 @@
         "masteryReq": 0
       },
       "polarities": [],
-      "aura": "Vazarin",
+      "aura": null,
+      "exilus": false,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shroud of Dynar",
@@ -36970,6 +37184,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reservoirs",
@@ -37493,6 +37709,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reservoirs",
@@ -38010,6 +38228,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Celestial Twin",
@@ -38333,6 +38553,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Celestial Twin",
@@ -38650,6 +38872,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Xata's Whisper",
@@ -39119,6 +39343,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Xata's Whisper",
@@ -39584,6 +39810,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sea Snares",
@@ -40027,6 +40255,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sea Snares",
@@ -40465,6 +40695,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tail Wind",
@@ -40810,6 +41042,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tail Wind",
