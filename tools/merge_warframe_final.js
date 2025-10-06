@@ -162,8 +162,6 @@ async function main(){
       masteryReq:  x.masteryReq ?? x.MasteryReq ?? 0
     };
     let baseStatsRank30=null;
-
-    // Polarities & Aura (wiki d'abord, override si wiki vide)
     let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
     let aura=w0?.aura ?? null;
 
@@ -174,16 +172,6 @@ async function main(){
       if(ov?.aura) aura=ov.aura;
     }
     if(!Array.isArray(polarities)) polarities=[];
-
-    // --- AJOUT MINIMAL : lire Exilus depuis polarity_overrides.json (si présent)
-    let exilus = null;
-    let exilusPolarity = null;
-    const exOv = polOverrides[canon];
-    if (exOv && typeof exOv === 'object') {
-      if (exOv.exilus !== undefined) exilus = !!exOv.exilus;
-      if (exOv.exilusPolarity) exilusPolarity = String(exOv.exilusPolarity);
-    }
-    // --- fin ajout ---
 
     const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
     if(type!=='warframe' && awo){
@@ -234,7 +222,7 @@ async function main(){
           if(o.stats){
             const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
             for(const k of Object.keys(map)){
-              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(k.toLowerCase()); }
+              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]); }
             }
             if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
           }
@@ -273,20 +261,7 @@ async function main(){
     const description=stripTags(w0?.description ?? x.description ?? null);
     const passive=(type==='warframe') ? stripTags(w0?.passive ?? x.passiveDescription ?? null) : null;
 
-    // --- entité finale (ajout exilus/exilusPolarity uniquement) ---
-    entities.push({
-      name,
-      type,
-      description,
-      passive,
-      baseStats,
-      baseStatsRank30,
-      polarities,
-      aura: aura ?? null,
-      exilus,           
-      exilusPolarity,   
-      abilities: abilitiesOut
-    });
+    entities.push({ name, type, description, passive, baseStats, baseStatsRank30, polarities, aura: aura ?? null, abilities: abilitiesOut });
   }
 
   // --- TRI ALPHABÉTIQUE AVANT L'ÉCRITURE ---
