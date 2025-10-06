@@ -90,12 +90,12 @@ async function fetchJson(url, what = "fetch") {
 /* ------------------------------------ */
 
 /* ====== PATCH: fallback de rendu des polarités (définis AVANT boot) ====== */
-const POL_ICON_BASE = new URL("img/polarity/", document.baseURI).href;
+const POL_ICON_BASE = new URL("img/polarities/", document.baseURI).href;
 const KNOWN_POLARITIES = new Set(["Madurai","Naramon","Vazarin","Zenurik","Unairu","Penjaga","Umbra"]);
 
 function renderPolarityImg(name, title) {
   const safeTitle = escapeHtml(title || name);
-  const src = POL_ICON_BASE + encodeURIComponent(name) + ".png";
+  const src = POL_ICON_BASE + encodeURIComponent(name) + "_Pol.svg";
   // si l'image manque, on remplace par un chip texte
   return `<img src="${src}" alt="${safeTitle}" title="${safeTitle}"
             style="width:22px;height:22px;object-fit:contain"
@@ -274,7 +274,6 @@ async function getWarframesData() {
   }
 
   /* ---------- UI Rendering Functions ---------- */
-
   function splitFilledLabel(filled) {
     const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
     return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
@@ -403,7 +402,7 @@ async function getWarframesData() {
 
     const imgHtml = wf.image
       ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain"
-              onerror="this.onerror=null;this.src='img/warframes/_placeholder.png'">`
+               onerror="this.onerror=null;this.src='img/warframes/_placeholder.png'">`
       : `<div class="muted">No Pictures</div>`;
 
     card.innerHTML = `
