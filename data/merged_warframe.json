@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T16:20:58.296Z",
+  "generatedAt": "2025-10-06T16:28:49.296Z",
   "count": 117,
   "entities": [
     {
@@ -22702,7 +22702,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": "None",
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
