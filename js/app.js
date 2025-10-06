@@ -38,18 +38,15 @@ const EXTRA_ICONS = { ENERGY: "EnergySymbol.png" };
 
 function renderTextIcons(input) {
   let s = String(input ?? "");
-
-  // normalise les retours à la ligne
   s = s.replace(/\r\n?|\r/g, "\n")
        .replace(/<\s*br\s*\/?>/gi, "\n")
        .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
 
-  // échappe le HTML
-  s = s.replace(/[&<>"']/g, c =>
-    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
+  // échappe le HTML (corrigé pour '>')
+  s = s.replace(/[&<>"']/g, (c) =>
+    ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c])
   );
 
-  // Remplace DT_* par icônes inline (avec style)
   s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = DT_ICONS[key];
     if (!file) return "";
@@ -57,7 +54,6 @@ function renderTextIcons(input) {
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
 
-  // Remplace tags simples (ex: <ENERGY>)
   s = s.replace(/\s*(?:&lt;|<)\s*([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
     const file = EXTRA_ICONS[key];
     if (!file) return "";
@@ -65,9 +61,7 @@ function renderTextIcons(input) {
     return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
   });
 
-  // Supprime les balises techniques restantes
   s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
-
   return s.replace(/\n/g, "<br>").trim();
 }
 
@@ -77,7 +71,7 @@ const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v
 const norm = (s) => String(s || "").trim();
 const escapeHtml = (s) =>
   String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&":"&amp;","<":"&lt;","&gt;":">&gt;","\"":"&quot;","'":"&#39;" }[c])
+    ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c])
   );
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 
@@ -89,14 +83,34 @@ async function fetchJson(url, what = "fetch") {
 }
 /* ------------------------------------ */
 
-/* ====== PATCH: fallback de rendu des polarités (définis AVANT boot) ====== */
+/* ====== PATCH: rendu polarités (définis AVANT boot) ====== */
+
+// dossier correct + extension svg « _Pol.svg »
 const POL_ICON_BASE = new URL("img/polarities/", document.baseURI).href;
-const KNOWN_POLARITIES = new Set(["Madurai","Naramon","Vazarin","Zenurik","Unairu","Penjaga","Umbra"]);
+
+// normalise et mappe vers le bon nom de fichier
+const POL_NAME_MAP = new Map([
+  ["madurai","Madurai"],
+  ["naramon","Naramon"],
+  ["vazarin","Vazarin"],
+  ["zenurik","Zenurik"],
+  ["unairu","Unairu"],
+  ["penjaga","Penjaga"],
+  ["umbra","Umbra"],
+  ["any","Any"],
+  ["exilus","Exilus"]
+]);
+function normalizePolName(x){
+  const k = String(x||"").trim().toLowerCase();
+  return POL_NAME_MAP.get(k) || (k ? (k[0].toUpperCase()+k.slice(1)) : "");
+}
 
 function renderPolarityImg(name, title) {
-  const safeTitle = escapeHtml(title || name);
-  const src = POL_ICON_BASE + encodeURIComponent(name) + "_Pol.svg";
-  // si l'image manque, on remplace par un chip texte
+  const nm = normalizePolName(name);
+  const safeTitle = escapeHtml(title || nm || name || "");
+  if (!nm) return `<span class="chip muted">—</span>`;
+  const src = POL_ICON_BASE + encodeURIComponent(nm) + "_Pol.svg";
+  // fallback texte si l’icône manque
   return `<img src="${src}" alt="${safeTitle}" title="${safeTitle}"
             style="width:22px;height:22px;object-fit:contain"
             onerror="this.onerror=null;this.replaceWith(document.createElement('span'));this?.insertAdjacentHTML?.('afterend','<span class=&quot;chip&quot;>${safeTitle}</span>')">`;
@@ -112,33 +126,39 @@ function renderAuraAndPolarities(wf) {
   auraZone.innerHTML = "";
   otherZone.innerHTML = "";
 
-  // Aura: certains dumps mettent juste "aura" => on n’affiche pas d’icône
-  const auraName = (wf.aura && wf.aura.toLowerCase() !== "aura") ? wf.aura : null;
-  if (auraName && KNOWN_POLARITIES.has(auraName)) {
+  // AURA — si "aura" littéral => rien à afficher
+  const auraNameRaw = wf.aura;
+  const auraName = (auraNameRaw && String(auraNameRaw).toLowerCase() !== "aura")
+    ? normalizePolName(auraNameRaw) : null;
+
+  if (auraName) {
     auraZone.innerHTML = renderPolarityImg(auraName, `Aura: ${auraName}`);
-  } else if (auraName) {
-    auraZone.innerHTML = `<span class="chip">${escapeHtml(auraName)}</span>`;
   } else {
     auraZone.innerHTML = `<span class="chip muted">—</span>`;
   }
 
-  const list = Array.isArray(wf.polarities) ? wf.polarities : [];
-  if (!list.length) {
-    otherZone.innerHTML = `<span class="chip muted">—</span>`;
-  } else {
-    otherZone.innerHTML = list.map(p => {
-      const nm = String(p||"").trim();
-      return KNOWN_POLARITIES.has(nm)
-        ? renderPolarityImg(nm, nm)
-        : `<span class="chip">${escapeHtml(nm || "—")}</span>`;
-    }).join(" ");
+  // POLARITIES — y compris Exilus si présent (exilus | exilusPolarity)
+  const polys = Array.isArray(wf.polarities) ? wf.polarities.slice() : [];
+  const exilus = wf.exilusPolarity || wf.exilus || null;
+  const parts = [];
+
+  if (exilus) {
+    parts.push(renderPolarityImg(exilus, `Exilus: ${normalizePolName(exilus)}`));
   }
+  if (!polys.length && !exilus) {
+    otherZone.innerHTML = `<span class="chip muted">—</span>`;
+    return;
+  }
+  for (const p of polys) {
+    parts.push(renderPolarityImg(p, normalizePolName(p)));
+  }
+  otherZone.innerHTML = parts.join(" ");
 }
-/* ======================================================================== */
+/* =============================================== */
 
 /* --------- Fallback data loader ---------- */
 async function getWarframesData() {
-  // 1) essaie l’API distante
+  // 1) API distante
   try {
     const data = await fetchJson(CFG.WARFRAMES_URL, "Warframes API");
     const arr = Array.isArray(data) ? data : (Array.isArray(data?.entities) ? data.entities : []);
@@ -147,7 +167,7 @@ async function getWarframesData() {
   } catch (e) {
     console.warn("[app] Remote API failed or empty, trying local file…", e);
   }
-  // 2) fallback local (placer /data/merged_warframe.json côté site)
+  // 2) fallback local
   try {
     const local = await fetchJson("data/merged_warframe.json", "Local merged_warframe.json");
     return Array.isArray(local) ? local : (Array.isArray(local?.entities) ? local.entities : []);
@@ -171,30 +191,22 @@ async function getWarframesData() {
       status.style.color = "#bfefff";
     }
 
-    // Récupère le JSON des warframes via l'API custom (avec fallback local)
+    // données (API + fallback)
     const wfRaw = await getWarframesData();
-    
     if (!wfRaw.length) {
       setStatus("No Warframes data loaded.", false);
       console.warn("[app] wfRaw vide ou introuvable", { wfRaw });
       return;
     }
 
-    // Construire la liste des Warframes à afficher
+    // liste affichable
     const list = wfRaw
       .filter((wf) => wf && wf.type && wf.type.toLowerCase() === "warframe")
       .map((rec) => {
-        // Nettoyer le nom (retirer les balises éventuelles comme <ARCHWING>)
         const name = (rec.name || "").replace(/<[^>]+>/g, "").trim();
-
-        // Image locale : "Ash Prime" -> "img/warframes/AshPrime.png"
         const imageName = name.replace(/\s+/g, "");
         const image = `img/warframes/${imageName}.png`;
-
-        // Description
         const description = rec.description || "";
-
-        // Stats de base
         const stats = {
           health: rec.baseStats?.health ?? "—",
           shield: rec.baseStats?.shields ?? "—",
@@ -202,14 +214,12 @@ async function getWarframesData() {
           energy: rec.baseStats?.energy ?? "—",
           sprintSpeed: rec.baseStats?.sprintSpeed ?? "—"
         };
-        // Polarités et aura
         const aura = rec.aura
           ? (rec.aura.charAt(0).toUpperCase() + rec.aura.slice(1).toLowerCase())
           : null;
         const polarities = (rec.polarities || []).map(p =>
           p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()
         );
-        // Capacités
         const abilities = (rec.abilities || []).map((ab, i) => {
           const sum = ab.summary || {};
           return {
@@ -227,11 +237,12 @@ async function getWarframesData() {
             rows: Array.isArray(ab.rows) ? ab.rows : []
           };
         });
-        return { name, description, image, stats, aura, polarities, abilities };
+        // on conserve exilus s'il arrive un jour dans le JSON
+        const exilus = rec.exilusPolarity || rec.exilus || null;
+        return { name, description, image, stats, aura, polarities, abilities, exilusPolarity: exilus };
       })
       .sort(byName);
 
-    // Crée le picker et la carte initiale
     if (!list.length) {
       setStatus("No Warframes to display.", false);
       console.warn("[app] liste Warframes vide", { list });
@@ -241,7 +252,7 @@ async function getWarframesData() {
     renderPicker(list);
     renderCard(list[0], 0);
 
-    // Gestion du changement de sélection
+    // picker
     $("#picker").addEventListener("change", (e) => {
       const idx = parseInt(e.target.value, 10);
       const q = norm($("#search").value).toLowerCase();
@@ -252,7 +263,7 @@ async function getWarframesData() {
       renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
     });
 
-    // Recherche interactive
+    // recherche
     $("#search").addEventListener("input", () => {
       const q = norm($("#search").value).toLowerCase();
       const filtered = !q ? list : list.filter((x) =>
@@ -274,6 +285,7 @@ async function getWarframesData() {
   }
 
   /* ---------- UI Rendering Functions ---------- */
+
   function splitFilledLabel(filled) {
     const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
     return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
@@ -339,7 +351,7 @@ async function getWarframesData() {
     }).filter(Boolean);
   }
 
-  // hoisted helpers
+  // helpers
   function pill(label, value) {
     return `
     <div class="pill">
@@ -402,7 +414,7 @@ async function getWarframesData() {
 
     const imgHtml = wf.image
       ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain"
-               onerror="this.onerror=null;this.src='img/warframes/_placeholder.png'">`
+              onerror="this.onerror=null;this.src='img/warframes/_placeholder.png'">`
       : `<div class="muted">No Pictures</div>`;
 
     card.innerHTML = `
@@ -450,15 +462,15 @@ async function getWarframesData() {
       </div>
     `;
 
-    // Rendu immédiat de l’aura et des polarités (fallback)
+    // Rendu immédiat de l’aura, des polarités et de l’exilus éventuel
     renderAuraAndPolarities(wf);
 
-    // Boutons onglets d'aptitudes
+    // onglets
     card.querySelectorAll("[data-abi]").forEach((btn) => {
       btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
     });
 
-    // Notifier polarities.js (si présent)
+    // hook externe (si présent)
     document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
   }
 
