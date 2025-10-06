@@ -23,7 +23,8 @@ const DT_ICONS = {
   DT_TOXIN_COLOR: "ToxinSymbol.png",
   DT_GAS_COLOR: "GasSymbol.png",
   DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RADIATIONSymbol.png",
+  // PATCH: corrige la casse du fichier Radiation
+  DT_RADIATION_COLOR: "RadiationSymbol.png",
   DT_VIRAL_COLOR: "ViralSymbol.png",
   DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
   DT_BLAST_COLOR: "BlastSymbol.png",
@@ -311,6 +312,53 @@ async function getWarframesData() {
   }
   // -----------------------------------------
 
+  // PATCH: fallback de rendu des polarités (si aucun listener externe ne remplit les zones)
+  const POL_ICON_BASE = new URL("img/polarity/", document.baseURI).href;
+  const KNOWN_POLARITIES = new Set(["Madurai","Naramon","Vazarin","Zenurik","Unairu","Penjaga","Umbra"]);
+
+  function renderPolarityImg(name, title) {
+    const safeTitle = escapeHtml(title || name);
+    const src = POL_ICON_BASE + encodeURIComponent(name) + ".png";
+    return `<img src="${src}" alt="${safeTitle}" title="${safeTitle}"
+              style="width:22px;height:22px;object-fit:contain"
+              onerror="this.onerror=null;this.replaceWith(document.createElement('span'));this?.insertAdjacentHTML?.('afterend','<span class=&quot;chip&quot;>'+ '${safeTitle}' +'</span>')">`;
+  }
+
+  function renderAuraAndPolarities(wf) {
+    const auraZone = card.querySelector('.polarity-row[data-zone="aura"]');
+    const otherZone = card.querySelector('.polarity-row[data-zone="others"]');
+    if (!auraZone || !otherZone) return;
+
+    // Nettoyage
+    auraZone.innerHTML = "";
+    otherZone.innerHTML = "";
+
+    // Aura: invalide si valeur générique "Aura" (certains dumps l'ont), on n’affiche pas
+    const auraName = wf.aura && wf.aura.toLowerCase() !== "aura" ? wf.aura : null;
+    if (auraName && KNOWN_POLARITIES.has(auraName)) {
+      auraZone.innerHTML = renderPolarityImg(auraName, `Aura: ${auraName}`);
+    } else if (auraName) {
+      // Aura texte fallback
+      auraZone.innerHTML = `<span class="chip">${escapeHtml(auraName)}</span>`;
+    } else {
+      auraZone.innerHTML = `<span class="chip muted">—</span>`;
+    }
+
+    // Others
+    const list = Array.isArray(wf.polarities) ? wf.polarities : [];
+    if (!list.length) {
+      otherZone.innerHTML = `<span class="chip muted">—</span>`;
+    } else {
+      otherZone.innerHTML = list.map(p => {
+        const nm = String(p||"").trim();
+        return KNOWN_POLARITIES.has(nm)
+          ? renderPolarityImg(nm, nm)
+          : `<span class="chip">${escapeHtml(nm || "—")}</span>`;
+      }).join(" ");
+    }
+  }
+  // -----------------------------------------
+
   function normalizeDesc(text) {
     let s = String(text ?? "");
     s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
@@ -405,12 +453,15 @@ async function getWarframesData() {
       </div>
     `;
 
+    // PATCH: rendu immédiat de l’aura et des polarités (fallback)
+    renderAuraAndPolarities(wf);
+
     // Boutons onglets d'aptitudes
     card.querySelectorAll("[data-abi]").forEach((btn) => {
       btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
     });
 
-    // Notifier polarities.js qu'une carte est prête
+    // Toujours notifier (si un script externe écoute, il peut écraser le rendu fallback)
     document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
   }
 
