@@ -17,6 +17,18 @@
     "exilus": true,
     "exilusPolarity": "Naramon"
   },
+  "Gauss": {
+    "aura": "Naramon",
+    "slots": ["Madurai","Vazarin"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
+  "Gauss Prime": {
+    "aura": "Naramon",
+    "slots": ["Madurai","Naramon","Vazarin"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
   "Inaros": {
     "aura": "Naramon",
     "slots": ["Vazarin","Vazarin"],
@@ -52,6 +64,12 @@
     "slots": ["Madurai","Vazarin","Naramon"],
     "exilus": null,
     "exilusPolarity": null
+  },
+  "Hildryn": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Vazarin"],
+    "exilus": true,
+    "exilusPolarity": "Vazarin"
   },
   "Hildryn Prime": {
     "aura": "Naramon",
