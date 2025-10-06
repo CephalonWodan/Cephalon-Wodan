@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T21:12:01.770Z",
+  "generatedAt": "2025-10-06T21:13:56.217Z",
   "count": 117,
   "entities": [
     {
@@ -35,20 +35,19 @@
         {
           "name": "Watchful Swarm",
           "description": "Tiny drones orbit the Warframe or an ally, and intercept enemy fire.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 15,
-            "duration": "N/A",
+            "duration": null,
             "range": 250,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
+              "efficiency"
             ]
           },
           "rows": [
@@ -84,20 +83,19 @@
         {
           "name": "Benevolent Decoy",
           "description": "Creates beacons that draw enemy fire, converting the damage into healing pulses.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 50,
-            "duration": "10 / 15 / 20 / 25 s",
+            "duration": null,
             "range": 400,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
+              "efficiency"
             ]
           },
           "rows": [
@@ -133,10 +131,10 @@
         {
           "name": "Warding Grace",
           "description": "Renders the Warframe and nearby allies immune to Status Effects, while slowing nearby enemies.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
             "strength": 1.5,
             "duration": 25,
@@ -200,10 +198,10 @@
         {
           "name": "Vengeful Rush",
           "description": "All damage taken is transformed into Energy, while abilities gain enhanced range, duration and power. Affects the caster and nearby allies.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 100,
             "strength": 100,
             "duration": 30,
@@ -2979,22 +2977,20 @@
         {
           "name": "Meathook",
           "description": "Skewer and hold a target. Use again to hurl the victim damaging them and anyone near the impact site.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 600,
-            "duration": "N/A",
+            "duration": null,
             "range": 17,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
-            ],
-            "misc": "100% Impact status on hit"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -3067,22 +3063,19 @@
         {
           "name": "Firing Line",
           "description": "Sweep surrounding enemies into the line of fire with a force beam.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
-            "strength": "N/A",
-            "duration": "5 s (Lifted)",
+            "strength": null,
+            "duration": null,
             "range": 25,
             "efficiency": 50,
             "affectedBy": [
               "range",
-              "efficiency",
-              "strength",
-              "duration"
-            ],
-            "misc": "180 / 240 / 300 / 360 °/s (speed) • 1.5× Lifted damage vulnerability"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -3117,20 +3110,18 @@
         {
           "name": "Exalted Ironbride",
           "description": "Summon a devastating exalted blade.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 1500,
-            "duration": "N/A",
-            "range": "N/A",
+            "duration": null,
+            "range": null,
             "efficiency": 25,
             "affectedBy": [
               "strength",
-              "efficiency",
-              "duration",
-              "range"
+              "efficiency"
             ]
           },
           "rows": [
@@ -6369,20 +6360,19 @@
         {
           "name": "Bloomer",
           "description": "Fires a high-yield, remotely detonated explosive projectile capable of latching onto targets.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 1000,
-            "duration": "N/A",
+            "duration": null,
             "range": 240,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
+              "efficiency"
             ]
           },
           "rows": [
@@ -6418,20 +6408,20 @@
         {
           "name": "Core Vent",
           "description": "Vents out the Archwing's propulsion core, confusing enemy projectiles and causing them to detonate.",
-          "subsumable": null,
-          "augments": [],
+          "subsumable": false,
+          "augments": [
+            "Afterburner"
+          ],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
-            "strength": "—",
+            "strength": null,
             "duration": 16,
-            "range": "N/A",
+            "range": null,
             "efficiency": 50,
             "affectedBy": [
               "duration",
-              "efficiency",
-              "strength",
-              "range"
+              "efficiency"
             ]
           },
           "rows": [
@@ -6467,10 +6457,10 @@
         {
           "name": "Thumper",
           "description": "Creates a localized storm of punishing explosions.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 75,
             "strength": 500,
             "duration": 3,
@@ -6543,20 +6533,19 @@
         {
           "name": "Warhead",
           "description": "Launches a plodding missile capable of unleashing a massive explosion.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 100,
             "strength": 1750,
-            "duration": "N/A",
+            "duration": null,
             "range": 240,
             "efficiency": 100,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
+              "efficiency"
             ]
           },
           "rows": [
@@ -16541,10 +16530,10 @@
         {
           "name": "Arch Line",
           "description": "Launch a tethered hook that either pulls enemies close, or pulls the Warframe toward any stationary objects it hooks onto.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 600,
             "duration": 1,
@@ -16646,20 +16635,21 @@
         {
           "name": "Cosmic Crush",
           "description": "Forms a miniature black hole that sucks in all nearby objects before rupturing in a massive shock wave.",
-          "subsumable": null,
-          "augments": [],
+          "subsumable": false,
+          "augments": [
+            "Cold Snap"
+          ],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 75,
             "strength": 1500,
-            "duration": "N/A",
+            "duration": null,
             "range": 140,
             "efficiency": 75,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
+              "efficiency"
             ]
           },
           "rows": [
@@ -16704,10 +16694,10 @@
         {
           "name": "Fighter Escort",
           "description": "Deploys drones that fight alongside the Warframe, each detonating in a destructive blast when killed.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 100,
             "strength": 8,
             "duration": 30,
@@ -27537,22 +27527,22 @@
         {
           "name": "Energy Shell",
           "description": "Forms a protective energy shell around the Warframe.",
-          "subsumable": null,
-          "augments": [],
+          "subsumable": false,
+          "augments": [
+            "Energy Field"
+          ],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 50,
             "duration": 22,
-            "range": "N/A",
+            "range": null,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "duration",
-              "efficiency",
-              "range"
-            ],
-            "misc": "50% Heat bonus • 2× Crit multiplier"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -27596,22 +27586,20 @@
         {
           "name": "Disarray",
           "description": "Drops flare beacons confusing incoming guided missiles.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
-            "strength": "N/A",
+            "strength": null,
             "duration": 8,
             "range": 180,
             "efficiency": 50,
             "affectedBy": [
               "duration",
               "range",
-              "efficiency",
-              "strength"
-            ],
-            "misc": "20 / 30 / 40 / 50 (flares)"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -27646,22 +27634,20 @@
         {
           "name": "Seeking Fire",
           "description": "Fires a large volley of homing missiles.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 75,
             "strength": 8,
-            "duration": "N/A",
+            "duration": null,
             "range": 480,
             "efficiency": 75,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
-            ],
-            "misc": "300 (initial Blast) • 40 (area Blast)"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -27714,10 +27700,10 @@
         {
           "name": "Repel",
           "description": "The Warframe emits a massive pulse of energy, stunning nearby enemies and sending them flying.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 100,
             "strength": 1500,
             "duration": 11,
@@ -27808,19 +27794,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 50,
             "duration": 22,
-            "range": "N/A",
+            "range": null,
             "efficiency": 25,
             "affectedBy": [
               "strength",
               "duration",
-              "efficiency",
-              "range"
-            ],
-            "misc": "50% Heat bonus • 2× Crit multiplier"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -27867,19 +27851,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
-            "strength": "N/A",
+            "strength": null,
             "duration": 8,
             "range": 180,
             "efficiency": 50,
             "affectedBy": [
               "duration",
               "range",
-              "efficiency",
-              "strength"
-            ],
-            "misc": "20 / 30 / 40 / 50 (flares)"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -27917,19 +27899,17 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 75,
             "strength": 8,
-            "duration": "N/A",
+            "duration": null,
             "range": 480,
             "efficiency": 75,
             "affectedBy": [
               "strength",
               "range",
-              "efficiency",
-              "duration"
-            ],
-            "misc": "300 (initial Blast) • 40 (area Blast)"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -27985,7 +27965,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 100,
             "strength": 1500,
             "duration": 11,
@@ -36225,10 +36205,10 @@
         {
           "name": "Necraweb",
           "description": "Hurl a canister of gravitation fluids to create a wide mire that will significantly slow enemies traveling across it. Alternatively, the canister can be shot in mid-air to create a fiery conflagration.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 25,
             "strength": 2000,
             "duration": 20,
@@ -36239,8 +36219,7 @@
               "duration",
               "range",
               "efficiency"
-            ],
-            "misc": "50% slow"
+            ]
           },
           "rows": [
             {
@@ -36293,22 +36272,19 @@
         {
           "name": "Storm Shroud",
           "description": "Swathe the Necramech in a powerful electrical field that greatly enhances survivability in close combat. Enemies that strike the shroud will suffer for their impudence.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
             "strength": 1200,
-            "duration": "N/A",
-            "range": "N/A",
+            "duration": null,
+            "range": null,
             "efficiency": 50,
             "affectedBy": [
               "strength",
-              "efficiency",
-              "duration",
-              "range"
-            ],
-            "misc": "25% / 50% / 75% / 100% counter chance • 3 s invulnerability duration"
+              "efficiency"
+            ]
           },
           "rows": [
             {
@@ -36361,10 +36337,10 @@
         {
           "name": "Gravemines",
           "description": "Launch a pattern of charged mines all around you. Each mine detonates in a violent blast when touched, damaging enemies in a three-meter radius.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 75,
             "strength": 200,
             "duration": 24,
@@ -36375,8 +36351,7 @@
               "duration",
               "range",
               "efficiency"
-            ],
-            "misc": "3 m explosion radius • 2.5 s self detonation time"
+            ]
           },
           "rows": [
             {
@@ -36420,20 +36395,18 @@
         {
           "name": "Guard Mode",
           "description": "Take a stationary stance to deploy maximum firepower and gain increased structural integrity for a time.",
-          "subsumable": null,
+          "subsumable": false,
           "augments": [],
           "summary": {
-            "costType": "Energy",
+            "costType": null,
             "costEnergy": 50,
             "strength": 500,
-            "duration": "N/A",
-            "range": "N/A",
+            "duration": null,
+            "range": null,
             "efficiency": 50,
             "affectedBy": [
               "strength",
-              "efficiency",
-              "duration",
-              "range"
+              "efficiency"
             ]
           },
           "rows": [
