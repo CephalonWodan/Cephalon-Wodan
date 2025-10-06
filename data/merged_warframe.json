@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T09:01:42.784Z",
+  "generatedAt": "2025-10-06T09:38:54.884Z",
   "count": 117,
   "entities": [
     {
@@ -29221,8 +29221,85 @@
           "description": "Summon a Chyrinka Pillar that slows enemies. It pulses Radiation Damage with a guaranteed Status Effect.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": null,
+            "costEnergy": 25,
+            "strength": 1000,
+            "duration": 5,
+            "range": 8,
+            "efficiency": 25,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 25",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Damage per Pulse: |val1|",
+              "filledLabel": "Damage per Pulse: 1000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1000
+              },
+              "mainNumeric": 1000
+            },
+            {
+              "label": "Slam and Pulse Radius: |val1|m",
+              "filledLabel": "Slam and Pulse Radius: 8m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 8
+              },
+              "mainNumeric": 8
+            },
+            {
+              "label": "Slow: |val1|%",
+              "filledLabel": "Slow: 35%",
+              "modifier": null,
+              "values": {
+                "Val1": 35
+              },
+              "mainNumeric": 35
+            },
+            {
+              "label": "Explosion Frequency: |val1|s",
+              "filledLabel": "Explosion Frequency: 5s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Pillar Duration: |val1|s",
+              "filledLabel": "Pillar Duration: 35s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 35
+              },
+              "mainNumeric": 35
+            },
+            {
+              "label": "Max Pillars: |val1|",
+              "filledLabel": "Max Pillars: 2",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            }
+          ]
         },
         {
           "name": "Containment Wall",
@@ -29231,16 +29308,148 @@
           "augments": [
             "Wrecking Wall"
           ],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": null,
+            "costEnergy": 50,
+            "strength": 3500,
+            "duration": null,
+            "range": 20,
+            "efficiency": 50,
+            "affectedBy": [
+              "strength",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 50",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Impact Damage: |val1|",
+              "filledLabel": "Impact Damage: 3500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 3500
+              },
+              "mainNumeric": 3500
+            },
+            {
+              "label": "Radiation Damage per Second: |val1|",
+              "filledLabel": "Radiation Damage per Second: 200",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 200
+              },
+              "mainNumeric": 200
+            },
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 20m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              },
+              "mainNumeric": 20
+            },
+            {
+              "label": "Damage Vulnerability: |val1|%",
+              "filledLabel": "Damage Vulnerability: 25%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            }
+          ]
         },
         {
           "name": "Disometric Guard",
           "description": "Guard yourself and nearby allies against Status Effects. Each time Qorvex kills or assists in killing an enemy affected by Radiation Status, the number of Status Effects Disometric Guard can prevent increases.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": null,
+            "costEnergy": 75,
+            "strength": 500,
+            "duration": null,
+            "range": 50,
+            "efficiency": 75,
+            "affectedBy": [
+              "strength",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 75",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              },
+              "mainNumeric": 75
+            },
+            {
+              "label": "Damage on Cast: |val1|",
+              "filledLabel": "Damage on Cast: 500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              },
+              "mainNumeric": 500
+            },
+            {
+              "label": "Initial Status Immunity Stacks: |val1|",
+              "filledLabel": "Initial Status Immunity Stacks: 5",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Max Status Immunity Stacks: |val1|",
+              "filledLabel": "Max Status Immunity Stacks: 10",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Stack Duration: ∞",
+              "filledLabel": "Stack Duration: ∞",
+              "modifier": null,
+              "values": {},
+              "mainNumeric": null
+            },
+            {
+              "label": "Range: |val1|m",
+              "filledLabel": "Range: 50m Affinity Range",
+              "modifier": "AVATAR_AFFINITY_RANGE",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Stack Chance per Active Radiation Status: |val1|%",
+              "filledLabel": "Stack Chance per Active Radiation Status: 10%",
+              "modifier": null,
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            }
+          ]
         },
         {
           "name": "Crucible Blast",
@@ -29249,8 +29458,75 @@
           "augments": [
             "Fused Crucible"
           ],
-          "summary": null,
-          "rows": []
+          "summary": {
+            "costType": null,
+            "costEnergy": 100,
+            "strength": 10000,
+            "duration": null,
+            "range": 8,
+            "efficiency": 100,
+            "affectedBy": [
+              "strength",
+              "range",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 100",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            },
+            {
+              "label": "Radiation Damage per Second: |val1|",
+              "filledLabel": "Radiation Damage per Second: 10000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 10000
+              },
+              "mainNumeric": 10000
+            },
+            {
+              "label": "Explosion Base Damage: |val1| Radiation Damage",
+              "filledLabel": "Explosion Base Damage: 500 Radiation Damage",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              },
+              "mainNumeric": 500
+            },
+            {
+              "label": "Explosion Damage per Status: |val1| Radiation Damage",
+              "filledLabel": "Explosion Damage per Status: 250 Radiation Damage",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              },
+              "mainNumeric": 250
+            },
+            {
+              "label": "Explosion Radius: |val1|m",
+              "filledLabel": "Explosion Radius: 8m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 8
+              },
+              "mainNumeric": 8
+            },
+            {
+              "label": "Beam Duration: |val1|s",
+              "filledLabel": "Beam Duration: 2s",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            }
+          ]
         }
       ]
     },
