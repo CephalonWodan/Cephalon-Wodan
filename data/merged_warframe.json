@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T21:44:24.636Z",
+  "generatedAt": "2025-10-06T21:47:44.649Z",
   "count": 117,
   "entities": [
     {
@@ -2284,10 +2284,7 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -2628,11 +2625,7 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Madurai",
-        "Naramon"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -5704,10 +5697,7 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Zenurik",
       "exilus": false,
       "exilusPolarity": null,
@@ -5990,10 +5980,7 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Naramon"
-      ],
+      "polarities": [],
       "aura": "Any",
       "exilus": false,
       "exilusPolarity": null,
@@ -11625,10 +11612,7 @@
         "sprintSpeed": 1.4,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -12159,11 +12143,7 @@
         "sprintSpeed": 1.5,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Naramon",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -14238,11 +14218,7 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Vazarin",
-        "Naramon"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": false,
       "exilusPolarity": null,
@@ -14554,10 +14530,7 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Vazarin",
@@ -14858,11 +14831,7 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Vazarin",
-        "Naramon"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Vazarin",
@@ -15882,10 +15851,7 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -16208,11 +16174,7 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Vazarin",
-        "Madurai"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -17563,10 +17525,7 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Naramon"
-      ],
+      "polarities": [],
       "aura": "Vazarin",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -17981,11 +17940,7 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Naramon",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Vazarin",
       "exilus": true,
       "exilusPolarity": "Naramon",
@@ -29148,10 +29103,7 @@
         "sprintSpeed": 0.89999998,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Naramon"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": false,
       "exilusPolarity": null,
@@ -32746,10 +32698,7 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Naramon",
       "exilus": false,
       "exilusPolarity": null,
@@ -37169,10 +37118,7 @@
         "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Vazarin"
-      ],
+      "polarities": [],
       "aura": "Vazarin",
       "exilus": false,
       "exilusPolarity": null,
