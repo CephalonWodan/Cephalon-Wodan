@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T16:40:17.098Z",
+  "generatedAt": "2025-10-06T16:45:16.483Z",
   "count": 117,
   "entities": [
     {
@@ -270,7 +270,7 @@
       "name": "Ash",
       "type": "warframe",
       "description": "Behold the patron saint of the Orokin school of political assassination. Ash specializes in stealth. The edge of his blade is sooner felt than seen.",
-      "passive": "Bleed effects inflicted on enemies do 25% increased damage and last 50% longer.",
+      "passive": "Slash Status Effects inflicted on enemies do |DAMAGE|% increased damage and last |DURATION|% longer.",
       "baseStats": {
         "health": 455,
         "shields": 270,
@@ -287,11 +287,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -553,7 +550,7 @@
       "name": "Ash Prime",
       "type": "warframe",
       "description": "Distraction and subterfuge become lethal weapons with Ash Prime. Featuring altered mod polarities for greater customization.",
-      "passive": "Bleed effects inflicted on enemies do 25% increased damage and last 50% longer.",
+      "passive": "Slash Status Effects inflicted on enemies do |DAMAGE|% increased damage and last |DURATION|% longer.",
       "baseStats": {
         "health": 455,
         "shields": 365,
@@ -570,12 +567,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -846,12 +839,8 @@
         "sprintSpeed": 0.9,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -1320,7 +1309,7 @@
       "passive": "Becomes immune to Knockdown effects while on the ground.",
       "baseStats": {
         "health": 550,
-        "shields": 555,
+        "shields": 455,
         "energy": 215,
         "armor": 500,
         "sprintSpeed": 1,
@@ -1328,19 +1317,14 @@
       },
       "baseStatsRank30": {
         "health": 650,
-        "shields": 655,
+        "shields": 555,
         "energy": 315,
         "armor": 500,
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -1796,7 +1780,7 @@
     {
       "name": "Banshee",
       "type": "warframe",
-      "description": "Banshee's call heralds death. She maintains crowd control and identifies enemy weak points with sonic attacks. Few can hold their position when struck by her force.",
+      "description": "Banshee’s call heralds death. She maintains crowd control and identifies enemy weak points with sonic attacks. Few can hold their position when struck by her force.",
       "passive": "Weapon noises are hushed so that enemies cannot hear them.",
       "baseStats": {
         "health": 270,
@@ -1814,11 +1798,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -2064,12 +2045,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -2290,7 +2267,7 @@
       "name": "Baruuk",
       "type": "warframe",
       "description": "Beware the fury of the truly patient. Baruuk boasts survivability and crowd control. Pushed beyond his restraint, he unleashes the storm within.",
-      "passive": "Each projectile dodged, each enemy lulled or disarmed, erodes Baruuk's restraint and fuels the storm within. As Baruuk's restraint is diminished he becomes up to 50% more resistant to damage.",
+      "passive": "Each projectile dodged, each enemy lulled or disarmed, erodes Baruuk's restraint and fuels the storm within. As Baruuk's restraint is diminished he becomes up to |PERCENT|% more resistant to damage.",
       "baseStats": {
         "health": 180,
         "shields": 270,
@@ -2308,10 +2285,10 @@
         "masteryReq": 0
       },
       "polarities": [
-        "vazarin",
-        "vazarin"
+        "Vazarin",
+        "Vazarin"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -2634,7 +2611,7 @@
       "name": "Baruuk Prime",
       "type": "warframe",
       "description": "Doomed are the fools who attack the peace and exhaust the restraint of this reluctant warrior.",
-      "passive": "Each projectile dodged, each enemy lulled or disarmed, erodes Baruuk's restraint and fuels the storm within. As Baruuk's restraint is diminished he becomes up to 50% more resistant to damage.",
+      "passive": "Each projectile dodged, each enemy lulled or disarmed, erodes Baruuk's restraint and fuels the storm within. As Baruuk's restraint is diminished he becomes up to |PERCENT|% more resistant to damage.",
       "baseStats": {
         "health": 180,
         "shields": 365,
@@ -2652,11 +2629,11 @@
         "masteryReq": 0
       },
       "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai"
+        "Vazarin",
+        "Madurai",
+        "Naramon"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -3192,7 +3169,7 @@
       "name": "Caliban",
       "type": "warframe",
       "description": "The heir of twin kingdoms ascends. Biological and Sentient life meet in Caliban. An adept monarch, he offers crowd control and survivability. His creator had more than one world in mind.",
-      "passive": "Allies within Affinity range gain increased resistance to the types of damage they are currently taking.",
+      "passive": "Allies within Affinity range gain up to |PCT|% resistance to the types of damage they are currently taking.",
       "baseStats": {
         "health": 270,
         "shields": 550,
@@ -3209,10 +3186,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -4127,11 +4102,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -4640,13 +4612,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -5129,7 +5096,7 @@
       "name": "Citrine",
       "type": "warframe",
       "description": "Gaze upon the Crystal Bastion. Citrine's crystalline might supports allies on the battlefield. Combat only enhances her fractal beauty.",
-      "passive": "Citrine grants nearby allies 5 health regeneration per second. Pick up a Health Orb to increase regeneration by 0,1, up to a maximum of 25.",
+      "passive": "Citrine grants nearby allies |BASE| health regeneration per second. Pick up a Health Orb to increase regeneration by |HPS|, up to a maximum of |MAX|.",
       "baseStats": {
         "health": 400,
         "shields": 270,
@@ -5146,11 +5113,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -5412,7 +5376,7 @@
       "name": "Cyte-09",
       "type": "warframe",
       "description": "Move like a shadow, strike with force. The Orokin created a Warframe that marries damage and stealth to eliminate sensitive problems, but he disappeared in the chaos of their demise. All that remains is a batch name: Cyte-09.",
-      "passive": "Weak Point Kills increase Cyte-09's Weak Point Critical Chance by 1% up to 300% for the duration of the current mission.",
+      "passive": "Weak Point Kills increase Cyte-09's Weak Point Critical Chance by |INCREASE|% up to |CAP|% for the duration of the current mission.",
       "baseStats": {
         "health": 225,
         "shields": 135,
@@ -5429,11 +5393,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -5726,7 +5687,7 @@
       "name": "Dagath",
       "type": "warframe",
       "description": "Never underestimate the power and wrath of sullen sadness. Dagath's malice deals high damage.",
-      "passive": "There is a 35% chance that Energy and Health Orbs will be 300% more effective on Dagath.",
+      "passive": "There is a |PERCENT|% chance that Energy and Health Orbs will be |ENERGY|% more effective on Dagath.",
       "baseStats": {
         "health": 566,
         "shields": 150,
@@ -5744,8 +5705,8 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "vazarin"
+        "Madurai",
+        "Vazarin"
       ],
       "aura": "Zenurik",
       "exilus": false,
@@ -6012,7 +5973,7 @@
       "name": "Dante",
       "type": "warframe",
       "description": "Seeker of knowledge. Keeper of history. Daring researcher of Leverian lore. Dante composes arcane tales to support allies and devastate enemies.",
-      "passive": "Noctua scans targets, recording information for your Codex. Status Chance increases by 50% on fully scanned targets.",
+      "passive": "Noctua scans targets, recording information for your Codex. Status Chance increases by |CHANCE|% on fully scanned targets.",
       "baseStats": {
         "health": 300,
         "shields": 150,
@@ -6633,8 +6594,8 @@
     {
       "name": "Ember",
       "type": "warframe",
-      "description": "Harness the power of fire. Ember's heat deals high damage. She keeps a cool head when the battle is hot.",
-      "passive": "Receive 5% Ability Strength for every enemy within Affinity Range affected by Heat.",
+      "description": "Harness the power of fire. Ember’s heat deals high damage. She keeps a cool head when the battle is hot.",
+      "passive": "Receive |STRENGTH|% Ability Strength for every enemy within Affinity Range affected by Heat.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -6651,11 +6612,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -7051,7 +7009,7 @@
       "name": "Ember Prime",
       "type": "warframe",
       "description": "Ember Prime offers the same potential for wanton destruction as Ember but provides unique mod polarities, allowing for greater customization.",
-      "passive": "Receive 5% Ability Strength for every enemy within Affinity Range affected by Heat.",
+      "passive": "Receive |STRENGTH|% Ability Strength for every enemy within Affinity Range affected by Heat.",
       "baseStats": {
         "health": 270,
         "shields": 365,
@@ -7068,11 +7026,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -7459,7 +7414,7 @@
       "name": "Equinox",
       "type": "warframe",
       "description": "Equinox rises from the edge of day and night. Her Day form offers offensive support while her Night form offers defensive support. She thrives between realms.",
-      "passive": "10% of Health Orbs are converted into Energy, and 10% of Energy Orbs are converted into Health.",
+      "passive": "|PERCENT|% of Health Orbs are converted into Energy, and |PERCENT|% of Energy Orbs are converted into Health.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -7476,11 +7431,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -7922,7 +7874,7 @@
       "name": "Equinox Prime",
       "type": "warframe",
       "description": "Night and Day in final balance; the graceful perfection of the one that walks the borders.",
-      "passive": "10% of Health Orbs are converted into Energy, and 10% of Energy Orbs are converted into Health.",
+      "passive": "|PERCENT|% of Health Orbs are converted into Energy, and |PERCENT|% of Energy Orbs are converted into Health.",
       "baseStats": {
         "health": 365,
         "shields": 270,
@@ -7939,13 +7891,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -8379,7 +8326,7 @@
       "name": "Excalibur",
       "type": "warframe",
       "description": "Excalibur epitomizes the warrior spirit. His master swordsmanship deals high damage. He is the embodiment of martial excellence.",
-      "passive": "Excalibur deals 10% increased damage and attacks 10% faster when wielding swords.",
+      "passive": "Excalibur deals |DAMAGE|% increased damage and attacks |SPEED|% faster when wielding swords.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -8396,10 +8343,7 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
+      "polarities": [],
       "aura": null,
       "exilus": null,
       "exilusPolarity": null,
@@ -8658,7 +8602,7 @@
       "name": "Excalibur Prime",
       "type": "warframe",
       "description": "Excalibur Prime is the epitome of mobility and offense, and features the same abilities as Excalibur, but has unique mod polarities installed allowing for greater customization.",
-      "passive": "Excalibur Prime deals 10% increased damage and attacks 10% faster when wielding swords.",
+      "passive": "Excalibur Prime deals |DAMAGE|% increased damage and attacks |SPEED|% faster when wielding swords.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -8675,12 +8619,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -8928,7 +8868,7 @@
       "name": "Excalibur Umbra",
       "type": "warframe",
       "description": "From the shadow of the long night emerges a new Excalibur.",
-      "passive": "Umbra exhibits sentience in combat without Transference control. Attacks 10% faster and deals 10% more damage while wielding swords.",
+      "passive": "Umbra exhibits sentience in combat without Transference control. Attacks |SPEED|% faster and deals |DAMAGE|% more damage while wielding swords.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -8945,13 +8885,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "umbra",
-        "umbra",
-        "umbra"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -9208,8 +9143,8 @@
     {
       "name": "Frost",
       "type": "warframe",
-      "description": "When Frost steps onto the battlefield, enemies experience a chill. Frost's attacks control crowds, protect objectives, and increase survivability. Wield the biting cold.",
-      "passive": "Cold Status Effects from Frost's Abilities last 100% longer. Frost gains 50 Armor per enemy afflicted with Cold Status within Affinity Range.",
+      "description": "When Frost steps onto the battlefield, enemies experience a chill. Frost’s attacks control crowds, protect objectives, and increase survivability. Wield the biting cold.",
+      "passive": "Cold Status Effects from Frost's Abilities last |DURATION|% longer. Frost gains |ARMOR| Armor for each enemy afflicted with Cold within Affinity Range.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -9226,11 +9161,8 @@
         "sprintSpeed": 0.95,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -9585,13 +9517,13 @@
       "name": "Frost Prime",
       "type": "warframe",
       "description": "Frost Prime has the same chilling abilities as Frost but provides unique mod polarities, allowing for greater customization.",
-      "passive": "Cold Status Effects from Frost's Abilities last 100% longer. Frost gains 50 Armor per enemy afflicted with Cold Status within Affinity Range.",
+      "passive": "Cold Status Effects from Frost's Abilities last |DURATION|% longer. Frost gains |ARMOR| Armor for each enemy afflicted with Cold within Affinity Range.",
       "baseStats": {
         "health": 270,
         "shields": 550,
         "energy": 100,
         "armor": 315,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -9599,15 +9531,11 @@
         "shields": 650,
         "energy": 150,
         "armor": 315,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "vazarin"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -9953,8 +9881,8 @@
     {
       "name": "Gara",
       "type": "warframe",
-      "description": "Enemies are made fragile by Gara's deadly touch. Gara's vitric abilities provide her and her allies with survivability and deal high damage. Shatter the foe.",
-      "passive": "A chance to create a radial blind lasting 10s when Gara casts abilities.",
+      "description": "Enemies are made fragile by Gara’s deadly touch. Gara’s vitric abilities provide her and her allies with survivability and deal high damage. Shatter the foe.",
+      "passive": "A chance to create a radial blind lasting |DURATION|s when Gara casts Abilities.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -9971,11 +9899,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -10420,7 +10345,7 @@
       "name": "Gara Prime",
       "type": "warframe",
       "description": "Continue the legend of the glass-armored warrior Gara. Dominate the battlefield with the power and purity of crystal.",
-      "passive": "A chance to create a radial blind lasting 10s when exposed to bright light.",
+      "passive": "A chance to create a radial blind lasting |DURATION|s when Gara casts Abilities.",
       "baseStats": {
         "health": 345,
         "shields": 270,
@@ -10437,12 +10362,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai",
-        "naramon"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -10880,8 +10801,8 @@
     {
       "name": "Garuda",
       "type": "warframe",
-      "description": "Death's crimson maiden sharpens her talons. Garuda weaponizes the blood of her foes to deal high damage. Sanguine beauty complements her deadly power.",
-      "passive": "Garuda's damage temporarily increases with each enemy she kills, to a maximum of 100%. Slashes with her talons if no melee weapon is equipped.",
+      "description": "Death’s crimson maiden sharpens her talons. Garuda weaponizes the blood of her foes to deal high damage. Sanguine beauty complements her deadly power.",
+      "passive": "Garuda's damage temporarily increases with each enemy she kills, to a maximum of |DAMAGE|%. Slashes with her talons if no melee weapon is equipped.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -10898,11 +10819,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -11290,7 +11208,7 @@
       "name": "Garuda Prime",
       "type": "warframe",
       "description": "White, gold and deepest scarlet, the queen of gore in full regalia.",
-      "passive": "Garuda's damage temporarily increases with each enemy she kills, to a maximum of 100%. Slashes with her talons if no melee weapon is equipped.",
+      "passive": "Garuda's damage temporarily increases with each enemy she kills, to a maximum of |DAMAGE|%. Slashes with her talons if no melee weapon is equipped.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -11307,12 +11225,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -11694,7 +11608,7 @@
       "name": "Gauss",
       "type": "warframe",
       "description": "Take charge with the Saint of Altra. Gauss is fast, deals high damage, and has strong survivability. Movement charges his powerful battery, so never stop moving.",
-      "passive": "Moving generates an electrical current that fills Gauss' battery. Shields recharge up to 120% faster while the Recharge Delay is up to 80% shorter, based on the battery level.",
+      "passive": "Moving generates an electrical current that fills Gauss' battery. Shields recharge up to |SPEED|% faster while the Recharge Delay is up to |DELAY|% shorter, based on the battery level.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -11712,10 +11626,10 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "vazarin"
+        "Madurai",
+        "Vazarin"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -12228,7 +12142,7 @@
       "name": "Gauss Prime",
       "type": "warframe",
       "description": "Quicksilver takes form. Gauss Prime brooks no talk of defeat.",
-      "passive": "Moving generates an electrical current that fills Gauss' battery. Shields recharge up to 120% faster while the Recharge Delay is up to 80% shorter, based on the battery level.",
+      "passive": "Moving generates an electrical current that fills Gauss' battery. Shields recharge up to |SPEED|% faster while the Recharge Delay is up to |DELAY|% shorter, based on the battery level.",
       "baseStats": {
         "health": 270,
         "shields": 550,
@@ -12246,11 +12160,11 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
+        "Madurai",
         "Naramon",
-        "vazarin"
+        "Vazarin"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -12759,7 +12673,7 @@
       "name": "Grendel",
       "type": "warframe",
       "description": "Grendel sees every battlefield as a smorgasbord. His insatiable appetite rewards him with high survivability. Enemies will be eaten. And regurgitated.",
-      "passive": "Each enemy consumed grants 250 bonus armor.",
+      "passive": "Each enemy consumed grants |ARMOUR| bonus armor.",
       "baseStats": {
         "health": 1095,
         "shields": 95,
@@ -12776,12 +12690,8 @@
         "sprintSpeed": 0.95,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -13167,13 +13077,13 @@
       "name": "Grendel Prime",
       "type": "warframe",
       "description": "Primal. Insatiable. Grendel Prime devours all who oppose him.",
-      "passive": "Each enemy consumed grants 250 bonus armor.",
+      "passive": "Each enemy consumed grants |ARMOUR| bonus armor.",
       "baseStats": {
         "health": 1095,
         "shields": 95,
         "energy": 200,
         "armor": 400,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -13181,16 +13091,11 @@
         "shields": 195,
         "energy": 300,
         "armor": 400,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "vazarin",
-        "Madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -13567,7 +13472,7 @@
     {
       "name": "Gyre",
       "type": "warframe",
-      "description": "Annihilate enemies with the conductivity of coils and transmitters. Gyre's electric attacks provide crowd control. She is the embodiment of elegant theory.",
+      "description": "Annihilate enemies with the conductivity of coils and transmitters. Gyre’s electric attacks provide crowd control. She is the embodiment of elegant theory.",
       "passive": "Gyre's abilities have a 10% chance to deal critical damage for each Electrical status that affects the enemy.",
       "baseStats": {
         "health": 270,
@@ -13585,11 +13490,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -14018,11 +13920,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -14340,11 +14239,11 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "vazarin",
-        "naramon"
+        "Madurai",
+        "Vazarin",
+        "Naramon"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -14637,7 +14536,7 @@
     {
       "name": "Hildryn",
       "type": "warframe",
-      "description": "Strength is Hildryn's virtue. Her unique high-damage abilities are powered by her Shields, which can be recharged with Energy. Hildryn proves that a strong offense is a good defense.",
+      "description": "Strength is Hildryn’s virtue. Her unique high-damage abilities are powered by her Shields, which can be recharged with Energy. Hildryn proves that a strong offense is a good defense.",
       "passive": "Hildryn's full Shield Gate is high. After her Shields are depleted, she is invulnerable to damage up to 3.5s.",
       "baseStats": {
         "health": 180,
@@ -14656,10 +14555,10 @@
         "masteryReq": 0
       },
       "polarities": [
-        "vazarin",
-        "vazarin"
+        "Vazarin",
+        "Vazarin"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Vazarin",
       "abilities": [
@@ -14941,7 +14840,7 @@
     {
       "name": "Hildryn Prime",
       "type": "warframe",
-      "description": "Hildryn Prime proves that power is discipline's reward.",
+      "description": "Hildryn Prime proves that power is discipline’s reward.",
       "passive": "Hildryn's full Shield Gate is high. After her Shields are depleted, she is invulnerable to damage up to 3.5s.",
       "baseStats": {
         "health": 270,
@@ -14960,11 +14859,11 @@
         "masteryReq": 0
       },
       "polarities": [
-        "vazarin",
-        "vazarin",
-        "naramon"
+        "Vazarin",
+        "Vazarin",
+        "Naramon"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Vazarin",
       "abilities": [
@@ -15241,7 +15140,7 @@
       "name": "Hydroid",
       "type": "warframe",
       "description": "Hydroid summons the power of the ocean depths. He provides crowd control with aqueous attacks. His enemies will meet a watery demise.",
-      "passive": "Enemies damaged by Hydroid are more vulnerable to Corrosion Status, with initial status reducing armor by 50%.",
+      "passive": "Enemies damaged by Hydroid are more vulnerable to Corrosive Status, with initial Status reducing Armor by |PCT|%.",
       "baseStats": {
         "health": 270,
         "shields": 365,
@@ -15258,11 +15157,8 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -15657,8 +15553,8 @@
     {
       "name": "Hydroid Prime",
       "type": "warframe",
-      "description": "Command the ocean's fury with this king of gold and silver. Featuring altered mod polarities for greater customization.",
-      "passive": "Enemies damaged by Hydroid are more vulnerable to Corrosion Status, with initial status reducing armor by 50%.",
+      "description": "Command the ocean’s fury with this king of gold and silver. Featuring altered mod polarities for greater customization.",
+      "passive": "Enemies damaged by Hydroid are more vulnerable to Corrosive Status, with initial Status reducing Armor by |PCT|%.",
       "baseStats": {
         "health": 270,
         "shields": 550,
@@ -15675,13 +15571,8 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin",
-        "naramon",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -15992,10 +15883,10 @@
         "masteryReq": 0
       },
       "polarities": [
-        "vazarin",
-        "vazarin"
+        "Vazarin",
+        "Vazarin"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -16318,11 +16209,11 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "vazarin",
-        "vazarin"
+        "Vazarin",
+        "Vazarin",
+        "Madurai"
       ],
-      "aura": "naramon",
+      "aura": "Naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -16892,7 +16783,7 @@
       "name": "Ivara",
       "type": "warframe",
       "description": "The huntress draws her bow. Ivara is stealth itself. Her enemies live in fear of her sudden attacks.",
-      "passive": "Senses nearby enemies within 50m.",
+      "passive": "Senses nearby enemies within |RADIUS|m.",
       "baseStats": {
         "health": 180,
         "shields": 270,
@@ -16909,11 +16800,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -17250,7 +17138,7 @@
       "name": "Ivara Prime",
       "type": "warframe",
       "description": "As regal and lethal as a nighttime wood, this is the queen of the hunt in her ultimate form.",
-      "passive": "Senses nearby enemies within 50m.",
+      "passive": "Senses nearby enemies within |RADIUS|m.",
       "baseStats": {
         "health": 180,
         "shields": 455,
@@ -17267,12 +17155,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -17600,7 +17484,7 @@
       "name": "Jade",
       "type": "warframe",
       "description": "Become enraptured by the song of devastation. Through her, the Jade Light can be a force of destruction or a source of support.",
-      "passive": "Jade's profound understanding of the relationship between life and death grants her two Aura Mod Slots. Some of her Abilities apply Judgments, increasing enemy damage vulnerability by 50% for 10s.",
+      "passive": "Jade's profound understanding of the relationship between life and death grants her two Aura Mod Slots. Some of her Abilities apply Judgments, increasing enemy damage vulnerability by |CHANCE|% for |DURATION|s.",
       "baseStats": {
         "health": 365,
         "shields": 450,
@@ -17617,10 +17501,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Naramon"
-      ],
-      "aura": "Any",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -17664,7 +17546,7 @@
       "name": "Khora",
       "type": "warframe",
       "description": "Khora is red in whip and claw. She works together with her Kavat companion, Venari, to deal high damage and provide crowd control. Two bodies, one will.",
-      "passive": "The ferocious kavat, Venari, fights by Khora's side and provides her with a 15% speed boost while active. If killed, Venari will reappear after 45s.",
+      "passive": "The ferocious kavat, Venari, fights by Khora's side and provides her with a |SPEED|% speed boost while active. If killed, Venari will reappear after |RESPAWN|s.",
       "baseStats": {
         "health": 365,
         "shields": 270,
@@ -17682,10 +17564,10 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "naramon"
+        "Madurai",
+        "Naramon"
       ],
-      "aura": "vazarin",
+      "aura": "Vazarin",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -18082,7 +17964,7 @@
       "name": "Khora Prime",
       "type": "warframe",
       "description": "A harmony of mistress and monster. The gilded huntress and her loyal Kavat, Venari, dominate the battlefield with their will.",
-      "passive": "The ferocious kavat, Venari, fights by Khora Prime's side and provides her with a 15% speed boost while active. If killed, Venari will reappear after 45s.",
+      "passive": "The ferocious kavat, Venari, fights by Khora's side and provides her with a |SPEED|% speed boost while active. If killed, Venari will reappear after |RESPAWN|s.",
       "baseStats": {
         "health": 365,
         "shields": 365,
@@ -18100,11 +17982,11 @@
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "vazarin",
-        "naramon"
+        "Madurai",
+        "Naramon",
+        "Vazarin"
       ],
-      "aura": "vazarin",
+      "aura": "Vazarin",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -18495,7 +18377,7 @@
       "name": "Koumei",
       "type": "warframe",
       "description": "Test your luck with the dice-maiden. Koumei weaves fate to unleash damage and ensure her survival. To the virtuous, she is an oracle. To the wicked, a perilous game of chance.",
-      "passive": "Every 60 seconds, one of Koumei's weapons will inflict random Status Effects for 60 seconds",
+      "passive": "Every |DURATION| seconds, one of Koumei's weapons will inflict random Status Effects for |DURATION| seconds.",
       "baseStats": {
         "health": 344,
         "shields": 122,
@@ -18512,11 +18394,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -18560,7 +18439,7 @@
       "name": "Kullervo",
       "type": "warframe",
       "description": "Kullervo answers for his sins and the sins of others. His daggers and melee prowess deal high damage. Seize the power of treachery to slake his thirst for revenge.",
-      "passive": "Kullervo boasts +75% Heavy Attack Efficiency and +100% Heavy Attack Wind Up Speed on all melee weapons.",
+      "passive": "Kullervo boasts +|EFFICIENCY|% Heavy Attack Efficiency and +|WINDUP|% Heavy Attack Wind Up Speed on all melee weapons.",
       "baseStats": {
         "health": 1005,
         "shields": 0,
@@ -18577,11 +18456,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -18627,7 +18503,7 @@
       "name": "Lavos",
       "type": "warframe",
       "description": "The serpents of Lavos encourage him as he transmutes the battlefield. He uses Toxin, Cold, Electricity, and Heat to deal elemental damage. Harness the power of the dark alchemist.",
-      "passive": "Energy and Universal Orbs give Lavos status immunity for 10s. Hold any ability to imbue the next cast with additional Elemental Damage and Status.",
+      "passive": "Energy and Universal Orbs give Lavos status immunity for |DURATION|s. Hold any ability to imbue the next cast with additional Elemental Damage and Status.",
       "baseStats": {
         "health": 540,
         "shields": 270,
@@ -18644,11 +18520,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -18895,7 +18768,7 @@
       "name": "Lavos Prime",
       "type": "warframe",
       "description": "Some Warframes were Prime from the start. Others ascended. Lavos, the master of transmutation, bowed to no one as he forged his own path to valor.",
-      "passive": "Energy and Universal Orbs give Lavos status immunity for 10s. Hold any ability to imbue the next cast with additional Elemental Damage and Status.",
+      "passive": "Energy and Universal Orbs give Lavos status immunity for |DURATION|s. Hold any ability to imbue the next cast with additional Elemental Damage and Status.",
       "baseStats": {
         "health": 600,
         "shields": 310,
@@ -18912,12 +18785,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "naramon",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -19162,7 +19031,7 @@
       "name": "Limbo",
       "type": "warframe",
       "description": "Master the rift between shadow and substance. Limbo disrupts time-space to provide crowd control. He is at home where others struggle with what is real.",
-      "passive": "Dodge to enter and exit the Rift. Entering leaves behind a small Rift portal lasting 5s. Energy slowly recharges in the Rift, and each enemy killed in there also gives 10 Energy.",
+      "passive": "Dodge to enter and exit the Rift. Entering leaves behind a small Rift portal lasting |DURATION|s. Energy slowly recharges in the Rift, and each enemy killed in there also gives |ENERGY| Energy.",
       "baseStats": {
         "health": 270,
         "shields": 180,
@@ -19179,11 +19048,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -19519,7 +19385,7 @@
       "name": "Limbo Prime",
       "type": "warframe",
       "description": "Dance between realms with this golden rift walker. Featuring altered mod polarities for greater customization.",
-      "passive": "Dodge to enter and exit the Rift. Entering leaves behind a small Rift portal lasting 5s. Energy slowly recharges in the Rift, and each enemy killed in there also gives 10 Energy.",
+      "passive": "Dodge to enter and exit the Rift. Entering leaves behind a small Rift portal lasting |DURATION|s. Energy slowly recharges in the Rift, and each enemy killed in there also gives |ENERGY| Energy.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -19536,13 +19402,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai",
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -19872,7 +19733,7 @@
       "name": "Loki",
       "type": "warframe",
       "description": "Loki knows the art of deception. The trickster employs stealth to sabotage enemies. Sow confusion.",
-      "passive": "Able to hang from walls 10x longer than normal.",
+      "passive": "Able to hang from walls |MULT|x longer than normal.",
       "baseStats": {
         "health": 180,
         "shields": 180,
@@ -19889,11 +19750,8 @@
         "sprintSpeed": 1.25,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -20111,7 +19969,7 @@
       "name": "Loki Prime",
       "type": "warframe",
       "description": "Confuse, deceive and destroy with Loki Prime. Featuring altered mod polarities for greater customization.",
-      "passive": "Able to hang from walls 10x longer than normal.",
+      "passive": "Able to hang from walls |MULT|x longer than normal.",
       "baseStats": {
         "health": 180,
         "shields": 180,
@@ -20128,13 +19986,8 @@
         "sprintSpeed": 1.25,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin",
-        "madurai",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -20342,7 +20195,7 @@
       "name": "Mag",
       "type": "warframe",
       "description": "Take down your enemies with magnetic force. Mag alters magnetic fields to provide crowd control and strip enemy defenses. Few can resist her attraction or her repulsion.",
-      "passive": "Nearby items gravitate towards Mag for easy collection.",
+      "passive": "Nearby items gravitate toward Mag for easy collection.",
       "baseStats": {
         "health": 180,
         "shields": 455,
@@ -20359,11 +20212,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -20769,7 +20619,7 @@
       "name": "Mag Prime",
       "type": "warframe",
       "description": "The exquisite Mag Prime offers the same abilities as Mag but with unique mod polarities for greater customization.",
-      "passive": "Nearby items gravitate towards Mag for easy collection.",
+      "passive": "Nearby items gravitate toward Mag for easy collection.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -20786,12 +20636,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -21189,7 +21035,7 @@
       "name": "Mesa",
       "type": "warframe",
       "description": "The gunslinger has a steady deadly hand. Each shot deals high damage. Mesa is the fastest draw in the realm.",
-      "passive": "Shoot dual-wielded sidearms 15% faster and reload single-handed sidearms 25% more rapidly. Gain 50 Bonus Health when not using Melee Weapons.",
+      "passive": "Shoot dual-wielded sidearms |SPEED|% faster and reload single-handed sidearms |RELOAD|% more rapidly. Gain |HEALTH| Bonus Health when not using Melee Weapons.",
       "baseStats": {
         "health": 365,
         "shields": 180,
@@ -21206,11 +21052,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -21528,7 +21371,7 @@
       "name": "Mesa Prime",
       "type": "warframe",
       "description": "Cast a long shadow with this lethal enforcer. Featuring altered mod polarities for greater customization.",
-      "passive": "Shoot dual-wielded sidearms 15% faster and reload single-handed sidearms 25% more rapidly. Gain 50 Bonus Health when not using Melee Weapons.",
+      "passive": "Shoot dual-wielded sidearms |SPEED|% faster and reload single-handed sidearms |RELOAD|% more rapidly. Gain |HEALTH| Bonus Health when not using Melee Weapons.",
       "baseStats": {
         "health": 400,
         "shields": 180,
@@ -21545,13 +21388,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon",
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -21860,8 +21698,8 @@
     {
       "name": "Mirage",
       "type": "warframe",
-      "description": "Mirage's sleight of hand complements her might. Her dazzled foes take heavy damage. Doppelgangers, lasers, and traps are elements of her stagecraft.",
-      "passive": "Sliding lasts 85% longer and acrobatic maneuvers are 50% faster.",
+      "description": "Mirage’s sleight of hand complements her might. Her dazzled foes take heavy damage. Doppelgangers, lasers, and traps are elements of her stagecraft.",
+      "passive": "Sliding lasts |DURATION|% longer and acrobatic maneuvers are |SPEED|% faster.",
       "baseStats": {
         "health": 200,
         "shields": 200,
@@ -21878,11 +21716,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -22274,7 +22109,7 @@
       "name": "Mirage Prime",
       "type": "warframe",
       "description": "Dazzle the opposition with this golden master of illusion and mayhem. Featuring altered mod polarities allow for greater customization.",
-      "passive": "Sliding lasts 85% longer and acrobatic maneuvers are 50% faster.",
+      "passive": "Sliding lasts |DURATION|% longer and acrobatic maneuvers are |SPEED|% faster.",
       "baseStats": {
         "health": 200,
         "shields": 310,
@@ -22291,13 +22126,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin",
-        "naramon",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -22681,7 +22511,7 @@
       "name": "Nekros",
       "type": "warframe",
       "description": "There is a reaper whose name is Nekros. He provides deathly crowd control. Erstwhile enemies become allies when Nekros calls up recruits from the dead.",
-      "passive": "Restore 5 Health with every enemy death within 10m.",
+      "passive": "Restore |HEALTH| Health with every enemy death within |RADIUS|m.",
       "baseStats": {
         "health": 270,
         "shields": 235,
@@ -22698,10 +22528,7 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
+      "polarities": [],
       "aura": null,
       "exilus": null,
       "exilusPolarity": null,
@@ -22993,7 +22820,7 @@
       "name": "Nekros Prime",
       "type": "warframe",
       "description": "Death's new master. Featuring altered mod polarities allow for greater customization.",
-      "passive": "Restore 5 Health with every enemy death within 10m.",
+      "passive": "Restore |HEALTH| Health with every enemy death within |RADIUS|m.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -23010,11 +22837,7 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin",
-        "naramon"
-      ],
+      "polarities": [],
       "aura": null,
       "exilus": null,
       "exilusPolarity": null,
@@ -23297,8 +23120,8 @@
     {
       "name": "Nezha",
       "type": "warframe",
-      "description": "The mercurial firemonger protects the innocent. Nezha's multifaceted tactics give him high survivability as he inflicts damage and provides crowd control. His fire is the clarion of hope.",
-      "passive": "Slide 60% faster and go 35% farther.",
+      "description": "The mercurial firemonger protects the innocent. Nezha’s multifaceted tactics give him high survivability as he inflicts damage and provides crowd control. His fire is the clarion of hope.",
+      "passive": "Slide |SPEED|% faster and go |RANGE|% farther.",
       "baseStats": {
         "health": 365,
         "shields": 135,
@@ -23315,11 +23138,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -23702,7 +23522,7 @@
       "name": "Nezha Prime",
       "type": "warframe",
       "description": "Behold: the Scion of the Burning Wind, now before you in most courtly accoutrement. Featuring altered mod polarities for greater customization.",
-      "passive": "Slide 60% faster and go 35% farther.",
+      "passive": "Slide |SPEED|% faster and go |RANGE|% farther.",
       "baseStats": {
         "health": 365,
         "shields": 135,
@@ -23719,12 +23539,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -24099,7 +23915,7 @@
       "name": "Nidus",
       "type": "warframe",
       "description": "Nidus draws strength from the Infestation. It bolsters him with survivability as he deals high damage and provides crowd control. Plague your enemies.",
-      "passive": "If Nidus is killed with at least 15 stacks of Mutation, those 15 stacks are consumed; this grants 5s of invulnerability and restores Health to 50%.",
+      "passive": "If Nidus is killed with at least |STACKS| stacks of Mutation, those |STACKS| stacks are consumed; this grants |DURATION|s of invulnerability and restores Health to |HEAL|%.",
       "baseStats": {
         "health": 455,
         "shields": 0,
@@ -24116,11 +23932,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -24440,7 +24253,7 @@
       "name": "Nidus Prime",
       "type": "warframe",
       "description": "Mutation is endless. The ravening plague-bearer returns in a long-unseen form, seething with a primal strain of the Infestation.",
-      "passive": "If Nidus is killed with at least 15 stacks of Mutation, those 15 stacks are consumed; this grants 5s of invulnerability and restores Health to 50%.",
+      "passive": "If Nidus is killed with at least |STACKS| stacks of Mutation, those |STACKS| stacks are consumed; this grants |DURATION|s of invulnerability and restores Health to |HEAL|%.",
       "baseStats": {
         "health": 550,
         "shields": 0,
@@ -24457,12 +24270,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -24774,7 +24583,7 @@
       "name": "Nova",
       "type": "warframe",
       "description": "Harness antimatter. Nova uses antiparticles to provide crowd control and amplify damage output. She obliterates enemies by destabilizing matter itself.",
-      "passive": "Enemies killed while slowed down have 15% to drop health orbs. Enemies killed while sped up have 15% to drop energy orbs.",
+      "passive": "Enemies killed while slowed down have |CHANCE|% to drop health orbs. Enemies killed while sped up have |CHANCE|% to drop energy orbs.",
       "baseStats": {
         "health": 270,
         "shields": 180,
@@ -24791,11 +24600,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -25123,7 +24929,7 @@
       "name": "Nova Prime",
       "type": "warframe",
       "description": "Nova Prime wreaks devastation on her enemies using volatile antimatter. Featuring altered mod polarities for greater customization.",
-      "passive": "Enemies killed while slowed down have 15% to drop health orbs. Enemies killed while sped up have 15% to drop energy orbs.",
+      "passive": "Enemies killed while slowed down have |CHANCE|% to drop health orbs. Enemies killed while sped up have |CHANCE|% to drop energy orbs.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -25140,12 +24946,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -25465,7 +25267,7 @@
       "name": "Nyx",
       "type": "warframe",
       "description": "Psychic attacks make Nyx a dangerous foe. She reaches into enemy consciousness to provide crowd control and turn their attacks back on them. Such manipulation can turn the tide of battle.",
-      "passive": "Nyx gains +40% Critical Chance on Primary and Secondary weapons per confused enemy within Affinity Range, up to +200%.",
+      "passive": "Nyx gains +|CRITICAL|% Critical Chance on Primary and Secondary weapons per Confused enemy within Affinity Range, up to +|MAX|%.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -25482,11 +25284,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -25815,7 +25614,7 @@
       "name": "Nyx Prime",
       "type": "warframe",
       "description": "Infiltrate the minds of your enemies with Nyx Prime. Featuring altered mod polarities for greater customization.",
-      "passive": "Nyx gains +40% Critical Chance on Primary and Secondary weapons per confused enemy within Affinity Range, up to +200%.",
+      "passive": "Nyx gains +|CRITICAL|% Critical Chance on Primary and Secondary weapons per Confused enemy within Affinity Range, up to +|MAX|%.",
       "baseStats": {
         "health": 270,
         "shields": 365,
@@ -25832,12 +25631,8 @@
         "sprintSpeed": 1.125,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -26156,8 +25951,8 @@
     {
       "name": "Oberon",
       "type": "warframe",
-      "description": "Healing and suffering do Oberon's bidding. His command of the natural world supports allies. Boon to his friends, bane of his foes.",
-      "passive": "Allied pets receive 25% Health, Armor and Shield links. In addition, your pet receives an instant revive per mission.",
+      "description": "Healing and suffering do Oberon’s bidding. His command of the natural world supports allies. Boon to his friends, bane of his foes.",
+      "passive": "Allied Companions receive |HEALTH|% Health-link, Armor-link and Shield-link from Oberon. In addition, your Companion receives an instant revive per mission.",
       "baseStats": {
         "health": 365,
         "shields": 270,
@@ -26174,11 +25969,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -26590,7 +26382,7 @@
       "name": "Oberon Prime",
       "type": "warframe",
       "description": "Protect the balance with this regal forest guardian. Featuring altered mod polarities for greater customization.",
-      "passive": "Allied pets receive 25% Health, Armor and Shield links. In addition, your pet receives an instant revive per mission.",
+      "passive": "Allied Companions receive |HEALTH|% Health-link, Armor-link and Shield-link from Oberon. In addition, your Companion receives an instant revive per mission.",
       "baseStats": {
         "health": 365,
         "shields": 270,
@@ -26607,13 +26399,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -27016,8 +26803,8 @@
     {
       "name": "Octavia",
       "type": "warframe",
-      "description": "Octavia turns bass, beat, and melody into a symphony of devastation. The music of her Mandachord gives her high survivability and supports allies. Her composition means the enemy's destruction.",
-      "passive": "Replenish 30 energy over 30s for Octavia and allies within 15m when abilities are activated.",
+      "description": "Octavia turns bass, beat, and melody into a symphony of devastation. The music of her Mandachord gives her high survivability and supports allies. Her composition means the enemy’s destruction.",
+      "passive": "Replenish |ENERGY| energy over |DURATION|s for Octavia and allies within |RANGE|m when abilities are activated.",
       "baseStats": {
         "health": 270,
         "shields": 180,
@@ -27034,11 +26821,8 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -27374,7 +27158,7 @@
       "name": "Octavia Prime",
       "type": "warframe",
       "description": "Strike up a symphony of destruction with the mistress of music, Octavia, in her grandest and most spectacular form. Featuring altered mod polarities for greater customization.",
-      "passive": "Replenish 30 energy over 30s for Octavia and allies within 15m when abilities are activated.",
+      "passive": "Replenish |ENERGY| energy over |DURATION|s for Octavia and allies within |RANGE|m when abilities are activated.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -27391,12 +27175,8 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "naramon",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -28263,7 +28043,7 @@
       "name": "Oraxia",
       "type": "warframe",
       "description": "Sinister grace interwoven with lethal versatility; the evolution of a perfect predator. Fear's name is Oraxia.",
-      "passive": "Wall Latching grants Predator's Lurk, rendering Oraxia invisible for 8s.",
+      "passive": "Wall Latching grants Predator's Lurk, rendering Oraxia invisible for |DURATION|s.",
       "baseStats": {
         "health": 575,
         "shields": 125,
@@ -28280,11 +28060,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "Madurai",
-        "Naramon"
-      ],
-      "aura": "Madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -28326,7 +28103,7 @@
       "name": "Protea",
       "type": "warframe",
       "description": "Protea knows all about protection. Her vast arsenal inflicts damage and provides ally support. She can even manipulate time itself.",
-      "passive": "Every 4th Power Cast is granted +100% Ability Strength.",
+      "passive": "Every |CASTS|th Power Cast is granted +|STRENGTH|% Ability Strength.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -28343,11 +28120,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon"
-      ],
-      "aura": "Any",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -28846,7 +28620,7 @@
       "name": "Protea Prime",
       "type": "warframe",
       "description": "Behold the child of two fathers. Protea Prime once fulfilled Parvos Granum's vision of a time-wielding guardian. Now she upholds the Tenno ideal of defending the defenseless.",
-      "passive": "Every 4th Power Cast is granted +100% Ability Strength.",
+      "passive": "Every |CASTS|th Power Cast is granted +|STRENGTH|% Ability Strength.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -28863,12 +28637,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon",
-        "naramon"
-      ],
-      "aura": "Any",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -29361,13 +29131,13 @@
       "name": "Qorvex",
       "type": "warframe",
       "description": "Albrecht Entrati designed Qorvex to protect a Chosen Operator from the unique hazards of his lab. A Crucible Core gives Qorvex high survivability as he provides crowd control.",
-      "passive": "Weapons wield by Qorvex have an additional +3 Punch Through.",
+      "passive": "Weapons wielded by Qorvex have an additional +|PUNCH_THROUGH| Punch Through.",
       "baseStats": {
         "health": 600,
         "shields": 200,
         "energy": 150,
         "armor": 875,
-        "sprintSpeed": 0.9,
+        "sprintSpeed": 0.89999998,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -29375,14 +29145,14 @@
         "shields": 300,
         "energy": 200,
         "armor": 875,
-        "sprintSpeed": 0.9,
+        "sprintSpeed": 0.89999998,
         "masteryReq": 0
       },
       "polarities": [
-        "naramon",
-        "vazarin"
+        "Vazarin",
+        "Naramon"
       ],
-      "aura": "vazarin",
+      "aura": "Naramon",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -29704,10 +29474,10 @@
       "name": "Revenant",
       "type": "warframe",
       "description": "Macabre spectral power has risen. Infused with the essence of the Eidolon, Revenant has strong survivability and deals high damage. Enemies become his thralls.",
-      "passive": "Shield depletion smashes enemies within 7.5m with a 100 Damage knockdown shockwave.",
+      "passive": "Shield depletion smashes enemies within |RADIUS|m with a |DAMAGE| Damage knockdown shockwave.",
       "baseStats": {
         "health": 270,
-        "shields": 735,
+        "shields": 635,
         "energy": 140,
         "armor": 135,
         "sprintSpeed": 1,
@@ -29715,17 +29485,14 @@
       },
       "baseStatsRank30": {
         "health": 370,
-        "shields": 835,
+        "shields": 735,
         "energy": 190,
         "armor": 135,
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -30133,7 +29900,7 @@
       "name": "Revenant Prime",
       "type": "warframe",
       "description": "The lost one rises. Reify the essence of the Eidolon as you wield Revenant Prime’s power.",
-      "passive": "Shield depletion smashes enemies within 7.5m with a 100 Damage knockdown shockwave.",
+      "passive": "Shield depletion smashes enemies within |RADIUS|m with a |DAMAGE| Damage knockdown shockwave.",
       "baseStats": {
         "health": 270,
         "shields": 825,
@@ -30150,12 +29917,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -30557,13 +30320,13 @@
       "name": "Rhino",
       "type": "warframe",
       "description": "Rhino packs a punch. He boasts high survivability and crowd control. The wise would do well to stand clear when he charges.",
-      "passive": "Emit a shockwave dealing 100 damage after landing from a great height.",
+      "passive": "Emit a shockwave dealing |DAMAGE| damage after landing from a great height.",
       "baseStats": {
         "health": 270,
         "shields": 455,
         "energy": 100,
         "armor": 240,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -30571,14 +30334,11 @@
         "shields": 555,
         "energy": 150,
         "armor": 240,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -30844,7 +30604,7 @@
       "name": "Rhino Prime",
       "type": "warframe",
       "description": "Takes Rhino's ground-shaking abilities to the next level with altered mod polarities that offer greater customization.",
-      "passive": "Emit a shockwave dealing 100 damage after landing from a great height.",
+      "passive": "Emit a shockwave dealing |DAMAGE| damage after landing from a great height.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -30861,12 +30621,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -31123,14 +30879,14 @@
     {
       "name": "Saryn",
       "type": "warframe",
-      "description": "Toxicity is Saryn's strength. Her serpentine powers deal heavy damage. For Saryn, venom is a virtue.",
-      "passive": "Status Effects inflicted upon enemies last 25% longer.",
+      "description": "Toxicity is Saryn’s strength. Her serpentine powers deal heavy damage. For Saryn, venom is a virtue.",
+      "passive": "Status Effects inflicted upon enemies last |DURATION|% longer.",
       "baseStats": {
         "health": 365,
         "shields": 270,
         "energy": 175,
         "armor": 240,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -31138,14 +30894,11 @@
         "shields": 370,
         "energy": 225,
         "armor": 240,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -31600,7 +31353,7 @@
       "name": "Saryn Prime",
       "type": "warframe",
       "description": "A golden blossom conceals deadly nectar. Featuring altered mod polarities for greater customization.",
-      "passive": "Status Effects inflicted upon enemies last 25% longer.",
+      "passive": "Status Effects inflicted upon enemies last |DURATION|% longer.",
       "baseStats": {
         "health": 365,
         "shields": 270,
@@ -31617,12 +31370,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -32076,7 +31825,7 @@
         "shields": 235,
         "energy": 140,
         "armor": 160,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -32084,13 +31833,10 @@
         "shields": 335,
         "energy": 190,
         "armor": 160,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "madurai"
-      ],
+      "polarities": [],
       "aura": null,
       "exilus": null,
       "exilusPolarity": null,
@@ -32504,7 +32250,7 @@
         "shields": 270,
         "energy": 175,
         "armor": 185,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -32512,14 +32258,10 @@
         "shields": 370,
         "energy": 225,
         "armor": 185,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
-      "polarities": [
-        "Vazarin",
-        "Naramon",
-        "Madurai"
-      ],
+      "polarities": [],
       "aura": null,
       "exilus": null,
       "exilusPolarity": null,
@@ -32940,11 +32682,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -32989,8 +32728,8 @@
     {
       "name": "Temple",
       "type": "warframe",
-      "description": "Blazing with glamor and armed with an Infested guitar, Lizzie. Temple's power chords light the flames of revolution.",
-      "passive": "Play abilities in sync with the Backbeat metronome to invigorate ability effects while increasing Ability Efficiency by 50%.",
+      "description": "Blazing with glamor and armed with an Infested guitar, Lizzie, Temple’s power chords light the flames of revolution.",
+      "passive": "Play abilities in sync with the Backbeat metronome to invigorate ability effects while increasing Ability Efficiency by |COST|%.",
       "baseStats": {
         "health": 405,
         "shields": 225,
@@ -33052,7 +32791,7 @@
     {
       "name": "Titania",
       "type": "warframe",
-      "description": "Titania's fairy-like appearance belies her formidable regal power. The enchantress deals high damage and provides crowd control. She forces opponents to pay homage or perish.",
+      "description": "Titania’s fairy-like appearance belies her formidable regal power. The enchantress deals high damage and provides crowd control. She forces opponents to pay homage or perish.",
       "passive": "Titania generates Health for herself and nearby allies every time she casts an Ability.",
       "baseStats": {
         "health": 270,
@@ -33070,11 +32809,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -33517,13 +33253,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai",
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -33942,7 +33673,7 @@
       "name": "Trinity",
       "type": "warframe",
       "description": "Trinity embodies redemption and health. Her extraordinary healing powers support allies. Where others destroy, she restores.",
-      "passive": "Allies in Affinity Range gain 50% of Trinity's Max Energy as Health.",
+      "passive": "Allies in Affinity Range gain |BUFF|% of Trinity's Max Energy as Health.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -33959,11 +33690,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -34328,7 +34056,7 @@
       "name": "Trinity Prime",
       "type": "warframe",
       "description": "Become the bastion that defends allies using powerful healing abilities with Trinity Prime. Featuring altered mod polarities for greater customization.",
-      "passive": "Allies in Affinity Range gain 50% of Trinity's Max Energy as Health.",
+      "passive": "Allies in Affinity Range gain |BUFF|% of Trinity's Max Energy as Health.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -34345,13 +34073,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin",
-        "madurai",
-        "naramon"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -34708,7 +34431,7 @@
       "name": "Valkyr",
       "type": "warframe",
       "description": "Valkyr was modified into a highly motivated and fearsome killer. She is adept at dealing damage and surviving. Her battle cry strikes terror into all who hear it.",
-      "passive": "Valkyr accumulates Rage when hitting or killing enemies with melee weapons, increasing her Melee Damage up to 300%. Taking fatal damage when the Rage meter is above 150% consumes the meter, preventing death and granting 5s of invulnerability.",
+      "passive": "Valkyr accumulates Rage when hitting or killing enemies with melee weapons, increasing her Melee Damage up to |PERCENT|%. Taking fatal damage when the Rage meter is above |CONSUME|% consumes the meter, preventing death and granting |DURATION|s of invulnerability.",
       "baseStats": {
         "health": 650,
         "shields": 135,
@@ -34725,11 +34448,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -35023,7 +34743,7 @@
       "name": "Valkyr Prime",
       "type": "warframe",
       "description": "A proud fighter emerges unscarred by time or malice. Featuring altered mod polarities allow for greater customization.",
-      "passive": "Valkyr accumulates Rage when hitting or killing enemies with melee weapons, increasing her Melee Damage up to 300%. Taking fatal damage when the Rage meter is above 150% consumes the meter, preventing death and granting 5s of invulnerability.",
+      "passive": "Valkyr accumulates Rage when hitting or killing enemies with melee weapons, increasing her Melee Damage up to |PERCENT|%. Taking fatal damage when the Rage meter is above |CONSUME|% consumes the meter, preventing death and granting |DURATION|s of invulnerability.",
       "baseStats": {
         "health": 650,
         "shields": 135,
@@ -35040,12 +34760,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -35330,7 +35046,7 @@
       "name": "Vauban",
       "type": "warframe",
       "description": "Vauban is the model of innovative technology. He deploys clever inventions to provide crowd control. His tenacity and focus make him formidable.",
-      "passive": "Deal 25% Extra Damage to incapacitated enemies.",
+      "passive": "Deal |DAMAGE|% Extra Damage to incapacitated enemies.",
       "baseStats": {
         "health": 270,
         "shields": 180,
@@ -35347,11 +35063,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -35911,7 +35624,7 @@
       "name": "Vauban Prime",
       "type": "warframe",
       "description": "Transform the battlefield into a weapon with this gilded tactician. Features unique mod polarities for extended customization.",
-      "passive": "Deal 25% Extra Damage to incapacitated enemies.",
+      "passive": "Deal |DAMAGE|% Extra Damage to incapacitated enemies.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -35928,12 +35641,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -36754,7 +36463,7 @@
       "name": "Volt",
       "type": "warframe",
       "description": "Electricity flows through Volt. His attacks deal high damage. Enemies will be shocked.",
-      "passive": "Grounded movement generates an electrical charge building up 1000 Damage per meter that is unleashed with the next attack.",
+      "passive": "Grounded movement generates an electrical charge building up |DAMAGE| Damage per meter that is unleashed with the next attack.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -36771,11 +36480,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -37106,7 +36812,7 @@
       "name": "Volt Prime",
       "type": "warframe",
       "description": "A glorious warrior from the past, Volt Prime features the same abilities as Volt but with unique mod polarities for greater customization.",
-      "passive": "Grounded movement generates an electrical charge building up 1000 Damage per meter that is unleashed with the next attack.",
+      "passive": "Grounded movement generates an electrical charge building up |DAMAGE| Damage per meter that is unleashed with the next attack.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -37123,12 +36829,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "madurai",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -37450,13 +37152,13 @@
       "name": "Voruna",
       "type": "warframe",
       "description": "Four beasts, one heart. Voruna's loyal wolf pack makes for a deadly combination of strength and stealth. Beware the monstrous howl that heralds fangs of vengeance.",
-      "passive": "Voruna never fights alone. In mission, hold Abilities to call upon each wolf's unique Passive power.",
+      "passive": "Voruna never fights alone. In mission, hold Abilities to call upon each wolf’s unique Passive power.",
       "baseStats": {
         "health": 455,
         "shields": 270,
         "energy": 100,
         "armor": 200,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -37464,14 +37166,14 @@
         "shields": 370,
         "energy": 150,
         "armor": 200,
-        "sprintSpeed": 0.95,
+        "sprintSpeed": 0.94999999,
         "masteryReq": 0
       },
       "polarities": [
-        "madurai",
-        "vazarin"
+        "Madurai",
+        "Vazarin"
       ],
-      "aura": "vazarin",
+      "aura": "Vazarin",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -37517,7 +37219,7 @@
       "name": "Wisp",
       "type": "warframe",
       "description": "Wisp floats between the material and the ethereal. She accesses multiple dimensions to support her allies. Her countenance is mysterious and enigmatic.",
-      "passive": "Flowing between dimensions Wisp becomes invisible to enemies while in the air.",
+      "passive": "Flowing between dimensions, Wisp becomes invisible to enemies while in the air.",
       "baseStats": {
         "health": 270,
         "shields": 180,
@@ -37534,11 +37236,8 @@
         "sprintSpeed": 1.2,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -38044,8 +37743,8 @@
     {
       "name": "Wisp Prime",
       "type": "warframe",
-      "description": "Wisp Prime's gilded splendor haunts the battlefield. Allies welcome her interdimensional beauty.",
-      "passive": "Flowing between dimensions Wisp becomes invisible to enemies while in the air.",
+      "description": "Wisp Prime’s gilded splendor haunts the battlefield. Allies welcome her interdimensional beauty.",
+      "passive": "Flowing between dimensions, Wisp becomes invisible to enemies while in the air.",
       "baseStats": {
         "health": 270,
         "shields": 270,
@@ -38062,12 +37761,8 @@
         "sprintSpeed": 1.25,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -38585,11 +38280,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -38913,12 +38605,8 @@
         "sprintSpeed": 1.05,
         "masteryReq": 0
       },
-      "polarities": [
-        "naramon",
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -39219,7 +38907,7 @@
       "name": "Xaku",
       "type": "warframe",
       "description": "Broken Warframes adrift in the Void converged to create Xaku. Together, they deal high damage. Xaku proves that the sum of the whole is greater than its parts.",
-      "passive": "25% Damage Reduction on AOE attacks and chance to avoid incoming weapon damage.",
+      "passive": "|CHANCE|% Damage Reduction on AOE attacks and chance to avoid incoming weapon damage.",
       "baseStats": {
         "health": 269,
         "shields": 239,
@@ -39236,11 +38924,8 @@
         "sprintSpeed": 1.02,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -39693,13 +39378,13 @@
       "name": "Xaku Prime",
       "type": "warframe",
       "description": "The child of war and void is reborn in gold. That which was once shattered may rise stronger than that which was never broken.",
-      "passive": "25% Damage Reduction on AOE attacks and chance to avoid incoming weapon damage.",
+      "passive": "|CHANCE|% Damage Reduction on AOE attacks and chance to avoid incoming weapon damage.",
       "baseStats": {
         "health": 269,
         "shields": 263,
         "energy": 181,
         "armor": 167,
-        "sprintSpeed": 1.07,
+        "sprintSpeed": 1.0700001,
         "masteryReq": 0
       },
       "baseStatsRank30": {
@@ -39707,15 +39392,11 @@
         "shields": 363,
         "energy": 231,
         "armor": 167,
-        "sprintSpeed": 1.07,
+        "sprintSpeed": 1.0700001,
         "masteryReq": 0
       },
-      "polarities": [
-        "vazarin",
-        "vazarin",
-        "madurai"
-      ],
-      "aura": "naramon",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -40164,7 +39845,7 @@
       "name": "Yareli",
       "type": "warframe",
       "description": "The waverider can unleash a flood of destruction on the battlefield. Yareli’s aqueous attacks deal high damage. Surf’s up. Enemies down.",
-      "passive": "Yareli gains +200% Critical Chance for Secondary weapons when she has been moving for at least 1.5s.",
+      "passive": "Yareli gains +|CHANCE|% Critical Chance for Secondary weapons when she has been moving for at least |TIME|s.",
       "baseStats": {
         "health": 270,
         "shields": 455,
@@ -40181,11 +39862,8 @@
         "sprintSpeed": 1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -40612,7 +40290,7 @@
       "name": "Yareli Prime",
       "type": "warframe",
       "description": "The Waverider arises, reborn from the ocean foam. In her original Orokin-era splendor she embodies the undying vigor of youth.",
-      "passive": "Yareli gains +200% Critical Chance for Secondary weapons when she has been moving for at least 1.5s.",
+      "passive": "Yareli gains +|CHANCE|% Critical Chance for Secondary weapons when she has been moving for at least |TIME|s.",
       "baseStats": {
         "health": 270,
         "shields": 550,
@@ -40629,12 +40307,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon",
-        "vazarin"
-      ],
-      "aura": "madurai",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -41055,8 +40729,8 @@
     {
       "name": "Zephyr",
       "type": "warframe",
-      "description": "Command the power of the wind. Zephyr's cyclonic abilities protect her, deal high damage, and provide crowd control. She swoops in from above and leaves a path of destruction.",
-      "passive": "Zephyr moves faster and falls slower while airborne. Also gain 150% Critical Hit chance with weapons while airborne.",
+      "description": "Command the power of the wind. Zephyr’s cyclonic abilities protect her, deal high damage, and provide crowd control. She swoops in from above and leaves a path of destruction.",
+      "passive": "Zephyr moves faster and falls slower while airborne. Also gain |CRIT|% Critical Hit chance with weapons while airborne.",
       "baseStats": {
         "health": 455,
         "shields": 455,
@@ -41073,11 +40747,8 @@
         "sprintSpeed": 1.1,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "naramon"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -41406,7 +41077,7 @@
       "name": "Zephyr Prime",
       "type": "warframe",
       "description": "Take to the skies with this golden bird of destruction.",
-      "passive": "Zephyr moves faster and falls slower while airborne. Also gain 150% Critical Hit chance with weapons while airborne.",
+      "passive": "Zephyr moves faster and falls slower while airborne. Also gain |CRIT|% Critical Hit chance with weapons while airborne.",
       "baseStats": {
         "health": 455,
         "shields": 455,
@@ -41423,13 +41094,8 @@
         "sprintSpeed": 1.15,
         "masteryReq": 0
       },
-      "polarities": [
-        "madurai",
-        "madurai",
-        "vazarin",
-        "naramon"
-      ],
-      "aura": "vazarin",
+      "polarities": [],
+      "aura": null,
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
