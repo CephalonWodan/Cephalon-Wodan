@@ -71,9 +71,14 @@ const mod2key=(m)=>{ m=String(m||'').toUpperCase();
 };
 function buildSummary(det){
   if(!det) return null;
-  const s={ costType: det.summary?.CostType ?? null, costEnergy: det.summary?.costEnergy ?? null,
-    strength:null, duration:null, range:null, efficiency:null, affectedBy:[] };
-  for(const a of (det.summary?.affectedBy||det.summary?.AffectedBy||[])){
+  const sum = det.summary || {};
+  const s={
+    // <<< PATCH: respecter toutes les variantes + NE PAS forcer 'Energy'
+    costType: (sum.CostType ?? sum.costType ?? sum.cost_type ?? null),
+    costEnergy: sum.costEnergy ?? null,
+    strength:null, duration:null, range:null, efficiency:null, affectedBy:[]
+  };
+  for(const a of (sum.affectedBy||sum.AffectedBy||[])){
     const k=affFR2EN(a); if(k && !s.affectedBy.includes(k)) s.affectedBy.push(k);
   }
   for(const r of (Array.isArray(det.rows)? det.rows: [])){
@@ -244,8 +249,34 @@ async function main(){
                || (a.path && A.byPath.get(a.path))
                || A.byName.get(nameA.toLowerCase())
                || null;
+
       const summary = buildSummary(det);
       const rows    = cleanRows(det);
+
+      // <<< PATCH fin: ne pas imposer 'Energy' par défaut via override; respecter o.costType si présent
+      // (garde sum.costEnergy si déjà défini par buildSummary)
+      if (type!=='warframe' && awo?.abilities) {
+        const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
+        if (o) {
+          const sum = summary || { costType:null,costEnergy:null,strength:null,duration:null,range:null,efficiency:null,affectedBy:[] };
+          if (o.cost != null && sum.costEnergy == null) sum.costEnergy = o.cost;
+          if (o.costType != null && sum.costType == null) sum.costType = o.costType;
+
+          if (o.stats){
+            const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
+            for(const k of Object.keys(map)){
+              if(o.stats[k]!=null && sum[map[k]]==null){
+                sum[map[k]]=o.stats[k];
+                if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]);
+              }
+            }
+            if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
+          }
+          if(!desc && o.desc) desc = stripTags(o.desc);
+          return { name:nameA, description:desc, subsumable:null, augments:[], summary:sum, rows };
+        }
+      }
+
       return { name:nameA, description:desc, subsumable, augments:aug, summary, rows };
     });
 
