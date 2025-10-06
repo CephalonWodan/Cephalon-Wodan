@@ -264,13 +264,6 @@ async function main(){
     entities.push({ name, type, description, passive, baseStats, baseStatsRank30, polarities, aura: aura ?? null, abilities: abilitiesOut });
   }
 
-  // --- TRI ALPHABÉTIQUE AVANT L'ÉCRITURE ---
-  entities.sort((a, b) =>
-    cleanEntityName(a.name).localeCompare(
-      cleanEntityName(b.name), 'fr', { sensitivity: 'base' }
-    )
-  );
-
   await writeFile(outPath, JSON.stringify({ generatedAt:new Date().toISOString(), count:entities.length, entities }, null, 2),'utf8');
   console.log(`[merge] OK -> ${outPath} (${entities.length} entities)`);
 }
