@@ -5,9 +5,39 @@
     "exilus": null,
     "exilusPolarity": null
   },
-    "Baruuk": {
+  "Baruuk": {
     "aura": "Naramon",
     "slots": ["Vazarin","Vazarin"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
+  "Baruuk Prime": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Madurai","Naramon"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
+  "Inaros": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Vazarin"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
+  "Inaros Prime": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Vazarin","Madurai"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },  
+  "Khora": {
+    "aura": "Vazarin",
+    "slots": ["Madurai","Naramon"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
+  "Khora Prime": {
+    "aura": "Vazarin",
+    "slots": ["Madurai","Naramon","Vazarin"],
     "exilus": true,
     "exilusPolarity": "Naramon"
   },
