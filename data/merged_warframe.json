@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T21:01:56.442Z",
+  "generatedAt": "2025-10-06T21:12:01.770Z",
   "count": 117,
   "entities": [
     {
@@ -3276,8 +3276,8 @@
               "mainNumeric": 24
             },
             {
-              "label": "Shield Regen Per Enemy: |val1|shield point",
-              "filledLabel": "Shield Regen Per Enemy: 30SP",
+              "label": "Shield Regen Per Enemy: |val1| shield point",
+              "filledLabel": "Shield Regen Per Enemy: 30 SP",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
                 "Val1": 30
@@ -3285,8 +3285,8 @@
               "mainNumeric": 30
             },
             {
-              "label": "Health Regen Per Enemy: |val1|health point",
-              "filledLabel": "Health Regen Per Enemy: 30HP",
+              "label": "Health Regen Per Enemy: |val1| health point",
+              "filledLabel": "Health Regen Per Enemy: 30 HP",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
                 "Val1": 30
@@ -3733,8 +3733,8 @@
               "mainNumeric": 24
             },
             {
-              "label": "Shield Regen Per Enemy: |val1|shield point",
-              "filledLabel": "Shield Regen Per Enemy: 30SP",
+              "label": "Shield Regen Per Enemy: |val1| shield point",
+              "filledLabel": "Shield Regen Per Enemy: 30 SP",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
                 "Val1": 30
@@ -3742,8 +3742,8 @@
               "mainNumeric": 30
             },
             {
-              "label": "Health Regen Per Enemy: |val1|health point",
-              "filledLabel": "Health Regen Per Enemy: 30HP",
+              "label": "Health Regen Per Enemy: |val1| health point",
+              "filledLabel": "Health Regen Per Enemy: 30 HP",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
                 "Val1": 30
@@ -5559,8 +5559,8 @@
               "mainNumeric": 10
             },
             {
-              "label": "Durationper Weak Point Kill: |val1|s",
-              "filledLabel": "Durationper Weak Point Kill: 2.0s",
+              "label": "Duration per Weak Point Kill: |val1|s",
+              "filledLabel": "Duration per Weak Point Kill: 2.0s",
               "modifier": "AVATAR_ABILITY_DURATION",
               "values": {
                 "Val1": 2
