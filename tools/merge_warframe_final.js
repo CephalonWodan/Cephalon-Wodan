@@ -85,7 +85,7 @@ function buildSummary(det){
 }
 function cleanRows(det){
   const rows = Array.isArray(det?.rows)? det.rows: [];
-  return rows.map(r=>({ label: stripTags(r.label), filledLabel: stripTags(r.filledLabel),
+  return rows map(r=>({ label: stripTags(r.label), filledLabel: stripTags(r.filledLabel),
     modifier:r.modifier??null, values:r.values??null, mainNumeric:r.mainNumeric??null }));
 }
 function mapFrameEntryList(wfAbilities, frameName){
@@ -162,16 +162,23 @@ async function main(){
       masteryReq:  x.masteryReq ?? x.MasteryReq ?? 0
     };
     let baseStatsRank30=null;
+
+    // Polarities & Aura — uniquement depuis Warframes_wikia.json (comportement d'origine)
     let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
     let aura=w0?.aura ?? null;
-
-    if((!polarities || polarities.length===0) && polOverrides[canon]){
-      const ov=polOverrides[canon];
-      if(Array.isArray(ov)) polarities=ov;
-      if(Array.isArray(ov?.polarities)) polarities=ov.polarities;
-      if(ov?.aura) aura=ov.aura;
-    }
     if(!Array.isArray(polarities)) polarities=[];
+
+    // --- EXILUS UNIQUEMENT depuis polarity_overrides.json ---
+    let exilus = null;
+    let exilusPolarity = null;
+    const exOv = polOverrides[canon];
+    if (exOv && typeof exOv === 'object') {
+      if (exOv.exilus !== undefined) exilus = !!exOv.exilus;
+      if (typeof exOv.exilusPolarity === 'string' && exOv.exilusPolarity.trim() !== '') {
+        exilusPolarity = exOv.exilusPolarity.trim();
+      }
+    }
+    // --------------------------------------------------------
 
     const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
     if(type!=='warframe' && awo){
@@ -261,7 +268,20 @@ async function main(){
     const description=stripTags(w0?.description ?? x.description ?? null);
     const passive=(type==='warframe') ? stripTags(w0?.passive ?? x.passiveDescription ?? null) : null;
 
-    entities.push({ name, type, description, passive, baseStats, baseStatsRank30, polarities, aura: aura ?? null, abilities: abilitiesOut });
+    // — entité finale (ajout exilus/exilusPolarity) —
+    entities.push({
+      name,
+      type,
+      description,
+      passive,
+      baseStats,
+      baseStatsRank30,
+      polarities,
+      aura: aura ?? null,
+      exilus,            // ← uniquement depuis polarity_overrides.json
+      exilusPolarity,    // ← uniquement depuis polarity_overrides.json
+      abilities: abilitiesOut
+    });
   }
 
   // --- TRI ALPHABÉTIQUE AVANT L'ÉCRITURE ---
