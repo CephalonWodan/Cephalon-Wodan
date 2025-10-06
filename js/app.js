@@ -91,7 +91,7 @@ const POL_FILE = {
   umbra:   "Umbra_Pol.svg",
   penjaga: "Penjaga_Pol.svg",
   exilus:  "Exilus_Pol.svg",
-  any:     null,
+  any:     "Any_Pol.svg,
   aura:    null,
   none:    null
 };
