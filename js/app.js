@@ -103,7 +103,6 @@ async function fetchWarframesWithFailover() {
   for (const url of CFG.WF_URLS) {
     try {
       const data = await fetchJson(url, "Warframes API");
-      // Ton endpoint renvoie { generatedAt, count, entities: [...] }
       const arr = Array.isArray(data?.entities) ? data.entities : (Array.isArray(data) ? data : null);
       if (arr && arr.length) {
         console.info(`[app] Warframes chargées via ${url} (${arr.length})`);
@@ -129,7 +128,6 @@ async function fetchWarframesWithFailover() {
       status.style.color = "#bfefff";
     }
 
-    // Charge en parallèle (with graceful fallback pour abilities_by_warframe.json)
     const [wfRaw, valsRaw, byWfRaw, metaRaw] = await Promise.all([
       fetchWarframesWithFailover(),
       fetchJson(CFG.ABILITIES_VALUES_URL, "abilities.json"),
@@ -137,7 +135,6 @@ async function fetchWarframesWithFailover() {
       fetchJson(CFG.ABILITIES_META_URL, "warframe_abilities.json"),
     ]);
 
-    // ---- index values (helper)
     function findValuesForInternal(internalName) {
       const cands = valsRaw.filter((v) => v.path.startsWith(internalName));
       if (!cands.length) return null;
@@ -145,7 +142,6 @@ async function fetchWarframesWithFailover() {
       return cands[0];
     }
 
-    // ---- index META par Warframe
     const metaByFrame = metaRaw.reduce((acc, m) => {
       const k = norm(m.Powersuit);
       if (!k) return acc;
@@ -153,36 +149,30 @@ async function fetchWarframesWithFailover() {
       return acc;
     }, {});
     for (const k in metaByFrame) metaByFrame[k].sort(bySlot);
-
-    // ---- fallback liste noms par Warframe
     const namesByFrame = byWfRaw || {};
 
-    // ---- normalise la liste Warframes (depuis ton endpoint)
     const list = (wfRaw || [])
-      // garde uniquement les Warframes (exclut archwings, necramechs, etc.)
       .filter((wf) => wf && String(wf.type || "").toLowerCase() === "warframe")
       .map((rec) => {
         const bs = rec.baseStats || {};
-        // image locale : img/warframes/NomSansEspace.png (ex: "Ash Prime" -> "AshPrime.png")
         const fileName = `${String(rec.name || "").replace(/\s+/g, "")}.png`;
         const img = `img/warframes/${fileName}`;
         return {
-           name: rec.name || "",
-           description: rec.description || "",
-           image: img,
-         // ➜ expose les polarités & exilus depuis ton API
+          name: rec.name || "",
+          description: rec.description || "",
+          image: img,
           polarities: Array.isArray(rec.polarities) ? rec.polarities : [],
           auraPolarity: rec.aura ?? null,
           exilus: (rec.exilus === true) ? true : (rec.exilus === false ? false : null),
           exilusPolarity: rec.exilusPolarity ?? null,
-           stats: {
-             health: bs.health ?? "—",
-             shield: bs.shields ?? bs.shield ?? "—",
-             armor:  bs.armor  ?? "—",
-             energy: bs.energy ?? bs.power ?? "—",
-             sprintSpeed: bs.sprintSpeed ?? "—",
-           },
-         };
+          stats: {
+            health: bs.health ?? "—",
+            shield: bs.shields ?? bs.shield ?? "—",
+            armor:  bs.armor  ?? "—",
+            energy: bs.energy ?? bs.power ?? "—",
+            sprintSpeed: bs.sprintSpeed ?? "—",
+          },
+        };
       })
       .sort(byName);
 
@@ -228,111 +218,17 @@ async function fetchWarframesWithFailover() {
       return out.sort((a, b) => (a.slot ?? 99) - (b.slot ?? 99));
     }
 
-    // Attache abilities à chaque wf
     list.forEach((wf) => { wf.abilities = abilitiesForFrame(wf.name); });
 
-    // ---------- UI
     const card = $("#card");
 
-    // ====== Helpers “Détails” (multi-tokens) ======
-    function splitFilledLabel(filled) {
-      const m = String(filled || "").match(/^(.+?):\s*(.+)$/);
-      return m ? { label: m[1], value: m[2] } : { label: filled || "", value: "" };
+    function normalizeDesc(text) {
+      let s = String(text ?? "");
+      s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n");
+      s = s.replace(/\r\n?/g, "\n");
+      s = s.replace(/\n{2,}/g, "\n");
+      return s;
     }
-    function buildTokenMap(row) {
-      const map = Object.create(null);
-
-      // val1..valN présents directement
-      for (const k in row) {
-        if (/^val\d+$/i.test(k) && isFinite(Number(row[k]))) {
-          map[k.toLowerCase()] = row[k];
-        }
-      }
-      // row.values.{val1..} éventuel
-      if (row.values && typeof row.values === "object") {
-        for (const k in row.values) {
-          if (/^val\d+$/i.test(k) && isFinite(Number(row.values[k]))) {
-            map[k.toLowerCase()] = row.values[k];
-          }
-        }
-      }
-      // tableau numerics éventuel -> val1, val2, ...
-      if (Array.isArray(row.numerics)) {
-        row.numerics.forEach((n, i) => {
-          if (isFinite(Number(n)) && map["val"+(i+1)] == null) {
-            map["val"+(i+1)] = n;
-          }
-        });
-      }
-      // mainNumeric => val1 par défaut
-      if (map.val1 == null && isFinite(Number(row.mainNumeric))) {
-        map.val1 = row.mainNumeric;
-      }
-      return map;
-    }
-    function fillTokens(template, tokenMap) {
-      return String(template || "").replace(/\|val(\d+)\|/gi, (_, n) => {
-        const key = ("val" + n).toLowerCase();
-        const v = tokenMap[key];
-        return v == null ? "" : String(v);
-      });
-    }
-    function fromTemplateToLabelValue(template, tokenMap) {
-      const filled = fillTokens(template, tokenMap).trim();
-      const m = filled.match(/^(.+?):\s*(.*)$/);
-      if (m) return { label: m[1], value: m[2] };
-      // pas de “:”, tout dans le label
-      return { label: filled, value: "" };
-    }
-    function makeDetailRows(rows) {
-      return (rows || []).map(r => {
-        const mapTok = buildTokenMap(r);
-
-        // 1) Priorité aux templates contenant des tokens
-        const hasTokLabel = /\|val\d+\|/i.test(r.label || "");
-        const hasTokFilled = /\|val\d+\|/i.test(r.filledLabel || "");
-        if (hasTokLabel)  return fromTemplateToLabelValue(r.label,       mapTok);
-        if (hasTokFilled) return fromTemplateToLabelValue(r.filledLabel, mapTok);
-
-        // 2) filledLabel déjà prêt (Energy Cost: 25)
-        if (r.filledLabel) {
-          const p = splitFilledLabel(r.filledLabel);
-          return { label: p.label.trim(), value: p.value.trim() };
-        }
-
-        // 3) label simple + mainNumeric (fallback)
-        if ((r.label || "").trim()) {
-          const label = r.label.replace(/\s*:\s*$/, "");
-          if (r.mainNumeric != null && r.mainNumeric !== "") {
-            return { label, value: String(r.mainNumeric) };
-          }
-          return { label, value: "" };
-        }
-
-        return null;
-      }).filter(Boolean);
-    }
-
-    const pill = (label, value) => `
-      <div class="pill">
-        <div class="text-[10px] uppercase tracking-wide muted">${escapeHtml(label)}</div>
-        <div class="mt-1 font-medium">${escapeHtml(txt(value))}</div>
-      </div>`;
-
-    const statBox = (label, value) => `
-      <div class="stat">
-        <div class="text-[10px] uppercase tracking-wide text-slate-200">${escapeHtml(label)}</div>
-        <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
-      </div>`;
-
-  // Normalise les sauts de ligne des descriptions (gère \r\n et \n littéraux)
-  function normalizeDesc(text) {
-    let s = String(text ?? "");
-    s = s.replace(/\\r\\n/g, "\n").replace(/\\n/g, "\n"); // séquences littérales -> vrais \n
-    s = s.replace(/\r\n?/g, "\n");                        // CRLF réels -> \n
-    s = s.replace(/\n{2,}/g, "\n");                       // compacte les lignes vides
-  return s;
-}
 
     function renderCard(wf, iAbility = 0) {
       const wfName = escapeHtml(wf.name);
@@ -351,46 +247,24 @@ async function fetchWarframesWithFailover() {
         .map((k) => `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`)
         .join(" ");
 
-      // Détails nettoyés (tokens multiples OK)
-      const detailRows = makeDetailRows(a.rows || []);
-      const rowsHtml = detailRows.map(({label, value}) => `
-        <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-          <div class="text-sm">${escapeHtml(label)}</div>
-          <div class="font-medium">${escapeHtml(value || "—")}</div>
-        </div>`).join("");
-
-      // Pastilles uniquement s'il n'y a PAS de bloc Détails
-      const pillsHtml = !detailRows.length ? `
-        <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
-          ${pill("Cost", s.costEnergy)}
-          ${pill("Strength", s.strength)}
-          ${pill("Duration", s.duration)}
-          ${pill("Range", s.range)}
-        </div>` : "";
-
-      const detailsBlock = rowsHtml ? `
-        <div class="mt-5">
-          <div class="text-sm muted mb-2">Details</div>
-          <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-            ${rowsHtml}
-          </div>
-        </div>` : "";
+      const detailRows = a.rows ? a.rows.map(r => r) : [];
+      const pillsHtml = "";
+      const detailsBlock = "";
 
       card.innerHTML = `
         <div class="flex flex-col md:flex-row gap-6">
           <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
             <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-              ${
-                wf.image
-                  ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain">`
-                  : `<div class="muted">No Pictures</div>`
-              }
+              ${wf.image ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain">`
+                         : `<div class="muted">No Pictures</div>`}
             </div>
 
             <!-- Polarités sous l'image -->
             <div class="w-full">
               <div class="aura-label">Aura polarity</div>
               <div class="polarity-row" data-zone="aura"></div>
+              <div class="polarity-label mt-3">Exilus</div>
+              <div class="polarity-row" data-zone="exilus"></div>
               <div class="polarity-label mt-3">Polarities</div>
               <div class="polarity-row" data-zone="others"></div>
             </div>
@@ -405,57 +279,31 @@ async function fetchWarframesWithFailover() {
             </div>
 
             <div class="grid grid-cols-5 gap-3">
-              ${statBox("HP", wf.stats.health)}
-              ${statBox("SHIELD", wf.stats.shield)}
-              ${statBox("ARMOR", wf.stats.armor)}
-              ${statBox("ENERGY", wf.stats.energy)}
-              ${statBox("SPRINT", wf.stats.sprintSpeed)}
+              ${["HP","SHIELD","ARMOR","ENERGY","SPRINT"].map((k,i)=>`
+                <div class="stat">
+                  <div class="text-[10px] uppercase tracking-wide text-slate-200">${k}</div>
+                  <div class="text-lg font-semibold">${
+                    escapeHtml(txt(Object.values(wf.stats)[i]))
+                  }</div>
+                </div>`).join("")}
             </div>
 
             <div class="mt-2">
               ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ""}
-
               <div class="card p-4 orn">
                 <div class="font-semibold">${escapeHtml(a.name || "—")}</div>
                 <p class="mt-1 text-[var(--muted)]">${renderTextIcons(normalizeDesc(a.description))}</p>
-
-                ${pillsHtml}
-
-                ${
-                  (s.affectedBy && s.affectedBy.length)
-                    ? `<div class="mt-4 text-sm">
-                        <div class="mb-1 muted">Affected by :</div>
-                        <div class="flex flex-wrap gap-2">${affected}</div>
-                      </div>`
-                    : ""
-                }
-
-                ${detailsBlock}
               </div>
             </div>
           </div>
         </div>
       `;
 
-      // Changement d'ability
       card.querySelectorAll("[data-abi]").forEach((btn) => {
         btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
       });
 
-      // Notifier polarities.js qu'une carte est prête
       document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
-    }
-
-    function renderPicker(arr) {
-      const picker = $("#picker");
-      picker.innerHTML = "";
-      arr.forEach((wf, i) => {
-        const opt = document.createElement("option");
-        opt.value = i;
-        opt.textContent = wf.name;
-        picker.appendChild(opt);
-      });
-      picker.value = "0";
     }
 
     const setStatus = (msg, ok = true) => {
@@ -472,38 +320,9 @@ async function fetchWarframesWithFailover() {
       }
     };
 
-    if (!list.length) {
-      setStatus("No Warframe loaded (API empty). go to the console for the detail.", false);
-      console.warn("[app] wfRaw vide", { wfRaw });
-      return;
-    }
-
     setStatus(`Dataset loaded : ${list.length} Warframes`);
-    renderPicker(list);
     renderCard(list[0], 0);
-
-    $("#picker").addEventListener("change", (e) => {
-      const idx = parseInt(e.target.value, 10);
-      const q = norm($("#search").value).toLowerCase();
-      const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
-      if (!filtered.length) return;
-      renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
-    });
-
-    $("#search").addEventListener("input", () => {
-      const q = norm($("#search").value).toLowerCase();
-      const filtered = !q ? list : list.filter((x) => x.name.toLowerCase().includes(q));
-      renderPicker(filtered);
-      if (filtered.length) renderCard(filtered[0], 0);
-      setStatus(`Affichage : ${filtered.length} résultat(s)`);
-    });
   } catch (e) {
     console.error("[app] ERREUR BOOT :", e);
-    if (status) {
-      status.textContent = `Loading error : ${e.message || e}`;
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
-    }
   }
 })();
