@@ -5,6 +5,12 @@
     "exilus": null,
     "exilusPolarity": null
   },
+    "Baruuk": {
+    "aura": "Naramon",
+    "slots": ["Vazarin","Vazarin"],
+    "exilus": true,
+    "exilusPolarity": "Naramon"
+  },
   "Dagath": {
     "aura": "Zenurik",
     "slots": ["Madurai","Vazarin"],
