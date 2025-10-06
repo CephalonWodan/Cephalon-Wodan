@@ -19118,8 +19118,8 @@
         "mainNumeric": 35
       },
       {
-        "label": "Explosion Frequency: |val1|s",
-        "filledLabel": "Explosion Frequency: 5s",
+        "label": "Empowered Duration: |val1|s",
+        "filledLabel": "Empowered Duration: 5s",
         "modifier": "AVATAR_ABILITY_DURATION",
         "values": {
           "Val1": 5
