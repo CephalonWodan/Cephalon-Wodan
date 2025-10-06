@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cephalon-wodan.vercel.app/sitemap.xml
