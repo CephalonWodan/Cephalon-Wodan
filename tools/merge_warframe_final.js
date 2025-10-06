@@ -144,12 +144,7 @@ async function main(){
 
   const A = indexAbilities(abilities);
   const wikiaByName=new Map();
-  // === PATCH #1 : indexer le wiki avec le nom "canon" ===
-  if(Array.isArray(wikia)) {
-    for(const x of wikia){
-      wikiaByName.set(cleanEntityName(x.name).toLowerCase(), x);
-    }
-  }
+  if(Array.isArray(wikia)) for(const x of wikia){ wikiaByName.set(String(x.name).toLowerCase(), x); }
 
   const entities=[];
 
@@ -157,10 +152,7 @@ async function main(){
     const rawName=x.name||x.Name; if(!rawName) continue;
     const name=rawName, canon=cleanEntityName(rawName), type=typeFrom(x.productCategory, x.type);
 
-    // === PATCH #2 : fallback base name (sans Prime/Umbra) ===
-    const baseName = canon.replace(/\s+(Prime|Umbra)\b/i, '').trim();
-    const w0 = wikiaByName.get(canon.toLowerCase()) || wikiaByName.get(baseName.toLowerCase());
-
+    const w0 = wikiaByName.get(canon.toLowerCase());
     let baseStats = {
       health:      w0?.stats?.health ?? x.health ?? x.Health ?? null,
       shields:     w0?.stats?.shield ?? x.shield ?? x.Shield ?? null,
@@ -171,34 +163,27 @@ async function main(){
     };
     let baseStatsRank30=null;
 
-    // --- polarities/aura depuis wiki + overrides
+    // Polarities & Aura (wiki d'abord, override si wiki vide)
     let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
     let aura=w0?.aura ?? null;
 
-    // --- NEW: exilus + exilus Polarity (uniquement via overrides)
+    if((!polarities || polarities.length===0) && polOverrides[canon]){
+      const ov=polOverrides[canon];
+      if(Array.isArray(ov)) polarities=ov;
+      if(Array.isArray(ov?.polarities)) polarities=ov.polarities;
+      if(ov?.aura) aura=ov.aura;
+    }
+    if(!Array.isArray(polarities)) polarities=[];
+
+    // --- AJOUT MINIMAL : lire Exilus depuis polarity_overrides.json (si présent)
     let exilus = null;
     let exilusPolarity = null;
-
-    // Recherche d'un override exact, puis d'un override pour le "base name" (sans Prime/Umbra)
-    const ovExact = polOverrides[canon] || polOverrides[canon?.toLowerCase?.()];
-    const ovBase  = polOverrides[baseName] || polOverrides[baseName?.toLowerCase?.()];
-    const ov = ovExact || ovBase || null;
-
-    // Polarities/Aura : seulement si absentes du wiki (comportement existant)
-    if((!polarities || polarities.length===0) && ov){
-      if(Array.isArray(ov)) polarities = ov; // legacy format: direct array
-      if(Array.isArray(ov?.polarities)) polarities = ov.polarities.slice();
-      if(ov?.slots && Array.isArray(ov.slots)) polarities = ov.slots.slice(); // compat "slots"
-      if(typeof ov?.aura === 'string') aura = ov.aura || null;
+    const exOv = polOverrides[canon];
+    if (exOv && typeof exOv === 'object') {
+      if (exOv.exilus !== undefined) exilus = !!exOv.exilus;
+      if (exOv.exilusPolarity) exilusPolarity = String(exOv.exilusPolarity);
     }
-
-    // Exilus : toujours appliqué s'il existe dans l'override (indépendant des polarities wiki)
-    if(ov && typeof ov === 'object'){
-      if(ov.exilus !== undefined) exilus = Boolean(ov.exilus);
-      if(ov.exilusPolarity) exilusPolarity = String(ov.exilusPolarity);
-    }
-
-    if(!Array.isArray(polarities)) polarities=[];
+    // --- fin ajout ---
 
     const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
     if(type!=='warframe' && awo){
@@ -207,7 +192,6 @@ async function main(){
       baseStatsRank30 = applied.statsR30;
       polarities = applied.polarities;
       if(applied.aura!=null) aura=applied.aura;
-      // Pour AW/Mech, on ne force pas exilus/exilusPolarity (non pertinents)
     }
 
     const wfList = mapFrameEntryList(wfAbilities, canon);
@@ -250,7 +234,7 @@ async function main(){
           if(o.stats){
             const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
             for(const k of Object.keys(map)){
-              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]); }
+              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(k.toLowerCase()); }
             }
             if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
           }
@@ -289,9 +273,7 @@ async function main(){
     const description=stripTags(w0?.description ?? x.description ?? null);
     const passive=(type==='warframe') ? stripTags(w0?.passive ?? x.passiveDescription ?? null) : null;
 
-    // Normalisation légère exilus
-    if (exilusPolarity != null && exilusPolarity === '') exilusPolarity = null;
-
+    // --- entité finale (ajout exilus/exilusPolarity uniquement) ---
     entities.push({
       name,
       type,
@@ -301,10 +283,8 @@ async function main(){
       baseStatsRank30,
       polarities,
       aura: aura ?? null,
-      // --- NEW fields exposed in API ---
-      exilus,           // boolean|null
-      exilusPolarity,   // string|null
-      // ---------------------------------
+      exilus,           
+      exilusPolarity,   
       abilities: abilitiesOut
     });
   }
