@@ -1,21 +1,59 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Warframes (Classic)</title>
+  <title>Warframes – Stats, Abilities & Polarities | Cephalon Wodan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- SEO -->
+  <meta name="description" content="Explore all Warframes with complete stats, abilities, aura/exilus polarities and local images. Powered by the Cephalon Wodan API.">
+  <link rel="canonical" href="https://cephalon-wodan.vercel.app/index.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Warframes – Stats & Abilities | Cephalon Wodan">
+  <meta property="og:description" content="All Warframes: stats, abilities, polarities (Aura/Exilus), and local images.">
+  <meta property="og:url" content="https://cephalon-wodan.vercel.app/index.html">
+  <meta property="og:image" content="https://cephalon-wodan.vercel.app/img/og-cover.jpg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Warframes – Stats & Abilities | Cephalon Wodan">
+  <meta name="twitter:description" content="All Warframes with updated stats and polarities.">
+  <meta name="twitter:image" content="https://cephalon-wodan.vercel.app/img/og-cover.jpg">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebSite",
+    "name":"Cephalon Wodan",
+    "url":"https://cephalon-wodan.vercel.app/",
+    "potentialAction":{
+      "@type":"SearchAction",
+      "target":"https://cephalon-wodan.vercel.app/index.html?q={search_term_string}",
+      "query-input":"required name=search_term_string"
+    }
+  }
+  </script>
+
+  <!-- Performance: preconnect to API origin -->
+  <link rel="preconnect" href="https://cephalon-wodan-production.up.railway.app">
+
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Thème -->
+
+  <!-- Theme -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
   <link rel="stylesheet" href="css/polarities.css">
-  <!----Icon---->
+
+  <!-- Icons -->
   <link rel="icon" type="image/x-icon" href="/img/CephalonWodan/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/img/CephalonWodan/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/img/CephalonWodan/favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/img/CephalonWodan/icon-180-apple.png">
-<link rel="manifest" href="/img/CephalonWodan/site.webmanifest">
-<meta name="theme-color" content="#0c0b1a">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/CephalonWodan/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/CephalonWodan/favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/CephalonWodan/icon-180-apple.png">
+  <link rel="manifest" href="/img/CephalonWodan/site.webmanifest">
+  <meta name="theme-color" content="#0c0b1a">
 </head>
 <body class="bg-[var(--bg)] text-[var(--ink)]">
   <!-- NAV -->
