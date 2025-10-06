@@ -108,6 +108,16 @@ function mapFrameEntryList(wfAbilities, frameName){
   })).filter(x=>x.name);
 }
 
+// --- normalisation des noms de polarités (casing + alias)
+const POL_CANON = {
+  madurai: 'Madurai', naramon: 'Naramon', vazarin: 'Vazarin', zenurik: 'Zenurik',
+  unairu: 'Unairu', umbra: 'Umbra', penjaga: 'Penjaga', exilus: 'Exilus',
+  any: 'Any', universal: 'Any', none: 'Any', aura: 'Any',
+  v: 'Madurai', d: 'Vazarin', dash: 'Naramon', bar: 'Zenurik', u: 'Umbra'
+};
+function normPolName(p){ if(!p) return null; const k=String(p).trim().toLowerCase(); return POL_CANON[k] || (k ? (k[0].toUpperCase()+k.slice(1)) : null); }
+function normPolArray(arr){ return (Array.isArray(arr)?arr:[]).map(normPolName).filter(Boolean); }
+
 // --- archwing/necramech overrides ---
 function applyAwBaseFromOverride(baseS, baseR, pol, awo){
   if(!awo?.base) return {stats:baseS, statsR30:baseR, polarities:pol, aura:null};
@@ -128,13 +138,13 @@ async function main(){
   const outPath=resolve(process.argv[3]||'./data/merged_warframe.json');
 
   const exportAll   = await J(join(dataDir,'ExportWarframes_en.json'));
-  const wikia       = await J(join(dataDir,'Warframes_wikia.json'));              // optional
-  const wfAbilities = await J(join(dataDir,'warframe_abilities.json'));           // required
-  const abilities   = await J(join(dataDir,'abilities.json'));                    // required
-  const awOverrides = await J(join(dataDir,'aw_overrides.json'));                 // required
-  const byFrameList = await J(join(dataDir,'abilities_by_warframe.json')) || {};  // optional
-  const polOverrides= await J(join(dataDir,'polarity_overrides.json')) || {};     // optional
-  const wikiRanks   = await J(join(dataDir,'wiki_ranks.json'));                   // optional
+  const wikia       = await J(join(dataDir,'Warframes_wikia.json'));
+  const wfAbilities = await J(join(dataDir,'warframe_abilities.json'));
+  const abilities   = await J(join(dataDir,'abilities.json'));
+  const awOverrides = await J(join(dataDir,'aw_overrides.json'));
+  const byFrameList = await J(join(dataDir,'abilities_by_warframe.json')) || {};
+  const polOverrides= await J(join(dataDir,'polarity_overrides.json')) || {};
+  const wikiRanks   = await J(join(dataDir,'wiki_ranks.json'));
   const wikiByName  = wikiRanks?.byName || null;
 
   if(!exportAll || !Array.isArray(exportAll.ExportWarframes)) throw new Error('ExportWarframes_en.json invalide');
@@ -144,7 +154,11 @@ async function main(){
 
   const A = indexAbilities(abilities);
   const wikiaByName=new Map();
-  if(Array.isArray(wikia)) for(const x of wikia){ wikiaByName.set(String(x.name).toLowerCase(), x); }
+  if(Array.isArray(wikia)){
+    for(const x of wikia){
+      wikiaByName.set(cleanEntityName(x.name).toLowerCase(), x);
+    }
+  }
 
   const entities=[];
 
@@ -152,7 +166,9 @@ async function main(){
     const rawName=x.name||x.Name; if(!rawName) continue;
     const name=rawName, canon=cleanEntityName(rawName), type=typeFrom(x.productCategory, x.type);
 
-    const w0 = wikiaByName.get(canon.toLowerCase());
+    const baseName = canon.replace(/\s+(Prime|Umbra)\b/i, '').trim();
+    const w0 = wikiaByName.get(canon.toLowerCase()) || wikiaByName.get(baseName.toLowerCase());
+
     let baseStats = {
       health:      w0?.stats?.health ?? x.health ?? x.Health ?? null,
       shields:     w0?.stats?.shield ?? x.shield ?? x.Shield ?? null,
@@ -163,37 +179,31 @@ async function main(){
     };
     let baseStatsRank30=null;
 
-    // --- polarities/aura depuis wiki + overrides
-    let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
-    let aura=w0?.aura ?? null;
-
-    // --- NEW: exilus + exilus Polarity (uniquement via overrides)
+    let polarities = Array.isArray(w0?.polarities) ? normPolArray(w0.polarities) : null;
+    let aura = normPolName(w0?.aura ?? null);
     let exilus = null;
     let exilusPolarity = null;
 
-    // === PATCH: overrides pris en compte même si polarities wiki présentes ===
-    // Recherche d'un override exact, puis d'un override pour le "base name" (sans Prime/Umbra)
-    const baseName = canon.replace(/\s+(Prime|Umbra)\b/i, '').trim();
     const ovExact = polOverrides[canon] || polOverrides[canon?.toLowerCase?.()];
     const ovBase  = polOverrides[baseName] || polOverrides[baseName?.toLowerCase?.()];
     const ov = ovExact || ovBase || null;
 
-    // Polarities/Aura : seulement si absentes du wiki (comportement existant)
     if((!polarities || polarities.length===0) && ov){
-      if(Array.isArray(ov)) polarities = ov; // legacy format: direct array
-      if(Array.isArray(ov?.polarities)) polarities = ov.polarities.slice();
-      if(ov?.slots && Array.isArray(ov.slots)) polarities = ov.slots.slice(); // compat "slots"
-      if(typeof ov?.aura === 'string') aura = ov.aura || null;
+      if(Array.isArray(ov)) polarities = normPolArray(ov);
+      if(Array.isArray(ov?.polarities)) polarities = normPolArray(ov.polarities);
+      if(Array.isArray(ov?.slots)) polarities = normPolArray(ov.slots);
+      if(typeof ov?.aura === 'string') aura = normPolName(ov.aura || null);
     }
 
-    // Exilus : toujours appliqué s'il existe dans l'override (indépendant des polarities wiki)
     if(ov && typeof ov === 'object'){
       if(ov.exilus !== undefined) exilus = Boolean(ov.exilus);
-      if(ov.exilusPolarity) exilusPolarity = String(ov.exilusPolarity);
+      if(ov.exilusPolarity) exilusPolarity = normPolName(ov.exilusPolarity);
     }
-    // === FIN PATCH ===
 
     if(!Array.isArray(polarities)) polarities=[];
+    polarities = normPolArray(polarities);
+    aura = normPolName(aura);
+    if (exilusPolarity) exilusPolarity = normPolName(exilusPolarity);
 
     const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
     if(type!=='warframe' && awo){
@@ -202,7 +212,6 @@ async function main(){
       baseStatsRank30 = applied.statsR30;
       polarities = applied.polarities;
       if(applied.aura!=null) aura=applied.aura;
-      // Pour AW/Mech, on ne force pas exilus/exilusPolarity (non pertinents)
     }
 
     const wfList = mapFrameEntryList(wfAbilities, canon);
@@ -237,22 +246,6 @@ async function main(){
                || null;
       const summary = buildSummary(det);
       const rows    = cleanRows(det);
-      if(type!=='warframe' && awo?.abilities){
-        const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
-        if(o){
-          const sum = summary || { costType:null,costEnergy:null,strength:null,duration:null,range:null,efficiency:null,affectedBy:[] };
-          if(o.cost!=null){ sum.costEnergy=sum.costEnergy??o.cost; sum.costType=sum.costType??'Energy'; }
-          if(o.stats){
-            const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
-            for(const k of Object.keys(map)){
-              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]); }
-            }
-            if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
-          }
-          if(!desc && o.desc) desc = stripTags(o.desc);
-          return { name:nameA, description:desc, subsumable:null, augments:[], summary:sum, rows };
-        }
-      }
       return { name:nameA, description:desc, subsumable, augments:aug, summary, rows };
     });
 
@@ -284,7 +277,6 @@ async function main(){
     const description=stripTags(w0?.description ?? x.description ?? null);
     const passive=(type==='warframe') ? stripTags(w0?.passive ?? x.passiveDescription ?? null) : null;
 
-    // Normalisation légère exilus
     if (exilusPolarity != null && exilusPolarity === '') exilusPolarity = null;
 
     entities.push({
@@ -296,19 +288,14 @@ async function main(){
       baseStatsRank30,
       polarities,
       aura: aura ?? null,
-      // --- NEW fields exposed in API ---
-      exilus,           // boolean|null
-      exilusPolarity,   // string|null
-      // ---------------------------------
+      exilus,
+      exilusPolarity,
       abilities: abilitiesOut
     });
   }
 
-  // --- TRI ALPHABÉTIQUE AVANT L'ÉCRITURE ---
   entities.sort((a, b) =>
-    cleanEntityName(a.name).localeCompare(
-      cleanEntityName(b.name), 'fr', { sensitivity: 'base' }
-    )
+    cleanEntityName(a.name).localeCompare(cleanEntityName(b.name), 'fr', { sensitivity: 'base' })
   );
 
   await writeFile(outPath, JSON.stringify({ generatedAt:new Date().toISOString(), count:entities.length, entities }, null, 2),'utf8');
