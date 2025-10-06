@@ -77,9 +77,8 @@ async function fetchJson(url, what = "fetch") {
 }
 /* ------------------------------------ */
 
-/* ====== Polarités : rendu via img/polarities/*.svg ====== */
+/* ====== Polarités : rendu via img/polarities/*.svg (sans onerror inline) ====== */
 const POL_ICON_BASE = new URL("img/polarities/", document.baseURI).href;
-
 function normPolKey(x){
   return String(x||"").toLowerCase().replace(/\s+|[_-]+/g, "");
 }
@@ -92,8 +91,8 @@ const POL_FILE = {
   umbra:   "Umbra_Pol.svg",
   penjaga: "Penjaga_Pol.svg",
   exilus:  "Exilus_Pol.svg",
-  any:     null,     // pas de fichier sûr → fallback texte
-  aura:    null,     // idem
+  any:     null,
+  aura:    null,
   none:    null
 };
 
@@ -101,52 +100,52 @@ function polImgHtml(key, title){
   const k = normPolKey(key);
   const file = POL_FILE[k];
   const t = escapeHtml(title || key || "—");
-  if (!file) {
-    // pas d'asset fiable -> chip texte
-    return `<span class="chip">${t}</span>`;
-  }
+  if (!file) return `<span class="chip">${t}</span>`;
   const src = POL_ICON_BASE + file;
-  // onerror → fallback chip si le fichier manque vraiment
-  return `<img src="${src}" alt="${t}" title="${t}"
-            style="width:22px;height:22px;object-fit:contain;vertical-align:middle"
-            onerror="this.onerror=null;this.replaceWith(Object.assign(document.createElement('span'),{className:'chip',textContent:'${t}'}))">`;
+  return `<img class="pol-img" src="${src}" alt="${t}" title="${t}" data-title="${t}" style="width:22px;height:22px;object-fit:contain;vertical-align:middle">`;
 }
 
 function renderAuraAndPolarities(wf) {
-  try{
-    const cardEl = $("#card");
-    if (!cardEl) return;
-    const auraZone  = cardEl.querySelector('.polarity-row[data-zone="aura"]');
-    const otherZone = cardEl.querySelector('.polarity-row[data-zone="others"]');
-    const exilusZone= cardEl.querySelector('.polarity-row[data-zone="exilus"]');
-    if (!auraZone || !otherZone) return;
+  const cardEl = $("#card");
+  if (!cardEl) return;
+  const auraZone  = cardEl.querySelector('.polarity-row[data-zone="aura"]');
+  const otherZone = cardEl.querySelector('.polarity-row[data-zone="others"]');
+  const exilusZone= cardEl.querySelector('.polarity-row[data-zone="exilus"]');
+  if (!auraZone || !otherZone) return;
 
-    // AURA (depuis l’API). Si l’API renvoie "aura", on affiche un chip texte.
-    const auraRaw = String(wf.aura ?? "").trim();
-    if (auraRaw) {
-      auraZone.innerHTML = polImgHtml(auraRaw, `Aura: ${auraRaw}`);
+  // Aura depuis l’API (si "aura" placeholder → chip texte)
+  const auraRaw = String(wf.aura ?? "").trim();
+  auraZone.innerHTML = auraRaw ? polImgHtml(auraRaw, `Aura: ${auraRaw}`) : `<span class="chip muted">—</span>`;
+
+  // Slots
+  const list = Array.isArray(wf.polarities) ? wf.polarities : [];
+  otherZone.innerHTML = list.length
+    ? list.map(p => polImgHtml(p, p)).join(" ")
+    : `<span class="chip muted">—</span>`;
+
+  // Exilus
+  if (exilusZone) {
+    if (wf.exilus) {
+      const exKey = (typeof wf.exilus === "string" && wf.exilus) ? wf.exilus : "exilus";
+      exilusZone.innerHTML = polImgHtml(exKey, exKey);
     } else {
-      auraZone.innerHTML = `<span class="chip muted">—</span>`;
+      exilusZone.innerHTML = `<span class="chip muted">—</span>`;
     }
-
-    // SLOTS (polarities)
-    const list = Array.isArray(wf.polarities) ? wf.polarities : [];
-    otherZone.innerHTML = list.length
-      ? list.map(p => polImgHtml(p, p)).join(" ")
-      : `<span class="chip muted">—</span>`;
-
-    // EXILUS si dispo dans l’API
-    if (exilusZone) {
-      if (wf.exilus) {
-        const exKey = (typeof wf.exilus === "string" && wf.exilus) ? wf.exilus : "exilus";
-        exilusZone.innerHTML = polImgHtml(exKey, exKey);
-      } else {
-        exilusZone.innerHTML = `<span class="chip muted">—</span>`;
-      }
-    }
-  }catch(err){
-    console.error("[polarity render] error:", err);
   }
+
+  // → attache les fallbacks d’images après injection
+  attachPolarityImgFallbacks(cardEl);
+}
+
+function attachPolarityImgFallbacks(root){
+  root.querySelectorAll("img.pol-img").forEach(img => {
+    img.addEventListener("error", () => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = img.getAttribute("data-title") || "—";
+      img.replaceWith(chip);
+    }, { once: true });
+  });
 }
 /* ======================================================== */
 
@@ -289,7 +288,6 @@ function makeDetailRows(rows) {
           energy: rec.baseStats?.energy ?? "—",
           sprintSpeed: rec.baseStats?.sprintSpeed ?? "—"
         };
-        // depuis l’API
         const aura = rec.aura ?? null;
         const polarities = Array.isArray(rec.polarities) ? rec.polarities.slice() : [];
         const exilus = rec.exilus ?? null;
@@ -328,163 +326,3 @@ function makeDetailRows(rows) {
     // Changement sélection
     $("#picker").addEventListener("change", (e) => {
       const idx = parseInt(e.target.value, 10);
-      const q = norm($("#search").value).toLowerCase();
-      const filtered = !q ? list : list.filter((x) =>
-        x.name.toLowerCase().includes(q)
-      );
-      if (!filtered.length) return;
-      renderCard(filtered[Math.min(idx, filtered.length - 1)], 0);
-    });
-
-    // Recherche
-    $("#search").addEventListener("input", () => {
-      const q = norm($("#search").value).toLowerCase();
-      const filtered = !q ? list : list.filter((x) =>
-        x.name.toLowerCase().includes(q)
-      );
-      renderPicker(filtered);
-      if (filtered.length) renderCard(filtered[0], 0);
-      setStatus(`Affichage : ${filtered.length} résultat(s)`);
-    });
-
-  } catch (e) {
-    console.error("[app] ERREUR BOOT :", e);
-    if (status) {
-      status.textContent = `Loading error : ${e.message || e}`;
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
-    }
-  }
-
-  /* ---------- UI Rendering Functions ---------- */
-
-  function renderCard(wf, iAbility = 0) {
-    const wfName = escapeHtml(wf.name);
-    const wfDesc = escapeHtml(wf.description || "");
-    const abilities = wf.abilities || [];
-    const a = abilities[iAbility] || {};
-    const s = a.summary || {};
-    const tabs = abilities.map((ab, i) =>
-      `<button class="btn-tab ${i === iAbility ? "active" : ""}" data-abi="${i}">
-         ${escapeHtml(String(ab.slot ?? i + 1))}. ${escapeHtml(ab.name || "—")}
-       </button>`
-    ).join(" ");
-    const affected = (s.affectedBy || [])
-      .map((k) =>
-        `<span class="chip orn" style="border-color:#D4AF37;color:#D4AF37;background:rgba(212,175,55,.06)">${escapeHtml(k)}</span>`
-      ).join(" ");
-    const detailRows = makeDetailRows(a.rows || []);
-    const rowsHtml = detailRows.map(({label, value}) => `
-      <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-        <div class="text-sm">${escapeHtml(label)}</div>
-        <div class="font-medium">${escapeHtml(value || "—")}</div>
-      </div>`).join("");
-    const pillsHtml = !detailRows.length ? `
-      <div class="pill-grid grid grid-cols-4 gap-3 mt-4">
-        ${pill("Cost", s.costEnergy)}
-        ${pill("Strength", s.strength)}
-        ${pill("Duration", s.duration)}
-        ${pill("Range", s.range)}
-      </div>` : "";
-    const detailsBlock = rowsHtml ? `
-      <div class="mt-5">
-        <div class="text-sm muted mb-2">Details</div>
-        <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
-          ${rowsHtml}
-        </div>
-      </div>` : "";
-
-    const imgHtml = wf.image
-      ? `<img src="${wf.image}" alt="${wfName}" class="w-full h-full object-contain"
-              onerror="this.onerror=null;this.src='img/warframes/_placeholder.png'">`
-      : `<div class="muted">No Pictures</div>`;
-
-    const cardHtml = `
-      <div class="flex flex-col md:flex-row gap-6">
-        <div class="w-full md:w-[260px] shrink-0 flex flex-col items-center gap-3">
-          <div class="w-[220px] h-[220px] rounded-2xl overflow-hidden bg-[var(--panel-2)] border orn flex items-center justify-center">
-            ${imgHtml}
-          </div>
-          <div class="w-full">
-            <div class="aura-label">Aura polarity</div>
-            <div class="polarity-row" data-zone="aura"></div>
-            <div class="polarity-label mt-3">Polarities</div>
-            <div class="polarity-row" data-zone="others"></div>
-            <div class="polarity-label mt-3">Exilus</div>
-            <div class="polarity-row" data-zone="exilus"></div>
-          </div>
-        </div>
-        <div class="flex-1 flex flex-col gap-4">
-          <div class="flex items-start gap-4">
-            <div class="min-w-0 flex-1">
-              <h2 class="text-xl font-semibold">${wfName}</h2>
-              <p class="mt-2 text-[var(--muted)]">${wfDesc}</p>
-            </div>
-          </div>
-          <div class="grid grid-cols-5 gap-3">
-            ${statBox("HP", wf.stats.health)}
-            ${statBox("SHIELD", wf.stats.shield)}
-            ${statBox("ARMOR", wf.stats.armor)}
-            ${statBox("ENERGY", wf.stats.energy)}
-            ${statBox("SPRINT", wf.stats.sprintSpeed)}
-          </div>
-          <div class="mt-2">
-            ${abilities.length ? `<div class="flex flex-wrap gap-2 mb-3">${tabs}</div>` : ""}
-            <div class="card p-4 orn">
-              <div class="font-semibold">${escapeHtml(a.name || "—")}</div>
-              <p class="mt-1 text-[var(--muted)]">${renderTextIcons(normalizeDesc(a.description))}</p>
-              ${pillsHtml}
-              ${ (s.affectedBy && s.affectedBy.length) ? `
-                <div class="mt-4 text-sm">
-                  <div class="mb-1 muted">Affected by :</div>
-                  <div class="flex flex-wrap gap-2">${affected}</div>
-                </div>` : "" }
-              ${detailsBlock}
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-    const card = $("#card");
-    card.innerHTML = cardHtml;
-
-    // Rendu des polarités depuis l’API (+ fallback chip/texte si fichier manquant)
-    renderAuraAndPolarities(wf);
-
-    // Boutons onglets d'aptitudes
-    card.querySelectorAll("[data-abi]").forEach((btn) => {
-      btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
-    });
-
-    // Fallback externe : laisser polarities.js écouter si présent
-    document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
-  }
-
-  function renderPicker(arr) {
-    const picker = $("#picker");
-    picker.innerHTML = "";
-    arr.forEach((wf, i) => {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = wf.name;
-      picker.appendChild(opt);
-    });
-    picker.value = "0";
-  }
-
-  function setStatus(msg, ok = true) {
-    const status = $("#status");
-    if (!status) return;
-    status.textContent = msg;
-    if (!ok) {
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
-    } else {
-      status.className = "mb-4 text-sm px-3 py-2 rounded-lg orn";
-      status.style.background = "rgba(0,229,255,.08)";
-      status.style.color = "#bfefff";
-    }
-  }
-})();
