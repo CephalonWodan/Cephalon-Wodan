@@ -167,19 +167,32 @@ async function main(){
     let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
     let aura=w0?.aura ?? null;
 
-// --- NEW: exilus + exilus Polarity (uniquement via overrides)
-let exilus = null;
-let exilusPolarity = null;
+    // --- NEW: exilus + exilus Polarity (uniquement via overrides)
+    let exilus = null;
+    let exilusPolarity = null;
 
-    if((!polarities || polarities.length===0) && polOverrides[canon]){
-      const ov=polOverrides[canon];
-      if(Array.isArray(ov)) polarities=ov; // legacy format: direct array
-      if(Array.isArray(ov?.polarities)) polarities=ov.polarities;
-      if(ov?.aura) aura=ov.aura;
-      // --- NEW: overrides exilus
-      if(ov?.exilus !== undefined) exilus = Boolean(ov.exilus);
-      if(ov?.exilusPolarity) exilusPolarity = ov.exilusPolarity;
+    // === PATCH: overrides pris en compte même si polarities wiki présentes ===
+    // Recherche d'un override exact, puis d'un override pour le "base name" (sans Prime/Umbra)
+    const baseName = canon.replace(/\s+(Prime|Umbra)\b/i, '').trim();
+    const ovExact = polOverrides[canon] || polOverrides[canon?.toLowerCase?.()];
+    const ovBase  = polOverrides[baseName] || polOverrides[baseName?.toLowerCase?.()];
+    const ov = ovExact || ovBase || null;
+
+    // Polarities/Aura : seulement si absentes du wiki (comportement existant)
+    if((!polarities || polarities.length===0) && ov){
+      if(Array.isArray(ov)) polarities = ov; // legacy format: direct array
+      if(Array.isArray(ov?.polarities)) polarities = ov.polarities.slice();
+      if(ov?.slots && Array.isArray(ov.slots)) polarities = ov.slots.slice(); // compat "slots"
+      if(typeof ov?.aura === 'string') aura = ov.aura || null;
     }
+
+    // Exilus : toujours appliqué s'il existe dans l'override (indépendant des polarities wiki)
+    if(ov && typeof ov === 'object'){
+      if(ov.exilus !== undefined) exilus = Boolean(ov.exilus);
+      if(ov.exilusPolarity) exilusPolarity = String(ov.exilusPolarity);
+    }
+    // === FIN PATCH ===
+
     if(!Array.isArray(polarities)) polarities=[];
 
     const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
