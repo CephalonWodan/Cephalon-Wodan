@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T14:33:31.786Z",
+  "generatedAt": "2025-10-06T14:48:08.081Z",
   "count": 117,
   "entities": [
     {
@@ -29,6 +29,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Watchful Swarm",
@@ -290,6 +292,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shuriken",
@@ -572,6 +576,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shuriken",
@@ -846,6 +852,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Landslide",
@@ -1333,6 +1341,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Landslide",
@@ -1809,6 +1819,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sonic Boom",
@@ -2058,6 +2070,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sonic Boom",
@@ -2298,6 +2312,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Elude",
@@ -2641,6 +2657,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Elude",
@@ -2978,6 +2996,8 @@
         "Madurai"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Meathook",
@@ -3193,6 +3213,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Razor Gyre",
@@ -3650,6 +3672,8 @@
       },
       "polarities": [],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Razor Gyre",
@@ -4108,6 +4132,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spectral Scream",
@@ -4621,6 +4647,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spectral Scream",
@@ -5123,6 +5151,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fractured Blast",
@@ -5404,6 +5434,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Seek",
@@ -5716,6 +5748,8 @@
         "vazarin"
       ],
       "aura": "Zenurik",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Wyrd Scythes",
@@ -6000,6 +6034,8 @@
         "Naramon"
       ],
       "aura": "aura",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Noctua",
@@ -6366,6 +6402,8 @@
         "Naramon"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Bloomer",
@@ -6618,6 +6656,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fireball",
@@ -7033,6 +7073,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fireball",
@@ -7439,6 +7481,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Metamorphosis",
@@ -7902,6 +7946,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Metamorphosis",
@@ -8355,6 +8401,8 @@
         "madurai"
       ],
       "aura": "None",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Slash Dash",
@@ -8633,6 +8681,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Slash Dash",
@@ -8902,6 +8952,8 @@
         "umbra"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Slash Dash",
@@ -9179,6 +9231,8 @@
         "vazarin"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Freeze",
@@ -9554,6 +9608,8 @@
         "vazarin"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Freeze",
@@ -9920,6 +9976,8 @@
         "madurai"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shattered Lash",
@@ -10385,6 +10443,8 @@
         "naramon"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shattered Lash",
@@ -10843,6 +10903,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Dread Mirror",
@@ -11251,6 +11313,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Dread Mirror",
@@ -11652,6 +11716,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mach Rush",
@@ -12185,6 +12251,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mach Rush",
@@ -12714,6 +12782,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Feast",
@@ -13121,6 +13191,8 @@
         "Madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Feast",
@@ -13518,6 +13590,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Arcsphere",
@@ -13949,6 +14023,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Condemn",
@@ -14269,6 +14345,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Condemn",
@@ -14582,6 +14660,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Balefire",
@@ -14885,6 +14965,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Balefire",
@@ -15181,6 +15263,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tempest Barrage",
@@ -15598,6 +15682,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tempest Barrage",
@@ -15910,6 +15996,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Desiccation",
@@ -16235,6 +16323,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Desiccation",
@@ -16554,6 +16644,8 @@
         "Madurai"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Arch Line",
@@ -16822,6 +16914,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Quiver",
@@ -17179,6 +17273,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Quiver",
@@ -17525,6 +17621,8 @@
         "Naramon"
       ],
       "aura": "Any",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Light's Judgment",
@@ -17588,6 +17686,8 @@
         "naramon"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Whipclaw",
@@ -18005,6 +18105,8 @@
         "naramon"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Whipclaw",
@@ -18415,6 +18517,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Kumihimo",
@@ -18478,6 +18582,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Wrathful Advance",
@@ -18543,6 +18649,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ophidian Bite",
@@ -18810,6 +18918,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ophidian Bite",
@@ -19074,6 +19184,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Banish",
@@ -19431,6 +19543,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Banish",
@@ -19780,6 +19894,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Decoy",
@@ -20019,6 +20135,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Decoy",
@@ -20246,6 +20364,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Pull",
@@ -20672,6 +20792,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Pull",
@@ -21089,6 +21211,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ballistic Battery",
@@ -21428,6 +21552,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Ballistic Battery",
@@ -21757,6 +21883,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Hall of Mirrors",
@@ -22170,6 +22298,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Hall of Mirrors",
@@ -22573,6 +22703,8 @@
         "madurai"
       ],
       "aura": "None",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Soul Punch",
@@ -22884,6 +23016,8 @@
         "naramon"
       ],
       "aura": "None",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Soul Punch",
@@ -23186,6 +23320,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fire Walker",
@@ -23589,6 +23725,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Fire Walker",
@@ -23983,6 +24121,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Virulence",
@@ -24323,6 +24463,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Virulence",
@@ -24654,6 +24796,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Null Star",
@@ -25002,6 +25146,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Null Star",
@@ -25341,6 +25487,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mind Control",
@@ -25690,6 +25838,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mind Control",
@@ -26029,6 +26179,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Smite",
@@ -26462,6 +26614,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Smite",
@@ -26885,6 +27039,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mallet",
@@ -27241,6 +27397,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mallet",
@@ -27593,6 +27751,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Energy Shell",
@@ -27859,6 +28019,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Energy Shell",
@@ -28123,6 +28285,8 @@
         "Naramon"
       ],
       "aura": "Madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Mercy's Kiss",
@@ -28184,6 +28348,8 @@
         "naramon"
       ],
       "aura": "aura",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Grenade Fan",
@@ -28703,6 +28869,8 @@
         "naramon"
       ],
       "aura": "aura",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Grenade Fan",
@@ -29215,6 +29383,8 @@
         "vazarin"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Chyrinka Pillar",
@@ -29556,6 +29726,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Enthrall",
@@ -29984,6 +30156,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Enthrall",
@@ -30405,6 +30579,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rhino Charge",
@@ -30691,6 +30867,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rhino Charge",
@@ -30968,6 +31146,8 @@
         "vazarin"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spores",
@@ -31443,6 +31623,8 @@
         "madurai"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spores",
@@ -31910,6 +32092,8 @@
         "madurai"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reap",
@@ -32337,6 +32521,8 @@
         "Madurai"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reap",
@@ -32759,6 +32945,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Axios Javelin",
@@ -32824,6 +33012,8 @@
         "Vazarin"
       ],
       "aura": "Naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Pyrotechnics",
@@ -32885,6 +33075,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spellbind",
@@ -33332,6 +33524,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Spellbind",
@@ -33770,6 +33964,8 @@
         "vazarin"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Well of Life",
@@ -34156,6 +34352,8 @@
         "naramon"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Well of Life",
@@ -34532,6 +34730,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rip Line",
@@ -34846,6 +35046,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Rip Line",
@@ -35150,6 +35352,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tesla Nervos",
@@ -35730,6 +35934,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tesla Nervos",
@@ -36304,6 +36510,8 @@
         "Vazarin"
       ],
       "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Necraweb",
@@ -36568,6 +36776,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shock",
@@ -36919,6 +37129,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shock",
@@ -37260,6 +37472,8 @@
         "vazarin"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Shroud of Dynar",
@@ -37325,6 +37539,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reservoirs",
@@ -37852,6 +38068,8 @@
         "naramon"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Reservoirs",
@@ -38372,6 +38590,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Celestial Twin",
@@ -38699,6 +38919,8 @@
         "madurai"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Celestial Twin",
@@ -39019,6 +39241,8 @@
         "vazarin"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Xata's Whisper",
@@ -39492,6 +39716,8 @@
         "madurai"
       ],
       "aura": "naramon",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Xata's Whisper",
@@ -39960,6 +40186,8 @@
         "naramon"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sea Snares",
@@ -40407,6 +40635,8 @@
         "vazarin"
       ],
       "aura": "madurai",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Sea Snares",
@@ -40848,6 +41078,8 @@
         "naramon"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tail Wind",
@@ -41198,6 +41430,8 @@
         "naramon"
       ],
       "aura": "vazarin",
+      "exilus": null,
+      "exilusPolarity": null,
       "abilities": [
         {
           "name": "Tail Wind",
