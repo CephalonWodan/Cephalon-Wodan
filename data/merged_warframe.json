@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-06T21:29:41.025Z",
+  "generatedAt": "2025-10-06T21:42:10.647Z",
   "count": 117,
   "entities": [
     {
@@ -38,7 +38,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 15,
             "duration": "N/A",
@@ -87,7 +87,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 50,
             "duration": "10 / 15 / 20 / 25 s",
@@ -136,7 +136,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": 1.5,
             "duration": 25,
@@ -203,7 +203,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 100,
             "duration": 30,
@@ -2982,7 +2982,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 600,
             "duration": "N/A",
@@ -3070,7 +3070,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": "N/A",
             "duration": "5 s (Lifted)",
@@ -3120,7 +3120,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 1500,
             "duration": "N/A",
@@ -6372,7 +6372,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 1000,
             "duration": "N/A",
@@ -6421,7 +6421,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": "—",
             "duration": 16,
@@ -6470,7 +6470,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 500,
             "duration": 3,
@@ -6546,7 +6546,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 1750,
             "duration": "N/A",
@@ -16544,7 +16544,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 600,
             "duration": 1,
@@ -16649,7 +16649,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 1500,
             "duration": "N/A",
@@ -16707,7 +16707,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 8,
             "duration": 30,
@@ -27540,7 +27540,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 50,
             "duration": 22,
@@ -27599,7 +27599,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": "N/A",
             "duration": 8,
@@ -27649,7 +27649,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 8,
             "duration": "N/A",
@@ -27717,7 +27717,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 1500,
             "duration": 11,
@@ -27808,7 +27808,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 50,
             "duration": 22,
@@ -27867,7 +27867,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": "N/A",
             "duration": 8,
@@ -27917,7 +27917,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 8,
             "duration": "N/A",
@@ -27985,7 +27985,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 100,
             "strength": 1500,
             "duration": 11,
@@ -36228,7 +36228,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 25,
             "strength": 2000,
             "duration": 20,
@@ -36296,7 +36296,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": 1200,
             "duration": "N/A",
@@ -36364,7 +36364,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 75,
             "strength": 200,
             "duration": 24,
@@ -36423,7 +36423,7 @@
           "subsumable": null,
           "augments": [],
           "summary": {
-            "costType": null,
+            "costType": "Energy",
             "costEnergy": 50,
             "strength": 500,
             "duration": "N/A",
