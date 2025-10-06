@@ -23,7 +23,7 @@ const DT_ICONS = {
   DT_TOXIN_COLOR: "ToxinSymbol.png",
   DT_GAS_COLOR: "GasSymbol.png",
   DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  DT_RADIATION_COLOR: "RadiationSymbol.png",
+  DT_RADIATION_COLOR: "RADIATIONSymbol.png",
   DT_VIRAL_COLOR: "ViralSymbol.png",
   DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
   DT_BLAST_COLOR: "BlastSymbol.png",
@@ -88,55 +88,6 @@ async function fetchJson(url, what = "fetch") {
   return r.json();
 }
 /* ------------------------------------ */
-
-/* ====== Polarités : rendu par fichiers img/polarities/*.svg ====== */
-const POL_ICON_BASE = new URL("img/polarities/", document.baseURI).href;
-// mapping <clé normalisée> -> nom de fichier
-const POL_FILE = {
-  madurai: "Madurai_Pol.svg",
-  naramon: "Naramon_Pol.svg",
-  vazarin: "Vazarin_Pol.svg",
-  zenurik: "Zenurik_Pol.svg",
-  unairu: "Unairu_Pol.svg",
-  umb ra: "Umbra_Pol.svg", // l’espace ne sera jamais utilisé, sécurité
-  umbra: "Umbra_Pol.svg",
-  penjaga: "Penjaga_Pol.svg",
-  exilus: "Exilus_Pol.svg",
-  aura: "Any_Pol.svg",
-  any: "Any_Pol.svg",
-  none: "Any_Pol.svg"
-};
-function normPol(k){ return String(k||"").trim().toLowerCase(); }
-function polImgHtml(key, title){
-  const file = POL_FILE[normPol(key)];
-  if(!file){
-    return `<span class="chip">${escapeHtml(title || key || "—")}</span>`;
-  }
-  const src = POL_ICON_BASE + file;
-  const t = escapeHtml(title || key);
-  return `<img src="${src}" alt="${t}" title="${t}" style="width:22px;height:22px;object-fit:contain;vertical-align:middle">`;
-}
-function renderAuraAndPolarities(wf) {
-  const cardEl = $("#card");
-  if (!cardEl) return;
-  const auraZone  = cardEl.querySelector('.polarity-row[data-zone="aura"]');
-  const otherZone = cardEl.querySelector('.polarity-row[data-zone="others"]');
-  if (!auraZone || !otherZone) return;
-
-  // --- Aura depuis l'API ---
-  // Beaucoup d’entrées ont "aura" générique -> on affiche Any_Pol.svg
-  const auraRaw = wf.aura || "aura";
-  auraZone.innerHTML = polImgHtml(auraRaw, `Aura: ${auraRaw}`);
-
-  // --- Polarities depuis l'API ---
-  const list = Array.isArray(wf.polarities) ? wf.polarities : [];
-  if (!list.length) {
-    otherZone.innerHTML = `<span class="chip muted">—</span>`;
-  } else {
-    otherZone.innerHTML = list.map(p => polImgHtml(p, p)).join(" ");
-  }
-}
-/* ================================================================= */
 
 /* --------- Fallback data loader ---------- */
 async function getWarframesData() {
@@ -204,10 +155,13 @@ async function getWarframesData() {
           energy: rec.baseStats?.energy ?? "—",
           sprintSpeed: rec.baseStats?.sprintSpeed ?? "—"
         };
-        // Polarités et aura EXACTEMENT comme dans l’API (pas de normalisation agressive)
-        const aura = rec.aura ?? null;
-        const polarities = Array.isArray(rec.polarities) ? rec.polarities.slice() : [];
-
+        // Polarités et aura
+        const aura = rec.aura
+          ? (rec.aura.charAt(0).toUpperCase() + rec.aura.slice(1).toLowerCase())
+          : null;
+        const polarities = (rec.polarities || []).map(p =>
+          p.charAt(0).toUpperCase() + p.slice(1).toLowerCase()
+        );
         // Capacités
         const abilities = (rec.abilities || []).map((ab, i) => {
           const sum = ab.summary || {};
@@ -339,7 +293,7 @@ async function getWarframesData() {
     }).filter(Boolean);
   }
 
-  // hoisted helpers
+  // ---- hoist via function declarations ----
   function pill(label, value) {
     return `
     <div class="pill">
@@ -355,6 +309,7 @@ async function getWarframesData() {
       <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
     </div>`;
   }
+  // -----------------------------------------
 
   function normalizeDesc(text) {
     let s = String(text ?? "");
@@ -450,15 +405,12 @@ async function getWarframesData() {
       </div>
     `;
 
-    // Rendu immédiat de l’aura et des polarités depuis l’API
-    renderAuraAndPolarities(wf);
-
     // Boutons onglets d'aptitudes
     card.querySelectorAll("[data-abi]").forEach((btn) => {
       btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
     });
 
-    // Notifier polarities.js (si présent)
+    // Notifier polarities.js qu'une carte est prête
     document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
   }
 
