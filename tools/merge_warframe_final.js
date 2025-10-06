@@ -167,9 +167,9 @@ async function main(){
     let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
     let aura=w0?.aura ?? null;
 
-    // --- NEW: exilus + exilusPolarity (wiki d'abord si présent)
-    let exilus = (w0?.exilus !== undefined) ? Boolean(w0.exilus) : null;
-    let exilusPolarity = w0?.exilusPolarity ?? null;
+// --- NEW: exilus + exilus Polarity (uniquement via overrides)
+let exilus = null;
+let exilusPolarity = null;
 
     if((!polarities || polarities.length===0) && polOverrides[canon]){
       const ov=polOverrides[canon];
