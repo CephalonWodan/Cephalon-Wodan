@@ -491,6 +491,59 @@
     "blueprint": null
   },
   {
+    "name": "Caliban Prime",
+    "description": "Forged in celebration of the all-too-brief peace between the Orokin and Sentients, Caliban Prime is a true collaborative masterpiece. The heir of twin kingdoms arises in royal gold.",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Caliban.png?c916e",
+    "stats": {
+      "health": 270,
+      "shield": 640,
+      "armor": 290,
+      "energy": 175,
+      "sprintSpeed": 1.1
+    },
+    "polarities": [
+      "vazarin","Madurai,"Madurai"
+    ],
+    "aura": "naramon",
+    "passive": "Allies within Affinity range gain increased resistance to the types of damage they are currently taking.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
     "name": "Chroma",
     "description": "Unleash the draconic. Chroma employs Heat, Electricity, Toxin, and Cold to deal high damage while maintaining survivability. Soar with winged fury.",
     "type": "Warframe",
