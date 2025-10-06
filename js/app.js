@@ -23,7 +23,7 @@ const DT_ICONS = {
   DT_TOXIN_COLOR: "ToxinSymbol.png",
   DT_GAS_COLOR: "GasSymbol.png",
   DT_MAGNETIC_COLOR: "MagneticSymbol.png",
-  // PATCH: corrige la casse du fichier Radiation
+  // corrigé (casse du fichier)
   DT_RADIATION_COLOR: "RadiationSymbol.png",
   DT_VIRAL_COLOR: "ViralSymbol.png",
   DT_CORROSIVE_COLOR: "CorrosiveSymbol.png",
@@ -78,7 +78,7 @@ const txt = (v) => (v === null || v === undefined || v === "" ? "—" : String(v
 const norm = (s) => String(s || "").trim();
 const escapeHtml = (s) =>
   String(s).replace(/[&<>"']/g, (c) =>
-    ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c])
+    ({ "&":"&amp;","<":"&lt;","&gt;":">&gt;","\"":"&quot;","'":"&#39;" }[c])
   );
 const byName = (a, b) => (a.name || "").localeCompare(b.name || "");
 
@@ -89,6 +89,53 @@ async function fetchJson(url, what = "fetch") {
   return r.json();
 }
 /* ------------------------------------ */
+
+/* ====== PATCH: fallback de rendu des polarités (définis AVANT boot) ====== */
+const POL_ICON_BASE = new URL("img/polarity/", document.baseURI).href;
+const KNOWN_POLARITIES = new Set(["Madurai","Naramon","Vazarin","Zenurik","Unairu","Penjaga","Umbra"]);
+
+function renderPolarityImg(name, title) {
+  const safeTitle = escapeHtml(title || name);
+  const src = POL_ICON_BASE + encodeURIComponent(name) + ".png";
+  // si l'image manque, on remplace par un chip texte
+  return `<img src="${src}" alt="${safeTitle}" title="${safeTitle}"
+            style="width:22px;height:22px;object-fit:contain"
+            onerror="this.onerror=null;this.replaceWith(document.createElement('span'));this?.insertAdjacentHTML?.('afterend','<span class=&quot;chip&quot;>${safeTitle}</span>')">`;
+}
+
+function renderAuraAndPolarities(wf) {
+  const cardEl = $("#card");
+  if (!cardEl) return;
+  const auraZone  = cardEl.querySelector('.polarity-row[data-zone="aura"]');
+  const otherZone = cardEl.querySelector('.polarity-row[data-zone="others"]');
+  if (!auraZone || !otherZone) return;
+
+  auraZone.innerHTML = "";
+  otherZone.innerHTML = "";
+
+  // Aura: certains dumps mettent juste "aura" => on n’affiche pas d’icône
+  const auraName = (wf.aura && wf.aura.toLowerCase() !== "aura") ? wf.aura : null;
+  if (auraName && KNOWN_POLARITIES.has(auraName)) {
+    auraZone.innerHTML = renderPolarityImg(auraName, `Aura: ${auraName}`);
+  } else if (auraName) {
+    auraZone.innerHTML = `<span class="chip">${escapeHtml(auraName)}</span>`;
+  } else {
+    auraZone.innerHTML = `<span class="chip muted">—</span>`;
+  }
+
+  const list = Array.isArray(wf.polarities) ? wf.polarities : [];
+  if (!list.length) {
+    otherZone.innerHTML = `<span class="chip muted">—</span>`;
+  } else {
+    otherZone.innerHTML = list.map(p => {
+      const nm = String(p||"").trim();
+      return KNOWN_POLARITIES.has(nm)
+        ? renderPolarityImg(nm, nm)
+        : `<span class="chip">${escapeHtml(nm || "—")}</span>`;
+    }).join(" ");
+  }
+}
+/* ======================================================================== */
 
 /* --------- Fallback data loader ---------- */
 async function getWarframesData() {
@@ -294,7 +341,7 @@ async function getWarframesData() {
     }).filter(Boolean);
   }
 
-  // ---- hoist via function declarations ----
+  // hoisted helpers
   function pill(label, value) {
     return `
     <div class="pill">
@@ -310,54 +357,6 @@ async function getWarframesData() {
       <div class="text-lg font-semibold">${escapeHtml(txt(value))}</div>
     </div>`;
   }
-  // -----------------------------------------
-
-  // PATCH: fallback de rendu des polarités (si aucun listener externe ne remplit les zones)
-  const POL_ICON_BASE = new URL("img/polarity/", document.baseURI).href;
-  const KNOWN_POLARITIES = new Set(["Madurai","Naramon","Vazarin","Zenurik","Unairu","Penjaga","Umbra"]);
-
-  function renderPolarityImg(name, title) {
-    const safeTitle = escapeHtml(title || name);
-    const src = POL_ICON_BASE + encodeURIComponent(name) + ".png";
-    return `<img src="${src}" alt="${safeTitle}" title="${safeTitle}"
-              style="width:22px;height:22px;object-fit:contain"
-              onerror="this.onerror=null;this.replaceWith(document.createElement('span'));this?.insertAdjacentHTML?.('afterend','<span class=&quot;chip&quot;>'+ '${safeTitle}' +'</span>')">`;
-  }
-
-  function renderAuraAndPolarities(wf) {
-    const auraZone = card.querySelector('.polarity-row[data-zone="aura"]');
-    const otherZone = card.querySelector('.polarity-row[data-zone="others"]');
-    if (!auraZone || !otherZone) return;
-
-    // Nettoyage
-    auraZone.innerHTML = "";
-    otherZone.innerHTML = "";
-
-    // Aura: invalide si valeur générique "Aura" (certains dumps l'ont), on n’affiche pas
-    const auraName = wf.aura && wf.aura.toLowerCase() !== "aura" ? wf.aura : null;
-    if (auraName && KNOWN_POLARITIES.has(auraName)) {
-      auraZone.innerHTML = renderPolarityImg(auraName, `Aura: ${auraName}`);
-    } else if (auraName) {
-      // Aura texte fallback
-      auraZone.innerHTML = `<span class="chip">${escapeHtml(auraName)}</span>`;
-    } else {
-      auraZone.innerHTML = `<span class="chip muted">—</span>`;
-    }
-
-    // Others
-    const list = Array.isArray(wf.polarities) ? wf.polarities : [];
-    if (!list.length) {
-      otherZone.innerHTML = `<span class="chip muted">—</span>`;
-    } else {
-      otherZone.innerHTML = list.map(p => {
-        const nm = String(p||"").trim();
-        return KNOWN_POLARITIES.has(nm)
-          ? renderPolarityImg(nm, nm)
-          : `<span class="chip">${escapeHtml(nm || "—")}</span>`;
-      }).join(" ");
-    }
-  }
-  // -----------------------------------------
 
   function normalizeDesc(text) {
     let s = String(text ?? "");
@@ -453,7 +452,7 @@ async function getWarframesData() {
       </div>
     `;
 
-    // PATCH: rendu immédiat de l’aura et des polarités (fallback)
+    // Rendu immédiat de l’aura et des polarités (fallback)
     renderAuraAndPolarities(wf);
 
     // Boutons onglets d'aptitudes
@@ -461,7 +460,7 @@ async function getWarframesData() {
       btn.addEventListener("click", () => renderCard(wf, parseInt(btn.dataset.abi, 10)));
     });
 
-    // Toujours notifier (si un script externe écoute, il peut écraser le rendu fallback)
+    // Notifier polarities.js (si présent)
     document.dispatchEvent(new CustomEvent("wf:card-rendered", { detail: { wf } }));
   }
 
