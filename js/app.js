@@ -167,17 +167,22 @@ async function fetchWarframesWithFailover() {
         const fileName = `${String(rec.name || "").replace(/\s+/g, "")}.png`;
         const img = `img/warframes/${fileName}`;
         return {
-          name: rec.name || "",
-          description: rec.description || "",
-          image: img,
-          stats: {
-            health: bs.health ?? "—",
-            shield: bs.shields ?? bs.shield ?? "—",
-            armor:  bs.armor  ?? "—",
-            energy: bs.energy ?? bs.power ?? "—",
-            sprintSpeed: bs.sprintSpeed ?? "—",
-          },
-        };
+           name: rec.name || "",
+           description: rec.description || "",
+           image: img,
+         // ➜ expose les polarités & exilus depuis ton API
+          polarities: Array.isArray(rec.polarities) ? rec.polarities : [],
+          auraPolarity: rec.aura ?? null,
+          exilus: (rec.exilus === true) ? true : (rec.exilus === false ? false : null),
+          exilusPolarity: rec.exilusPolarity ?? null,
+           stats: {
+             health: bs.health ?? "—",
+             shield: bs.shields ?? bs.shield ?? "—",
+             armor:  bs.armor  ?? "—",
+             energy: bs.energy ?? bs.power ?? "—",
+             sprintSpeed: bs.sprintSpeed ?? "—",
+           },
+         };
       })
       .sort(byName);
 
