@@ -162,14 +162,23 @@ async function main(){
       masteryReq:  x.masteryReq ?? x.MasteryReq ?? 0
     };
     let baseStatsRank30=null;
+
+    // --- polarities/aura depuis wiki + overrides
     let polarities=Array.isArray(w0?.polarities)? w0.polarities.slice(): null;
     let aura=w0?.aura ?? null;
 
+    // --- NEW: exilus + exilusPolarity (wiki d'abord si présent)
+    let exilus = (w0?.exilus !== undefined) ? Boolean(w0.exilus) : null;
+    let exilusPolarity = w0?.exilusPolarity ?? null;
+
     if((!polarities || polarities.length===0) && polOverrides[canon]){
       const ov=polOverrides[canon];
-      if(Array.isArray(ov)) polarities=ov;
+      if(Array.isArray(ov)) polarities=ov; // legacy format: direct array
       if(Array.isArray(ov?.polarities)) polarities=ov.polarities;
       if(ov?.aura) aura=ov.aura;
+      // --- NEW: overrides exilus
+      if(ov?.exilus !== undefined) exilus = Boolean(ov.exilus);
+      if(ov?.exilusPolarity) exilusPolarity = ov.exilusPolarity;
     }
     if(!Array.isArray(polarities)) polarities=[];
 
@@ -180,6 +189,7 @@ async function main(){
       baseStatsRank30 = applied.statsR30;
       polarities = applied.polarities;
       if(applied.aura!=null) aura=applied.aura;
+      // Pour AW/Mech, on ne force pas exilus/exilusPolarity (non pertinents)
     }
 
     const wfList = mapFrameEntryList(wfAbilities, canon);
@@ -261,7 +271,24 @@ async function main(){
     const description=stripTags(w0?.description ?? x.description ?? null);
     const passive=(type==='warframe') ? stripTags(w0?.passive ?? x.passiveDescription ?? null) : null;
 
-    entities.push({ name, type, description, passive, baseStats, baseStatsRank30, polarities, aura: aura ?? null, abilities: abilitiesOut });
+    // Normalisation légère exilus
+    if (exilusPolarity != null && exilusPolarity === '') exilusPolarity = null;
+
+    entities.push({
+      name,
+      type,
+      description,
+      passive,
+      baseStats,
+      baseStatsRank30,
+      polarities,
+      aura: aura ?? null,
+      // --- NEW fields exposed in API ---
+      exilus,           // boolean|null
+      exilusPolarity,   // string|null
+      // ---------------------------------
+      abilities: abilitiesOut
+    });
   }
 
   // --- TRI ALPHABÉTIQUE AVANT L'ÉCRITURE ---
