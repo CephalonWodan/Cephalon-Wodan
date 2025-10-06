@@ -778,7 +778,7 @@
       "Madurai",
       "Naramon"
     ],
-    "aura": "aura",
+    "aura": "Any",
     "passive": "Noctua scans targets, recording information for your Codex. Status Chance increases by 50% on fully scanned targets.",
     "abilities": [
       {
