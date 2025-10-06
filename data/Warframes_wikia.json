@@ -1050,7 +1050,6 @@
       "vazarin",
       "madurai"
     ],
-    "aura": "None",
     "passive": "Excalibur deals 10% increased damage and attacks 10% faster when wielding swords.",
     "abilities": [
       {
@@ -3399,7 +3398,6 @@
       "vazarin",
       "naramon"
     ],
-    "aura": "None",
     "passive": "Restore 5 Health with every enemy death within 10m.",
     "abilities": [
       {
@@ -4866,7 +4864,6 @@
       "sprintSpeed": 1.2
     },
     "polarities": [],
-    "aura": "None",
     "passive": "Stalker's attacks have +300% Critical Chance against enemies who do not see him.",
     "abilities": [
       {
