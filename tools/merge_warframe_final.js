@@ -85,8 +85,13 @@ function buildSummary(det){
 }
 function cleanRows(det){
   const rows = Array.isArray(det?.rows)? det.rows: [];
-  return rows map(r=>({ label: stripTags(r.label), filledLabel: stripTags(r.filledLabel),
-    modifier:r.modifier??null, values:r.values??null, mainNumeric:r.mainNumeric??null }));
+  return rows.map(r=>({
+    label: stripTags(r.label),
+    filledLabel: stripTags(r.filledLabel),
+    modifier: r.modifier ?? null,
+    values: r.values ?? null,
+    mainNumeric: r.mainNumeric ?? null
+  }));
 }
 function mapFrameEntryList(wfAbilities, frameName){
   let list=[];
