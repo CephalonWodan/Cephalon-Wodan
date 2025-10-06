@@ -149,10 +149,163 @@ async function main(){
 
   const A = indexAbilities(abilities);
   const wikiaByName=new Map();
-  if(Array.isArray(wikia)) for(const x of wikia){ wikiaByName.set(String(x.name).toLowerCase(), x); }
+  // PATCH 1: on indexe par name normalisé (trim + lower)
+  if(Array.isArray(wikia)) {
+    for(const x of wikia){
+      const key = String(x.name ?? '').trim().toLowerCase();
+      if (key) wikiaByName.set(key, x);
+    }
+  }
 
   const entities=[];
 
   for(const x of exportAll.ExportWarframes){
     const rawName=x.name||x.Name; if(!rawName) continue;
-    const name=rawName, canon=cleanEntity
+    const name=rawName, canon=cleanEntityName(rawName), type=typeFrom(x.productCategory, x.type);
+
+    // PATCH 2: lookup wiki avec fallback base (sans Prime/Umbra)
+    const canonKey = canon.trim().toLowerCase();
+    const baseKey  = canon.replace(/\s+(Prime|Umbra)\b/i,'').trim().toLowerCase();
+    const w0 = wikiaByName.get(canonKey) ?? wikiaByName.get(baseKey);
+
+    let baseStats = {
+      health:      w0?.stats?.health ?? x.health ?? x.Health ?? null,
+      shields:     w0?.stats?.shield ?? x.shield ?? x.Shield ?? null,
+      energy:      w0?.stats?.energy ?? x.power  ?? x.Power  ?? null,
+      armor:       w0?.stats?.armor  ?? x.armor  ?? x.Armor  ?? null,
+      sprintSpeed: w0?.stats?.sprintSpeed ?? x.sprintSpeed ?? x.SprintSpeed ?? null,
+      masteryReq:  x.masteryReq ?? x.MasteryReq ?? 0
+    };
+    let baseStatsRank30=null;
+
+    // Polarities & Aura — uniquement depuis Warframes_wikia.json (+fallback de clés)
+    let polarities = Array.isArray(w0?.polarities) ? w0.polarities.slice() : [];
+    let aura = w0?.aura ?? w0?.auraPolarity ?? w0?.Aura ?? w0?.AuraPolarity ?? null;
+
+    // --- EXILUS UNIQUEMENT depuis polarity_overrides.json ---
+    let exilus = null;
+    let exilusPolarity = null;
+    const exOv = polOverrides[canon] ?? polOverrides[canonKey] ?? polOverrides[baseKey];
+    if (exOv && typeof exOv === 'object') {
+      if (exOv.exilus !== undefined) exilus = !!exOv.exilus;
+      if (typeof exOv.exilusPolarity === 'string' && exOv.exilusPolarity.trim() !== '') {
+        exilusPolarity = exOv.exilusPolarity.trim();
+      }
+    }
+    // --------------------------------------------------------
+
+    const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
+    if(type!=='warframe' && awo){
+      const applied = applyAwBaseFromOverride(baseStats, {}, polarities, awo);
+      baseStats = applied.stats;
+      baseStatsRank30 = applied.statsR30;
+      polarities = applied.polarities;
+      if(applied.aura!=null) aura=applied.aura;
+    }
+
+    const wfList = mapFrameEntryList(wfAbilities, canon);
+    let raw=[];
+    if(type==='warframe' && wfList.length){
+      raw = wfList.map(a=>({slot:a.slot, name:a.name, path:a.path}));
+    } else if(Array.isArray(x.abilities) && x.abilities.length){
+      raw = x.abilities.map((ab,i)=>({
+        slot: Number(ab.SlotKey ?? ab.slot ?? ab.Slot ?? (i+1)),
+        name: String(ab.abilityName || ab.name || ab.Name || '').trim(),
+        path: ab.abilityUniqueName || ab.path || ab.Path || null
+      }));
+    } else {
+      const names = byFrameList[canon] || byFrameList[canon.toLowerCase()] || [];
+      raw = names.map((n,i)=>({slot:i+1, name:n, path:null}));
+    }
+    raw.sort((a,b)=>(a.slot||999)-(b.slot||999));
+
+    const abilitiesOut = raw.map(a=>{
+      const meta = wfList.find(m => (m.slot===a.slot) || (m.name.toLowerCase()===a.name.toLowerCase()));
+      const nameA = meta?.name || a.name;
+      let desc = stripTags(meta?.desc) || null;
+      let subsumable = (typeof meta?.subsumable === 'boolean') ? meta.subsumable : null;
+      let aug = Array.isArray(meta?.augments) ? meta.augments : [];
+      if(!desc){
+        const exAb=(x.abilities||[]).find(z => String(z.abilityName||z.name||'').toLowerCase()===nameA.toLowerCase());
+        if(exAb) desc = stripTags(exAb.description || exAb.desc || null);
+      }
+      const det = (meta?.path && A.byPath.get(meta.path))
+               || (a.path && A.byPath.get(a.path))
+               || A.byName.get(nameA.toLowerCase())
+               || null;
+      const summary = buildSummary(det);
+      const rows    = cleanRows(det);
+      if(type!=='warframe' && awo?.abilities){
+        const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
+        if(o){
+          const sum = summary || { costType:null,costEnergy:null,strength:null,duration:null,range:null,efficiency:null,affectedBy:[] };
+          if(o.cost!=null){ sum.costEnergy=sum.costEnergy??o.cost; sum.costType=sum.costType??'Energy'; }
+          if(o.stats){
+            const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
+            for(const k of Object.keys(map)){
+              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]); }
+            }
+            if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
+          }
+          if(!desc && o.desc) desc = stripTags(o.desc);
+          return { name:nameA, description:desc, subsumable:null, augments:[], summary:sum, rows };
+        }
+      }
+      return { name:nameA, description:desc, subsumable, augments:aug, summary, rows };
+    });
+
+    if(type==='warframe'){
+      const wk = wikiByName && wikiByName[canon];
+      if(wk){
+        const r0=wk.r0||{}, r30=wk.r30||{};
+        baseStats={
+          health: r0.health ?? baseStats.health,
+          shields:r0.shields?? baseStats.shields,
+          energy: r0.energy ?? baseStats.energy,
+          armor:  r0.armor  ?? baseStats.armor,
+          sprintSpeed: r0.sprintSpeed ?? baseStats.sprintSpeed,
+          masteryReq: baseStats.masteryReq ?? 0
+        };
+        baseStatsRank30={
+          health: r30.health ?? null,
+          shields:r30.shields?? null,
+          energy: r30.energy ?? null,
+          armor:  r30.armor  ?? baseStats.armor ?? null,
+          sprintSpeed: r30.sprintSpeed ?? baseStats.sprintSpeed ?? null,
+          masteryReq: baseStats.masteryReq ?? 0
+        };
+      } else {
+        baseStatsRank30 = computeRank30FromR0(baseStats, canon);
+      }
+    }
+
+    const description=stripTags(w0?.description ?? x.description ?? null);
+    const passive=(type==='warframe') ? stripTags(w0?.passive ?? x.passiveDescription ?? null) : null;
+
+    entities.push({
+      name,
+      type,
+      description,
+      passive,
+      baseStats,
+      baseStatsRank30,
+      polarities,
+      aura: aura ?? null,
+      exilus,           // ← uniquement depuis polarity_overrides.json
+      exilusPolarity,   // ← uniquement depuis polarity_overrides.json
+      abilities: abilitiesOut
+    });
+  }
+
+  // --- TRI ALPHABÉTIQUE AVANT L'ÉCRITURE ---
+  entities.sort((a, b) =>
+    cleanEntityName(a.name).localeCompare(
+      cleanEntityName(b.name), 'fr', { sensitivity: 'base' }
+    )
+  );
+
+  await writeFile(outPath, JSON.stringify({ generatedAt:new Date().toISOString(), count:entities.length, entities }, null, 2),'utf8');
+  console.log(`[merge] OK -> ${outPath} (${entities.length} entities)`);
+}
+
+main().catch(e=>{ console.error(e); process.exit(1); });
