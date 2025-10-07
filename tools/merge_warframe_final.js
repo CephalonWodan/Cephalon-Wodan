@@ -54,6 +54,20 @@ function indexAbilities(abilitiesJson){
   }
   return {byName,byPath};
 }
+
+// ⬇️ NOUVEAU : index sur warframe_abilities.json pour récupérer CostType / Cost
+function indexWFAbilities(wfJson){
+  const byName=new Map(), byPath=new Map();
+  const arr = Array.isArray(wfJson)? wfJson : (wfJson?.abilities || wfJson?.data || []);
+  for(const a of arr||[]){
+    const nm = String(a.Name || a.name || '').trim();
+    const p  = String(a.InternalName || a.path || a.Path || '').trim();
+    if(nm) byName.set(nm.toLowerCase(), a);
+    if(p)  byPath.set(p, a);
+  }
+  return {byName, byPath};
+}
+
 const affFR2EN=(s)=>{ s=String(s||'').toLowerCase();
   if(s.includes('strength')||s.includes('force')) return 'strength';
   if(s.includes('duration')||s.includes('durée')) return 'duration';
@@ -69,38 +83,24 @@ const mod2key=(m)=>{ m=String(m||'').toUpperCase();
   if(m.includes('EFFICIENCY')) return 'efficiency';
   return null;
 };
-
-// ⬇️ PATCH MINIMAL : on autorise un fallback vers "meta" (warframe_abilities.json) pour costType / costEnergy
-function buildSummary(det, meta){
-  if(!det && !meta) return null;
-  const s={
-    // abilities.json (det.summary) d'abord, puis fallbacks vers meta si absent
-    costType:   det?.summary?.CostType ?? det?.summary?.costType ?? meta?.CostType ?? meta?.summary?.CostType ?? null,
-    costEnergy: det?.summary?.costEnergy ?? det?.summary?.Cost ?? meta?.Cost ?? meta?.summary?.Cost ?? null,
-    strength:null, duration:null, range:null, efficiency:null, affectedBy:[]
-  };
-
-  // affectedBy à partir de abilities.json (comme avant)
-  for(const a of (det?.summary?.affectedBy||det?.summary?.AffectedBy||[])){
+function buildSummary(det){
+  if(!det) return null;
+  const s={ costType: det.summary?.CostType ?? null, costEnergy: det.summary?.costEnergy ?? null,
+    strength:null, duration:null, range:null, efficiency:null, affectedBy:[] };
+  for(const a of (det.summary?.affectedBy||det.summary?.AffectedBy||[])){
     const k=affFR2EN(a); if(k && !s.affectedBy.includes(k)) s.affectedBy.push(k);
   }
-  for(const r of (Array.isArray(det?.rows)? det.rows: [])){
+  for(const r of (Array.isArray(det.rows)? det.rows: [])){
     const k=mod2key(r.modifier); if(!k) continue;
     if(s[k]==null) s[k]=r.mainNumeric??null;
     if(!s.affectedBy.includes(k)) s.affectedBy.push(k);
   }
   return s;
 }
-
 function cleanRows(det){
   const rows = Array.isArray(det?.rows)? det.rows: [];
-  return rows.map(r=>({
-    label: stripTags(r.label),
-    filledLabel: stripTags(r.filledLabel),
-    modifier: r.modifier ?? null,
-    values: r.values ?? null,
-    mainNumeric: r.mainNumeric ?? null
-  }));
+  return rows.map(r=>({ label: stripTags(r.label), filledLabel: stripTags(r.filledLabel),
+    modifier:r.modifier??null, values:r.values??null, mainNumeric:r.mainNumeric??null }));
 }
 function mapFrameEntryList(wfAbilities, frameName){
   let list=[];
@@ -143,11 +143,11 @@ async function main(){
 
   const exportAll   = await J(join(dataDir,'ExportWarframes_en.json'));
   const wikia       = await J(join(dataDir,'Warframes_wikia.json'));              // optional
-  const wfAbilities = await J(join(dataDir,'warframe_abilities.json'));           // required
-  const abilities   = await J(join(dataDir,'abilities.json'));                    // required
+  const wfAbilities = await J(join(dataDir,'warframe_abilities.json'));           // required (pour CostType/Cost)
+  const abilities   = await J(join(dataDir,'abilities.json'));                    // required (détails/rows)
   const awOverrides = await J(join(dataDir,'aw_overrides.json'));                 // required
   const byFrameList = await J(join(dataDir,'abilities_by_warframe.json')) || {};  // optional
-  const polOverrides= await J(join(dataDir,'polarity_overrides.json')) || {};     // optional
+  const polOverrides= await J(join(dataDir,'polarity_overrides.json')) || {};     // optional (Exilus ONLY)
   const wikiRanks   = await J(join(dataDir,'wiki_ranks.json'));                   // optional
   const wikiByName  = wikiRanks?.byName || null;
 
@@ -156,7 +156,9 @@ async function main(){
   if(!abilities)   throw new Error('abilities.json manquant');
   if(!awOverrides) throw new Error('aw_overrides.json manquant');
 
-  const A = indexAbilities(abilities);
+  const A  = indexAbilities(abilities);
+  const WF = indexWFAbilities(wfAbilities); // ⬅️ index pour CostType/Cost
+
   const wikiaByName=new Map();
   if(Array.isArray(wikia)) for(const x of wikia){ wikiaByName.set(String(x.name).toLowerCase(), x); }
 
@@ -178,10 +180,11 @@ async function main(){
     let baseStatsRank30=null;
 
     // Polarities & Aura — uniquement depuis Warframes_wikia.json
-    let polarities = Array.isArray(w0?.polarities) ? w0.polarities.slice() : [];
+    let polarities = Array.isArray(w0?.polarities) ? w0.polarities.slice() : null;
     let aura = w0?.aura ?? w0?.auraPolarity ?? w0?.Aura ?? w0?.AuraPolarity ?? null;
+    if(!Array.isArray(polarities)) polarities=[];
 
-    // --- EXILUS UNIQUEMENT depuis polarity_overrides.json ---
+    // EXILUS UNIQUEMENT depuis polarity_overrides.json
     let exilus = null;
     let exilusPolarity = null;
     const exOv = polOverrides[canon];
@@ -191,7 +194,6 @@ async function main(){
         exilusPolarity = exOv.exilusPolarity.trim();
       }
     }
-    // --------------------------------------------------------
 
     const awo = awOverrides[canon] || awOverrides[canon.toLowerCase()];
     if(type!=='warframe' && awo){
@@ -232,10 +234,24 @@ async function main(){
                || (a.path && A.byPath.get(a.path))
                || A.byName.get(nameA.toLowerCase())
                || null;
+      let summary = buildSummary(det);
+      const rows  = cleanRows(det);
 
-      // ⬇️ Passe "meta" à buildSummary pour rétablir costType/costEnergy si absents d'abilities.json
-      const summary = buildSummary(det, meta);
-      const rows    = cleanRows(det);
+      // ⬇️ Compléter costType / costEnergy depuis warframe_abilities.json
+      const wfSrc = (meta?.path && WF.byPath.get(meta.path))
+                 || (a.path && WF.byPath.get(a.path))
+                 || WF.byName.get(nameA.toLowerCase())
+                 || null;
+      if (wfSrc) {
+        if (!summary) summary = { costType:null, costEnergy:null, strength:null, duration:null, range:null, efficiency:null, affectedBy:[] };
+        if (summary.costType == null && wfSrc.CostType != null) {
+          summary.costType = String(wfSrc.CostType).toLowerCase();
+        }
+        if (summary.costEnergy == null && wfSrc.Cost != null) {
+          summary.costEnergy = wfSrc.Cost;
+        }
+      }
+      // ------------------------------------
 
       if(type!=='warframe' && awo?.abilities){
         const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
@@ -245,7 +261,7 @@ async function main(){
           if(o.stats){
             const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
             for(const k of Object.keys(map)){
-              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(k.toLowerCase()); }
+              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]); }
             }
             if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
           }
