@@ -503,7 +503,9 @@
       "sprintSpeed": 1.1
     },
     "polarities": [
-      "vazarin","Madurai,"Madurai"
+      "vazarin",
+      "madurai,
+      "madurai"
     ],
     "aura": "naramon",
     "passive": "Allies within Affinity range gain increased resistance to the types of damage they are currently taking.",
