@@ -10,7 +10,7 @@
 //   .polarity-row[data-zone="aura"|"exilus"|"others"]
 //
 (function () {
-  const API = "https://api.warframestat.us/warframes/?language=en";
+  const API = "https://cephalon-wodan-production.up.railway.app/warframes";
   const OVERRIDES_URL = "data/polarity_overrides.json"; // optionnel
   const ICON_DIR = "img/polarities/";
 
