@@ -69,23 +69,29 @@ const mod2key=(m)=>{ m=String(m||'').toUpperCase();
   if(m.includes('EFFICIENCY')) return 'efficiency';
   return null;
 };
-function buildSummary(det){
-  if(!det) return null;
+
+// ⬇️ PATCH MINIMAL : on autorise un fallback vers "meta" (warframe_abilities.json) pour costType / costEnergy
+function buildSummary(det, meta){
+  if(!det && !meta) return null;
   const s={
-    costType:   det.summary?.CostType ?? det.summary?.costType ?? null, // <- préserve les 2 casses
-    costEnergy: det.summary?.costEnergy ?? null,
+    // abilities.json (det.summary) d'abord, puis fallbacks vers meta si absent
+    costType:   det?.summary?.CostType ?? det?.summary?.costType ?? meta?.CostType ?? meta?.summary?.CostType ?? null,
+    costEnergy: det?.summary?.costEnergy ?? det?.summary?.Cost ?? meta?.Cost ?? meta?.summary?.Cost ?? null,
     strength:null, duration:null, range:null, efficiency:null, affectedBy:[]
   };
-  for(const a of (det.summary?.affectedBy||det.summary?.AffectedBy||[])){
+
+  // affectedBy à partir de abilities.json (comme avant)
+  for(const a of (det?.summary?.affectedBy||det?.summary?.AffectedBy||[])){
     const k=affFR2EN(a); if(k && !s.affectedBy.includes(k)) s.affectedBy.push(k);
   }
-  for(const r of (Array.isArray(det.rows)? det.rows: [])){
+  for(const r of (Array.isArray(det?.rows)? det.rows: [])){
     const k=mod2key(r.modifier); if(!k) continue;
     if(s[k]==null) s[k]=r.mainNumeric??null;
     if(!s.affectedBy.includes(k)) s.affectedBy.push(k);
   }
   return s;
 }
+
 function cleanRows(det){
   const rows = Array.isArray(det?.rows)? det.rows: [];
   return rows.map(r=>({
@@ -114,38 +120,6 @@ function mapFrameEntryList(wfAbilities, frameName){
       return Array.isArray(ag)? ag: []; })(),
     desc: ab.Description || ab.desc || ab.description || null
   })).filter(x=>x.name);
-}
-
-// --- helpers Wiki: robustesse sur les clés aura/polarities ---
-function getWikiEntry(wikiaMap, canon){
-  const lc = String(canon||'').toLowerCase();
-  const base = lc.replace(/\s+(prime|umbra)\b/i,'').trim();
-  return wikiaMap.get(lc) || wikiaMap.get(base) || null;
-}
-function extractPolFromWiki(w0){
-  // polarities: peut être Array ou dans un objet { slots:[], polarities:[], aura: "" }
-  let polarities = [];
-  let aura = null;
-
-  const polyObj = (w0 && typeof w0 === 'object') ? (
-    Array.isArray(w0.polarities) ? { slots:w0.polarities } :
-    (w0.polarities && typeof w0.polarities === 'object') ? w0.polarities : null
-  ) : null;
-
-  if (polyObj) {
-    const slots = Array.isArray(polyObj.slots) ? polyObj.slots
-               : Array.isArray(polyObj.polarities) ? polyObj.polarities : [];
-    polarities = Array.isArray(slots) ? slots.slice() : [];
-    aura = polyObj.aura ?? polyObj.auraPolarity ?? null;
-  } else {
-    // anciennes clés à plat
-    polarities = Array.isArray(w0?.polarities) ? w0.polarities.slice() : [];
-    aura = w0?.aura ?? w0?.auraPolarity ?? w0?.Aura ?? w0?.AuraPolarity ?? null;
-  }
-
-  if (!Array.isArray(polarities)) polarities = [];
-  if (aura != null && typeof aura !== 'string') aura = String(aura);
-  return { polarities, aura };
 }
 
 // --- archwing/necramech overrides ---
@@ -183,8 +157,8 @@ async function main(){
   if(!awOverrides) throw new Error('aw_overrides.json manquant');
 
   const A = indexAbilities(abilities);
-  const wikiaMap=new Map();
-  if(Array.isArray(wikia)) for(const x of wikia){ wikiaMap.set(String(x.name||'').toLowerCase(), x); }
+  const wikiaByName=new Map();
+  if(Array.isArray(wikia)) for(const x of wikia){ wikiaByName.set(String(x.name).toLowerCase(), x); }
 
   const entities=[];
 
@@ -192,7 +166,7 @@ async function main(){
     const rawName=x.name||x.Name; if(!rawName) continue;
     const name=rawName, canon=cleanEntityName(rawName), type=typeFrom(x.productCategory, x.type);
 
-    const w0 = getWikiEntry(wikiaMap, canon);
+    const w0 = wikiaByName.get(canon.toLowerCase());
     let baseStats = {
       health:      w0?.stats?.health ?? x.health ?? x.Health ?? null,
       shields:     w0?.stats?.shield ?? x.shield ?? x.Shield ?? null,
@@ -203,24 +177,18 @@ async function main(){
     };
     let baseStatsRank30=null;
 
-    // Polarities & Aura — UNIQUEMENT depuis Warframes_wikia.json (formes variées robustes)
-    let { polarities, aura } = extractPolFromWiki(w0);
+    // Polarities & Aura — uniquement depuis Warframes_wikia.json
+    let polarities = Array.isArray(w0?.polarities) ? w0.polarities.slice() : [];
+    let aura = w0?.aura ?? w0?.auraPolarity ?? w0?.Aura ?? w0?.AuraPolarity ?? null;
 
     // --- EXILUS UNIQUEMENT depuis polarity_overrides.json ---
     let exilus = null;
     let exilusPolarity = null;
-    {
-      const k1 = canon;
-      const k2 = canon.toLowerCase();
-      const base = canon.replace(/\s+(Prime|Umbra)\b/i,'').trim();
-      const k3 = base;
-      const k4 = base.toLowerCase();
-      const exOv = polOverrides[k1] || polOverrides[k2] || polOverrides[k3] || polOverrides[k4] || null;
-      if (exOv && typeof exOv === 'object') {
-        if (exOv.exilus !== undefined) exilus = !!exOv.exilus;
-        if (typeof exOv.exilusPolarity === 'string' && exOv.exilusPolarity.trim() !== '') {
-          exilusPolarity = exOv.exilusPolarity.trim();
-        }
+    const exOv = polOverrides[canon];
+    if (exOv && typeof exOv === 'object') {
+      if (exOv.exilus !== undefined) exilus = !!exOv.exilus;
+      if (typeof exOv.exilusPolarity === 'string' && exOv.exilusPolarity.trim() !== '') {
+        exilusPolarity = exOv.exilusPolarity.trim();
       }
     }
     // --------------------------------------------------------
@@ -264,19 +232,22 @@ async function main(){
                || (a.path && A.byPath.get(a.path))
                || A.byName.get(nameA.toLowerCase())
                || null;
-      const summary = buildSummary(det);
+
+      // ⬇️ Passe "meta" à buildSummary pour rétablir costType/costEnergy si absents d'abilities.json
+      const summary = buildSummary(det, meta);
       const rows    = cleanRows(det);
+
       if(type!=='warframe' && awo?.abilities){
         const o = awo.abilities.find(z => String(z.name||'').toLowerCase()===nameA.toLowerCase());
         if(o){
           const sum = summary || { costType:null,costEnergy:null,strength:null,duration:null,range:null,efficiency:null,affectedBy:[] };
-          if(o.cost!=null){ if(sum.costEnergy==null) sum.costEnergy=o.cost; if(sum.costType==null) sum.costType='Energy'; }
+          if(o.cost!=null){ sum.costEnergy=sum.costEnergy??o.cost; sum.costType=sum.costType??'Energy'; }
           if(o.stats){
             const map={Strength:'strength',Duration:'duration',Range:'range',Efficiency:'efficiency'};
             for(const k of Object.keys(map)){
-              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(map[k]); }
+              if(o.stats[k]!=null && sum[map[k]]==null){ sum[map[k]]=o.stats[k]; if(!sum.affectedBy.includes(map[k])) sum.affectedBy.push(k.toLowerCase()); }
             }
-            if(o.stats.Misc && sum.misc==null) sum.misc=o.stats.Misc;
+            if(o.stats.Misc) sum.misc=sum.misc??o.stats.Misc;
           }
           if(!desc && o.desc) desc = stripTags(o.desc);
           return { name:nameA, description:desc, subsumable:null, augments:[], summary:sum, rows };
@@ -322,8 +293,8 @@ async function main(){
       baseStatsRank30,
       polarities,
       aura: aura ?? null,
-      exilus,                 // ← uniquement depuis polarity_overrides.json
-      exilusPolarity,         // ← uniquement depuis polarity_overrides.json
+      exilus,           // ← uniquement depuis polarity_overrides.json
+      exilusPolarity,   // ← uniquement depuis polarity_overrides.json
       abilities: abilitiesOut
     });
   }
