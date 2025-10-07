@@ -100,7 +100,7 @@
     const span = document.createElement("span");
     span.className = "pol-icon" + (isAura ? " aura" : "");
     span.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" aria-hidden="true">
         <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,.06)"/>
         <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(212,175,55,.8)" stroke-width="1.5"/>
         <text x="12" y="16" text-anchor="middle" font-size="11" fill="#D4AF37"
@@ -180,7 +180,7 @@
         return;
       }
 
-      // 2) Sinon, logique Warframes (API Warframestat + overrides locaux)
+      // 2) Sinon, logique Warframes (API + overrides locaux)
       if (!name) return;
       const idx = await ensureApiIndex();
       await ensureOverrides();
