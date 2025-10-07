@@ -99,6 +99,7 @@
     const fire    = apiRec?.fireRate ?? exportRec?.FireRate ?? null;
     const mag     = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;
     const reload  = apiRec?.reloadTime ?? exportRec?.Reload ?? null;
+    const range  = apiRec?.range ?? exportRec?.Range ?? null;
 
     const dmgMap  = computeDamageMap(apiRec);
     const total   = apiRec?.totalDamage ?? exportRec?.TotalDamage ?? sumDamage(dmgMap);
@@ -114,7 +115,7 @@
       description: desc,
       image: img,
       mastery, disposition: dispo, trigger,
-      stats: { total, critC, critM, status, fire, mag, reload },
+      stats: { total, critC, critM, status, fire, mag, reload, range },
       damage: dmgMap
     };
   }
