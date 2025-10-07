@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-07T07:56:37.385Z",
+  "generatedAt": "2025-10-07T08:08:25.033Z",
   "count": 117,
   "entities": [
     {
@@ -291,7 +291,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -575,7 +575,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -851,7 +851,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -1340,7 +1340,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -1818,7 +1818,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -2069,7 +2069,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -2311,7 +2311,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -2656,7 +2656,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -3212,7 +3212,7 @@
       "polarities": [
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -3675,7 +3675,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -4135,7 +4135,7 @@
         "naramon",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -4650,7 +4650,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -5154,7 +5154,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -5437,7 +5437,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -5751,7 +5751,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "Zenurik",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -6037,7 +6037,7 @@
         "Madurai",
         "Naramon"
       ],
-      "aura": null,
+      "aura": "Any",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -6659,7 +6659,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -7076,7 +7076,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -7484,7 +7484,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -7949,7 +7949,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -8684,7 +8684,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -8955,7 +8955,7 @@
         "umbra",
         "umbra"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -9234,7 +9234,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -9611,7 +9611,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -9979,7 +9979,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -10446,7 +10446,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -10906,7 +10906,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -11316,7 +11316,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -11719,7 +11719,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -12254,7 +12254,7 @@
         "Naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -12785,7 +12785,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -13194,7 +13194,7 @@
         "vazarin",
         "Madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -13593,7 +13593,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -14026,7 +14026,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -14348,7 +14348,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -14663,7 +14663,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Vazarin",
       "abilities": [
@@ -14968,7 +14968,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Vazarin",
       "abilities": [
@@ -15266,7 +15266,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -15452,7 +15452,15 @@
           "augments": [
             "Rousing Plunder"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -15685,7 +15693,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -15999,7 +16007,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -16183,7 +16191,15 @@
           "augments": [
             "Negation Armor"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -16326,7 +16342,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -16917,7 +16933,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -17276,7 +17292,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -17624,7 +17640,7 @@
       "polarities": [
         "Naramon"
       ],
-      "aura": null,
+      "aura": "Any",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -17635,7 +17651,15 @@
           "augments": [
             "Jade's Judgment"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -17643,7 +17667,15 @@
           "description": "Cycle through three songs that strengthen allies. Power of The Seven increases Ability Strength. Deathbringer increases Weapon Damage. Spirit of Resilience increases Shield Effectiveness. Extend the duration of each song by killing enemies surrounded by Judgments.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -17651,7 +17683,15 @@
           "description": "Jade summons an accusatory gaze that slows nearby enemies and dissolves their Shields and Armor. When the gaze falls upon allies, they can be revived from a distance.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -17659,7 +17699,15 @@
           "description": "Soar with destructive power. Use alternate-fire to detonate Judgments, causing an explosion of Jade Light. Enemies inside the Light's Judgment radius empower the explosion.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -17689,7 +17737,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -18108,7 +18156,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": true,
       "exilusPolarity": "Naramon",
       "abilities": [
@@ -18520,7 +18568,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -18529,7 +18577,15 @@
           "description": "Weave the threads of destiny. Enemies who touch the threads suffer a random Elemental Status Effect. A roll of triple sixes creates threads that inflict one of every Elemental Status Effect.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -18539,7 +18595,15 @@
           "augments": [
             "Omikuji's Fortune"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -18547,7 +18611,15 @@
           "description": "Surround yourself with Omamori Charms, each with a chance to have enemy attacks heal you instead of damage you. The number of charms is determined by Koumei’s dice roll. A roll of triple sixes grants invulnerability for the duration of your Omamori Charms.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -18555,7 +18627,15 @@
           "description": "Wield your foe’s fate threads like the strings of marionettes. Koumei’s dice determine how many Status Effects foes in front of Koumei will suffer. A roll of triple sixes maximizes Status Effect stacks and extends Bunraku to enemies behind Koumei.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -18585,7 +18665,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -18594,7 +18674,15 @@
           "description": "(TAP) Kullervo charges a Heavy Attack, then teleports to his target and strikes. His rage-filled focus temporarily increases his Melee Critical Chance.\\n\\r\\n\\r(HOLD) Teleport to any marked location.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -18604,7 +18692,15 @@
           "augments": [
             "Volatile Recompense"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -18612,7 +18708,15 @@
           "description": "Kullervo sends forth a curse that binds enemies. When a cursed enemy takes damage from him, every other cursed enemy also suffers a portion of that damage.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -18622,7 +18726,15 @@
           "augments": [
             "Wrath of Ukko"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -18652,7 +18764,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -18921,7 +19033,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -19187,7 +19299,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -19546,7 +19658,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -19897,7 +20009,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -20138,7 +20250,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -20367,7 +20479,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -20795,7 +20907,7 @@
         "naramon",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -21214,7 +21326,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -21555,7 +21667,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -21886,7 +21998,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -22301,7 +22413,7 @@
         "naramon",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -23323,7 +23435,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -23728,7 +23840,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -24124,7 +24236,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -24466,7 +24578,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -24799,7 +24911,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -25149,7 +25261,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -25490,7 +25602,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -25841,7 +25953,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -26182,7 +26294,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -26617,7 +26729,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -27042,7 +27154,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -27400,7 +27512,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -28288,7 +28400,7 @@
         "Madurai",
         "Naramon"
       ],
-      "aura": null,
+      "aura": "Madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -28297,7 +28409,15 @@
           "description": "Leap onto an enemy and pierce them with Oraxia’s spider legs, dealing Toxin Damage. Enemies defeated by this attack have a chance to drop Health or Energy Orbs.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -28305,7 +28425,15 @@
           "description": "Oraxia throws a creeping web to ensnare her prey. Enemies caught within the widening radius are trapped inside a cocoon that increases their Damage Vulnerability.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -28313,7 +28441,15 @@
           "description": "Oraxia launches a barrage of stinging darts in front of her that applies Toxin Status Effect. Poisoned enemies spawn Scuttlers when killed.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -28321,7 +28457,15 @@
           "description": "Unfurl Oraxia’s spider legs and go on the prowl. Oraxia is immune to Status Effects and has increased Maximum Health. Ranged Weapons are imbued with Toxin Damage. Killing enemies causes them to burst with Toxin.\\r\\n\\r\\nSilken Thread: Tap Dodge to leap to a targeted surface.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -28351,7 +28495,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "Any",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -28872,7 +29016,7 @@
         "naramon",
         "naramon"
       ],
-      "aura": null,
+      "aura": "Any",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -29386,7 +29530,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -29729,7 +29873,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -30159,7 +30303,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -30582,7 +30726,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -30870,7 +31014,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -31149,7 +31293,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -31626,7 +31770,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -32948,7 +33092,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -32959,7 +33103,15 @@
           "augments": [
             "Axios Javelineers"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -32967,7 +33119,15 @@
           "description": "Summon Tharros, the shield of Styanax. Swing Tharros to repel enemies and reduce their shields and armor. Styanax regenerates health for every enemy struck.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -32975,7 +33135,15 @@
           "description": "Draw enemy attention to Styanax. His resolve uplifts nearby allies, regenerating the squad’s energy over time. Styanax and his allies also regenerate shields for every kill assist they contribute.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -32985,7 +33153,15 @@
           "augments": [
             "Intrepid Stand"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -33015,7 +33191,7 @@
         "Madurai",
         "Vazarin"
       ],
-      "aura": null,
+      "aura": "Naramon",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -33024,7 +33200,15 @@
           "description": "Blast targeted enemies with pillars of Heat Damage. \\r\\n\\r\\nBackbeat Timing: Ignite even more pillars. Increases the Duration and Heat Damage of Ripper's Wail when it deals damage.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -33032,7 +33216,15 @@
           "description": "Drive loudspeakers into epic distortion to create a damaging wave of Heat Damage while also increasing vulnerability to Critical Chance. \\r\\n\\r\\nBackbeat Timing: Doubles Critical Chance. Increases the Duration and Heat Damage of Ripper’s Wail when it deals damage.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -33040,7 +33232,15 @@
           "description": "Rip on the guitar to make Temple briefly invulnerable while healing them. Ally’s weapons in Affinity Range are lit-up with extra Heat Damage each time an ability is used on the Backbeat and successfully hits enemies.\\r\\n\\r\\nBackbeat Timing: Invulnerability lasts longer.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -33048,7 +33248,15 @@
           "description": "Once a charge has been built up on the Backbeat metronome, set Lizzie aflame and torch enemies with Heat. While aimed, Lizzie blasts enemies with thunderous elemental sound waves, use ability controls to change the Elemental Damage type.\\r\\n\\r\\nBackbeat Timing: No Energy consumed.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -33078,7 +33286,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -33527,7 +33735,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -33967,7 +34175,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -34355,7 +34563,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -34733,7 +34941,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -35049,7 +35257,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -35355,7 +35563,7 @@
         "naramon",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -35937,7 +36145,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -36779,7 +36987,7 @@
         "naramon",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -37132,7 +37340,7 @@
         "madurai",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -37475,7 +37683,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
@@ -37486,7 +37694,15 @@
           "augments": [
             "Prey of Dynar"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -37494,7 +37710,15 @@
           "description": "(TAP) Raksh's fangs tear into your enemies. 5 random Status Effects are applied at 10 Stacks each on an enemy. On target's death, spread the Status Effects to other nearby enemies.\\r\\n\\r\\n(HOLD) Raksh guards Voruna with Status Effect resistance.",
           "subsumable": false,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -37502,7 +37726,15 @@
           "description": "(TAP) Lycath hunts to sustain the pack. There is a chance for enemies killed by melee attacks to drop health orbs and enemies killed by headshots to supply energy orbs. Increase the duration of Lycath's hunt by killing enemies affected by 5 or more Status Effects.\\r\\n\\r\\n(HOLD) Lycath guards Voruna with increased Heavy Attack efficiency.",
           "subsumable": true,
           "augments": [],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         },
         {
@@ -37512,7 +37744,15 @@
           "augments": [
             "Ulfrun's Endurance"
           ],
-          "summary": null,
+          "summary": {
+            "costType": null,
+            "costEnergy": null,
+            "strength": null,
+            "duration": null,
+            "range": null,
+            "efficiency": null,
+            "affectedBy": []
+          },
           "rows": []
         }
       ]
@@ -37542,7 +37782,7 @@
         "madurai",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -38071,7 +38311,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -38593,7 +38833,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -38922,7 +39162,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -39244,7 +39484,7 @@
         "vazarin",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -39719,7 +39959,7 @@
         "vazarin",
         "madurai"
       ],
-      "aura": null,
+      "aura": "naramon",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -40189,7 +40429,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -40638,7 +40878,7 @@
         "naramon",
         "vazarin"
       ],
-      "aura": null,
+      "aura": "madurai",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -41081,7 +41321,7 @@
         "madurai",
         "naramon"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
@@ -41433,7 +41673,7 @@
         "vazarin",
         "naramon"
       ],
-      "aura": null,
+      "aura": "vazarin",
       "exilus": null,
       "exilusPolarity": null,
       "abilities": [
