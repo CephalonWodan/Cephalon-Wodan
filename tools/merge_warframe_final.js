@@ -147,7 +147,7 @@ async function main(){
   const abilities   = await J(join(dataDir,'abilities.json'));                    // required
   const awOverrides = await J(join(dataDir,'aw_overrides.json'));                 // required
   const byFrameList = await J(join(dataDir,'abilities_by_warframe.json')) || {};  // optional
-  const polOverrides= await J(join(dataDir,'polarity_overrides.json')) || {};     // optional
+  const polOverrides= await J(join(dataDir,'polarity_overrides.json')) || {};     // required
   const wikiRanks   = await J(join(dataDir,'wiki_ranks.json'));                   // optional
   const wikiByName  = wikiRanks?.byName || null;
 
