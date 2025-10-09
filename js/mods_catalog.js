@@ -116,6 +116,7 @@
       Unairu:  "Unairu_Pol.svg",  Umbra:   "Umbra_Pol.svg",
       Penjaga: "Penjaga_Pol.svg", Any:     "Any_Pol.svg",
       None:    "Any_Pol.svg",      "":      "Any_Pol.svg",
+      Aura:    "Aura_Pol.svg",      Exilus:      "Exilus_Pol.svg",
     };
     const key = canonPolarity(p);
     return `img/polarities/${map[key] || "Any_Pol.svg"}`;
@@ -124,7 +125,7 @@
     const s = norm(p).toLowerCase();
     if (!s) return "Any";
     const aliases = {
-      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon",
+      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus"
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
       umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
     };
