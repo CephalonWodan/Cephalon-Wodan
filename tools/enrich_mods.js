@@ -70,8 +70,7 @@ const clean = (s) =>
     .trim();
 
 function keyify(name) {
-  // ⚠️ on garde le CONTENU entre parenthèses (Primed/Umbral/Archon…),
-  // on retire uniquement les caractères ()
+  // on garde le CONTENU entre parenthèses (Primed/Umbral/Archon…)
   return clean(name)
     .toLowerCase()
     .replace(/<[^>]+>/g, "")
@@ -106,8 +105,7 @@ if (!S_wfstat || !Array.isArray(S_wfstat.data)) {
   process.exit(1);
 }
 
-// Structures utilisables
-const OF_ENTRIES = Object.entries(S_ofmods); // [ [pathKey, ofObj], ... ]
+const OF_ENTRIES = Object.entries(S_ofmods);
 const WF_ITEMS   = S_wfstat.data;
 const EXP_UP     = Array.isArray(S_export?.ExportUpgrades) ? S_export.ExportUpgrades : [];
 
@@ -146,11 +144,11 @@ function isArcaneLike(entry) {
   const cats = Array.isArray(entry.categories) ? entry.categories.map((c) => String(c).toLowerCase()) : [];
   const slug = (entry.slug || "").toLowerCase();
   if (type.includes("arcane")) return true;
-  if (type.includes("relicsandarcanes")) return true; // Overframe
+  if (type.includes("relicsandarcanes")) return true;
   if (cats.includes("arcane")) return true;
-  if (/^arcane\b/.test(name)) return true;    // "Arcane" ou "Arcane XYZ"
-  if (slug === "arcane") return true;         // slug strict
-  if (slug.startsWith("arcane")) return true; // "arcane" ou "arcane-*"
+  if (/^arcane\b/.test(name)) return true;
+  if (slug === "arcane") return true;
+  if (slug.startsWith("arcane")) return true;
   return false;
 }
 function isStanceLike({ type, categories }) {
@@ -163,14 +161,12 @@ function isAuraLike({ type, name, baseDrain }) {
   const n = String(name||"").toLowerCase();
   if (t.includes("aura")) return true;
   if (/^aura\b/.test(n)) return true;
-  if (typeof baseDrain === "number" && baseDrain < 0) return true; // drain négatif typique
+  if (typeof baseDrain === "number" && baseDrain < 0) return true;
   return false;
 }
-
-// Type plus précis quand OF a laissé "Mod"
 function inferTypeSmart(currentType, compatName, uniqueName) {
   const cur = String(currentType || '').toLowerCase();
-  if (cur && cur !== 'mod') return currentType; // déjà spécifique
+  if (cur && cur !== 'mod') return currentType;
   const s = (String(compatName || '') + ' ' + String(uniqueName || '')).toLowerCase();
   if (/(powersuit|\/mods\/warframe|warframe)/.test(s)) return 'Warframe Mod';
   if (/(archwing|arch-gun|archgun)/.test(s)) return 'Archwing';
@@ -184,16 +180,21 @@ function inferTypeSmart(currentType, compatName, uniqueName) {
   return currentType || 'Mod';
 }
 
-// Helpers numériques
+/* ----------------------- Helpers num./normalisation ---------------------- */
 const toNum = (v) => (typeof v === 'number' ? v : (v!==undefined && v!==null && !isNaN(Number(v)) ? Number(v) : undefined));
-const chooseFusionLimit = (...vals) => {
-  const nums = vals.map(toNum).filter((x)=>Number.isFinite(x));
-  return nums.length ? Math.min(...nums) : undefined;
+// priorité: WF > Export > OF (ex: Archon Intensify = 10)
+const chooseFusionLimit = (wf, exp, of) => {
+  const wfN  = toNum(wf);
+  const expN = toNum(exp);
+  const ofN  = toNum(of);
+  return wfN ?? expN ?? ofN;
 };
+// clamp sur EXACTEMENT fusionLimit+1 entrées (rangs 0..fusionLimit)
 const normalizeLevelStats = (levelStats, fusionLimit) => {
   const list = Array.isArray(levelStats) ? levelStats : [];
-  const max = Number.isFinite(fusionLimit) ? (fusionLimit + 1) : list.length;
-  return list.slice(0, max);
+  const lim = toNum(fusionLimit);
+  if (!Number.isFinite(lim)) return list;
+  return list.slice(0, lim + 1);
 };
 
 /* ----------------------- Extracteurs par source -------------------------- */
@@ -213,7 +214,6 @@ function fromOverframe(of) {
 
   const description = of?.description || d?.Description || null;
 
-  // Heuristique augment (soft) → uniquement si le nom contient "Augment"
   const isAug = /\baugment\b/i.test(name || "");
 
   return {
@@ -259,9 +259,7 @@ function fromExport(u) {
 
 /* --------------------------- Fusion champ par champ ---------------------- */
 function take(...vals) {
-  for (const v of vals) {
-    if (v !== undefined && v !== null && String(v) !== "") return v;
-  }
+  for (const v of vals) if (v !== undefined && v !== null && String(v) !== "") return v;
   return undefined;
 }
 
@@ -271,14 +269,13 @@ const report = [];
 let skippedArcanes = 0, skippedNoSlug = 0, skippedEmptyCats = 0;
 
 for (const [ofKey, ofObj] of OF_ENTRIES) {
-  // 0) Skip Arcanes très tôt
   if (isArcaneLike(ofObj)) { skippedArcanes++; continue; }
 
   const baseOF = fromOverframe(ofObj);
   const kName = baseOF.name ? keyify(baseOF.name) : null;
   const kNameSorted = baseOF.name ? keyifySorted(baseOF.name) : null;
 
-  // 1) WFStat match par name (k et k trié)
+  // 1) WFStat match par name
   let wfRaw = null;
   if (kName && mapWFByName.has(kName)) wfRaw = mapWFByName.get(kName);
   if (!wfRaw && kNameSorted && mapWFByName.has(kNameSorted)) wfRaw = mapWFByName.get(kNameSorted);
@@ -312,20 +309,19 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     id: take(baseOF.id),
     slug: take(baseOF.slug),
 
-    // ⚠️ garder le nom Overframe en priorité (préserve “Primed/Umbral/Archon …”)
+    // nom Overframe en priorité (préserve “Primed/Umbral/Archon …”)
     name: take(baseOF.name, WF?.name, EXP?.name),
 
     categories: baseOF.categories || [],
 
-    // expose uniqueName (utile côté API)
     uniqueName: take(WF?.uniqueName, EXP?.uniqueName),
 
-    // WF > EXP > OF
     type: take(WF?.type, EXP?.type, baseOF.type),
     rarity: take(WF?.rarity, EXP?.rarity, baseOF.rarity),
     polarity: take(WF?.polarity, EXP?.polarity, baseOF.polarity),
     compatName: take(WF?.compatName, EXP?.compatName, baseOF.compatName),
     baseDrain: take(WF?.baseDrain, EXP?.baseDrain, baseOF.baseDrain),
+
     fusionLimit: chooseFusionLimit(WF?.fusionLimit, EXP?.fusionLimit, baseOF.fusionLimit),
 
     description: take(WF?.description, EXP?.description, baseOF.description),
@@ -348,7 +344,7 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   // 5) Nettoyages
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
 
-  // clamp des levelStats au fusionLimit (évite 11 rangs fantômes)
+  // clamp des levelStats sur EXACTEMENT fusionLimit+1 (rangs 0..limit)
   merged.levelStats = normalizeLevelStats(merged.levelStats, merged.fusionLimit);
 
   // type plus précis si OF a mis "Mod"
@@ -371,13 +367,11 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
 }
 
 /* ----------------- Backfill : WFStat non présents dans Overframe --------- */
-// (utile pour faire apparaître des Primed/Umbral si absents d'OF)
+// (laisse tomber ce bloc si tu veux uniquement les items OF)
 const seenUnique = new Set(result.map(m => String(m.uniqueName||'').toLowerCase()).filter(Boolean));
 for (const w of WF_ITEMS) {
   const u = String(w?.uniqueName||'').toLowerCase();
   if (!u || seenUnique.has(u)) continue;
-
-  // Évite les Arcanes
   if (isArcaneLike({ name: w?.name, type: w?.type, slug: slugify(w?.name||''), categories: [] })) continue;
 
   const expByU = mapEXPByUnique.get(u);
@@ -388,7 +382,7 @@ for (const w of WF_ITEMS) {
     id: slugify(EXP?.name || WF?.name || u.split('/').pop()),
     slug: slugify(EXP?.name || WF?.name || u.split('/').pop()),
     name: take(EXP?.name, WF?.name),
-    categories: [], // pas d’info OF
+    categories: [],
     uniqueName: u,
     type: take(WF?.type, EXP?.type, 'Mod'),
     rarity: take(WF?.rarity, EXP?.rarity),
@@ -404,7 +398,6 @@ for (const w of WF_ITEMS) {
 
   merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
 
-  // respect des règles d’exclusion
   if (!merged.slug) continue;
   if (!Array.isArray(merged.categories) || merged.categories.length === 0) continue;
 
