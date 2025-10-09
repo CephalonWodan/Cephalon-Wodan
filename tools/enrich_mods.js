@@ -237,7 +237,7 @@ function take(...vals) {
 /* ------------------------------ Fusion globale --------------------------- */
 const result = [];
 const report = [];
-let skippedArcanes = 0;
+let skippedArcanes = 0, skippedNoSlug = 0, skippedEmptyCats = 0;
 
 for (const [ofKey, ofObj] of OF_ENTRIES) {
   // 0) Skip Arcanes très tôt
@@ -296,6 +296,10 @@ merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric 
 
   // 5) Nettoyages
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
+  // ❌ Règle: pas de slug ⇒ on exclut
+  if (!merged.slug) { skippedNoSlug++; continue; }
+  // ❌ Règle: slug OK mais categories vide ⇒ on exclut
+  if (!Array.isArray(merged.categories) || merged.categories.length === 0) { skippedEmptyCats++; continue; }
 
   // 5bis) Affine le type si OF a laissé "Mod"
 merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
@@ -313,7 +317,7 @@ result.push(merged);
 }
 
 // 6) Filet final : retire toute entrée arcane qui aurait survécu (sécurité)
-const final = result.filter((m) => !isArcaneLike(m));
+const final = result.filter((m) => !isArcaneLike(m) && m.slug && Array.isArray(m.categories) && m.categories.length > 0);
 
 /* -------------------------- Écriture des sorties ------------------------- */
 final.sort((a,b) => String(a.name).localeCompare(String(b.name)));
@@ -323,6 +327,8 @@ fs.writeFileSync(OUT_JSON, JSON.stringify(final, null, 2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_input: OF_ENTRIES.length,
   skippedArcanes,
+  skippedNoSlug,
+  skippedEmptyCats,
   total_output: final.length,
   wfMatches: report.filter(r => r.matchedWFStat).length,
   expMatches: report.filter(r => r.matchedExport).length,
