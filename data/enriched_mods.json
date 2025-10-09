@@ -492,7 +492,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.02,
@@ -579,7 +579,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -709,7 +709,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0248,
@@ -1200,7 +1200,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0086,
@@ -1583,7 +1583,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -1736,7 +1736,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -2443,7 +2443,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
@@ -2458,7 +2458,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -2474,7 +2474,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "UNCOMMON",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
@@ -3824,7 +3824,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -3983,6 +3983,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Digital extremists stand no chance when you have Anti-V on your side",
     "isAugment": false,
     "drops": [
       {
@@ -4008,7 +4009,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -4156,7 +4157,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0017,
@@ -4255,6 +4256,7 @@
     "compatName": "Rifle",
     "baseDrain": 2,
     "fusionLimit": 5,
+    "description": "On Hit:",
     "isAugment": false,
     "drops": [
       {
@@ -4347,278 +4349,6 @@
     ]
   },
   {
-    "id": 2221,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/LotusSuitCustomization",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 5531,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 5529,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 5528,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6381,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_HIGH",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 2214,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Weapons/Tenno/LotusBulletWeapon",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 2217,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Weapons/Ostron/Melee/LotusModularWeapon",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 2212,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Weapons/Sentients/OperatorAmplifiers/OperatorAmpWeapon",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 2215,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Powersuits/Operator/OperatorSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6497,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6504,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6494,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 2213,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6506,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6500,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6501,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6499,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6503,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6498,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6502,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
-    "id": 6505,
-    "slug": "arcane",
-    "name": "Arcane",
-    "categories": [],
-    "type": "Mod",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_NONE",
-    "fusionLimit": "QA_MEDIUM",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
     "id": 1450,
     "slug": "archgun-ace",
     "name": "Archgun Ace",
@@ -4700,7 +4430,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -4792,7 +4522,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -4884,7 +4614,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -4940,7 +4670,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -4996,7 +4726,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -5088,6 +4818,7 @@
     "compatName": "Polearms",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -5399,7 +5130,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -5449,7 +5180,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.1549,
@@ -5511,7 +5242,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -5561,7 +5292,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -6138,6 +5869,7 @@
     "compatName": "Archmelee",
     "baseDrain": 10,
     "fusionLimit": 0,
+    "description": "Fatal strikes against an enemy also perform a Codex Scan. Scans require an equipped Codex Scanner and an available charge.",
     "isAugment": false,
     "drops": [
       {
@@ -6316,6 +6048,7 @@
     "compatName": "Glaives",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Orbiting slashes and lashing strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -6371,6 +6104,7 @@
     "compatName": "Nunchaku",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Rapid strikes, deceptive movements.",
     "isAugment": false,
     "drops": [
       {
@@ -6532,7 +6266,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0884,
@@ -6606,7 +6340,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0928,
@@ -6772,7 +6506,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0879,
@@ -6846,7 +6580,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.005,
@@ -7482,7 +7216,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0058,
@@ -7828,7 +7562,7 @@
   {
     "id": 631,
     "slug": "bane-of-corpus",
-    "name": "Bane Of Corpus",
+    "name": "Bane of Corpus",
     "categories": [
       "mod"
     ],
@@ -7920,7 +7654,7 @@
   {
     "id": 633,
     "slug": "bane-of-grineer",
-    "name": "Bane Of Grineer",
+    "name": "Bane of Grineer",
     "categories": [
       "mod"
     ],
@@ -8060,7 +7794,7 @@
   {
     "id": 634,
     "slug": "bane-of-infested",
-    "name": "Bane Of Infested",
+    "name": "Bane of Infested",
     "categories": [
       "mod"
     ],
@@ -8182,7 +7916,7 @@
   {
     "id": 632,
     "slug": "bane-of-orokin",
-    "name": "Bane Of Orokin",
+    "name": "Bane of Orokin",
     "categories": [
       "mod"
     ],
@@ -8262,7 +7996,7 @@
   {
     "id": 6373,
     "slug": "bane-of-the-murmur",
-    "name": "Bane Of The Murmur",
+    "name": "Bane of The Murmur",
     "categories": [
       "mod"
     ],
@@ -8607,7 +8341,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0022,
@@ -9160,6 +8894,7 @@
     "compatName": "Dual Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -9174,7 +8909,7 @@
   {
     "id": 762,
     "slug": "blade-of-truth",
-    "name": "Blade Of Truth",
+    "name": "Blade of Truth",
     "categories": [
       "mod"
     ],
@@ -9845,6 +9580,7 @@
     "compatName": "Polearms",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "A blend of strong and rapid strikes with leaping combos.",
     "isAugment": false,
     "drops": [
       {
@@ -9922,6 +9658,7 @@
     "compatName": "Nikanas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Reverse grip style emphasizing slashing and impaling strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -9983,7 +9720,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -10986,7 +10723,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
@@ -11001,7 +10738,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -11017,7 +10754,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "UNCOMMON",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
@@ -11096,6 +10833,7 @@
     "compatName": "Shotgun",
     "baseDrain": 2,
     "fusionLimit": 5,
+    "description": "On Hit:",
     "isAugment": false,
     "drops": [
       {
@@ -11302,6 +11040,7 @@
     "compatName": "AURA",
     "baseDrain": -2,
     "fusionLimit": 5,
+    "description": "On Ability Cast:",
     "isAugment": false,
     "drops": [
       {
@@ -11506,6 +11245,7 @@
     "compatName": "Sparring",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Round-house attacks and leaping fists.",
     "isAugment": false,
     "drops": [
       {
@@ -11640,6 +11380,7 @@
     "compatName": "Gunblade",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Sharpened blades dance with gunfire.",
     "isAugment": false,
     "drops": [
       {
@@ -11884,6 +11625,7 @@
     "compatName": "Whips",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Chaining combos.",
     "isAugment": false,
     "drops": [
       {
@@ -12054,7 +11796,7 @@
   {
     "id": 7279,
     "slug": "byteryte",
-    "name": "Byteryte",
+    "name": "ByteRyte",
     "categories": [
       "mod"
     ],
@@ -12065,6 +11807,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Keeps your bytes tight and your bits fit",
     "isAugment": false,
     "drops": [
       {
@@ -12280,7 +12023,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -12484,7 +12227,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.017,
@@ -12850,6 +12593,7 @@
     "compatName": "Dual Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Strong slashes and quick stabs that keeps momentum forward.",
     "isAugment": false,
     "drops": [
       {
@@ -12898,7 +12642,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_PRECEPT",
     "compatName": "/Lotus/Types/Game/CatbrowPet/MirrorCatbrowPetPowerSuit",
@@ -13087,7 +12831,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -13315,6 +13059,7 @@
     "compatName": "Glaives",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -13385,7 +13130,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Trinity/TrinityBaseSuit",
@@ -14463,6 +14208,7 @@
     "compatName": "Staves",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Arcing strikes and focused combos.",
     "isAugment": false,
     "drops": [
       {
@@ -15362,6 +15108,7 @@
     "compatName": "Heavy Blade",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Arcing cuts with spinning finish.",
     "isAugment": false,
     "drops": [
       {
@@ -15454,7 +15201,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -15548,6 +15295,7 @@
     "compatName": "Whips",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Powerful arcing strikes with energetic flips.",
     "isAugment": false,
     "drops": [
       {
@@ -15625,6 +15373,7 @@
     "compatName": " Itzal",
     "baseDrain": 6,
     "fusionLimit": 3,
+    "description": "Cosmic Crush Augment: The black hole saps the area of heat, freezing enemies in range. Enemies near the black hole are completely frozen for |val|s.",
     "isAugment": false,
     "drops": [],
     "levelStats": [
@@ -16599,6 +16348,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Stopping cyber-crime in its tracks",
     "isAugment": false,
     "drops": [
       {
@@ -17325,7 +17075,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "UNCOMMON",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -17568,7 +17318,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.1549,
@@ -17948,7 +17698,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -19376,6 +19126,7 @@
     "compatName": "Hammers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -19401,6 +19152,7 @@
     "compatName": "Staves",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -19618,6 +19370,7 @@
     "compatName": "Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Strong whirlwind attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -20077,6 +19830,7 @@
     "compatName": "Dual Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Multi-angle strikes and deadly thrust attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -20248,6 +20002,7 @@
     "compatName": "Hammers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Aerial attacks with Crowd Control combos.",
     "isAugment": false,
     "drops": [
       {
@@ -20699,7 +20454,7 @@
   {
     "id": 6956,
     "slug": "cull-the-weak",
-    "name": "Cull The Weak",
+    "name": "Cull the Weak",
     "categories": [
       "mod"
     ],
@@ -20765,6 +20520,7 @@
     "compatName": "Rapiers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -20790,7 +20546,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -21040,6 +20796,7 @@
     "compatName": "Machetes",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Brutal strikes with deft movement.",
     "isAugment": false,
     "drops": [
       {
@@ -21488,6 +21245,7 @@
     "compatName": "Nikanas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fierce, double-handed strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -21893,6 +21651,7 @@
     "compatName": "Blade And Whip",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Sudden lashes, lethal slashes.",
     "isAugment": false,
     "drops": [
       {
@@ -22133,7 +21892,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Sandman/SandmanBaseSuit",
@@ -22209,6 +21968,7 @@
     "compatName": "Helios",
     "baseDrain": 6,
     "fusionLimit": 5,
+    "description": "Upon completing research on an enemy, subsequent scans will reveal their weak points.",
     "isAugment": false,
     "drops": [
       {
@@ -22234,7 +21994,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0022,
@@ -22501,6 +22261,7 @@
     "compatName": "Sahasa Kubrow",
     "baseDrain": 0,
     "fusionLimit": 5,
+    "description": "The kubrow sniffs out buried objects and digs them up.",
     "isAugment": false,
     "drops": [
       {
@@ -22843,7 +22604,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_TACTIC",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -23160,6 +22921,7 @@
     "compatName": "Dual Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -23633,7 +23395,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -23707,6 +23469,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Your digital virus buster",
     "isAugment": false,
     "drops": [
       {
@@ -23990,6 +23753,7 @@
     "compatName": "Convectrix",
     "baseDrain": 4,
     "fusionLimit": 5,
+    "description": "Only consume ammo when dealing damage.",
     "isAugment": false,
     "drops": [],
     "levelStats": [
@@ -24500,6 +24264,7 @@
     "compatName": "Sword And Shield",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Rapid attacks using sword and shield.",
     "isAugment": false,
     "drops": [
       {
@@ -24809,7 +24574,7 @@
   {
     "id": 323,
     "slug": "emp-aura",
-    "name": "Emp Aura",
+    "name": "EMP Aura",
     "categories": [
       "mod"
     ],
@@ -25081,7 +24846,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -25358,6 +25123,7 @@
     "compatName": "AURA",
     "baseDrain": -2,
     "fusionLimit": 5,
+    "description": "Highlights enemies on the Minimap",
     "isAugment": false,
     "drops": [
       {
@@ -25420,7 +25186,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -25893,7 +25659,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -26246,7 +26012,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0031,
@@ -27123,7 +26889,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0067,
@@ -28578,6 +28344,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Roiling, moaning, this realm of ours\n\nIn madness lost shall die",
     "isAugment": false,
     "drops": [
       {
@@ -28673,7 +28440,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0022,
@@ -29795,6 +29562,7 @@
     "compatName": "Nikanas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -30486,7 +30254,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0248,
@@ -30574,6 +30342,7 @@
     "compatName": "Sword And Shield",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Powerful slashes and shield attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -30883,6 +30652,7 @@
     "compatName": "Rifle",
     "baseDrain": 6,
     "fusionLimit": 3,
+    "description": "Improves the Blast Radius of weapons with Radial Attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -30983,7 +30753,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.005,
@@ -31177,6 +30947,7 @@
     "compatName": "Staves",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Lifting strikes and whirlwind combos.",
     "isAugment": false,
     "drops": [
       {
@@ -31340,7 +31111,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0076,
@@ -31585,7 +31356,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -31647,7 +31418,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -32221,6 +31992,7 @@
     "compatName": "Tetra",
     "baseDrain": 10,
     "fusionLimit": 3,
+    "description": "When Aiming:",
     "isAugment": false,
     "drops": [
       {
@@ -32422,7 +32194,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "description": "On Respawn:",
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -32514,7 +32287,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -32570,6 +32343,7 @@
     "compatName": "Claws",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fast strikes, powerful slams.",
     "isAugment": false,
     "drops": [
       {
@@ -32671,6 +32445,7 @@
     "compatName": "Fists",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fast, multi-hit strikes with powerful finishers.",
     "isAugment": false,
     "drops": [
       {
@@ -33297,6 +33072,7 @@
     "compatName": "Pistol",
     "baseDrain": 6,
     "fusionLimit": 3,
+    "description": "Improves the Blast Radius of weapons with Radial Attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -34543,7 +34319,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.01,
@@ -34625,6 +34401,7 @@
     "compatName": "Heavy Scythe",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Wide slashes and heavy strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -35678,6 +35455,7 @@
     "compatName": "Tonfas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "A style exhibiting sweeping slash attacks and swift jabs.",
     "isAugment": false,
     "drops": [
       {
@@ -35961,7 +35739,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.1768,
@@ -36035,7 +35813,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.005,
@@ -36225,7 +36003,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0879,
@@ -36527,6 +36305,7 @@
     "compatName": "Glaives",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fast arcing strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -36582,6 +36361,7 @@
     "compatName": "Dual Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Lunging punctures with impaling spirals.",
     "isAugment": false,
     "drops": [
       {
@@ -36853,6 +36633,7 @@
     "compatName": "Sparring",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Lightning fast hit chains and hard-hitting combos.",
     "isAugment": false,
     "drops": [
       {
@@ -37923,7 +37704,7 @@
   {
     "id": 117,
     "slug": "hall-of-malevolence",
-    "name": "Hall Of Malevolence",
+    "name": "Hall of Malevolence",
     "categories": [
       "mod"
     ],
@@ -38140,7 +37921,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0006,
@@ -38742,7 +38523,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0248,
@@ -39207,7 +38988,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -39795,7 +39576,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0022,
@@ -40294,7 +40075,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0248,
@@ -40379,7 +40160,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Shotgun",
     "rarity": "RARE",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Shotgun/LotusShotgun",
@@ -40984,6 +40765,7 @@
     "compatName": "Gunblade",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Bullets spray between wicked slash attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -41374,6 +41156,7 @@
     "compatName": "Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fast strikes, many hits.",
     "isAugment": false,
     "drops": [
       {
@@ -42240,7 +42023,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0893,
@@ -42701,7 +42484,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "UNCOMMON",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Grineer/Melee/GrineerClaws/GrnClaws",
@@ -43501,7 +43284,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0002,
@@ -45398,7 +45181,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0076,
@@ -45497,7 +45280,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.003,
@@ -46287,6 +46070,7 @@
     "compatName": "Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fast cutting attacks with puncture finish.",
     "isAugment": false,
     "drops": [
       {
@@ -46663,7 +46447,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Choir/ChoirBaseSuit",
@@ -46881,6 +46665,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Corporeal laws are unwrit\n\nAs suns and love retreat",
     "isAugment": false,
     "drops": [
       {
@@ -47181,7 +46966,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.017,
@@ -47507,7 +47292,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_TACTIC",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
@@ -47531,6 +47316,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "There's no Clean like Keep-Clean",
     "isAugment": false,
     "drops": [
       {
@@ -47556,6 +47342,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "To cosmic forms from tangent planes\n\nWe end as we began",
     "isAugment": false,
     "drops": [
       {
@@ -48345,6 +48132,7 @@
     "compatName": "Whips",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -48370,6 +48158,7 @@
     "compatName": "Sword And Shield",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -49137,7 +48926,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.005,
@@ -49270,7 +49059,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0076,
@@ -49990,7 +49779,7 @@
   {
     "id": 529,
     "slug": "lock-and-load",
-    "name": "Lock And Load",
+    "name": "Lock and Load",
     "categories": [
       "mod"
     ],
@@ -50101,6 +49890,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "From brooding gulfs are we beheld\n\nBy that which bears no name",
     "isAugment": false,
     "drops": [
       {
@@ -50382,6 +50172,7 @@
     "compatName": "AURA",
     "baseDrain": -2,
     "fusionLimit": 5,
+    "description": "Minimap shows loot crates.",
     "isAugment": false,
     "drops": [
       {
@@ -50881,6 +50672,7 @@
     "compatName": "MOD",
     "baseDrain": 0,
     "fusionLimit": 0,
+    "description": "Ensures transmuted mod is of Madurai polarity and eliminates credit cost.",
     "isAugment": false,
     "drops": [
       {
@@ -50906,6 +50698,7 @@
     "compatName": "Nunchaku",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -52529,7 +52322,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0017,
@@ -52745,7 +52538,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -53379,6 +53172,7 @@
     "compatName": "Claws",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Puncturing strikes and quick slashes.",
     "isAugment": false,
     "drops": [
       {
@@ -53511,7 +53305,7 @@
   {
     "id": 5597,
     "slug": "mark-of-the-beast",
-    "name": "Mark Of The Beast",
+    "name": "Mark of the Beast",
     "categories": [
       "mod"
     ],
@@ -53808,7 +53602,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -54109,7 +53903,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "UNCOMMON",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -54305,6 +54099,7 @@
     "compatName": "Tiberon",
     "baseDrain": 10,
     "fusionLimit": 3,
+    "description": "When Aiming:",
     "isAugment": false,
     "drops": [
       {
@@ -54397,6 +54192,7 @@
     "compatName": "AURA",
     "baseDrain": -2,
     "fusionLimit": 5,
+    "description": "Increased Pistol Ammo recovery.",
     "isAugment": false,
     "drops": [
       {
@@ -54539,7 +54335,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.05,
@@ -55712,7 +55508,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "UNCOMMON",
     "polarity": "AP_TACTIC",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -55899,7 +55695,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Cowgirl/CowgirlBaseSuit",
@@ -57016,7 +56812,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0022,
@@ -58403,7 +58199,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0327,
@@ -58760,6 +58556,7 @@
     "compatName": "Penta",
     "baseDrain": 4,
     "fusionLimit": 5,
+    "description": "Grenades leave a burning patch on impact.",
     "isAugment": false,
     "drops": [],
     "levelStats": [
@@ -58809,6 +58606,7 @@
     "compatName": "MOD",
     "baseDrain": 0,
     "fusionLimit": 0,
+    "description": "Ensures transmuted mod is of Naramon polarity and eliminates credit cost.",
     "isAugment": false,
     "drops": [
       {
@@ -58908,7 +58706,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -59000,7 +58798,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "description": "Improves Casting Speed on Warframe abilities if applicable.",
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0103,
@@ -61491,6 +61290,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Carrion hordes trill their profane\n\nAccord with eldritch plans",
     "isAugment": false,
     "drops": [
       {
@@ -61737,6 +61537,7 @@
     "compatName": "Pistol",
     "baseDrain": 2,
     "fusionLimit": 5,
+    "description": "On Hit:",
     "isAugment": false,
     "drops": [
       {
@@ -61842,7 +61643,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
@@ -61857,7 +61658,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -61873,7 +61674,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "UNCOMMON",
     "polarity": "AP_DEFENSE",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
@@ -61952,7 +61753,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -62592,6 +62393,7 @@
     "compatName": "Heavy Blade",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -63469,7 +63271,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Koumei/KoumeiBaseSuit",
@@ -63486,7 +63288,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "UNCOMMON",
     "polarity": "AP_ATTACK",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -63858,6 +63660,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Through endless faces, countless forms, a multitude unfolds.\n\n(Mimics any Requiem Mod)",
     "isAugment": false,
     "drops": [],
     "levelStats": []
@@ -63865,7 +63668,7 @@
   {
     "id": 2817,
     "slug": "out-of-sight",
-    "name": "Out Of Sight",
+    "name": "Out of Sight",
     "categories": [
       "mod"
     ],
@@ -63907,7 +63710,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -63963,7 +63766,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 5,
-    "isAugment": true,
+    "description": "On Respawn:",
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -64019,7 +63823,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -64231,6 +64035,7 @@
     "compatName": "COMPANION",
     "baseDrain": 4,
     "fusionLimit": 5,
+    "description": "Heal your Companion with Melee hits. Excess healing grants Overguard.",
     "isAugment": false,
     "drops": [
       {
@@ -64366,7 +64171,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0103,
@@ -65056,7 +64861,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0033,
@@ -65131,7 +64936,7 @@
   {
     "id": 89,
     "slug": "path-of-statues",
-    "name": "Path Of Statues",
+    "name": "Path of Statues",
     "categories": [
       "mod"
     ],
@@ -65459,6 +65264,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
+    "description": "Critical hits cause flowers to grow from the wounds.",
     "isAugment": false,
     "drops": [
       {
@@ -66047,6 +65853,7 @@
     "compatName": "Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -66424,7 +66231,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0034,
@@ -68940,6 +68747,7 @@
     "compatName": "Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Spiral strikes, lifting combos.",
     "isAugment": false,
     "drops": [
       {
@@ -69252,7 +69060,7 @@
   {
     "id": 191,
     "slug": "pool-of-life",
-    "name": "Pool Of Life",
+    "name": "Pool of Life",
     "categories": [
       "mod"
     ],
@@ -69532,7 +69340,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -69576,7 +69384,7 @@
   {
     "id": 172,
     "slug": "power-of-three",
-    "name": "Power Of Three",
+    "name": "Power of Three",
     "categories": [
       "mod"
     ],
@@ -69888,7 +69696,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.003,
@@ -70081,7 +69889,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -71138,7 +70946,7 @@
   {
     "id": 6745,
     "slug": "prey-of-dynar",
-    "name": "Prey Of Dynar",
+    "name": "Prey of Dynar",
     "categories": [
       "mod"
     ],
@@ -71500,7 +71308,7 @@
   {
     "id": 607,
     "slug": "primed-bane-of-corpus",
-    "name": "Primed Bane Of Corpus",
+    "name": "Primed Bane of Corpus",
     "categories": [
       "mod"
     ],
@@ -71574,7 +71382,7 @@
   {
     "id": 609,
     "slug": "primed-bane-of-grineer",
-    "name": "Primed Bane Of Grineer",
+    "name": "Primed Bane of Grineer",
     "categories": [
       "mod"
     ],
@@ -71648,7 +71456,7 @@
   {
     "id": 610,
     "slug": "primed-bane-of-infested",
-    "name": "Primed Bane Of Infested",
+    "name": "Primed Bane of Infested",
     "categories": [
       "mod"
     ],
@@ -71722,7 +71530,7 @@
   {
     "id": 608,
     "slug": "primed-bane-of-orokin",
-    "name": "Primed Bane Of Orokin",
+    "name": "Primed Bane of Orokin",
     "categories": [
       "mod"
     ],
@@ -71796,7 +71604,7 @@
   {
     "id": 7433,
     "slug": "primed-bane-of-the-murmur",
-    "name": "Primed Bane Of The Murmur",
+    "name": "Primed Bane of The Murmur",
     "categories": [
       "mod"
     ],
@@ -72438,7 +72246,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -73400,6 +73208,7 @@
     "compatName": "Rifle",
     "baseDrain": 6,
     "fusionLimit": 10,
+    "description": "Improves the Blast Radius of weapons with Radial Attacks.",
     "isAugment": false,
     "drops": [],
     "levelStats": [
@@ -73474,7 +73283,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -73548,6 +73357,7 @@
     "compatName": "Pistol",
     "baseDrain": 6,
     "fusionLimit": 10,
+    "description": "Improves the Blast Radius of weapons with Radial Attacks.",
     "isAugment": false,
     "drops": [],
     "levelStats": [
@@ -73992,6 +73802,7 @@
     "compatName": "COMPANION",
     "baseDrain": 4,
     "fusionLimit": 10,
+    "description": "Heal your Companion with Melee hits. Excess healing grants Overguard.",
     "isAugment": false,
     "drops": [],
     "levelStats": [
@@ -74595,7 +74406,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -75716,7 +75527,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -75938,7 +75749,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -76657,7 +76468,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0327,
@@ -76981,7 +76792,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0067,
@@ -77367,6 +77178,7 @@
     "compatName": "Fists",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -77478,7 +77290,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -77802,7 +77614,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -78550,7 +78362,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0006,
@@ -78831,7 +78643,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0001,
@@ -80568,6 +80380,7 @@
     "compatName": "Scythes",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Far flung attacks and multi-hit combos.",
     "isAugment": false,
     "drops": [
       {
@@ -81115,7 +80928,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0011,
@@ -81535,7 +81348,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0017,
@@ -82552,7 +82365,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -83129,6 +82942,7 @@
     "compatName": "Heavy Blade",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Downward cuts with an impact combo.",
     "isAugment": false,
     "drops": [
       {
@@ -83222,7 +83036,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0033,
@@ -83320,6 +83134,7 @@
     "compatName": "Machetes",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -83928,7 +83743,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -85135,7 +84950,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 0,
     "fusionLimit": 0,
-    "isAugment": true,
+    "description": "Ice FX on Bullet Jump",
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -85206,6 +85022,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "In luminous space blackened stars\n\nThey gaze, accuse, deny",
     "isAugment": false,
     "drops": [
       {
@@ -85301,7 +85118,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -85351,6 +85168,7 @@
     "compatName": "Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -85428,7 +85246,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -85991,7 +85809,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0008,
@@ -87397,7 +87215,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.017,
@@ -87738,7 +87556,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_PRECEPT",
     "compatName": "/Lotus/Types/Sentinels/SentinelPowersuits/RadarBasePowerSuit",
     "baseDrain": "QA_NONE",
@@ -87800,6 +87618,7 @@
     "compatName": "Claws",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -88139,7 +87958,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 0,
     "fusionLimit": 0,
-    "isAugment": true,
+    "description": "Fire FX on Bullet Jump",
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -88789,6 +88609,7 @@
     "compatName": "Fists",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Methodical strikes with reaching combos.",
     "isAugment": false,
     "drops": [
       {
@@ -89018,6 +88839,7 @@
     "compatName": "Pistol",
     "baseDrain": 4,
     "fusionLimit": 5,
+    "description": "Only compatible with Semi-Auto Trigger. Fire Rate cannot be modified.",
     "isAugment": false,
     "drops": [
       {
@@ -89080,6 +88902,7 @@
     "compatName": "Rifle",
     "baseDrain": 4,
     "fusionLimit": 5,
+    "description": "Only compatible with Semi-Auto Trigger. Fire Rate cannot be modified.",
     "isAugment": false,
     "drops": [
       {
@@ -89142,6 +88965,7 @@
     "compatName": "Shotgun",
     "baseDrain": 4,
     "fusionLimit": 5,
+    "description": "Only compatible with Semi-Auto Trigger. Fire Rate cannot be modified.",
     "isAugment": false,
     "drops": [
       {
@@ -90175,6 +89999,7 @@
     "compatName": "Scythes",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -90676,6 +90501,7 @@
     "compatName": "Hammers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Methodical strikes and high impact combos.",
     "isAugment": false,
     "drops": [
       {
@@ -91336,7 +91162,7 @@
   {
     "id": 144,
     "slug": "shield-of-shadows",
-    "name": "Shield Of Shadows",
+    "name": "Shield of Shadows",
     "categories": [
       "mod"
     ],
@@ -91445,6 +91271,7 @@
     "compatName": "Polearms",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fast spinning attacks and staggering strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -91580,7 +91407,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0003,
@@ -94631,6 +94458,7 @@
     "compatName": "Dual Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Strong, focused attacks with multi-hit spins.",
     "isAugment": false,
     "drops": [
       {
@@ -94870,6 +94698,7 @@
     "compatName": "K-Drive",
     "baseDrain": 4,
     "fusionLimit": 3,
+    "description": "On Directional Dismount:",
     "isAugment": false,
     "drops": [
       {
@@ -94916,6 +94745,7 @@
     "compatName": "Warfans",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Twirling, acrobatic slashes with a refined touch.",
     "isAugment": false,
     "drops": [
       {
@@ -96528,6 +96358,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Keeping software safe by ALWAYS WATCHING",
     "isAugment": false,
     "drops": [
       {
@@ -96703,6 +96534,7 @@
     "compatName": "Tonfas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "An outlandish style with sweeping attacks.",
     "isAugment": false,
     "drops": [
       {
@@ -96992,7 +96824,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -97407,6 +97239,7 @@
     "compatName": "Dual Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Swift stabs, twisting slashes.",
     "isAugment": false,
     "drops": [
       {
@@ -98810,6 +98643,7 @@
     "compatName": "Scythes",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Lunging spirals and shattering combos.",
     "isAugment": false,
     "drops": [
       {
@@ -99019,6 +98853,7 @@
     "compatName": "Tonfas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -99437,7 +99272,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -99554,7 +99389,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0058,
@@ -99898,6 +99733,7 @@
     "compatName": "Daggers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Vigorous slashes with forceful stabs.",
     "isAugment": false,
     "drops": [
       {
@@ -100381,7 +100217,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0125,
@@ -100637,7 +100473,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0001,
@@ -101103,7 +100939,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.2256,
@@ -101165,7 +101001,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0018,
@@ -102323,7 +102159,7 @@
   {
     "id": 7186,
     "slug": "summoner-s-wrath",
-    "name": "Summoner’S Wrath",
+    "name": "Summoner’s Wrath",
     "categories": [
       "mod"
     ],
@@ -102482,6 +102318,7 @@
     "compatName": "Machetes",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Steady chopping strikes with focused damage.",
     "isAugment": false,
     "drops": [
       {
@@ -102849,7 +102686,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0001,
@@ -103153,7 +102990,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -103569,6 +103406,7 @@
     "compatName": "Dual Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fanning, multi-hit strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -103702,6 +103540,7 @@
     "compatName": "Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Quick slashes with spinning lunges.",
     "isAugment": false,
     "drops": [
       {
@@ -103751,6 +103590,7 @@
     "compatName": "Melee",
     "baseDrain": 10,
     "fusionLimit": 3,
+    "description": "With Melee Equipped:",
     "isAugment": false,
     "drops": [
       {
@@ -104052,7 +103892,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.05,
@@ -104557,7 +104397,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0248,
@@ -104707,6 +104547,7 @@
     "compatName": "Blade And Whip",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -105781,7 +105622,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "description": "Increased Pistol Ammo recovery.",
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.05,
@@ -106162,7 +106004,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -106212,6 +106054,7 @@
     "compatName": "Heavy Blade",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Sweeping strikes and twisting slashes.",
     "isAugment": false,
     "drops": [
       {
@@ -107065,7 +106908,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_TACTIC",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "isAugment": false,
@@ -107840,7 +107683,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.004,
@@ -108246,6 +108089,7 @@
     "compatName": "Nikanas",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Powerful arcs with frenzied combo.",
     "isAugment": false,
     "drops": [
       {
@@ -108328,7 +108172,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0417,
@@ -108470,6 +108314,7 @@
     "compatName": "MOD",
     "baseDrain": 0,
     "fusionLimit": 0,
+    "description": "Removes credits cost and guarantees the resultant mod polarity.",
     "isAugment": false,
     "drops": [
       {
@@ -109393,6 +109238,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Eliminating sneaky viruses since 1989",
     "isAugment": false,
     "drops": [
       {
@@ -109912,6 +109758,7 @@
     "compatName": "Polearms",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "A mix of sweeping attacks with precise strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -110024,7 +109871,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Werewolf/WerewolfBaseSuit",
@@ -110048,7 +109895,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -110140,7 +109987,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -110232,7 +110079,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -110313,7 +110160,7 @@
   {
     "id": 4342,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/AntiMatter/NovaBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110325,7 +110172,7 @@
   {
     "id": 4347,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Banshee/BansheeBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110337,7 +110184,7 @@
   {
     "id": 4339,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Berserker/BerserkerBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110349,7 +110196,7 @@
   {
     "id": 4336,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Brawler/BrawlerBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110361,7 +110208,7 @@
   {
     "id": 4344,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Ember/EmberBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110373,7 +110220,7 @@
   {
     "id": 4332,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Excalibur/ExcaliburBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110385,7 +110232,7 @@
   {
     "id": 4337,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Excalibur/ExcaliburBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110397,7 +110244,7 @@
   {
     "id": 4334,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Harlequin/HarlequinBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110409,7 +110256,7 @@
   {
     "id": 4338,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Jade/JadeBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110421,7 +110268,7 @@
   {
     "id": 4348,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Loki/LokiBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110433,7 +110280,7 @@
   {
     "id": 4330,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Mag/MagBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110445,7 +110292,7 @@
   {
     "id": 4333,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Mag/MagBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110457,7 +110304,7 @@
   {
     "id": 4343,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Necro/NecroBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110469,7 +110316,7 @@
   {
     "id": 4341,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Nezha/NezhaBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110481,7 +110328,7 @@
   {
     "id": 6496,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Nezha/NezhaBaseSuit",
@@ -110494,7 +110341,7 @@
   {
     "id": 4350,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Ninja/NinjaBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110517,7 +110364,7 @@
   {
     "id": 4331,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Paladin/PaladinBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110529,7 +110376,7 @@
   {
     "id": 4335,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Ranger/RangerBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110541,7 +110388,7 @@
   {
     "id": 4346,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Saryn/SarynBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110553,7 +110400,7 @@
   {
     "id": 4345,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Volt/VoltBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110565,7 +110412,7 @@
   {
     "id": 4340,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/Volt/VoltBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110577,7 +110424,7 @@
   {
     "id": 4349,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "compatName": "/Lotus/Powersuits/YinYang/YinYangBaseSuit",
     "baseDrain": "QA_HIGH",
@@ -110599,7 +110446,7 @@
   {
     "id": 5145,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_PRECEPT",
     "compatName": "/Lotus/Types/Friendly/Pets/CreaturePets/BaseInfestedCatbrowPetPowerSuit",
@@ -110612,7 +110459,7 @@
   {
     "id": 5526,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_PRECEPT",
     "compatName": "/Lotus/Types/Game/SentinelPowerSuit",
     "isAugment": false,
@@ -110622,7 +110469,7 @@
   {
     "id": 5527,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_PRECEPT",
     "compatName": "/Lotus/Types/Game/SentinelPowerSuit",
     "isAugment": false,
@@ -110632,7 +110479,7 @@
   {
     "id": 5530,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "polarity": "AP_PRECEPT",
     "compatName": "/Lotus/Types/Game/SentinelPowerSuit",
     "isAugment": false,
@@ -110658,7 +110505,7 @@
   {
     "id": 1304,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "compatName": "/Lotus/Types/Game/SentinelPowerSuit",
     "isAugment": false,
     "drops": [],
@@ -110707,7 +110554,7 @@
   {
     "id": 6382,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_NONE",
     "isAugment": false,
@@ -110717,7 +110564,7 @@
   {
     "id": 6380,
     "categories": [],
-    "type": "Mod",
+    "type": "Secondary",
     "compatName": "/Lotus/Weapons/Tenno/Pistol/LotusGrimoire",
     "baseDrain": "QA_NONE",
     "fusionLimit": "QA_MEDIUM",
@@ -110728,7 +110575,7 @@
   {
     "id": 6379,
     "categories": [],
-    "type": "Mod",
+    "type": "Secondary",
     "compatName": "/Lotus/Weapons/Tenno/Pistol/LotusGrimoire",
     "baseDrain": "QA_NONE",
     "fusionLimit": "QA_MEDIUM",
@@ -110739,7 +110586,7 @@
   {
     "id": 1282,
     "categories": [],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "UNCOMMON",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "isAugment": false,
@@ -110868,7 +110715,7 @@
   {
     "id": 1313,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110877,7 +110724,7 @@
   {
     "id": 1301,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110886,7 +110733,7 @@
   {
     "id": 1286,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110895,7 +110742,7 @@
   {
     "id": 1308,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110904,7 +110751,7 @@
   {
     "id": 6144,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110913,7 +110760,7 @@
   {
     "id": 1287,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110922,7 +110769,7 @@
   {
     "id": 1295,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110931,7 +110778,7 @@
   {
     "id": 1314,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110940,7 +110787,7 @@
   {
     "id": 1303,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110949,7 +110796,7 @@
   {
     "id": 1309,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110958,7 +110805,7 @@
   {
     "id": 5767,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110967,7 +110814,7 @@
   {
     "id": 1297,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110976,7 +110823,7 @@
   {
     "id": 2461,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110985,7 +110832,7 @@
   {
     "id": 1306,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -110994,7 +110841,7 @@
   {
     "id": 1283,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111003,7 +110850,7 @@
   {
     "id": 1293,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111012,7 +110859,7 @@
   {
     "id": 1315,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111021,7 +110868,7 @@
   {
     "id": 1298,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "rarity": "RARE",
     "polarity": "AP_TACTIC",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
@@ -111040,7 +110887,7 @@
   {
     "id": 1310,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111049,7 +110896,7 @@
   {
     "id": 1288,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111058,7 +110905,7 @@
   {
     "id": 1290,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111067,7 +110914,7 @@
   {
     "id": 1284,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111076,7 +110923,7 @@
   {
     "id": 1300,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111085,7 +110932,7 @@
   {
     "id": 1294,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111094,7 +110941,7 @@
   {
     "id": 1296,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111103,7 +110950,7 @@
   {
     "id": 1291,
     "categories": [],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -111114,7 +110961,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Melee",
     "compatName": "/Lotus/Weapons/Tenno/Melee/Swords/DaxDuviriKatana/DaxDuviriKatanaWeapon",
     "isAugment": false,
     "drops": [],
@@ -111134,7 +110981,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0002,
@@ -111941,6 +111788,7 @@
     "compatName": "MOD",
     "baseDrain": 0,
     "fusionLimit": 0,
+    "description": "Ensures transmuted mod is of Vazarin polarity and eliminates credit cost.",
     "isAugment": false,
     "drops": [
       {
@@ -112074,6 +111922,7 @@
     "compatName": "Swords",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Hate... Dread... Despair...",
     "isAugment": false,
     "drops": [
       {
@@ -112383,7 +112232,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 0,
     "fusionLimit": 0,
-    "isAugment": true,
+    "description": "Toxin FX on Bullet Jump",
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -112408,6 +112258,7 @@
     "compatName": "Claws",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Kicks woven between spinning slashes.",
     "isAugment": false,
     "drops": [
       {
@@ -112553,6 +112404,7 @@
     "compatName": "Sparring",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Fighting form devised for Conclave.",
     "isAugment": false,
     "drops": [
       {
@@ -113040,7 +112892,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0851,
@@ -113236,7 +113088,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 4,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.2088,
@@ -113316,7 +113168,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0033,
@@ -113414,7 +113266,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 10,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -114254,7 +114106,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 3,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0248,
@@ -114346,7 +114198,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 2,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0011,
@@ -115744,7 +115596,8 @@
     "compatName": "WARFRAME",
     "baseDrain": 0,
     "fusionLimit": 0,
-    "isAugment": true,
+    "description": "Electrical FX on Bullet Jump",
+    "isAugment": false,
     "drops": [
       {
         "chance": 1,
@@ -115812,6 +115665,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "To cosmic madness laws submit\n\nThough stalwart minds entreat",
     "isAugment": false,
     "drops": [
       {
@@ -115907,6 +115761,7 @@
     "compatName": "Warfans",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Precise, focused arcs and cuts not hampered by pity.",
     "isAugment": false,
     "drops": [
       {
@@ -116126,6 +115981,7 @@
     "compatName": "Rapiers",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Swift cuts, lancing strikes.",
     "isAugment": false,
     "drops": [
       {
@@ -116375,7 +116231,7 @@
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 5,
-    "isAugment": true,
+    "isAugment": false,
     "drops": [
       {
         "chance": 0.0046,
@@ -116490,7 +116346,7 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
+    "type": "Warframe Mod",
     "rarity": "RARE",
     "polarity": "AP_POWER",
     "compatName": "/Lotus/Powersuits/Excalibur/ExcaliburUmbra",
@@ -116843,7 +116699,7 @@
   {
     "id": 759,
     "slug": "winds-of-purity",
-    "name": "Winds Of Purity",
+    "name": "Winds of Purity",
     "categories": [
       "mod"
     ],
@@ -116904,6 +116760,7 @@
     "compatName": "Two-Handed Nikana",
     "baseDrain": -2,
     "fusionLimit": 3,
+    "description": "Deftly executed sweeps and slashes.",
     "isAugment": false,
     "drops": [
       {
@@ -116929,6 +116786,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Get rid of malware, spyware, wetware and worms",
     "isAugment": false,
     "drops": [
       {
@@ -117005,7 +116863,7 @@
   {
     "id": 6492,
     "slug": "wrath-of-ukko",
-    "name": "Wrath Of Ukko",
+    "name": "Wrath of Ukko",
     "categories": [
       "mod"
     ],
@@ -117107,6 +116965,7 @@
     "compatName": "Parazon",
     "baseDrain": 0,
     "fusionLimit": 3,
+    "description": "Its heralds are the stars it fells\n\nThe sky and Earth aflame",
     "isAugment": false,
     "drops": [
       {
