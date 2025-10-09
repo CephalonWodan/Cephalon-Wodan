@@ -70,13 +70,20 @@ const clean = (s) =>
     .trim();
 
 function keyify(name) {
+  // ⚠️ On garde le CONTENU entre parenthèses (Primed/Umbral/Archon…),
+  // on retire uniquement les caractères ().
   return clean(name)
     .toLowerCase()
-    .replace(/<[^>]+>/g, "")      // enlève balises genre <ARCHWING>
-    .replace(/\([^)]*\)/g, "")    // enlève () fréquents
+    .replace(/<[^>]+>/g, "")
+    .replace(/[()]/g, " ")
     .replace(/[\-–_'"`]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
+// Clé alternative indépendante de l’ordre des mots (robuste sur “Primed Intensify” vs “Intensify Primed”)
+function keyifySorted(name) {
+  const k = keyify(name);
+  return k.split(" ").filter(Boolean).sort().join(" ");
 }
 
 function slugify(s) {
@@ -109,14 +116,26 @@ const EXP_UP     = Array.isArray(S_export?.ExportUpgrades) ? S_export.ExportUpgr
 const mapWFByName = new Map();
 const mapWFByUnique = new Map();
 for (const it of WF_ITEMS) {
-  const n = it?.name; if (n) mapWFByName.set(keyify(n), it);
+  const n = it?.name;
+  if (n) {
+    const k1 = keyify(n);
+    const k2 = keyifySorted(n);
+    mapWFByName.set(k1, it);
+    mapWFByName.set(k2, it);
+  }
   const u = it?.uniqueName; if (u) mapWFByUnique.set(String(u).toLowerCase(), it);
 }
 
 const mapEXPByName = new Map();
 const mapEXPByUnique = new Map();
 for (const u of EXP_UP) {
-  const n = u?.name || u?.upgradeName || u?.displayName; if (n) mapEXPByName.set(keyify(n), u);
+  const n = u?.name || u?.upgradeName || u?.displayName;
+  if (n) {
+    const k1 = keyify(n);
+    const k2 = keyifySorted(n);
+    mapEXPByName.set(k1, u);
+    mapEXPByName.set(k2, u);
+  }
   const un = u?.uniqueName; if (un) mapEXPByUnique.set(String(un).toLowerCase(), u);
 }
 
@@ -130,8 +149,9 @@ function isArcaneLike(entry) {
   if (type.includes("arcane")) return true;
   if (type.includes("relicsandarcanes")) return true; // Overframe
   if (cats.includes("arcane")) return true;
-  if (name.startsWith("arcane ")) return true;
-  if (slug.startsWith("arcane-")) return true;
+  if (/^arcane\b/.test(name)) return true;    // "Arcane" seul ou "Arcane XYZ"
+  if (slug === "arcane") return true;         // slug strict
+  if (slug.startsWith("arcane")) return true; // "arcane" ou "arcane-*"
   return false;
 }
 function isStanceLike({ type, categories }) {
@@ -144,14 +164,29 @@ function isAuraLike({ type, name, baseDrain }) {
   const n = String(name||"").toLowerCase();
   if (t.includes("aura")) return true;
   if (/^aura\b/.test(n)) return true;
-  // Drain négatif souvent caractéristique (hors stances)
-  if (typeof baseDrain === "number" && baseDrain < 0) return true;
+  if (typeof baseDrain === "number" && baseDrain < 0) return true; // drain négatif typique
   return false;
+}
+
+/* ----------------------- Détection type intelligente ---------------------- */
+function inferTypeSmart(currentType, compatName, uniqueName) {
+  const cur = String(currentType || '').toLowerCase();
+  if (cur && cur !== 'mod') return currentType; // déjà spécifique
+  const s = (String(compatName || '') + ' ' + String(uniqueName || '')).toLowerCase();
+  if (/(powersuit|\/mods\/warframe|warframe)/.test(s)) return 'Warframe Mod';
+  if (/(archwing|arch-gun|archgun)/.test(s)) return 'Archwing';
+  if (/(necramech|mech)/.test(s)) return 'Necramech';
+  if (/sentinel/.test(s)) return 'Sentinel';
+  if (/parazon/.test(s)) return 'Parazon';
+  if (/(\/rifle\/|sniperrifle)/.test(s)) return 'Primary';
+  if (/\/shotgun\//.test(s)) return 'Shotgun';
+  if (/(\/pistol\/|secondary)/.test(s)) return 'Secondary';
+  if (/\/melee\//.test(s)) return 'Melee';
+  return currentType || 'Mod';
 }
 
 /* ----------------------- Extracteurs par source -------------------------- */
 function fromOverframe(of) {
-  // of = { name/title/id/slug/categories, data: {...} }
   const name = of?.name || of?.title || null;
   const slug = of?.slug || (name ? slugify(name) : null);
 
@@ -168,10 +203,14 @@ function fromOverframe(of) {
   // Heuristique augment (soft) → seulement si le nom contient "Augment" (évite les faux positifs)
   const isAug = /\baugment\b/i.test(name || "");
 
+  // Description courte (selon ce que fournit OF)
+  const description = of?.description || d?.Description || null;
+
   return {
     id: of?.id ?? slug ?? (name ? slugify(name) : undefined),
     name, slug, type, categories,
     rarity, polarity, baseDrain, fusionLimit, compatName,
+    description,
     isAugment: isAug,
   };
 }
@@ -186,6 +225,7 @@ function fromWFStat(w) {
     baseDrain: w?.baseDrain ?? null,
     fusionLimit: w?.fusionLimit ?? null,
     compatName: w?.compatName || null,
+    description: w?.description || null,
     isAugment: !!w?.isAugment,
     drops: Array.isArray(w?.drops) ? w.drops : [],
     levelStats: Array.isArray(w?.levelStats) ? w.levelStats : [],
@@ -203,7 +243,7 @@ function fromExport(u) {
     baseDrain: u?.baseDrain ?? null,
     fusionLimit: u?.fusionLimit ?? null,
     compatName: u?.compatName || null,
-    // description: u?.description || null, // dispo si tu veux
+    description: u?.description || null,
   };
 }
 
@@ -226,14 +266,17 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
 
   const baseOF = fromOverframe(ofObj);
   const kName = baseOF.name ? keyify(baseOF.name) : null;
+  const kNameSorted = baseOF.name ? keyifySorted(baseOF.name) : null;
 
-  // 1) WFStat match par name, puis par uniqueName si on en détecte un plus tard
+  // 1) WFStat match par name (k et k trié)
   let wfRaw = null;
   if (kName && mapWFByName.has(kName)) wfRaw = mapWFByName.get(kName);
+  if (!wfRaw && kNameSorted && mapWFByName.has(kNameSorted)) wfRaw = mapWFByName.get(kNameSorted);
 
   // 2) ExportUpgrades (fallback)
   let expRaw = null;
   if (kName && mapEXPByName.has(kName)) expRaw = mapEXPByName.get(kName);
+  if (!expRaw && kNameSorted && mapEXPByName.has(kNameSorted)) expRaw = mapEXPByName.get(kNameSorted);
 
   const WF  = wfRaw ? fromWFStat(wfRaw) : {};
   const EXP = expRaw ? fromExport(expRaw) : {};
@@ -242,10 +285,13 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const merged = {
     id: take(baseOF.id),
     slug: take(baseOF.slug),
-    name: take(WF?.name, EXP?.name, baseOF.name),
+
+    // ⚠️ garder le nom Overframe en priorité (pour conserver “Primed/Umbral/Archon …”)
+    name: take(baseOF.name, WF?.name, EXP?.name),
+
     categories: baseOF.categories || [],
 
-    // Expose uniqueName s'il existe (utile côté API)
+    // Expose uniqueName (utile côté API)
     uniqueName: take(WF?.uniqueName, EXP?.uniqueName),
 
     // Champs ⚖️  WF > EXP > OF
@@ -256,7 +302,10 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     baseDrain: take(WF?.baseDrain, EXP?.baseDrain, baseOF.baseDrain),
     fusionLimit: take(WF?.fusionLimit, EXP?.fusionLimit, baseOF.fusionLimit),
 
-    // isAugment plus strict : (WF || nom contient "Augment") ET non Aura/Stance
+    // description cohérente
+    description: take(WF?.description, EXP?.description, baseOF.description),
+
+    // isAugment recalculé plus strict
     isAugment: false,
 
     drops: Array.isArray(WF?.drops) ? WF.drops : [],
@@ -268,10 +317,15 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const byName   = /\baugment\b/i.test(String(merged.name || ""));
   const aura     = isAuraLike({ type: merged.type, name: merged.name, baseDrain: merged.baseDrain });
   const stance   = isStanceLike({ type: merged.type, categories: merged.categories });
-  merged.isAugment = (prelimWF || byName) && !aura && !stance;
+  const compat   = String(merged.compatName || "");
+  const compatIsGeneric = !compat || /\bwarframe\b/i.test(compat) || /powersuit|player/i.test(compat);
+  const isArchon = /^archon\b/i.test(String(merged.name || ""));
+  merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
   // 5) Nettoyages
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
+  // Type plus précis si OF a mis "Mod"
+  merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
 
   result.push(merged);
 
