@@ -1,9 +1,11 @@
 {
   "total_input": 1581,
-  "skippedArcanes": 148,
-  "total_output": 1412,
-  "wfMatches": 1282,
-  "expMatches": 1282,
+  "skippedArcanes": 169,
+  "skippedNoSlug": 81,
+  "skippedEmptyCats": 12,
+  "total_output": 1319,
+  "wfMatches": 1271,
+  "expMatches": 1271,
   "samples": [
     {
       "key": "/Lotus/Animations/FlightSuit/TestMeleeAttacks/FairyMeleeTree",
@@ -36,13 +38,6 @@
       "matchedExport": true,
       "hasLevelStats": true,
       "hasDrops": true
-    },
-    {
-      "key": "/Lotus/Powersuits/AntiMatter/AntiMatterDropBaseAugmentCard",
-      "matchedWFStat": false,
-      "matchedExport": false,
-      "hasLevelStats": false,
-      "hasDrops": false
     },
     {
       "key": "/Lotus/Powersuits/AntiMatter/AntiMatterDropPvPAugmentCard",
@@ -133,13 +128,6 @@
       "hasDrops": true
     },
     {
-      "key": "/Lotus/Powersuits/Banshee/SonarBaseAugmentCard",
-      "matchedWFStat": false,
-      "matchedExport": false,
-      "hasLevelStats": false,
-      "hasDrops": false
-    },
-    {
       "key": "/Lotus/Powersuits/Bard/BardCharmAugmentCard",
       "name": "Conductor",
       "matchedWFStat": true,
@@ -158,6 +146,22 @@
     {
       "key": "/Lotus/Powersuits/Berserker/GrappleAugmentCard",
       "name": "Swing Line",
+      "matchedWFStat": true,
+      "matchedExport": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Berserker/IntimidateAugmentCard",
+      "name": "Eternal War",
+      "matchedWFStat": true,
+      "matchedExport": true,
+      "hasLevelStats": true,
+      "hasDrops": true
+    },
+    {
+      "key": "/Lotus/Powersuits/Berserker/LastStandAugmentCard",
+      "name": "Hysterical Assault",
       "matchedWFStat": true,
       "matchedExport": true,
       "hasLevelStats": true,
