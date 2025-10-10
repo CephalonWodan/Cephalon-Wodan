@@ -1,5 +1,5 @@
 // tools/enrich_mods.js
-// Merge des mods depuis : Overframe + WarframeStat + (optionnel) ExportUpgrades
+// Merge Overframe + WarframeStat + (optionnel) ExportUpgrades => mods propres pour l'API
 // Sorties: data/enriched_mods.json | data/enriched_mods_report.json | data/enriched_mods.csv
 
 import fs from "fs";
@@ -40,10 +40,37 @@ const P_EXPORT = [
 
 /* ------------------------------ Normalisation ---------------------------- */
 const normStr = (s) => String(s ?? "").trim();
-const clean = (s) => normStr(s).normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ").replace(/–/g, "-").replace(/\u00A0/g, " ").trim();
-function keyify(name){return clean(name).toLowerCase().replace(/<[^>]+>/g,"").replace(/[()]/g," ").replace(/[\-–_'"`]/g," ").replace(/\s+/g," ").trim();}
-function keyifySorted(name){return keyify(name).split(" ").filter(Boolean).sort().join(" ");}
-function slugify(s){return clean(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
+const clean = (s) =>
+  normStr(s).normalize("NFKD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ").replace(/–/g, "-").replace(/\u00A0/g, " ").trim();
+
+function keyify(name){
+  return clean(name).toLowerCase()
+    .replace(/<[^>]+>/g, "")
+    .replace(/[()]/g, " ")            // conserve le contenu
+    .replace(/[\-–_'"`]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function keyifySorted(name){ return keyify(name).split(" ").filter(Boolean).sort().join(" "); }
+function slugify(s){ return clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+
+/* ----------------------- Nettoyage NOM (affichage API) ------------------- */
+function cleanDisplayName(name) {
+  if (!name) return name;
+  let s = String(name);
+
+  // Décode les échappements/artefacts les plus fréquents
+  s = s.replace(/&apos;/gi, "’");   // html
+  s = s.replace(/\\'s/gi, "’s");    // Amar\'s → Amar’s
+  s = s.replace(/\\s\b/gi, "’s");   // Amar\s → Amar’s (artefact)
+  s = s.replace(/\\'/g, "’");       // toute quote échappée
+  s = s.replace(/'/g, "’");         // quote droite → apostrophe typographique
+
+  // Espace propre
+  s = s.replace(/\s+/g, " ").trim();
+  return s;
+}
 
 /* -------------------------- Charger les sources -------------------------- */
 const S_ofmods = readFirstExisting(P_OFMODS);
@@ -57,25 +84,50 @@ const OF_ENTRIES = Object.entries(S_ofmods);
 const WF_ITEMS   = S_wfstat.data;
 const EXP_UP     = Array.isArray(S_export?.ExportUpgrades) ? S_export.ExportUpgrades : [];
 
-/* ------------------------ Utils / détecteurs ----------------------------- */
+/* ------------------------ Détecteurs / filtres métier ------------------- */
 const isArchonName = (n) => /^archon\b/i.test(String(n||""));
-function isArcaneLike(entry){ if(!entry)return false; const name=(entry.name||entry.title||"").toLowerCase(); const type=(entry.type||entry.tag||"").toLowerCase(); const cats=Array.isArray(entry.categories)?entry.categories.map(c=>String(c).toLowerCase()):[]; const slug=(entry.slug||"").toLowerCase(); return type.includes("arcane")||type.includes("relicsandarcanes")||cats.includes("arcane")||/^arcane\b/.test(name)||slug==="arcane"||slug.startsWith("arcane"); }
-function isStanceLike({type,categories}){const t=String(type||"").toLowerCase(); const cats=Array.isArray(categories)?categories.map(c=>String(c).toLowerCase()):[]; return t.includes("stance")||cats.includes("stance");}
-function isAuraLike({type,name,baseDrain}){const t=String(type||"").toLowerCase(); const n=String(name||"").toLowerCase(); return t.includes("aura")||/^aura\b/.test(n)||(typeof baseDrain==="number"&&baseDrain<0);}
-function inferTypeSmart(currentType, compatName, uniqueName){
-  const cur=String(currentType||'').toLowerCase(); if(cur&&cur!=='mod')return currentType;
-  const s=(String(compatName||'')+' '+String(uniqueName||'')).toLowerCase();
-  if(/(powersuit|\/mods\/warframe|warframe)/.test(s))return'Warframe Mod';
-  if(/(archwing|arch-gun|archgun)/.test(s))return'Archwing';
-  if(/(necramech|mech)/.test(s))return'Necramech';
-  if(/sentinel/.test(s))return'Sentinel';
-  if(/parazon/.test(s))return'Parazon';
-  if(/(\/rifle\/|sniperrifle)/.test(s))return'Primary';
-  if(/\/shotgun\//.test(s))return'Shotgun';
-  if(/(\/pistol\/|secondary)/.test(s))return'Secondary';
-  if(/\/melee\//.test(s))return'Melee';
-  return currentType||'Mod';
+
+function isArcaneLike(entry){
+  if(!entry) return false;
+  const name=(entry.name||entry.title||"").toLowerCase();
+  const type=(entry.type||entry.tag||"").toLowerCase();
+  const cats=Array.isArray(entry.categories)?entry.categories.map(c=>String(c).toLowerCase()):[];
+  const slug=(entry.slug||"").toLowerCase();
+  return type.includes("arcane") || type.includes("relicsandarcanes") ||
+         cats.includes("arcane") || /^arcane\b/.test(name) || slug==="arcane" || slug.startsWith("arcane");
 }
+function isStanceLike({type,categories}){ const t=String(type||"").toLowerCase(); const cats=Array.isArray(categories)?categories.map(c=>String(c).toLowerCase()):[]; return t.includes("stance") || cats.includes("stance"); }
+function isAuraLike({type,name,baseDrain}){ const t=String(type||"").toLowerCase(); const n=String(name||"").toLowerCase(); return t.includes("aura") || /^aura\b/.test(n) || (typeof baseDrain==="number" && baseDrain<0); }
+function inferTypeSmart(currentType, compatName, uniqueName){
+  const cur=String(currentType||'').toLowerCase(); if(cur && cur!=='mod') return currentType;
+  const s=(String(compatName||'')+' '+String(uniqueName||'')).toLowerCase();
+  if (/(powersuit|\/mods\/warframe|warframe)/.test(s)) return 'Warframe Mod';
+  if (/(archwing|arch-gun|archgun)/.test(s)) return 'Archwing';
+  if (/(necramech|mech)/.test(s)) return 'Necramech';
+  if (/sentinel/.test(s)) return 'Sentinel';
+  if (/parazon/.test(s)) return 'Parazon';
+  if (/(\/rifle\/|sniperrifle)/.test(s)) return 'Primary';
+  if (/\/shotgun\//.test(s)) return 'Shotgun';
+  if (/(\/pistol\/|secondary)/.test(s)) return 'Secondary';
+  if (/\/melee\//.test(s)) return 'Melee';
+  return currentType || 'Mod';
+}
+
+// Exclusions explicites (abilities, défined par nom)
+const ABILITY_NAMES_BLACKLIST = new Set([
+  "blade storm", "razorwing", "shattered lash", "landslide",
+  "cryo grenades", "exalted blade", "serene storm", "whipclaw"
+]);
+
+function isAbilityByName(n){
+  if (!n) return false;
+  return ABILITY_NAMES_BLACKLIST.has(String(n).toLowerCase());
+}
+
+// Exclure “Defiled Requiem” et “nan” et “Unfused …”
+function isDefiledRequiem(n){ return /\bdefiled\s+requiem\b/i.test(String(n||"")); }
+function isNanName(n){ return String(n||"").trim().toLowerCase() === "nan"; }
+function isUnfusedLike(n){ return /^\s*unfused\b/i.test(String(n||"")); }
 
 /* ------------------------- Polarity canonique (API) ---------------------- */
 const UNMAPPED_POLARITIES = new Set();
@@ -96,14 +148,19 @@ const ALIAS_MAP = {
 function normalizePolarity(p){
   if(!p) return p;
   const raw=String(p).trim(); const lower=raw.toLowerCase();
-  if(lower.startsWith("ap_")){const code=lower.slice(3); if(AP_MAP[code])return AP_MAP[code]; UNMAPPED_POLARITIES.add(raw); return lower;}
-  if(ALIAS_MAP[lower])return ALIAS_MAP[lower];
+  if (lower.startsWith("ap_")) {
+    const code=lower.slice(3);
+    if (AP_MAP[code]) return AP_MAP[code];
+    UNMAPPED_POLARITIES.add(raw);
+    return lower;
+  }
+  if (ALIAS_MAP[lower]) return ALIAS_MAP[lower];
   UNMAPPED_POLARITIES.add(raw);
   return lower;
 }
 
 /* ----------------------- Helpers num./normalisation ---------------------- */
-const toNum = (v) => (typeof v==='number'? v : (v!=null && !isNaN(Number(v))? Number(v): undefined));
+const toNum = (v) => (typeof v==='number'? v : (v!=null && !isNaN(Number(v)) ? Number(v) : undefined));
 const chooseFusionLimit = (wf,exp,of) => (toNum(wf) ?? toNum(exp) ?? toNum(of));
 const normalizeLevelStats = (levelStats,fusionLimit)=>{ const list=Array.isArray(levelStats)?levelStats:[]; const lim=toNum(fusionLimit); if(!Number.isFinite(lim)) return list; return list.slice(0, lim+1); };
 
@@ -115,12 +172,12 @@ OVERRIDES.set("archon-intensify",{ baseDrain:6, fusionLimit:10, polarity:"madura
     const line="Restoring health with abilities grants +30% Ability Strength for 10s.";
     return nums.map(n=>({stats:[`+${n}% Ability Strength`, line]})); }
 });
-// Autres Archon → impose baseDrain:6 / fusionLimit:10 (garde levelStats source tronqués)
+// Autres Archon → impose baseDrain:6 / fusionLimit:10 (on garde leurs levelStats source, tronqués)
 ["archon-flow","archon-stretch","archon-vitality","archon-continuity"].forEach(s=>OVERRIDES.set(s,{baseDrain:6,fusionLimit:10}));
-// Primed Intensify (si besoin de forcer)
+// Primed Intensify (si besoin)
 OVERRIDES.set("primed-intensify",{ fusionLimit:10, polarity:"madurai" });
 
-/* ---------- OVERRIDES par uniqueName (correction Primed Intensify) ------- */
+// Override par uniqueName : Primed Intensify (non disponible en jeu → drops Not available)
 const UNIQUE_OVERRIDES = [
   {
     match: (u) => String(u||"") === "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarAbilityStrengthModExpert",
@@ -130,7 +187,6 @@ const UNIQUE_OVERRIDES = [
       m.rarity = "Legendary";
       if (m.fusionLimit == null || m.fusionLimit < 10) m.fusionLimit = 10;
       if (!m.polarity) m.polarity = "madurai";
-      // Non disponible en jeu → drops "Not available"
       m.drops = ["Not available"];
     }
   }
@@ -161,7 +217,7 @@ function fromOverframe(of){ const name=of?.name||of?.title||null; const slug=of?
     rarity, polarity, baseDrain, fusionLimit, compatName, description, isAugment:isAug };
 }
 
-/* --------- INDEXATION : on garde TOUTES les entrées WF par nom ----------- */
+/* --------- Indexation WF : toutes les variantes par nom ------------------ */
 const mapWFByName = new Map();   // keyName -> Array<rawWF>
 const mapWFByUnique = new Map(); // uniqueName -> rawWF
 for (const it of WF_ITEMS) {
@@ -182,7 +238,7 @@ for (const u of EXP_UP) {
   const un = u?.uniqueName; if (un) mapEXPByUnique.set(String(un).toLowerCase(), u);
 }
 
-/* ---- Sélection “best-of” pour WFStat quand doublons (spécial Archon) ---- */
+/* ---- Best-of WF quand doublons (spécial Archon) ------------------------- */
 function wfPickBestByHeuristics(candidates, ofName) {
   if (!Array.isArray(candidates) || candidates.length === 0) return null;
   if (candidates.length === 1) return candidates[0];
@@ -193,10 +249,10 @@ function wfPickBestByHeuristics(candidates, ofName) {
     const base = toNum(it?.baseDrain);
     const lvlLen = Array.isArray(it?.levelStats) ? it.levelStats.length : 0;
     let s = 0;
-    s += lvlLen * 100;                         // 1) +levelStats
-    s += (fusion >= 0 ? fusion : 0) * 10;      // 2) +fusionLimit
-    if (base === 6) s += 5;                    // 3) baseDrain=6 bonus
-    if (String(it?.uniqueName||"").toLowerCase().includes("archon")) s += 3; // 4) tag archon
+    s += lvlLen * 100;                          // 1) +levelStats
+    s += (fusion >= 0 ? fusion : 0) * 10;       // 2) +fusionLimit
+    if (base === 6) s += 5;                     // 3) baseDrain=6 bonus
+    if (String(it?.uniqueName||"").toLowerCase().includes("archon")) s += 3;
     return s;
   };
 
@@ -206,7 +262,6 @@ function wfPickBestByHeuristics(candidates, ofName) {
                                    (Array.isArray(it?.levelStats) ? it.levelStats.length : 0) >= 10);
     if (full.length) pool = full;
   }
-
   pool.sort((a,b) => score(b) - score(a));
   return pool[0] || candidates[0];
 }
@@ -216,21 +271,30 @@ function take(...vals){ for(const v of vals){ if(v!==undefined && v!==null && St
 
 /* ------------------------------ Fusion globale --------------------------- */
 const result = [];
-let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0;
+let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0;
 
 for (const [ofKey, ofObj] of OF_ENTRIES) {
+  // skips précoces Overframe
   if (isArcaneLike(ofObj)) { skippedArcanes++; continue; }
 
   const baseOF = fromOverframe(ofObj);
+
+  // filtres nom (abilities / defiled / nan / unfused)
+  const nm = String(baseOF.name || "");
+  if (isAbilityByName(nm)) { skippedAbility++; continue; }
+  if (isDefiledRequiem(nm)) { skippedDefiled++; continue; }
+  if (isNanName(nm)) { skippedNan++; continue; }
+  if (isUnfusedLike(nm)) { skippedUnfused++; continue; }
+
   const kName = baseOF.name ? keyify(baseOF.name) : null;
   const kNameSorted = baseOF.name ? keyifySorted(baseOF.name) : null;
 
   // 1) WFStat candidats
-  let wfRaw = null, wfList =
+  let wfRaw = null;
+  const wfList =
     (kName && mapWFByName.get(kName)) ? mapWFByName.get(kName) :
     (kNameSorted && mapWFByName.get(kNameSorted)) ? mapWFByName.get(kNameSorted) :
     null;
-
   if (wfList && wfList.length) wfRaw = wfPickBestByHeuristics(wfList, baseOF.name);
 
   // 2) Export (fallback)
@@ -241,19 +305,19 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     null;
   if (expByName) expRaw = expByName;
 
-  // 2-bis) réalignement via uniqueName si Export l’apporte
+  // réalignement via uniqueName si Export l’apporte
   if (!wfRaw && expRaw?.uniqueName) {
     const wfByU = mapWFByUnique.get(String(expRaw.uniqueName).toLowerCase());
     if (wfByU) wfRaw = wfByU;
   }
 
-  // 🔁 DÉ-PRIME : si OF ne dit pas Primed mais WF pointe un Expert, bascule vers la variante non-Expert
+  // dé-prime : si OF ne dit pas Primed mais WF pointe un Expert, bascule vers non-Expert
   if (wfRaw?.uniqueName && !/\bprime(d)?\b/i.test(String(baseOF.name||""))) {
     const u = String(wfRaw.uniqueName);
     if (/\/Expert\//.test(u) || /ModExpert/.test(u)) {
       const alt = u.replace(/\/Expert\//, "/").replace(/ModExpert/, "Mod");
       const wfAlt = mapWFByUnique.get(alt.toLowerCase());
-      if (wfAlt) wfRaw = wfAlt; // on remplace par la version non-Expert
+      if (wfAlt) wfRaw = wfAlt;
     }
   }
 
@@ -261,10 +325,11 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const EXP = expRaw ? fromExport(expRaw) : {};
 
   // 3) Merge
+  let mergedName = cleanDisplayName(take(baseOF.name, WF?.name, EXP?.name)); // 💡 nettoyage nom
   const merged = {
     id: take(baseOF.id),
-    slug: take(baseOF.slug),
-    name: take(baseOF.name, WF?.name, EXP?.name), // on préserve "Intensify" si l'OF dit Intensify
+    slug: take(baseOF.slug), // on ne réécrit pas le slug si déjà fourni par OF
+    name: mergedName,
     categories: baseOF.categories || [],
     uniqueName: take(WF?.uniqueName, EXP?.uniqueName),
 
@@ -283,7 +348,7 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     levelStats: Array.isArray(WF?.levelStats) ? WF.levelStats : [],
   };
 
-  // 3-bis) OVERRIDES par slug (Archon etc.)
+  // OVERRIDES par slug (Archon etc.)
   const slug = merged.slug || (merged.name ? slugify(merged.name) : null);
   if (slug && OVERRIDES.has(slug)) {
     const o = OVERRIDES.get(slug);
@@ -292,13 +357,12 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
     if (o.buildLevelStats) merged.levelStats = o.buildLevelStats();
   }
-
-  // 3-ter) OVERRIDES par uniqueName (Primed Intensify) — s'applique UNIQUEMENT si on est sur l'Expert
+  // OVERRIDES par uniqueName (Primed Intensify)
   for (const rule of UNIQUE_OVERRIDES) {
     if (rule.match(merged.uniqueName)) rule.apply(merged);
   }
 
-  // 4) isAugment robuste
+  // isAugment robuste
   const prelimWF = !!WF?.isAugment;
   const byName   = /\baugment\b/i.test(String(merged.name || ""));
   const aura     = isAuraLike({ type: merged.type, name: merged.name, baseDrain: merged.baseDrain });
@@ -308,39 +372,83 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = isArchonName(merged.name);
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // 5) Exclure Focus Way
+  // Focus Way ?
   const t = String(merged.type||"").toLowerCase();
   if (t.includes("focus way") || t === "focus way") { skippedFocusWay++; continue; }
 
-  // 6) Nettoyages + clamp + type
+  // Nettoyages + clamp + type
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
   merged.levelStats = normalizeLevelStats(merged.levelStats, merged.fusionLimit);
   merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
 
-  // ❌ exclusions (pas de slug / categories vides)
+  // ❌ exclusions (pas de slug / categories vides / abilities / defiled / nan / unfused)
   if (!merged.slug) { skippedNoSlug++; continue; }
   if (!Array.isArray(merged.categories) || merged.categories.length === 0) { skippedEmptyCats++; continue; }
+  if (isAbilityByName(merged.name) || isDefiledRequiem(merged.name) || isNanName(merged.name) || isUnfusedLike(merged.name)) continue;
 
   result.push(merged);
 }
 
+/* ---------------------- DÉDOUBLONNAGE FINAL (par nom normalisé) ---------- */
+const groups = new Map(); // name_norm -> array
+const nameNorm = (n)=> keyify(n||"");
+for (const m of result) {
+  const k = nameNorm(m.name);
+  if (!k) continue;
+  if (!groups.has(k)) groups.set(k, []);
+  groups.get(k).push(m);
+}
+function scoreMerged(it){
+  const lvlLen = Array.isArray(it.levelStats) ? it.levelStats.length : 0;
+  const fusion = toNum(it.fusionLimit) ?? -1;
+  const base   = toNum(it.baseDrain);
+  let s = 0;
+  s += lvlLen * 100;
+  s += (fusion >= 0 ? fusion : 0) * 10;
+  if (base === 6) s += 5;
+  if (it.wikiaThumbnail) s += 2;
+  return s;
+}
+const deduped = [];
+const duplicates_report = [];
+for (const [k, arr] of groups) {
+  if (arr.length === 1) { deduped.push(arr[0]); continue; }
+  const filtered = arr.filter(m =>
+    !isUnfusedLike(m.name) &&
+    !isAbilityByName(m.name) &&
+    !isDefiledRequiem(m.name) &&
+    !isNanName(m.name)
+  );
+  const pool = filtered.length ? filtered : arr;
+  pool.sort((a,b)=> scoreMerged(b) - scoreMerged(a));
+  deduped.push(pool[0]);
+  duplicates_report.push({ key_norm:k, kept: pool[0].name, dropped: pool.slice(1).map(x=>x.name) });
+}
+
 /* -------------------------- Filet final / sorties ------------------------ */
-const final = result.filter((m) =>
+const final = deduped.filter((m) =>
   !isArcaneLike(m) &&
   m.slug &&
   Array.isArray(m.categories) && m.categories.length > 0 &&
-  !(String(m.type||"").toLowerCase().includes("focus way"))
+  !(String(m.type||"").toLowerCase().includes("focus way")) &&
+  !isAbilityByName(m.name) &&
+  !isDefiledRequiem(m.name) &&
+  !isNanName(m.name) &&
+  !isUnfusedLike(m.name)
 );
 
-final.sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
 
 fs.mkdirSync(DATA_DIR,{recursive:true});
 fs.writeFileSync(OUT_JSON, JSON.stringify(final,null,2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_input: OF_ENTRIES.length,
+  total_merged_before_dedup: result.length,
   total_output: final.length,
-  skippedArcanes, skippedFocusWay, skippedNoSlug, skippedEmptyCats,
-  unmappedPolarities: Array.from(UNMAPPED_POLARITIES).sort().slice(0,100)
+  skipped: { arcanes:skippedArcanes, focusWay:skippedFocusWay, noSlug:skippedNoSlug, emptyCats:skippedEmptyCats, ability:skippedAbility, defiledRequiem:skippedDefiled, nan:skippedNan, unfused:skippedUnfused },
+  deduplicated_groups: duplicates_report.length,
+  duplicates_samples: duplicates_report.slice(0, 25),
+  unmappedPolarities: Array.from(UNMAPPED_POLARITIES).sort().slice(0, 100)
 }, null, 2), "utf-8");
 
 // CSV
