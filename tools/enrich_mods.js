@@ -59,15 +59,11 @@ function slugify(s){ return clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").r
 function cleanDisplayName(name) {
   if (!name) return name;
   let s = String(name);
-
-  // Décode les échappements/artefacts les plus fréquents
-  s = s.replace(/&apos;/gi, "’");   // html
-  s = s.replace(/\\'s/gi, "’s");    // Amar\'s → Amar’s
-  s = s.replace(/\\s\b/gi, "’s");   // Amar\s → Amar’s (artefact)
-  s = s.replace(/\\'/g, "’");       // toute quote échappée
-  s = s.replace(/'/g, "’");         // quote droite → apostrophe typographique
-
-  // Espace propre
+  s = s.replace(/&apos;/gi, "’");  // HTML
+  s = s.replace(/\\'s/gi, "’s");   // Amar\'s → Amar’s
+  s = s.replace(/\\s\b/gi, "’s");  // Amar\s  → Amar’s (artefact)
+  s = s.replace(/\\'/g, "’");      // quote échappée
+  s = s.replace(/'/g, "’");        // quote droite → apostrophe typographique
   s = s.replace(/\s+/g, " ").trim();
   return s;
 }
@@ -113,21 +109,32 @@ function inferTypeSmart(currentType, compatName, uniqueName){
   return currentType || 'Mod';
 }
 
-// Exclusions explicites (abilities, défined par nom)
+// Exclusions explicites (abilities)
 const ABILITY_NAMES_BLACKLIST = new Set([
   "blade storm", "razorwing", "shattered lash", "landslide",
   "cryo grenades", "exalted blade", "serene storm", "whipclaw"
 ]);
+function isAbilityByName(n){ return n && ABILITY_NAMES_BLACKLIST.has(String(n).toLowerCase()); }
 
-function isAbilityByName(n){
-  if (!n) return false;
-  return ABILITY_NAMES_BLACKLIST.has(String(n).toLowerCase());
-}
-
-// Exclure “Defiled Requiem” et “nan” et “Unfused …”
+// Exclure “Defiled Requiem”, “nan”, “Unfused …”
 function isDefiledRequiem(n){ return /\bdefiled\s+requiem\b/i.test(String(n||"")); }
 function isNanName(n){ return String(n||"").trim().toLowerCase() === "nan"; }
 function isUnfusedLike(n){ return /^\s*unfused\b/i.test(String(n||"")); }
+
+// Exclure **écoles de Focus** (Amp/Affinity/etc. Spike + tout ce qui est Focus Tree)
+function isFocusSchoolLike({ name, type, uniqueName }) {
+  const n = String(name||"").toLowerCase();
+  const t = String(type||"").toLowerCase();
+  const u = String(uniqueName||"").toLowerCase();
+  // Heuristiques sûres :
+  if (t.includes("focus")) return true;
+  if (u.includes("/focus/") || u.includes("focusability") || u.includes("focustree")) return true;
+  // Spikes bien connus
+  if (/\b(amp|affinity|energy|health|shield|armor)\s+spike\b/.test(n)) return true;
+  // autres mots-clés d’écoles
+  if (/\b(naramon|zenurik|madurai|unairu|vazarin)\b/.test(n) && n.includes("focus")) return true;
+  return false;
+}
 
 /* ------------------------- Polarity canonique (API) ---------------------- */
 const UNMAPPED_POLARITIES = new Set();
@@ -271,15 +278,14 @@ function take(...vals){ for(const v of vals){ if(v!==undefined && v!==null && St
 
 /* ------------------------------ Fusion globale --------------------------- */
 const result = [];
-let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0;
+let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0, skippedFocusSchool=0;
 
+// --- 1) Passe principale : Overframe comme base, enrichi WF/Export
 for (const [ofKey, ofObj] of OF_ENTRIES) {
-  // skips précoces Overframe
   if (isArcaneLike(ofObj)) { skippedArcanes++; continue; }
 
   const baseOF = fromOverframe(ofObj);
 
-  // filtres nom (abilities / defiled / nan / unfused)
   const nm = String(baseOF.name || "");
   if (isAbilityByName(nm)) { skippedAbility++; continue; }
   if (isDefiledRequiem(nm)) { skippedDefiled++; continue; }
@@ -289,7 +295,7 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const kName = baseOF.name ? keyify(baseOF.name) : null;
   const kNameSorted = baseOF.name ? keyifySorted(baseOF.name) : null;
 
-  // 1) WFStat candidats
+  // WFStat candidats
   let wfRaw = null;
   const wfList =
     (kName && mapWFByName.get(kName)) ? mapWFByName.get(kName) :
@@ -297,7 +303,7 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     null;
   if (wfList && wfList.length) wfRaw = wfPickBestByHeuristics(wfList, baseOF.name);
 
-  // 2) Export (fallback)
+  // Export (fallback)
   let expRaw = null;
   const expByName =
     (kName && mapEXPByName.get(kName)) ? mapEXPByName.get(kName) :
@@ -324,11 +330,11 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const WF  = wfRaw ? fromWFStat(wfRaw) : {};
   const EXP = expRaw ? fromExport(expRaw) : {};
 
-  // 3) Merge
-  let mergedName = cleanDisplayName(take(baseOF.name, WF?.name, EXP?.name)); // 💡 nettoyage nom
+  // Merge
+  let mergedName = cleanDisplayName(take(baseOF.name, WF?.name, EXP?.name));
   const merged = {
     id: take(baseOF.id),
-    slug: take(baseOF.slug), // on ne réécrit pas le slug si déjà fourni par OF
+    slug: take(baseOF.slug),
     name: mergedName,
     categories: baseOF.categories || [],
     uniqueName: take(WF?.uniqueName, EXP?.uniqueName),
@@ -372,21 +378,78 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = isArchonName(merged.name);
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // Focus Way ?
-  const t = String(merged.type||"").toLowerCase();
-  if (t.includes("focus way") || t === "focus way") { skippedFocusWay++; continue; }
+  // Focus school (exclusion)
+  if (isFocusSchoolLike({ name: merged.name, type: merged.type, uniqueName: merged.uniqueName })) {
+    skippedFocusSchool++; continue;
+  }
 
   // Nettoyages + clamp + type
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
   merged.levelStats = normalizeLevelStats(merged.levelStats, merged.fusionLimit);
   merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
 
-  // ❌ exclusions (pas de slug / categories vides / abilities / defiled / nan / unfused)
+  // ❌ exclusions (pas de slug / categories vides + autres filtres fermes)
   if (!merged.slug) { skippedNoSlug++; continue; }
   if (!Array.isArray(merged.categories) || merged.categories.length === 0) { skippedEmptyCats++; continue; }
   if (isAbilityByName(merged.name) || isDefiledRequiem(merged.name) || isNanName(merged.name) || isUnfusedLike(merged.name)) continue;
 
   result.push(merged);
+}
+
+// --- 2) Passe “WF-only” : ajouter les mods présents dans WFStat mais pas captés via Overframe
+const seenByNameNorm = new Set(result.map(m => keyify(m.name)));
+for (const raw of WF_ITEMS) {
+  const base = fromWFStat(raw);
+  const n = cleanDisplayName(base.name);
+  const k = keyify(n);
+  if (!n || seenByNameNorm.has(k)) continue; // déjà présent via OF/merge
+
+  // Exclusions globales
+  if (isArcaneLike(base)) continue;
+  if (isAbilityByName(n)) { skippedAbility++; continue; }
+  if (isDefiledRequiem(n)) { skippedDefiled++; continue; }
+  if (isNanName(n)) { skippedNan++; continue; }
+  if (isUnfusedLike(n)) { skippedUnfused++; continue; }
+  if (isFocusSchoolLike({ name: n, type: base.type, uniqueName: base.uniqueName })) { skippedFocusSchool++; continue; }
+
+  // Construire une entrée cohérente malgré l’absence d’OF
+  const merged = {
+    id: slugify(n),
+    slug: slugify(n),
+    name: n,
+    categories: ["mod"], // ⚠️ défaut pour passer le filtre "catégories non vide"
+    uniqueName: base.uniqueName,
+
+    type: inferTypeSmart(base.type, base.compatName, base.uniqueName),
+    rarity: base.rarity,
+    polarity: base.polarity,
+    compatName: base.compatName,
+    baseDrain: base.baseDrain,
+    fusionLimit: base.fusionLimit,
+
+    description: base.description,
+    wikiaThumbnail: base.wikiaThumbnail,
+
+    isAugment: !!base.isAugment,
+    drops: Array.isArray(base.drops) ? base.drops : [],
+    levelStats: normalizeLevelStats(base.levelStats, base.fusionLimit),
+  };
+
+  // OVERRIDES par slug/uniqueName (Archon/Primed)
+  const slug = merged.slug;
+  if (slug && OVERRIDES.has(slug)) {
+    const o = OVERRIDES.get(slug);
+    if (o.baseDrain !== undefined) merged.baseDrain = o.baseDrain;
+    if (o.fusionLimit !== undefined) merged.fusionLimit = o.fusionLimit;
+    if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
+    if (o.buildLevelStats) merged.levelStats = o.buildLevelStats();
+  }
+  for (const rule of UNIQUE_OVERRIDES) {
+    if (rule.match(merged.uniqueName)) rule.apply(merged);
+  }
+
+  result.push(merged);
+  seenByNameNorm.add(k);
 }
 
 /* ---------------------- DÉDOUBLONNAGE FINAL (par nom normalisé) ---------- */
@@ -417,7 +480,8 @@ for (const [k, arr] of groups) {
     !isUnfusedLike(m.name) &&
     !isAbilityByName(m.name) &&
     !isDefiledRequiem(m.name) &&
-    !isNanName(m.name)
+    !isNanName(m.name) &&
+    !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName })
   );
   const pool = filtered.length ? filtered : arr;
   pool.sort((a,b)=> scoreMerged(b) - scoreMerged(a));
@@ -430,11 +494,12 @@ const final = deduped.filter((m) =>
   !isArcaneLike(m) &&
   m.slug &&
   Array.isArray(m.categories) && m.categories.length > 0 &&
-  !(String(m.type||"").toLowerCase().includes("focus way")) &&
+  !(String(m.type||"").toLowerCase().includes("focus way")) && // sécurité
   !isAbilityByName(m.name) &&
   !isDefiledRequiem(m.name) &&
   !isNanName(m.name) &&
-  !isUnfusedLike(m.name)
+  !isUnfusedLike(m.name) &&
+  !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName })
 );
 
 final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
@@ -442,10 +507,15 @@ final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
 fs.mkdirSync(DATA_DIR,{recursive:true});
 fs.writeFileSync(OUT_JSON, JSON.stringify(final,null,2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify({
-  total_input: OF_ENTRIES.length,
+  total_input_OF: OF_ENTRIES.length,
+  total_WF_items: WF_ITEMS.length,
   total_merged_before_dedup: result.length,
   total_output: final.length,
-  skipped: { arcanes:skippedArcanes, focusWay:skippedFocusWay, noSlug:skippedNoSlug, emptyCats:skippedEmptyCats, ability:skippedAbility, defiledRequiem:skippedDefiled, nan:skippedNan, unfused:skippedUnfused },
+  skipped: {
+    arcanes:skippedArcanes, focusWay:skippedFocusWay, focusSchool:skippedFocusSchool,
+    noSlug:skippedNoSlug, emptyCats:skippedEmptyCats,
+    ability:skippedAbility, defiledRequiem:skippedDefiled, nan:skippedNan, unfused:skippedUnfused
+  },
   deduplicated_groups: duplicates_report.length,
   duplicates_samples: duplicates_report.slice(0, 25),
   unmappedPolarities: Array.from(UNMAPPED_POLARITIES).sort().slice(0, 100)
