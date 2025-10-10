@@ -147,15 +147,26 @@ function isBeginnerByUnique(uniqueName) {
   return String(uniqueName||"").toLowerCase().includes("beginner");
 }
 
-// Règle "vrai Mod" (assouplie pour éviter d'exclure Abating Link & co)
+// Vrai Mod (assoupli pour augments)
 function isRealMod({ uniqueName, type, name, compatName }) {
   const u = String(uniqueName||"");
   const t = String(type||"");
   const n = String(name||"");
-  if (u.includes("/Mods/")) return true;                      // cas nominal
-  if (/\bmod\b/i.test(t)) return true;                        // type explicite (Warframe Mod, Melee Mod…)
-  if (/\baugment\b/i.test(n) && String(compatName||"")) return true;  // augment ciblé (Trinity, etc.)
-  return false; // sinon on considère que ce n’est pas un vrai mod publiable
+  if (u.includes("/Mods/")) return true;
+  if (/\bmod\b/i.test(t)) return true;
+  if (/\baugment\b/i.test(n) && String(compatName||"")) return true;
+  return false;
+}
+
+// Stub de bonus de set (à exclure de la sortie finale)
+function isSetBonusStub({ uniqueName, type, name }) {
+  const u = String(uniqueName || "").toLowerCase();
+  const t = String(type || "").toLowerCase();
+  const n = String(name || "").toLowerCase();
+  if (u.includes("/mods/sets/")) return true;
+  if (t.includes("mod set mod")) return true;
+  if (/\bset mod\b/.test(n)) return true;
+  return false;
 }
 
 /* ------------------------- Polarity canonique (API) ---------------------- */
@@ -228,6 +239,8 @@ function fromWFStat(w){ return {
   baseDrain:w?.baseDrain??null, fusionLimit:w?.fusionLimit??null,
   compatName:w?.compatName||null, description:w?.description||null,
   wikiaThumbnail:w?.wikiaThumbnail||null, isAugment:!!w?.isAugment,
+  modSet:w?.modSet||null,                      // <— lien vers le SetMod
+  modSetValues:Array.isArray(w?.modSetValues)?w.modSetValues:null,
   drops:Array.isArray(w?.drops)?w.drops:[], levelStats:Array.isArray(w?.levelStats)?w.levelStats:[],
 };}
 function fromExport(u){ if(!u)return{}; return {
@@ -260,11 +273,36 @@ for (const it of WF_ITEMS) {
   }
   const u = it?.uniqueName; if (u) mapWFByUnique.set(String(u).toLowerCase(), it);
 }
-const mapEXPByName = new Map(), mapEXPByUnique = new Map();
-for (const u of EXP_UP) {
-  const n = u?.name || u?.upgradeName || u?.displayName;
-  if (n) { const k1 = keyify(n), k2 = keyifySorted(n); mapEXPByName.set(k1, u); mapEXPByName.set(k2, u); }
-  const un = u?.uniqueName; if (un) mapEXPByUnique.set(String(un).toLowerCase(), u);
+
+/* --------- Index des SetMods (bonus de set) ------------------------------ */
+function extractSetTiers(rawSet){
+  // Supporte levelStats[].stats ou stats[] plats
+  if (Array.isArray(rawSet?.levelStats) && rawSet.levelStats.every(x => Array.isArray(x?.stats))) {
+    return rawSet.levelStats.map(x => Array.from(x.stats));
+  }
+  if (Array.isArray(rawSet?.stats)) {
+    const s = rawSet.stats;
+    if (Array.isArray(s[0])) return s.map(arr => Array.from(arr));
+    return s.map(x => [String(x)]);
+  }
+  return [];
+}
+const mapSetByUnique = new Map();   // uniqueName(set) -> {name, uniqueName, num, tiersTexts, values?}
+for (const it of WF_ITEMS) {
+  const u = String(it?.uniqueName || "");
+  const t = String(it?.type || "");
+  const n = String(it?.name || "");
+  const isSet = u.toLowerCase().includes("/mods/sets/") || t.toLowerCase().includes("mod set mod") || /\bset mod\b/i.test(n);
+  if (!isSet) continue;
+  const tiersTexts = extractSetTiers(it);
+  const num = toNum(it?.numUpgradesInSet) ?? toNum(it?.setNumUpgrades) ?? (tiersTexts.length || undefined);
+  mapSetByUnique.set(u.toLowerCase(), {
+    name: n || "Set",
+    uniqueName: u,
+    numUpgradesInSet: num,
+    tiersTexts,
+    values: Array.isArray(it?.modSetValues) ? it.modSetValues : null
+  });
 }
 
 /* ---- Best-of WF quand doublons (spécial Archon) ------------------------- */
@@ -376,6 +414,21 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     levelStats: Array.isArray(WF?.levelStats) ? WF.levelStats : [],
   };
 
+  // Injecter setBonus si ce mod appartient à un set
+  const wfForSet = wfRaw || {};
+  const modSetKey = String(wfForSet?.modSet || "").toLowerCase();
+  if (modSetKey && mapSetByUnique.has(modSetKey)) {
+    const set = mapSetByUnique.get(modSetKey);
+    const tiers = (set.tiersTexts || []).map((stats, i) => ({ count: i+1, stats: Array.from(stats) }));
+    merged.setBonus = {
+      setName: set.name,
+      setUniqueName: set.uniqueName,
+      numUpgradesInSet: set.numUpgradesInSet || tiers.length || undefined,
+      tiers,
+      values: set.values || undefined
+    };
+  }
+
   // OVERRIDES par slug (Archon etc.)
   const tmpSlug = merged.slug || (merged.name ? slugify(merged.name) : null);
   if (tmpSlug && OVERRIDES.has(tmpSlug)) {
@@ -400,11 +453,12 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = isArchonName(merged.name);
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // Exclusions supplémentaires: Focus, Riven, Beginner, "vrai Mod"
+  // Exclusions supplémentaires
   if (isFocusSchoolLike({ name: merged.name, type: merged.type, uniqueName: merged.uniqueName })) { skippedFocusSchool++; continue; }
   if (isRivenLike({ name: merged.name, uniqueName: merged.uniqueName })) { skippedRiven++; continue; }
   if (isBeginnerByUnique(merged.uniqueName)) { skippedBeginner++; continue; }
   if (!isRealMod({ uniqueName: merged.uniqueName, type: merged.type, name: merged.name, compatName: merged.compatName })) { skippedNotRealMod++; continue; }
+  if (isSetBonusStub({ uniqueName: merged.uniqueName, type: merged.type, name: merged.name })) { continue; }
 
   // Nettoyages + clamp + type
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
@@ -427,7 +481,7 @@ for (const raw of WF_ITEMS) {
   const k = keyify(n);
   if (!n || seenByNameNorm.has(k)) continue; // déjà présent via OF/merge
 
-  // Exclusions globales (avant construction)
+  // Exclusions globales
   if (isArcaneLike(base)) continue;
   if (isAbilityByName(n)) { skippedAbility++; continue; }
   if (isDefiledRequiem(n)) { skippedDefiled++; continue; }
@@ -437,13 +491,13 @@ for (const raw of WF_ITEMS) {
   if (isRivenLike({ name: n, uniqueName: base.uniqueName })) { skippedRiven++; continue; }
   if (isBeginnerByUnique(base.uniqueName)) { skippedBeginner++; continue; }
   if (!isRealMod({ uniqueName: base.uniqueName, type: base.type, name: n, compatName: base.compatName })) { skippedNotRealMod++; continue; }
+  if (isSetBonusStub({ uniqueName: base.uniqueName, type: base.type, name: n })) { continue; }
 
-  // Construire une entrée cohérente malgré l’absence d’OF
   const merged = {
     id: slugify(n),
     slug: slugify(n),
     name: n,
-    categories: ["mod"], // défaut pour passer le filtre "catégories non vide"
+    categories: ["mod"],
     uniqueName: base.uniqueName,
 
     type: inferTypeSmart(base.type, base.compatName, base.uniqueName),
@@ -461,7 +515,21 @@ for (const raw of WF_ITEMS) {
     levelStats: normalizeLevelStats(base.levelStats, base.fusionLimit),
   };
 
-  // OVERRIDES par slug/uniqueName (Archon/Primed)
+  // setBonus via modSet
+  const modSetKey = String(base.modSet || "").toLowerCase();
+  if (modSetKey && mapSetByUnique.has(modSetKey)) {
+    const set = mapSetByUnique.get(modSetKey);
+    const tiers = (set.tiersTexts || []).map((stats, i) => ({ count: i+1, stats: Array.from(stats) }));
+    merged.setBonus = {
+      setName: set.name,
+      setUniqueName: set.uniqueName,
+      numUpgradesInSet: set.numUpgradesInSet || tiers.length || undefined,
+      tiers,
+      values: set.values || undefined
+    };
+  }
+
+  // OVERRIDES
   const tmpSlug = merged.slug;
   if (tmpSlug && OVERRIDES.has(tmpSlug)) {
     const o = OVERRIDES.get(tmpSlug);
@@ -510,7 +578,8 @@ for (const [k, arr] of groups) {
     !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
     !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
     !isBeginnerByUnique(m.uniqueName) &&
-    isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName })
+    isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName }) &&
+    !isSetBonusStub({ uniqueName: m.uniqueName, type: m.type, name: m.name })
   );
   const pool = filtered.length ? filtered : arr;
   pool.sort((a,b)=> scoreMerged(b) - scoreMerged(a));
@@ -531,7 +600,8 @@ const final = deduped.filter((m) =>
   !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
   !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
   !isBeginnerByUnique(m.uniqueName) &&
-  isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName })
+  isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName }) &&
+  !isSetBonusStub({ uniqueName: m.uniqueName, type: m.type, name: m.name })
 );
 
 final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
@@ -543,6 +613,7 @@ fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_WF_items: WF_ITEMS.length,
   total_merged_before_dedup: result.length,
   total_output: final.length,
+  sets_indexed: mapSetByUnique.size,
   skipped: {
     arcanes:skippedArcanes, focusWay:skippedFocusWay, focusSchool:skippedFocusSchool,
     riven:skippedRiven, beginner:skippedBeginner, notRealMod:skippedNotRealMod,
