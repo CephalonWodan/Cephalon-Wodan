@@ -59,11 +59,11 @@ function slugify(s){ return clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").r
 function cleanDisplayName(name) {
   if (!name) return name;
   let s = String(name);
-  s = s.replace(/&apos;/gi, "’");  // HTML
-  s = s.replace(/\\'s/gi, "’s");   // Amar\'s → Amar’s
-  s = s.replace(/\\s\b/gi, "’s");  // Amar\s  → Amar’s
-  s = s.replace(/\\'/g, "’");      // quotes échappées
-  s = s.replace(/'/g, "’");        // droite → apostrophe
+  s = s.replace(/&apos;/gi, "’");
+  s = s.replace(/\\'s/gi, "’s");
+  s = s.replace(/\\s\b/gi, "’s");
+  s = s.replace(/\\'/g, "’");
+  s = s.replace(/'/g, "’");
   s = s.replace(/\s+/g, " ").trim();
   return s;
 }
@@ -109,19 +109,16 @@ function inferTypeSmart(currentType, compatName, uniqueName){
   return currentType || 'Mod';
 }
 
-// Exclusions explicites (abilities)
 const ABILITY_NAMES_BLACKLIST = new Set([
   "blade storm", "razorwing", "shattered lash", "landslide",
   "cryo grenades", "exalted blade", "serene storm", "whipclaw"
 ]);
 function isAbilityByName(n){ return n && ABILITY_NAMES_BLACKLIST.has(String(n).toLowerCase()); }
 
-// Exclure “Defiled Requiem”, “nan”, “Unfused …”
 function isDefiledRequiem(n){ return /\bdefiled\s+requiem\b/i.test(String(n||"")); }
 function isNanName(n){ return String(n||"").trim().toLowerCase() === "nan"; }
 function isUnfusedLike(n){ return /^\s*unfused\b/i.test(String(n||"")); }
 
-// Exclure écoles de Focus
 function isFocusSchoolLike({ name, type, uniqueName }) {
   const n = String(name||"").toLowerCase();
   const t = String(type||"").toLowerCase();
@@ -133,7 +130,6 @@ function isFocusSchoolLike({ name, type, uniqueName }) {
   return false;
 }
 
-// Exclure Riven mods
 function isRivenLike({ name, uniqueName }) {
   const n = String(name||"").toLowerCase();
   const u = String(uniqueName||"").toLowerCase();
@@ -142,20 +138,29 @@ function isRivenLike({ name, uniqueName }) {
   return false;
 }
 
-// Exclure Beginner
 function isBeginnerByUnique(uniqueName) {
   return String(uniqueName||"").toLowerCase().includes("beginner");
 }
 
-// Règle "vrai Mod" (assouplie pour éviter d'exclure Abating Link & co)
 function isRealMod({ uniqueName, type, name, compatName }) {
   const u = String(uniqueName||"");
   const t = String(type||"");
   const n = String(name||"");
-  if (u.includes("/Mods/")) return true;                      // cas nominal
-  if (/\bmod\b/i.test(t)) return true;                        // type explicite (Warframe Mod, Melee Mod…)
-  if (/\baugment\b/i.test(n) && String(compatName||"")) return true;  // augment ciblé (Trinity, etc.)
-  return false; // sinon on considère que ce n’est pas un vrai mod publiable
+  if (u.includes("/Mods/")) return true;
+  if (/\bmod\b/i.test(t)) return true;
+  if (/\baugment\b/i.test(n) && String(compatName||"")) return true;
+  return false;
+}
+
+/* ⚠️ Corrigé : n’exclut que le *stub* du set (pas les mods membres) */
+function isSetBonusStub({ uniqueName, type, name }) {
+  const u = String(uniqueName || "");
+  const t = String(type || "").toLowerCase();
+  const n = String(name || "").toLowerCase();
+  if (t.includes("mod set mod")) return true;
+  if (/\/setmod\b/i.test(u)) return true;                 // …/AugurSetMod
+  if (/\bset mod\b/i.test(n)) return true;                // libellé explicite
+  return false;                                           // ← ne filtre pas /Mods/Sets/ tout court
 }
 
 /* ------------------------- Polarity canonique (API) ---------------------- */
@@ -195,18 +200,14 @@ const normalizeLevelStats = (levelStats,fusionLimit)=>{ const list=Array.isArray
 
 /* ----------------------------- OVERRIDES --------------------------------- */
 const OVERRIDES = new Map();
-// Archon Intensify progression corrigée
 OVERRIDES.set("archon-intensify",{ baseDrain:6, fusionLimit:10, polarity:"madurai",
   buildLevelStats(){ const nums=[2.7,5.5,8.2,10.9,13.6,16.4,19.1,21.8,24.5,27.3,30.0];
     const line="Restoring health with abilities grants +30% Ability Strength for 10s.";
     return nums.map(n=>({stats:[`+${n}% Ability Strength`, line]})); }
 });
-// Autres Archon → impose baseDrain:6 / fusionLimit:10 (on garde leurs levelStats source, tronqués)
 ["archon-flow","archon-stretch","archon-vitality","archon-continuity"].forEach(s=>OVERRIDES.set(s,{baseDrain:6,fusionLimit:10}));
-// Primed Intensify (si besoin)
 OVERRIDES.set("primed-intensify",{ fusionLimit:10, polarity:"madurai" });
 
-// Override par uniqueName : Primed Intensify (non disponible en jeu → drops Not available)
 const UNIQUE_OVERRIDES = [
   {
     match: (u) => String(u||"") === "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarAbilityStrengthModExpert",
@@ -228,6 +229,8 @@ function fromWFStat(w){ return {
   baseDrain:w?.baseDrain??null, fusionLimit:w?.fusionLimit??null,
   compatName:w?.compatName||null, description:w?.description||null,
   wikiaThumbnail:w?.wikiaThumbnail||null, isAugment:!!w?.isAugment,
+  modSet:w?.modSet||null,
+  modSetValues:Array.isArray(w?.modSetValues)?w.modSetValues:null,
   drops:Array.isArray(w?.drops)?w.drops:[], levelStats:Array.isArray(w?.levelStats)?w.levelStats:[],
 };}
 function fromExport(u){ if(!u)return{}; return {
@@ -246,9 +249,9 @@ function fromOverframe(of){ const name=of?.name||of?.title||null; const slug=of?
     rarity, polarity, baseDrain, fusionLimit, compatName, description, isAugment:isAug };
 }
 
-/* --------- Indexation WF : toutes les variantes par nom ------------------ */
-const mapWFByName = new Map();   // keyName -> Array<rawWF>
-const mapWFByUnique = new Map(); // uniqueName -> rawWF
+/* --------- Indexation WF/EXP -------------------------------------------- */
+const mapWFByName = new Map();
+const mapWFByUnique = new Map();
 for (const it of WF_ITEMS) {
   const n = it?.name;
   if (n) {
@@ -260,11 +263,48 @@ for (const it of WF_ITEMS) {
   }
   const u = it?.uniqueName; if (u) mapWFByUnique.set(String(u).toLowerCase(), it);
 }
-const mapEXPByName = new Map(), mapEXPByUnique = new Map();
+
+const mapEXPByName = new Map();
+const mapEXPByUnique = new Map();
 for (const u of EXP_UP) {
   const n = u?.name || u?.upgradeName || u?.displayName;
-  if (n) { const k1 = keyify(n), k2 = keyifySorted(n); mapEXPByName.set(k1, u); mapEXPByName.set(k2, u); }
-  const un = u?.uniqueName; if (un) mapEXPByUnique.set(String(un).toLowerCase(), u);
+  if (n) {
+    const k1 = keyify(n), k2 = keyifySorted(n);
+    mapEXPByName.set(k1, u);
+    mapEXPByName.set(k2, u);
+  }
+  const un = u?.uniqueName;
+  if (un) mapEXPByUnique.set(String(un).toLowerCase(), u);
+}
+
+/* --------- Index des SetMods (bonus de set) ------------------------------ */
+function extractSetTiers(rawSet){
+  if (Array.isArray(rawSet?.levelStats) && rawSet.levelStats.every(x => Array.isArray(x?.stats))) {
+    return rawSet.levelStats.map(x => Array.from(x.stats));
+  }
+  if (Array.isArray(rawSet?.stats)) {
+    const s = rawSet.stats;
+    if (Array.isArray(s[0])) return s.map(arr => Array.from(arr));
+    return s.map(x => [String(x)]);
+  }
+  return [];
+}
+const mapSetByUnique = new Map();
+for (const it of WF_ITEMS) {
+  const u = String(it?.uniqueName || "");
+  const t = String(it?.type || "");
+  const n = String(it?.name || "");
+  const isSet = t.toLowerCase().includes("mod set mod") || /\/setmod\b/i.test(u);
+  if (!isSet) continue;
+  const tiersTexts = extractSetTiers(it);
+  const num = toNum(it?.numUpgradesInSet) ?? toNum(it?.setNumUpgrades) ?? (tiersTexts.length || undefined);
+  mapSetByUnique.set(u.toLowerCase(), {
+    name: n || "Set",
+    uniqueName: u,
+    numUpgradesInSet: num,
+    tiersTexts,
+    values: Array.isArray(it?.modSetValues) ? it.modSetValues : null
+  });
 }
 
 /* ---- Best-of WF quand doublons (spécial Archon) ------------------------- */
@@ -275,12 +315,12 @@ function wfPickBestByHeuristics(candidates, ofName) {
   const isArchon = isArchonName(ofName || candidates[0]?.name);
   const score = (it) => {
     const fusion = toNum(it?.fusionLimit) ?? -1;
-    const base = toNum(it?.baseDrain);
+       const base = toNum(it?.baseDrain);
     const lvlLen = Array.isArray(it?.levelStats) ? it.levelStats.length : 0;
     let s = 0;
-    s += lvlLen * 100;                          // 1) +levelStats
-    s += (fusion >= 0 ? fusion : 0) * 10;       // 2) +fusionLimit
-    if (base === 6) s += 5;                     // 3) baseDrain=6 bonus
+    s += lvlLen * 100;
+    s += (fusion >= 0 ? fusion : 0) * 10;
+    if (base === 6) s += 5;
     if (String(it?.uniqueName||"").toLowerCase().includes("archon")) s += 3;
     return s;
   };
@@ -302,7 +342,7 @@ function take(...vals){ for(const v of vals){ if(v!==undefined && v!==null && St
 const result = [];
 let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0, skippedFocusSchool=0, skippedRiven=0, skippedBeginner=0, skippedNotRealMod=0;
 
-// --- 1) Passe principale : Overframe comme base, enrichi WF/Export
+// --- 1) Passe principale
 for (const [ofKey, ofObj] of OF_ENTRIES) {
   if (isArcaneLike(ofObj)) { skippedArcanes++; continue; }
 
@@ -317,7 +357,6 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const kName = baseOF.name ? keyify(baseOF.name) : null;
   const kNameSorted = baseOF.name ? keyifySorted(baseOF.name) : null;
 
-  // WFStat candidats
   let wfRaw = null;
   const wfList =
     (kName && mapWFByName.get(kName)) ? mapWFByName.get(kName) :
@@ -325,7 +364,6 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     null;
   if (wfList && wfList.length) wfRaw = wfPickBestByHeuristics(wfList, baseOF.name);
 
-  // Export (fallback)
   let expRaw = null;
   const expByName =
     (kName && mapEXPByName.get(kName)) ? mapEXPByName.get(kName) :
@@ -333,13 +371,11 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     null;
   if (expByName) expRaw = expByName;
 
-  // réalignement via uniqueName si Export l’apporte
   if (!wfRaw && expRaw?.uniqueName) {
     const wfByU = mapWFByUnique.get(String(expRaw.uniqueName).toLowerCase());
     if (wfByU) wfRaw = wfByU;
   }
 
-  // dé-prime : si OF ne dit pas Primed mais WF pointe un Expert, bascule vers non-Expert
   if (wfRaw?.uniqueName && !/\bprime(d)?\b/i.test(String(baseOF.name||""))) {
     const u = String(wfRaw.uniqueName);
     if (/\/Expert\//.test(u) || /ModExpert/.test(u)) {
@@ -352,7 +388,6 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const WF  = wfRaw ? fromWFStat(wfRaw) : {};
   const EXP = expRaw ? fromExport(expRaw) : {};
 
-  // Merge
   let mergedName = cleanDisplayName(take(baseOF.name, WF?.name, EXP?.name));
   const merged = {
     id: take(baseOF.id),
@@ -376,7 +411,21 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     levelStats: Array.isArray(WF?.levelStats) ? WF.levelStats : [],
   };
 
-  // OVERRIDES par slug (Archon etc.)
+  // setBonus (si membre d’un set)
+  const wfForSet = wfRaw || {};
+  const modSetKey = String(wfForSet?.modSet || "").toLowerCase();
+  if (modSetKey && mapSetByUnique.has(modSetKey)) {
+    const set = mapSetByUnique.get(modSetKey);
+    const tiers = (set.tiersTexts || []).map((stats, i) => ({ count: i+1, stats: Array.from(stats) }));
+    merged.setBonus = {
+      setName: set.name,
+      setUniqueName: set.uniqueName,
+      numUpgradesInSet: set.numUpgradesInSet || tiers.length || undefined,
+      tiers,
+      values: set.values || undefined
+    };
+  }
+
   const tmpSlug = merged.slug || (merged.name ? slugify(merged.name) : null);
   if (tmpSlug && OVERRIDES.has(tmpSlug)) {
     const o = OVERRIDES.get(tmpSlug);
@@ -385,12 +434,8 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
     if (o.buildLevelStats) merged.levelStats = o.buildLevelStats();
   }
-  // OVERRIDES par uniqueName (Primed Intensify)
-  for (const rule of UNIQUE_OVERRIDES) {
-    if (rule.match(merged.uniqueName)) rule.apply(merged);
-  }
+  for (const rule of UNIQUE_OVERRIDES) { if (rule.match(merged.uniqueName)) rule.apply(merged); }
 
-  // isAugment robuste
   const prelimWF = !!WF?.isAugment;
   const byName   = /\baugment\b/i.test(String(merged.name || ""));
   const aura     = isAuraLike({ type: merged.type, name: merged.name, baseDrain: merged.baseDrain });
@@ -400,18 +445,16 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = isArchonName(merged.name);
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // Exclusions supplémentaires: Focus, Riven, Beginner, "vrai Mod"
   if (isFocusSchoolLike({ name: merged.name, type: merged.type, uniqueName: merged.uniqueName })) { skippedFocusSchool++; continue; }
   if (isRivenLike({ name: merged.name, uniqueName: merged.uniqueName })) { skippedRiven++; continue; }
   if (isBeginnerByUnique(merged.uniqueName)) { skippedBeginner++; continue; }
   if (!isRealMod({ uniqueName: merged.uniqueName, type: merged.type, name: merged.name, compatName: merged.compatName })) { skippedNotRealMod++; continue; }
+  if (isSetBonusStub({ uniqueName: merged.uniqueName, type: merged.type, name: merged.name })) { continue; }
 
-  // Nettoyages + clamp + type
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
   merged.levelStats = normalizeLevelStats(merged.levelStats, merged.fusionLimit);
   merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
 
-  // ❌ exclusions fermes
   if (!merged.slug) { skippedNoSlug++; continue; }
   if (!Array.isArray(merged.categories) || merged.categories.length === 0) { skippedEmptyCats++; continue; }
   if (isAbilityByName(merged.name) || isDefiledRequiem(merged.name) || isNanName(merged.name) || isUnfusedLike(merged.name)) continue;
@@ -419,15 +462,14 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   result.push(merged);
 }
 
-// --- 2) Passe “WF-only” : ajouter les mods présents dans WFStat mais pas captés via Overframe
+// --- 2) Passe “WF-only”
 const seenByNameNorm = new Set(result.map(m => keyify(m.name)));
 for (const raw of WF_ITEMS) {
   const base = fromWFStat(raw);
   const n = cleanDisplayName(base.name);
   const k = keyify(n);
-  if (!n || seenByNameNorm.has(k)) continue; // déjà présent via OF/merge
+  if (!n || seenByNameNorm.has(k)) continue;
 
-  // Exclusions globales (avant construction)
   if (isArcaneLike(base)) continue;
   if (isAbilityByName(n)) { skippedAbility++; continue; }
   if (isDefiledRequiem(n)) { skippedDefiled++; continue; }
@@ -437,13 +479,13 @@ for (const raw of WF_ITEMS) {
   if (isRivenLike({ name: n, uniqueName: base.uniqueName })) { skippedRiven++; continue; }
   if (isBeginnerByUnique(base.uniqueName)) { skippedBeginner++; continue; }
   if (!isRealMod({ uniqueName: base.uniqueName, type: base.type, name: n, compatName: base.compatName })) { skippedNotRealMod++; continue; }
+  if (isSetBonusStub({ uniqueName: base.uniqueName, type: base.type, name: n })) { continue; }
 
-  // Construire une entrée cohérente malgré l’absence d’OF
   const merged = {
     id: slugify(n),
     slug: slugify(n),
     name: n,
-    categories: ["mod"], // défaut pour passer le filtre "catégories non vide"
+    categories: ["mod"],
     uniqueName: base.uniqueName,
 
     type: inferTypeSmart(base.type, base.compatName, base.uniqueName),
@@ -461,7 +503,19 @@ for (const raw of WF_ITEMS) {
     levelStats: normalizeLevelStats(base.levelStats, base.fusionLimit),
   };
 
-  // OVERRIDES par slug/uniqueName (Archon/Primed)
+  const modSetKey = String(base.modSet || "").toLowerCase();
+  if (modSetKey && mapSetByUnique.has(modSetKey)) {
+    const set = mapSetByUnique.get(modSetKey);
+    const tiers = (set.tiersTexts || []).map((stats, i) => ({ count: i+1, stats: Array.from(stats) }));
+    merged.setBonus = {
+      setName: set.name,
+      setUniqueName: set.uniqueName,
+      numUpgradesInSet: set.numUpgradesInSet || tiers.length || undefined,
+      tiers,
+      values: set.values || undefined
+    };
+  }
+
   const tmpSlug = merged.slug;
   if (tmpSlug && OVERRIDES.has(tmpSlug)) {
     const o = OVERRIDES.get(tmpSlug);
@@ -470,16 +524,14 @@ for (const raw of WF_ITEMS) {
     if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
     if (o.buildLevelStats) merged.levelStats = o.buildLevelStats();
   }
-  for (const rule of UNIQUE_OVERRIDES) {
-    if (rule.match(merged.uniqueName)) rule.apply(merged);
-  }
+  for (const rule of UNIQUE_OVERRIDES) { if (rule.match(merged.uniqueName)) rule.apply(merged); }
 
   result.push(merged);
   seenByNameNorm.add(k);
 }
 
-/* ---------------------- DÉDOUBLONNAGE FINAL (par nom normalisé) ---------- */
-const groups = new Map(); // name_norm -> array
+/* ---------------------- DÉDOUBLONNAGE FINAL ------------------------------ */
+const groups = new Map();
 const nameNorm = (n)=> keyify(n||"");
 for (const m of result) {
   const k = nameNorm(m.name);
@@ -510,7 +562,8 @@ for (const [k, arr] of groups) {
     !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
     !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
     !isBeginnerByUnique(m.uniqueName) &&
-    isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName })
+    isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName }) &&
+    !isSetBonusStub({ uniqueName: m.uniqueName, type: m.type, name: m.name })
   );
   const pool = filtered.length ? filtered : arr;
   pool.sort((a,b)=> scoreMerged(b) - scoreMerged(a));
@@ -531,7 +584,8 @@ const final = deduped.filter((m) =>
   !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
   !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
   !isBeginnerByUnique(m.uniqueName) &&
-  isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName })
+  isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName }) &&
+  !isSetBonusStub({ uniqueName: m.uniqueName, type: m.type, name: m.name })
 );
 
 final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
@@ -543,6 +597,7 @@ fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_WF_items: WF_ITEMS.length,
   total_merged_before_dedup: result.length,
   total_output: final.length,
+  sets_indexed: mapSetByUnique.size,
   skipped: {
     arcanes:skippedArcanes, focusWay:skippedFocusWay, focusSchool:skippedFocusSchool,
     riven:skippedRiven, beginner:skippedBeginner, notRealMod:skippedNotRealMod,
