@@ -1,11 +1,9 @@
 {
   "total_input": 1581,
-  "total_output": 1319,
+  "total_output": 1318,
   "skippedArcanes": 169,
-  "skippedFocusWay": 0,
+  "skippedFocusWay": 1,
   "skippedNoSlug": 81,
   "skippedEmptyCats": 12,
-  "wfMatches": 1271,
-  "overrides": 1,
   "unmappedPolarities": []
 }

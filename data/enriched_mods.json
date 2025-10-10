@@ -2848,14 +2848,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponAmmoMaxMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponAmmoMaxModExpert",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/AmmoDrumMod.png?905e5",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -3537,6 +3536,31 @@
         "stats": [
           "+90% Ammo Maximum"
         ]
+      },
+      {
+        "stats": [
+          "+105% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Ammo Maximum"
+        ]
       }
     ]
   },
@@ -3547,13 +3571,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponClipMaxModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponClipMaxMod",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 2,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AmmoStockMod.png?562e2",
     "isAugment": false,
     "drops": [
       {
@@ -3596,22 +3621,32 @@
     "levelStats": [
       {
         "stats": [
-          "+5% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
           "+10% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+15% Magazine Capacity"
+          "+20% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+20% Magazine Capacity"
+          "+30% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Magazine Capacity"
         ]
       }
     ]
@@ -4561,13 +4596,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Kahl/KahlAvatarDropEnergySubMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Kahl/KahlAvatarPowerMaxMod",
     "type": "Warframe Mod",
-    "rarity": "Rare",
+    "rarity": "Legendary",
     "polarity": "naramon",
     "compatName": "WARFRAME",
-    "baseDrain": 4,
-    "fusionLimit": 5,
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArchonFlowMod.png?6dfca",
     "isAugment": false,
     "drops": [
       {
@@ -4580,31 +4616,67 @@
     "levelStats": [
       {
         "stats": [
+          "+17% Energy Max",
           "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
         ]
       },
       {
         "stats": [
+          "+34% Energy Max",
           "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
         ]
       },
       {
         "stats": [
+          "+50% Energy Max",
           "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
         ]
       },
       {
         "stats": [
+          "+67% Energy Max",
           "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
         ]
       },
       {
         "stats": [
+          "+84% Energy Max",
           "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
         ]
       },
       {
         "stats": [
+          "+101% Energy Max",
+          "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
+        ]
+      },
+      {
+        "stats": [
+          "+118% Energy Max",
+          "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Energy Max",
+          "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
+        ]
+      },
+      {
+        "stats": [
+          "+151% Energy Max",
+          "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
+        ]
+      },
+      {
+        "stats": [
+          "+168% Energy Max",
+          "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
+        ]
+      },
+      {
+        "stats": [
+          "+185% Energy Max",
           "Enemies killed by <DT_FREEZE_COLOR>Cold Abilities have 10% chance to drop an Energy Orb. Cooldown: 10s"
         ]
       }
@@ -4617,13 +4689,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Kahl/KahlAvatarAbilityStrengthSubMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Kahl/KahlAvatarAbilityStrengthMod",
     "type": "Warframe Mod",
-    "rarity": "Rare",
+    "rarity": "Legendary",
     "polarity": "madurai",
     "compatName": "WARFRAME",
     "baseDrain": 6,
     "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArchonIntensifyMod.png?582da",
     "isAugment": false,
     "drops": [
       {
@@ -4709,13 +4782,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Kahl/KahlAvatarAbilityRangeSubMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Kahl/KahlAvatarAbilityRangeMod",
     "type": "Warframe Mod",
-    "rarity": "Rare",
-    "polarity": "madurai",
+    "rarity": "Legendary",
+    "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArchonStretchMod.png?622bc",
     "isAugment": false,
     "drops": [
       {
@@ -4728,31 +4802,67 @@
     "levelStats": [
       {
         "stats": [
+          "+4.1% Ability Range",
           "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
         ]
       },
       {
         "stats": [
+          "+8.2% Ability Range",
           "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
         ]
       },
       {
         "stats": [
+          "+12.3% Ability Range",
           "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
         ]
       },
       {
         "stats": [
+          "+16.4% Ability Range",
           "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
         ]
       },
       {
         "stats": [
+          "+20.5% Ability Range",
           "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
         ]
       },
       {
         "stats": [
+          "+24.5% Ability Range",
+          "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
+        ]
+      },
+      {
+        "stats": [
+          "+28.6% Ability Range",
+          "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
+        ]
+      },
+      {
+        "stats": [
+          "+32.7% Ability Range",
+          "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
+        ]
+      },
+      {
+        "stats": [
+          "+36.8% Ability Range",
+          "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
+        ]
+      },
+      {
+        "stats": [
+          "+40.9% Ability Range",
+          "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
+        ]
+      },
+      {
+        "stats": [
+          "+45% Ability Range",
           "Abilities that deal <DT_ELECTRICITY_COLOR>Electricity Damage restore +2 Energy/s over 5s."
         ]
       }
@@ -5389,13 +5499,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Intermediate/WeaponBowConvertAmmoModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponBowConvertAmmoModExpert",
     "type": "Primary Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Bow",
-    "baseDrain": 2,
-    "fusionLimit": 5,
+    "baseDrain": 0,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -5662,6 +5772,31 @@
       {
         "stats": [
           "Converts Secondary ammo pickups to 50% of Ammo Pick Up."
+        ]
+      },
+      {
+        "stats": [
+          "Converts Secondary ammo pickups to 58% of Ammo Pick Up."
+        ]
+      },
+      {
+        "stats": [
+          "Converts Secondary ammo pickups to 67% of Ammo Pick Up."
+        ]
+      },
+      {
+        "stats": [
+          "Converts Secondary ammo pickups to 75% of Ammo Pick Up."
+        ]
+      },
+      {
+        "stats": [
+          "Converts Secondary ammo pickups to 84% of Ammo Pick Up."
+        ]
+      },
+      {
+        "stats": [
+          "Converts Secondary ammo pickups to 92% of Ammo Pick Up."
         ]
       }
     ]
@@ -7284,13 +7419,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarDamageReductionInAirIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarDamageReductionInAirExpert",
     "type": "Warframe Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -7383,6 +7518,31 @@
       {
         "stats": [
           "Reduced damage by 60% while airborne"
+        ]
+      },
+      {
+        "stats": [
+          "Reduced damage by 70% while airborne"
+        ]
+      },
+      {
+        "stats": [
+          "Reduced damage by 80% while airborne"
+        ]
+      },
+      {
+        "stats": [
+          "Reduced damage by 90% while airborne"
+        ]
+      },
+      {
+        "stats": [
+          "Reduced damage by 100% while airborne"
+        ]
+      },
+      {
+        "stats": [
+          "Reduced damage by 100% while airborne"
         ]
       }
     ]
@@ -8225,14 +8385,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponFireIterationsMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponFireIterationsModExpert",
     "type": "Secondary Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Pistol",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/BarrelDiffusionMod.png?23904",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -8482,6 +8641,31 @@
         "stats": [
           "+120% Multishot"
         ]
+      },
+      {
+        "stats": [
+          "+140% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+160% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+180% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+220% Multishot"
+        ]
       }
     ]
   },
@@ -8684,14 +8868,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponCritFireRateBonusMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponCritFireRateBonusModExpert",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/BerserkerFuryMod.png?9d9cb",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -8760,6 +8943,31 @@
       {
         "stats": [
           "On Melee Kill:\\n+35% Attack Speed for 10s. Stacks up to 2x."
+        ]
+      },
+      {
+        "stats": [
+          "On Melee Kill:\\n+40.8% Attack Speed for 10s. Stacks up to 2x."
+        ]
+      },
+      {
+        "stats": [
+          "On Melee Kill:\\n+46.7% Attack Speed for 10s. Stacks up to 2x."
+        ]
+      },
+      {
+        "stats": [
+          "On Melee Kill:\\n+52.5% Attack Speed for 10s. Stacks up to 2x."
+        ]
+      },
+      {
+        "stats": [
+          "On Melee Kill:\\n+58.3% Attack Speed for 10s. Stacks up to 2x."
+        ]
+      },
+      {
+        "stats": [
+          "On Melee Kill:\\n+64.2% Attack Speed for 10s. Stacks up to 2x."
         ]
       }
     ]
@@ -10436,13 +10644,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponCritChanceModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponCritChanceMod",
     "type": "Shotgun Mod",
     "rarity": "Common",
     "polarity": "madurai",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BlunderbussMod.png?74f55",
     "isAugment": false,
     "drops": [
       {
@@ -10677,12 +10886,7 @@
     "levelStats": [
       {
         "stats": [
-          "+10% Critical Chance"
-        ]
-      },
-      {
-        "stats": [
-          "+20% Critical Chance"
+          "+15% Critical Chance"
         ]
       },
       {
@@ -10692,7 +10896,22 @@
       },
       {
         "stats": [
-          "+40% Critical Chance"
+          "+45% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Critical Chance"
         ]
       }
     ]
@@ -13573,13 +13792,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponElectricityDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponElectricityDamageMod",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Shotgun",
-    "baseDrain": 4,
-    "fusionLimit": 3,
+    "baseDrain": 6,
+    "fusionLimit": 5,
     "isAugment": false,
     "drops": [
       {
@@ -13874,12 +14093,7 @@
     "levelStats": [
       {
         "stats": [
-          "+10% <DT_ELECTRICITY_COLOR>Electricity"
-        ]
-      },
-      {
-        "stats": [
-          "+20% <DT_ELECTRICITY_COLOR>Electricity"
+          "+15% <DT_ELECTRICITY_COLOR>Electricity"
         ]
       },
       {
@@ -13889,7 +14103,22 @@
       },
       {
         "stats": [
-          "+40% <DT_ELECTRICITY_COLOR>Electricity"
+          "+45% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+60% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+75% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+90% <DT_ELECTRICITY_COLOR>Electricity"
         ]
       }
     ]
@@ -14102,13 +14331,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponFreezeDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponFreezeDamageMod",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ChillingGraspMod.png?3f2b7",
     "isAugment": false,
     "drops": [
       {
@@ -14259,12 +14489,7 @@
     "levelStats": [
       {
         "stats": [
-          "+10% <DT_FREEZE_COLOR>Cold"
-        ]
-      },
-      {
-        "stats": [
-          "+20% <DT_FREEZE_COLOR>Cold"
+          "+15% <DT_FREEZE_COLOR>Cold"
         ]
       },
       {
@@ -14274,7 +14499,22 @@
       },
       {
         "stats": [
-          "+40% <DT_FREEZE_COLOR>Cold"
+          "+45% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+60% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+75% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+90% <DT_FREEZE_COLOR>Cold"
         ]
       }
     ]
@@ -14429,13 +14669,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponShotgunFactionDamageCorpusBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponShotgunFactionDamageCorpus",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CleanseCorpusMod.png?8a925",
     "isAugment": false,
     "drops": [
       {
@@ -14544,22 +14785,32 @@
     "levelStats": [
       {
         "stats": [
-          "x1.03 Damage to Corpus"
+          "x1.05 Damage to Corpus"
         ]
       },
       {
         "stats": [
-          "x1.06 Damage to Corpus"
+          "x1.1 Damage to Corpus"
         ]
       },
       {
         "stats": [
-          "x1.09 Damage to Corpus"
+          "x1.15 Damage to Corpus"
         ]
       },
       {
         "stats": [
-          "x1.12 Damage to Corpus"
+          "x1.2 Damage to Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Corpus"
         ]
       }
     ]
@@ -14571,13 +14822,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponShotgunFactionDamageGrineerBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponShotgunFactionDamageGrineer",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CleanseGrineerMod.png?0218c",
     "isAugment": false,
     "drops": [
       {
@@ -14926,22 +15178,32 @@
     "levelStats": [
       {
         "stats": [
-          "x1.03 Damage to Grineer"
+          "x1.05 Damage to Grineer"
         ]
       },
       {
         "stats": [
-          "x1.06 Damage to Grineer"
+          "x1.1 Damage to Grineer"
         ]
       },
       {
         "stats": [
-          "x1.09 Damage to Grineer"
+          "x1.15 Damage to Grineer"
         ]
       },
       {
         "stats": [
-          "x1.12 Damage to Grineer"
+          "x1.2 Damage to Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Grineer"
         ]
       }
     ]
@@ -14953,13 +15215,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponShotgunFactionDamageInfestedBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponShotgunFactionDamageInfested",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CleanseInfestedMod.png?8aa87",
     "isAugment": false,
     "drops": [
       {
@@ -15092,22 +15355,32 @@
     "levelStats": [
       {
         "stats": [
-          "x1.03 Damage to Infested"
+          "x1.05 Damage to Infested"
         ]
       },
       {
         "stats": [
-          "x1.06 Damage to Infested"
+          "x1.1 Damage to Infested"
         ]
       },
       {
         "stats": [
-          "x1.09 Damage to Infested"
+          "x1.15 Damage to Infested"
         ]
       },
       {
         "stats": [
-          "x1.12 Damage to Infested"
+          "x1.2 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Infested"
         ]
       }
     ]
@@ -16730,14 +17003,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponImpactDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponImpactDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ConcussionRoundsMod.png?235da",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -17112,6 +17384,31 @@
       {
         "stats": [
           "+90% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_IMPACT_COLOR>Impact"
         ]
       }
     ]
@@ -17657,14 +17954,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponToxinDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponToxinDamageModExpert",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ContagiousSpreadMod.png?d5957",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -17757,6 +18053,31 @@
       {
         "stats": [
           "+90% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_POISON_COLOR>Toxin"
         ]
       }
     ]
@@ -17882,14 +18203,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarAbilityDurationModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarAbilityDurationMod",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "WARFRAME",
     "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedContinuityMod.png?d1060",
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ContinuityMod.png?06c37",
     "isAugment": false,
     "drops": [
       {
@@ -18142,22 +18463,32 @@
     "levelStats": [
       {
         "stats": [
-          "+3% Ability Duration"
+          "+5% Ability Duration"
         ]
       },
       {
         "stats": [
-          "+6% Ability Duration"
+          "+10% Ability Duration"
         ]
       },
       {
         "stats": [
-          "+9% Ability Duration"
+          "+15% Ability Duration"
         ]
       },
       {
         "stats": [
-          "+12% Ability Duration"
+          "+20% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Ability Duration"
         ]
       }
     ]
@@ -18309,14 +18640,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponElectricityDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponElectricityDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ConvulsionMod.png?a9fc5",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -18691,6 +19021,31 @@
       {
         "stats": [
           "+90% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_ELECTRICITY_COLOR>Electricity"
         ]
       }
     ]
@@ -20380,13 +20735,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Beginner/WeaponFreezeDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponFreezeDamageMod",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Rifle",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CryoRoundsMod.png?dee2a",
     "isAugment": false,
     "drops": [
       {
@@ -20645,12 +21001,7 @@
     "levelStats": [
       {
         "stats": [
-          "+10% <DT_FREEZE_COLOR>Cold"
-        ]
-      },
-      {
-        "stats": [
-          "+20% <DT_FREEZE_COLOR>Cold"
+          "+15% <DT_FREEZE_COLOR>Cold"
         ]
       },
       {
@@ -20660,7 +21011,22 @@
       },
       {
         "stats": [
-          "+40% <DT_FREEZE_COLOR>Cold"
+          "+45% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+60% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+75% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+90% <DT_FREEZE_COLOR>Cold"
         ]
       }
     ]
@@ -21558,14 +21924,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponFreezeDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponFreezeDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Pistol",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DeepFreezeMod.png?5173b",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -21802,6 +22167,31 @@
       {
         "stats": [
           "+90% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_FREEZE_COLOR>Cold"
         ]
       }
     ]
@@ -22914,14 +23304,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponImpactDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponImpactDamageModExpert",
     "type": "Shotgun Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DisruptorMod.png?06aa9",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -23080,6 +23469,31 @@
       {
         "stats": [
           "+90% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_IMPACT_COLOR>Impact"
         ]
       }
     ]
@@ -23939,13 +24353,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Intermediate/WeaponZoomFovModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponZoomFovModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -23984,6 +24398,31 @@
       {
         "stats": [
           "+60% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+70% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Zoom"
         ]
       }
     ]
@@ -25449,14 +25888,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarEnemyRadarMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarEnemyRadarModExpert",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/EnemySenseMod.png?e6f3b",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -25591,6 +26029,31 @@
       {
         "stats": [
           "+30m Enemy Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+35m Enemy Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+40m Enemy Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+45m Enemy Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+50m Enemy Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+55m Enemy Radar"
         ]
       }
     ]
@@ -25764,13 +26227,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Intermediate/WeaponPowerDamageModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponPowerDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -25899,6 +26362,31 @@
       {
         "stats": [
           "Converts 300% of Energy used to up to 300 Bonus Damage on next Melee Attack."
+        ]
+      },
+      {
+        "stats": [
+          "Converts 350% of Energy used to up to 350 Bonus Damage on next Melee Attack."
+        ]
+      },
+      {
+        "stats": [
+          "Converts 400% of Energy used to up to 400 Bonus Damage on next Melee Attack."
+        ]
+      },
+      {
+        "stats": [
+          "Converts 450% of Energy used to up to 450 Bonus Damage on next Melee Attack."
+        ]
+      },
+      {
+        "stats": [
+          "Converts 500% of Energy used to up to 500 Bonus Damage on next Melee Attack."
+        ]
+      },
+      {
+        "stats": [
+          "Converts 550% of Energy used to up to 550 Bonus Damage on next Melee Attack."
         ]
       }
     ]
@@ -27155,14 +27643,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarPickupBonusModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarPickupBonusMod",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 4,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedEquilibriumMod.png?67243",
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EquilibriumMod.png?a6c8d",
     "isAugment": false,
     "drops": [
       {
@@ -27199,22 +27687,57 @@
     "levelStats": [
       {
         "stats": [
-          "Health pickups give +8% Energy. Energy pickups give +8% Health."
+          "Health pickups give +10% Energy. Energy pickups give +10% Health."
         ]
       },
       {
         "stats": [
-          "Health pickups give +16% Energy. Energy pickups give +16% Health."
+          "Health pickups give +20% Energy. Energy pickups give +20% Health."
         ]
       },
       {
         "stats": [
-          "Health pickups give +24% Energy. Energy pickups give +24% Health."
+          "Health pickups give +30% Energy. Energy pickups give +30% Health."
         ]
       },
       {
         "stats": [
-          "Health pickups give +32% Energy. Energy pickups give +32% Health."
+          "Health pickups give +40% Energy. Energy pickups give +40% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +50% Energy. Energy pickups give +50% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +60% Energy. Energy pickups give +60% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +70% Energy. Energy pickups give +70% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +80% Energy. Energy pickups give +80% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +90% Energy. Energy pickups give +90% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +100% Energy. Energy pickups give +100% Health."
+        ]
+      },
+      {
+        "stats": [
+          "Health pickups give +110% Energy. Energy pickups give +110% Health."
         ]
       }
     ]
@@ -27653,13 +28176,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponPistolFactionDamageCorpusBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponPistolFactionDamageCorpus",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Pistol",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ExpelCorpusMod.png?83a42",
     "isAugment": false,
     "drops": [
       {
@@ -27708,22 +28232,32 @@
     "levelStats": [
       {
         "stats": [
-          "x1.03 Damage to Corpus"
-        ]
-      },
-      {
-        "stats": [
           "x1.05 Damage to Corpus"
         ]
       },
       {
         "stats": [
-          "x1.08 Damage to Corpus"
+          "x1.1 Damage to Corpus"
         ]
       },
       {
         "stats": [
-          "x1.1 Damage to Corpus"
+          "x1.15 Damage to Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.2 Damage to Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Corpus"
         ]
       }
     ]
@@ -27735,13 +28269,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponPistolFactionDamageGrineerBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponPistolFactionDamageGrineer",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Pistol",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ExpelGrineerMod.png?d8bb4",
     "isAugment": false,
     "drops": [
       {
@@ -27868,22 +28403,32 @@
     "levelStats": [
       {
         "stats": [
-          "x1.03 Damage to Grineer"
-        ]
-      },
-      {
-        "stats": [
           "x1.05 Damage to Grineer"
         ]
       },
       {
         "stats": [
-          "x1.08 Damage to Grineer"
+          "x1.1 Damage to Grineer"
         ]
       },
       {
         "stats": [
-          "x1.1 Damage to Grineer"
+          "x1.15 Damage to Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.2 Damage to Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Grineer"
         ]
       }
     ]
@@ -27895,13 +28440,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponPistolFactionDamageInfestedBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponPistolFactionDamageInfested",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Pistol",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ExpelInfestedMod.png?932ab",
     "isAugment": false,
     "drops": [
       {
@@ -27980,22 +28526,32 @@
     "levelStats": [
       {
         "stats": [
-          "x1.03 Damage to Infested"
-        ]
-      },
-      {
-        "stats": [
           "x1.05 Damage to Infested"
         ]
       },
       {
         "stats": [
-          "x1.08 Damage to Infested"
+          "x1.1 Damage to Infested"
         ]
       },
       {
         "stats": [
-          "x1.1 Damage to Infested"
+          "x1.15 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.2 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Infested"
         ]
       }
     ]
@@ -28696,14 +29252,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarShieldRechargeRateModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarShieldRechargeRateMod",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedFastDeflectionMod.png?a802c",
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FastDeflectionMod.png?5c487",
     "isAugment": false,
     "drops": [
       {
@@ -29130,22 +29686,38 @@
     "levelStats": [
       {
         "stats": [
-          "+10% Shield Recharge"
+          "+15% Shield Recharge",
+          "-7.5% Shield Recharge Delay"
         ]
       },
       {
         "stats": [
-          "+20% Shield Recharge"
+          "+30% Shield Recharge",
+          "-15% Shield Recharge Delay"
         ]
       },
       {
         "stats": [
-          "+30% Shield Recharge"
+          "+45% Shield Recharge",
+          "-22.5% Shield Recharge Delay"
         ]
       },
       {
         "stats": [
-          "+40% Shield Recharge"
+          "+60% Shield Recharge",
+          "-30% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Shield Recharge",
+          "-37.5% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Shield Recharge",
+          "-45% Shield Recharge Delay"
         ]
       }
     ]
@@ -29157,14 +29729,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Beginner/WeaponReloadSpeedModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponReloadSpeedMod",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedFastHandsMod.png?33188",
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FastHandsMod.png?3414c",
     "isAugment": false,
     "drops": [
       {
@@ -29657,22 +30229,32 @@
     "levelStats": [
       {
         "stats": [
-          "+3% Reload Speed"
+          "+5% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+6% Reload Speed"
+          "+10% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+9% Reload Speed"
+          "+15% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+12% Reload Speed"
+          "+20% Reload Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Reload Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Reload Speed"
         ]
       }
     ]
@@ -30219,14 +30801,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Beginner/WeaponToxinDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponToxinDamageMod",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 6,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedFeverStrikeMod.png?43c81",
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FeverStrikeMod.png?2350e",
     "isAugment": false,
     "drops": [
       {
@@ -30490,6 +31072,16 @@
         "stats": [
           "+60% <DT_POISON_COLOR>Toxin"
         ]
+      },
+      {
+        "stats": [
+          "+75% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+90% <DT_POISON_COLOR>Toxin"
+        ]
       }
     ]
   },
@@ -30717,13 +31309,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Intermediate/WeaponMeleeFinisherDamageModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponMeleeFinisherDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -30780,6 +31372,31 @@
       {
         "stats": [
           "+90% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Finisher Damage"
         ]
       }
     ]
@@ -31519,14 +32136,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponArmorPiercingDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponArmorPiercingDamageModExpert",
     "type": "Shotgun Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlechetteMod.png?57770",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -31614,6 +32230,31 @@
         "stats": [
           "+90% <DT_PUNCTURE_COLOR>Puncture"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_PUNCTURE_COLOR>Puncture"
+        ]
       }
     ]
   },
@@ -31687,14 +32328,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarPowerMaxModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarPowerMaxMod",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "WARFRAME",
-    "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedFlowMod.png?81222",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FlowMod.png?94020",
     "isAugment": false,
     "drops": [
       {
@@ -31983,22 +32624,32 @@
     "levelStats": [
       {
         "stats": [
-          "+13% Energy Max"
+          "+17% Energy Max"
         ]
       },
       {
         "stats": [
-          "+25% Energy Max"
-        ]
-      },
-      {
-        "stats": [
-          "+38% Energy Max"
+          "+33% Energy Max"
         ]
       },
       {
         "stats": [
           "+50% Energy Max"
+        ]
+      },
+      {
+        "stats": [
+          "+67% Energy Max"
+        ]
+      },
+      {
+        "stats": [
+          "+83% Energy Max"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Energy Max"
         ]
       }
     ]
@@ -33665,13 +34316,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Beginner/WeaponFireRateModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponFireRateMod",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FuryMod.png?f0224",
     "isAugment": false,
     "drops": [
       {
@@ -34487,6 +35139,16 @@
         "stats": [
           "+20% Attack Speed"
         ]
+      },
+      {
+        "stats": [
+          "+25% Attack Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Attack Speed"
+        ]
       }
     ]
   },
@@ -35158,68 +35820,80 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponMeleeStatusChanceSPSubMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponMeleeStatusChanceSPMod",
     "type": "Melee Mod",
     "rarity": "Rare",
-    "polarity": "madurai",
-    "compatName": "Shotgun",
-    "baseDrain": 0,
+    "polarity": "vazarin",
+    "compatName": "Melee",
+    "baseDrain": 2,
     "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GalvanizedElementalistMod.png?6f721",
     "isAugment": false,
     "drops": [],
     "levelStats": [
       {
         "stats": [
+          "+7.3% Status Damage",
           "On Melee Kill:\\n+2.7% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+14.5% Status Damage",
           "On Melee Kill:\\n+5.5% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+21.8% Status Damage",
           "On Melee Kill:\\n+8.2% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+29.1% Status Damage",
           "On Melee Kill:\\n+10.9% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+36.4% Status Damage",
           "On Melee Kill:\\n+13.6% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+43.6% Status Damage",
           "On Melee Kill:\\n+16.4% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+50.9% Status Damage",
           "On Melee Kill:\\n+19.1% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+58.2% Status Damage",
           "On Melee Kill:\\n+21.8% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+65.4% Status Damage",
           "On Melee Kill:\\n+24.5% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+72.7% Status Damage",
           "On Melee Kill:\\n+27.3% Status Chance for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+80% Status Damage",
           "On Melee Kill:\\n+30% Status Chance for 20s. Stacks up to 4x."
         ]
       }
@@ -35318,68 +35992,80 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponHeavyAttackEfficiencySPSubMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponHeavyAttackEfficiencySPMod",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "madurai",
-    "compatName": "Shotgun",
-    "baseDrain": 0,
+    "compatName": "Melee",
+    "baseDrain": 2,
     "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GalvanizedReflexMod.png?1bbf0",
     "isAugment": false,
     "drops": [],
     "levelStats": [
       {
         "stats": [
+          "+4.5% Heavy Attack Efficiency",
           "On Melee Kill:\\n+2 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+9.1% Heavy Attack Efficiency",
           "On Melee Kill:\\n+4 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+13.6% Heavy Attack Efficiency",
           "On Melee Kill:\\n+6 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+18.2% Heavy Attack Efficiency",
           "On Melee Kill:\\n+7 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+22.7% Heavy Attack Efficiency",
           "On Melee Kill:\\n+9 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+27.3% Heavy Attack Efficiency",
           "On Melee Kill:\\n+11 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+31.8% Heavy Attack Efficiency",
           "On Melee Kill:\\n+13 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+36.4% Heavy Attack Efficiency",
           "On Melee Kill:\\n+15 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+40.9% Heavy Attack Efficiency",
           "On Melee Kill:\\n+17 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+45.5% Heavy Attack Efficiency",
           "On Melee Kill:\\n+19 Initial Combo for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+50% Heavy Attack Efficiency",
           "On Melee Kill:\\n+20 Initial Combo for 20s. Stacks up to 4x."
         ]
       }
@@ -35639,68 +36325,80 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponCritChanceSPSubMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponCritChanceSPMod",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "madurai",
-    "compatName": "Shotgun",
-    "baseDrain": 0,
+    "compatName": "Melee",
+    "baseDrain": 2,
     "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GalvanizedSteelMod.png?297dd",
     "isAugment": false,
     "drops": [],
     "levelStats": [
       {
         "stats": [
+          "+10% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+2.7% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+20% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+5.5% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+30% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+8.2% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+40% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+10.9% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+50% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+13.6% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+60% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+16.4% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+70% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+19.1% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+80% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+21.8% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+90% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+24.5% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+100% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+27.3% Critical Damage for 20s. Stacks up to 4x."
         ]
       },
       {
         "stats": [
+          "+110% Critical Chance (x2 for Heavy Attacks)",
           "On Melee Kill:\\n+30% Critical Damage for 20s. Stacks up to 4x."
         ]
       }
@@ -37904,14 +38602,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponFireRateMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponFireRateModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Pistol",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/GunslingerMod.png?24f31",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -38028,6 +38725,31 @@
       {
         "stats": [
           "+72% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+84% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+96% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+108% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+132% Fire Rate"
         ]
       }
     ]
@@ -38249,13 +38971,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarKnockdownRecoveryModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarKnockdownRecoveryModExpert",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -38582,6 +39304,31 @@
       {
         "stats": [
           "+240% Faster Knockdown Recovery"
+        ]
+      },
+      {
+        "stats": [
+          "+280% Faster Knockdown Recovery"
+        ]
+      },
+      {
+        "stats": [
+          "+320% Faster Knockdown Recovery"
+        ]
+      },
+      {
+        "stats": [
+          "+360% Faster Knockdown Recovery"
+        ]
+      },
+      {
+        "stats": [
+          "+400% Faster Knockdown Recovery"
+        ]
+      },
+      {
+        "stats": [
+          "+440% Faster Knockdown Recovery"
         ]
       }
     ]
@@ -39005,13 +39752,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Intermediate/WeaponPistolZoomFovModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponPistolZoomFovModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -39164,6 +39911,31 @@
       {
         "stats": [
           "+120% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+140% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+160% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+180% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Zoom"
+        ]
+      },
+      {
+        "stats": [
+          "+220% Zoom"
         ]
       }
     ]
@@ -39495,14 +40267,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponFireDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponFireDamageMod",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
-    "baseDrain": 4,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedHeatedChargeMod.png?1c4c0",
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HeatedChargeMod.png?2a534",
     "isAugment": false,
     "drops": [
       {
@@ -39797,12 +40569,7 @@
     "levelStats": [
       {
         "stats": [
-          "+10% <DT_FIRE_COLOR>Heat"
-        ]
-      },
-      {
-        "stats": [
-          "+20% <DT_FIRE_COLOR>Heat"
+          "+15% <DT_FIRE_COLOR>Heat"
         ]
       },
       {
@@ -39812,7 +40579,22 @@
       },
       {
         "stats": [
-          "+40% <DT_FIRE_COLOR>Heat"
+          "+45% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+60% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+75% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+90% <DT_FIRE_COLOR>Heat"
         ]
       }
     ]
@@ -39917,14 +40699,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarFallingImpactMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarFallingImpactModExpert",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/HeavyImpactMod.png?be441",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -40084,6 +40865,31 @@
         "stats": [
           "Create 6m seismic shockwaves from heavy landings, dealing 300 Damage and knocking foes off their feet."
         ]
+      },
+      {
+        "stats": [
+          "Create 7m seismic shockwaves from heavy landings, dealing 350 Damage and knocking foes off their feet."
+        ]
+      },
+      {
+        "stats": [
+          "Create 8m seismic shockwaves from heavy landings, dealing 400 Damage and knocking foes off their feet."
+        ]
+      },
+      {
+        "stats": [
+          "Create 9m seismic shockwaves from heavy landings, dealing 450 Damage and knocking foes off their feet."
+        ]
+      },
+      {
+        "stats": [
+          "Create 10m seismic shockwaves from heavy landings, dealing 500 Damage and knocking foes off their feet."
+        ]
+      },
+      {
+        "stats": [
+          "Create 11m seismic shockwaves from heavy landings, dealing 550 Damage and knocking foes off their feet."
+        ]
       }
     ]
   },
@@ -40094,13 +40900,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Beginner/WeaponImpactDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponImpactDamageMod",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HeavyTraumaMod.png?6f298",
     "isAugment": false,
     "drops": [
       {
@@ -40279,6 +41086,16 @@
       {
         "stats": [
           "+60% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+75% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+90% <DT_IMPACT_COLOR>Impact"
         ]
       }
     ]
@@ -40492,14 +41309,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponFireDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponFireDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/HellfireMod.png?fdeac",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -40670,6 +41486,31 @@
       {
         "stats": [
           "+90% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_FIRE_COLOR>Heat"
         ]
       }
     ]
@@ -40681,14 +41522,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponFireDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponFireDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/HellfireMod.png?fdeac",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -40859,6 +41699,31 @@
       {
         "stats": [
           "+90% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_FIRE_COLOR>Heat"
         ]
       }
     ]
@@ -41513,13 +42378,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Intermediate/WeaponDamageAmountModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponDamageAmountMod",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Pistol",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HornetStrikeMod.png?37dcd",
     "isAugment": false,
     "drops": [
       {
@@ -42140,6 +43006,31 @@
       {
         "stats": [
           "+120% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+140% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+160% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+180% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+220% Damage"
         ]
       }
     ]
@@ -44180,14 +45071,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponFireDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponFireDamageModExpert",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/IncendiaryCoatMod.png?3f46e",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -44557,6 +45447,31 @@
         "stats": [
           "+90% <DT_FIRE_COLOR>Heat"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_FIRE_COLOR>Heat"
+        ]
       }
     ]
   },
@@ -44614,14 +45529,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponToxinDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponToxinDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/InfectedClipMod.png?60a48",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -45159,6 +46073,31 @@
         "stats": [
           "+90% <DT_POISON_COLOR>Toxin"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_POISON_COLOR>Toxin"
+        ]
       }
     ]
   },
@@ -45600,303 +46539,6 @@
       {
         "stats": [
           "+100% <DT_FREEZE_COLOR>Cold Resistance"
-        ]
-      }
-    ]
-  },
-  {
-    "id": 807,
-    "slug": "intensify",
-    "name": "Intensify",
-    "categories": [
-      "mod"
-    ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarAbilityStrengthMod",
-    "type": "Warframe Mod",
-    "rarity": "Rare",
-    "polarity": "madurai",
-    "compatName": "WARFRAME",
-    "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/IntensifyMod.png?9a7bb",
-    "isAugment": false,
-    "drops": [
-      {
-        "chance": 0.003,
-        "location": "The Hollow Vein",
-        "rarity": "Rare",
-        "type": "Precision Intensify"
-      },
-      {
-        "chance": 0.0031,
-        "location": "The Anatomizer",
-        "rarity": "Uncommon",
-        "type": "Precision Intensify"
-      },
-      {
-        "chance": 0.0031,
-        "location": "The Severed Warden",
-        "rarity": "Uncommon",
-        "type": "Precision Intensify"
-      },
-      {
-        "chance": 0.0031,
-        "location": "The Unseeing Herald",
-        "rarity": "Uncommon",
-        "type": "Precision Intensify"
-      },
-      {
-        "chance": 0.0061,
-        "location": "The Fragmented Suzerain",
-        "rarity": "Uncommon",
-        "type": "Precision Intensify"
-      },
-      {
-        "chance": 0.0103,
-        "location": "Duviri/Endless: Tier 6 (Normal)",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0149,
-        "location": "Duviri/Endless: Tier 4 (Normal)",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Ceres/Seimeni (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Earth/Coba (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Eris/Akkad (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Europa/Larzac (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Jupiter/Sinai (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Mars/Kadesh (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Pluto/Sechura (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Sedna/Sangeru (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0184,
-        "location": "Venus/Romula (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0201,
-        "location": "Alad V",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0201,
-        "location": "Captain Vor",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0201,
-        "location": "Janus Captain Vor",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0201,
-        "location": "Mutalist Alad V",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0278,
-        "location": "Hunhow",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0278,
-        "location": "Protector Stalker",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0278,
-        "location": "Shadow Stalker",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0278,
-        "location": "Stalker",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0737,
-        "location": "Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0752,
-        "location": "Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation C",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Ceres/Gabii (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Earth/Everest (Excavation), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Earth/Tikal (Excavation), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Mars/Arcadia (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Mars/Augustus (Excavation), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Mercury/Apollodorus (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Phobos/Flimnap (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Phobos/Stickney (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Phobos/Wendell (Excavation), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Venus/Kiliken (Excavation), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Venus/Malva (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.0769,
-        "location": "Venus/V Prime (Survival), Rotation B",
-        "rarity": "Rare",
-        "type": "Intensify"
-      },
-      {
-        "chance": 0.3056,
-        "location": "Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation C",
-        "rarity": "Uncommon",
-        "type": "Intensify"
-      },
-      {
-        "chance": 1,
-        "location": "Kahl's Garrison (Chipper), Fort",
-        "rarity": "Common",
-        "type": "Archon Intensify"
-      },
-      {
-        "chance": 1,
-        "location": "NecraLoid (Loid), Clearance Odima",
-        "rarity": "Common",
-        "type": "Necramech Intensify"
-      }
-    ],
-    "levelStats": [
-      {
-        "stats": [
-          "+5% Ability Strength"
-        ]
-      },
-      {
-        "stats": [
-          "+10% Ability Strength"
-        ]
-      },
-      {
-        "stats": [
-          "+15% Ability Strength"
-        ]
-      },
-      {
-        "stats": [
-          "+20% Ability Strength"
-        ]
-      },
-      {
-        "stats": [
-          "+25% Ability Strength"
-        ]
-      },
-      {
-        "stats": [
-          "+30% Ability Strength"
         ]
       }
     ]
@@ -46786,14 +47428,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponSlashDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponSlashDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/JaggedEdgeMod.png?36b4c",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -46970,6 +47611,31 @@
       {
         "stats": [
           "+90% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_SLASH_COLOR>Slash"
         ]
       }
     ]
@@ -51296,14 +51962,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Beginner/WeaponClipMaxModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponClipMaxMod",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
-    "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedMagazineWarpMod.png?c26fb",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MagazineWarpMod.png?1733e",
     "isAugment": false,
     "drops": [
       {
@@ -51958,22 +52624,32 @@
     "levelStats": [
       {
         "stats": [
-          "+3% Magazine Capacity"
+          "+5% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+6% Magazine Capacity"
+          "+10% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+9% Magazine Capacity"
+          "+15% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+12% Magazine Capacity"
+          "+20% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Magazine Capacity"
         ]
       }
     ]
@@ -51985,14 +52661,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Beginner/WeaponClipMaxModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponClipMaxMod",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
-    "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedMagazineWarpMod.png?c26fb",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MagazineWarpMod.png?1733e",
     "isAugment": false,
     "drops": [
       {
@@ -52647,22 +53323,32 @@
     "levelStats": [
       {
         "stats": [
-          "+3% Magazine Capacity"
+          "+5% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+6% Magazine Capacity"
+          "+10% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+9% Magazine Capacity"
+          "+15% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+12% Magazine Capacity"
+          "+20% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Magazine Capacity"
         ]
       }
     ]
@@ -52674,13 +53360,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarSlideBoostModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarSlideBoostMod",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MaglevMod.png?9c65d",
     "isAugment": false,
     "drops": [
       {
@@ -52725,6 +53412,18 @@
         "stats": [
           "+20% Slide",
           "-20% Friction"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Slide",
+          "-25% Friction"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Slide",
+          "-30% Friction"
         ]
       }
     ]
@@ -53973,13 +54672,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarChanceToLootIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarChanceToLootExpert",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 10,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -54270,6 +54969,31 @@
       {
         "stats": [
           "+60% chance to unlock locked lockers."
+        ]
+      },
+      {
+        "stats": [
+          "+70% chance to unlock locked lockers."
+        ]
+      },
+      {
+        "stats": [
+          "+80% chance to unlock locked lockers."
+        ]
+      },
+      {
+        "stats": [
+          "+90% chance to unlock locked lockers."
+        ]
+      },
+      {
+        "stats": [
+          "+100% chance to unlock locked lockers."
+        ]
+      },
+      {
+        "stats": [
+          "+110% chance to unlock locked lockers."
         ]
       }
     ]
@@ -55181,13 +55905,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Intermediate/WeaponStunChanceModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponStunChanceModExpert",
     "type": "Melee Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -55761,6 +56485,31 @@
         "stats": [
           "+90% Status Chance"
         ]
+      },
+      {
+        "stats": [
+          "+105% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Status Chance"
+        ]
       }
     ]
   },
@@ -56106,14 +56855,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponPunctureDepthMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponPunctureDepthModExpert",
     "type": "Primary Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 10,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/MetalAugerMod.png?a8f4c",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -56572,6 +57320,31 @@
       {
         "stats": [
           "+2.1 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+2.4 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+2.8 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.1 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.5 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.9 Punch Through"
         ]
       }
     ]
@@ -57438,14 +58211,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponFireDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponFireDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/MoltenImpactMod.png?74e14",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -57910,6 +58682,31 @@
       {
         "stats": [
           "+90% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_FIRE_COLOR>Heat"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_FIRE_COLOR>Heat"
         ]
       }
     ]
@@ -62205,14 +63002,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponArmorPiercingDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponArmorPiercingDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/NoReturnMod.png?54db1",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -62786,6 +63582,31 @@
         "stats": [
           "+90% <DT_PUNCTURE_COLOR>Puncture"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_PUNCTURE_COLOR>Puncture"
+        ]
       }
     ]
   },
@@ -62823,14 +63644,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponFreezeDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponFreezeDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Melee",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/NorthWindMod.png?35552",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -63554,6 +64374,31 @@
         "stats": [
           "+90% <DT_FREEZE_COLOR>Cold"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_FREEZE_COLOR>Cold"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_FREEZE_COLOR>Cold"
+        ]
       }
     ]
   },
@@ -63770,14 +64615,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponCritDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponCritDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Common",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/OrganShatterMod.png?ffc15",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -64056,6 +64900,31 @@
       {
         "stats": [
           "+90% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Critical Damage"
         ]
       }
     ]
@@ -64994,13 +65863,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarParryMeleeModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarParryMeleeModExpert",
     "type": "Warframe Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": true,
     "drops": [
       {
@@ -65220,6 +66089,31 @@
         "stats": [
           "+96% chance to open enemies to Finisher Attacks after Warframe blocks Melee"
         ]
+      },
+      {
+        "stats": [
+          "+112% chance to open enemies to Finisher Attacks after Warframe blocks Melee"
+        ]
+      },
+      {
+        "stats": [
+          "+128% chance to open enemies to Finisher Attacks after Warframe blocks Melee"
+        ]
+      },
+      {
+        "stats": [
+          "+144% chance to open enemies to Finisher Attacks after Warframe blocks Melee"
+        ]
+      },
+      {
+        "stats": [
+          "+160% chance to open enemies to Finisher Attacks after Warframe blocks Melee"
+        ]
+      },
+      {
+        "stats": [
+          "+176% chance to open enemies to Finisher Attacks after Warframe blocks Melee"
+        ]
       }
     ]
   },
@@ -65423,14 +66317,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponToxinDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponToxinDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/PathogenRoundsMod.png?dc526",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -65577,6 +66470,31 @@
       {
         "stats": [
           "+90% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_POISON_COLOR>Toxin"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_POISON_COLOR>Toxin"
         ]
       }
     ]
@@ -66317,14 +67235,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponArmorPiercingDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponArmorPiercingDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/PiercingHitMod.png?38d09",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -66555,6 +67472,31 @@
       {
         "stats": [
           "+90% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_PUNCTURE_COLOR>Puncture"
         ]
       }
     ]
@@ -67350,13 +68292,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponCritChanceModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponCritChanceMod",
     "type": "Secondary Mod",
     "rarity": "Common",
     "polarity": "madurai",
     "compatName": "Pistol",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PistolGambitMod.png?92e86",
     "isAugment": false,
     "drops": [
       {
@@ -67729,22 +68672,32 @@
     "levelStats": [
       {
         "stats": [
-          "+15% Critical Chance"
+          "+20% Critical Chance"
         ]
       },
       {
         "stats": [
-          "+30% Critical Chance"
-        ]
-      },
-      {
-        "stats": [
-          "+45% Critical Chance"
+          "+40% Critical Chance"
         ]
       },
       {
         "stats": [
           "+60% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Critical Chance"
         ]
       }
     ]
@@ -67959,14 +68912,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponDamageAmountModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponDamageAmountMod",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedPointBlankMod.png?4b899",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PointBlankMod.png?d7448",
     "isAugment": false,
     "drops": [
       {
@@ -68201,12 +69154,7 @@
     "levelStats": [
       {
         "stats": [
-          "+10% Damage"
-        ]
-      },
-      {
-        "stats": [
-          "+20% Damage"
+          "+15% Damage"
         ]
       },
       {
@@ -68216,7 +69164,22 @@
       },
       {
         "stats": [
-          "+40% Damage"
+          "+45% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Damage"
         ]
       }
     ]
@@ -68228,14 +69191,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponCritChanceMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponCritChanceModExpert",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "madurai",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/PointStrikeMod.png?a7647",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -68754,6 +69716,31 @@
       {
         "stats": [
           "+150% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+175% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+225% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+250% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+275% Critical Chance"
         ]
       }
     ]
@@ -69468,14 +70455,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponGlaivePowerthrowMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponGlaivePowerthrowModExpert",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Thrown Melee",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/PowerThrowMod.png?54195",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -69628,6 +70614,36 @@
         "stats": [
           "+2 Punch Through",
           "On Consecutive throw (Max stacks 3):\\n+100% Throw Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+2.3 Punch Through",
+          "On Consecutive throw (Max stacks 3):\\n+116.7% Throw Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+2.7 Punch Through",
+          "On Consecutive throw (Max stacks 3):\\n+133.3% Throw Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+3 Punch Through",
+          "On Consecutive throw (Max stacks 3):\\n+150% Throw Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+3.3 Punch Through",
+          "On Consecutive throw (Max stacks 3):\\n+166.7% Throw Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+3.7 Punch Through",
+          "On Consecutive throw (Max stacks 3):\\n+183.3% Throw Damage"
         ]
       }
     ]
@@ -73717,6 +74733,327 @@
     ]
   },
   {
+    "id": 807,
+    "slug": "primed-intensify",
+    "name": "Primed Intensify",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarAbilityStrengthModExpert",
+    "type": "Warframe Mod",
+    "rarity": "Legendary",
+    "polarity": "madurai",
+    "compatName": "WARFRAME",
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.003,
+        "location": "The Hollow Vein",
+        "rarity": "Rare",
+        "type": "Precision Intensify"
+      },
+      {
+        "chance": 0.0031,
+        "location": "The Anatomizer",
+        "rarity": "Uncommon",
+        "type": "Precision Intensify"
+      },
+      {
+        "chance": 0.0031,
+        "location": "The Severed Warden",
+        "rarity": "Uncommon",
+        "type": "Precision Intensify"
+      },
+      {
+        "chance": 0.0031,
+        "location": "The Unseeing Herald",
+        "rarity": "Uncommon",
+        "type": "Precision Intensify"
+      },
+      {
+        "chance": 0.0061,
+        "location": "The Fragmented Suzerain",
+        "rarity": "Uncommon",
+        "type": "Precision Intensify"
+      },
+      {
+        "chance": 0.0103,
+        "location": "Duviri/Endless: Tier 6 (Normal)",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0149,
+        "location": "Duviri/Endless: Tier 4 (Normal)",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Ceres/Seimeni (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Earth/Coba (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Eris/Akkad (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Europa/Larzac (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Jupiter/Sinai (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Mars/Kadesh (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Pluto/Sechura (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Sedna/Sangeru (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0184,
+        "location": "Venus/Romula (Defense), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0201,
+        "location": "Alad V",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0201,
+        "location": "Captain Vor",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0201,
+        "location": "Janus Captain Vor",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0201,
+        "location": "Mutalist Alad V",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0278,
+        "location": "Hunhow",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0278,
+        "location": "Protector Stalker",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0278,
+        "location": "Shadow Stalker",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0278,
+        "location": "Stalker",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0737,
+        "location": "Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0752,
+        "location": "Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Ceres/Gabii (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Earth/Everest (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Earth/Tikal (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Mars/Arcadia (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Mars/Augustus (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Mercury/Apollodorus (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Phobos/Flimnap (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Phobos/Stickney (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Phobos/Wendell (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Venus/Kiliken (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Venus/Malva (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Venus/V Prime (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Intensify"
+      },
+      {
+        "chance": 0.3056,
+        "location": "Earth/Cetus (Level 5 - 15 Cetus Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Intensify"
+      },
+      {
+        "chance": 1,
+        "location": "Kahl's Garrison (Chipper), Fort",
+        "rarity": "Common",
+        "type": "Archon Intensify"
+      },
+      {
+        "chance": 1,
+        "location": "NecraLoid (Loid), Clearance Odima",
+        "rarity": "Common",
+        "type": "Necramech Intensify"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+5% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+35% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+55% Ability Strength"
+        ]
+      }
+    ]
+  },
+  {
     "id": 5596,
     "slug": "primed-magazine-warp",
     "name": "Primed Magazine Warp",
@@ -76900,13 +78237,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarGroundFireDmgModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarGroundFireDmgMod",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "WARFRAME",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ProvokedMod.png?4be45",
     "isAugment": false,
     "drops": [
       {
@@ -77029,6 +78367,31 @@
       {
         "stats": [
           "+60% Damage during Bleedout"
+        ]
+      },
+      {
+        "stats": [
+          "+70% Damage during Bleedout"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Damage during Bleedout"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Damage during Bleedout"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Damage during Bleedout"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Damage during Bleedout"
         ]
       }
     ]
@@ -77725,13 +79088,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarPowerToHealthOnDeathModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarPowerToHealthOnDeathMod",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
-    "baseDrain": 4,
-    "fusionLimit": 3,
+    "baseDrain": 10,
+    "fusionLimit": 5,
     "isAugment": false,
     "drops": [
       {
@@ -77756,22 +79119,32 @@
     "levelStats": [
       {
         "stats": [
-          "Drains Energy to stop Lethal Damage with 20% Efficiency."
-        ]
-      },
-      {
-        "stats": [
           "Drains Energy to stop Lethal Damage with 40% Efficiency."
         ]
       },
       {
         "stats": [
-          "Drains Energy to stop Lethal Damage with 60% Efficiency."
+          "Drains Energy to stop Lethal Damage with 80% Efficiency."
         ]
       },
       {
         "stats": [
-          "Drains Energy to stop Lethal Damage with 80% Efficiency."
+          "Drains Energy to stop Lethal Damage with 120% Efficiency."
+        ]
+      },
+      {
+        "stats": [
+          "Drains Energy to stop Lethal Damage with 160% Efficiency."
+        ]
+      },
+      {
+        "stats": [
+          "Drains Energy to stop Lethal Damage with 200% Efficiency."
+        ]
+      },
+      {
+        "stats": [
+          "Drains Energy to stop Lethal Damage with 240% Efficiency."
         ]
       }
     ]
@@ -77783,14 +79156,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponReloadSpeedModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponReloadSpeedMod",
     "type": "Secondary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedQuickdrawMod.png?0b72a",
+    "fusionLimit": 5,
     "isAugment": false,
     "drops": [
       {
@@ -78043,22 +79415,32 @@
     "levelStats": [
       {
         "stats": [
-          "+5% Reload Speed"
+          "+8% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+10% Reload Speed"
+          "+16% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+15% Reload Speed"
+          "+24% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+20% Reload Speed"
+          "+32% Reload Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Reload Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+48% Reload Speed"
         ]
       }
     ]
@@ -78464,13 +79846,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarDamageToEnergyModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarDamageToEnergyModExpert",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -78629,6 +80011,31 @@
       {
         "stats": [
           "Convert +60% of Damage on Health to Energy. Without Shields, ally Overguard imitates Health."
+        ]
+      },
+      {
+        "stats": [
+          "Convert +70% of Damage on Health to Energy. Without Shields, ally Overguard imitates Health."
+        ]
+      },
+      {
+        "stats": [
+          "Convert +80% of Damage on Health to Energy. Without Shields, ally Overguard imitates Health."
+        ]
+      },
+      {
+        "stats": [
+          "Convert +90% of Damage on Health to Energy. Without Shields, ally Overguard imitates Health."
+        ]
+      },
+      {
+        "stats": [
+          "Convert +100% of Damage on Health to Energy. Without Shields, ally Overguard imitates Health."
+        ]
+      },
+      {
+        "stats": [
+          "Convert +110% of Damage on Health to Energy. Without Shields, ally Overguard imitates Health."
         ]
       }
     ]
@@ -78953,13 +80360,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponCritDamageModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponCritDamageMod",
     "type": "Shotgun Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Shotgun",
-    "baseDrain": 2,
-    "fusionLimit": 3,
+    "baseDrain": 4,
+    "fusionLimit": 5,
     "isAugment": false,
     "drops": [
       {
@@ -79458,22 +80865,32 @@
     "levelStats": [
       {
         "stats": [
-          "+7.5% Critical Damage"
+          "+10% Critical Damage"
         ]
       },
       {
         "stats": [
-          "+15% Critical Damage"
-        ]
-      },
-      {
-        "stats": [
-          "+22.5% Critical Damage"
+          "+20% Critical Damage"
         ]
       },
       {
         "stats": [
           "+30% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Critical Damage"
         ]
       }
     ]
@@ -79584,13 +81001,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponSlashDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponSlashDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -79725,6 +81142,31 @@
       {
         "stats": [
           "+90% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_SLASH_COLOR>Slash"
         ]
       }
     ]
@@ -81028,13 +82470,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarShieldMaxModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarShieldMaxMod",
     "type": "Warframe Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -81386,6 +82828,31 @@
         "stats": [
           "+55% Shield Capacity"
         ]
+      },
+      {
+        "stats": [
+          "+64% Shield Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+73% Shield Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+82% Shield Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+91% Shield Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Shield Capacity"
+        ]
       }
     ]
   },
@@ -81448,13 +82915,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarParryReflectMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarParryReflectModExpert",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -81608,6 +83075,36 @@
           "+40% chance to Stagger on Block",
           "+10% chance to Stun on Block"
         ]
+      },
+      {
+        "stats": [
+          "+46.6% chance to Stagger on Block",
+          "+11.7% chance to Stun on Block"
+        ]
+      },
+      {
+        "stats": [
+          "+53.3% chance to Stagger on Block",
+          "+13.3% chance to Stun on Block"
+        ]
+      },
+      {
+        "stats": [
+          "+59.9% chance to Stagger on Block",
+          "+15% chance to Stun on Block"
+        ]
+      },
+      {
+        "stats": [
+          "+66.6% chance to Stagger on Block",
+          "+16.7% chance to Stun on Block"
+        ]
+      },
+      {
+        "stats": [
+          "+73.3% chance to Stagger on Block",
+          "+18.3% chance to Stun on Block"
+        ]
       }
     ]
   },
@@ -81618,13 +83115,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Intermediate/WeaponMeleeChannelingEfficiencyeModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponMeleeChannelingEfficiencyModExpert",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -82305,6 +83802,31 @@
       {
         "stats": [
           "+60% Heavy Attack Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+70% Heavy Attack Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Heavy Attack Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Heavy Attack Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Heavy Attack Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Heavy Attack Efficiency"
         ]
       }
     ]
@@ -83832,13 +85354,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarRevengeDamageMeleeIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarRevengeDamageMeleeExpert",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -83913,6 +85435,36 @@
         "stats": [
           "+90% Chance to deal Electrical Damage when shield struck by melee enemies.",
           "+120 <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Chance to deal Electrical Damage when shield struck by melee enemies.",
+          "+140 <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Chance to deal Electrical Damage when shield struck by melee enemies.",
+          "+160 <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Chance to deal Electrical Damage when shield struck by melee enemies.",
+          "+180 <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Chance to deal Electrical Damage when shield struck by melee enemies.",
+          "+200 <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Chance to deal Electrical Damage when shield struck by melee enemies.",
+          "+220 <DT_ELECTRICITY_COLOR>Electricity"
         ]
       }
     ]
@@ -84569,13 +86121,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Intermediate/WeaponStatusChanceModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponStatusChanceModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -84668,6 +86220,31 @@
       {
         "stats": [
           "+90% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Status Chance"
         ]
       }
     ]
@@ -85818,14 +87395,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponImpactDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponImpactDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/RuptureMod.png?a98e2",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -85913,6 +87489,31 @@
         "stats": [
           "+90% <DT_IMPACT_COLOR>Impact"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_IMPACT_COLOR>Impact"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_IMPACT_COLOR>Impact"
+        ]
       }
     ]
   },
@@ -85923,14 +87524,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarSprintSpeedMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarSprintSpeedModExpert",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/RushMod.png?12b7b",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -86413,6 +88013,31 @@
       {
         "stats": [
           "+30% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+35% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+55% Sprint Speed"
         ]
       }
     ]
@@ -87206,14 +88831,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponSlashDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponSlashDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SawtoothClipMod.png?8b878",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -87306,6 +88930,31 @@
       {
         "stats": [
           "+90% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_SLASH_COLOR>Slash"
         ]
       }
     ]
@@ -88291,14 +89940,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponPunctureDepthMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponPunctureDepthModExpert",
     "type": "Secondary Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 10,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SeekerMod.png?fb041",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -88464,6 +90112,31 @@
         "stats": [
           "+2.1 Punch Through"
         ]
+      },
+      {
+        "stats": [
+          "+2.4 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+2.8 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.1 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.5 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.9 Punch Through"
+        ]
       }
     ]
   },
@@ -88474,14 +90147,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponPunctureDepthMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponPunctureDepthModExpert",
     "type": "Shotgun Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 10,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SeekingForceMod.png?f7d73",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -88544,6 +90216,31 @@
       {
         "stats": [
           "+2.1 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+2.4 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+2.8 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.1 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.5 Punch Through"
+        ]
+      },
+      {
+        "stats": [
+          "+3.9 Punch Through"
         ]
       }
     ]
@@ -89509,13 +91206,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Intermediate/WeaponDamageAmountModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponDamageAmountMod",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SerrationMod.png?0b8ff",
     "isAugment": false,
     "drops": [
       {
@@ -90095,6 +91793,31 @@
         "stats": [
           "+90% Damage"
         ]
+      },
+      {
+        "stats": [
+          "+105% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Damage"
+        ]
       }
     ]
   },
@@ -90649,14 +92372,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponAmmoMaxMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponAmmoMaxModExpert",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ShellCompressionMod.png?60d69",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -90761,6 +92483,31 @@
       {
         "stats": [
           "+90% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Ammo Maximum"
         ]
       }
     ]
@@ -92006,14 +93753,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponElectricityDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponElectricityDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ShockingTouchMod.png?79483",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -92665,6 +94411,31 @@
         "stats": [
           "+90% <DT_ELECTRICITY_COLOR>Electricity"
         ]
+      },
+      {
+        "stats": [
+          "+105% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
       }
     ]
   },
@@ -93068,14 +94839,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponFireRateMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponFireRateModExpert",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Shotgun",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ShotgunBarrageMod.png?0d69e",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -93247,6 +95017,31 @@
         "stats": [
           "+90% Fire Rate"
         ]
+      },
+      {
+        "stats": [
+          "+105% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Fire Rate"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Fire Rate"
+        ]
       }
     ]
   },
@@ -93320,14 +95115,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponStunChanceMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponStunChanceModExpert",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Shotgun",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ShotgunSavvyMod.png?10dc0",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -93558,6 +95352,31 @@
       {
         "stats": [
           "+90% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Status Chance"
         ]
       }
     ]
@@ -93934,14 +95753,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponSlashDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponSlashDamageModExpert",
     "type": "Shotgun Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ShredderMod.png?26626",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -94298,6 +96116,31 @@
       {
         "stats": [
           "+90% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_SLASH_COLOR>Slash"
         ]
       }
     ]
@@ -94958,14 +96801,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Beginner/WeaponClipMaxModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponClipMaxMod",
     "type": "Secondary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Pistol",
-    "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedSlipMagazineMod.png?d5ecd",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SlipMagazineMod.png?50508",
     "isAugment": false,
     "drops": [
       {
@@ -95068,22 +96911,32 @@
     "levelStats": [
       {
         "stats": [
-          "+2.5% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
           "+5% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+7.5% Magazine Capacity"
+          "+10% Magazine Capacity"
         ]
       },
       {
         "stats": [
-          "+10% Magazine Capacity"
+          "+15% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Magazine Capacity"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Magazine Capacity"
         ]
       }
     ]
@@ -95135,13 +96988,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Beginner/WeaponMeleeFactionDamageCorpusBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponMeleeFactionDamageCorpus",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SmiteCorpusMod.png?ddfdf",
     "isAugment": false,
     "drops": [
       {
@@ -95219,6 +97073,16 @@
         "stats": [
           "x1.2 Damage to Corpus"
         ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Corpus"
+        ]
       }
     ]
   },
@@ -95229,13 +97093,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Beginner/WeaponMeleeFactionDamageGrineerBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponMeleeFactionDamageGrineer",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SmiteGrineerMod.png?63c34",
     "isAugment": false,
     "drops": [
       {
@@ -95529,6 +97394,16 @@
         "stats": [
           "x1.2 Damage to Grineer"
         ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Grineer"
+        ]
       }
     ]
   },
@@ -95539,13 +97414,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Beginner/WeaponMeleeFactionDamageInfestedBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponMeleeFactionDamageInfested",
     "type": "Melee Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 3,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SmiteInfestedMod.png?25838",
     "isAugment": false,
     "drops": [
       {
@@ -95640,6 +97516,16 @@
       {
         "stats": [
           "x1.2 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.25 Damage to Infested"
+        ]
+      },
+      {
+        "stats": [
+          "x1.3 Damage to Infested"
         ]
       }
     ]
@@ -97010,14 +98896,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponFireRateMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponFireRateModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SpeedTriggerMod.png?a9c65",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -97309,6 +99194,31 @@
         "stats": [
           "+60% Fire Rate (x2 for Bows)"
         ]
+      },
+      {
+        "stats": [
+          "+70% Fire Rate (x2 for Bows)"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Fire Rate (x2 for Bows)"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Fire Rate (x2 for Bows)"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Fire Rate (x2 for Bows)"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Fire Rate (x2 for Bows)"
+        ]
       }
     ]
   },
@@ -97429,14 +99339,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponFireIterationsMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponFireIterationsModExpert",
     "type": "Primary Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Rifle",
     "baseDrain": 10,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SplitChamberMod.png?32e76",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -97919,6 +99828,31 @@
       {
         "stats": [
           "+90% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Multishot"
         ]
       }
     ]
@@ -99563,13 +101497,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarArmourModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarArmourMod",
     "type": "Warframe Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 4,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SteelFiberMod.png?c6055",
     "isAugment": false,
     "drops": [
       {
@@ -99897,6 +101832,31 @@
         "stats": [
           "+55% Armor"
         ]
+      },
+      {
+        "stats": [
+          "+64% Armor"
+        ]
+      },
+      {
+        "stats": [
+          "+73% Armor"
+        ]
+      },
+      {
+        "stats": [
+          "+82% Armor"
+        ]
+      },
+      {
+        "stats": [
+          "+91% Armor"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Armor"
+        ]
       }
     ]
   },
@@ -100060,14 +102020,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponElectricityDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponElectricityDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Rifle",
     "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/StormbringerMod.png?7215d",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -100292,6 +102251,31 @@
       {
         "stats": [
           "+90% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_ELECTRICITY_COLOR>Electricity"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_ELECTRICITY_COLOR>Electricity"
         ]
       }
     ]
@@ -100656,14 +102640,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Beginner/AvatarAbilityEfficiencyModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarAbilityEfficiencyMod",
     "type": "Warframe Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "WARFRAME",
-    "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedStreamlineMod.png?87ac4",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/StreamlineMod.png?08eab",
     "isAugment": false,
     "drops": [
       {
@@ -101096,22 +103080,32 @@
     "levelStats": [
       {
         "stats": [
-          "+3% Ability Efficiency"
+          "+5% Ability Efficiency"
         ]
       },
       {
         "stats": [
-          "+6% Ability Efficiency"
+          "+10% Ability Efficiency"
         ]
       },
       {
         "stats": [
-          "+9% Ability Efficiency"
+          "+15% Ability Efficiency"
         ]
       },
       {
         "stats": [
-          "+12% Ability Efficiency"
+          "+20% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Ability Efficiency"
         ]
       }
     ]
@@ -101186,14 +103180,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarAbilityRangeMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarAbilityRangeModExpert",
     "type": "Warframe Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "WARFRAME",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/StretchMod.png?a3428",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -102067,6 +104060,31 @@
         "stats": [
           "+45% Ability Range"
         ]
+      },
+      {
+        "stats": [
+          "+52.5% Ability Range"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Ability Range"
+        ]
+      },
+      {
+        "stats": [
+          "+67.5% Ability Range"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Ability Range"
+        ]
+      },
+      {
+        "stats": [
+          "+82.5% Ability Range"
+        ]
       }
     ]
   },
@@ -102397,14 +104415,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponArmorPiercingDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponArmorPiercingDamageModExpert",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "naramon",
     "compatName": "Melee",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SunderingStrikeMod.png?5ae8b",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -102473,6 +104490,31 @@
       {
         "stats": [
           "+90% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+105% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+120% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+135% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+150% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      },
+      {
+        "stats": [
+          "+165% <DT_PUNCTURE_COLOR>Puncture"
         ]
       }
     ]
@@ -102953,13 +104995,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Intermediate/WeaponStatusChanceModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponStatusChanceModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "vazarin",
     "compatName": "Pistol",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -103035,6 +105077,31 @@
         "stats": [
           "+90% Status Chance"
         ]
+      },
+      {
+        "stats": [
+          "+105% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Status Chance"
+        ]
       }
     ]
   },
@@ -103087,59 +105154,6 @@
       {
         "stats": [
           "Aquablades Augment: Activate Aquablades when the ability is in use or cooldown to throw one blade. Blades gain 10% damage when any Aquablade hits an enemy. No cost to throw with Merulina."
-        ]
-      }
-    ]
-  },
-  {
-    "id": 108,
-    "slug": "surging-dash",
-    "name": "Surging Dash",
-    "categories": [
-      "mod"
-    ],
-    "uniqueName": "/Lotus/Powersuits/Excalibur/SlashDashAugmentCard",
-    "type": "Warframe Mod",
-    "rarity": "Rare",
-    "polarity": "zenurik",
-    "compatName": "Excalibur",
-    "baseDrain": 6,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/SurgingDashMod.png?886ea",
-    "isAugment": true,
-    "drops": [
-      {
-        "chance": 1,
-        "location": "Arbiters of Hexis, Maxim",
-        "rarity": "Common",
-        "type": "Surging Dash (Excalibur)"
-      },
-      {
-        "chance": 1,
-        "location": "Steel Meridian, General",
-        "rarity": "Common",
-        "type": "Surging Dash (Excalibur)"
-      }
-    ],
-    "levelStats": [
-      {
-        "stats": [
-          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 2."
-        ]
-      },
-      {
-        "stats": [
-          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 4."
-        ]
-      },
-      {
-        "stats": [
-          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 6."
-        ]
-      },
-      {
-        "stats": [
-          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 8."
         ]
       }
     ]
@@ -104364,14 +106378,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Beginner/WeaponReloadSpeedModBeginner",
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponReloadSpeedMod",
     "type": "Shotgun Mod",
     "rarity": "Uncommon",
     "polarity": "naramon",
     "compatName": "Shotgun",
     "baseDrain": 2,
-    "fusionLimit": 3,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/FlawedTacticalPumpMod.png?3ef38",
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TacticalPumpMod.png?b4175",
     "isAugment": false,
     "drops": [
       {
@@ -104450,22 +106464,32 @@
     "levelStats": [
       {
         "stats": [
-          "+3% Reload Speed"
+          "+10% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+6% Reload Speed"
+          "+20% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+9% Reload Speed"
+          "+30% Reload Speed"
         ]
       },
       {
         "stats": [
-          "+12% Reload Speed"
+          "+40% Reload Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Reload Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Reload Speed"
         ]
       }
     ]
@@ -105129,14 +107153,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponCritDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponCritDamageModExpert",
     "type": "Secondary Mod",
     "rarity": "Uncommon",
     "polarity": "madurai",
     "compatName": "Pistol",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TargetCrackerMod.png?5e9ec",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -105409,6 +107432,31 @@
       {
         "stats": [
           "+60% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+70% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Critical Damage"
         ]
       }
     ]
@@ -107364,13 +109412,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Intermediate/BowExplosionChanceModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/BowExplosionChanceModExpert",
     "type": "Primary Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Bow",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -107529,6 +109577,31 @@
       {
         "stats": [
           "+45% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+52.5% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+67.5% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+82.5% Chance to Explode (Use with Caution)"
         ]
       }
     ]
@@ -108590,14 +110663,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/WeaponAmmoMaxMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/Expert/WeaponAmmoMaxModExpert",
     "type": "Secondary Mod",
     "rarity": "Common",
     "polarity": "naramon",
     "compatName": "Pistol",
     "baseDrain": 2,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TrickMagMod.png?3a586",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -109327,6 +111399,31 @@
         "stats": [
           "+90% Ammo Maximum"
         ]
+      },
+      {
+        "stats": [
+          "+105% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Ammo Maximum"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Ammo Maximum"
+        ]
       }
     ]
   },
@@ -109672,14 +111769,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponCritChanceMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponCritChanceModExpert",
     "type": "Melee Mod",
     "rarity": "Common",
     "polarity": "madurai",
     "compatName": "Melee",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TrueSteelMod.png?ef2ba",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -109874,6 +111970,31 @@
       {
         "stats": [
           "+120% Critical Chance (x2 for Heavy Attacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+140% Critical Chance (x2 for Heavy Attacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+160% Critical Chance (x2 for Heavy Attacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+180% Critical Chance (x2 for Heavy Attacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Critical Chance (x2 for Heavy Attacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+220% Critical Chance (x2 for Heavy Attacks)"
         ]
       }
     ]
@@ -112919,14 +115040,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponCritDamageMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/WeaponCritDamageModExpert",
     "type": "Primary Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Rifle",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VitalSenseMod.png?b8493",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -113362,6 +115482,31 @@
         "stats": [
           "+120% Critical Damage"
         ]
+      },
+      {
+        "stats": [
+          "+140% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+160% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+180% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+220% Critical Damage"
+        ]
       }
     ]
   },
@@ -113465,13 +115610,14 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarHealthMaxModIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarHealthMaxMod",
     "type": "Warframe Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 2,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VitalityMod.png?ac1e5",
     "isAugment": false,
     "drops": [
       {
@@ -114422,6 +116568,31 @@
       {
         "stats": [
           "+55% Health"
+        ]
+      },
+      {
+        "stats": [
+          "+64% Health"
+        ]
+      },
+      {
+        "stats": [
+          "+73% Health"
+        ]
+      },
+      {
+        "stats": [
+          "+82% Health"
+        ]
+      },
+      {
+        "stats": [
+          "+91% Health"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Health"
         ]
       }
     ]
@@ -115514,13 +117685,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Intermediate/AvatarMissionSpecificResistanceIceIntermediate",
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarMissionSpecificResistanceIceExpert",
     "type": "Warframe Mod",
     "rarity": "Common",
     "polarity": "vazarin",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -115625,6 +117796,31 @@
       {
         "stats": [
           "+18% Shield Resistance to Environmental Ice Hazards"
+        ]
+      },
+      {
+        "stats": [
+          "+21% Shield Resistance to Environmental Ice Hazards"
+        ]
+      },
+      {
+        "stats": [
+          "+24% Shield Resistance to Environmental Ice Hazards"
+        ]
+      },
+      {
+        "stats": [
+          "+27% Shield Resistance to Environmental Ice Hazards"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Shield Resistance to Environmental Ice Hazards"
+        ]
+      },
+      {
+        "stats": [
+          "+33% Shield Resistance to Environmental Ice Hazards"
         ]
       }
     ]
@@ -115786,14 +117982,13 @@
     "categories": [
       "mod"
     ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Melee/WeaponGlaiveSpeedMod",
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Expert/WeaponGlaiveSpeedModExpert",
     "type": "Melee Mod",
     "rarity": "Rare",
     "polarity": "madurai",
     "compatName": "Thrown Melee",
     "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/WhirlwindMod.png?7e03b",
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -115886,6 +118081,31 @@
       {
         "stats": [
           "+180% Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+210% Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+240% Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+270% Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+300% Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+330% Projectile Speed"
         ]
       }
     ]
