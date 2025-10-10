@@ -70,7 +70,7 @@ const clean = (s) =>
     .trim();
 
 function keyify(name) {
-  // on garde le CONTENU entre parenthèses (Primed/Umbral/Archon…)
+  // On garde le CONTENU entre parenthèses (Primed/Umbral/Archon…), on retire juste les caractères ()
   return clean(name)
     .toLowerCase()
     .replace(/<[^>]+>/g, "")
@@ -83,7 +83,6 @@ function keyifySorted(name) {
   const k = keyify(name);
   return k.split(" ").filter(Boolean).sort().join(" ");
 }
-
 function slugify(s) {
   return clean(s).toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
@@ -144,7 +143,7 @@ function isArcaneLike(entry) {
   const cats = Array.isArray(entry.categories) ? entry.categories.map((c) => String(c).toLowerCase()) : [];
   const slug = (entry.slug || "").toLowerCase();
   if (type.includes("arcane")) return true;
-  if (type.includes("relicsandarcanes")) return true;
+  if (type.includes("relicsandarcanes")) return true; // Overframe
   if (cats.includes("arcane")) return true;
   if (/^arcane\b/.test(name)) return true;
   if (slug === "arcane") return true;
@@ -180,9 +179,26 @@ function inferTypeSmart(currentType, compatName, uniqueName) {
   return currentType || 'Mod';
 }
 
+// Polarity canonique
+const POLARITY_MAP = {
+  "madurai": "madurai", "v": "madurai", "attack": "madurai",
+  "naramon": "naramon", "dash": "naramon", "-": "naramon",
+  "vazarin": "vazarin", "d": "vazarin", "defense": "vazarin",
+  "zenurik": "zenurik", "bar": "zenurik", "=": "zenurik", "tactic": "zenurik",
+  "umbra": "umbra", "umbral": "umbra",
+  "tau": "tau", "tauforged": "tau",
+  // cas exotiques qui remontent parfois :
+  "penjaga": "penjaga", "madurai:": "madurai"
+};
+function normalizePolarity(p) {
+  if (!p) return p;
+  const k = String(p).toLowerCase().trim();
+  return POLARITY_MAP[k] || k;
+}
+
 /* ----------------------- Helpers num./normalisation ---------------------- */
 const toNum = (v) => (typeof v === 'number' ? v : (v!==undefined && v!==null && !isNaN(Number(v)) ? Number(v) : undefined));
-// priorité: WF > Export > OF (ex: Archon Intensify = 10)
+// priorité: WF > Export > OF
 const chooseFusionLimit = (wf, exp, of) => {
   const wfN  = toNum(wf);
   const expN = toNum(exp);
@@ -197,6 +213,28 @@ const normalizeLevelStats = (levelStats, fusionLimit) => {
   return list.slice(0, lim + 1);
 };
 
+/* ----------------------------- OVERRIDES --------------------------------- */
+// 🔧 correctifs manuels par slug (ou clé triée)
+const OVERRIDES = new Map();
+// Archon Intensify : 0..10 (+2.7 → +30) + phrase constante
+OVERRIDES.set("archon-intensify", {
+  baseDrain: 6,
+  fusionLimit: 10,
+  polarity: "madurai",
+  buildLevelStats() {
+    const nums = [2.7,5.5,8.2,10.9,13.6,16.4,19.1,21.8,24.5,27.3,30.0];
+    const constLine = "Restoring health with abilities grants +30% Ability Strength for 10s.";
+    return nums.map(n => ({ stats: [`+${n}% Ability Strength`, constLine] }));
+  }
+});
+// Primed Intensify (si jamais il manque/est erroné côté sources)
+OVERRIDES.set("primed-intensify", {
+  fusionLimit: 10,
+  polarity: "madurai",
+  // (on laisse les levelStats de WF si elles existent; sinon on peut reconstruire +5 → +55)
+  buildLevelStatsFromWF: true
+});
+
 /* ----------------------- Extracteurs par source -------------------------- */
 function fromOverframe(of) {
   const name = of?.name || of?.title || null;
@@ -204,7 +242,7 @@ function fromOverframe(of) {
 
   const d = of?.data || {};
   const rarity      = d.RarityName || d.Rarity || null;
-  const polarity    = d.ArtifactPolarity || d.Polarity || null;
+  const polarity    = normalizePolarity(d.ArtifactPolarity || d.Polarity || null);
   const baseDrain   = d.BaseDrain ?? d.baseDrain ?? null;
   const fusionLimit = d.FusionLimit ?? d.fusionLimit ?? null;
   const compatName  = d.ItemCompatibility || d.Compat || null;
@@ -213,7 +251,6 @@ function fromOverframe(of) {
   const categories = Array.isArray(of?.categories) ? of.categories : (of?.category ? [of.category] : []);
 
   const description = of?.description || d?.Description || null;
-
   const isAug = /\baugment\b/i.test(name || "");
 
   return {
@@ -231,7 +268,7 @@ function fromWFStat(w) {
     uniqueName: w?.uniqueName || null,
     type: w?.type || null,
     rarity: w?.rarity || null,
-    polarity: w?.polarity || null,
+    polarity: normalizePolarity(w?.polarity || null),
     baseDrain: w?.baseDrain ?? null,
     fusionLimit: w?.fusionLimit ?? null,
     compatName: w?.compatName || null,
@@ -249,7 +286,7 @@ function fromExport(u) {
     uniqueName: u?.uniqueName || null,
     type: u?.type || null,
     rarity: u?.rarity || null,
-    polarity: u?.polarity || null,
+    polarity: normalizePolarity(u?.polarity || null),
     baseDrain: u?.baseDrain ?? null,
     fusionLimit: u?.fusionLimit ?? null,
     compatName: u?.compatName || null,
@@ -266,16 +303,17 @@ function take(...vals) {
 /* ------------------------------ Fusion globale --------------------------- */
 const result = [];
 const report = [];
-let skippedArcanes = 0, skippedNoSlug = 0, skippedEmptyCats = 0;
+let skippedArcanes = 0, skippedNoSlug = 0, skippedEmptyCats = 0, skippedFocusWay = 0;
 
 for (const [ofKey, ofObj] of OF_ENTRIES) {
+  // 0) Skip Arcanes très tôt
   if (isArcaneLike(ofObj)) { skippedArcanes++; continue; }
 
   const baseOF = fromOverframe(ofObj);
   const kName = baseOF.name ? keyify(baseOF.name) : null;
   const kNameSorted = baseOF.name ? keyifySorted(baseOF.name) : null;
 
-  // 1) WFStat match par name
+  // 1) WFStat match par name (k et k trié)
   let wfRaw = null;
   if (kName && mapWFByName.has(kName)) wfRaw = mapWFByName.get(kName);
   if (!wfRaw && kNameSorted && mapWFByName.has(kNameSorted)) wfRaw = mapWFByName.get(kNameSorted);
@@ -316,12 +354,12 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
 
     uniqueName: take(WF?.uniqueName, EXP?.uniqueName),
 
+    // WF > EXP > OF
     type: take(WF?.type, EXP?.type, baseOF.type),
     rarity: take(WF?.rarity, EXP?.rarity, baseOF.rarity),
-    polarity: take(WF?.polarity, EXP?.polarity, baseOF.polarity),
+    polarity: normalizePolarity(take(WF?.polarity, EXP?.polarity, baseOF.polarity)),
     compatName: take(WF?.compatName, EXP?.compatName, baseOF.compatName),
     baseDrain: take(WF?.baseDrain, EXP?.baseDrain, baseOF.baseDrain),
-
     fusionLimit: chooseFusionLimit(WF?.fusionLimit, EXP?.fusionLimit, baseOF.fusionLimit),
 
     description: take(WF?.description, EXP?.description, baseOF.description),
@@ -330,6 +368,20 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     drops: Array.isArray(WF?.drops) ? WF.drops : [],
     levelStats: Array.isArray(WF?.levelStats) ? WF.levelStats : [],
   };
+
+  // 3-bis) OVERRIDES par slug
+  const slug = merged.slug || (merged.name ? slugify(merged.name) : null);
+  if (slug && OVERRIDES.has(slug)) {
+    const o = OVERRIDES.get(slug);
+    if (o.baseDrain !== undefined) merged.baseDrain = o.baseDrain;
+    if (o.fusionLimit !== undefined) merged.fusionLimit = o.fusionLimit;
+    if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
+    if (o.buildLevelStats) merged.levelStats = o.buildLevelStats();
+    // Si on veut garder les WF levelStats par défaut sur Primed Intensify
+    if (o.buildLevelStatsFromWF && (!merged.levelStats || merged.levelStats.length === 0)) {
+      // rien, on laisse WF
+    }
+  }
 
   // 4) isAugment robuste
   const prelimWF = !!WF?.isAugment;
@@ -341,7 +393,12 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = /^archon\b/i.test(String(merged.name || ""));
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // 5) Nettoyages
+  // 5) Filtres de type
+  // - On garde les "Mod Set Mod" (bonus de set), mais on exclut tout ce qui est "Focus Way"
+  const t = String(merged.type||"").toLowerCase();
+  if (t.includes("focus way") || t === "focus way") { skippedFocusWay++; continue; }
+
+  // 6) Nettoyages
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
 
   // clamp des levelStats sur EXACTEMENT fusionLimit+1 (rangs 0..limit)
@@ -363,6 +420,7 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     matchedExport: !!expRaw,
     hasLevelStats: (merged.levelStats || []).length > 0,
     hasDrops: (merged.drops || []).length > 0,
+    override: !!OVERRIDES.get(slug),
   });
 }
 
@@ -386,7 +444,7 @@ for (const w of WF_ITEMS) {
     uniqueName: u,
     type: take(WF?.type, EXP?.type, 'Mod'),
     rarity: take(WF?.rarity, EXP?.rarity),
-    polarity: take(WF?.polarity, EXP?.polarity),
+    polarity: normalizePolarity(take(WF?.polarity, EXP?.polarity)),
     compatName: take(WF?.compatName, EXP?.compatName),
     baseDrain: take(WF?.baseDrain, EXP?.baseDrain),
     fusionLimit: chooseFusionLimit(WF?.fusionLimit, EXP?.fusionLimit),
@@ -396,7 +454,9 @@ for (const w of WF_ITEMS) {
     levelStats: normalizeLevelStats(WF?.levelStats || [], chooseFusionLimit(WF?.fusionLimit, EXP?.fusionLimit)),
   };
 
-  merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
+  // filtres
+  const t = String(merged.type||"").toLowerCase();
+  if (t.includes("focus way") || t === "focus way") continue;
 
   if (!merged.slug) continue;
   if (!Array.isArray(merged.categories) || merged.categories.length === 0) continue;
@@ -409,7 +469,8 @@ for (const w of WF_ITEMS) {
 const final = result.filter((m) =>
   !isArcaneLike(m) &&
   m.slug &&
-  Array.isArray(m.categories) && m.categories.length > 0
+  Array.isArray(m.categories) && m.categories.length > 0 &&
+  !(String(m.type||"").toLowerCase().includes("focus way"))
 );
 
 final.sort((a,b) => String(a.name).localeCompare(String(b.name)));
@@ -419,11 +480,13 @@ fs.writeFileSync(OUT_JSON, JSON.stringify(final, null, 2), "utf-8");
 fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_input: OF_ENTRIES.length,
   skippedArcanes,
+  skippedFocusWay,
   skippedNoSlug,
   skippedEmptyCats,
   total_output: final.length,
   wfMatches: report.filter(r => r.matchedWFStat).length,
   expMatches: report.filter(r => r.matchedExport).length,
+  overrides: report.filter(r => r.override).length,
   samples: report.slice(0, 20)
 }, null, 2), "utf-8");
 
