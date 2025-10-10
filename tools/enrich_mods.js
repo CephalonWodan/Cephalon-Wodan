@@ -63,7 +63,7 @@ function cleanDisplayName(name) {
   s = s.replace(/\\'s/gi, "’s");   // Amar\'s → Amar’s
   s = s.replace(/\\s\b/gi, "’s");  // Amar\s  → Amar’s
   s = s.replace(/\\'/g, "’");      // quotes échappées
-  s = s.replace(/'/g, "’");        // quote droite → apostrophe typographique
+  s = s.replace(/'/g, "’");        // droite → apostrophe
   s = s.replace(/\s+/g, " ").trim();
   return s;
 }
@@ -142,12 +142,20 @@ function isRivenLike({ name, uniqueName }) {
   return false;
 }
 
-// Exclure Beginner + n'autoriser que /Mods/ dans uniqueName
+// Exclure Beginner
 function isBeginnerByUnique(uniqueName) {
   return String(uniqueName||"").toLowerCase().includes("beginner");
 }
-function isUniqueModsPath(uniqueName) {
-  return String(uniqueName||"").includes("/Mods/");
+
+// Règle "vrai Mod" (assouplie pour éviter d'exclure Abating Link & co)
+function isRealMod({ uniqueName, type, name, compatName }) {
+  const u = String(uniqueName||"");
+  const t = String(type||"");
+  const n = String(name||"");
+  if (u.includes("/Mods/")) return true;                      // cas nominal
+  if (/\bmod\b/i.test(t)) return true;                        // type explicite (Warframe Mod, Melee Mod…)
+  if (/\baugment\b/i.test(n) && String(compatName||"")) return true;  // augment ciblé (Trinity, etc.)
+  return false; // sinon on considère que ce n’est pas un vrai mod publiable
 }
 
 /* ------------------------- Polarity canonique (API) ---------------------- */
@@ -292,7 +300,7 @@ function take(...vals){ for(const v of vals){ if(v!==undefined && v!==null && St
 
 /* ------------------------------ Fusion globale --------------------------- */
 const result = [];
-let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0, skippedFocusSchool=0, skippedRiven=0, skippedBeginner=0, skippedNotModsPath=0;
+let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0, skippedFocusSchool=0, skippedRiven=0, skippedBeginner=0, skippedNotRealMod=0;
 
 // --- 1) Passe principale : Overframe comme base, enrichi WF/Export
 for (const [ofKey, ofObj] of OF_ENTRIES) {
@@ -392,11 +400,11 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = isArchonName(merged.name);
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // Exclusions supplémentaires: Focus, Riven, Beginner, uniqueName sans /Mods/
+  // Exclusions supplémentaires: Focus, Riven, Beginner, "vrai Mod"
   if (isFocusSchoolLike({ name: merged.name, type: merged.type, uniqueName: merged.uniqueName })) { skippedFocusSchool++; continue; }
   if (isRivenLike({ name: merged.name, uniqueName: merged.uniqueName })) { skippedRiven++; continue; }
   if (isBeginnerByUnique(merged.uniqueName)) { skippedBeginner++; continue; }
-  if (!isUniqueModsPath(merged.uniqueName)) { skippedNotModsPath++; continue; }
+  if (!isRealMod({ uniqueName: merged.uniqueName, type: merged.type, name: merged.name, compatName: merged.compatName })) { skippedNotRealMod++; continue; }
 
   // Nettoyages + clamp + type
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
@@ -428,7 +436,7 @@ for (const raw of WF_ITEMS) {
   if (isFocusSchoolLike({ name: n, type: base.type, uniqueName: base.uniqueName })) { skippedFocusSchool++; continue; }
   if (isRivenLike({ name: n, uniqueName: base.uniqueName })) { skippedRiven++; continue; }
   if (isBeginnerByUnique(base.uniqueName)) { skippedBeginner++; continue; }
-  if (!isUniqueModsPath(base.uniqueName)) { skippedNotModsPath++; continue; }
+  if (!isRealMod({ uniqueName: base.uniqueName, type: base.type, name: n, compatName: base.compatName })) { skippedNotRealMod++; continue; }
 
   // Construire une entrée cohérente malgré l’absence d’OF
   const merged = {
@@ -502,7 +510,7 @@ for (const [k, arr] of groups) {
     !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
     !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
     !isBeginnerByUnique(m.uniqueName) &&
-    isUniqueModsPath(m.uniqueName)
+    isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName })
   );
   const pool = filtered.length ? filtered : arr;
   pool.sort((a,b)=> scoreMerged(b) - scoreMerged(a));
@@ -523,7 +531,7 @@ const final = deduped.filter((m) =>
   !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
   !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
   !isBeginnerByUnique(m.uniqueName) &&
-  isUniqueModsPath(m.uniqueName)
+  isRealMod({ uniqueName: m.uniqueName, type: m.type, name: m.name, compatName: m.compatName })
 );
 
 final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
@@ -537,7 +545,7 @@ fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_output: final.length,
   skipped: {
     arcanes:skippedArcanes, focusWay:skippedFocusWay, focusSchool:skippedFocusSchool,
-    riven:skippedRiven, beginner:skippedBeginner, notModsPath:skippedNotModsPath,
+    riven:skippedRiven, beginner:skippedBeginner, notRealMod:skippedNotRealMod,
     noSlug:skippedNoSlug, emptyCats:skippedEmptyCats,
     ability:skippedAbility, defiledRequiem:skippedDefiled, nan:skippedNan, unfused:skippedUnfused
   },
