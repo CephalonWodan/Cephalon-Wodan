@@ -1,8 +1,9 @@
 {
   "total_input_OF": 1581,
   "total_WF_items": 1744,
-  "total_merged_before_dedup": 1389,
-  "total_output": 1375,
+  "total_merged_before_dedup": 1307,
+  "total_output": 1293,
+  "sets_indexed": 91,
   "skipped": {
     "arcanes": 169,
     "focusWay": 0,
