@@ -2475,7 +2475,7 @@
   {
     "id": 5622,
     "slug": "amar-s-anguish",
-    "name": "Amar\\'s Anguish",
+    "name": "Amar’s Anguish",
     "categories": [
       "mod"
     ],
@@ -2490,7 +2490,7 @@
   {
     "id": 5623,
     "slug": "amar-s-contempt",
-    "name": "Amar\\'s Contempt",
+    "name": "Amar’s Contempt",
     "categories": [
       "mod"
     ],
@@ -2506,7 +2506,7 @@
   {
     "id": 5624,
     "slug": "amar-s-hatred",
-    "name": "Amar\\'s Hatred",
+    "name": "Amar’s Hatred",
     "categories": [
       "mod"
     ],
@@ -9237,20 +9237,6 @@
     ]
   },
   {
-    "id": 7442,
-    "slug": "blade-storm",
-    "name": "Blade Storm",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Ninja/NinjaStormWeapon",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
     "id": 604,
     "slug": "bladed-rounds",
     "name": "Bladed Rounds",
@@ -10898,7 +10884,7 @@
   {
     "id": 4981,
     "slug": "bomb-the-landin",
-    "name": "Bomb The Landin\\'",
+    "name": "Bomb The Landin’",
     "categories": [
       "mod"
     ],
@@ -11019,7 +11005,7 @@
   {
     "id": 5625,
     "slug": "boreal-s-anguish",
-    "name": "Boreal\\'s Anguish",
+    "name": "Boreal’s Anguish",
     "categories": [
       "mod"
     ],
@@ -11034,7 +11020,7 @@
   {
     "id": 5626,
     "slug": "boreal-s-contempt",
-    "name": "Boreal\\'s Contempt",
+    "name": "Boreal’s Contempt",
     "categories": [
       "mod"
     ],
@@ -11050,7 +11036,7 @@
   {
     "id": 5627,
     "slug": "boreal-s-hatred",
-    "name": "Boreal\\'s Hatred",
+    "name": "Boreal’s Hatred",
     "categories": [
       "mod"
     ],
@@ -12040,7 +12026,7 @@
   {
     "id": 5631,
     "slug": "butcher-s-revelry",
-    "name": "Butcher\\'s Revelry",
+    "name": "Butcher’s Revelry",
     "categories": [
       "mod"
     ],
@@ -12959,7 +12945,7 @@
   {
     "id": 203,
     "slug": "cat-s-eye",
-    "name": "Cat\\'s Eye",
+    "name": "Cat’s Eye",
     "categories": [
       "mod"
     ],
@@ -13446,7 +13432,7 @@
   {
     "id": 5609,
     "slug": "champion-s-blessing",
-    "name": "Champion\\'s Blessing",
+    "name": "Champion’s Blessing",
     "categories": [
       "mod"
     ],
@@ -17431,7 +17417,7 @@
   {
     "id": 6358,
     "slug": "condition-s-perfection",
-    "name": "Condition\\'s Perfection",
+    "name": "Condition’s Perfection",
     "categories": [
       "mod"
     ],
@@ -20548,19 +20534,6 @@
     ]
   },
   {
-    "id": 7445,
-    "slug": "cryo-grenades",
-    "name": "Cryo Grenades",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "compatName": "/Lotus/Powersuits/Frumentarius/ExaltedSniper",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
     "id": 638,
     "slug": "cryo-rounds",
     "name": "Cryo Rounds",
@@ -22305,7 +22278,7 @@
   {
     "id": 2298,
     "slug": "desiccation-s-curse",
-    "name": "Desiccation\\'s Curse",
+    "name": "Desiccation’s Curse",
     "categories": [
       "mod"
     ],
@@ -23023,7 +22996,7 @@
   {
     "id": 6355,
     "slug": "discipline-s-merit",
-    "name": "Discipline\\'s Merit",
+    "name": "Discipline’s Merit",
     "categories": [
       "mod"
     ],
@@ -23809,7 +23782,7 @@
   {
     "id": 6482,
     "slug": "dreamer-s-bond",
-    "name": "Dreamer\\'s Bond",
+    "name": "Dreamer’s Bond",
     "categories": [
       "mod"
     ],
@@ -23824,7 +23797,7 @@
   {
     "id": 6356,
     "slug": "dreamer-s-wrath",
-    "name": "Dreamer\\'s Wrath",
+    "name": "Dreamer’s Wrath",
     "categories": [
       "mod"
     ],
@@ -27743,20 +27716,6 @@
         ]
       }
     ]
-  },
-  {
-    "id": 7440,
-    "slug": "exalted-blade",
-    "name": "Exalted Blade",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Excalibur/DoomSword",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
   },
   {
     "id": 6226,
@@ -34882,7 +34841,7 @@
   {
     "id": 869,
     "slug": "gaia-s-tragedy",
-    "name": "Gaia\\'s Tragedy",
+    "name": "Gaia’s Tragedy",
     "categories": [
       "mod"
     ],
@@ -40807,7 +40766,7 @@
   {
     "id": 737,
     "slug": "hell-s-chamber",
-    "name": "Hell\\'s Chamber",
+    "name": "Hell’s Chamber",
     "categories": [
       "mod"
     ],
@@ -40822,195 +40781,6 @@
   },
   {
     "id": 4668,
-    "slug": "hellfire",
-    "name": "Hellfire",
-    "categories": [
-      "mod"
-    ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponFireDamageMod",
-    "type": "Primary Mod",
-    "rarity": "Uncommon",
-    "polarity": "naramon",
-    "compatName": "Rifle",
-    "baseDrain": 6,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/HellfireMod.png?fdeac",
-    "isAugment": false,
-    "drops": [
-      {
-        "chance": 0.0014,
-        "location": "Orb Vallis - Spaceport Enemies",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Juno Geminex Moa",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Kuva Roller",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Latcher",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Narmer Geminex Moa",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Roller Sentry",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Roller",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0022,
-        "location": "Tusk Roller",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0028,
-        "location": "Thermic Raknoid",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0033,
-        "location": "Juno Disc Moa",
-        "rarity": "Uncommon",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0033,
-        "location": "Narmer Disc Moa",
-        "rarity": "Uncommon",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0067,
-        "location": "Duviri/Endless: Tier 1 (Normal)",
-        "rarity": "Legendary",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0067,
-        "location": "Duviri/Endless: Tier 3 (Normal)",
-        "rarity": "Legendary",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.0442,
-        "location": "Ambulas",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Ceres/Seimeni (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Earth/Coba (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Eris/Akkad (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Europa/Larzac (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Jupiter/Sinai (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Mars/Kadesh (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Pluto/Sechura (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Sedna/Sangeru (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      },
-      {
-        "chance": 0.069,
-        "location": "Venus/Romula (Defense), Rotation C",
-        "rarity": "Rare",
-        "type": "Hellfire"
-      }
-    ],
-    "levelStats": [
-      {
-        "stats": [
-          "+15% <DT_FIRE_COLOR>Heat"
-        ]
-      },
-      {
-        "stats": [
-          "+30% <DT_FIRE_COLOR>Heat"
-        ]
-      },
-      {
-        "stats": [
-          "+45% <DT_FIRE_COLOR>Heat"
-        ]
-      },
-      {
-        "stats": [
-          "+60% <DT_FIRE_COLOR>Heat"
-        ]
-      },
-      {
-        "stats": [
-          "+75% <DT_FIRE_COLOR>Heat"
-        ]
-      },
-      {
-        "stats": [
-          "+90% <DT_FIRE_COLOR>Heat"
-        ]
-      }
-    ]
-  },
-  {
-    "id": 635,
     "slug": "hellfire",
     "name": "Hellfire",
     "categories": [
@@ -43150,7 +42920,7 @@
   {
     "id": 343,
     "slug": "hunter-s-bonesaw",
-    "name": "Hunter\\'s Bonesaw",
+    "name": "Hunter’s Bonesaw",
     "categories": [
       "mod"
     ],
@@ -47127,7 +46897,7 @@
   {
     "id": 7395,
     "slug": "jade-s-judgment",
-    "name": "Jade\\'s Judgment",
+    "name": "Jade’s Judgment",
     "categories": [
       "mod"
     ],
@@ -47981,7 +47751,7 @@
   {
     "id": 2523,
     "slug": "kavat-s-grace",
-    "name": "Kavat\\'s Grace",
+    "name": "Kavat’s Grace",
     "categories": [
       "mod"
     ],
@@ -48672,20 +48442,6 @@
         ]
       }
     ]
-  },
-  {
-    "id": 7451,
-    "slug": "landslide",
-    "name": "Landslide",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Brawler/AtlasPunchWeapon",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
   },
   {
     "id": 122,
@@ -52350,705 +52106,6 @@
     ]
   },
   {
-    "id": 623,
-    "slug": "magazine-warp",
-    "name": "Magazine Warp",
-    "categories": [
-      "mod"
-    ],
-    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/WeaponClipMaxMod",
-    "type": "Primary Mod",
-    "rarity": "Common",
-    "polarity": "naramon",
-    "compatName": "Rifle",
-    "baseDrain": 4,
-    "fusionLimit": 5,
-    "wikiaThumbnail": "https://wiki.warframe.com/images/MagazineWarpMod.png?1733e",
-    "isAugment": false,
-    "drops": [
-      {
-        "chance": 0.0057,
-        "location": "Arid Heavy Gunner",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Corrupted Warden",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Frontier Heavy Gunner",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Garv",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Grineer Warden",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Heavy Gunner",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Narmer Gunner Warden",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0057,
-        "location": "Narmer Heavy Gunner",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Derivator Crewman",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Kuva Trokarian",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Leech Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Narmer Leech Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Narmer Mine Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Narmer Sapping Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Sapping Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0076,
-        "location": "Vapos Sapping Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0077,
-        "location": "Commander",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0126,
-        "location": "Primm",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0126,
-        "location": "Terra Attack Drone",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0126,
-        "location": "Terra Shield Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0126,
-        "location": "Verd-Ie",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0177,
-        "location": "Orb Vallis - Spaceport Enemies",
-        "rarity": "Common",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0506,
-        "location": "Terra Attack Drone",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0506,
-        "location": "Terra Shield Osprey",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Ceres/Seimeni (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Earth/Coba (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Eris/Akkad (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Europa/Larzac (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Jupiter/Sinai (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Mars/Kadesh (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Pluto/Sechura (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Sedna/Sangeru (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.069,
-        "location": "Venus/Romula (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Ceres/Bode (Spy), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Ceres/Casta (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Ceres/Egeria (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Ceres/Varro (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Earth/Lith (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Europa/Ose (Interception), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Europa/Valac (Spy), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Jupiter/Amalthea (Spy), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Jupiter/Callisto (Interception), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Mars/Spear (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Mercury/Lares (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Phobos/Drunlo (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Phobos/Gulliver (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Saturn/Aegaeon (Spy), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Saturn/Dione (Spy), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Saturn/Rhea (Interception), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Uranus/Umbriel (Interception), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.0909,
-        "location": "Venus/Tessera (Defense), Rotation A",
-        "rarity": "Rare",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Ceres/Cinxia (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Earth/Gaia (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Eris/Ixodes (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Eris/Kala-Azar (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Eris/Oestrus (Infested Salvage), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Eris/Phalan (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Eris/Sporid (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Eris/Xini (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Kuva Fortress/Nabuk (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Lua/StöFler (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Mars/Alator (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Mercury/Odin (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Neptune/Proteus (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Pluto/Cerberus (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Pluto/Outer Terminus (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Sedna/Berehynia (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Sedna/Hydron (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Uranus/Bianca (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Uranus/Miranda (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Uranus/Stephano (Defense), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1,
-        "location": "Venus/Cytherean (Interception), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Ceres/Lex (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Earth/Mantle (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Eris/Cosis (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Eris/Isos (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Europa/Abaddon (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Europa/Beleth (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Europa/Cryotic Front (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Jupiter/Ananke (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Lua/Copernicus (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Mars/Ara (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Mars/Quirinus (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Mercury/Elion (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Neptune/Galatea (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Phobos/Limtoc (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Phobos/Skyresh (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Phobos/Todd (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Pluto/Corb (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Pluto/Hydra (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Saturn/Cassini (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Saturn/Phoebe (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Uranus/Ariel (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Uranus/Trinculo (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1084,
-        "location": "Venus/Venera (Capture)",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Another Betrayer, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Family Reunion, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Hot Mess, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Phobos/Opik (Rush), Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Recover The Orokin Archive, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Sunkiller, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Table For Two, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "The Aftermath, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.1518,
-        "location": "Time's Up, Rotation A",
-        "rarity": "Uncommon",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.2,
-        "location": "Jupiter/The Ropalolyst (Assassination)",
-        "rarity": "Uncommon",
-        "type": "Amalgam Javlok Magazine Warp"
-      },
-      {
-        "chance": 0.3794,
-        "location": "J3 Jordas Golem",
-        "rarity": "Common",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.3794,
-        "location": "Jordas Golem",
-        "rarity": "Common",
-        "type": "Magazine Warp"
-      },
-      {
-        "chance": 0.3872,
-        "location": "The Sergeant",
-        "rarity": "Common",
-        "type": "Magazine Warp"
-      }
-    ],
-    "levelStats": [
-      {
-        "stats": [
-          "+5% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
-          "+10% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
-          "+15% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
-          "+20% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
-          "+25% Magazine Capacity"
-        ]
-      },
-      {
-        "stats": [
-          "+30% Magazine Capacity"
-        ]
-      }
-    ]
-  },
-  {
     "id": 838,
     "slug": "maglev",
     "name": "Maglev",
@@ -54696,7 +53753,7 @@
   {
     "id": 6357,
     "slug": "master-s-edge",
-    "name": "Master\\'s Edge",
+    "name": "Master’s Edge",
     "categories": [
       "mod"
     ],
@@ -56315,7 +55372,7 @@
   {
     "id": 6479,
     "slug": "mentor-s-legacy",
-    "name": "Mentor\\'s Legacy",
+    "name": "Mentor’s Legacy",
     "categories": [
       "mod"
     ],
@@ -56453,7 +55510,7 @@
   {
     "id": 93,
     "slug": "mesa-s-waltz",
-    "name": "Mesa\\'s Waltz",
+    "name": "Mesa’s Waltz",
     "categories": [
       "mod"
     ],
@@ -59130,7 +58187,7 @@
   {
     "id": 6143,
     "slug": "mountain-s-edge",
-    "name": "Mountain\\'s Edge",
+    "name": "Mountain’s Edge",
     "categories": [
       "mod"
     ],
@@ -62466,7 +61523,7 @@
   {
     "id": 5628,
     "slug": "nira-s-anguish",
-    "name": "Nira\\'s Anguish",
+    "name": "Nira’s Anguish",
     "categories": [
       "mod"
     ],
@@ -62481,7 +61538,7 @@
   {
     "id": 5629,
     "slug": "nira-s-contempt",
-    "name": "Nira\\'s Contempt",
+    "name": "Nira’s Contempt",
     "categories": [
       "mod"
     ],
@@ -62497,7 +61554,7 @@
   {
     "id": 5630,
     "slug": "nira-s-hatred",
-    "name": "Nira\\'s Hatred",
+    "name": "Nira’s Hatred",
     "categories": [
       "mod"
     ],
@@ -64101,7 +63158,7 @@
   {
     "id": 7266,
     "slug": "omikuji-s-fortune",
-    "name": "Omikuji\\'s Fortune",
+    "name": "Omikuji’s Fortune",
     "categories": [
       "mod"
     ],
@@ -64117,7 +63174,7 @@
   {
     "id": 6359,
     "slug": "opportunity-s-reach",
-    "name": "Opportunity\\'s Reach",
+    "name": "Opportunity’s Reach",
     "categories": [
       "mod"
     ],
@@ -69640,7 +68697,7 @@
   {
     "id": 2710,
     "slug": "poppin-vert",
-    "name": "Poppin\\' Vert",
+    "name": "Poppin’ Vert",
     "categories": [
       "mod"
     ],
@@ -79412,7 +78469,7 @@
   {
     "id": 7449,
     "slug": "raptor-s-chase",
-    "name": "Raptor\\'s Chase",
+    "name": "Raptor’s Chase",
     "categories": [
       "mod"
     ],
@@ -80215,20 +79272,6 @@
         ]
       }
     ]
-  },
-  {
-    "id": 7448,
-    "slug": "razorwing",
-    "name": "Razorwing",
-    "categories": [
-      "component"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Fairy/BaseFlightSword",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
   },
   {
     "id": 111,
@@ -89987,20 +89030,6 @@
     ]
   },
   {
-    "id": 7444,
-    "slug": "serene-storm",
-    "name": "Serene Storm",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Pacifist/PacifistFist",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
-  },
-  {
     "id": 455,
     "slug": "serrated-edges",
     "name": "Serrated Edges",
@@ -91051,20 +90080,6 @@
         ]
       }
     ]
-  },
-  {
-    "id": 7438,
-    "slug": "shattered-lash",
-    "name": "Shattered Lash",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Glass/GaraShankWeapon",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
   },
   {
     "id": 6057,
@@ -107791,7 +106806,7 @@
   {
     "id": 827,
     "slug": "thief-s-wit",
-    "name": "Thief\\'s Wit",
+    "name": "Thief’s Wit",
     "categories": [
       "mod"
     ],
@@ -110738,7 +109753,7 @@
   {
     "id": 6223,
     "slug": "ulfrun-s-endurance",
-    "name": "Ulfrun\\'s Endurance",
+    "name": "Ulfrun’s Endurance",
     "categories": [
       "mod"
     ],
@@ -116353,7 +115368,7 @@
   {
     "id": 6485,
     "slug": "warrior-s-rest",
-    "name": "Warrior\\'s Rest",
+    "name": "Warrior’s Rest",
     "categories": [
       "mod"
     ],
@@ -116445,20 +115460,6 @@
         ]
       }
     ]
-  },
-  {
-    "id": 7443,
-    "slug": "whipclaw",
-    "name": "Whipclaw",
-    "categories": [
-      "mod"
-    ],
-    "type": "Upgrades",
-    "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Khora/KhoraWhipclawWeapon",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
   },
   {
     "id": 2303,
