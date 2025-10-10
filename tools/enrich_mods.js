@@ -47,7 +47,7 @@ const clean = (s) =>
 function keyify(name){
   return clean(name).toLowerCase()
     .replace(/<[^>]+>/g, "")
-    .replace(/[()]/g, " ")            // conserve le contenu
+    .replace(/[()]/g, " ")
     .replace(/[\-–_'"`]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -61,8 +61,8 @@ function cleanDisplayName(name) {
   let s = String(name);
   s = s.replace(/&apos;/gi, "’");  // HTML
   s = s.replace(/\\'s/gi, "’s");   // Amar\'s → Amar’s
-  s = s.replace(/\\s\b/gi, "’s");  // Amar\s  → Amar’s (artefact)
-  s = s.replace(/\\'/g, "’");      // quote échappée
+  s = s.replace(/\\s\b/gi, "’s");  // Amar\s  → Amar’s
+  s = s.replace(/\\'/g, "’");      // quotes échappées
   s = s.replace(/'/g, "’");        // quote droite → apostrophe typographique
   s = s.replace(/\s+/g, " ").trim();
   return s;
@@ -121,19 +121,33 @@ function isDefiledRequiem(n){ return /\bdefiled\s+requiem\b/i.test(String(n||"")
 function isNanName(n){ return String(n||"").trim().toLowerCase() === "nan"; }
 function isUnfusedLike(n){ return /^\s*unfused\b/i.test(String(n||"")); }
 
-// Exclure **écoles de Focus** (Amp/Affinity/etc. Spike + tout ce qui est Focus Tree)
+// Exclure écoles de Focus
 function isFocusSchoolLike({ name, type, uniqueName }) {
   const n = String(name||"").toLowerCase();
   const t = String(type||"").toLowerCase();
   const u = String(uniqueName||"").toLowerCase();
-  // Heuristiques sûres :
   if (t.includes("focus")) return true;
   if (u.includes("/focus/") || u.includes("focusability") || u.includes("focustree")) return true;
-  // Spikes bien connus
   if (/\b(amp|affinity|energy|health|shield|armor)\s+spike\b/.test(n)) return true;
-  // autres mots-clés d’écoles
   if (/\b(naramon|zenurik|madurai|unairu|vazarin)\b/.test(n) && n.includes("focus")) return true;
   return false;
+}
+
+// Exclure Riven mods
+function isRivenLike({ name, uniqueName }) {
+  const n = String(name||"").toLowerCase();
+  const u = String(uniqueName||"").toLowerCase();
+  if (n.includes("riven") || n.includes("veiled")) return true;
+  if (u.includes("/riven/") || u.includes("rivenmod")) return true;
+  return false;
+}
+
+// Exclure Beginner + n'autoriser que /Mods/ dans uniqueName
+function isBeginnerByUnique(uniqueName) {
+  return String(uniqueName||"").toLowerCase().includes("beginner");
+}
+function isUniqueModsPath(uniqueName) {
+  return String(uniqueName||"").includes("/Mods/");
 }
 
 /* ------------------------- Polarity canonique (API) ---------------------- */
@@ -278,7 +292,7 @@ function take(...vals){ for(const v of vals){ if(v!==undefined && v!==null && St
 
 /* ------------------------------ Fusion globale --------------------------- */
 const result = [];
-let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0, skippedFocusSchool=0;
+let skippedArcanes=0, skippedNoSlug=0, skippedEmptyCats=0, skippedFocusWay=0, skippedAbility=0, skippedDefiled=0, skippedNan=0, skippedUnfused=0, skippedFocusSchool=0, skippedRiven=0, skippedBeginner=0, skippedNotModsPath=0;
 
 // --- 1) Passe principale : Overframe comme base, enrichi WF/Export
 for (const [ofKey, ofObj] of OF_ENTRIES) {
@@ -355,9 +369,9 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   };
 
   // OVERRIDES par slug (Archon etc.)
-  const slug = merged.slug || (merged.name ? slugify(merged.name) : null);
-  if (slug && OVERRIDES.has(slug)) {
-    const o = OVERRIDES.get(slug);
+  const tmpSlug = merged.slug || (merged.name ? slugify(merged.name) : null);
+  if (tmpSlug && OVERRIDES.has(tmpSlug)) {
+    const o = OVERRIDES.get(tmpSlug);
     if (o.baseDrain !== undefined) merged.baseDrain = o.baseDrain;
     if (o.fusionLimit !== undefined) merged.fusionLimit = o.fusionLimit;
     if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
@@ -378,17 +392,18 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
   const isArchon = isArchonName(merged.name);
   merged.isAugment = (prelimWF || byName) && !aura && !stance && !compatIsGeneric && !isArchon;
 
-  // Focus school (exclusion)
-  if (isFocusSchoolLike({ name: merged.name, type: merged.type, uniqueName: merged.uniqueName })) {
-    skippedFocusSchool++; continue;
-  }
+  // Exclusions supplémentaires: Focus, Riven, Beginner, uniqueName sans /Mods/
+  if (isFocusSchoolLike({ name: merged.name, type: merged.type, uniqueName: merged.uniqueName })) { skippedFocusSchool++; continue; }
+  if (isRivenLike({ name: merged.name, uniqueName: merged.uniqueName })) { skippedRiven++; continue; }
+  if (isBeginnerByUnique(merged.uniqueName)) { skippedBeginner++; continue; }
+  if (!isUniqueModsPath(merged.uniqueName)) { skippedNotModsPath++; continue; }
 
   // Nettoyages + clamp + type
   if (!merged.slug && merged.name) merged.slug = slugify(merged.name);
   merged.levelStats = normalizeLevelStats(merged.levelStats, merged.fusionLimit);
   merged.type = inferTypeSmart(merged.type, merged.compatName, merged.uniqueName);
 
-  // ❌ exclusions (pas de slug / categories vides + autres filtres fermes)
+  // ❌ exclusions fermes
   if (!merged.slug) { skippedNoSlug++; continue; }
   if (!Array.isArray(merged.categories) || merged.categories.length === 0) { skippedEmptyCats++; continue; }
   if (isAbilityByName(merged.name) || isDefiledRequiem(merged.name) || isNanName(merged.name) || isUnfusedLike(merged.name)) continue;
@@ -404,20 +419,23 @@ for (const raw of WF_ITEMS) {
   const k = keyify(n);
   if (!n || seenByNameNorm.has(k)) continue; // déjà présent via OF/merge
 
-  // Exclusions globales
+  // Exclusions globales (avant construction)
   if (isArcaneLike(base)) continue;
   if (isAbilityByName(n)) { skippedAbility++; continue; }
   if (isDefiledRequiem(n)) { skippedDefiled++; continue; }
   if (isNanName(n)) { skippedNan++; continue; }
   if (isUnfusedLike(n)) { skippedUnfused++; continue; }
   if (isFocusSchoolLike({ name: n, type: base.type, uniqueName: base.uniqueName })) { skippedFocusSchool++; continue; }
+  if (isRivenLike({ name: n, uniqueName: base.uniqueName })) { skippedRiven++; continue; }
+  if (isBeginnerByUnique(base.uniqueName)) { skippedBeginner++; continue; }
+  if (!isUniqueModsPath(base.uniqueName)) { skippedNotModsPath++; continue; }
 
   // Construire une entrée cohérente malgré l’absence d’OF
   const merged = {
     id: slugify(n),
     slug: slugify(n),
     name: n,
-    categories: ["mod"], // ⚠️ défaut pour passer le filtre "catégories non vide"
+    categories: ["mod"], // défaut pour passer le filtre "catégories non vide"
     uniqueName: base.uniqueName,
 
     type: inferTypeSmart(base.type, base.compatName, base.uniqueName),
@@ -436,9 +454,9 @@ for (const raw of WF_ITEMS) {
   };
 
   // OVERRIDES par slug/uniqueName (Archon/Primed)
-  const slug = merged.slug;
-  if (slug && OVERRIDES.has(slug)) {
-    const o = OVERRIDES.get(slug);
+  const tmpSlug = merged.slug;
+  if (tmpSlug && OVERRIDES.has(tmpSlug)) {
+    const o = OVERRIDES.get(tmpSlug);
     if (o.baseDrain !== undefined) merged.baseDrain = o.baseDrain;
     if (o.fusionLimit !== undefined) merged.fusionLimit = o.fusionLimit;
     if (o.polarity !== undefined) merged.polarity = normalizePolarity(o.polarity);
@@ -481,7 +499,10 @@ for (const [k, arr] of groups) {
     !isAbilityByName(m.name) &&
     !isDefiledRequiem(m.name) &&
     !isNanName(m.name) &&
-    !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName })
+    !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
+    !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
+    !isBeginnerByUnique(m.uniqueName) &&
+    isUniqueModsPath(m.uniqueName)
   );
   const pool = filtered.length ? filtered : arr;
   pool.sort((a,b)=> scoreMerged(b) - scoreMerged(a));
@@ -494,12 +515,15 @@ const final = deduped.filter((m) =>
   !isArcaneLike(m) &&
   m.slug &&
   Array.isArray(m.categories) && m.categories.length > 0 &&
-  !(String(m.type||"").toLowerCase().includes("focus way")) && // sécurité
+  !(String(m.type||"").toLowerCase().includes("focus way")) &&
   !isAbilityByName(m.name) &&
   !isDefiledRequiem(m.name) &&
   !isNanName(m.name) &&
   !isUnfusedLike(m.name) &&
-  !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName })
+  !isFocusSchoolLike({ name: m.name, type: m.type, uniqueName: m.uniqueName }) &&
+  !isRivenLike({ name: m.name, uniqueName: m.uniqueName }) &&
+  !isBeginnerByUnique(m.uniqueName) &&
+  isUniqueModsPath(m.uniqueName)
 );
 
 final.sort((a,b)=> String(a.name).localeCompare(String(b.name)));
@@ -513,6 +537,7 @@ fs.writeFileSync(OUT_REP,  JSON.stringify({
   total_output: final.length,
   skipped: {
     arcanes:skippedArcanes, focusWay:skippedFocusWay, focusSchool:skippedFocusSchool,
+    riven:skippedRiven, beginner:skippedBeginner, notModsPath:skippedNotModsPath,
     noSlug:skippedNoSlug, emptyCats:skippedEmptyCats,
     ability:skippedAbility, defiledRequiem:skippedDefiled, nan:skippedNan, unfused:skippedUnfused
   },
