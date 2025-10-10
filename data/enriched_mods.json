@@ -2444,7 +2444,7 @@
       "mod"
     ],
     "type": "Warframe Mod",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -2460,7 +2460,7 @@
     ],
     "type": "Melee",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -2476,7 +2476,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "UNCOMMON",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -4567,7 +4567,7 @@
     "polarity": "madurai",
     "compatName": "WARFRAME",
     "baseDrain": 6,
-    "fusionLimit": 5,
+    "fusionLimit": 10,
     "isAugment": false,
     "drops": [
       {
@@ -4580,31 +4580,67 @@
     "levelStats": [
       {
         "stats": [
+          "+2.7% Ability Strength",
           "Restoring health with abilities grants +30% Ability Strength for 10s."
         ]
       },
       {
         "stats": [
+          "+5.5% Ability Strength",
           "Restoring health with abilities grants +30% Ability Strength for 10s."
         ]
       },
       {
         "stats": [
+          "+8.2% Ability Strength",
           "Restoring health with abilities grants +30% Ability Strength for 10s."
         ]
       },
       {
         "stats": [
+          "+10.9% Ability Strength",
           "Restoring health with abilities grants +30% Ability Strength for 10s."
         ]
       },
       {
         "stats": [
+          "+13.6% Ability Strength",
           "Restoring health with abilities grants +30% Ability Strength for 10s."
         ]
       },
       {
         "stats": [
+          "+16.4% Ability Strength",
+          "Restoring health with abilities grants +30% Ability Strength for 10s."
+        ]
+      },
+      {
+        "stats": [
+          "+19.1% Ability Strength",
+          "Restoring health with abilities grants +30% Ability Strength for 10s."
+        ]
+      },
+      {
+        "stats": [
+          "+21.8% Ability Strength",
+          "Restoring health with abilities grants +30% Ability Strength for 10s."
+        ]
+      },
+      {
+        "stats": [
+          "+24.5% Ability Strength",
+          "Restoring health with abilities grants +30% Ability Strength for 10s."
+        ]
+      },
+      {
+        "stats": [
+          "+27.3% Ability Strength",
+          "Restoring health with abilities grants +30% Ability Strength for 10s."
+        ]
+      },
+      {
+        "stats": [
+          "+30% Ability Strength",
           "Restoring health with abilities grants +30% Ability Strength for 10s."
         ]
       }
@@ -8993,7 +9029,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Ninja/NinjaStormWeapon",
     "isAugment": false,
     "drops": [],
@@ -10623,7 +10659,7 @@
     ],
     "type": "Mod",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Types/Vehicles/Hoverboard/HoverboardSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -10742,7 +10778,7 @@
       "mod"
     ],
     "type": "Warframe Mod",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -10758,7 +10794,7 @@
     ],
     "type": "Melee",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -10774,7 +10810,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "UNCOMMON",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -11749,7 +11785,7 @@
     ],
     "type": "Upgrades",
     "rarity": "RARE",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -12662,7 +12698,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_PRECEPT",
+    "polarity": "ap_precept",
     "compatName": "/Lotus/Types/Game/CatbrowPet/MirrorCatbrowPetPowerSuit",
     "baseDrain": "QA_NONE",
     "isAugment": false,
@@ -13149,7 +13185,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Trinity/TrinityBaseSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -17053,7 +17089,7 @@
     ],
     "type": "Melee",
     "rarity": "UNCOMMON",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -21845,7 +21881,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Sandman/SandmanBaseSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -22556,7 +22592,7 @@
     ],
     "type": "Melee",
     "rarity": "RARE",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -23331,7 +23367,7 @@
     ],
     "type": "Upgrades",
     "rarity": "UNCOMMON",
-    "polarity": "AP_ANY",
+    "polarity": "ap_any",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "isAugment": false,
     "drops": [],
@@ -23346,7 +23382,7 @@
     ],
     "type": "Melee",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -27200,7 +27236,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Excalibur/DoomSword",
     "isAugment": false,
     "drops": [],
@@ -34192,7 +34228,7 @@
     ],
     "type": "Upgrades",
     "rarity": "RARE",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -40020,7 +40056,7 @@
     ],
     "type": "Shotgun",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Shotgun/LotusShotgun",
     "baseDrain": "QA_VERY_HIGH",
     "isAugment": false,
@@ -42319,7 +42355,7 @@
     ],
     "type": "Melee",
     "rarity": "UNCOMMON",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Grineer/Melee/GrineerClaws/GrnClaws",
     "isAugment": false,
     "drops": [],
@@ -42960,7 +42996,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Berserker/BerserkerMelee",
     "isAugment": false,
     "drops": [],
@@ -46257,7 +46293,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Choir/ChoirBaseSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -47101,7 +47137,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -47786,7 +47822,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Brawler/AtlasPunchWeapon",
     "isAugment": false,
     "drops": [],
@@ -52326,7 +52362,7 @@
     ],
     "type": "Melee",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -53690,7 +53726,7 @@
     ],
     "type": "Melee",
     "rarity": "UNCOMMON",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -55295,7 +55331,7 @@
     ],
     "type": "Melee",
     "rarity": "UNCOMMON",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -55431,7 +55467,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Cowgirl/CowgirlBaseSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -58087,7 +58123,7 @@
     ],
     "type": "Upgrades",
     "rarity": "UNCOMMON",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -61377,7 +61413,7 @@
       "mod"
     ],
     "type": "Warframe Mod",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -61393,7 +61429,7 @@
     ],
     "type": "Melee",
     "rarity": "RARE",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -61409,7 +61445,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "UNCOMMON",
-    "polarity": "AP_DEFENSE",
+    "polarity": "ap_defense",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -63006,7 +63042,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Koumei/KoumeiBaseSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -63022,7 +63058,7 @@
     ],
     "type": "Melee",
     "rarity": "UNCOMMON",
-    "polarity": "AP_ATTACK",
+    "polarity": "ap_attack",
     "compatName": "/Lotus/Weapons/Tenno/Melee/PlayerMeleeWeapon",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -68471,7 +68507,7 @@
     ],
     "type": "Mod",
     "rarity": "RARE",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Types/Vehicles/Hoverboard/HoverboardSuit",
     "baseDrain": "QA_MEDIUM",
     "isAugment": false,
@@ -70286,7 +70322,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/MonkeyKing/MonkeyKingStaff",
     "isAugment": false,
     "drops": [],
@@ -78663,7 +78699,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Wraith/ReaperMeleeWeapon",
     "isAugment": false,
     "drops": [],
@@ -78914,7 +78950,7 @@
       "component"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Fairy/BaseFlightSword",
     "isAugment": false,
     "drops": [],
@@ -86786,7 +86822,7 @@
       "mod"
     ],
     "type": "Warframe Mod",
-    "polarity": "AP_PRECEPT",
+    "polarity": "ap_precept",
     "compatName": "/Lotus/Types/Sentinels/SentinelPowersuits/RadarBasePowerSuit",
     "baseDrain": "QA_NONE",
     "isAugment": false,
@@ -88494,7 +88530,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Pacifist/PacifistFist",
     "isAugment": false,
     "drops": [],
@@ -89526,7 +89562,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Glass/GaraShankWeapon",
     "isAugment": false,
     "drops": [],
@@ -106047,7 +106083,7 @@
       "mod"
     ],
     "type": "Warframe Mod",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "isAugment": false,
     "drops": [],
@@ -106954,7 +106990,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_TACTIC",
+    "polarity": "ap_tactic",
     "compatName": "/Lotus/Types/Game/KubrowPet/KubrowPetPowerSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -108975,7 +109011,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Werewolf/WerewolfBaseSuit",
     "baseDrain": "QA_HIGH",
     "isAugment": false,
@@ -114480,7 +114516,7 @@
     ],
     "type": "Warframe Mod",
     "rarity": "RARE",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Excalibur/ExcaliburUmbra",
     "isAugment": false,
     "drops": [],
@@ -114574,7 +114610,7 @@
       "mod"
     ],
     "type": "Upgrades",
-    "polarity": "AP_POWER",
+    "polarity": "ap_power",
     "compatName": "/Lotus/Powersuits/Khora/KhoraWhipclawWeapon",
     "isAugment": false,
     "drops": [],
