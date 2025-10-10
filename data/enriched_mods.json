@@ -1648,6 +1648,51 @@
     ]
   },
   {
+    "id": "air-martial",
+    "slug": "air-martial",
+    "name": "Air Martial",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/PvPMods/Melee/AirborneMeleeAutoTargetBonus",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Melee",
+    "baseDrain": 10,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "With Melee equipped, lock onto targets within +1.3m while Airborne",
+          "-25% Channeling Damage"
+        ]
+      },
+      {
+        "stats": [
+          "With Melee equipped, lock onto targets within +2.5m while Airborne",
+          "-50% Channeling Damage"
+        ]
+      },
+      {
+        "stats": [
+          "With Melee equipped, lock onto targets within +3.8m while Airborne",
+          "-75% Channeling Damage"
+        ]
+      },
+      {
+        "stats": [
+          "With Melee equipped, lock onto targets within +5m while Airborne",
+          "-100% Channeling Damage"
+        ]
+      }
+    ]
+  },
+  {
     "id": 469,
     "slug": "air-recon",
     "name": "Air Recon",
@@ -2473,6 +2518,57 @@
     ]
   },
   {
+    "id": "amanata-pressure",
+    "slug": "amanata-pressure",
+    "name": "Amanata Pressure",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Weapons/Tenno/Melee/Polearms/Naginata/ShrineMaidenNaginataAugment",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Amanata",
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": "When Combo Multiplier reaches 8x, Heavy attacks apply a random Status Effect to enemies hit.",
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AmanataPressureMod.png?48681",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+55% Melee Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Melee Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Melee Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+220% Melee Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+275% Melee Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+330% Melee Damage"
+        ]
+      }
+    ]
+  },
+  {
     "id": 5622,
     "slug": "amar-s-anguish",
     "name": "Amar’s Anguish",
@@ -2515,6 +2611,26 @@
     "polarity": "vazarin",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
+    "id": "amarsetmod",
+    "slug": "amarsetmod",
+    "name": "Amarsetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
     "isAugment": false,
     "drops": [],
     "levelStats": []
@@ -4473,6 +4589,26 @@
     ]
   },
   {
+    "id": "archgun-riven-mod",
+    "slug": "archgun-riven-mod",
+    "name": "Archgun Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/LotusArchgunRandomModRare",
+    "type": "Arch-Gun Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArchgunRivenMod.png?c488c",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 5921,
     "slug": "archon-continuity",
     "name": "Archon Continuity",
@@ -5754,6 +5890,108 @@
     ]
   },
   {
+    "id": "artillery-cheap-shot",
+    "slug": "artillery-cheap-shot",
+    "name": "Artillery Cheap Shot",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/ZektiFreeSuperWeaponAmmo",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArtilleryCheapShotMod.png?9ec3e",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0015,
+        "location": "Exo Flak",
+        "rarity": "Rare",
+        "type": "Artillery Cheap Shot"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Orm Basilisk",
+        "rarity": "Rare",
+        "type": "Artillery Cheap Shot"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Elite Exo Flak",
+        "rarity": "Rare",
+        "type": "Artillery Cheap Shot"
+      },
+      {
+        "chance": 0.0031,
+        "location": "Orm Weaver",
+        "rarity": "Rare",
+        "type": "Artillery Cheap Shot"
+      },
+      {
+        "chance": 0.0054,
+        "location": "Elite Orm Weaver",
+        "rarity": "Rare",
+        "type": "Artillery Cheap Shot"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Forward Artillery has a +10% chance to not consume Dome Charges"
+        ]
+      },
+      {
+        "stats": [
+          "Forward Artillery has a +20% chance to not consume Dome Charges"
+        ]
+      },
+      {
+        "stats": [
+          "Forward Artillery has a +30% chance to not consume Dome Charges"
+        ]
+      },
+      {
+        "stats": [
+          "Forward Artillery has a +40% chance to not consume Dome Charges"
+        ]
+      },
+      {
+        "stats": [
+          "Forward Artillery has a +50% chance to not consume Dome Charges"
+        ]
+      },
+      {
+        "stats": [
+          "Forward Artillery has a +60% chance to not consume Dome Charges"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ashensetmod",
+    "slug": "ashensetmod",
+    "name": "Ashensetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Ashen/AshenSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 6751,
     "slug": "assassin-posture",
     "name": "Assassin Posture",
@@ -6404,6 +6642,47 @@
     ]
   },
   {
+    "id": "augmented-sonar",
+    "slug": "augmented-sonar",
+    "name": "Augmented Sonar",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Powersuits/Banshee/SonarPvPAugmentCard",
+    "type": "Warframe Mod",
+    "rarity": "Rare",
+    "polarity": "zenurik",
+    "compatName": "Banshee",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": true,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "Sonar Augment: Affected enemies also become visible through walls for 7s."
+        ]
+      },
+      {
+        "stats": [
+          "Sonar Augment: Affected enemies also become visible through walls for 8s."
+        ]
+      },
+      {
+        "stats": [
+          "Sonar Augment: Affected enemies also become visible through walls for 9s."
+        ]
+      },
+      {
+        "stats": [
+          "Sonar Augment: Affected enemies also become visible through walls for 10s."
+        ]
+      }
+    ]
+  },
+  {
     "id": 675,
     "slug": "augur-accord",
     "name": "Augur Accord",
@@ -6930,6 +7209,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "augursetmod",
+    "slug": "augursetmod",
+    "name": "Augursetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Augur/AugurSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 2821,
@@ -8697,6 +8996,218 @@
     ]
   },
   {
+    "id": "battle-forge",
+    "slug": "battle-forge",
+    "name": "Battle Forge",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipBattleCraftingAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BattleForgeMod.png?db9ae",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Battle Forge"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Reduce Forge Cooldown by 30s\\nCooldown: 480s"
+        ]
+      },
+      {
+        "stats": [
+          "Reduce Forge Cooldown by 35s\\nCooldown: 480s"
+        ]
+      },
+      {
+        "stats": [
+          "Reduce Forge Cooldown by 40s\\nCooldown: 480s"
+        ]
+      },
+      {
+        "stats": [
+          "Reduce Forge Cooldown by 60s\\nCooldown: 480s"
+        ]
+      },
+      {
+        "stats": [
+          "Reduce Forge Cooldown by 80s\\nCooldown: 480s"
+        ]
+      },
+      {
+        "stats": [
+          "Reduce Forge Cooldown by 100s\\nCooldown: 480s"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "battle-stations",
+    "slug": "battle-stations",
+    "name": "Battle Stations",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipQuadDamageAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BattleStationsMod.png?750b8",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Battle Stations"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Boost Turret Damage by 20% for 16s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Boost Turret Damage by 30% for 18s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Boost Turret Damage by 50% for 20s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Boost Turret Damage by 55% for 22s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Boost Turret Damage by 60% for 24s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Boost Turret Damage by 65% for 26s\\nCooldown: 240s"
+        ]
+      }
+    ]
+  },
+  {
     "id": 112,
     "slug": "beguiling-lantern",
     "name": "Beguiling Lantern",
@@ -9184,6 +9695,239 @@
       }
     ],
     "levelStats": []
+  },
+  {
+    "id": "blackout-pulse",
+    "slug": "blackout-pulse",
+    "name": "Blackout Pulse",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipEMPAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BlackoutPulseMod.png?8b31f",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.001,
+        "location": "Axio Basilisk",
+        "rarity": "Legendary",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.001,
+        "location": "Exo Taktis",
+        "rarity": "Legendary",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.001,
+        "location": "Vorac Basilisk",
+        "rarity": "Legendary",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Gyre Flak",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Exo Taktis",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Gyre Flak",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Kasio's Rest (Caches)",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Lupal Pass (Caches)",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Mordo Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Nodo Gap (Caches)",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Vand Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Arva Vector (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Brom Cluster (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Enkidu Ice Drifts (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Mammon's Prospect (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Nu-Gua Mines (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Sovereign Grasp (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Fenton's Field (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Khufu Envoy (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Obol Crossing (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Peregrine Axis (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Profit Margin (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Seven Sirens (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Blackout Pulse"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      },
+      {
+        "stats": [
+          "Electro-Magnetic Pulse that damages enemies and disables them temporarily."
+        ]
+      }
+    ]
   },
   {
     "id": 762,
@@ -10898,6 +11642,26 @@
     "levelStats": []
   },
   {
+    "id": "bonebladesetmod",
+    "slug": "bonebladesetmod",
+    "name": "Bonebladesetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Boneblade/BonebladeSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 428,
     "slug": "bore",
     "name": "Bore",
@@ -11045,6 +11809,26 @@
     "polarity": "vazarin",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
+    "id": "borealsetmod",
+    "slug": "borealsetmod",
+    "name": "Borealsetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
     "isAugment": false,
     "drops": [],
     "levelStats": []
@@ -11312,6 +12096,88 @@
       {
         "stats": [
           "+120% <DT_PUNCTURE_COLOR>Puncture"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "breach-quanta",
+    "slug": "breach-quanta",
+    "name": "Breach Quanta",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/BreachRepair",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BreachQuantaMod.png?64909",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0244,
+        "location": "Elite Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Breach Quanta"
+      },
+      {
+        "chance": 0.0244,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Breach Quanta"
+      },
+      {
+        "chance": 0.0251,
+        "location": "Corpus Ramsled",
+        "rarity": "Uncommon",
+        "type": "Breach Quanta"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Breach Quanta"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Breach Quanta"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Temporarily stall Hull Breach for 20s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Temporarily stall Hull Breach for 25s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Temporarily stall Hull Breach for 30s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Temporarily stall Hull Breach for 35s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Temporarily stall Hull Breach for 40s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Temporarily stall Hull Breach for 45s\\nCooldown: 300s"
         ]
       }
     ]
@@ -12464,6 +13330,66 @@
       {
         "stats": [
           "Rest & Rage Augment: Killing an affected enemy causes the effect to spread to enemies within 5m for 100% of the remaining duration."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cannonade",
+    "slug": "cannonade",
+    "name": "Cannonade",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Pistol/ProjectileExplosionChanceMod",
+    "type": "Secondary Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Pistol",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0043,
+        "location": "Juno Sapper Moa",
+        "rarity": "Uncommon",
+        "type": "Semi-Pistol Cannonade"
+      },
+      {
+        "chance": 0.0043,
+        "location": "Juno Sapper Moa",
+        "rarity": "Uncommon",
+        "type": "Semi-Rifle Cannonade"
+      },
+      {
+        "chance": 0.0043,
+        "location": "Juno Sapper Moa",
+        "rarity": "Uncommon",
+        "type": "Semi-Shotgun Cannonade"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+7.5% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+22.5% Chance to Explode (Use with Caution)"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Chance to Explode (Use with Caution)"
         ]
       }
     ]
@@ -16676,6 +17602,33 @@
     ]
   },
   {
+    "id": "companion-weapon-riven-mod",
+    "slug": "companion-weapon-riven-mod",
+    "name": "Companion Weapon Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/RawSentinelWeaponRandomMod",
+    "type": "Companion Weapon Riven Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": "ANY",
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Cephalon Simaris, Companion Weapon Riven Mod\n",
+        "rarity": "Common",
+        "type": "Companion Weapon Riven Mod"
+      }
+    ],
+    "levelStats": []
+  },
+  {
     "id": 7276,
     "slug": "computer-cop",
     "name": "Computer Cop",
@@ -17648,6 +18601,106 @@
       {
         "stats": [
           "Resonator Augment: Reactivate the ability to command Resonator to move to your aim point at 150% Speed."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "conic-nozzle",
+    "slug": "conic-nozzle",
+    "name": "Conic Nozzle",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Piloting/ZektiSpeed",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "vazarin",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ConicNozzleMod.png?83f44",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.001,
+        "location": "Gyre Taktis",
+        "rarity": "Legendary",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Kosma Flak",
+        "rarity": "Rare",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Exo Cutter",
+        "rarity": "Rare",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Kosma Flak",
+        "rarity": "Rare",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Taro Weaver",
+        "rarity": "Rare",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": 0.0063,
+        "location": "Kosma Cutter",
+        "rarity": "Rare",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": null,
+        "location": "Elite Exo Cutter",
+        "rarity": "Legendary",
+        "type": "Conic Nozzle"
+      },
+      {
+        "chance": null,
+        "location": "Elite Gyre Taktis",
+        "rarity": "Legendary",
+        "type": "Conic Nozzle"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+4.3% Railjack Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+8.5% Railjack Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+12.8% Railjack Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+17% Railjack Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+21.3% Railjack Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+25.5% Railjack Speed"
         ]
       }
     ]
@@ -19179,6 +20232,204 @@
     ]
   },
   {
+    "id": "countermeasures",
+    "slug": "countermeasures",
+    "name": "Countermeasures",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipFlaresAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CountermeasuresMod.png?d0265",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Kasio's Rest (Caches)",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Lupal Pass (Caches)",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Mordo Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Nodo Gap (Caches)",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Vand Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0773,
+        "location": "Elite Exo Outrider",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0773,
+        "location": "Exo Outrider",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0773,
+        "location": "Orm Gox",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Arva Vector (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Brom Cluster (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Enkidu Ice Drifts (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Mammon's Prospect (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Nu-Gua Mines (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Sovereign Grasp (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Fenton's Field (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Khufu Envoy (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Obol Crossing (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Peregrine Axis (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Profit Margin (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Seven Sirens (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.1047,
+        "location": "Axio Gox",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.1077,
+        "location": "Vorac Gox",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.1086,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.1086,
+        "location": "Gyre Outrider",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Kosma Outrider",
+        "rarity": "Common",
+        "type": "Countermeasures"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Flares that distract enemy guided projectiles."
+        ]
+      },
+      {
+        "stats": [
+          "Flares that distract enemy guided projectiles."
+        ]
+      },
+      {
+        "stats": [
+          "Flares that distract enemy guided projectiles."
+        ]
+      },
+      {
+        "stats": [
+          "Flares that distract enemy guided projectiles."
+        ]
+      }
+    ]
+  },
+  {
     "id": 454,
     "slug": "counterweight",
     "name": "Counterweight",
@@ -19805,6 +21056,125 @@
     "levelStats": []
   },
   {
+    "id": "crimson-fugue",
+    "slug": "crimson-fugue",
+    "name": "Crimson Fugue",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanDamageOnKill",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 10,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CrimsonFugueMod.png?b054a",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0015,
+        "location": "Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Kosma Cutter",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      },
+      {
+        "chance": 0.003,
+        "location": "Cannon Battery",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      },
+      {
+        "chance": 0.003,
+        "location": "Kosma Taktis",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      },
+      {
+        "chance": 0.003,
+        "location": "Taro Harpi",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      },
+      {
+        "chance": 0.0041,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      },
+      {
+        "chance": 0.0063,
+        "location": "Taro Weaver",
+        "rarity": "Rare",
+        "type": "Crimson Fugue"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+2.5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+7.5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+12.5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+17.5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+22.5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+27.5% Turret Damage per enemy destroyed, for 8s (Maximum 5 stacks)"
+        ]
+      }
+    ]
+  },
+  {
     "id": 706,
     "slug": "critical-deceleration",
     "name": "Critical Deceleration",
@@ -20379,6 +21749,113 @@
       {
         "stats": [
           "Unleashes a 10.0m radial knockdown when multiple enemies are nearby, dealing 10.0 Damage."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cruising-speed",
+    "slug": "cruising-speed",
+    "name": "Cruising Speed",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Piloting/ZektiNonCombatSpeed",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CruisingSpeedMod.png?ffb64",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0083,
+        "location": "Kosma Flak",
+        "rarity": "Rare",
+        "type": "Cruising Speed"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Cruising Speed"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Kosma Flak",
+        "rarity": "Rare",
+        "type": "Cruising Speed"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Taro Weaver",
+        "rarity": "Rare",
+        "type": "Cruising Speed"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Cruising Speed"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+10% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+70% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Railjack Speed when no enemies within 3000m"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Railjack Speed when no enemies within 3000m"
         ]
       }
     ]
@@ -21583,6 +23060,70 @@
     ]
   },
   {
+    "id": "death-blossom",
+    "slug": "death-blossom",
+    "name": "Death Blossom",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipDeathBlossomAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DeathBlossomMod.png?ba5cd",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.001,
+        "location": "Exo Taktis",
+        "rarity": "Legendary",
+        "type": "Death Blossom"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Exo Taktis",
+        "rarity": "Rare",
+        "type": "Death Blossom"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Turret Cooldowns removed for 10s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Turret Cooldowns removed for 15s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Turret Cooldowns removed for 17s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Turret Cooldowns removed for 20s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Turret Cooldowns removed for 23s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Turret Cooldowns removed for 25s\\nCooldown: 300s"
+        ]
+      }
+    ]
+  },
+  {
     "id": 129,
     "slug": "deceptive-bond",
     "name": "Deceptive Bond",
@@ -21973,6 +23514,88 @@
       {
         "stats": [
           "+90% <DT_FREEZE_COLOR>Cold"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "defensive-fire",
+    "slug": "defensive-fire",
+    "name": "Defensive Fire",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Engineering/LavanMaxShieldOnKill",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "vazarin",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DefensiveFireMod.png?a12ae",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0015,
+        "location": "Orm Basilisk",
+        "rarity": "Rare",
+        "type": "Defensive Fire"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Rare",
+        "type": "Defensive Fire"
+      },
+      {
+        "chance": 0.003,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Defensive Fire"
+      },
+      {
+        "chance": 0.0031,
+        "location": "Orm Weaver",
+        "rarity": "Rare",
+        "type": "Defensive Fire"
+      },
+      {
+        "chance": 0.0054,
+        "location": "Elite Orm Weaver",
+        "rarity": "Rare",
+        "type": "Defensive Fire"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+1.5% Maximum Shields per enemy killed for 10s (Maximum 10 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+3% Maximum Shields per enemy killed for 10s (Maximum 10 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+4.5% Maximum Shields per enemy killed for 10s (Maximum 10 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+6% Maximum Shields per enemy killed for 10s (Maximum 10 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+7.5% Maximum Shields per enemy killed for 10s (Maximum 10 stacks)"
+        ]
+      },
+      {
+        "stats": [
+          "+9% Maximum Shields per enemy killed for 10s (Maximum 10 stacks)"
         ]
       }
     ]
@@ -30206,6 +31829,26 @@
     ]
   },
   {
+    "id": "femursetmod",
+    "slug": "femursetmod",
+    "name": "Femursetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Femur/FemurSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 657,
     "slug": "ferocity",
     "name": "Ferocity",
@@ -31019,6 +32662,130 @@
     ]
   },
   {
+    "id": "fire-suppression",
+    "slug": "fire-suppression",
+    "name": "Fire Suppression",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/FireExtinguish",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FireSuppressionMod.png?026ec",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0244,
+        "location": "Elite Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0244,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0244,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0251,
+        "location": "Corpus Ramsled",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0447,
+        "location": "Elite Gyre Flak",
+        "rarity": "Uncommon",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Gyre Flak",
+        "rarity": "Common",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Common",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Common",
+        "type": "Fire Suppression"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Axio Basilisk",
+        "rarity": "Common",
+        "type": "Fire Suppression"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Extinguish 1 fire\\nCooldown: <LOWER_IS_BETTER>300s"
+        ]
+      },
+      {
+        "stats": [
+          "Extinguish 1 fire\\nCooldown: <LOWER_IS_BETTER>290s"
+        ]
+      },
+      {
+        "stats": [
+          "Extinguish 1 fire\\nCooldown: <LOWER_IS_BETTER>275s"
+        ]
+      },
+      {
+        "stats": [
+          "Extinguish 1 fire\\nCooldown: <LOWER_IS_BETTER>260s"
+        ]
+      },
+      {
+        "stats": [
+          "Extinguish 1 fire\\nCooldown: <LOWER_IS_BETTER>245s"
+        ]
+      },
+      {
+        "stats": [
+          "Extinguish 1 fire\\nCooldown: <LOWER_IS_BETTER>230s"
+        ]
+      }
+    ]
+  },
+  {
     "id": 100,
     "slug": "fireball-frenzy",
     "name": "Fireball Frenzy",
@@ -31434,6 +33201,47 @@
       {
         "stats": [
           "Reduces damage by 75% while hacking"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fizzbang-flourish",
+    "slug": "fizzbang-flourish",
+    "name": "Fizzbang Flourish",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Hoverboard/HBFireWorksMod",
+    "type": "K-Drive Mod",
+    "rarity": "Common",
+    "polarity": "vazarin",
+    "compatName": "K-Drive",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "Fireworks trigger when completing a trick over 500 points."
+        ]
+      },
+      {
+        "stats": [
+          "Fireworks trigger when completing a trick over 400 points."
+        ]
+      },
+      {
+        "stats": [
+          "Fireworks trigger when completing a trick over 300 points."
+        ]
+      },
+      {
+        "stats": [
+          "Fireworks trigger when completing a trick over 200 points."
         ]
       }
     ]
@@ -32248,6 +34056,113 @@
     ]
   },
   {
+    "id": "flow-burn",
+    "slug": "flow-burn",
+    "name": "Flow Burn",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipAfterBurnersAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FlowBurnMod.png?7df26",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0166,
+        "location": "Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Flow Burn"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Flow Burn"
+      },
+      {
+        "chance": 0.0227,
+        "location": "Elite Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Flow Burn"
+      },
+      {
+        "chance": 0.0227,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Flow Burn"
+      },
+      {
+        "chance": 0.0466,
+        "location": "Corpus Ramsled",
+        "rarity": "Uncommon",
+        "type": "Flow Burn"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+12% Speed and Boost Speed for 5s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Speed and Boost Speed for 5s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+17% Speed and Boost Speed for 5s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Speed and Boost Speed for 6s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+23% Speed and Boost Speed for 7s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Speed and Boost Speed for 8s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+28% Speed and Boost Speed for 9s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Speed and Boost Speed for 10s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+33% Speed and Boost Speed for 11s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+35% Speed and Boost Speed for 12s\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "+38% Speed and Boost Speed for 13s\\nCooldown: 240s"
+        ]
+      }
+    ]
+  },
+  {
     "id": 596,
     "slug": "flux-overdrive",
     "name": "Flux Overdrive",
@@ -32803,6 +34718,194 @@
     ]
   },
   {
+    "id": "form-up",
+    "slug": "form-up",
+    "name": "Form Up",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipMassRecallAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FormUpMod.png?30871",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Form Up"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Form Up"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Recall all Crew Members to the Railjack and Heal them for 25%\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Recall all Crew Members to the Railjack and Heal them for 35%\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Recall all Crew Members to the Railjack and Heal them for 45%\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Recall all Crew Members to the Railjack and Heal them for 55%\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Recall all Crew Members to the Railjack and Heal them for 65%\\nCooldown: 240s"
+        ]
+      },
+      {
+        "stats": [
+          "Recall all Crew Members to the Railjack and Heal them for 75%\\nCooldown: 240s"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "fortifying-fire",
+    "slug": "fortifying-fire",
+    "name": "Fortifying Fire",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Engineering/LavanShieldOnCrit",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "vazarin",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FortifyingFireMod.png?108df",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.003,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Fortifying Fire"
+      },
+      {
+        "chance": 0.003,
+        "location": "Orm Harpi",
+        "rarity": "Rare",
+        "type": "Fortifying Fire"
+      },
+      {
+        "chance": 0.0031,
+        "location": "Orm Weaver",
+        "rarity": "Rare",
+        "type": "Fortifying Fire"
+      },
+      {
+        "chance": 0.005,
+        "location": "Elite Orm Harpi",
+        "rarity": "Rare",
+        "type": "Fortifying Fire"
+      },
+      {
+        "chance": 0.0054,
+        "location": "Elite Orm Weaver",
+        "rarity": "Rare",
+        "type": "Fortifying Fire"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "ON CRITICAL HIT:\\nReplenish 0.5% of Shields"
+        ]
+      },
+      {
+        "stats": [
+          "ON CRITICAL HIT:\\nReplenish 1% of Shields"
+        ]
+      },
+      {
+        "stats": [
+          "ON CRITICAL HIT:\\nReplenish 1.5% of Shields"
+        ]
+      },
+      {
+        "stats": [
+          "ON CRITICAL HIT:\\nReplenish 2% of Shields"
+        ]
+      },
+      {
+        "stats": [
+          "ON CRITICAL HIT:\\nReplenish 2.5% of Shields"
+        ]
+      },
+      {
+        "stats": [
+          "ON CRITICAL HIT:\\nReplenish 3% of Shields"
+        ]
+      }
+    ]
+  },
+  {
     "id": 795,
     "slug": "fortitude",
     "name": "Fortitude",
@@ -32855,6 +34958,119 @@
         "stats": [
           "+40% Chance to Resist Knockdown",
           "+100% Shield Recharge"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "forward-artillery",
+    "slug": "forward-artillery",
+    "name": "Forward Artillery",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/ZektiSuperWeaponDamage",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ForwardArtilleryMod.png?b5239",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.001,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Forward Artillery"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Forward Artillery"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Forward Artillery"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Rare",
+        "type": "Forward Artillery"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Kosma Cutter",
+        "rarity": "Rare",
+        "type": "Forward Artillery"
+      },
+      {
+        "chance": 0.0063,
+        "location": "Kosma Cutter",
+        "rarity": "Rare",
+        "type": "Forward Artillery"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+9.1% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+18.2% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+27.3% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+36.4% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+45.5% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+54.5% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+63.6% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+72.7% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+81.8% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+90.9% Forward Artillery Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Forward Artillery Damage"
         ]
       }
     ]
@@ -36848,6 +39064,26 @@
     ]
   },
   {
+    "id": "gladiatorsetmod",
+    "slug": "gladiatorsetmod",
+    "name": "Gladiatorsetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Gladiator/GladiatorSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 756,
     "slug": "gleaming-blight",
     "name": "Gleaming Blight",
@@ -37174,6 +39410,136 @@
       {
         "stats": [
           "Feast Augment: Instead of Energy, consumes <LOWER_IS_BETTER>200 Health on cast. Glutton grants an additional 150 Armor per enemy."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "granum-s-nemesis",
+    "slug": "granum-s-nemesis",
+    "name": "Granum’s Nemesis",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarCorpusKiller",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Granum%27sNemesisMod.png?b5f4c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0007,
+        "location": "Axio Harpi",
+        "rarity": "Legendary",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.001,
+        "location": "Axio Basilisk",
+        "rarity": "Legendary",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Elite Taro Harpi",
+        "rarity": "Legendary",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Axio Harpi",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.002,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.002,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Exo Cutter",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.003,
+        "location": "Axio Weaver",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0033,
+        "location": "Elite Axio Weaver",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.0038,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Granum's Nemesis"
+      },
+      {
+        "chance": 0.03,
+        "location": "Elite Exo Cutter",
+        "rarity": "Uncommon",
+        "type": "Granum's Nemesis"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "x1.04 Turret Damage vs Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.09 Turret Damage vs Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.14 Turret Damage vs Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.18 Turret Damage vs Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.23 Turret Damage vs Corpus"
+        ]
+      },
+      {
+        "stats": [
+          "x1.27 Turret Damage vs Corpus"
         ]
       }
     ]
@@ -39038,6 +41404,47 @@
     ]
   },
   {
+    "id": "harrowed-hook",
+    "slug": "harrowed-hook",
+    "name": "Harrowed Hook",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/PvPMods/Melee/GroundingMeleeMod",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "naramon",
+    "compatName": "Melee",
+    "baseDrain": 10,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "With Melee Weapon equipped, unchanneled hits slow target and disable jump for +0.5s."
+        ]
+      },
+      {
+        "stats": [
+          "With Melee Weapon equipped, unchanneled hits slow target and disable jump for +1s."
+        ]
+      },
+      {
+        "stats": [
+          "With Melee Weapon equipped, unchanneled hits slow target and disable jump for +1.5s."
+        ]
+      },
+      {
+        "stats": [
+          "With Melee Weapon equipped, unchanneled hits slow target and disable jump for +2s."
+        ]
+      }
+    ]
+  },
+  {
     "id": 664,
     "slug": "hastened-deflection",
     "name": "Hastened Deflection",
@@ -39440,6 +41847,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "hawksetmod",
+    "slug": "hawksetmod",
+    "name": "Hawksetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Hawk/HawkSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 101,
@@ -40969,6 +43396,57 @@
     ]
   },
   {
+    "id": "helminth-ferocity",
+    "slug": "helminth-ferocity",
+    "name": "Helminth Ferocity",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sentinel/Kubrow/ChargerFinisherMod",
+    "type": "Companion Mod",
+    "rarity": "Rare",
+    "polarity": "penjaga",
+    "compatName": "Helminth Charger",
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": "Allows the Kubrow to use Finisher attacks on an enemy.",
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+20% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Finisher Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Finisher Damage"
+        ]
+      }
+    ]
+  },
+  {
     "id": 5404,
     "slug": "hemorrhage",
     "name": "Hemorrhage",
@@ -41171,6 +43649,57 @@
       {
         "stats": [
           " <DT_IMPACT_COLOR>Impact Status Effects have 35% chance to apply a <DT_SLASH_COLOR>Slash Status Effect (x2 when Fire Rate is below 2.5)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "higasa-serration",
+    "slug": "higasa-serration",
+    "name": "Higasa Serration",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Weapons/Tenno/LongGuns/Gunbrella/ShrineMaidenGunbrellaAugment",
+    "type": "Primary Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Higasa",
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": "Alternate Fire applies a random Status Effect to enemies hit.",
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HigasaSerrationMod.png?2b28b",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+75% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+225% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+300% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+375% Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+450% Damage"
         ]
       }
     ]
@@ -42933,6 +45462,26 @@
     "levelStats": []
   },
   {
+    "id": "huntersetmod",
+    "slug": "huntersetmod",
+    "name": "Huntersetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Hunter/HunterSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 642,
     "slug": "hush",
     "name": "Hush",
@@ -43500,6 +46049,106 @@
       {
         "stats": [
           "+27.5% Flight Speed"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hyperstrike",
+    "slug": "hyperstrike",
+    "name": "Hyperstrike",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarGunnerWeaponDamage",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 10,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HyperstrikeMod.png?a2e91",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0244,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Cannon Battery",
+        "rarity": "Uncommon",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Taro Harpi",
+        "rarity": "Uncommon",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Axio Weaver",
+        "rarity": "Common",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Elite Gyre Cutter",
+        "rarity": "Common",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Gyre Cutter",
+        "rarity": "Common",
+        "type": "Hyperstrike"
+      },
+      {
+        "chance": 0.0615,
+        "location": "Elite Axio Weaver",
+        "rarity": "Common",
+        "type": "Hyperstrike"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+12.5% Turret Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Turret Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+37.5% Turret Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Turret Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+62.5% Turret Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Turret Damage"
         ]
       }
     ]
@@ -44687,6 +47336,124 @@
       {
         "stats": [
           "+90% <DT_FIRE_COLOR>Heat"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "indomitable-matrix",
+    "slug": "indomitable-matrix",
+    "name": "Indomitable Matrix",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Piloting/ZektiSiegeMatrixAura",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": -2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/IndomitableMatrixMod.png?a9931",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0087,
+        "location": "Elite Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.0687,
+        "location": "Orm Weaver",
+        "rarity": "Common",
+        "type": "Indomitable Matrix"
+      },
+      {
+        "chance": 0.1179,
+        "location": "Elite Orm Weaver",
+        "rarity": "Common",
+        "type": "Indomitable Matrix"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "<LOWER_IS_BETTER>-2% Breach Chance\\n+2% Shield Recharge during Breach\\n+30% Armor when below 6% Hull"
+        ]
+      },
+      {
+        "stats": [
+          "<LOWER_IS_BETTER>-4% Breach Chance\\n+5% Shield Recharge during Breach\\n+30% Armor when below 12% Hull"
+        ]
+      },
+      {
+        "stats": [
+          "<LOWER_IS_BETTER>-6% Breach Chance\\n+7% Shield Recharge during Breach\\n+30% Armor when below 18% Hull"
+        ]
+      },
+      {
+        "stats": [
+          "<LOWER_IS_BETTER>-8% Breach Chance\\n+10% Shield Recharge during Breach\\n+30% Armor when below 24% Hull"
+        ]
+      },
+      {
+        "stats": [
+          "<LOWER_IS_BETTER>-9% Breach Chance\\n+12% Shield Recharge during Breach\\n+30% Armor when below 29% Hull"
+        ]
+      },
+      {
+        "stats": [
+          "<LOWER_IS_BETTER>-12% Breach Chance\\n+15% Shield Recharge during Breach\\n+30% Armor when below 36% Hull"
         ]
       }
     ]
@@ -46399,6 +49166,112 @@
     ]
   },
   {
+    "id": "intruder-stasis",
+    "slug": "intruder-stasis",
+    "name": "Intruder Stasis",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipStasisAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/IntruderStasisMod.png?65748",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Intruder Stasis"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Freeze all Enemy Boarding Parties for 10s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Freeze all Enemy Boarding Parties for 15s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Freeze all Enemy Boarding Parties for 20s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Freeze all Enemy Boarding Parties for 25s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Freeze all Enemy Boarding Parties for 30s\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Freeze all Enemy Boarding Parties for 35s\\nCooldown: 300s"
+        ]
+      }
+    ]
+  },
+  {
     "id": 229,
     "slug": "investigator",
     "name": "Investigator",
@@ -46444,6 +49317,130 @@
       {
         "stats": [
           "Helios Sentinel will scan objects and enemies within 50m over 2.0s. This consumes Codex Scanner charges."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ion-burn",
+    "slug": "ion-burn",
+    "name": "Ion Burn",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Piloting/ZektiBoostSpeed",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "vazarin",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/IonBurnMod.png?e7869",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0569,
+        "location": "Axio Weaver",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Elite Gyre Cutter",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Gyre Cutter",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Gyre Taktis",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0615,
+        "location": "Elite Axio Weaver",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0718,
+        "location": "Elite Gyre Taktis",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Kosma Flak",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Taro Weaver",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Kosma Flak",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Taro Basilisk",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Vorac Weaver",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      },
+      {
+        "chance": 0.1198,
+        "location": "Elite Vorac Weaver",
+        "rarity": "Common",
+        "type": "Ion Burn"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+7.5% Railjack Boost Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Railjack Boost Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+22.5% Railjack Boost Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Railjack Boost Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+37.5% Railjack Boost Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Railjack Boost Speed"
         ]
       }
     ]
@@ -46837,6 +49834,118 @@
       {
         "stats": [
           "Disable vacuum in Razorwing. Reduced Damage by 40% while Airborne."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ironclad-matrix",
+    "slug": "ironclad-matrix",
+    "name": "Ironclad Matrix",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Engineering/VidarDefensiveMatrix",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "vazarin",
+    "compatName": null,
+    "baseDrain": -2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/IroncladMatrixMod.png?19ad5",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Cannon Battery",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Kosma Taktis",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Taro Harpi",
+        "rarity": "Rare",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0151,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Ironclad Matrix"
+      },
+      {
+        "chance": 0.0208,
+        "location": "Elite Taro Harpi",
+        "rarity": "Uncommon",
+        "type": "Ironclad Matrix"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+3.75% Hull and Armor",
+          "+4.25% Max Shields and Shield Recharge"
+        ]
+      },
+      {
+        "stats": [
+          "+7.5% Hull and Armor",
+          "+8.5% Max Shields and Shield Recharge"
+        ]
+      },
+      {
+        "stats": [
+          "+11.25% Hull and Armor",
+          "+12.75% Max Shields and Shield Recharge"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Hull and Armor",
+          "+17% Max Shields and Shield Recharge"
+        ]
+      },
+      {
+        "stats": [
+          "+18.75% Hull and Armor",
+          "+21.25% Max Shields and Shield Recharge"
+        ]
+      },
+      {
+        "stats": [
+          "+22.5% Hull and Armor",
+          "+25.5% Max Shields and Shield Recharge"
         ]
       }
     ]
@@ -48442,6 +51551,57 @@
         ]
       }
     ]
+  },
+  {
+    "id": "kitgun-riven-mod",
+    "slug": "kitgun-riven-mod",
+    "name": "Kitgun Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/LotusModularPistolRandomModRare",
+    "type": "Kitgun Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KitgunRivenMod.png?c488c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0095,
+        "location": "Duviri/Endless: Repeated Rewards (Hard)",
+        "rarity": "Legendary",
+        "type": "Kitgun Riven Mod"
+      },
+      {
+        "chance": 0.01,
+        "location": "Sorties",
+        "rarity": "Rare",
+        "type": "Kitgun Riven Mod"
+      },
+      {
+        "chance": 0.012,
+        "location": "Duviri/Endless: Tier 6 (Hard)",
+        "rarity": "Rare",
+        "type": "Kitgun Riven Mod"
+      },
+      {
+        "chance": 0.012,
+        "location": "Duviri/Endless: Tier 7 (Hard)",
+        "rarity": "Rare",
+        "type": "Kitgun Riven Mod"
+      },
+      {
+        "chance": 0.035,
+        "location": "Enter Nihil's Oubliette, Rotation C",
+        "rarity": "Rare",
+        "type": "Kitgun Riven Mod"
+      }
+    ],
+    "levelStats": []
   },
   {
     "id": 122,
@@ -54321,6 +57481,26 @@
     ]
   },
   {
+    "id": "mechasetmod",
+    "slug": "mechasetmod",
+    "name": "Mechasetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Mecha/MechaSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 654,
     "slug": "medi-pet-kit",
     "name": "Medi-Pet Kit",
@@ -55240,6 +58420,57 @@
         ]
       }
     ]
+  },
+  {
+    "id": "melee-riven-mod",
+    "slug": "melee-riven-mod",
+    "name": "Melee Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/PlayerMeleeWeaponRandomModRare",
+    "type": "Melee Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MeleeRivenMod.png?c488c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0095,
+        "location": "Duviri/Endless: Repeated Rewards (Hard)",
+        "rarity": "Legendary",
+        "type": "Melee Riven Mod"
+      },
+      {
+        "chance": 0.098,
+        "location": "Sorties",
+        "rarity": "Rare",
+        "type": "Melee Riven Mod"
+      },
+      {
+        "chance": 0.119,
+        "location": "Duviri/Endless: Tier 6 (Hard)",
+        "rarity": "Uncommon",
+        "type": "Melee Riven Mod"
+      },
+      {
+        "chance": 0.119,
+        "location": "Duviri/Endless: Tier 7 (Hard)",
+        "rarity": "Uncommon",
+        "type": "Melee Riven Mod"
+      },
+      {
+        "chance": 0.35,
+        "location": "Enter Nihil's Oubliette, Rotation C",
+        "rarity": "Common",
+        "type": "Melee Riven Mod"
+      }
+    ],
+    "levelStats": []
   },
   {
     "id": 4285,
@@ -58200,6 +61431,226 @@
     "levelStats": []
   },
   {
+    "id": "munitions-vortex",
+    "slug": "munitions-vortex",
+    "name": "Munitions Vortex",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipAttractorAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MunitionsVortexMod.png?66e9b",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0083,
+        "location": "Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Orm Harpi",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Gyre Flak",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Orm Harpi",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0227,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0277,
+        "location": "Elite Gyre Flak",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0332,
+        "location": "Exo Taktis",
+        "rarity": "Uncommon",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Kasio's Rest (Caches)",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Lupal Pass (Caches)",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Mordo Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Nodo Gap (Caches)",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0403,
+        "location": "Saturn/Vand Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0555,
+        "location": "Elite Exo Taktis",
+        "rarity": "Common",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Arva Vector (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Brom Cluster (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Enkidu Ice Drifts (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Mammon's Prospect (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Nu-Gua Mines (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Neptune/Sovereign Grasp (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Fenton's Field (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Khufu Envoy (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Obol Crossing (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Peregrine Axis (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Profit Margin (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      },
+      {
+        "chance": 0.0833,
+        "location": "Pluto/Seven Sirens (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Munitions Vortex"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Vortex that absorbs incoming fire and detonates, releasing damage."
+        ]
+      },
+      {
+        "stats": [
+          "Vortex that absorbs incoming fire and detonates, releasing damage."
+        ]
+      },
+      {
+        "stats": [
+          "Vortex that absorbs incoming fire and detonates, releasing damage."
+        ]
+      },
+      {
+        "stats": [
+          "Vortex that absorbs incoming fire and detonates, releasing damage."
+        ]
+      },
+      {
+        "stats": [
+          "Vortex that absorbs incoming fire and detonates, releasing damage."
+        ]
+      },
+      {
+        "stats": [
+          "Vortex that absorbs incoming fire and detonates, releasing damage."
+        ]
+      }
+    ]
+  },
+  {
     "id": 95,
     "slug": "muzzle-flash",
     "name": "Muzzle Flash",
@@ -60613,6 +64064,57 @@
     ]
   },
   {
+    "id": "necramech-stamina",
+    "slug": "necramech-stamina",
+    "name": "Necramech Stamina",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Necromech/NecromechSprintEfficiencyMod",
+    "type": "Necramech Mod",
+    "rarity": "Uncommon",
+    "polarity": "vazarin",
+    "compatName": "Necramech",
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "-10% Sprint Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "-20% Sprint Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "-30% Sprint Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "-40% Sprint Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "-50% Sprint Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "-60% Sprint Efficiency"
+        ]
+      }
+    ]
+  },
+  {
     "id": 4984,
     "slug": "necramech-steel-fiber",
     "name": "Necramech Steel Fiber",
@@ -61563,6 +65065,26 @@
     "polarity": "vazarin",
     "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
     "baseDrain": "QA_MEDIUM",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
+    "id": "nirasetmod",
+    "slug": "nirasetmod",
+    "name": "Nirasetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
     "isAugment": false,
     "drops": [],
     "levelStats": []
@@ -63172,6 +66694,154 @@
     "levelStats": []
   },
   {
+    "id": "onslaught-matrix",
+    "slug": "onslaught-matrix",
+    "name": "Onslaught Matrix",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarOffensiveMatrix",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": -2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OnslaughtMatrixMod.png?25ed7",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0061,
+        "location": "Gyre Outrider",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Kosma Flak",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.009,
+        "location": "Elite Axio Weaver",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Orm Harpi",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Kosma Flak",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Taro Weaver",
+        "rarity": "Rare",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Gyre Flak",
+        "rarity": "Uncommon",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Vorac Harpi",
+        "rarity": "Uncommon",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Orm Harpi",
+        "rarity": "Uncommon",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0277,
+        "location": "Elite Gyre Flak",
+        "rarity": "Uncommon",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0277,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Uncommon",
+        "type": "Onslaught Matrix"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Taro Weaver",
+        "rarity": "Uncommon",
+        "type": "Onslaught Matrix"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+2% Turret Damage while 100% Hull\\n20% chance to Reflect 4% Damage while over 80% Shields\\n+1% Battle Mod Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+5% Turret Damage while 100% Hull\\n20% chance to Reflect 8% Damage while over 80% Shields\\n+2% Battle Mod Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+7% Turret Damage while 100% Hull\\n20% chance to Reflect 12% Damage while over 80% Shields\\n+3% Battle Mod Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Turret Damage while 100% Hull\\n20% chance to Reflect 17% Damage while over 80% Shields\\n+4% Battle Mod Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+12% Turret Damage while 100% Hull\\n20% chance to Reflect 21% Damage while over 80% Shields\\n+4% Battle Mod Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Turret Damage while 100% Hull\\n20% chance to Reflect 25% Damage while over 80% Shields\\n+6% Battle Mod Efficiency"
+        ]
+      }
+    ]
+  },
+  {
     "id": 6359,
     "slug": "opportunity-s-reach",
     "name": "Opportunity’s Reach",
@@ -63186,6 +66856,188 @@
     "isAugment": false,
     "drops": [],
     "levelStats": []
+  },
+  {
+    "id": "ordnance-cheap-shot",
+    "slug": "ordnance-cheap-shot",
+    "name": "Ordnance Cheap Shot",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanFreeOrdnanceAmmo",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OrdnanceCheapShotMod.png?20185",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0007,
+        "location": "Axio Harpi",
+        "rarity": "Legendary",
+        "type": "Ordnance Cheap Shot"
+      },
+      {
+        "chance": 0.001,
+        "location": "Axio Basilisk",
+        "rarity": "Legendary",
+        "type": "Ordnance Cheap Shot"
+      },
+      {
+        "chance": 0.001,
+        "location": "Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Ordnance Cheap Shot"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Elite Taro Harpi",
+        "rarity": "Legendary",
+        "type": "Ordnance Cheap Shot"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Gyre Cutter",
+        "rarity": "Rare",
+        "type": "Ordnance Cheap Shot"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Gyre Flak",
+        "rarity": "Rare",
+        "type": "Ordnance Cheap Shot"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Gyre Flak",
+        "rarity": "Rare",
+        "type": "Ordnance Cheap Shot"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Ordnance weapons have a +10% chance to not consume Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "Ordnance weapons have a +20% chance to not consume Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "Ordnance weapons have a +30% chance to not consume Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "Ordnance weapons have a +40% chance to not consume Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "Ordnance weapons have a +50% chance to not consume Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "Ordnance weapons have a +60% chance to not consume Munitions"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ordnance-velocity",
+    "slug": "ordnance-velocity",
+    "name": "Ordnance Velocity",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanOrdnanceSpeed",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OrdnanceVelocityMod.png?4733f",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0013,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Ordnance Velocity"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Ordnance Velocity"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Ordnance Velocity"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Ordnance Velocity"
+      },
+      {
+        "chance": 0.002,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Ordnance Velocity"
+      },
+      {
+        "chance": 0.002,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Ordnance Velocity"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+10% Ordnance Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Ordnance Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Ordnance Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Ordnance Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Ordnance Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Ordnance Projectile Speed"
+        ]
+      }
+    ]
   },
   {
     "id": 88,
@@ -63538,6 +67390,124 @@
     ]
   },
   {
+    "id": "orgone-tuning-matrix",
+    "slug": "orgone-tuning-matrix",
+    "name": "Orgone Tuning Matrix",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Engineering/LavanEngineerMatrix",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": -2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OrgoneTuningMatrixMod.png?3c94c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0227,
+        "location": "Elite Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Orgone Tuning Matrix"
+      },
+      {
+        "chance": 0.0227,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Orgone Tuning Matrix"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+3.75% Forge Capacity",
+          "<LOWER_IS_BETTER>-2.5% Forge Cooldown",
+          "+2.5% Elemental Resistance",
+          "+3% Turret Heat Capacity "
+        ]
+      },
+      {
+        "stats": [
+          "+7.5% Forge Capacity",
+          "<LOWER_IS_BETTER>-5% Forge Cooldown",
+          "+5% Elemental Resistance",
+          "+6% Turret Heat Capacity "
+        ]
+      },
+      {
+        "stats": [
+          "+11.25% Forge Capacity",
+          "<LOWER_IS_BETTER>-7.5% Forge Cooldown",
+          "+7.5% Elemental Resistance",
+          "+9% Turret Heat Capacity "
+        ]
+      },
+      {
+        "stats": [
+          "+15% Forge Capacity",
+          "<LOWER_IS_BETTER>-10% Forge Cooldown",
+          "+10% Elemental Resistance",
+          "+12% Turret Heat Capacity "
+        ]
+      },
+      {
+        "stats": [
+          "+18.75% Forge Capacity",
+          "<LOWER_IS_BETTER>-12.5% Forge Cooldown",
+          "+12.5% Elemental Resistance",
+          "+15% Turret Heat Capacity "
+        ]
+      },
+      {
+        "stats": [
+          "+22.5% Forge Capacity",
+          "<LOWER_IS_BETTER>-15% Forge Cooldown",
+          "+15% Elemental Resistance",
+          "+18% Turret Heat Capacity "
+        ]
+      }
+    ]
+  },
+  {
     "id": 5595,
     "slug": "oull",
     "name": "Oull",
@@ -63763,6 +67733,96 @@
         "stats": [
           "+90% Ability Range",
           "-60% Ability Strength"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "overloader",
+    "slug": "overloader",
+    "name": "Overloader",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanMaxOrdnanceMunitions",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 2,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OverloaderMod.png?f08e0",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0379,
+        "location": "Cannon Battery",
+        "rarity": "Uncommon",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Taro Harpi",
+        "rarity": "Uncommon",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.0518,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Common",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.0518,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Common",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.0712,
+        "location": "Elite Taro Harpi",
+        "rarity": "Common",
+        "type": "Overloader"
+      },
+      {
+        "chance": 0.1329,
+        "location": "Ionyx",
+        "rarity": "Common",
+        "type": "Overloader"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+12% Maximum Ordnance Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Maximum Ordnance Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "+37% Maximum Ordnance Munitions"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Maximum Ordnance Munitions"
         ]
       }
     ]
@@ -64702,6 +68762,161 @@
     ]
   },
   {
+    "id": "particle-ram",
+    "slug": "particle-ram",
+    "name": "Particle Ram",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipRamAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ParticleRamMod.png?83e8b",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0015,
+        "location": "Exo Flak",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Elite Exo Flak",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Bendar Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Iota Temple (Caches)",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Korm's Belt (Caches)",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Ogal Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Sover Strait (Caches)",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Beacon Shield Ring (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Bifrost Echo (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Falling Glory (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Luckless Expanse (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Orvin-Haarc (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Vesper Strait (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Particle Ram"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      },
+      {
+        "stats": [
+          "Railjack Ram that deals damage to anything it touches when moving forward."
+        ]
+      }
+    ]
+  },
+  {
     "id": 81,
     "slug": "partitioned-mallet",
     "name": "Partitioned Mallet",
@@ -65469,6 +69684,179 @@
       {
         "stats": [
           "The companion will pick a target and then attack it relentlessly. +40% Impact Damage"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "phoenix-blaze",
+    "slug": "phoenix-blaze",
+    "name": "Phoenix Blaze",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipPhoenixAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PhoenixBlazeMod.png?e441e",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0048,
+        "location": "Elite Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.0049,
+        "location": "Elite Axio Weaver",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Axio Weaver",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Elite Gyre Cutter",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Gyre Cutter",
+        "rarity": "Uncommon",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/Flexa (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/H-2 Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/Nsu Grid (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/R-9 Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Arc Silver (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Calabash (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Erato (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Lu-Yan (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Numina (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Sabmir Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Phoenix Blaze"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
+        ]
+      },
+      {
+        "stats": [
+          "Wreathes the Railjack in fire, increasing Turret Damage and Speed."
         ]
       }
     ]
@@ -67288,6 +71676,57 @@
         ]
       }
     ]
+  },
+  {
+    "id": "pistol-riven-mod",
+    "slug": "pistol-riven-mod",
+    "name": "Pistol Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/LotusPistolRandomModRare",
+    "type": "Pistol Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PistolRivenMod.png?d0f91",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0095,
+        "location": "Duviri/Endless: Repeated Rewards (Hard)",
+        "rarity": "Legendary",
+        "type": "Pistol Riven Mod"
+      },
+      {
+        "chance": 0.07,
+        "location": "Sorties",
+        "rarity": "Rare",
+        "type": "Pistol Riven Mod"
+      },
+      {
+        "chance": 0.085,
+        "location": "Duviri/Endless: Tier 6 (Hard)",
+        "rarity": "Rare",
+        "type": "Pistol Riven Mod"
+      },
+      {
+        "chance": 0.085,
+        "location": "Duviri/Endless: Tier 7 (Hard)",
+        "rarity": "Rare",
+        "type": "Pistol Riven Mod"
+      },
+      {
+        "chance": 0.25,
+        "location": "Enter Nihil's Oubliette, Rotation C",
+        "rarity": "Uncommon",
+        "type": "Pistol Riven Mod"
+      }
+    ],
+    "levelStats": []
   },
   {
     "id": 313,
@@ -69414,6 +73853,112 @@
     ]
   },
   {
+    "id": "predator",
+    "slug": "predator",
+    "name": "Predator",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarGunnerWeaponCritChance",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PredatorMod.png?ed6c7",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0083,
+        "location": "Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Kosma Flak",
+        "rarity": "Rare",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Kosma Flak",
+        "rarity": "Rare",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Taro Weaver",
+        "rarity": "Rare",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Predator"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Taro Weaver",
+        "rarity": "Uncommon",
+        "type": "Predator"
+      },
+      {
+        "chance": 1,
+        "location": "Conclave, Mistral",
+        "rarity": "Common",
+        "type": "Apex Predator"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+8.3% Turret Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+16.7% Turret Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Turret Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+33.3% Turret Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+41.7% Turret Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Turret Critical Chance"
+        ]
+      }
+    ]
+  },
+  {
     "id": 4286,
     "slug": "preparation",
     "name": "Preparation",
@@ -71226,6 +75771,82 @@
     ]
   },
   {
+    "id": "primed-blunderbuss",
+    "slug": "primed-blunderbuss",
+    "name": "Primed Blunderbuss",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/Expert/WeaponCritChanceModExpert",
+    "type": "Shotgun Mod",
+    "rarity": "Legendary",
+    "polarity": "madurai",
+    "compatName": "Shotgun",
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+15% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Critical Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Critical Chance"
+        ]
+      }
+    ]
+  },
+  {
     "id": 615,
     "slug": "primed-chamber",
     "name": "Primed Chamber",
@@ -71261,6 +75882,82 @@
       {
         "stats": [
           "+100% Damage on first shot in Magazine"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primed-charged-chamber",
+    "slug": "primed-charged-chamber",
+    "name": "Primed Charged Chamber",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Rifle/Expert/SniperReloadDamageModExpert",
+    "type": "Primary Mod",
+    "rarity": "Legendary",
+    "polarity": "madurai",
+    "compatName": "Sniper",
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+10% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+70% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Damage on first shot in Magazine"
+        ]
+      },
+      {
+        "stats": [
+          "+110% Damage on first shot in Magazine"
         ]
       }
     ]
@@ -72609,6 +77306,93 @@
       {
         "stats": [
           "x1.55 Damage to Murmur"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primed-fast-deflection",
+    "slug": "primed-fast-deflection",
+    "name": "Primed Fast Deflection",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarShieldRechargeRateModExpert",
+    "type": "Warframe Mod",
+    "rarity": "Legendary",
+    "polarity": "vazarin",
+    "compatName": "WARFRAME",
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": true,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+15% Shield Recharge",
+          "-5% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Shield Recharge",
+          "-10% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Shield Recharge",
+          "-15% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Shield Recharge",
+          "-20% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Shield Recharge",
+          "-25% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Shield Recharge",
+          "-30% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+105% Shield Recharge",
+          "-35% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Shield Recharge",
+          "-40% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+135% Shield Recharge",
+          "-45% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Shield Recharge",
+          "-50% Shield Recharge Delay"
+        ]
+      },
+      {
+        "stats": [
+          "+165% Shield Recharge",
+          "-55% Shield Recharge Delay"
         ]
       }
     ]
@@ -75112,6 +79896,82 @@
     ]
   },
   {
+    "id": "primed-streamline",
+    "slug": "primed-streamline",
+    "name": "Primed Streamline",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/Expert/AvatarAbilityEfficiencyModExpert",
+    "type": "Warframe Mod",
+    "rarity": "Legendary",
+    "polarity": "naramon",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": true,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+5% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+35% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+55% Ability Efficiency"
+        ]
+      }
+    ]
+  },
+  {
     "id": 801,
     "slug": "primed-sure-footed",
     "name": "Primed Sure Footed",
@@ -75861,6 +80721,94 @@
       {
         "stats": [
           "The kubrow comes to the defense of its master, replenishing both of their shields by 30% of its maximum shields and adding its shield regeneration rate to its master's for 3s."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "protective-shots",
+    "slug": "protective-shots",
+    "name": "Protective Shots",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanProtectiveShots",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ProtectiveShotsMod.png?ed6c7",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0111,
+        "location": "Cannon Battery",
+        "rarity": "Rare",
+        "type": "Protective Shots"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Kosma Taktis",
+        "rarity": "Rare",
+        "type": "Protective Shots"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Protective Shots"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Taro Harpi",
+        "rarity": "Rare",
+        "type": "Protective Shots"
+      },
+      {
+        "chance": 0.0151,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Protective Shots"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Taro Weaver",
+        "rarity": "Uncommon",
+        "type": "Protective Shots"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+5% Turret Damage when Shields are above 75%"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Turret Damage when Shields are above 75%"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Turret Damage when Shields are above 75%"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Turret Damage when Shields are above 75%"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Turret Damage when Shields are above 75%"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Turret Damage when Shields are above 75%"
         ]
       }
     ]
@@ -77814,6 +82762,112 @@
     ]
   },
   {
+    "id": "quicklock",
+    "slug": "quicklock",
+    "name": "Quicklock",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanFastOrdnanceLock",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0244,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0447,
+        "location": "Elite Exo Taktis",
+        "rarity": "Uncommon",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0447,
+        "location": "Elite Gyre Flak",
+        "rarity": "Uncommon",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0447,
+        "location": "Elite Orm Harpi",
+        "rarity": "Uncommon",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Exo Taktis",
+        "rarity": "Common",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Gyre Flak",
+        "rarity": "Common",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Orm Harpi",
+        "rarity": "Common",
+        "type": "Quicklock"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Kosma Cutter",
+        "rarity": "Common",
+        "type": "Quicklock"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "-12.5% Ordnance Lock-On Time"
+        ]
+      },
+      {
+        "stats": [
+          "-25% Ordnance Lock-On Time"
+        ]
+      },
+      {
+        "stats": [
+          "-37.5% Ordnance Lock-On Time"
+        ]
+      },
+      {
+        "stats": [
+          "-50% Ordnance Lock-On Time"
+        ]
+      },
+      {
+        "stats": [
+          "-62.5% Ordnance Lock-On Time"
+        ]
+      },
+      {
+        "stats": [
+          "-75% Ordnance Lock-On Time"
+        ]
+      }
+    ]
+  },
+  {
     "id": 105,
     "slug": "radiant-finish",
     "name": "Radiant Finish",
@@ -78168,6 +83222,106 @@
     ]
   },
   {
+    "id": "raider-matrix",
+    "slug": "raider-matrix",
+    "name": "Raider Matrix",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Piloting/LavanHijackMatrixAura",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": -2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Axio Harpi",
+        "rarity": "Rare",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Taro Basilisk",
+        "rarity": "Rare",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Axio Harpi",
+        "rarity": "Uncommon",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Uncommon",
+        "type": "Raider Matrix"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Raider Matrix"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+2% Archwing Speed and Damage\\n+4% Archwing Shield and Armor\\n+7% Captured Crewship Speed and Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+5% Archwing Speed and Damage\\n+8% Archwing Shield and Armor\\n+15% Captured Crewship Speed and Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+7% Archwing Speed and Damage\\n+12% Archwing Shield and Armor\\n+22% Captured Crewship Speed and Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Archwing Speed and Damage\\n+16% Archwing Shield and Armor\\n+30% Captured Crewship Speed and Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+12% Archwing Speed and Damage\\n+19% Archwing Shield and Armor\\n+37% Captured Crewship Speed and Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Archwing Speed and Damage\\n+24% Archwing Shield and Armor\\n+45% Captured Crewship Speed and Damage"
+        ]
+      }
+    ]
+  },
+  {
     "id": 1396,
     "slug": "rail-guards",
     "name": "Rail Guards",
@@ -78476,6 +83630,26 @@
     "type": "Upgrades",
     "rarity": "UNCOMMON",
     "compatName": "/Lotus/Types/Friendly/PlayerControllable/Weapons/DuviriDualSwords",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
+    "id": "raptorsetmod",
+    "slug": "raptorsetmod",
+    "name": "Raptorsetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Raptor/RaptorSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
     "isAugment": false,
     "drops": [],
     "levelStats": []
@@ -83100,6 +88274,47 @@
     ]
   },
   {
+    "id": "resilient-focus",
+    "slug": "resilient-focus",
+    "name": "Resilient Focus",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarDamageResistanceStun",
+    "type": "Warframe Mod",
+    "rarity": "Rare",
+    "polarity": "vazarin",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": true,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+5% Damage Resistance on Stun"
+        ]
+      },
+      {
+        "stats": [
+          "+10% Damage Resistance on Stun"
+        ]
+      },
+      {
+        "stats": [
+          "+15% Damage Resistance on Stun"
+        ]
+      },
+      {
+        "stats": [
+          "+20% Damage Resistance on Stun"
+        ]
+      }
+    ]
+  },
+  {
     "id": 1445,
     "slug": "resolute-focus",
     "name": "Resolute Focus",
@@ -83874,6 +89089,148 @@
     ]
   },
   {
+    "id": "revo-reducer",
+    "slug": "revo-reducer",
+    "name": "Revo Reducer",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Piloting/LavanMultiToolPower",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RevoReducerMod.png?9c019",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0007,
+        "location": "Axio Harpi",
+        "rarity": "Legendary",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.001,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Gyre Cutter",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Kosma Flak",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Axio Harpi",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Exo Cutter",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Kosma Flak",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0025,
+        "location": "Elite Taro Weaver",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.003,
+        "location": "Elite Gyre Cutter",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0031,
+        "location": "Orm Weaver",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0054,
+        "location": "Elite Orm Weaver",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.0063,
+        "location": "Taro Weaver",
+        "rarity": "Rare",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.03,
+        "location": "Elite Exo Cutter",
+        "rarity": "Uncommon",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.05,
+        "location": "Splintrix",
+        "rarity": "Common",
+        "type": "Revo Reducer"
+      },
+      {
+        "chance": 0.1,
+        "location": "Gyrix",
+        "rarity": "Common",
+        "type": "Revo Reducer"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "-6.8% Omni Revolite Consumption"
+        ]
+      },
+      {
+        "stats": [
+          "-13.5% Omni Revolite Consumption"
+        ]
+      },
+      {
+        "stats": [
+          "-20.3% Omni Revolite Consumption"
+        ]
+      },
+      {
+        "stats": [
+          "-27% Omni Revolite Consumption"
+        ]
+      },
+      {
+        "stats": [
+          "-33.8% Omni Revolite Consumption"
+        ]
+      },
+      {
+        "stats": [
+          "-40.5% Omni Revolite Consumption"
+        ]
+      }
+    ]
+  },
+  {
     "id": 648,
     "slug": "rifle-ammo-mutation",
     "name": "Rifle Ammo Mutation",
@@ -84371,6 +89728,57 @@
     ]
   },
   {
+    "id": "rifle-riven-mod",
+    "slug": "rifle-riven-mod",
+    "name": "Rifle Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/LotusRifleRandomModRare",
+    "type": "Rifle Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CompanionWeaponRivenMod.png?c488c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0095,
+        "location": "Duviri/Endless: Repeated Rewards (Hard)",
+        "rarity": "Legendary",
+        "type": "Rifle Riven Mod"
+      },
+      {
+        "chance": 0.07,
+        "location": "Sorties",
+        "rarity": "Rare",
+        "type": "Rifle Riven Mod"
+      },
+      {
+        "chance": 0.085,
+        "location": "Duviri/Endless: Tier 6 (Hard)",
+        "rarity": "Rare",
+        "type": "Rifle Riven Mod"
+      },
+      {
+        "chance": 0.085,
+        "location": "Duviri/Endless: Tier 7 (Hard)",
+        "rarity": "Rare",
+        "type": "Rifle Riven Mod"
+      },
+      {
+        "chance": 0.25,
+        "location": "Enter Nihil's Oubliette, Rotation C",
+        "rarity": "Uncommon",
+        "type": "Rifle Riven Mod"
+      }
+    ],
+    "levelStats": []
+  },
+  {
     "id": 316,
     "slug": "rifle-scavenger",
     "name": "Rifle Scavenger",
@@ -84703,6 +90111,124 @@
       }
     ],
     "levelStats": []
+  },
+  {
+    "id": "ripload",
+    "slug": "ripload",
+    "name": "Ripload",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanReducedOrdnanceReload",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "naramon",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RiploadMod.png?98f42",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0244,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0335,
+        "location": "Elite Taro Harpi",
+        "rarity": "Uncommon",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0338,
+        "location": "Elite Gyre Taktis",
+        "rarity": "Uncommon",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Cannon Battery",
+        "rarity": "Uncommon",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Taro Harpi",
+        "rarity": "Uncommon",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Gyre Taktis",
+        "rarity": "Common",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Axio Harpi",
+        "rarity": "Common",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.0895,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Common",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Axio Harpi",
+        "rarity": "Common",
+        "type": "Ripload"
+      },
+      {
+        "chance": 0.1138,
+        "location": "Vorac Harpi",
+        "rarity": "Common",
+        "type": "Ripload"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "-7% Ordnance Reload Time"
+        ]
+      },
+      {
+        "stats": [
+          "-14% Ordnance Reload Time"
+        ]
+      },
+      {
+        "stats": [
+          "-21% Ordnance Reload Time"
+        ]
+      },
+      {
+        "stats": [
+          "-28% Ordnance Reload Time"
+        ]
+      },
+      {
+        "stats": [
+          "-35% Ordnance Reload Time"
+        ]
+      },
+      {
+        "stats": [
+          "-42% Ordnance Reload Time"
+        ]
+      }
+    ]
   },
   {
     "id": 484,
@@ -86183,6 +91709,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "sacrificesetmod",
+    "slug": "sacrificesetmod",
+    "name": "Sacrificesetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Sacrifice/SacrificeSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 691,
@@ -87697,6 +93243,124 @@
     ]
   },
   {
+    "id": "scourging-warheads",
+    "slug": "scourging-warheads",
+    "name": "Scourging Warheads",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanBypassShieldOrdnance",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ScourgingWarheadsMod.png?0bd77",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0049,
+        "location": "Elite Axio Weaver",
+        "rarity": "Rare",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Axio Harpi",
+        "rarity": "Rare",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Axio Weaver",
+        "rarity": "Rare",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Axio Harpi",
+        "rarity": "Uncommon",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Taro Basilisk",
+        "rarity": "Uncommon",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0208,
+        "location": "Elite Taro Harpi",
+        "rarity": "Uncommon",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0332,
+        "location": "Gyre Taktis",
+        "rarity": "Uncommon",
+        "type": "Scourging Warheads"
+      },
+      {
+        "chance": 0.0419,
+        "location": "Elite Gyre Taktis",
+        "rarity": "Uncommon",
+        "type": "Scourging Warheads"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+8.5% chance for Ordnance to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+17% chance for Ordnance to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+25.5% chance for Ordnance to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+34% chance for Ordnance to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+42.5% chance for Ordnance to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+51% chance for Ordnance to ignore enemy Shields"
+        ]
+      }
+    ]
+  },
+  {
     "id": 564,
     "slug": "searing-leap",
     "name": "Searing Leap",
@@ -87865,6 +93529,124 @@
       {
         "stats": [
           "On Kill:\\n+50% Reload Speed for 4s"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "section-density",
+    "slug": "section-density",
+    "name": "Section Density",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarGunnerWeaponCritDamage",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 10,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SectionDensityMod.png?9902a",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0083,
+        "location": "Kosma Flak",
+        "rarity": "Rare",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Axio Harpi",
+        "rarity": "Rare",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Elite Gyre Cutter",
+        "rarity": "Rare",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Orm Harpi",
+        "rarity": "Rare",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Kosma Flak",
+        "rarity": "Rare",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0139,
+        "location": "Elite Taro Weaver",
+        "rarity": "Rare",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Axio Harpi",
+        "rarity": "Uncommon",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0185,
+        "location": "Elite Orm Harpi",
+        "rarity": "Uncommon",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Kosma Cutter",
+        "rarity": "Uncommon",
+        "type": "Section Density"
+      },
+      {
+        "chance": 0.0344,
+        "location": "Taro Weaver",
+        "rarity": "Uncommon",
+        "type": "Section Density"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+8.3% Turret Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+16.7% Turret Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Turret Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+33.3% Turret Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+41.7% Turret Critical Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+50% Turret Critical Damage"
         ]
       }
     ]
@@ -88098,6 +93880,167 @@
       {
         "stats": [
           "+2.1 Punch Through"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "seeker-volley",
+    "slug": "seeker-volley",
+    "name": "Seeker Volley",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipAttackAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SeekerVolleyMod.png?964b3",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0107,
+        "location": "Elite Orm Weaver",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/Flexa (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/H-2 Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/Nsu Grid (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/R-9 Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.0687,
+        "location": "Orm Weaver",
+        "rarity": "Common",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Arc Silver (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Calabash (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Erato (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Lu-Yan (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Numina (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Sabmir Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": 0.1375,
+        "location": "Exo Cutter",
+        "rarity": "Common",
+        "type": "Seeker Volley"
+      },
+      {
+        "chance": null,
+        "location": "Elite Exo Cutter",
+        "rarity": "Legendary",
+        "type": "Seeker Volley"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
+        ]
+      },
+      {
+        "stats": [
+          "Fires a volley of homing missiles."
         ]
       }
     ]
@@ -88827,6 +94770,112 @@
       {
         "stats": [
           "Discharge from Alt-Fire now has infinite Body Punch Through but no longer explodes on contact. Each enemy hit will refill one charge, and reaching a full charge will increase the Critical Chance and Critical Damage of the next discharge by 300%."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sentient-scalpel",
+    "slug": "sentient-scalpel",
+    "name": "Sentient Scalpel",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarSentientKiller",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SentientScalpelMod.png?56ffb",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.001,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.001,
+        "location": "Exo Taktis",
+        "rarity": "Legendary",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.001,
+        "location": "Vorac Basilisk",
+        "rarity": "Legendary",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Axio Basilisk",
+        "rarity": "Rare",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Exo Taktis",
+        "rarity": "Rare",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Exo Cutter",
+        "rarity": "Rare",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.0171,
+        "location": "Ionyx",
+        "rarity": "Uncommon",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.03,
+        "location": "Elite Exo Cutter",
+        "rarity": "Uncommon",
+        "type": "Sentient Scalpel"
+      },
+      {
+        "chance": 0.05,
+        "location": "Splintrix",
+        "rarity": "Common",
+        "type": "Sentient Scalpel"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "x1.04 Turret Damage vs Sentients"
+        ]
+      },
+      {
+        "stats": [
+          "x1.09 Turret Damage vs Sentients"
+        ]
+      },
+      {
+        "stats": [
+          "x1.14 Turret Damage vs Sentients"
+        ]
+      },
+      {
+        "stats": [
+          "x1.18 Turret Damage vs Sentients"
+        ]
+      },
+      {
+        "stats": [
+          "x1.23 Turret Damage vs Sentients"
+        ]
+      },
+      {
+        "stats": [
+          "x1.27 Turret Damage vs Sentients"
         ]
       }
     ]
@@ -90077,6 +96126,154 @@
       {
         "stats": [
           "On Headshot Kill:\\n+15 Energy"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "shatter-burst",
+    "slug": "shatter-burst",
+    "name": "Shatter Burst",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipThumperAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ShatterBurstMod.png?303b3",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0379,
+        "location": "Exo Flak",
+        "rarity": "Uncommon",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.0379,
+        "location": "Orm Basilisk",
+        "rarity": "Uncommon",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Bendar Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Iota Temple (Caches)",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Korm's Belt (Caches)",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Ogal Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Sover Strait (Caches)",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.0518,
+        "location": "Elite Exo Flak",
+        "rarity": "Common",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.0518,
+        "location": "Elite Orm Basilisk",
+        "rarity": "Common",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.0533,
+        "location": "Corpus Ramsled",
+        "rarity": "Common",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Beacon Shield Ring (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Bifrost Echo (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Falling Glory (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Luckless Expanse (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Orvin-Haarc (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Vesper Strait (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Shatter Burst"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Delivers a barrage of explosions across a large area."
+        ]
+      },
+      {
+        "stats": [
+          "Delivers a barrage of explosions across a large area."
+        ]
+      },
+      {
+        "stats": [
+          "Delivers a barrage of explosions across a large area."
+        ]
+      },
+      {
+        "stats": [
+          "Delivers a barrage of explosions across a large area."
+        ]
+      },
+      {
+        "stats": [
+          "Delivers a barrage of explosions across a large area."
+        ]
+      },
+      {
+        "stats": [
+          "Delivers a barrage of explosions across a large area."
         ]
       }
     ]
@@ -92945,6 +99142,57 @@
         ]
       }
     ]
+  },
+  {
+    "id": "shotgun-riven-mod",
+    "slug": "shotgun-riven-mod",
+    "name": "Shotgun Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/LotusShotgunRandomModRare",
+    "type": "Shotgun Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ShotgunRivenMod.png?c488c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0095,
+        "location": "Duviri/Endless: Repeated Rewards (Hard)",
+        "rarity": "Legendary",
+        "type": "Shotgun Riven Mod"
+      },
+      {
+        "chance": 0.022,
+        "location": "Sorties",
+        "rarity": "Rare",
+        "type": "Shotgun Riven Mod"
+      },
+      {
+        "chance": 0.027,
+        "location": "Duviri/Endless: Tier 6 (Hard)",
+        "rarity": "Rare",
+        "type": "Shotgun Riven Mod"
+      },
+      {
+        "chance": 0.027,
+        "location": "Duviri/Endless: Tier 7 (Hard)",
+        "rarity": "Rare",
+        "type": "Shotgun Riven Mod"
+      },
+      {
+        "chance": 0.08,
+        "location": "Enter Nihil's Oubliette, Rotation C",
+        "rarity": "Rare",
+        "type": "Shotgun Riven Mod"
+      }
+    ],
+    "levelStats": []
   },
   {
     "id": 751,
@@ -96078,6 +102326,51 @@
     ]
   },
   {
+    "id": "soaring-truth",
+    "slug": "soaring-truth",
+    "name": "Soaring Truth",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Syndicate/BallisticaMod",
+    "type": "Secondary Mod",
+    "rarity": "Rare",
+    "polarity": "vazarin",
+    "compatName": "Ballistica",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": [
+      {
+        "stats": [
+          "+50% Critical Chance",
+          "+0.3 'Purity'"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Critical Chance",
+          "+0.5 'Purity'"
+        ]
+      },
+      {
+        "stats": [
+          "+150% Critical Chance",
+          "+0.8 'Purity'"
+        ]
+      },
+      {
+        "stats": [
+          "+200% Critical Chance",
+          "+1 'Purity'"
+        ]
+      }
+    ]
+  },
+  {
     "id": 524,
     "slug": "soft-hands",
     "name": "Soft Hands",
@@ -97040,6 +103333,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "spidersetmod",
+    "slug": "spidersetmod",
+    "name": "Spidersetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Spider/SpiderSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 863,
@@ -98117,6 +104430,100 @@
       {
         "stats": [
           "+20% Movement Speed when Aiming"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "squad-renew",
+    "slug": "squad-renew",
+    "name": "Squad Renew",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/CrewShipRenewAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SquadRenewMod.png?de1da",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0007,
+        "location": "Axio Harpi",
+        "rarity": "Legendary",
+        "type": "Squad Renew"
+      },
+      {
+        "chance": 0.001,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Squad Renew"
+      },
+      {
+        "chance": 0.001,
+        "location": "Gyre Taktis",
+        "rarity": "Legendary",
+        "type": "Squad Renew"
+      },
+      {
+        "chance": 0.001,
+        "location": "Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Squad Renew"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Elite Gyre Taktis",
+        "rarity": "Legendary",
+        "type": "Squad Renew"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Elite Taro Harpi",
+        "rarity": "Legendary",
+        "type": "Squad Renew"
+      },
+      {
+        "chance": 0.0017,
+        "location": "Elite Axio Harpi",
+        "rarity": "Rare",
+        "type": "Squad Renew"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Heal all Railjack squad members by 50%.\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Heal all Railjack squad members by 55%.\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Heal all Railjack squad members by 60%.\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Heal all Railjack squad members by 65%.\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Heal all Railjack squad members by 70%.\\nCooldown: 300s"
+        ]
+      },
+      {
+        "stats": [
+          "Heal all Railjack squad members by 75%.\\nCooldown: 300s"
         ]
       }
     ]
@@ -100350,6 +106757,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "strainsetmod",
+    "slug": "strainsetmod",
+    "name": "Strainsetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Strain/StrainSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 805,
@@ -102829,6 +109256,60 @@
     ]
   },
   {
+    "id": "surging-dash",
+    "slug": "surging-dash",
+    "name": "Surging Dash",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Powersuits/Excalibur/SlashDashAugmentCard",
+    "type": "Warframe Mod",
+    "rarity": "Rare",
+    "polarity": "zenurik",
+    "compatName": "Excalibur",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SurgingDashMod.png?886ea",
+    "isAugment": true,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Arbiters of Hexis, Maxim",
+        "rarity": "Common",
+        "type": "Surging Dash (Excalibur)"
+      },
+      {
+        "chance": 1,
+        "location": "Steel Meridian, General",
+        "rarity": "Common",
+        "type": "Surging Dash (Excalibur)"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 2."
+        ]
+      },
+      {
+        "stats": [
+          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 4."
+        ]
+      },
+      {
+        "stats": [
+          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 6."
+        ]
+      },
+      {
+        "stats": [
+          "Slash Dash Augment: Each enemy hit during Slash Dash further increases your Melee Counter by 8."
+        ]
+      }
+    ]
+  },
+  {
     "id": 559,
     "slug": "surplus-diverters",
     "name": "Surplus Diverters",
@@ -103820,6 +110301,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "synthsetmod",
+    "slug": "synthsetmod",
+    "name": "Synthsetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Synth/SynthSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 290,
@@ -105694,6 +112195,26 @@
     ]
   },
   {
+    "id": "teksetmod",
+    "slug": "teksetmod",
+    "name": "Teksetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Tek/TekSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 157,
     "slug": "teleport-rush",
     "name": "Teleport Rush",
@@ -106311,6 +112832,274 @@
       {
         "stats": [
           "Tesla Nervos Augment: While a target has a Nervos attached, any damage dealt to it will be absorbed by the Nervos and channeled into a 8m burst of <DT_ELECTRICITY_COLOR>Electricity on death."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tether",
+    "slug": "tether",
+    "name": "Tether",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipTetherAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TetherMod.png?5cdc9",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0004,
+        "location": "Vorac Gox",
+        "rarity": "Legendary",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0006,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0006,
+        "location": "Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0047,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0052,
+        "location": "Axio Gox",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Orm Gox",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0095,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.0125,
+        "location": "002-Er",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Armis Ulta",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Auditor",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Azoth",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Derim Zahn",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Dru Pesfor",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Jad Teran",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Jen Dro",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Lockjaw & Sol",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "M-W.A.M.",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Nako Xol",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Pelna Cade",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Rana Del",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Raptor Rx",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Tia Mayn",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.0125,
+        "location": "Ved Xol",
+        "rarity": "Uncommon",
+        "type": "Tether Grenades"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Bendar Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Iota Temple (Caches)",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Korm's Belt (Caches)",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Ogal Cluster (Caches)",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.04,
+        "location": "Earth/Sover Strait (Caches)",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Beacon Shield Ring (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Bifrost Echo (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Falling Glory (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Luckless Expanse (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Orvin-Haarc (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Tether"
+      },
+      {
+        "chance": 0.087,
+        "location": "Venus/Vesper Strait (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Tether"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Ensnares enemies, increasing vulnerability to Railjack weaponry."
+        ]
+      },
+      {
+        "stats": [
+          "Ensnares enemies, increasing vulnerability to Railjack weaponry."
+        ]
+      },
+      {
+        "stats": [
+          "Ensnares enemies, increasing vulnerability to Railjack weaponry."
+        ]
+      },
+      {
+        "stats": [
+          "Ensnares enemies, increasing vulnerability to Railjack weaponry."
+        ]
+      },
+      {
+        "stats": [
+          "Ensnares enemies, increasing vulnerability to Railjack weaponry."
+        ]
+      },
+      {
+        "stats": [
+          "Ensnares enemies, increasing vulnerability to Railjack weaponry."
         ]
       }
     ]
@@ -108216,6 +115005,45 @@
     ]
   },
   {
+    "id": "transmute-core",
+    "slug": "transmute-core",
+    "name": "Transmute Core",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/TransmuteCores/BaseTransmuteCore",
+    "type": "Transmutation Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": "MOD",
+    "baseDrain": 0,
+    "fusionLimit": 0,
+    "description": "Removes credits cost and guarantees the resultant mod polarity.",
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Cephalon Simaris, Madurai Transmute Core\n",
+        "rarity": "Common",
+        "type": "Madurai Transmute Core"
+      },
+      {
+        "chance": 1,
+        "location": "Cephalon Simaris, Naramon Transmute Core\n",
+        "rarity": "Common",
+        "type": "Naramon Transmute Core"
+      },
+      {
+        "chance": 1,
+        "location": "Cephalon Simaris, Vazarin Transmute Core\n",
+        "rarity": "Common",
+        "type": "Vazarin Transmute Core"
+      }
+    ],
+    "levelStats": []
+  },
+  {
     "id": 4328,
     "slug": "tribunal",
     "name": "Tribunal",
@@ -109629,6 +116457,130 @@
     ]
   },
   {
+    "id": "turret-velocity",
+    "slug": "turret-velocity",
+    "name": "Turret Velocity",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarTurretRangeAndSpeed",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TurretVelocityMod.png?647e7",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0013,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Turret Velocity"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Turret Velocity"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Elite Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Turret Velocity"
+      },
+      {
+        "chance": 0.0015,
+        "location": "Kosma Outrider",
+        "rarity": "Rare",
+        "type": "Turret Velocity"
+      },
+      {
+        "chance": 0.002,
+        "location": "Elite Exo Outrider",
+        "rarity": "Rare",
+        "type": "Turret Velocity"
+      },
+      {
+        "chance": 0.002,
+        "location": "Exo Outrider",
+        "rarity": "Rare",
+        "type": "Turret Velocity"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+2.3% Turret Range",
+          "+5% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+4.6% Turret Range",
+          "+10% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+6.9% Turret Range",
+          "+15% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+9.2% Turret Range",
+          "+20% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+11.5% Turret Range",
+          "+25% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+13.8% Turret Range",
+          "+30% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+16.1% Turret Range",
+          "+35% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+18.4% Turret Range",
+          "+40% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+20.7% Turret Range",
+          "+45% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+23% Turret Range",
+          "+50% Turret Projectile Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+25.3% Turret Range",
+          "+55% Turret Projectile Speed"
+        ]
+      }
+    ]
+  },
+  {
     "id": 885,
     "slug": "twirling-spire",
     "name": "Twirling Spire",
@@ -110044,6 +116996,26 @@
         ]
       }
     ]
+  },
+  {
+    "id": "umbrasetmod",
+    "slug": "umbrasetmod",
+    "name": "Umbrasetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Umbra/UmbraSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 810,
@@ -112104,6 +119076,26 @@
     ]
   },
   {
+    "id": "vigilantesetmod",
+    "slug": "vigilantesetmod",
+    "name": "Vigilantesetmod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Vigilante/VigilanteSetMod",
+    "type": "Mod Set Mod",
+    "rarity": null,
+    "polarity": null,
+    "compatName": null,
+    "baseDrain": null,
+    "fusionLimit": null,
+    "description": null,
+    "wikiaThumbnail": null,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 798,
     "slug": "vigor",
     "name": "Vigor",
@@ -114138,6 +121130,231 @@
     ]
   },
   {
+    "id": "void-cloak",
+    "slug": "void-cloak",
+    "name": "Void Cloak",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Tactical/VoidCloak",
+    "type": "Plexus Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VoidCloakMod.png?b5a4c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0447,
+        "location": "Elite Exo Taktis",
+        "rarity": "Uncommon",
+        "type": "Void Cloak"
+      },
+      {
+        "chance": 0.0447,
+        "location": "Elite Orm Harpi",
+        "rarity": "Uncommon",
+        "type": "Void Cloak"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Exo Taktis",
+        "rarity": "Common",
+        "type": "Void Cloak"
+      },
+      {
+        "chance": 0.0569,
+        "location": "Orm Harpi",
+        "rarity": "Common",
+        "type": "Void Cloak"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Cloak from Enemies for 10s\\nEngine Speed reduced to 5%\\nCooldown: 120s"
+        ]
+      },
+      {
+        "stats": [
+          "Cloak from Enemies for 15s\\nEngine Speed reduced to 10%\\nCooldown: 120s"
+        ]
+      },
+      {
+        "stats": [
+          "Cloak from Enemies for 20s\\nEngine Speed reduced to 15%\\nCooldown: 120s"
+        ]
+      },
+      {
+        "stats": [
+          "Cloak from Enemies for 25s\\nEngine Speed reduced to 20%\\nCooldown: 120s"
+        ]
+      },
+      {
+        "stats": [
+          "Cloak from Enemies for 30s\\nEngine Speed reduced to 25%\\nCooldown: 120s"
+        ]
+      },
+      {
+        "stats": [
+          "Cloak from Enemies for 35s\\nEngine Speed reduced to 30%\\nCooldown: 120s"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "void-hole",
+    "slug": "void-hole",
+    "name": "Void Hole",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Abilities/CrewShipBlackHoleAbilityCard",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 0,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VoidHoleMod.png?2fa92",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0021,
+        "location": "Exo Cutter",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.03,
+        "location": "Elite Exo Cutter",
+        "rarity": "Uncommon",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/Flexa (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/H-2 Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/Nsu Grid (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.04,
+        "location": "Veil/R-9 Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Arc Silver (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Calabash (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Erato (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Lu-Yan (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Numina (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      },
+      {
+        "chance": 0.087,
+        "location": "Veil/Sabmir Cloud (Caches), Rotation A",
+        "rarity": "Rare",
+        "type": "Void Hole"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      },
+      {
+        "stats": [
+          "A black hole that draws in enemies, dealing damage."
+        ]
+      }
+    ]
+  },
+  {
     "id": 5261,
     "slug": "volatile-parasite",
     "name": "Volatile Parasite",
@@ -115219,6 +122436,191 @@
     ]
   },
   {
+    "id": "warhead",
+    "slug": "warhead",
+    "name": "Warhead",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanOrdnanceDamage",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 6,
+    "fusionLimit": 10,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/WarheadMod.png?fa257",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0048,
+        "location": "Elite Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0049,
+        "location": "Elite Axio Weaver",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Axio Weaver",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Cannon Battery",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Elite Gyre Cutter",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Kosma Taktis",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0111,
+        "location": "Taro Harpi",
+        "rarity": "Rare",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0151,
+        "location": "Elite Kosma Taktis",
+        "rarity": "Uncommon",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Gyre Cutter",
+        "rarity": "Uncommon",
+        "type": "Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Neptune/Cephalon Capture (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Annihilation (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Cephalon Capture (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Lunaro (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Team Annihilation (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Variant Annihilation (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Variant Cephalon Capture (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      },
+      {
+        "chance": 0.0248,
+        "location": "Saturn/Variant Team Annihilation (Conclave), Rotation A",
+        "rarity": "Rare",
+        "type": "Heavy Warhead"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+9.1% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+18.2% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+27.3% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+36.4% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+45.5% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+54.5% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+63.6% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+72.7% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+81.8% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+90.9% Ordnance Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Ordnance Damage"
+        ]
+      }
+    ]
+  },
+  {
     "id": 828,
     "slug": "warm-coat",
     "name": "Warm Coat",
@@ -115379,6 +122781,100 @@
     "isAugment": false,
     "drops": [],
     "levelStats": []
+  },
+  {
+    "id": "waveband-disruptor",
+    "slug": "waveband-disruptor",
+    "name": "Waveband Disruptor",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/LavanCritBypassShieldTurret",
+    "type": "Plexus Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/WavebandDisruptorMod.png?40250",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0047,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Waveband Disruptor"
+      },
+      {
+        "chance": 0.0083,
+        "location": "Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Waveband Disruptor"
+      },
+      {
+        "chance": 0.0087,
+        "location": "Elite Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Waveband Disruptor"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Waveband Disruptor"
+      },
+      {
+        "chance": 0.0166,
+        "location": "Vorac Harpi",
+        "rarity": "Uncommon",
+        "type": "Waveband Disruptor"
+      },
+      {
+        "chance": 0.0227,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Uncommon",
+        "type": "Waveband Disruptor"
+      },
+      {
+        "chance": 0.0277,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Uncommon",
+        "type": "Waveband Disruptor"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+8.5% chance for Turret Critical Hits to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+17% chance for Turret Critical Hits to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+25.5% chance for Turret Critical Hits to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+34% chance for Turret Critical Hits to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+42.5% chance for Turret Critical Hits to ignore enemy Shields"
+        ]
+      },
+      {
+        "stats": [
+          "+51% chance for Turret Critical Hits to ignore enemy Shields"
+        ]
+      }
+    ]
   },
   {
     "id": 347,
@@ -115819,6 +123315,136 @@
     "levelStats": []
   },
   {
+    "id": "worm-s-torment",
+    "slug": "worm-s-torment",
+    "name": "Worm’s Torment",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Railjack/Gunnery/VidarGrineerKiller",
+    "type": "Plexus Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": null,
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Worm%27sTormentMod.png?04cca",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.001,
+        "location": "Elite Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.001,
+        "location": "Gyre Taktis",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.001,
+        "location": "Vorac Basilisk",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.001,
+        "location": "Vorac Harpi",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Elite Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Elite Gyre Taktis",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0013,
+        "location": "Gyre Outrider",
+        "rarity": "Legendary",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Elite Vorac Basilisk",
+        "rarity": "Rare",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0021,
+        "location": "Exo Cutter",
+        "rarity": "Rare",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.003,
+        "location": "Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0032,
+        "location": "Elite Vorac Weaver",
+        "rarity": "Rare",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.0039,
+        "location": "Vorac Gox",
+        "rarity": "Rare",
+        "type": "Worm's Torment"
+      },
+      {
+        "chance": 0.03,
+        "location": "Elite Exo Cutter",
+        "rarity": "Uncommon",
+        "type": "Worm's Torment"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "x1.04 Turret Damage vs Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.09 Turret Damage vs Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.14 Turret Damage vs Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.18 Turret Damage vs Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.23 Turret Damage vs Grineer"
+        ]
+      },
+      {
+        "stats": [
+          "x1.27 Turret Damage vs Grineer"
+        ]
+      }
+    ]
+  },
+  {
     "id": 7187,
     "slug": "worthy-comradery",
     "name": "Worthy Comradery",
@@ -116071,6 +123697,57 @@
         ]
       }
     ]
+  },
+  {
+    "id": "zaw-riven-mod",
+    "slug": "zaw-riven-mod",
+    "name": "Zaw Riven Mod",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Randomized/LotusModularMeleeRandomModRare",
+    "type": "Zaw Riven Mod",
+    "rarity": "Common",
+    "polarity": "universal",
+    "compatName": null,
+    "baseDrain": 82642480,
+    "fusionLimit": 251658954,
+    "description": null,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ZawRivenMod.png?c488c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0095,
+        "location": "Duviri/Endless: Repeated Rewards (Hard)",
+        "rarity": "Legendary",
+        "type": "Zaw Riven Mod"
+      },
+      {
+        "chance": 0.01,
+        "location": "Sorties",
+        "rarity": "Rare",
+        "type": "Zaw Riven Mod"
+      },
+      {
+        "chance": 0.012,
+        "location": "Duviri/Endless: Tier 6 (Hard)",
+        "rarity": "Rare",
+        "type": "Zaw Riven Mod"
+      },
+      {
+        "chance": 0.012,
+        "location": "Duviri/Endless: Tier 7 (Hard)",
+        "rarity": "Rare",
+        "type": "Zaw Riven Mod"
+      },
+      {
+        "chance": 0.035,
+        "location": "Enter Nihil's Oubliette, Rotation C",
+        "rarity": "Rare",
+        "type": "Zaw Riven Mod"
+      }
+    ],
+    "levelStats": []
   },
   {
     "id": 5172,
