@@ -4,15 +4,21 @@
   /* ================== Text Icons (DT_...) → <img> inline ================== */
   const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
 
+  // mapping minimal : chaque balise -> nom de fichier PNG (aucun label/pastille)
   const DT_ICONS = {
+    // Physiques
     DT_IMPACT_COLOR:     "ImpactSymbol.png",
     DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
     DT_SLASH_COLOR:      "SlashSymbol.png",
+
+    // Élémentaires
     DT_FIRE_COLOR:       "HeatSymbol.png",
     DT_FREEZE_COLOR:     "ColdSymbol.png",
     DT_ELECTRICITY_COLOR:"ElectricitySymbol.png",
     DT_POISON_COLOR:     "ToxinSymbol.png",
     DT_TOXIN_COLOR:      "ToxinSymbol.png",
+
+    // Combinés
     DT_GAS_COLOR:        "GasSymbol.png",
     DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
     DT_RADIATION_COLOR:  "RadiationSymbol.png",
@@ -20,6 +26,8 @@
     DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
     DT_BLAST_COLOR:      "BlastSymbol.png",
     DT_EXPLOSION_COLOR:  "BlastSymbol.png",
+
+    // Divers / Void
     DT_RADIANT_COLOR:    "VoidSymbol.png",
     DT_SENTIENT_COLOR:   "SentientSymbol.png",
     DT_RESIST_COLOR:     "ResistSymbol.png",
@@ -27,30 +35,45 @@
     DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
   };
 
+  // tags additionnels simples (ex : <ENERGY>, <PRE_ATTACK>)
   const EXTRA_ICONS = {
     ENERGY: "EnergySymbol.png",
     PRE_ATTACK: "LeftclicSymbol.png",
   };
 
+  // Rend le texte en remplaçant les <DT_...> par une icône inline
+  // + absorbe les espaces/retours autour de la balise pour éviter les sauts de ligne.
   function renderTextIcons(input) {
     let s = String(input ?? "");
+
+    // normaliser d'abord
     s = s.replace(/\r\n?|\r/g, "\n")
          .replace(/<\s*br\s*\/?>/gi, "\n")
          .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+
+    // échapper le HTML (sécurité)
     s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // remplacer les DT_* (forme brute ou encodée) en "mangeant" le blanc autour
     s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = DT_ICONS[key];
       if (!file) return "";
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
+
+    // remplacer quelques tags additionnels (ex: <ENERGY>, <PRE_ATTACK>) — même logique
     s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = EXTRA_ICONS[key];
-      if (!file) return `&lt;${key}&gt;`;
+      if (!file) return `&lt;${key}&gt;`; // laisser encodé si inconnu, on nettoie juste après
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
+
+    // supprimer toute autre balise technique restante (p.ex. &lt;LOWER_IS_BETTER&gt;)
     s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
+
+    // ménage
     s = s.replace(/[ \t]{2,}/g, " ");
     s = s.replace(/\n/g, "<br>");
     return s.trim();
@@ -58,7 +81,7 @@
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
-    // Priorité à ton API
+    // ✅ Priorise ton API Cephalon
     "https://cephalon-wodan-production.up.railway.app/mods",
     // replis warframestat
     "https://api.warframestat.us/mods?language=en",
@@ -91,21 +114,23 @@
 
   /* === Catégories calculées pour le filtrage ===
      On garde m.type pour l’affichage (ex: “Primary Mod”, “Stance Mod”),
-     et on ajoute des catégories synthétiques : Aura, Sniper, Rifle, Augment Mod. */
+     et on ajoute des catégories synthétiques : Aura Mod, Sniper, Rifle, Augment Mod. */
   function categoryKeys(m) {
     const t = norm(m.type);
     const c = norm(m.compatibility);
+    const name = norm(m.name);
 
     const keys = new Set();
-    if (t) keys.add(t);             // conserve les types d’origine
+    if (t) keys.add(t);             // conserve le type d’origine (ex: “Primary Mod”, “Stance Mod”)
 
-    // Ajouts synthétiques
-    if (/aura/i.test(t)) keys.add("Aura Mod");                        // uniquement si le type est vraiment aura
-    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper Mod");
-    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle Mod");
+    // Ajouts synthétiques ciblés
+    if (/aura/i.test(t)) keys.add("Aura Mod");         // ▶️ libellé exact demandé
+    if (/exilus/i.test(t)) keys.add("Exilus Mod");
+    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper");
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle");
 
-    // ✅ Nouvelle catégorie : Augment Mod
-    if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(norm(m.name))) {
+    // ▶️ Augment Mod: via flag ou heuristique nom/type
+    if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(name)) {
       keys.add("Augment Mod");
     }
 
@@ -129,7 +154,7 @@
     const s = norm(p).toLowerCase();
     if (!s) return "Any";
     const aliases = {
-      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus:"Exilus",
+      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
       umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
     };
@@ -154,21 +179,25 @@
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
+  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte (garde les <DT_...>) ================== */
+  /* ================== Nettoyage de texte (sans supprimer les <DT_...>) ================== */
   function cleanFxKeepTokens(s) {
     if (!s) return "";
     let t = String(s);
-    t = t.replace(/\\n/g, "\n");
+    t = t.replace(/\\n/g, "\n");                 // \n échappés -> réels
     t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+    // NE PAS supprimer <DT_...> !
+    // Ne pas supprimer toute balise générique ici (certaines descriptions ont des tags bénins).
+    // On se contente d’aplatir espaces multiples.
     t = t.replace(/[ \t]{2,}/g, " ").trim();
     return t;
   }
 
-  /* ================== Effets & SetBonus ================== */
+  /* ================== Effets ================== */
   function effectsFromLevelStats(m){
     const ls = Array.isArray(m.levelStats) ? m.levelStats : null;
     if (!ls || !ls.length) return [];
@@ -199,19 +228,6 @@
     return Array.from(new Set(desc));
   }
 
-  // 🔹 Normalisation d’un champ setBonus (string | string[])
-  function setBonusLines(sb){
-    if (!sb) return [];
-    if (Array.isArray(sb)) return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
-    const s = cleanFxKeepTokens(String(sb));
-    return s
-      .replace(/\r?\n/g, "|")
-      .replace(/[•;·]/g, "|")
-      .split("|")
-      .map(x => cleanFxKeepTokens(x))
-      .filter(Boolean);
-  }
-
   /* ================== Exclusions par défaut ================== */
   function isFocus(m){
     const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
@@ -228,6 +244,8 @@
   function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
+
+  // ✅ PATCH: bonus si l’item vient de ton API (slug/cats/setBonus)
   function qualityForPrimary(m){
     const imgBonus = wikiThumbRaw(m) ? 2000 : 0;
     const textBonus = descScore(m);
@@ -240,6 +258,7 @@
   }
 
   /* ================== Fusion des doublons PAR NOM ================== */
+
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
@@ -259,8 +278,17 @@
       return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
     }
 
-    const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus)) || primary;
+    // ✅ PATCH: préserver des champs Cephalon utiles (slug/cats/setBonus) + isAugment
+    const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus || x.isAugment)) || primary;
     const setBonus = withMeta.setBonus || null;
+
+    // ▶️ Nouveau : calcul isAugment final (pour “Augment Mod”)
+    const isAug =
+      items.some(x =>
+        x && (x.isAugment === true ||
+              /augment/i.test(norm(x.type)) ||
+              /augment/i.test(norm(x.name)))
+      );
 
     return {
       name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
@@ -274,9 +302,11 @@
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
 
+      // ✅ champs Cephalon conservés
       slug: withMeta.slug || "",
       categories: Array.isArray(withMeta.categories) ? withMeta.categories.slice() : [],
       setBonus,
+      isAugment: isAug, // ◀️ important pour “Augment Mod”
 
       wikiImage: img,
       imgVerified: !!verified,
@@ -307,17 +337,29 @@
     return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
   }
 
+  function setBonusLines(sb){
+    if (!sb) return [];
+    if (Array.isArray(sb)) return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
+    const s = cleanFxKeepTokens(String(sb));
+    return s
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxKeepTokens(x))
+      .filter(Boolean);
+  }
+
   function modCard(m){
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
-    const displayCat = m.type || "";
+    const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
     const sbLines = setBonusLines(m.setBonus);
 
     const chipsLeft = [
-      displayCat && badge(displayCat),
+      cat && badge(cat),
       compat && badge(compat),
       rar && badge(rar, `rar-${rar}`),
       Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "",
@@ -340,8 +382,8 @@
         <div class="mod-effects">
           ${
             lines.length
-              ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
-              : `<div class="fx muted">No effect data in API</div>`
+            ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
+            : `<div class="fx muted">No effect data in API</div>`
           }
           ${
             sbLines.length
@@ -359,12 +401,11 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
-    const displayCat = m.type || "";
     return `
       <tr class="border-t border-[rgba(255,255,255,.06)]">
         <td class="p-2"><img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" class="w-20 h-12 object-contain"></td>
         <td class="p-2">${escapeHtml(m.name)} ${!m.imgVerified ? '<span class="badge gold ml-1">Unreleased</span>' : ''}</td>
-        <td class="p-2">${escapeHtml(displayCat)}</td>
+        <td class="p-2">${escapeHtml(m.type || "")}</td>
         <td class="p-2">${escapeHtml(m.compatibility || "")}</td>
         <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${pol}" class="inline w-5 h-5 align-[-2px]"> ${pol}` : ""}</td>
         <td class="p-2">${rar}</td>
@@ -378,9 +419,12 @@
 
     for (const m of arr) {
       if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
+
+      // Ajouter toutes les clés de catégorie calculées
       for (const lab of categoryKeys(m)) {
         if (lab && !isDeniedType(lab)) cats.add(lab);
       }
+
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
@@ -562,58 +606,15 @@
   /* ================== Fetch + boot ================== */
   async function fetchMods(){
     const errors = [];
-
-    function withTimeout(promise, ms = 10000){
-      return Promise.race([
-        promise,
-        new Promise((_, reject) => setTimeout(()=>reject(new Error(`Timeout ${ms}ms`)), ms))
-      ]);
-    }
-
-    async function safeJson(resp){
-      const ct = String(resp.headers.get("content-type") || "").toLowerCase();
-      const text = await resp.text();
-      if (!ct.includes("application/json")) {
-        try { return JSON.parse(text); }
-        catch(e){ throw new Error(`Non-JSON response (${resp.status})`); }
-      }
-      try { return JSON.parse(text); }
-      catch(e){ throw new Error(`JSON parse error: ${e.message}`); }
-    }
-
-    function pickArray(payload){
-      if (Array.isArray(payload)) return payload;
-      if (payload && Array.isArray(payload.data)) return payload.data;
-      if (payload && Array.isArray(payload.mods)) return payload.mods;
-      return null;
-    }
-
     for (const url of ENDPOINTS) {
       try {
-        const r = await withTimeout(fetch(url, { cache: "no-store", mode: "cors" }), 10000);
+        const r = await fetch(url, { cache: "no-store" });
         if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
-
-        const data = await safeJson(r);
-        const arr = pickArray(data);
-        if (Array.isArray(arr) && arr.length >= 0) {
-          console.debug(`[mods] loaded from ${url}:`, arr.length);
-          return arr;
-        }
-        errors.push(`${url} → unexpected payload shape`);
-      } catch (e) {
-        errors.push(`${url} → ${e.message || e}`);
-      }
+        const data = await r.json();
+        if (Array.isArray(data) && data.length >= 0) return data;
+      } catch (e) { errors.push(`${url} → ${e.message||e}`); }
     }
-
-    console.warn("[mods] endpoints empty/failed:", errors);
-    const status = document.querySelector("#status");
-    if (status) {
-      status.textContent = `Failed to load mods.\n${errors.join("\n")}`;
-      status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
-      status.style.background = "rgba(255,0,0,.08)";
-      status.style.color = "#ffd1d1";
-      status.style.whiteSpace = "pre-wrap";
-    }
+    console.warn("[mods] endpoints empty/failed]:", errors);
     return [];
   }
 
