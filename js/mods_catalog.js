@@ -100,9 +100,9 @@
     if (t) keys.add(t);             // conserve les types d’origine
 
     // Ajouts synthétiques
-    if (/aura/i.test(t)) keys.add("Aura");                        // uniquement si le type est vraiment aura
-    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper");
-    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle");
+    if (/aura/i.test(t)) keys.add("Aura Mod");                        // uniquement si le type est vraiment aura
+    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper Mod");
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle Mod");
 
     // ✅ Nouvelle catégorie : Augment Mod
     if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(norm(m.name))) {
