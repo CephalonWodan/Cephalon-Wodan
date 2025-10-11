@@ -81,6 +81,9 @@
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
+    // ✅ Priorise ton API Cephalon
+    "https://cephalon-wodan-production.up.railway.app/mods",
+    // replis warframestat
     "https://api.warframestat.us/mods?language=en",
     "https://api.warframestat.us/mods/?language=en",
     "https://api.warframestat.us/mods/",
@@ -215,9 +218,26 @@
   function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
-  function qualityForPrimary(m){ return (wikiThumbRaw(m) ? 2000 : 0) + descScore(m) + (m.fusionLimit || 0); }
+
+  // ✅ PATCH: bonus si l’item vient de ton API (slug/cats/setBonus)
+  function qualityForPrimary(m){
+    const imgBonus = wikiThumbRaw(m) ? 2000 : 0;
+    const textBonus = descScore(m);
+    const rankBonus = (m.fusionLimit || 0);
+    const cephalonBonus =
+      (m.slug ? 150 : 0) +
+      (Array.isArray(m.categories) && m.categories.length ? 100 : 0) +
+      (m.setBonus ? 200 : 0);
+    return imgBonus + textBonus + rankBonus + cephalonBonus;
+  }
 
   /* ================== Fusion des doublons PAR NOM ================== */
+
+  // (utilitaire interne pour choisir un meilleur item selon un score)
+  function pickWithScore(items, scorer){
+    return items.slice().sort((a,b)=> scorer(b) - scorer(a))[0];
+  }
+
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
@@ -237,6 +257,10 @@
       return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
     }
 
+    // ✅ PATCH: préserver des champs Cephalon utiles (slug/cats/setBonus)
+    const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus)) || primary;
+    const setBonus = withMeta.setBonus || null;
+
     return {
       name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
       description: pick(bestTxt.description, primary.description),
@@ -248,6 +272,11 @@
       rarity: pickRarity(primary.rarity, primary.rarityString, bestTxt.rarity, bestTxt.rarityString),
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
+
+      // ✅ PATCH: champs Cephalon conservés
+      slug: withMeta.slug || "",
+      categories: Array.isArray(withMeta.categories) ? withMeta.categories.slice() : [],
+      setBonus,
 
       wikiImage: img,
       imgVerified: !!verified,
