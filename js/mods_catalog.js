@@ -65,7 +65,7 @@
     // remplacer quelques tags additionnels (ex: <ENERGY>, <PRE_ATTACK>) — même logique
     s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = EXTRA_ICONS[key];
-      if (!file) return `&lt;${key}&gt;`; // laisser encodé si inconnu, on nettoie juste après
+      if (!file) return `&lt;${key}&gt;`;
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
@@ -119,7 +119,7 @@
       Unairu:  "Unairu_Pol.svg",  Umbra:   "Umbra_Pol.svg",
       Penjaga: "Penjaga_Pol.svg", Any:     "Any_Pol.svg",
       None:    "Any_Pol.svg",     "":      "Any_Pol.svg",
-      Aura:    "Aura_Pol.svg",    Exilus:      "Exilus_Pol.svg",
+      Aura:    "Aura_Pol.svg",    Exilus:  "Exilus_Pol.svg",
     };
     const key = canonPolarity(p);
     return `img/polarities/${map[key] || "Any_Pol.svg"}`;
@@ -128,7 +128,7 @@
     const s = norm(p).toLowerCase();
     if (!s) return "Any";
     const aliases = {
-      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
+      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus:"Exilus",
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
       umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
     };
@@ -162,11 +162,8 @@
   function cleanFxKeepTokens(s) {
     if (!s) return "";
     let t = String(s);
-    t = t.replace(/\\n/g, "\n");                 // \n échappés -> réels
+    t = t.replace(/\\n/g, "\n");
     t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
-    // NE PAS supprimer <DT_...> !
-    // Ne pas supprimer toute balise générique ici (certaines descriptions ont des tags bénins).
-    // On se contente d’aplatir espaces multiples.
     t = t.replace(/[ \t]{2,}/g, " ").trim();
     return t;
   }
@@ -232,11 +229,6 @@
   }
 
   /* ================== Fusion des doublons PAR NOM ================== */
-
-  // (utilitaire interne pour choisir un meilleur item selon un score)
-  function pickWithScore(items, scorer){
-    return items.slice().sort((a,b)=> scorer(b) - scorer(a))[0];
-  }
 
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
@@ -310,7 +302,7 @@
   function modCard(m){
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
-    const rar = rarityKey(m.rarity || "");
+    aconst rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
     const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
@@ -542,15 +534,61 @@
   /* ================== Fetch + boot ================== */
   async function fetchMods(){
     const errors = [];
+
+    // timeout helper
+    function withTimeout(promise, ms = 10000){
+      return Promise.race([
+        promise,
+        new Promise((_, reject) => setTimeout(()=>reject(new Error(`Timeout ${ms}ms`)), ms))
+      ]);
+    }
+
+    // parse sécurisé : tolère text/plain et montre une erreur claire si HTML
+    async function safeJson(resp){
+      const ct = String(resp.headers.get("content-type") || "").toLowerCase();
+      const text = await resp.text();
+      if (!ct.includes("application/json")) {
+        try { return JSON.parse(text); }
+        catch(e){ throw new Error(`Non-JSON response (${resp.status})`); }
+      }
+      try { return JSON.parse(text); }
+      catch(e){ throw new Error(`JSON parse error: ${e.message}`); }
+    }
+
+    // normaliser la forme en tableau
+    function pickArray(payload){
+      if (Array.isArray(payload)) return payload;
+      if (payload && Array.isArray(payload.data)) return payload.data;
+      if (payload && Array.isArray(payload.mods)) return payload.mods;
+      return null;
+    }
+
     for (const url of ENDPOINTS) {
       try {
-        const r = await fetch(url, { cache: "no-store" });
+        const r = await withTimeout(fetch(url, { cache: "no-store", mode: "cors" }), 10000);
         if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
-        const data = await r.json();
-        if (Array.isArray(data) && data.length) return data;
-      } catch (e) { errors.push(`${url} → ${e.message||e}`); }
+
+        const data = await safeJson(r);
+        const arr = pickArray(data);
+        if (Array.isArray(arr) && arr.length >= 0) {
+          console.debug(`[mods] loaded from ${url}:`, arr.length);
+          return arr;
+        }
+        errors.push(`${url} → unexpected payload shape`);
+      } catch (e) {
+        errors.push(`${url} → ${e.message || e}`);
+      }
     }
-    console.warn("[mods] endpoints empty/failed]:", errors);
+
+    console.warn("[mods] endpoints empty/failed:", errors);
+    const status = document.querySelector("#status");
+    if (status) {
+      status.textContent = `Failed to load mods.\n${errors.join("\n")}`;
+      status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
+      status.style.background = "rgba(255,0,0,.08)";
+      status.style.color = "#ffd1d1";
+      status.style.whiteSpace = "pre-wrap";
+    }
     return [];
   }
 
