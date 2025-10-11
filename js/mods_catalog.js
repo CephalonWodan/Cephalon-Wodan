@@ -4,21 +4,15 @@
   /* ================== Text Icons (DT_...) → <img> inline ================== */
   const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
 
-  // mapping minimal : chaque balise -> nom de fichier PNG (aucun label/pastille)
   const DT_ICONS = {
-    // Physiques
     DT_IMPACT_COLOR:     "ImpactSymbol.png",
     DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
     DT_SLASH_COLOR:      "SlashSymbol.png",
-
-    // Élémentaires
     DT_FIRE_COLOR:       "HeatSymbol.png",
     DT_FREEZE_COLOR:     "ColdSymbol.png",
     DT_ELECTRICITY_COLOR:"ElectricitySymbol.png",
     DT_POISON_COLOR:     "ToxinSymbol.png",
     DT_TOXIN_COLOR:      "ToxinSymbol.png",
-
-    // Combinés
     DT_GAS_COLOR:        "GasSymbol.png",
     DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
     DT_RADIATION_COLOR:  "RadiationSymbol.png",
@@ -26,8 +20,6 @@
     DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
     DT_BLAST_COLOR:      "BlastSymbol.png",
     DT_EXPLOSION_COLOR:  "BlastSymbol.png",
-
-    // Divers / Void
     DT_RADIANT_COLOR:    "VoidSymbol.png",
     DT_SENTIENT_COLOR:   "SentientSymbol.png",
     DT_RESIST_COLOR:     "ResistSymbol.png",
@@ -35,45 +27,30 @@
     DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
   };
 
-  // tags additionnels simples (ex : <ENERGY>, <PRE_ATTACK>)
   const EXTRA_ICONS = {
     ENERGY: "EnergySymbol.png",
     PRE_ATTACK: "LeftclicSymbol.png",
   };
 
-  // Rend le texte en remplaçant les <DT_...> par une icône inline
-  // + absorbe les espaces/retours autour de la balise pour éviter les sauts de ligne.
   function renderTextIcons(input) {
     let s = String(input ?? "");
-
-    // normaliser d'abord
     s = s.replace(/\r\n?|\r/g, "\n")
          .replace(/<\s*br\s*\/?>/gi, "\n")
          .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
-
-    // échapper le HTML (sécurité)
     s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-    // remplacer les DT_* (forme brute ou encodée) en "mangeant" le blanc autour
     s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = DT_ICONS[key];
       if (!file) return "";
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
-
-    // remplacer quelques tags additionnels (ex: <ENERGY>, <PRE_ATTACK>) — même logique
     s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
       const file = EXTRA_ICONS[key];
       if (!file) return `&lt;${key}&gt;`;
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
-
-    // supprimer toute autre balise technique restante (p.ex. &lt;LOWER_IS_BETTER&gt;)
     s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
-
-    // ménage
     s = s.replace(/[ \t]{2,}/g, " ");
     s = s.replace(/\n/g, "<br>");
     return s.trim();
@@ -81,9 +58,7 @@
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
-    // ✅ Priorise ton API Cephalon
     "https://cephalon-wodan-production.up.railway.app/mods",
-    // replis warframestat
     "https://api.warframestat.us/mods?language=en",
     "https://api.warframestat.us/mods/?language=en",
     "https://api.warframestat.us/mods/",
@@ -97,7 +72,7 @@
   // ---- Category denylist (exclues de la sidebar)
   const CATEGORY_DENY = [
     "Focus Way",
-    "Mod",           // ⛔️ on retire la catégorie “Mod”
+    "Mod",                 // ⛔️ on retire UNIQUEMENT la catégorie générique “Mod”
     "Mod Set Mod",
     "Arch-Gun Riven Mod",
     "Companion Weapon Riven Mod",
@@ -112,18 +87,22 @@
   const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
   const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
 
-  /* === Catégorie normalisée affichée côté UI (Aura / Sniper / Rifle, etc.) === */
-  function catLabel(m) {
+  /* === Catégories pour le filtrage ===
+     On conserve m.type pour l’affichage (ex: “Primary Mod”, “Stance Mod”),
+     et on ajoute des catégories synthétiques: Aura, Sniper, Rifle. */
+  function categoryKeys(m) {
     const t = norm(m.type);
     const c = norm(m.compatibility);
-    // Aura : type “Aura” ou drain négatif
-    if (/aura/i.test(t) || (Number.isFinite(m.baseDrain) && m.baseDrain < 0)) return "Aura";
-    // Sniper : type/compat contient “Sniper”
-    if (/sniper/i.test(t) || /sniper/i.test(c)) return "Sniper";
-    // Rifle : type/compat contient “Rifle” ou “Primary”
-    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) return "Rifle";
-    // Sinon on renvoie le type tel quel
-    return t;
+
+    const keys = new Set();
+    if (t) keys.add(t);             // préserve “Primary Mod”, “Stance Mod”, etc.
+
+    // Ajouts synthétiques demandés :
+    if (/aura/i.test(t)) keys.add("Aura");                      // Aura → seulement si le type le dit
+    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper");
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle");
+
+    return Array.from(keys);
   }
 
   /* ================== Polarity (icônes locales) ================== */
@@ -168,12 +147,11 @@
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte (sans supprimer les <DT_...>) ================== */
+  /* ================== Nettoyage de texte ================== */
   function cleanFxKeepTokens(s) {
     if (!s) return "";
     let t = String(s);
@@ -230,8 +208,6 @@
   function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
-
-  // ✅ PATCH: bonus si l’item vient de ton API (slug/cats/setBonus)
   function qualityForPrimary(m){
     const imgBonus = wikiThumbRaw(m) ? 2000 : 0;
     const textBonus = descScore(m);
@@ -263,7 +239,6 @@
       return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
     }
 
-    // ✅ PATCH: préserver des champs Cephalon utiles (slug/cats/setBonus)
     const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus)) || primary;
     const setBonus = withMeta.setBonus || null;
 
@@ -279,7 +254,6 @@
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
 
-      // ✅ PATCH: champs Cephalon conservés
       slug: withMeta.slug || "",
       categories: Array.isArray(withMeta.categories) ? withMeta.categories.slice() : [],
       setBonus,
@@ -318,11 +292,13 @@
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
-    const cat = catLabel(m); // ✅ catégorie normalisée
+
+    // Affichage: on garde le type d’origine (ex: Primary Mod / Stance Mod)
+    const displayCat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
     const chipsLeft = [
-      cat && badge(cat),
+      displayCat && badge(displayCat),
       compat && badge(compat),
       rar && badge(rar, `rar-${rar}`),
       Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "",
@@ -357,12 +333,12 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
-    const cat = catLabel(m); // ✅
+    const displayCat = m.type || "";
     return `
       <tr class="border-t border-[rgba(255,255,255,.06)]">
         <td class="p-2"><img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" class="w-20 h-12 object-contain"></td>
         <td class="p-2">${escapeHtml(m.name)} ${!m.imgVerified ? '<span class="badge gold ml-1">Unreleased</span>' : ''}</td>
-        <td class="p-2">${escapeHtml(cat || "")}</td>
+        <td class="p-2">${escapeHtml(displayCat)}</td>
         <td class="p-2">${escapeHtml(m.compatibility || "")}</td>
         <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${pol}" class="inline w-5 h-5 align-[-2px]"> ${pol}` : ""}</td>
         <td class="p-2">${rar}</td>
@@ -376,8 +352,9 @@
 
     for (const m of arr) {
       if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
-      const label = catLabel(m);                 // ✅ catégorie normalisée
-      if (label && !isDeniedType(label)) cats.add(label);
+      for (const lab of categoryKeys(m)) {
+        if (lab && !isDeniedType(lab)) cats.add(lab);
+      }
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
@@ -458,7 +435,12 @@
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
     if (STATE.onlyVerified) arr = arr.filter(m => m.imgVerified === true);
 
-    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(catLabel(m))); // ✅
+    if (STATE.fCats.size) {
+      arr = arr.filter(m => {
+        const keys = new Set(categoryKeys(m));
+        return [...STATE.fCats].some(k => keys.has(k));
+      });
+    }
 
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
@@ -479,7 +461,11 @@
       if (sort === "polarity") return canonPolarity(a.polarity||"").localeCompare(canonPolarity(b.polarity||"")) || (a.name||"").localeCompare(b.name||"");
       if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||"");
       if (sort === "compat")   return (a.compatibility||"").localeCompare(b.compatibility||"") || (a.name||"").localeCompare(b.name||"");
-      if (sort === "category") return catLabel(a).localeCompare(catLabel(b)) || (a.name||"").localeCompare(b.name||""); // ✅
+      if (sort === "category") {
+        const ca = (categoryKeys(a)[0] || a.type || "");
+        const cb = (categoryKeys(b)[0] || b.type || "");
+        return ca.localeCompare(cb) || (a.name||"").localeCompare(b.name||"");
+      }
       return (a.name||"").localeCompare(b.name||"");
     });
 
