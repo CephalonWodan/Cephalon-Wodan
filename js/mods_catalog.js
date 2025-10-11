@@ -302,7 +302,7 @@
   function modCard(m){
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
-    aconst rar = rarityKey(m.rarity || "");
+    const rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
     const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
