@@ -97,6 +97,7 @@
   // ---- Category denylist (exclues de la sidebar)
   const CATEGORY_DENY = [
     "Focus Way",
+    "Mod",           // ⛔️ on retire la catégorie “Mod”
     "Mod Set Mod",
     "Arch-Gun Riven Mod",
     "Companion Weapon Riven Mod",
@@ -110,6 +111,20 @@
   const normTypeName = (s) => norm(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
   const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
+
+  /* === Catégorie normalisée affichée côté UI (Aura / Sniper / Rifle, etc.) === */
+  function catLabel(m) {
+    const t = norm(m.type);
+    const c = norm(m.compatibility);
+    // Aura : type “Aura” ou drain négatif
+    if (/aura/i.test(t) || (Number.isFinite(m.baseDrain) && m.baseDrain < 0)) return "Aura";
+    // Sniper : type/compat contient “Sniper”
+    if (/sniper/i.test(t) || /sniper/i.test(c)) return "Sniper";
+    // Rifle : type/compat contient “Rifle” ou “Primary”
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) return "Rifle";
+    // Sinon on renvoie le type tel quel
+    return t;
+  }
 
   /* ================== Polarity (icônes locales) ================== */
   const POL_ICON = (p) => {
@@ -229,7 +244,6 @@
   }
 
   /* ================== Fusion des doublons PAR NOM ================== */
-
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
@@ -304,7 +318,7 @@
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
-    const cat = m.type || "";
+    const cat = catLabel(m); // ✅ catégorie normalisée
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
     const chipsLeft = [
@@ -343,11 +357,12 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
+    const cat = catLabel(m); // ✅
     return `
       <tr class="border-t border-[rgba(255,255,255,.06)]">
         <td class="p-2"><img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" class="w-20 h-12 object-contain"></td>
         <td class="p-2">${escapeHtml(m.name)} ${!m.imgVerified ? '<span class="badge gold ml-1">Unreleased</span>' : ''}</td>
-        <td class="p-2">${escapeHtml(m.type || "")}</td>
+        <td class="p-2">${escapeHtml(cat || "")}</td>
         <td class="p-2">${escapeHtml(m.compatibility || "")}</td>
         <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${pol}" class="inline w-5 h-5 align-[-2px]"> ${pol}` : ""}</td>
         <td class="p-2">${rar}</td>
@@ -361,8 +376,8 @@
 
     for (const m of arr) {
       if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
-      const t = m.type || "";
-      if (t && !isDeniedType(t)) cats.add(t);
+      const label = catLabel(m);                 // ✅ catégorie normalisée
+      if (label && !isDeniedType(label)) cats.add(label);
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
@@ -443,7 +458,8 @@
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
     if (STATE.onlyVerified) arr = arr.filter(m => m.imgVerified === true);
 
-    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(m.type || ""));
+    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(catLabel(m))); // ✅
+
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
 
@@ -463,7 +479,7 @@
       if (sort === "polarity") return canonPolarity(a.polarity||"").localeCompare(canonPolarity(b.polarity||"")) || (a.name||"").localeCompare(b.name||"");
       if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||"");
       if (sort === "compat")   return (a.compatibility||"").localeCompare(b.compatibility||"") || (a.name||"").localeCompare(b.name||"");
-      if (sort === "category") return (a.type||"").localeCompare(b.type||"") || (a.name||"").localeCompare(b.name||"");
+      if (sort === "category") return catLabel(a).localeCompare(catLabel(b)) || (a.name||"").localeCompare(b.name||""); // ✅
       return (a.name||"").localeCompare(b.name||"");
     });
 
@@ -535,7 +551,6 @@
   async function fetchMods(){
     const errors = [];
 
-    // timeout helper
     function withTimeout(promise, ms = 10000){
       return Promise.race([
         promise,
@@ -543,7 +558,6 @@
       ]);
     }
 
-    // parse sécurisé : tolère text/plain et montre une erreur claire si HTML
     async function safeJson(resp){
       const ct = String(resp.headers.get("content-type") || "").toLowerCase();
       const text = await resp.text();
@@ -555,7 +569,6 @@
       catch(e){ throw new Error(`JSON parse error: ${e.message}`); }
     }
 
-    // normaliser la forme en tableau
     function pickArray(payload){
       if (Array.isArray(payload)) return payload;
       if (payload && Array.isArray(payload.data)) return payload.data;
