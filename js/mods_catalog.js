@@ -58,7 +58,9 @@
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
+    // Priorité à ton API
     "https://cephalon-wodan-production.up.railway.app/mods",
+    // replis warframestat
     "https://api.warframestat.us/mods?language=en",
     "https://api.warframestat.us/mods/?language=en",
     "https://api.warframestat.us/mods/",
@@ -72,7 +74,7 @@
   // ---- Category denylist (exclues de la sidebar)
   const CATEGORY_DENY = [
     "Focus Way",
-    "Mod",                 // ⛔️ on retire UNIQUEMENT la catégorie générique “Mod”
+    "Mod",                 // ❌ on retire seulement la catégorie générique “Mod”
     "Mod Set Mod",
     "Arch-Gun Riven Mod",
     "Companion Weapon Riven Mod",
@@ -87,20 +89,25 @@
   const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
   const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
 
-  /* === Catégories pour le filtrage ===
-     On conserve m.type pour l’affichage (ex: “Primary Mod”, “Stance Mod”),
-     et on ajoute des catégories synthétiques: Aura, Sniper, Rifle. */
+  /* === Catégories calculées pour le filtrage ===
+     On garde m.type pour l’affichage (ex: “Primary Mod”, “Stance Mod”),
+     et on ajoute des catégories synthétiques : Aura, Sniper, Rifle, Augment Mod. */
   function categoryKeys(m) {
     const t = norm(m.type);
     const c = norm(m.compatibility);
 
     const keys = new Set();
-    if (t) keys.add(t);             // préserve “Primary Mod”, “Stance Mod”, etc.
+    if (t) keys.add(t);             // conserve les types d’origine
 
-    // Ajouts synthétiques demandés :
-    if (/aura/i.test(t)) keys.add("Aura");                      // Aura → seulement si le type le dit
+    // Ajouts synthétiques
+    if (/aura/i.test(t)) keys.add("Aura");                        // uniquement si le type est vraiment aura
     if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper");
     if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle");
+
+    // ✅ Nouvelle catégorie : Augment Mod
+    if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(norm(m.name))) {
+      keys.add("Augment Mod");
+    }
 
     return Array.from(keys);
   }
@@ -151,7 +158,7 @@
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte ================== */
+  /* ================== Nettoyage de texte (garde les <DT_...>) ================== */
   function cleanFxKeepTokens(s) {
     if (!s) return "";
     let t = String(s);
@@ -161,7 +168,7 @@
     return t;
   }
 
-  /* ================== Effets ================== */
+  /* ================== Effets & SetBonus ================== */
   function effectsFromLevelStats(m){
     const ls = Array.isArray(m.levelStats) ? m.levelStats : null;
     if (!ls || !ls.length) return [];
@@ -190,6 +197,19 @@
     if (stats.length) return Array.from(new Set(stats));
     const desc = effectsFromDescription(m);
     return Array.from(new Set(desc));
+  }
+
+  // 🔹 Normalisation d’un champ setBonus (string | string[])
+  function setBonusLines(sb){
+    if (!sb) return [];
+    if (Array.isArray(sb)) return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
+    const s = cleanFxKeepTokens(String(sb));
+    return s
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxKeepTokens(x))
+      .filter(Boolean);
   }
 
   /* ================== Exclusions par défaut ================== */
@@ -292,10 +312,9 @@
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
     const compat = m.compatibility || "";
-
-    // Affichage: on garde le type d’origine (ex: Primary Mod / Stance Mod)
     const displayCat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
+    const sbLines = setBonusLines(m.setBonus);
 
     const chipsLeft = [
       displayCat && badge(displayCat),
@@ -321,8 +340,15 @@
         <div class="mod-effects">
           ${
             lines.length
-            ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
-            : `<div class="fx muted">No effect data in API</div>`
+              ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
+              : `<div class="fx muted">No effect data in API</div>`
+          }
+          ${
+            sbLines.length
+              ? `<div class="fx-sep"></div>
+                 <div class="fx-head muted">Set Bonus</div>
+                 ${sbLines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")}`
+              : ""
           }
         </div>
       </div>
