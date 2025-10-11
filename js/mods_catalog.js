@@ -81,6 +81,9 @@
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
+    // ✅ Priorise ton API Cephalon
+    "https://cephalon-wodan-production.up.railway.app/mods",
+    // replis warframestat
     "https://api.warframestat.us/mods?language=en",
     "https://api.warframestat.us/mods/?language=en",
     "https://api.warframestat.us/mods/",
@@ -199,46 +202,42 @@
     return Array.from(new Set(desc));
   }
 
-  /* ================== ▼▼▼ PATCH catégorie (Aura/Exilus/Posture→Stance) ▼▼▼ ================== */
-  function isStanceMod(m){
-    const t = norm(m.type);
-    // on traite explicitement Posture comme Stance
-    return /^stance$/i.test(t) || /^posture$/i.test(t) || /stance/i.test(t);
+  /* ================== Exclusions par défaut ================== */
+  function isFocus(m){
+    const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
+    return /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
   }
-  function isAuraMod(m){
-    const t = norm(m.type);
-    if (/^aura$/i.test(t)) return true;
-    // (fix) drain négatif = aura UNIQUEMENT si ce n'est pas une Stance
-    if (Number.isFinite(m.baseDrain) && m.baseDrain < 0 && !isStanceMod(m)) return true;
-    return false;
+  function isRiven(m){ return /riven/i.test(m.name) || /riven/i.test(m.type); }
+  function isEmptySetStub(m){
+    const stub = /set\s*mod/i.test(m.type) || /^set\s*mod$/i.test(m.name);
+    const emptyish = !(m.description && m.description.trim().length) && !Array.isArray(m.levelStats);
+    return stub && emptyish;
   }
-  function isExilusMod(m){
-    const pol = canonPolarity(m.polarity || "");
-    const t = norm(m.type), n = norm(m.name), d = norm(m.description);
-    if (/exilus/i.test(t) || /exilus/i.test(n)) return true;
-    if (/\bexilus\b/i.test(d)) return true; // ex: "Can be equipped in the Exilus slot"
-    return pol === "Exilus"; // fallback
-  }
-  function displayType(m){
-    // 1) Catégories “virtuelles”
-    if (isAuraMod(m))   return "Aura";
-    if (isExilusMod(m)) return "Exilus";
-    // 2) Harmonisation Posture → Stance
-    const t = norm(m.type);
-    if (/^posture$/i.test(t)) return "Stance";
-    // 3) Supprimer “Mod” (catégorie générique inutile) de l’affichage
-    if (/^mod$/i.test(t)) return "";
-    return t;
-  }
-  /* ================== ▲▲▲ FIN PATCH catégorie ▲▲▲ ================== */
 
   /* ================== Rareté / Qualité ================== */
   function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
-  function qualityForPrimary(m){ return (wikiThumbRaw(m) ? 2000 : 0) + descScore(m) + (m.fusionLimit || 0); }
+
+  // ✅ PATCH: bonus si l’item vient de ton API (slug/cats/setBonus)
+  function qualityForPrimary(m){
+    const imgBonus = wikiThumbRaw(m) ? 2000 : 0;
+    const textBonus = descScore(m);
+    const rankBonus = (m.fusionLimit || 0);
+    const cephalonBonus =
+      (m.slug ? 150 : 0) +
+      (Array.isArray(m.categories) && m.categories.length ? 100 : 0) +
+      (m.setBonus ? 200 : 0);
+    return imgBonus + textBonus + rankBonus + cephalonBonus;
+  }
 
   /* ================== Fusion des doublons PAR NOM ================== */
+
+  // (utilitaire interne pour choisir un meilleur item selon un score)
+  function pickWithScore(items, scorer){
+    return items.slice().sort((a,b)=> scorer(b) - scorer(a))[0];
+  }
+
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
@@ -258,24 +257,26 @@
       return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
     }
 
+    // ✅ PATCH: préserver des champs Cephalon utiles (slug/cats/setBonus)
+    const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus)) || primary;
+    const setBonus = withMeta.setBonus || null;
+
     return {
       name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
       description: pick(bestTxt.description, primary.description),
       effectsLines: effects,
-      // use displayType pour l’affichage cohérent
-      type: displayType({
-        type: pick(primary.type, bestTxt.type),
-        baseDrain: pickMaxInt(primary.baseDrain, bestTxt.baseDrain),
-        polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
-        name: pick(primary.name),
-        description: pick(bestTxt.description, primary.description)
-      }),
+      type: pick(primary.type, bestTxt.type),
       compatibility: pick(primary.compatibility, primary.compatName, bestTxt.compatibility, bestTxt.compatName),
       baseDrain: pickMaxInt(primary.baseDrain, bestTxt.baseDrain),
       fusionLimit: pickMaxInt(primary.fusionLimit, bestTxt.fusionLimit),
       rarity: pickRarity(primary.rarity, primary.rarityString, bestTxt.rarity, bestTxt.rarityString),
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
+
+      // ✅ PATCH: champs Cephalon conservés
+      slug: withMeta.slug || "",
+      categories: Array.isArray(withMeta.categories) ? withMeta.categories.slice() : [],
+      setBonus,
 
       wikiImage: img,
       imgVerified: !!verified,
@@ -310,8 +311,8 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
-    const cat = displayType(m) || "";     // (patch) catégorie visible
     const compat = m.compatibility || "";
+    const cat = m.type || "";
     const lines = Array.isArray(m.effectsLines) ? m.effectsLines : [];
 
     const chipsLeft = [
@@ -350,12 +351,11 @@
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
     const pol = canonPolarity(m.polarity || "");
     const rar = rarityKey(m.rarity || "");
-    const cat = displayType(m) || "";     // (patch) catégorie visible
     return `
       <tr class="border-t border-[rgba(255,255,255,.06)]">
         <td class="p-2"><img src="${escapeHtml(img)}" alt="${escapeHtml(m.name)}" class="w-20 h-12 object-contain"></td>
         <td class="p-2">${escapeHtml(m.name)} ${!m.imgVerified ? '<span class="badge gold ml-1">Unreleased</span>' : ''}</td>
-        <td class="p-2">${escapeHtml(cat)}</td>
+        <td class="p-2">${escapeHtml(m.type || "")}</td>
         <td class="p-2">${escapeHtml(m.compatibility || "")}</td>
         <td class="p-2">${pol ? `<img src="${POL_ICON(pol)}" alt="${pol}" class="inline w-5 h-5 align-[-2px]"> ${pol}` : ""}</td>
         <td class="p-2">${rar}</td>
@@ -369,10 +369,8 @@
 
     for (const m of arr) {
       if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
-
-      const tDisp = displayType(m);                 // (patch) utiliser displayType
-      if (tDisp && !isDeniedType(tDisp)) cats.add(tDisp);
-
+      const t = m.type || "";
+      if (t && !isDeniedType(t)) cats.add(t);
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
@@ -453,7 +451,7 @@
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
     if (STATE.onlyVerified) arr = arr.filter(m => m.imgVerified === true);
 
-    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(displayType(m) || ""));
+    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(m.type || ""));
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
 
@@ -461,7 +459,7 @@
       arr = arr.filter(m => {
         const hay = [
           m.name, m.description, (m.effectsLines||[]).join(" "),
-          displayType(m), m.compatibility, m.uniqueName
+          m.type, m.compatibility, m.uniqueName
         ].map(norm).join(" ").toLowerCase();
         return hay.includes(q);
       });
@@ -473,7 +471,7 @@
       if (sort === "polarity") return canonPolarity(a.polarity||"").localeCompare(canonPolarity(b.polarity||"")) || (a.name||"").localeCompare(b.name||"");
       if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||"");
       if (sort === "compat")   return (a.compatibility||"").localeCompare(b.compatibility||"") || (a.name||"").localeCompare(b.name||"");
-      if (sort === "category") return (displayType(a)||"").localeCompare(displayType(b)||"") || (a.name||"").localeCompare(b.name||"");
+      if (sort === "category") return (a.type||"").localeCompare(b.type||"") || (a.name||"").localeCompare(b.name||"");
       return (a.name||"").localeCompare(b.name||"");
     });
 
