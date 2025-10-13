@@ -156,7 +156,7 @@
     const aliases = {
       madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
-      umbra:"Umbra", universal:"", any:"Any", none:"Any", "-":"Any"
+      umbra:"Umbra", any:"Any", none:"Any", "-":"Any"
     };
     return aliases[s] || ucFirst(s);
   }
