@@ -138,18 +138,25 @@
   }
 
   /* ================== Polarity (icônes locales) ================== */
-  const POL_ICON = (p) => {
+    const POL_ICON = (p) => {
     const map = {
       Madurai: "Madurai_Pol.svg", Vazarin: "Vazarin_Pol.svg",
       Naramon: "Naramon_Pol.svg", Zenurik: "Zenurik_Pol.svg",
       Unairu:  "Unairu_Pol.svg",  Umbra:   "Umbra_Pol.svg",
       Penjaga: "Penjaga_Pol.svg", Any:     "Any_Pol.svg",
+      None:    "Any_Pol.svg",     "":      "Any_Pol.svg",
       Aura:    "Aura_Pol.svg",    Exilus:  "Exilus_Pol.svg",
     };
+    const key = canonPolarity(p);
+    return `img/polarities/${map[key] || "Any_Pol.svg"}`;
+  };
+  function canonPolarity(p){
+    const s = norm(p).toLowerCase();
+    if (!s) return "Any";
     const aliases = {
       madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
-      umbra:"Umbra", any:"Any", none:"Any", "-":"Any"
+      umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
     };
     return aliases[s] || ucFirst(s);
   }
