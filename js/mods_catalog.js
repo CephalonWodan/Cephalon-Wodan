@@ -144,7 +144,6 @@
       Naramon: "Naramon_Pol.svg", Zenurik: "Zenurik_Pol.svg",
       Unairu:  "Unairu_Pol.svg",  Umbra:   "Umbra_Pol.svg",
       Penjaga: "Penjaga_Pol.svg", Any:     "Any_Pol.svg",
-      None:    "Any_Pol.svg",     "":      "Any_Pol.svg",
       Aura:    "Aura_Pol.svg",    Exilus:  "Exilus_Pol.svg",
     };
     const key = canonPolarity(p);
