@@ -1,4 +1,4 @@
-(() => {
+(() => { 
   "use strict";
 
   /* ================== Text Icons (DT_...) → <img> inline ================== */
@@ -337,17 +337,49 @@
     return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
   }
 
+  // ⬇️⬇️ PATCH — setBonus parser robuste (tiers[].count + tiers[].stats[])
   function setBonusLines(sb){
-    if (!sb) return [];
-    if (Array.isArray(sb)) return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
-    const s = cleanFxKeepTokens(String(sb));
-    return s
-      .replace(/\r?\n/g, "|")
-      .replace(/[•;·]/g, "|")
-      .split("|")
-      .map(x => cleanFxKeepTokens(x))
-      .filter(Boolean);
+    try {
+      if (!sb) return [];
+
+      // tableau simple de chaînes
+      if (Array.isArray(sb)) {
+        return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
+      }
+
+      // objet avec tiers (format de ton API)
+      if (typeof sb === "object") {
+        const tiers = Array.isArray(sb.tiers) ? sb.tiers.slice() : [];
+        if (tiers.length) {
+          tiers.sort((a,b)=>(a?.count??0)-(b?.count??0));
+          const out = [];
+          for (const t of tiers) {
+            const label = Number.isFinite(t?.count) ? `${t.count} Mod${t.count>1?"s":""}` : "";
+            const stats = Array.isArray(t?.stats) ? t.stats : (t?.stat ? [t.stat] : []);
+            for (const st of stats) {
+              const line = cleanFxKeepTokens(norm(st));
+              if (line) out.push(label ? `${label}: ${line}` : line);
+            }
+          }
+          return out;
+        }
+        // autres formes d'objet possibles
+        if (Array.isArray(sb.stats)) {
+          return sb.stats.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
+        }
+        if (typeof sb.text === "string") {
+          return [ cleanFxKeepTokens(sb.text) ];
+        }
+      }
+
+      // fallback générique
+      return [ cleanFxKeepTokens(String(sb)) ];
+    } catch (e){
+      console.warn("[setBonus] parse error:", e);
+      return [];
+    }
   }
+  // ⬆️⬆️ PATCH
 
   function modCard(m){
     const img = m.imgVerified ? m.wikiImage : MOD_PLACEHOLDER;
