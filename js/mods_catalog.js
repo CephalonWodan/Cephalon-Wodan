@@ -1,47 +1,89 @@
-<script>
 (() => {
   "use strict";
 
   /* ================== Text Icons (DT_...) → <img> inline ================== */
   const ICON_BASE = new URL("img/symbol/", document.baseURI).href;
 
+  // mapping minimal : chaque balise -> nom de fichier PNG (aucun label/pastille)
   const DT_ICONS = {
-    DT_IMPACT_COLOR:"ImpactSymbol.png", DT_PUNCTURE_COLOR:"PunctureSymbol.png", DT_SLASH_COLOR:"SlashSymbol.png",
-    DT_FIRE_COLOR:"HeatSymbol.png", DT_FREEZE_COLOR:"ColdSymbol.png", DT_ELECTRICITY_COLOR:"ElectricitySymbol.png",
-    DT_POISON_COLOR:"ToxinSymbol.png", DT_TOXIN_COLOR:"ToxinSymbol.png",
-    DT_GAS_COLOR:"GasSymbol.png", DT_MAGNETIC_COLOR:"MagneticSymbol.png", DT_RADIATION_COLOR:"RadiationSymbol.png",
-    DT_VIRAL_COLOR:"ViralSymbol.png", DT_CORROSIVE_COLOR:"CorrosiveSymbol.png",
-    DT_BLAST_COLOR:"BlastSymbol.png", DT_EXPLOSION_COLOR:"BlastSymbol.png",
-    DT_RADIANT_COLOR:"VoidSymbol.png", DT_SENTIENT_COLOR:"SentientSymbol.png",
-    DT_RESIST_COLOR:"ResistSymbol.png", DT_POSITIVE_COLOR:"PositiveSymbol.png", DT_NEGATIVE_COLOR:"NegativeSymbol.png",
+    // Physiques
+    DT_IMPACT_COLOR:     "ImpactSymbol.png",
+    DT_PUNCTURE_COLOR:   "PunctureSymbol.png",
+    DT_SLASH_COLOR:      "SlashSymbol.png",
+
+    // Élémentaires
+    DT_FIRE_COLOR:       "HeatSymbol.png",
+    DT_FREEZE_COLOR:     "ColdSymbol.png",
+    DT_ELECTRICITY_COLOR:"ElectricitySymbol.png",
+    DT_POISON_COLOR:     "ToxinSymbol.png",
+    DT_TOXIN_COLOR:      "ToxinSymbol.png",
+
+    // Combinés
+    DT_GAS_COLOR:        "GasSymbol.png",
+    DT_MAGNETIC_COLOR:   "MagneticSymbol.png",
+    DT_RADIATION_COLOR:  "RadiationSymbol.png",
+    DT_VIRAL_COLOR:      "ViralSymbol.png",
+    DT_CORROSIVE_COLOR:  "CorrosiveSymbol.png",
+    DT_BLAST_COLOR:      "BlastSymbol.png",
+    DT_EXPLOSION_COLOR:  "BlastSymbol.png",
+
+    // Divers / Void
+    DT_RADIANT_COLOR:    "VoidSymbol.png",
+    DT_SENTIENT_COLOR:   "SentientSymbol.png",
+    DT_RESIST_COLOR:     "ResistSymbol.png",
+    DT_POSITIVE_COLOR:   "PositiveSymbol.png",
+    DT_NEGATIVE_COLOR:   "NegativeSymbol.png",
   };
 
-  const EXTRA_ICONS = { ENERGY:"EnergySymbol.png", PRE_ATTACK:"LeftclicSymbol.png" };
+  // tags additionnels simples (ex : <ENERGY>, <PRE_ATTACK>)
+  const EXTRA_ICONS = {
+    ENERGY: "EnergySymbol.png",
+    PRE_ATTACK: "LeftclicSymbol.png",
+  };
 
+  // Rend le texte en remplaçant les <DT_...> par une icône inline
+  // + absorbe les espaces/retours autour de la balise pour éviter les sauts de ligne.
   function renderTextIcons(input) {
     let s = String(input ?? "");
-    s = s.replace(/\r\n?|\r/g, "\n").replace(/<\s*br\s*\/?>/gi, "\n").replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+
+    // normaliser d'abord
+    s = s.replace(/\r\n?|\r/g, "\n")
+         .replace(/<\s*br\s*\/?>/gi, "\n")
+         .replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+
+    // échapper le HTML (sécurité)
     s = s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // remplacer les DT_* (forme brute ou encodée) en "mangeant" le blanc autour
     s = s.replace(/\s*(?:&lt;|<)\s*(DT_[A-Z_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
-      const file = DT_ICONS[key]; if (!file) return "";
+      const file = DT_ICONS[key];
+      if (!file) return "";
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
+
+    // remplacer quelques tags additionnels (ex: <ENERGY>, <PRE_ATTACK>) — même logique
     s = s.replace(/\s*(?:&lt;|<)\s*(?!DT_)([A-Z0-9_]+)\s*(?:&gt;|>)\s*/g, (_, key) => {
-      const file = EXTRA_ICONS[key]; if (!file) return `&lt;${key}&gt;`;
+      const file = EXTRA_ICONS[key];
+      if (!file) return `&lt;${key}&gt;`; // laisser encodé si inconnu, on nettoie juste après
       const src = ICON_BASE + file;
       return `<img src="${src}" alt="" style="display:inline-block;width:1.05em;height:1.05em;vertical-align:-0.2em;margin:0 .25em;object-fit:contain;">`;
     });
+
+    // supprimer toute autre balise technique restante (p.ex. &lt;LOWER_IS_BETTER&gt;)
     s = s.replace(/&lt;\/?[A-Z0-9_]+\/?&gt;/g, "");
-    s = s.replace(/[ \t]{2,}/g, " ").replace(/\n/g, "<br>");
+
+    // ménage
+    s = s.replace(/[ \t]{2,}/g, " ");
+    s = s.replace(/\n/g, "<br>");
     return s.trim();
   }
 
   /* ================== Utils & Config ================== */
   const ENDPOINTS = [
-    // Ton API d'abord
+    // ✅ Priorise ton API Cephalon
     "https://cephalon-wodan-production.up.railway.app/mods",
-    // WarframeStat fallback
+    // replis warframestat
     "https://api.warframestat.us/mods?language=en",
     "https://api.warframestat.us/mods/?language=en",
     "https://api.warframestat.us/mods/",
@@ -52,29 +94,69 @@
   const ucFirst = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
   const escapeHtml = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+  // ---- Category denylist (exclues de la sidebar)
   const CATEGORY_DENY = [
-    "Focus Way","Mod Set Mod","Arch-Gun Riven Mod","Companion Weapon Riven Mod","Kitgun Riven Mod",
-    "Melee Riven Mod","Pistol Riven Mod","Rifle Riven Mod","Shotgun Riven Mod","Zaw Riven Mod",
+    "Focus Way",
+    "Mod",                 // ❌ on retire seulement la catégorie générique “Mod”
+    "Mod Set Mod",
+    "Arch-Gun Riven Mod",
+    "Companion Weapon Riven Mod",
+    "Kitgun Riven Mod",
+    "Melee Riven Mod",
+    "Pistol Riven Mod",
+    "Rifle Riven Mod",
+    "Shotgun Riven Mod",
+    "Zaw Riven Mod",
   ];
   const normTypeName = (s) => norm(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
   const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
 
+  /* === Catégories calculées pour le filtrage ===
+     On garde m.type pour l’affichage (ex: “Primary Mod”, “Stance Mod”),
+     et on ajoute des catégories synthétiques : Aura Mod, Sniper, Rifle, Augment Mod. */
+  function categoryKeys(m) {
+    const t = norm(m.type);
+    const c = norm(m.compatibility);
+    const name = norm(m.name);
+
+    const keys = new Set();
+    if (t) keys.add(t);             // conserve le type d’origine (ex: “Primary Mod”, “Stance Mod”)
+
+    // Ajouts synthétiques ciblés
+    if (/aura/i.test(t)) keys.add("Aura Mod");         // ▶️ libellé exact demandé
+    if (/exilus/i.test(t)) keys.add("Exilus Mod");
+    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper Mod");
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle Mod");
+
+    // ▶️ Augment Mod: via flag ou heuristique nom/type
+    if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(name)) {
+      keys.add("Augment Mod");
+    }
+
+    return Array.from(keys);
+  }
+
   /* ================== Polarity (icônes locales) ================== */
-  const POL_ICON = (p) => {
+    const POL_ICON = (p) => {
     const map = {
-      Madurai:"Madurai_Pol.svg", Vazarin:"Vazarin_Pol.svg", Naramon:"Naramon_Pol.svg", Zenurik:"Zenurik_Pol.svg",
-      Unairu:"Unairu_Pol.svg", Umbra:"Umbra_Pol.svg", Penjaga:"Penjaga_Pol.svg",
-      Any:"Any_Pol.svg", None:"Any_Pol.svg", "":"Any_Pol.svg", Aura:"Aura_Pol.svg", Exilus:"Exilus_Pol.svg",
+      Madurai: "Madurai_Pol.svg", Vazarin: "Vazarin_Pol.svg",
+      Naramon: "Naramon_Pol.svg", Zenurik: "Zenurik_Pol.svg",
+      Unairu:  "Unairu_Pol.svg",  Umbra:   "Umbra_Pol.svg",
+      Penjaga: "Penjaga_Pol.svg", Any:     "Any_Pol.svg",
+      None:    "Any_Pol.svg",     "":      "Any_Pol.svg",
+      Aura:    "Aura_Pol.svg",    Exilus:  "Exilus_Pol.svg",
     };
     const key = canonPolarity(p);
     return `img/polarities/${map[key] || "Any_Pol.svg"}`;
   };
   function canonPolarity(p){
-    const s = norm(p).toLowerCase(); if (!s) return "Any";
+    const s = norm(p).toLowerCase();
+    if (!s) return "Any";
     const aliases = {
-      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus:"Exilus",
-      zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga", umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
+      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
+      zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
+      umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
     };
     return aliases[s] || ucFirst(s);
   }
@@ -97,15 +179,20 @@
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
+  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
 
-  /* ================== Nettoyage de texte ================== */
+  /* ================== Nettoyage de texte (sans supprimer les <DT_...>) ================== */
   function cleanFxKeepTokens(s) {
     if (!s) return "";
     let t = String(s);
-    t = t.replace(/\\n/g, "\n").replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+    t = t.replace(/\\n/g, "\n");                 // \n échappés -> réels
+    t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+    // NE PAS supprimer <DT_...> !
+    // Ne pas supprimer toute balise générique ici (certaines descriptions ont des tags bénins).
+    // On se contente d’aplatir espaces multiples.
     t = t.replace(/[ \t]{2,}/g, " ").trim();
     return t;
   }
@@ -126,8 +213,12 @@
     let d = norm(m.description);
     if (!d) return [];
     d = cleanFxKeepTokens(d);
-    const parts = d.replace(/\r?\n/g, "|").replace(/[•;·]/g, "|").split("|")
-      .map(x => cleanFxKeepTokens(x)).filter(Boolean);
+    const parts = d
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxKeepTokens(x))
+      .filter(Boolean);
     return parts;
   }
   function makeEffects(m){
@@ -137,7 +228,7 @@
     return Array.from(new Set(desc));
   }
 
-  /* ================== Exclusions ================== */
+  /* ================== Exclusions par défaut ================== */
   function isFocus(m){
     const name = norm(m.name), type = norm(m.type), uniq = norm(m.uniqueName);
     return /focus/i.test(type) || /\/focus\//i.test(uniq) || /focus/i.test(name);
@@ -154,6 +245,7 @@
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
 
+  // ✅ PATCH: bonus si l’item vient de ton API (slug/cats/setBonus)
   function qualityForPrimary(m){
     const imgBonus = wikiThumbRaw(m) ? 2000 : 0;
     const textBonus = descScore(m);
@@ -165,7 +257,8 @@
     return imgBonus + textBonus + rankBonus + cephalonBonus;
   }
 
-  /* ================== Merge par nom ================== */
+  /* ================== Fusion des doublons PAR NOM ================== */
+
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
@@ -185,8 +278,17 @@
       return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
     }
 
+    // ✅ PATCH: préserver des champs Cephalon utiles (slug/cats/setBonus) + isAugment
     const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus || x.isAugment)) || primary;
     const setBonus = withMeta.setBonus || null;
+
+    // ▶️ Nouveau : calcul isAugment final (pour “Augment Mod”)
+    const isAug =
+      items.some(x =>
+        x && (x.isAugment === true ||
+              /augment/i.test(norm(x.type)) ||
+              /augment/i.test(norm(x.name)))
+      );
 
     return {
       name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
@@ -200,9 +302,11 @@
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
 
+      // ✅ champs Cephalon conservés
       slug: withMeta.slug || "",
       categories: Array.isArray(withMeta.categories) ? withMeta.categories.slice() : [],
       setBonus,
+      isAugment: isAug, // ◀️ important pour “Augment Mod”
 
       wikiImage: img,
       imgVerified: !!verified,
@@ -217,7 +321,7 @@
     return Array.from(groups.values()).map(mergeGroup);
   }
 
-  /* ================== STATE ================== */
+  /* ================== STATE (unique) ================== */
   const STATE = {
     all: [], filtered: [], page: 1, perPage: 24,
     q: "", sort: "name",
@@ -228,28 +332,21 @@
 
   /* ================== UI helpers ================== */
   function badge(text, cls=""){ return `<span class="badge ${cls}">${escapeHtml(text)}</span>`; }
-  function polBadge(p){ const src = POL_ICON(p), txt = canonPolarity(p); return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`; }
+  function polBadge(p){
+    const src = POL_ICON(p), txt = canonPolarity(p);
+    return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
+  }
 
-  // ---- Set Bonus → lignes lisibles
   function setBonusLines(sb){
     if (!sb) return [];
     if (Array.isArray(sb)) return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
-    if (typeof sb === "object") {
-      const tiers = Array.isArray(sb.tiers) ? sb.tiers.slice() : [];
-      if (tiers.length) {
-        tiers.sort((a,b)=>(a.count??0)-(b.count??0));
-        const out = [];
-        for (const t of tiers) {
-          const label = Number.isFinite(t?.count) ? `${t.count} Mod${t.count>1?"s":""}` : "";
-          const stats = Array.isArray(t?.stats) ? t.stats : (t?.stat ? [t.stat] : []);
-          for (const st of stats) { const txt = cleanFxKeepTokens(norm(st)); if (txt) out.push(label ? `${label}: ${txt}` : txt); }
-        }
-        return out;
-      }
-      if (Array.isArray(sb.stats)) return sb.stats.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
-      if (typeof sb.text === "string") return [cleanFxKeepTokens(sb.text)];
-    }
-    return [cleanFxKeepTokens(String(sb))];
+    const s = cleanFxKeepTokens(String(sb));
+    return s
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxKeepTokens(x))
+      .filter(Boolean);
   }
 
   function modCard(m){
@@ -262,8 +359,11 @@
     const sbLines = setBonusLines(m.setBonus);
 
     const chipsLeft = [
-      cat && badge(cat), compat && badge(compat), rar && badge(rar, `rar-${rar}`),
-      Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "", (!m.imgVerified) ? badge("Unreleased","gold") : ""
+      cat && badge(cat),
+      compat && badge(compat),
+      rar && badge(rar, `rar-${rar}`),
+      Number.isFinite(m.fusionLimit) ? badge(`R${m.fusionLimit}`) : "",
+      (!m.imgVerified) ? badge("Unreleased","gold") : ""
     ].filter(Boolean).join(" ");
 
     const headRight = pol ? polBadge(pol) : "";
@@ -280,8 +380,18 @@
         </div>
         <div class="mod-chips">${chipsLeft}</div>
         <div class="mod-effects">
-          ${ lines.length ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("") : `<div class="fx muted">No effect data in API</div>` }
-          ${ sbLines.length ? `<div class="fx-sep"></div><div class="fx-head muted">Set Bonus</div>${sbLines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")}` : "" }
+          ${
+            lines.length
+            ? lines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")
+            : `<div class="fx muted">No effect data in API</div>`
+          }
+          ${
+            sbLines.length
+              ? `<div class="fx-sep"></div>
+                 <div class="fx-head muted">Set Bonus</div>
+                 ${sbLines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")}`
+              : ""
+          }
         </div>
       </div>
     </div>`;
@@ -306,32 +416,60 @@
   /* ================== Filtres (sidebar) ================== */
   function buildFiltersFromData(arr){
     const cats = new Set(), pols = new Set(), rars = new Set();
+
     for (const m of arr) {
       if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
-      const t = m.type || "";
-      if (t && !isDeniedType(t)) cats.add(t);
+
+      // Ajouter toutes les clés de catégorie calculées
+      for (const lab of categoryKeys(m)) {
+        if (lab && !isDeniedType(lab)) cats.add(lab);
+      }
+
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
+
     const catList = Array.from(cats).sort((a,b)=>a.localeCompare(b));
     const polList = Array.from(pols).sort((a,b)=>a.localeCompare(b));
     const rarList = Array.from(rars).sort((a,b)=>rarityOrder(a)-rarityOrder(b));
 
-    $("#f-cat").innerHTML = catList.map(v => `<label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}"><span>${escapeHtml(v)}</span></label>`).join("");
-    $("#f-pol").innerHTML = polList.map(v => `<label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}"><img src="${POL_ICON(v)}" class="w-4 h-4 inline-block mr-1" alt="${escapeHtml(v)}">${escapeHtml(v)}</label>`).join("");
-    $("#f-rar").innerHTML = rarList.map(v => `<label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}"><span>${escapeHtml(v)}</span></label>`).join("");
+    $("#f-cat").innerHTML = catList.map(v => `
+      <label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}"><span>${escapeHtml(v)}</span></label>
+    `).join("");
+
+    $("#f-pol").innerHTML = polList.map(v => `
+      <label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}">
+        <img src="${POL_ICON(v)}" class="w-4 h-4 inline-block mr-1" alt="${escapeHtml(v)}">${escapeHtml(v)}
+      </label>
+    `).join("");
+
+    $("#f-rar").innerHTML = rarList.map(v => `
+      <label class="filter-pill"><input type="checkbox" value="${escapeHtml(v)}"><span>${escapeHtml(v)}</span></label>
+    `).join("");
 
     $("#f-cat").querySelectorAll("input[type=checkbox]").forEach(cb=>{
-      cb.addEventListener("change", ()=>{ if (cb.checked) STATE.fCats.add(cb.value); else STATE.fCats.delete(cb.value); STATE.page = 1; applyFilters(); });
+      cb.addEventListener("change", ()=>{
+        if (cb.checked) STATE.fCats.add(cb.value); else STATE.fCats.delete(cb.value);
+        STATE.page = 1; applyFilters();
+      });
     });
     $("#f-pol").querySelectorAll("input[type=checkbox]").forEach(cb=>{
-      cb.addEventListener("change", ()=>{ if (cb.checked) STATE.fPols.add(cb.value); else STATE.fPols.delete(cb.value); STATE.page = 1; applyFilters(); });
+      cb.addEventListener("change", ()=>{
+        if (cb.checked) STATE.fPols.add(cb.value); else STATE.fPols.delete(cb.value);
+        STATE.page = 1; applyFilters();
+      });
     });
     $("#f-rar").querySelectorAll("input[type=checkbox]").forEach(cb=>{
-      cb.addEventListener("change", ()=>{ if (cb.checked) STATE.fRars.add(cb.value); else STATE.fRars.delete(cb.value); STATE.page = 1; applyFilters(); });
+      cb.addEventListener("change", ()=>{
+        if (cb.checked) STATE.fRars.add(cb.value); else STATE.fRars.delete(cb.value);
+        STATE.page = 1; applyFilters();
+      });
     });
 
-    $("#f-verified").addEventListener("change", ()=>{ STATE.onlyVerified = $("#f-verified").checked; STATE.page = 1; applyFilters(); });
+    $("#f-verified").addEventListener("change", ()=>{
+      STATE.onlyVerified = $("#f-verified").checked;
+      STATE.page = 1; applyFilters();
+    });
   }
 
   function renderActiveChips(){
@@ -342,7 +480,9 @@
     if (STATE.fPols.size) chips.push({k:"pols", label:`Pol: ${[...STATE.fPols].join(", ")}`});
     if (STATE.fRars.size) chips.push({k:"rars", label:`Rarity: ${[...STATE.fRars].join(", ")}`});
     if (STATE.onlyVerified) chips.push({k:"verified", label:`Verified wiki image`});
-    wrap.innerHTML = chips.length ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("") : "";
+    wrap.innerHTML = chips.length
+      ? chips.map((c,i)=>`<button class="badge gold" data-chip="${c.k}|${i}">${c.label} ✕</button>`).join("")
+      : "";
     wrap.querySelectorAll("[data-chip]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const [k] = btn.dataset.chip.split("|");
@@ -365,14 +505,22 @@
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
     if (STATE.onlyVerified) arr = arr.filter(m => m.imgVerified === true);
 
-    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(m.type || ""));
+    if (STATE.fCats.size) {
+      arr = arr.filter(m => {
+        const keys = new Set(categoryKeys(m));
+        return [...STATE.fCats].some(k => keys.has(k));
+      });
+    }
+
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
 
     if (q) {
       arr = arr.filter(m => {
-        const hay = [ m.name, m.description, (m.effectsLines||[]).join(" "), m.type, m.compatibility, m.uniqueName ]
-          .map(norm).join(" ").toLowerCase();
+        const hay = [
+          m.name, m.description, (m.effectsLines||[]).join(" "),
+          m.type, m.compatibility, m.uniqueName
+        ].map(norm).join(" ").toLowerCase();
         return hay.includes(q);
       });
     }
@@ -383,7 +531,11 @@
       if (sort === "polarity") return canonPolarity(a.polarity||"").localeCompare(canonPolarity(b.polarity||"")) || (a.name||"").localeCompare(b.name||"");
       if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||"");
       if (sort === "compat")   return (a.compatibility||"").localeCompare(b.compatibility||"") || (a.name||"").localeCompare(b.name||"");
-      if (sort === "category") return (a.type||"").localeCompare(b.type||"") || (a.name||"").localeCompare(b.name||"");
+      if (sort === "category") {
+        const ca = (categoryKeys(a)[0] || a.type || "");
+        const cb = (categoryKeys(b)[0] || b.type || "");
+        return ca.localeCompare(cb) || (a.name||"").localeCompare(b.name||"");
+      }
       return (a.name||"").localeCompare(b.name||"");
     });
 
@@ -430,54 +582,40 @@
   }
 
   /* ================== Lightbox ================== */
-  function openLightbox(url, caption=""){ if (!url) return; $("#lb-img").src = url; $("#lb-img").alt = caption; $("#lb-caption").textContent = caption; $("#lightbox").classList.remove("hidden"); }
-  function closeLightbox(){ $("#lightbox").classList.add("hidden"); $("#lb-img").src = ""; }
+  function openLightbox(url, caption=""){
+    if (!url) return;
+    $("#lb-img").src = url;
+    $("#lb-img").alt = caption;
+    $("#lb-caption").textContent = caption;
+    $("#lightbox").classList.remove("hidden");
+  }
+  function closeLightbox(){
+    $("#lightbox").classList.add("hidden");
+    $("#lb-img").src = "";
+  }
   (function setupLightbox(){
-    const lb = $("#lightbox"); if (!lb) return;
+    const lb = $("#lightbox");
+    if (!lb) return;
     $("#lb-close").addEventListener("click", closeLightbox);
-    lb.addEventListener("click", (e)=>{ if (e.target.id === "lightbox" || e.target.classList.contains("lb-backdrop")) closeLightbox(); });
+    lb.addEventListener("click", (e)=>{
+      if (e.target.id === "lightbox" || e.target.classList.contains("lb-backdrop")) closeLightbox();
+    });
     document.addEventListener("keydown", (e)=>{ if (e.key === "Escape") closeLightbox(); });
   })();
 
   /* ================== Fetch + boot ================== */
-
-  // --- helper: timeout fetch
-  async function fetchWithTimeout(url, { timeout = 7000, ...opts } = {}){
-    const ctrl = new AbortController();
-    const id = setTimeout(()=>ctrl.abort(new DOMException("Timeout","AbortError")), timeout);
-    try {
-      const r = await fetch(url, { ...opts, signal: ctrl.signal, cache: "no-store" });
-      return r;
-    } finally {
-      clearTimeout(id);
-    }
-  }
-
-  // --- helper: extraire un tableau de mods quelle que soit la forme
-  function asModsArray(data){
-    if (!data) return [];
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data?.data)) return data.data;
-    if (Array.isArray(data?.results)) return data.results;
-    return [];
-  }
-
   async function fetchMods(){
     const errors = [];
     for (const url of ENDPOINTS) {
       try {
-        const r = await fetchWithTimeout(url, { timeout: 7000 });
+        const r = await fetch(url, { cache: "no-store" });
         if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
         const data = await r.json();
-        const arr = asModsArray(data);
-        if (Array.isArray(arr) && arr.length) return arr;
-        errors.push(`${url} → no data`);
-      } catch (e) {
-        errors.push(`${url} → ${e?.name==="AbortError"?"timeout":(e?.message||e)}`);
-      }
+        if (Array.isArray(data) && data.length >= 0) return data;
+      } catch (e) { errors.push(`${url} → ${e.message||e}`); }
     }
     console.warn("[mods] endpoints empty/failed]:", errors);
-    return { errors, mods: [] };
+    return [];
   }
 
   (function boot(){
@@ -494,16 +632,8 @@
       </div>
     `).join("");
 
-    Promise.resolve(fetchMods()).then(payload => {
-      // fetchMods peut renvoyer [] ou {errors, mods: []}
-      const arr = Array.isArray(payload) ? payload : (payload?.mods || []);
-      const errs = Array.isArray(payload?.errors) ? payload.errors : [];
-      if (!Array.isArray(arr)) {
-        console.error("[mods] unexpected payload:", payload);
-        status.textContent = "Error while loading mods (bad payload).";
-      }
-
-      STATE.all = mergeByName(arr || []);
+    fetchMods().then(raw => {
+      STATE.all = mergeByName(raw);
       buildFiltersFromData(STATE.all);
 
       $("#q").value = "";
@@ -528,15 +658,7 @@
       $("#prev").addEventListener("click", ()=>{ STATE.page--; render(); });
       $("#next").addEventListener("click", ()=>{ STATE.page++; render(); });
 
-      if (STATE.all.length) {
-        status.textContent = `Mods loaded: ${STATE.all.length} (EN, verified wiki images only by default)`;
-      } else {
-        status.textContent = "No mods received from endpoints.";
-        status.className = "mt-2 text-sm px-3 py-2 rounded-lg";
-        status.style.background = "rgba(255,255,0,.08)";
-        status.style.color = "#ffe38a";
-        if (errs.length) console.warn("[mods] errors:", errs);
-      }
+      status.textContent = `Mods loaded: ${STATE.all.length} (EN, verified wiki images only by default)`;
       applyFilters();
     }).catch(e=>{
       console.error("[mods] error:", e);
@@ -548,4 +670,3 @@
   })();
 
 })();
-</script>
