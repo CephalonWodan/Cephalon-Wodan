@@ -2,7 +2,7 @@
   "total_input_OF": 1581,
   "total_WF_items": 1744,
   "total_merged_before_dedup": 1373,
-  "total_output": 1356,
+  "total_output": 1367,
   "sets_indexed": 19,
   "skipped": {
     "arcanes": 169,
@@ -10,7 +10,7 @@
     "focusSchool": 79,
     "riven": 15,
     "beginner": 3,
-    "notRealMod": 11,
+    "notRealMod": 7,
     "noSlug": 79,
     "emptyCats": 0,
     "ability": 8,

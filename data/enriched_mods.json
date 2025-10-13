@@ -2650,13 +2650,222 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarExilusMod",
     "type": "Warframe Mod",
+    "rarity": "Common",
     "polarity": "vazarin",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Amar%27sAnguishMod.png?bd831",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0545,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Amar's Anguish"
+      },
+      {
+        "chance": 0.0545,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Amar's Anguish"
+      },
+      {
+        "chance": 0.0811,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Amar's Anguish"
+      },
+      {
+        "chance": 0.0811,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Amar's Anguish"
+      },
+      {
+        "chance": 0.2,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Amar's Anguish"
+      },
+      {
+        "chance": 0.2,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Amar's Anguish"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+2.5% to Parkour Velocity",
+          "+2.5% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+5% to Parkour Velocity",
+          "+5% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+7.5% to Parkour Velocity",
+          "+7.5% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+10% to Parkour Velocity",
+          "+10% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+12.5% to Parkour Velocity",
+          "+12.5% Sprint Speed"
+        ]
+      },
+      {
+        "stats": [
+          "+15% to Parkour Velocity",
+          "+15% Sprint Speed"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Amarsetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Teleport to a target within 10m on using a Heavy Attack."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Teleport to a target within 20m on using a Heavy Attack."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Teleport to a target within 30m on using a Heavy Attack."
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 5623,
+    "slug": "amar-s-contempt",
+    "name": "Amar’s Contempt",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarMeleeMod",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Dual Daggers",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Amar%27sContemptMod.png?e07c1",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0545,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Amar's Contempt"
+      },
+      {
+        "chance": 0.0545,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Amar's Contempt"
+      },
+      {
+        "chance": 0.075,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Amar's Contempt"
+      },
+      {
+        "chance": 0.075,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Amar's Contempt"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+15% Melee Damage",
+          "+5% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Melee Damage",
+          "+10% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Melee Damage",
+          "+15% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Melee Damage",
+          "+20% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Melee Damage",
+          "+25% <DT_SLASH_COLOR>Slash"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Melee Damage",
+          "+30% <DT_SLASH_COLOR>Slash"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Amarsetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Teleport to a target within 10m on using a Heavy Attack."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Teleport to a target within 20m on using a Heavy Attack."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Teleport to a target within 30m on using a Heavy Attack."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 5624,
@@ -2665,14 +2874,116 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarWarframeMod",
     "type": "Warframe Mod",
-    "rarity": "UNCOMMON",
+    "rarity": "Uncommon",
     "polarity": "vazarin",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Amar%27sHatredMod.png?92f89",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0909,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Amar's Hatred"
+      },
+      {
+        "chance": 0.0909,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Amar's Hatred"
+      },
+      {
+        "chance": 0.125,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Amar's Hatred"
+      },
+      {
+        "chance": 0.125,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Amar's Hatred"
+      },
+      {
+        "chance": 0.1351,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Amar's Hatred"
+      },
+      {
+        "chance": 0.1351,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Amar's Hatred"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+4% Armor",
+          "+2.5% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+8% Armor",
+          "+5% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+13% Armor",
+          "+7.5% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+17% Armor",
+          "+10% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+21% Armor",
+          "+12.5% Ability Strength"
+        ]
+      },
+      {
+        "stats": [
+          "+25% Armor",
+          "+15% Ability Strength"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Amarsetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Amar/AmarSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Teleport to a target within 10m on using a Heavy Attack."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Teleport to a target within 20m on using a Heavy Attack."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Teleport to a target within 30m on using a Heavy Attack."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 1387,
@@ -11869,14 +12180,45 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
-    "rarity": "RARE",
+    "uniqueName": "/Lotus/Upgrades/Mods/Hoverboard/HBGrindSlamMod",
+    "type": "K-Drive Mod",
+    "rarity": "Rare",
     "polarity": "madurai",
-    "compatName": "/Lotus/Types/Vehicles/Hoverboard/HoverboardSuit",
-    "baseDrain": "QA_HIGH",
+    "compatName": "K-Drive",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BombTheLandin%27Mod.png?23317",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Ventkids, Logical",
+        "rarity": "Common",
+        "type": "Bomb The Landin'"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Tap and hold Grind in the air to execute a 5m radius Slam Shockwave that deals 150 damage."
+        ]
+      },
+      {
+        "stats": [
+          "Tap and hold Grind in the air to execute a 10m radius Slam Shockwave that deals 200 damage."
+        ]
+      },
+      {
+        "stats": [
+          "Tap and hold Grind in the air to execute a 15m radius Slam Shockwave that deals 250 damage."
+        ]
+      },
+      {
+        "stats": [
+          "Tap and hold Grind in the air to execute a 20m radius Slam Shockwave that deals 300 damage."
+        ]
+      }
+    ]
   },
   {
     "id": 428,
@@ -11990,13 +12332,222 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealExilusMod",
     "type": "Warframe Mod",
+    "rarity": "Common",
     "polarity": "vazarin",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Boreal%27sAnguishMod.png?76564",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0545,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Boreal's Anguish"
+      },
+      {
+        "chance": 0.0545,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Boreal's Anguish"
+      },
+      {
+        "chance": 0.0811,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Boreal's Anguish"
+      },
+      {
+        "chance": 0.0811,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Boreal's Anguish"
+      },
+      {
+        "chance": 0.2,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Uncommon",
+        "type": "Boreal's Anguish"
+      },
+      {
+        "chance": 0.2,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Uncommon",
+        "type": "Boreal's Anguish"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "-12.5% Gravity while Aim Gliding",
+          "+10% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "-25% Gravity while Aim Gliding",
+          "+20% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "-37.5% Gravity while Aim Gliding",
+          "+30% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "-50% Gravity while Aim Gliding",
+          "+40% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "-62.5% Gravity while Aim Gliding",
+          "+50% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "-75% Gravity while Aim Gliding",
+          "+60% Aim Glide/Wall Latch Duration"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Borealsetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Reduces damage by +20% when Airborne."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Reduces damage by +40% when Airborne."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Reduces damage by +60% when Airborne."
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 5626,
+    "slug": "boreal-s-contempt",
+    "name": "Boreal’s Contempt",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealMeleeMod",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Polearms",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Boreal%27sContemptMod.png?cf4bc",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0545,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Boreal's Contempt"
+      },
+      {
+        "chance": 0.0545,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Boreal's Contempt"
+      },
+      {
+        "chance": 0.075,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Boreal's Contempt"
+      },
+      {
+        "chance": 0.075,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Boreal's Contempt"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+15% Melee Damage",
+          "+10% Status Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Melee Damage",
+          "+20% Status Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Melee Damage",
+          "+30% Status Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Melee Damage",
+          "+40% Status Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Melee Damage",
+          "+50% Status Damage"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Melee Damage",
+          "+60% Status Damage"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Borealsetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Reduces damage by +20% when Airborne."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Reduces damage by +40% when Airborne."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Reduces damage by +60% when Airborne."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 5627,
@@ -12005,14 +12556,116 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealWarframeMod",
     "type": "Warframe Mod",
-    "rarity": "UNCOMMON",
+    "rarity": "Uncommon",
     "polarity": "vazarin",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Boreal%27sHatredMod.png?84680",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0909,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Boreal's Hatred"
+      },
+      {
+        "chance": 0.0909,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Boreal's Hatred"
+      },
+      {
+        "chance": 0.125,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Boreal's Hatred"
+      },
+      {
+        "chance": 0.125,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Boreal's Hatred"
+      },
+      {
+        "chance": 0.1351,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Boreal's Hatred"
+      },
+      {
+        "chance": 0.1351,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Boreal's Hatred"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+11% Shield Capacity",
+          "+2.5% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+22% Shield Capacity",
+          "+5% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+33% Shield Capacity",
+          "+7.5% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+43% Shield Capacity",
+          "+10% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+54% Shield Capacity",
+          "+12.5% Ability Efficiency"
+        ]
+      },
+      {
+        "stats": [
+          "+65% Shield Capacity",
+          "+15% Ability Efficiency"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Borealsetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Boreal/BorealSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Reduces damage by +20% when Airborne."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Reduces damage by +40% when Airborne."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Reduces damage by +60% when Airborne."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 5148,
@@ -13071,7 +13724,7 @@
     ]
   },
   {
-    "id": "butcher-s-revelry",
+    "id": 5631,
     "slug": "butcher-s-revelry",
     "name": "Butcher’s Revelry",
     "categories": [
@@ -13085,7 +13738,6 @@
     "baseDrain": -2,
     "fusionLimit": 3,
     "description": "Rip and rend with this Assault Saw stance.",
-    "wikiaThumbnail": null,
     "isAugment": false,
     "drops": [
       {
@@ -14149,14 +14801,44 @@
     "categories": [
       "mod"
     ],
-    "type": "Warframe Mod",
-    "rarity": "RARE",
+    "uniqueName": "/Lotus/Types/Friendly/Pets/CatbrowPetPrecepts/CatbrowCatsEyePrecept",
+    "type": "Companion Mod",
+    "rarity": "Rare",
     "polarity": "penjaga",
-    "compatName": "/Lotus/Types/Game/CatbrowPet/MirrorCatbrowPetPowerSuit",
-    "baseDrain": "QA_NONE",
+    "compatName": "Adarza Kavat",
+    "baseDrain": 0,
+    "fusionLimit": 3,
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0083,
+        "location": "Kavat",
+        "rarity": "Rare",
+        "type": "Cat's Eye"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Adarza Kavat grants 15% increased critical chance for 4s to allies within 15m every <LOWER_IS_BETTER>50s."
+        ]
+      },
+      {
+        "stats": [
+          "Adarza Kavat grants 30% increased critical chance for 6s to allies within 20m every <LOWER_IS_BETTER>40s."
+        ]
+      },
+      {
+        "stats": [
+          "Adarza Kavat grants 45% increased critical chance for 8s to allies within 22m every <LOWER_IS_BETTER>30s."
+        ]
+      },
+      {
+        "stats": [
+          "Adarza Kavat grants 60% increased critical chance for 10s to allies within 25m every <LOWER_IS_BETTER>20s."
+        ]
+      }
+    ]
   },
   {
     "id": 140,
@@ -14636,14 +15318,50 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Trinity/BlessingAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Trinity/TrinityBaseSuit",
-    "baseDrain": "QA_HIGH",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "compatName": "Trinity",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "isAugment": true,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "New Loka, Flawless",
+        "rarity": "Common",
+        "type": "Champion's Blessing (Trinity)"
+      },
+      {
+        "chance": 1,
+        "location": "The Perrin Sequence, Partner",
+        "rarity": "Common",
+        "type": "Champion's Blessing (Trinity)"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Blessing Augment: Gain Primary and Secondary Critical Chance for 12s for each percent you heal on allies up to 350%."
+        ]
+      },
+      {
+        "stats": [
+          "Blessing Augment: Gain Primary and Secondary Critical Chance for 18s for each percent you heal on allies up to 350%."
+        ]
+      },
+      {
+        "stats": [
+          "Blessing Augment: Gain Primary and Secondary Critical Chance for 24s for each percent you heal on allies up to 350%."
+        ]
+      },
+      {
+        "stats": [
+          "Blessing Augment: Gain Primary and Secondary Critical Chance for 30s for each percent you heal on allies up to 350%."
+        ]
+      }
+    ]
   },
   {
     "id": 123,
@@ -18610,6 +19328,53 @@
       {
         "stats": [
           "+80% Melee Damage per Status Type affecting the target"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6358,
+    "slug": "condition-s-perfection",
+    "name": "Condition’s Perfection",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/EmpoweredHeavyMelee/PerfectCondition",
+    "type": "Melee Mod",
+    "rarity": "Uncommon",
+    "polarity": "vazarin",
+    "compatName": "Melee",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Condition%27sPerfectionMod.png?a39ec",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.12,
+        "location": "Deimos/Cambire (Alchemy), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Condition's Perfection"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Enables Tennokai. Increases status chance by +25% on Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases status chance by +50% on Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases status chance by +75% on Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases status chance by +100% on Tennokai attacks."
         ]
       }
     ]
@@ -24136,14 +24901,51 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Sandman/SandmanBlastAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Sandman/SandmanBaseSuit",
-    "baseDrain": "QA_HIGH",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "compatName": "Inaros",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Desiccation%27sCurseMod.png?08eb3",
+    "isAugment": true,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Arbiters of Hexis, Maxim",
+        "rarity": "Common",
+        "type": "Desiccation's Curse (Inaros)"
+      },
+      {
+        "chance": 1,
+        "location": "The Perrin Sequence, Partner",
+        "rarity": "Common",
+        "type": "Desiccation's Curse (Inaros)"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Desiccation Augment: Killing a blinded enemy with a Finisher has a 35% chance to summon a Swarm Kavat that will spread Scarab Swarm. Maximum Swarm Kavats +2."
+        ]
+      },
+      {
+        "stats": [
+          "Desiccation Augment: Killing a blinded enemy with a Finisher has a 50% chance to summon a Swarm Kavat that will spread Scarab Swarm. Maximum Swarm Kavats +2."
+        ]
+      },
+      {
+        "stats": [
+          "Desiccation Augment: Killing a blinded enemy with a Finisher has a 70% chance to summon a Swarm Kavat that will spread Scarab Swarm. Maximum Swarm Kavats +2."
+        ]
+      },
+      {
+        "stats": [
+          "Desiccation Augment: Killing a blinded enemy with a Finisher has a 100% chance to summon a Swarm Kavat that will spread Scarab Swarm. Maximum Swarm Kavats +2."
+        ]
+      }
+    ]
   },
   {
     "id": 145,
@@ -24843,6 +25645,53 @@
       {
         "stats": [
           "Soul Punch Augment: Depletes up to 25 Energy from the target."
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6355,
+    "slug": "discipline-s-merit",
+    "name": "Discipline’s Merit",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/EmpoweredHeavyMelee/CertainStrike",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "naramon",
+    "compatName": "Melee",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Discipline%27sMeritMod.png?6471c",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.06,
+        "location": "Deimos/Cambire (Alchemy), Rotation C",
+        "rarity": "Rare",
+        "type": "Discipline's Merit"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Enables Tennokai. Opportunities occur every <LOWER_IS_BETTER>7 melee hits instead of at random."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Opportunities occur every <LOWER_IS_BETTER>6 melee hits instead of at random."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Opportunities occur every <LOWER_IS_BETTER>5 melee hits instead of at random."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Opportunities occur every <LOWER_IS_BETTER>4 melee hits instead of at random."
         ]
       }
     ]
@@ -25618,7 +26467,7 @@
     ]
   },
   {
-    "id": "dreamer-s-bond",
+    "id": 6482,
     "slug": "dreamer-s-bond",
     "name": "Dreamer’s Bond",
     "categories": [
@@ -25631,9 +26480,8 @@
     "compatName": "AURA",
     "baseDrain": -2,
     "fusionLimit": 5,
-    "description": null,
     "wikiaThumbnail": "https://wiki.warframe.com/images/Dreamer%27sBondMod.png?3c491",
-    "isAugment": true,
+    "isAugment": false,
     "drops": [],
     "levelStats": [
       {
@@ -25664,6 +26512,53 @@
       {
         "stats": [
           "Squad receives +0.3 Energy Regen/s and +1.5 Health Regen/s"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6356,
+    "slug": "dreamer-s-wrath",
+    "name": "Dreamer’s Wrath",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/EmpoweredHeavyMelee/FocusedAttack",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Melee",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dreamer%27sWrathMod.png?b0824",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.06,
+        "location": "Deimos/Cambire (Alchemy), Rotation C",
+        "rarity": "Rare",
+        "type": "Dreamer's Wrath"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity chance by 12.5% and critical damage by 8% for Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity chance by 25% and critical damage by 16% for Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity chance by 37.5% and critical damage by 24% for Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity chance by 50% and critical damage by 32% for Tennokai attacks."
         ]
       }
     ]
@@ -37270,7 +38165,7 @@
     ]
   },
   {
-    "id": "gaia-s-tragedy",
+    "id": 869,
     "slug": "gaia-s-tragedy",
     "name": "Gaia’s Tragedy",
     "categories": [
@@ -43750,6 +44645,531 @@
     ]
   },
   {
+    "id": 737,
+    "slug": "hell-s-chamber",
+    "name": "Hell’s Chamber",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Shotgun/WeaponFireIterationsMod",
+    "type": "Shotgun Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Shotgun",
+    "baseDrain": 10,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hell%27sChamberMod.png?18c38",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0002,
+        "location": "Juno Elite Crewman",
+        "rarity": "Legendary",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Attack Drone",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Carabus",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Frontier Regulator",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Juno Oxium Osprey",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Narmer Observation Drone",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Narmer Oxium Osprey",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Narmer Regulator",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Nemes",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Observation Drone",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Oxium Osprey",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Rathuum Broadcaster",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Regulator",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Remech Osprey",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Sensor Regulator",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Taro Secura Osprey",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0003,
+        "location": "Vapos Oxium Osprey",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0103,
+        "location": "Duviri/Endless: Tier 6 (Normal)",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0149,
+        "location": "Duviri/Endless: Tier 4 (Normal)",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.05,
+        "location": "Vem Tabook",
+        "rarity": "Uncommon",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0556,
+        "location": "Ceres/Bode (Spy), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0556,
+        "location": "Europa/Valac (Spy), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0556,
+        "location": "Jupiter/Amalthea (Spy), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0556,
+        "location": "Saturn/Aegaeon (Spy), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0556,
+        "location": "Saturn/Dione (Spy), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0625,
+        "location": "Europa/Paimon (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0625,
+        "location": "Jupiter/Io (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0625,
+        "location": "Saturn/Helene (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0625,
+        "location": "Sedna/Camenae (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Eris/Hymeno (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Eris/Ixodes (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Eris/Kala-Azar (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Eris/Nimus (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Eris/Oestrus (Infested Salvage), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Europa/Cholistan (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Kuva Fortress/Nabuk (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Kuva Fortress/Taveuni (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Lua/StöFler (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Lua/Tycho (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Neptune/Despina (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Neptune/Kelashin (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Neptune/Proteus (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Pluto/Hieracon (Excavation), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Pluto/Outer Terminus (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Pluto/Palus (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Sedna/Amarna (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Sedna/Hydron (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Sedna/Scylla (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Sedna/Selkie (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Sedna/Yemaja (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Uranus/Assur (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Uranus/Bianca (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Uranus/Cupid (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Uranus/Miranda (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Uranus/Ophelia (Survival), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0667,
+        "location": "Uranus/Stephano (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Eris/Cyath (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Eris/Gnathos (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Neptune/Nereid (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Pluto/Oceanum (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Sedna/Kelpie (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Sedna/Tikoloshe (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0704,
+        "location": "Uranus/Rosalind (Spy), Rotation C",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0714,
+        "location": "Europa/Ose (Interception), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0714,
+        "location": "Jupiter/Callisto (Interception), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0714,
+        "location": "Saturn/Rhea (Interception), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0714,
+        "location": "Uranus/Umbriel (Interception), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0749,
+        "location": "Lua/Pavlov (Spy), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Ceres/Casta (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Ceres/Egeria (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Ceres/Varro (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Earth/Lith (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Mars/Spear (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Mercury/Lares (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Phobos/Drunlo (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Phobos/Gulliver (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.0769,
+        "location": "Venus/Tessera (Defense), Rotation B",
+        "rarity": "Rare",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.1,
+        "location": "Leekter",
+        "rarity": "Uncommon",
+        "type": "Hell's Chamber"
+      },
+      {
+        "chance": 0.1,
+        "location": "Shik Tal",
+        "rarity": "Uncommon",
+        "type": "Hell's Chamber"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+20% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+40% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+80% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+100% Multishot"
+        ]
+      },
+      {
+        "stats": [
+          "+120% Multishot"
+        ]
+      }
+    ]
+  },
+  {
     "id": 4668,
     "slug": "hellfire",
     "name": "Hellfire",
@@ -46246,6 +47666,63 @@
         }
       ]
     }
+  },
+  {
+    "id": 343,
+    "slug": "hunter-s-bonesaw",
+    "name": "Hunter’s Bonesaw",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/Event/ProjectNightwatch/RipkasNightwatchMod",
+    "type": "Melee Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": "Ripkas",
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hunter%27sBonesawMod.png?912ff",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.1111,
+        "location": "Kela De Thaym",
+        "rarity": "Uncommon",
+        "type": "Hunter's Bonesaw"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Increase Finisher Damage by 20% against prone enemies."
+        ]
+      },
+      {
+        "stats": [
+          "Increase Finisher Damage by 40% against prone enemies."
+        ]
+      },
+      {
+        "stats": [
+          "Increase Finisher Damage by 60% against prone enemies."
+        ]
+      },
+      {
+        "stats": [
+          "Increase Finisher Damage by 80% against prone enemies."
+        ]
+      },
+      {
+        "stats": [
+          "Increase Finisher Damage by 100% against prone enemies."
+        ]
+      },
+      {
+        "stats": [
+          "Increase Finisher Damage by 120% against prone enemies."
+        ]
+      }
+    ]
   },
   {
     "id": 642,
@@ -50749,14 +52226,38 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Choir/ChoirPoolAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Choir/ChoirBaseSuit",
-    "baseDrain": "QA_HIGH",
-    "isAugment": false,
+    "compatName": "Jade",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Jade%27sJudgmentMod.png?bc6e9",
+    "isAugment": true,
     "drops": [],
-    "levelStats": []
+    "levelStats": [
+      {
+        "stats": [
+          "Light's Judgment Augment: Enemies damaged by the well have a 2% chance per hit to spawn a Jade Light above them, damaging them for 1.5s."
+        ]
+      },
+      {
+        "stats": [
+          "Light's Judgment Augment: Enemies damaged by the well have a 3% chance per hit to spawn a Jade Light above them, damaging them for 2s."
+        ]
+      },
+      {
+        "stats": [
+          "Light's Judgment Augment: Enemies damaged by the well have a 4% chance per hit to spawn a Jade Light above them, damaging them for 2.5s."
+        ]
+      },
+      {
+        "stats": [
+          "Light's Judgment Augment: Enemies damaged by the well have a 5% chance per hit to spawn a Jade Light above them, damaging them for 3s."
+        ]
+      }
+    ]
   },
   {
     "id": 389,
@@ -51678,14 +53179,81 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/WarframeCatMod",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "naramon",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kavat%27sGraceMod.png?8ebc1",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.01,
+        "location": "Amalgam Arca Heqet",
+        "rarity": "Uncommon",
+        "type": "Kavat's Grace"
+      },
+      {
+        "chance": 0.01,
+        "location": "Amalgam Arca Kucumatz",
+        "rarity": "Uncommon",
+        "type": "Kavat's Grace"
+      },
+      {
+        "chance": 0.01,
+        "location": "Amalgam Cinder Machinist",
+        "rarity": "Uncommon",
+        "type": "Kavat's Grace"
+      },
+      {
+        "chance": 0.01,
+        "location": "Amalgam Phase Moa",
+        "rarity": "Uncommon",
+        "type": "Kavat's Grace"
+      },
+      {
+        "chance": 0.01,
+        "location": "Amalgam Swarm Satyr",
+        "rarity": "Uncommon",
+        "type": "Kavat's Grace"
+      },
+      {
+        "chance": 0.0103,
+        "location": "Duviri/Endless: Tier 6 (Normal)",
+        "rarity": "Rare",
+        "type": "Kavat's Grace"
+      },
+      {
+        "chance": 0.0149,
+        "location": "Duviri/Endless: Tier 4 (Normal)",
+        "rarity": "Rare",
+        "type": "Kavat's Grace"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Falling is 25% less likely to result in a hard landing."
+        ]
+      },
+      {
+        "stats": [
+          "Falling is 50% less likely to result in a hard landing."
+        ]
+      },
+      {
+        "stats": [
+          "Falling is 75% less likely to result in a hard landing."
+        ]
+      },
+      {
+        "stats": [
+          "Falling is 100% less likely to result in a hard landing."
+        ]
+      }
+    ]
   },
   {
     "id": 7278,
@@ -57658,6 +59226,63 @@
     ]
   },
   {
+    "id": 6357,
+    "slug": "master-s-edge",
+    "name": "Master’s Edge",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/EmpoweredHeavyMelee/HeavyAgression",
+    "type": "Melee Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": "Melee",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Master%27sEdgeMod.png?b0824",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.12,
+        "location": "Deimos/Cambire (Alchemy), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Master's Edge"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Enables Tennokai. Increases Tennokai damage by 10%."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases Tennokai damage by 20%."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases Tennokai damage by 30%."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases Tennokai damage by 40%."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases Tennokai damage by 50%."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases Tennokai damage by 60%."
+        ]
+      }
+    ]
+  },
+  {
     "id": 662,
     "slug": "maul",
     "name": "Maul",
@@ -59385,6 +61010,26 @@
     ]
   },
   {
+    "id": 6479,
+    "slug": "mentor-s-legacy",
+    "name": "Mentor’s Legacy",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/EmpoweredHeavyMelee/TennokaiBaseMod",
+    "type": "Melee Mod",
+    "rarity": "Uncommon",
+    "polarity": "naramon",
+    "compatName": "Melee",
+    "baseDrain": 4,
+    "fusionLimit": 0,
+    "description": "Enables Tennokai.",
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mentor%27sLegacyMod.png?a522c",
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
+  },
+  {
     "id": 7189,
     "slug": "merciless-gunfight",
     "name": "Merciless Gunfight",
@@ -59513,14 +61158,57 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Cowgirl/GunFuPvPAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Cowgirl/CowgirlBaseSuit",
-    "baseDrain": "QA_HIGH",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "compatName": "Mesa",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mesa%27sWaltzMod.png?c1250",
+    "isAugment": true,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Conclave, Tempest",
+        "rarity": "Common",
+        "type": "Mesa's Waltz"
+      },
+      {
+        "chance": 1,
+        "location": "Red Veil, Exalted",
+        "rarity": "Common",
+        "type": "Mesa's Waltz (Mesa)"
+      },
+      {
+        "chance": 1,
+        "location": "Steel Meridian, General",
+        "rarity": "Common",
+        "type": "Mesa's Waltz (Mesa)"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Peacemaker Augment: Mesa can move at 35% Speed while using Peacemaker."
+        ]
+      },
+      {
+        "stats": [
+          "Peacemaker Augment: Mesa can move at 40% Speed while using Peacemaker."
+        ]
+      },
+      {
+        "stats": [
+          "Peacemaker Augment: Mesa can move at 45% Speed while using Peacemaker."
+        ]
+      },
+      {
+        "stats": [
+          "Peacemaker Augment: Mesa can move at 50% Speed while using Peacemaker."
+        ]
+      }
+    ]
   },
   {
     "id": 6059,
@@ -62259,7 +63947,7 @@
     }
   },
   {
-    "id": "mountain-s-edge",
+    "id": 6143,
     "slug": "mountain-s-edge",
     "name": "Mountain’s Edge",
     "categories": [
@@ -65877,13 +67565,222 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraExilusMod",
     "type": "Warframe Mod",
+    "rarity": "Common",
     "polarity": "vazarin",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nira%27sAnguishMod.png?e68b5",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0545,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Nira's Anguish"
+      },
+      {
+        "chance": 0.0545,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Nira's Anguish"
+      },
+      {
+        "chance": 0.0811,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Nira's Anguish"
+      },
+      {
+        "chance": 0.0811,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Rare",
+        "type": "Nira's Anguish"
+      },
+      {
+        "chance": 0.2,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Nira's Anguish"
+      },
+      {
+        "chance": 0.2,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Nira's Anguish"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+2.5% to Parkour Velocity",
+          "+2.5% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+5% to Parkour Velocity",
+          "+5% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+7.5% to Parkour Velocity",
+          "+7.5% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+10% to Parkour Velocity",
+          "+10% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+12.5% to Parkour Velocity",
+          "+12.5% Aim Glide/Wall Latch Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+15% to Parkour Velocity",
+          "+15% Aim Glide/Wall Latch Duration"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Nirasetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Increase damage from Slam Attacks by +150%."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Increase damage from Slam Attacks by +300%."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Increase damage from Slam Attacks by +450%."
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 5629,
+    "slug": "nira-s-contempt",
+    "name": "Nira’s Contempt",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraMeleeMod",
+    "type": "Melee Mod",
+    "rarity": "Rare",
+    "polarity": "madurai",
+    "compatName": "Whips",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nira%27sContemptMod.png?2bc05",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.0545,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Nira's Contempt"
+      },
+      {
+        "chance": 0.0545,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Nira's Contempt"
+      },
+      {
+        "chance": 0.075,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Nira's Contempt"
+      },
+      {
+        "chance": 0.075,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation A",
+        "rarity": "Rare",
+        "type": "Nira's Contempt"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+15% Melee Damage",
+          "+10% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+30% Melee Damage",
+          "+20% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+45% Melee Damage",
+          "+30% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+60% Melee Damage",
+          "+40% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+75% Melee Damage",
+          "+50% Status Chance"
+        ]
+      },
+      {
+        "stats": [
+          "+90% Melee Damage",
+          "+60% Status Chance"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Nirasetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Increase damage from Slam Attacks by +150%."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Increase damage from Slam Attacks by +300%."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Increase damage from Slam Attacks by +450%."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 5630,
@@ -65892,14 +67789,116 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraWarframeMod",
     "type": "Warframe Mod",
-    "rarity": "UNCOMMON",
+    "rarity": "Uncommon",
     "polarity": "vazarin",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "WARFRAME",
+    "baseDrain": 4,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nira%27sHatredMod.png?54b15",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0909,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Nira's Hatred"
+      },
+      {
+        "chance": 0.0909,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Rare",
+        "type": "Nira's Hatred"
+      },
+      {
+        "chance": 0.125,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Uncommon",
+        "type": "Nira's Hatred"
+      },
+      {
+        "chance": 0.125,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Uncommon",
+        "type": "Nira's Hatred"
+      },
+      {
+        "chance": 0.1351,
+        "location": "Earth/Cetus (Level 50 - 70 Cetus Bounty), Rotation B",
+        "rarity": "Uncommon",
+        "type": "Nira's Hatred"
+      },
+      {
+        "chance": 0.1351,
+        "location": "Venus/Orb Vallis (Level 50 - 70 Orb Vallis Bounty), Rotation B",
+        "rarity": "Uncommon",
+        "type": "Nira's Hatred"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+6% Health",
+          "+2.5% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+12% Health",
+          "+5% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+18% Health",
+          "+7.5% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+23% Health",
+          "+10% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+29% Health",
+          "+12.5% Ability Duration"
+        ]
+      },
+      {
+        "stats": [
+          "+35% Health",
+          "+15% Ability Duration"
+        ]
+      }
+    ],
+    "setBonus": {
+      "setName": "Nirasetmod",
+      "setUniqueName": "/Lotus/Upgrades/Mods/Sets/Nira/NiraSetMod",
+      "numUpgradesInSet": 3,
+      "tiers": [
+        {
+          "count": 1,
+          "stats": [
+            "Increase damage from Slam Attacks by +150%."
+          ]
+        },
+        {
+          "count": 2,
+          "stats": [
+            "Increase damage from Slam Attacks by +300%."
+          ]
+        },
+        {
+          "count": 3,
+          "stats": [
+            "Increase damage from Slam Attacks by +450%."
+          ]
+        }
+      ]
+    }
   },
   {
     "id": 1403,
@@ -67496,14 +69495,38 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Koumei/KoumeiFortuneAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Koumei/KoumeiBaseSuit",
-    "baseDrain": "QA_HIGH",
-    "isAugment": false,
+    "compatName": "Koumei",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Omikuji%27sFortuneMod.png?81f61",
+    "isAugment": true,
     "drops": [],
-    "levelStats": []
+    "levelStats": [
+      {
+        "stats": [
+          "Omikuji Augment: Reduce Omikuji's Cooldown by 1s when you kill an enemy with the weapon affected by Koumei's Passive."
+        ]
+      },
+      {
+        "stats": [
+          "Omikuji Augment: Reduce Omikuji's Cooldown by 2s when you kill an enemy with the weapon affected by Koumei's Passive."
+        ]
+      },
+      {
+        "stats": [
+          "Omikuji Augment: Reduce Omikuji's Cooldown by 3s when you kill an enemy with the weapon affected by Koumei's Passive."
+        ]
+      },
+      {
+        "stats": [
+          "Omikuji Augment: Reduce Omikuji's Cooldown by 4s when you kill an enemy with the weapon affected by Koumei's Passive."
+        ]
+      }
+    ]
   },
   {
     "id": "onslaught-matrix",
@@ -67649,6 +69672,53 @@
       {
         "stats": [
           "+15% Turret Damage while 100% Hull\\n20% chance to Reflect 25% Damage while over 80% Shields\\n+6% Battle Mod Efficiency"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6359,
+    "slug": "opportunity-s-reach",
+    "name": "Opportunity’s Reach",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/EmpoweredHeavyMelee/PerfectReach",
+    "type": "Melee Mod",
+    "rarity": "Uncommon",
+    "polarity": "madurai",
+    "compatName": "Melee",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Opportunity%27sReachMod.png?34012",
+    "isAugment": false,
+    "drops": [
+      {
+        "chance": 0.12,
+        "location": "Deimos/Cambire (Alchemy), Rotation C",
+        "rarity": "Uncommon",
+        "type": "Opportunity's Reach"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity window to 2.8s and melee range by 0.75m for Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity window to 3.2s and melee range by 1.5m for Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity window to 3.6s and melee range by 2.25m for Tennokai attacks."
+        ]
+      },
+      {
+        "stats": [
+          "Enables Tennokai. Increases opportunity window to 4.0s and melee range by 3m for Tennokai attacks."
         ]
       }
     ]
@@ -73885,14 +75955,45 @@
     "categories": [
       "mod"
     ],
-    "type": "Mod",
-    "rarity": "RARE",
+    "uniqueName": "/Lotus/Upgrades/Mods/Hoverboard/HBDoubleJumpHeightMod",
+    "type": "K-Drive Mod",
+    "rarity": "Rare",
     "polarity": "naramon",
-    "compatName": "/Lotus/Types/Vehicles/Hoverboard/HoverboardSuit",
-    "baseDrain": "QA_MEDIUM",
+    "compatName": "K-Drive",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Poppin%27VertMod.png?c68d6",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Ventkids, Whozit",
+        "rarity": "Common",
+        "type": "Poppin' Vert"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+20% K-Drive Double Jump Height"
+        ]
+      },
+      {
+        "stats": [
+          "+40% K-Drive Double Jump Height"
+        ]
+      },
+      {
+        "stats": [
+          "+60% K-Drive Double Jump Height"
+        ]
+      },
+      {
+        "stats": [
+          "+80% K-Drive Double Jump Height"
+        ]
+      }
+    ]
   },
   {
     "id": 207,
@@ -114565,12 +116666,236 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Warframe/AvatarLootRadarMod",
     "type": "Warframe Mod",
+    "rarity": "Common",
     "polarity": "naramon",
-    "compatName": "/Lotus/Types/Game/PowerSuits/PlayerPowerSuit",
+    "compatName": "WARFRAME",
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "description": "Minimap shows loot crates.",
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Thief%27sWitMod.png?ffe7d",
     "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "drops": [
+      {
+        "chance": 0.0057,
+        "location": "Fusion Moa",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0057,
+        "location": "Vapos Fusion Moa",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Axio Engineer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Axio Tech",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Juno Elite Crewman",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Juno Tech",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Kuva Shield Lancer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Narmer Shield Lancer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Narmer Tech",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Orm Engineer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Orm Tech",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Shield Lancer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Taro Engineer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Taro Tech",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Tusk Shield Lancer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Vorac Engineer",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0076,
+        "location": "Vorac Tech",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0116,
+        "location": "Anti Moa",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0116,
+        "location": "Axio Disc Moa",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0116,
+        "location": "Orm Disc Moa",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0116,
+        "location": "Taro Disc Moa",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0116,
+        "location": "Vapos Anti Moa",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0116,
+        "location": "Vorac Disc Moa",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.0146,
+        "location": "Kuva Lich Agor Rok (Level 70 - 79)",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.1429,
+        "location": "Deimos/Formido (Caches), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.1667,
+        "location": "Eris/Candiru (Caches), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.1667,
+        "location": "Eris/Lepis (Caches), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.1667,
+        "location": "Eris/Naeglar (Caches), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.1667,
+        "location": "Eris/Psoro (Caches), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.1667,
+        "location": "Eris/Viver (Caches), Rotation A",
+        "rarity": "Uncommon",
+        "type": "Thief's Wit"
+      },
+      {
+        "chance": 0.3872,
+        "location": "The Sergeant",
+        "rarity": "Common",
+        "type": "Thief's Wit"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "+7m Loot Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+14m Loot Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+21m Loot Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+28m Loot Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+35m Loot Radar"
+        ]
+      },
+      {
+        "stats": [
+          "+42m Loot Radar"
+        ]
+      }
+    ]
   },
   {
     "id": 5257,
@@ -117659,14 +119984,51 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Werewolf/WerewolfHowlAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Werewolf/WerewolfBaseSuit",
-    "baseDrain": "QA_HIGH",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "compatName": "Voruna",
+    "baseDrain": 6,
+    "fusionLimit": 3,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ulfrun%27sEnduranceMod.png?69c1b",
+    "isAugment": true,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Red Veil, Exalted",
+        "rarity": "Common",
+        "type": "Ulfrun's Endurance (Voruna)"
+      },
+      {
+        "chance": 1,
+        "location": "Steel Meridian, General",
+        "rarity": "Common",
+        "type": "Ulfrun's Endurance (Voruna)"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Ulfrun's Descent Augment: During Ulfrun’s attack, enemies that die from <DT_SLASH_COLOR>Slash Status within 5m restore Voruna’s charges."
+        ]
+      },
+      {
+        "stats": [
+          "Ulfrun's Descent Augment: During Ulfrun’s attack, enemies that die from <DT_SLASH_COLOR>Slash Status within 10m restore Voruna’s charges."
+        ]
+      },
+      {
+        "stats": [
+          "Ulfrun's Descent Augment: During Ulfrun’s attack, enemies that die from <DT_SLASH_COLOR>Slash Status within 15m restore Voruna’s charges."
+        ]
+      },
+      {
+        "stats": [
+          "Ulfrun's Descent Augment: During Ulfrun’s attack, enemies that die from <DT_SLASH_COLOR>Slash Status within 20m restore Voruna’s charges."
+        ]
+      }
+    ]
   },
   {
     "id": 694,
@@ -124017,13 +126379,61 @@
     "categories": [
       "mod"
     ],
+    "uniqueName": "/Lotus/Powersuits/Excalibur/ExcaliburUmbraPassiveAugmentCard",
     "type": "Warframe Mod",
-    "rarity": "RARE",
+    "rarity": "Rare",
     "polarity": "zenurik",
-    "compatName": "/Lotus/Powersuits/Excalibur/ExcaliburUmbra",
-    "isAugment": false,
-    "drops": [],
-    "levelStats": []
+    "compatName": "Excalibur Umbra",
+    "baseDrain": 2,
+    "fusionLimit": 5,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Warrior%27sRestMod.png?da4f9",
+    "isAugment": true,
+    "drops": [
+      {
+        "chance": 1,
+        "location": "Arbiters of Hexis, Maxim",
+        "rarity": "Common",
+        "type": "Warrior's Rest (Excalibur Umbra)"
+      },
+      {
+        "chance": 1,
+        "location": "Red Veil, Exalted",
+        "rarity": "Common",
+        "type": "Warrior's Rest (Excalibur Umbra)"
+      }
+    ],
+    "levelStats": [
+      {
+        "stats": [
+          "Passive Augment: Umbra's Ability Strength increases by +2.5% but he no longer fights independently alongside his Operator."
+        ]
+      },
+      {
+        "stats": [
+          "Passive Augment: Umbra's Ability Strength increases by +5% but he no longer fights independently alongside his Operator."
+        ]
+      },
+      {
+        "stats": [
+          "Passive Augment: Umbra's Ability Strength increases by +7.5% but he no longer fights independently alongside his Operator."
+        ]
+      },
+      {
+        "stats": [
+          "Passive Augment: Umbra's Ability Strength increases by +10% but he no longer fights independently alongside his Operator."
+        ]
+      },
+      {
+        "stats": [
+          "Passive Augment: Umbra's Ability Strength increases by +12.5% but he no longer fights independently alongside his Operator."
+        ]
+      },
+      {
+        "stats": [
+          "Passive Augment: Umbra's Ability Strength increases by +15% but he no longer fights independently alongside his Operator."
+        ]
+      }
+    ]
   },
   {
     "id": "waveband-disruptor",
