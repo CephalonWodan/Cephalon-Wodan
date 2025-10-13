@@ -126,8 +126,8 @@
     // Ajouts synthétiques ciblés
     if (/aura/i.test(t)) keys.add("Aura Mod");         // ▶️ libellé exact demandé
     if (/exilus/i.test(t)) keys.add("Exilus Mod");
-    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper");
-    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle");
+    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper Mod");
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle Mod");
 
     // ▶️ Augment Mod: via flag ou heuristique nom/type
     if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(name)) {
@@ -156,7 +156,7 @@
     const aliases = {
       madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
-      umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
+      umbra:"Umbra", universal:"", any:"Any", none:"Any", "-":"Any"
     };
     return aliases[s] || ucFirst(s);
   }
