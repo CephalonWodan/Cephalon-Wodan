@@ -227,7 +227,7 @@ function fromWFStat(w){ return {
   name:w?.name||null, uniqueName:w?.uniqueName||null, type:w?.type||null,
   rarity:w?.rarity||null, polarity:normalizePolarity(w?.polarity||null),
   baseDrain:w?.baseDrain??null, fusionLimit:w?.fusionLimit??null,
-  compatName:w?.compatName||null, description:w?.description||null,
+  compatName:w?.compatName||null, description:w?.description??null,
   wikiaThumbnail:w?.wikiaThumbnail||null, isAugment:!!w?.isAugment,
   modSet:w?.modSet||null,
   modSetValues:Array.isArray(w?.modSetValues)?w.modSetValues:null,
@@ -237,7 +237,7 @@ function fromExport(u){ if(!u)return{}; return {
   name:u?.name||u?.upgradeName||u?.displayName||null, uniqueName:u?.uniqueName||null,
   type:u?.type||null, rarity:u?.rarity||null, polarity:normalizePolarity(u?.polarity||null),
   baseDrain:u?.baseDrain??null, fusionLimit:u?.fusionLimit??null,
-  compatName:u?.compatName||null, description:u?.description||null,
+  compatName:u?.compatName||null, description:u?.description??null,
 };}
 function fromOverframe(of){ const name=of?.name||of?.title||null; const slug=of?.slug||(name?slugify(name):null); const d=of?.data||{};
   const rarity=d.RarityName||d.Rarity||null; const polarity=normalizePolarity(d.ArtifactPolarity||d.Polarity||null);
@@ -410,6 +410,11 @@ for (const [ofKey, ofObj] of OF_ENTRIES) {
     drops: Array.isArray(WF?.drops) ? WF.drops : [],
     levelStats: Array.isArray(WF?.levelStats) ? WF.levelStats : [],
   };
+
+  /* 🩹 PATCH MINIMAL: si Overframe ne donne pas de catégories, éviter l'exclusion en fin de pipeline */
+  if (!Array.isArray(merged.categories) || merged.categories.length === 0) {
+    merged.categories = ["mod"];
+  }
 
   // setBonus (si membre d’un set)
   const wfForSet = wfRaw || {};
