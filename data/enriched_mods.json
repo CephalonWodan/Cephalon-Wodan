@@ -72006,7 +72006,7 @@
     ]
   },
   {
-    "id": 423,
+    "id": 1305,
     "slug": "pistol-gambit",
     "name": "Pistol Gambit",
     "categories": [
@@ -115956,7 +115956,7 @@
     ]
   },
   {
-    "id": "transmute-core",
+    "id": 1311,
     "slug": "transmute-core",
     "name": "Transmute Core",
     "categories": [
@@ -115970,7 +115970,6 @@
     "baseDrain": 0,
     "fusionLimit": 0,
     "description": "Removes credits cost and guarantees the resultant mod polarity.",
-    "wikiaThumbnail": null,
     "isAugment": false,
     "drops": [
       {
