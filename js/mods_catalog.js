@@ -1,4 +1,3 @@
-<script>
 (() => {
   "use strict";
 
@@ -98,6 +97,7 @@
   // ---- Category denylist (exclues de la sidebar)
   const CATEGORY_DENY = [
     "Focus Way",
+    "Mod",                 // ❌ on retire seulement la catégorie générique “Mod”
     "Mod Set Mod",
     "Arch-Gun Riven Mod",
     "Companion Weapon Riven Mod",
@@ -112,8 +112,33 @@
   const CATEGORY_DENYSET = new Set(CATEGORY_DENY.map(normTypeName));
   const isDeniedType = (t) => CATEGORY_DENYSET.has(normTypeName(t));
 
+  /* === Catégories calculées pour le filtrage ===
+     On garde m.type pour l’affichage (ex: “Primary Mod”, “Stance Mod”),
+     et on ajoute des catégories synthétiques : Aura Mod, Sniper, Rifle, Augment Mod. */
+  function categoryKeys(m) {
+    const t = norm(m.type);
+    const c = norm(m.compatibility);
+    const name = norm(m.name);
+
+    const keys = new Set();
+    if (t) keys.add(t);             // conserve le type d’origine (ex: “Primary Mod”, “Stance Mod”)
+
+    // Ajouts synthétiques ciblés
+    if (/aura/i.test(t)) keys.add("Aura Mod");         // ▶️ libellé exact demandé
+    if (/exilus/i.test(t)) keys.add("Exilus Mod");
+    if (/sniper/i.test(t) || /sniper/i.test(c)) keys.add("Sniper Mod");
+    if (/\brifle\b/i.test(t) || /\brifle\b/i.test(c) || /primary/i.test(t)) keys.add("Rifle Mod");
+
+    // ▶️ Augment Mod: via flag ou heuristique nom/type
+    if (m.isAugment === true || /augment/i.test(t) || /augment/i.test(name)) {
+      keys.add("Augment Mod");
+    }
+
+    return Array.from(keys);
+  }
+
   /* ================== Polarity (icônes locales) ================== */
-  const POL_ICON = (p) => {
+    const POL_ICON = (p) => {
     const map = {
       Madurai: "Madurai_Pol.svg", Vazarin: "Vazarin_Pol.svg",
       Naramon: "Naramon_Pol.svg", Zenurik: "Zenurik_Pol.svg",
@@ -129,7 +154,7 @@
     const s = norm(p).toLowerCase();
     if (!s) return "Any";
     const aliases = {
-      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus:"Exilus",
+      madurai:"Madurai", vazarin:"Vazarin", naramon:"Naramon", aura:"Aura", exilus: "Exilus",
       zenurik:"Zenurik", unairu:"Unairu", penjaga:"Penjaga",
       umbra:"Umbra", universal:"Any", any:"Any", none:"Any", "-":"Any"
     };
@@ -154,7 +179,7 @@
     if (!raw) return { url: "", verified: false };
     return { url: upscaleThumb(raw, 720), verified: true };
   }
-  // Placeholder
+  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
   const MOD_PLACEHOLDER =
     'data:image/svg+xml;utf8,' +
     encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
@@ -163,8 +188,11 @@
   function cleanFxKeepTokens(s) {
     if (!s) return "";
     let t = String(s);
-    t = t.replace(/\\n/g, "\n");
+    t = t.replace(/\\n/g, "\n");                 // \n échappés -> réels
     t = t.replace(/<\s*LINE_SEPARATOR\s*>/gi, "\n");
+    // NE PAS supprimer <DT_...> !
+    // Ne pas supprimer toute balise générique ici (certaines descriptions ont des tags bénins).
+    // On se contente d’aplatir espaces multiples.
     t = t.replace(/[ \t]{2,}/g, " ").trim();
     return t;
   }
@@ -215,9 +243,9 @@
   /* ================== Rareté / Qualité ================== */
   function rarityKey(r){ const s = norm(r).toUpperCase(); return /PRIMED/.test(s) ? "PRIMED" : s; }
   function rarityOrder(r){ return ({COMMON:1,UNCOMMON:2,RARE:3,LEGENDARY:4,PRIMED:5})[rarityKey(r)] || 0; }
-
-  // ✅ bonus si item issu de ton API (slug/cats/setBonus)
   function descScore(m){ return Math.min(500, makeEffects(m).join(" ").length + norm(m.description).length); }
+
+  // ✅ PATCH: bonus si l’item vient de ton API (slug/cats/setBonus)
   function qualityForPrimary(m){
     const imgBonus = wikiThumbRaw(m) ? 2000 : 0;
     const textBonus = descScore(m);
@@ -230,6 +258,7 @@
   }
 
   /* ================== Fusion des doublons PAR NOM ================== */
+
   function mergeGroup(items){
     const primary = items.slice().sort((a,b)=> qualityForPrimary(b)-qualityForPrimary(a))[0];
     const bestTxt = items.slice().sort((a,b)=> descScore(b)-descScore(a))[0];
@@ -249,9 +278,17 @@
       return vals.sort((a,b)=> (a==="Any") - (b==="Any") || a.localeCompare(b))[0];
     }
 
-    // ✅ conserver meta (slug/cats/setBonus)
+    // ✅ PATCH: préserver des champs Cephalon utiles (slug/cats/setBonus) + isAugment
     const withMeta = items.find(x => x && (x.slug || (x.categories && x.categories.length) || x.setBonus || x.isAugment)) || primary;
     const setBonus = withMeta.setBonus || null;
+
+    // ▶️ Nouveau : calcul isAugment final (pour “Augment Mod”)
+    const isAug =
+      items.some(x =>
+        x && (x.isAugment === true ||
+              /augment/i.test(norm(x.type)) ||
+              /augment/i.test(norm(x.name)))
+      );
 
     return {
       name: pick(primary.name), uniqueName: pick(primary.uniqueName, bestTxt.uniqueName),
@@ -265,9 +302,11 @@
       polarity: pickPolarity(primary.polarity, primary.polarityName, bestTxt.polarity, bestTxt.polarityName),
       set: pick(primary.set, bestTxt.set),
 
+      // ✅ champs Cephalon conservés
       slug: withMeta.slug || "",
       categories: Array.isArray(withMeta.categories) ? withMeta.categories.slice() : [],
       setBonus,
+      isAugment: isAug, // ◀️ important pour “Augment Mod”
 
       wikiImage: img,
       imgVerified: !!verified,
@@ -298,33 +337,16 @@
     return `<span class="badge pol-badge"><img src="${src}" alt="${txt}"><span>${txt}</span></span>`;
   }
 
-  // 👉 NEW: parser propre du setBonus (object tiers → lignes)
   function setBonusLines(sb){
     if (!sb) return [];
-    // déjà un tableau de lignes
     if (Array.isArray(sb)) return sb.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
-    // objet avec tiers
-    if (typeof sb === "object") {
-      const tiers = Array.isArray(sb.tiers) ? sb.tiers.slice() : [];
-      if (tiers.length) {
-        tiers.sort((a,b)=>(a.count??0)-(b.count??0));
-        const out = [];
-        for (const t of tiers) {
-          const label = Number.isFinite(t?.count) ? `${t.count} Mod${t.count>1?"s":""}` : "";
-          const stats = Array.isArray(t?.stats) ? t.stats : (t?.stat ? [t.stat] : []);
-          for (const st of stats) {
-            const txt = cleanFxKeepTokens(norm(st));
-            if (txt) out.push(label ? `${label}: ${txt}` : txt);
-          }
-        }
-        return out;
-      }
-      // fallback si un autre shape (ex: {stats:[…]})
-      if (Array.isArray(sb.stats)) return sb.stats.map(x => cleanFxKeepTokens(norm(x))).filter(Boolean);
-      if (typeof sb.text === "string") return [cleanFxKeepTokens(sb.text)];
-    }
-    // dernier recours: stringifier proprement
-    return [cleanFxKeepTokens(String(sb))];
+    const s = cleanFxKeepTokens(String(sb));
+    return s
+      .replace(/\r?\n/g, "|")
+      .replace(/[•;·]/g, "|")
+      .split("|")
+      .map(x => cleanFxKeepTokens(x))
+      .filter(Boolean);
   }
 
   function modCard(m){
@@ -365,10 +387,10 @@
           }
           ${
             sbLines.length
-            ? `<div class="fx-sep"></div>
-               <div class="fx-head muted">Set Bonus</div>
-               ${sbLines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")}`
-            : ""
+              ? `<div class="fx-sep"></div>
+                 <div class="fx-head muted">Set Bonus</div>
+                 ${sbLines.map(t => `<div class="fx">• ${renderTextIcons(t)}</div>`).join("")}`
+              : ""
           }
         </div>
       </div>
@@ -397,8 +419,12 @@
 
     for (const m of arr) {
       if (isFocus(m) || isRiven(m) || isEmptySetStub(m)) continue;
-      const t = m.type || "";
-      if (t && !isDeniedType(t)) cats.add(t);
+
+      // Ajouter toutes les clés de catégorie calculées
+      for (const lab of categoryKeys(m)) {
+        if (lab && !isDeniedType(lab)) cats.add(lab);
+      }
+
       if (canonPolarity(m.polarity)) pols.add(canonPolarity(m.polarity));
       if (rarityKey(m.rarity)) rars.add(rarityKey(m.rarity));
     }
@@ -479,7 +505,13 @@
     arr = arr.filter(m => !isFocus(m) && !isRiven(m) && !isEmptySetStub(m));
     if (STATE.onlyVerified) arr = arr.filter(m => m.imgVerified === true);
 
-    if (STATE.fCats.size) arr = arr.filter(m => STATE.fCats.has(m.type || ""));
+    if (STATE.fCats.size) {
+      arr = arr.filter(m => {
+        const keys = new Set(categoryKeys(m));
+        return [...STATE.fCats].some(k => keys.has(k));
+      });
+    }
+
     if (STATE.fPols.size) arr = arr.filter(m => STATE.fPols.has(canonPolarity(m.polarity || "")));
     if (STATE.fRars.size) arr = arr.filter(m => STATE.fRars.has(rarityKey(m.rarity || "")));
 
@@ -499,7 +531,11 @@
       if (sort === "polarity") return canonPolarity(a.polarity||"").localeCompare(canonPolarity(b.polarity||"")) || (a.name||"").localeCompare(b.name||"");
       if (sort === "drain")    return (a.fusionLimit ?? 0) - (b.fusionLimit ?? 0) || (a.name||"").localeCompare(b.name||"");
       if (sort === "compat")   return (a.compatibility||"").localeCompare(b.compatibility||"") || (a.name||"").localeCompare(b.name||"");
-      if (sort === "category") return (a.type||"").localeCompare(b.type||"") || (a.name||"").localeCompare(b.name||"");
+      if (sort === "category") {
+        const ca = (categoryKeys(a)[0] || a.type || "");
+        const cb = (categoryKeys(b)[0] || b.type || "");
+        return ca.localeCompare(cb) || (a.name||"").localeCompare(b.name||"");
+      }
       return (a.name||"").localeCompare(b.name||"");
     });
 
@@ -575,7 +611,7 @@
         const r = await fetch(url, { cache: "no-store" });
         if (!r.ok) { errors.push(`${url} → HTTP ${r.status}`); continue; }
         const data = await r.json();
-        if (Array.isArray(data) && data.length) return data;
+        if (Array.isArray(data) && data.length >= 0) return data;
       } catch (e) { errors.push(`${url} → ${e.message||e}`); }
     }
     console.warn("[mods] endpoints empty/failed]:", errors);
@@ -634,4 +670,3 @@
   })();
 
 })();
-</script>
