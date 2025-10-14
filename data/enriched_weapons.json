@@ -41,8 +41,8 @@
         "shotType": "Projectile",
         "shotSpeed": 70,
         "damage": {
-          "impact": 35,
-          "total": 35
+          "impact": 26,
+          "total": 26
         }
       },
       {
