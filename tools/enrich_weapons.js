@@ -54,6 +54,7 @@ function hydrateAttackWithItemStats(a, item) {
   if (a.speed == null) a.speed = baseSpeed;
   return a;
 }
+// (laisse maybeSwapPS défini mais on ne l’utilise plus)
 function maybeSwapPS(atkDmg, baseDmg) {
   if (!atkDmg || !baseDmg) return false;
   const { puncture:pA, slash:sA } = atkDmg;
@@ -198,12 +199,13 @@ for (const w of WFSTAT) {
     attacks = [hydrateAttackWithItemStats({ name:"Primary Fire", damage: normalizeDamageMap(item.damageTypes || {}) }, item)];
   }
   for (const atk of attacks) {
-    if (maybeSwapPS(atk.damage, item.damageTypes)) { /* swap P/S effectué */ }
+    // ⛔ On NE swap plus Puncture/Slash automatiquement — on respecte WFStat tel quel
+    // if (maybeSwapPS(atk.damage, item.damageTypes)) { /* swap P/S */ }
     recomputeTotal(atk.damage);
   }
   item.attacks = attacks;
 
-  // damageTypes final
+  // damageTypes final (on garde le top-level référence de WFStat/Export)
   if (item.damageTypes) item.damageTypes = normalizeDamageMap(item.damageTypes);
 
   // Spécifique mêlée
