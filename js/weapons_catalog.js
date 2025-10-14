@@ -7,11 +7,8 @@
 
   /* -------------------- Config -------------------- */
   // URL de ton API (même domaine que le site). Fallback local si offline.
-  const ENRICHED_WEAPONS_URL_PRIMARY = "/weapons";
+  const ENRICHED_WEAPONS_URL_PRIMARY = "https://cephalon-wodan-production.up.railway.app/weapons";
   const ENRICHED_WEAPONS_URL_FALLBACK = "data/enriched_weapons.json";
-
-  // Toujours utile pour images/fallbacks DE
-  const EXPORT_WEAPONS_URL = "data/ExportWeapons_en.json";
 
   // On NE GARDE que ces catégories (UI)
   const KEEP_UI = new Set(["Primary", "Secondary", "Melee"]);
