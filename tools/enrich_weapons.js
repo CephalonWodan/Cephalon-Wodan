@@ -80,20 +80,35 @@ function indexByName(arr, nameSel) {
   return m;
 }
 
-// 🔧 Hotfixes ciblés (ex: Acceltra)
+// 🔧 Hotfix ciblé Acceltra (normal + prime) : répartit IPS Projectile/AoE depuis le top-level
 function applyWeaponHotfixes(item) {
   const k = keyify(item.slug || item.name);
-  if (k === "acceltra") {
-    const imp = item.attacks.find(a => keyify(a.name) === "rocket impact");
-    if (imp) {
-      imp.damage = normalizeDamageMap({ impact: 26 });
-      recomputeTotal(imp.damage); // 26
-    }
-    const exp = item.attacks.find(a => keyify(a.name) === "rocket explosion");
-    if (exp) {
-      exp.damage = normalizeDamageMap({ slash: 8.8, puncture: 35.2 });
-      recomputeTotal(exp.damage); // 44
-    }
+  if (k !== "acceltra" && k !== "acceltra-prime") return;
+
+  const dt = item.damageTypes || {};
+  const imp = Number(dt.impact || 0);
+  const pun = Number(dt.puncture || 0);
+  const sl  = Number(dt.slash || 0);
+
+  // Repère les deux attaques (par nom en priorité, puis par shotType)
+  const by = (a) => keyify(a.name || a.shotType || "");
+  let impactAtk    = item.attacks.find(a => by(a) === "rocket impact")
+                  || item.attacks.find(a => keyify(a.shotType) === "projectile");
+  let explosionAtk = item.attacks.find(a => by(a) === "rocket explosion")
+                  || item.attacks.find(a => keyify(a.shotType) === "aoe");
+
+  if (!impactAtk && !explosionAtk) return;
+
+  if (impactAtk) {
+    impactAtk.damage = normalizeDamageMap(imp > 0 ? { impact: imp } : {});
+    recomputeTotal(impactAtk.damage);
+  }
+  if (explosionAtk) {
+    const dmg = {};
+    if (sl  > 0) dmg.slash    = sl;
+    if (pun > 0) dmg.puncture = pun;
+    explosionAtk.damage = normalizeDamageMap(dmg);
+    recomputeTotal(explosionAtk.damage);
   }
 }
 
