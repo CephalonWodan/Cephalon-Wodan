@@ -33,7 +33,7 @@ const clean   = (s) => String(s ?? "").replace(/<[^>]+>\s*/g, "").trim();
 const keyify  = (s) => clean(s).toLowerCase().replace(/[\s\-–_'"`]+/g, " ").replace(/\s+/g, " ");
 const slugify = (s) => clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
-// ---- Helpers dégâts/attaques
+// Helpers dégâts/attaques
 function normalizeDamageMap(dmg) {
   const out = {}; let total = 0;
   if (!dmg || typeof dmg !== "object") return out;
@@ -42,7 +42,7 @@ function normalizeDamageMap(dmg) {
     const val = Number(v) || 0;
     if (val > 0) { out[k] = val; total += val; }
   }
-  if (total > 0) out.total = Math.round(total * 1000) / 1000; // anti 70.0000002
+  if (total > 0) out.total = Math.round(total * 1000) / 1000;
   return out;
 }
 const pctToFrac = (v) => (v == null ? undefined : Number(v) / 100);
@@ -54,7 +54,7 @@ function hydrateAttackWithItemStats(a, item) {
   if (a.speed == null) a.speed = baseSpeed;
   return a;
 }
-// (laisse maybeSwapPS défini mais on ne l’utilise plus)
+// gardé pour référence, non utilisé
 function maybeSwapPS(atkDmg, baseDmg) {
   if (!atkDmg || !baseDmg) return false;
   const { puncture:pA, slash:sA } = atkDmg;
@@ -80,23 +80,21 @@ function indexByName(arr, nameSel) {
   return m;
 }
 
-// ---- Mapping Export DE → damageTypes (ordre damagePerShot)
-const DAMAGE_KEYS = [
-  "impact","puncture","slash","heat","cold","electricity","toxin",
-  "blast","radiation","gas","magnetic","viral","corrosive",
-  "void","tau","cinematic","shieldDrain","healthDrain","energyDrain","true"
-];
-function mapExportDamage(ex) {
-  const arr = ex && Array.isArray(ex.damagePerShot) ? ex.damagePerShot : null;
-  if (!arr) return null;
-  const out = {};
-  let total = 0;
-  for (let i = 0; i < Math.min(arr.length, DAMAGE_KEYS.length); i++) {
-    const v = Number(arr[i]) || 0;
-    if (v > 0) { out[DAMAGE_KEYS[i]] = v; total += v; }
+// 🔧 Hotfixes ciblés (ex: Acceltra)
+function applyWeaponHotfixes(item) {
+  const k = keyify(item.slug || item.name);
+  if (k === "acceltra") {
+    const imp = item.attacks.find(a => keyify(a.name) === "rocket impact");
+    if (imp) {
+      imp.damage = normalizeDamageMap({ impact: 26 });
+      recomputeTotal(imp.damage); // 26
+    }
+    const exp = item.attacks.find(a => keyify(a.name) === "rocket explosion");
+    if (exp) {
+      exp.damage = normalizeDamageMap({ slash: 8.8, puncture: 35.2 });
+      recomputeTotal(exp.damage); // 44
+    }
   }
-  if (total > 0) out.total = Math.round(total * 1000) / 1000;
-  return out;
 }
 
 // Charge datasets
@@ -191,14 +189,7 @@ for (const w of WFSTAT) {
     if (item.criticalMultiplier === undefined && ex.criticalMultiplier != null) item.criticalMultiplier = ex.criticalMultiplier;
     if (item.statusChance === undefined && ex.procChance != null) item.statusChance = ex.procChance;
     if (item.fireRate === undefined && ex.fireRate != null) item.fireRate = ex.fireRate;
-
-    // ✅ Préférence aux dégâts DE (damagePerShot) s'ils sont dispo
-    const exDmg = mapExportDamage(ex);
-    if (exDmg && Object.keys(exDmg).length) {
-      item.damageTypes = exDmg; // ex: Acceltra → impact 26, puncture 35.2, slash 8.8, total 70
-    } else if (!item.damageTypes && (ex.damageTypes || ex.damage)) {
-      item.damageTypes = ex.damageTypes || ex.damage;
-    }
+    if (!item.damageTypes && (ex.damageTypes || ex.damage)) item.damageTypes = ex.damageTypes || ex.damage;
   }
 
   // Description
@@ -224,14 +215,13 @@ for (const w of WFSTAT) {
   if (!attacks.length) {
     attacks = [hydrateAttackWithItemStats({ name:"Primary Fire", damage: normalizeDamageMap(item.damageTypes || {}) }, item)];
   }
-  for (const atk of attacks) {
-    // ⛔ On NE swap plus Puncture/Slash automatiquement — on respecte WFStat tel quel
-    // if (maybeSwapPS(atk.damage, item.damageTypes)) { /* swap P/S */ }
-    recomputeTotal(atk.damage);
-  }
+  for (const atk of attacks) recomputeTotal(atk.damage);
   item.attacks = attacks;
 
-  // damageTypes final (on garde le top-level référence, normalisé/arrondi)
+  // ✅ Hotfixs ciblés
+  applyWeaponHotfixes(item);
+
+  // damageTypes final (top-level)
   if (item.damageTypes) item.damageTypes = normalizeDamageMap(item.damageTypes);
 
   // Spécifique mêlée
