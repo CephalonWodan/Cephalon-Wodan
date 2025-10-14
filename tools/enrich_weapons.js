@@ -217,6 +217,9 @@ for (const w of WFSTAT) {
     // miniature wiki depuis WFStat (si présente)
     wikiaThumbnail: w.wikiaThumbnail ?? undefined,
 
+    // ➕ NOUVEAU : nom d’image CDN (wfstat) pour fallback front
+    imageName: w.imageName ?? undefined,
+
     ...flags
   };
 
@@ -265,7 +268,7 @@ for (const w of WFSTAT) {
   for (const atk of attacks) recomputeTotal(atk.damage);
   item.attacks = attacks;
 
-  // ✅ Hotfixs ciblés (une seule définition de la fonction, appelée ici)
+  // ✅ Hotfixs ciblés
   applyWeaponHotfixes(item);
 
   // Spécifique mêlée
