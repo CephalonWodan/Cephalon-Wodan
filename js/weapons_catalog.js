@@ -1,17 +1,20 @@
 // js/weapons_catalog.js
-// Sources: ExportWeapons (Warframe officiel) + WarframeStat API
+// Sources: ton API /weapons (enriched) + ExportWeapons (images/fallbacks)
 // Onglets Primary/Secondary/Melee, Archwing exclu.
 
 (() => {
   "use strict";
 
   /* -------------------- Config -------------------- */
-  // mets à jour ce hash si besoin
-  const EXPORT_WEAPONS_URL = "data/ExportWeapons_en.json";
-  const WFSTAT_API_URL = "https://api.warframestat.us/weapons?language=en";
+  // URL de ton API (même domaine que le site). Fallback local si offline.
+  const ENRICHED_WEAPONS_URL_PRIMARY = "/weapons";
+  const ENRICHED_WEAPONS_URL_FALLBACK = "data/enriched_weapons.json";
 
-  // On NE GARDE que ces catégories
-  const KEEP_API = new Set(["Primary", "Secondary", "Melee"]);
+  // Toujours utile pour images/fallbacks DE
+  const EXPORT_WEAPONS_URL = "data/ExportWeapons_en.json";
+
+  // On NE GARDE que ces catégories (UI)
+  const KEEP_UI = new Set(["Primary", "Secondary", "Melee"]);
   const MAP_EXPORT_TO_CAT = {
     LongGuns: "Primary",
     Pistols: "Secondary",
@@ -42,6 +45,15 @@
   }
   function coalesce(obj, keys, def=null){ for (const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
   function mapByLowerName(list){ const m=new Map(); for (const it of list){ const n=norm(it.name||it.Name||""); if(n) m.set(n.toLowerCase(), it); } return m; }
+  const cap = (s) => s ? s[0].toUpperCase()+s.slice(1) : s;
+
+  const subtypeToCategory = (subtype) => {
+    const s = String(subtype||"").toLowerCase();
+    if (s === "primary") return "Primary";
+    if (s === "secondary") return "Secondary";
+    if (s === "melee") return "Melee";
+    return ""; // on exclut le reste (archgun, archmelee, etc.)
+  };
 
   /* -------------------- Loaders -------------------- */
   async function loadExportWeapons(){
@@ -54,24 +66,33 @@
       if (!Array.isArray(list)) list = Object.values(list);
       // Filtre: seulement catégories qu'on mappe (pas SpaceGuns/SpaceMelee)
       list = list.filter(rec => MAP_EXPORT_TO_CAT[rec.ProductCategory]);
-      // Normalise name pour tri
       list.sort((a,b)=> (a.Name||"").localeCompare(b.Name||""));
       return list;
     }catch{ return []; }
   }
 
-  async function loadApiWeapons(){
-    try{
-      const r = await fetch(WFSTAT_API_URL, { cache:"no-store" });
+  async function loadEnrichedWeapons(){
+    // essaie l’API; si KO, retombe sur le JSON local
+    const tryFetch = async (url) => {
+      const r = await fetch(url, { cache:"no-store" });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const data = await r.json();
-      if (!Array.isArray(data)) return [];
-      return data.filter(w => KEEP_API.has(w.category)).sort(byName);
-    }catch{ return []; }
+      return Array.isArray(data) ? data : [];
+    };
+    try{
+      return await tryFetch(ENRICHED_WEAPONS_URL_PRIMARY);
+    }catch{
+      try{
+        return await tryFetch(ENRICHED_WEAPONS_URL_FALLBACK);
+      }catch{
+        return [];
+      }
+    }
   }
 
   /* -------------------- Merge model -------------------- */
   function computeDamageMap(apiRec){
+    // Dans l’enrichi: damageTypes (map), sinon rien
     const obj = apiRec && (apiRec.damageTypes || apiRec.damage);
     if (!obj || typeof obj !== "object") return null;
     const out = {};
@@ -83,28 +104,39 @@
   function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if(!isNaN(v)) t+=v; } return t||null; }
 
   function unifyWeapon(name, exportRec, apiRec){
-    const category =
-      apiRec?.category ||
-      MAP_EXPORT_TO_CAT[coalesce(exportRec, ["ProductCategory"], "")] || "";
+    // Catégorie prioritaire = enriched.subtype
+    let category = subtypeToCategory(apiRec?.subtype);
+    if (!category) {
+      category = MAP_EXPORT_TO_CAT[coalesce(exportRec, ["ProductCategory"], "")] || "";
+    }
 
+    // Type + description
     const type    = apiRec?.type || exportRec?.Type || "";
     const desc    = apiRec?.description || exportRec?.Description || "";
+
+    // Champs communs
     const mastery = apiRec?.masteryReq ?? exportRec?.Mastery ?? null;
     const dispo   = apiRec?.disposition ?? exportRec?.Disposition ?? null;
     const trigger = apiRec?.trigger || exportRec?.Trigger || null;
 
+    // Stats
     const critC   = apiRec?.criticalChance ?? exportRec?.CritChance ?? null;
     const critM   = apiRec?.criticalMultiplier ?? exportRec?.CritMultiplier ?? null;
-    const status  = apiRec?.procChance ?? exportRec?.StatusChance ?? null;
-    const fire    = apiRec?.fireRate ?? exportRec?.FireRate ?? null;
-    const mag     = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;
-    const reload  = apiRec?.reloadTime ?? exportRec?.Reload ?? null;
-    
-    const dmgMap  = computeDamageMap(apiRec);
-    const total   = apiRec?.totalDamage ?? exportRec?.TotalDamage ?? sumDamage(dmgMap);
+    const status  = apiRec?.statusChance ?? exportRec?.StatusChance ?? null;
+    // Fire vs Attack speed (mêlée)
+    const isMelee = category === "Melee";
+    const fire    = isMelee ? (apiRec?.attackSpeed ?? exportRec?.FireRate ?? null)
+                            : (apiRec?.fireRate ?? exportRec?.FireRate ?? null);
+    const mag     = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;   // peu fréquent sur enriched
+    const reload  = apiRec?.reloadTime ?? exportRec?.Reload ?? null;       // idem
 
+    // Dégâts
+    const dmgMap  = computeDamageMap(apiRec);
+    const total   = apiRec?.damageTypes?.total ?? exportRec?.TotalDamage ?? sumDamage(dmgMap);
+
+    // Image (Export DE d’abord)
     const exportFile = coalesce(exportRec, ["Image","image"], "");
-    const apiImgName = apiRec?.imageName || "";
+    const apiImgName = apiRec?.imageName || ""; // rarement disponible côté enriched
     const img = wikiImage(exportFile) || cdnImage(exportFile || apiImgName) || localImage(exportFile || apiImgName);
 
     return {
@@ -119,9 +151,9 @@
     };
   }
 
-  function mergeLists(exportList, apiList){
+  function mergeLists(exportList, enrichedList){
     const expBy = mapByLowerName(exportList);
-    const apiBy = mapByLowerName(apiList);
+    const apiBy = mapByLowerName(enrichedList);
     const names = new Set([...expBy.keys(), ...apiBy.keys()]);
     const out = [];
     for (const n of names){
@@ -130,7 +162,7 @@
       const name = (a?.name || e?.Name || e?.name || "");
       const w = unifyWeapon(name, e, a);
       // Sécurité: ne garde que Primary/Secondary/Melee
-      if (KEEP_API.has(w.category)) out.push(w);
+      if (KEEP_UI.has(w.category)) out.push(w);
     }
     return out.sort(byName);
   }
@@ -152,16 +184,23 @@
 
   function damageRows(map){
     if (!map) return "";
-    const rows = Object.entries(map).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`
-      <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
-        <div class="text-sm">${esc(k)}</div>
-        <div class="font-medium">${esc(v)}</div>
-      </div>
-    `).join("");
+    const rows = Object.entries(map)
+      .filter(([k])=>k!=="total")
+      .sort((a,b)=>b[1]-a[1])
+      .map(([k,v])=>`
+        <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
+          <div class="text-sm">${esc(k)}</div>
+          <div class="font-medium">${esc(v)}</div>
+        </div>
+      `).join("");
     return `
       <div class="mt-5">
         <div class="text-sm muted mb-2">Damage Details</div>
         <div class="bg-[var(--panel-2)] rounded-xl p-3 border border-[rgba(255,255,255,.08)]">
+          <div class="flex items-center justify-between py-1">
+            <div class="text-sm font-medium">total</div>
+            <div class="font-semibold">${esc(map.total ?? "—")}</div>
+          </div>
           ${rows}
         </div>
       </div>`;
@@ -171,6 +210,7 @@
     const s = w.stats || {};
     const title = esc(w.name || "—");
     const desc  = cleanDesc(w.description || "");
+    const fireLabel = (w.category === "Melee") ? "Attack speed" : "Fire rate";
 
     $("#card").innerHTML = `
       <div class="flex flex-col md:flex-row gap-6">
@@ -196,8 +236,8 @@
             ${statBox("Damage", s.total ?? "—")}
             ${statBox("Crit", toPct(s.critC))}
             ${statBox("Crit Mult.", toX(s.critM))}
-            ${statBox("Statut", toPct(s.status))}
-            ${statBox("fire rate", num(s.fire))}
+            ${statBox("Status", toPct(s.status))}
+            ${statBox(fireLabel, num(s.fire))}
             ${s.mag!=null ? statBox("Magazine", num(s.mag)) : ""}
             ${s.reload!=null ? statBox("Reload", num(s.reload)) : ""}
           </div>
@@ -236,7 +276,6 @@
 
   function activateTab(cat){
     STATE.tab = cat;
-    // toggle classe active
     document.querySelectorAll("#tabs .btn-tab").forEach(b=>{
       b.classList.toggle("active", b.dataset.cat === cat);
     });
@@ -249,8 +288,12 @@
     try{
       status.textContent = "Weapons Loading…";
 
-      const [eList, aList] = await Promise.all([loadExportWeapons(), loadApiWeapons()]);
-      STATE.list = mergeLists(eList, aList); // Primary/Secondary/Melee uniquement
+      const [exportList, enrichedList] = await Promise.all([
+        loadExportWeapons(),
+        loadEnrichedWeapons()
+      ]);
+
+      STATE.list = mergeLists(exportList, enrichedList); // Primary/Secondary/Melee uniquement
 
       if (!STATE.list.length){
         status.textContent = "No Weapon Found.";
