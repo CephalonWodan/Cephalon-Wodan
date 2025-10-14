@@ -100,22 +100,25 @@
   function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if (!isNaN(v)) t+=v; } return t||null; }
 
   function pickImage(apiRec, exportRec){
-    // 1) wikiaThumbnail de l'API enrichie (souvent URL absolue)
+    // 1) wikiaThumbnail (API) → URL absolue
     const thumb = apiRec?.wikiaThumbnail || "";
     if (/^https?:\/\//i.test(thumb)) return thumb;
-    // 2) si c'est un nom de fichier (cas rarissime), tente via wikiImage
+
+    // 2) si c'est un nom de fichier, tente l'URL wiki
     if (thumb) {
       const viaWiki = wikiImage(thumb);
       if (viaWiki) return viaWiki;
     }
+
     // 3) Export DE (champ Image) → URL wiki
     const exportFile = coalesce(exportRec, ["Image","image"], "");
     if (exportFile) {
       const fromWiki = wikiImage(exportFile);
       if (fromWiki) return fromWiki;
     }
+
     // 4) CDN wfstat / local (secours)
-    const apiImgName = apiRec?.imageName || exportFile || "";
+    const apiImgName = apiRec?.imageName || exportFile || apiRec?.name || "";
     return cdnImage(apiImgName) || localImage(apiImgName) || "";
   }
 
