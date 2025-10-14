@@ -1,191 +1,168 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+// tools/enrich_weapons.js
+// Base: data/wfstat_weapons.json (WFStat.us)
+// Compléments: WFCD (catégorisation fine), ExportWeapons_en.json (stats), Overframe (ID/slug éventuel)
+// Produit: data/enriched_weapons.json + data/enriched_weapons_report.json
 
-"""
-Fixe des incohérences dans enriched_weapons.json :
-- déduplication (id, slug) en gardant la version la plus "riche"
-- Melee/Archmelee : fireRate -> attackSpeed (top-level), attacks.speed -> attacks.attackSpeed
-- correction Slash/Puncture inversés vs top-level damageTypes
-- recalcul des totaux 'total' dans attacks.damage et damageTypes
-Sorties :
-  /mnt/data/enriched_weapons.json
-  /mnt/data/enriched_weapons_report.csv
-"""
+import fs from "fs";
+import path from "path";
 
-import json
-from copy import deepcopy
-from pathlib import Path
-from typing import Dict, Any, List
+const DATA = path.resolve("data");
+const OF   = path.join(DATA, "overframe");
+const WFCD = path.join(DATA, "wfcd_items");
 
-import pandas as pd
+// Entrées
+const P_WFSTAT   = path.join(DATA, "wfstat_weapons.json");
+const P_EXPORT   = path.join(DATA, "ExportWeapons_en.json");
+const P_OF_ITEMS = path.join(OF, "overframe-items.json");
 
-# ---- Chemins : adapte si besoin ----
-SRC = Path("/mnt/data/enriched_weapons.json")  # ton JSON d’entrée
-OUT_JSON = Path("/mnt/data/enriched_weapons.json")
-OUT_CSV = Path("/mnt/data/enriched_weapons_report.csv")
-# ------------------------------------
+// WFCD categorisation
+const WFCD_FILES = {
+  primary:   path.join(WFCD, "Primary.json"),
+  secondary: path.join(WFCD, "Secondary.json"),
+  melee:     path.join(WFCD, "Melee.json"),
+  archgun:   path.join(WFCD, "Arch-Gun.json"),
+  archmelee: path.join(WFCD, "Arch-Melee.json"),
+  zaw:       path.join(WFCD, "Zaws.json"),
+  kitgun:    path.join(WFCD, "Kitguns.json"),
+};
 
-def load_json(path: Path):
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+// Utils
+const readIf  = (p) => (fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, "utf-8")) : null);
+const asArray = (v) => (Array.isArray(v) ? v : v ? Object.values(v) : []);
+const clean   = (s) => String(s ?? "").replace(/<[^>]+>\s*/g, "").trim();
+const keyify  = (s) => clean(s).toLowerCase().replace(/[\s\-–_'"`]+/g, " ").replace(/\s+/g, " ");
+const slugify = (s) => clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
-def save_json(data, path: Path):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
+// ---- Helpers dégâts/attaques (ajouts) ----
+function normalizeDamageMap(dmg) {
+  const out = {};
+  let total = 0;
+  for (const [k, v] of Object.entries(dmg || {})) {
+    const val = Number(v) || 0;
+    if (k === "total") continue;
+    if (val > 0) { out[k] = val; total += val; }
+  }
+  if (total > 0) out.total = Math.round(total * 1000) / 1000; // anti 70.0000002
+  return out;
+}
+const pctToFrac = (v) => (v == null ? undefined : Number(v) / 100);
 
-def almost_equal(a: float, b: float, tol: float = 1e-3) -> bool:
-    try:
-        return abs((a or 0) - (b or 0)) <= tol
-    except TypeError:
-        return False
+function hydrateAttackWithItemStats(attack, item) {
+  attack.critChance   = attack.critChance   ?? item.criticalChance;
+  attack.critMult     = attack.critMult     ?? item.criticalMultiplier;
+  attack.statusChance = attack.statusChance ?? item.statusChance;
+  const baseSpeed = item.attackSpeed ?? item.fireRate;
+  attack.speed = attack.speed ?? baseSpeed;
+  return attack;
+}
 
-def sum_damage(dmg: Dict[str, Any]) -> float:
-    return float(sum(v for k, v in dmg.items() if k != "total" and isinstance(v, (int, float))))
+// Swapper Puncture/Slash si clairement inversés vs dégâts globaux
+function maybeSwapPS(atkDmg, baseDmg) {
+  if (!atkDmg || !baseDmg) return false;
+  const pA = atkDmg.puncture, sA = atkDmg.slash;
+  const pB = baseDmg.puncture, sB = baseDmg.slash;
+  if ([pA,sA,pB,sB].some(v => v == null)) return false;
+  const eq = (a,b) => Math.abs(Number(a)-Number(b)) <= 1e-3;
+  if (eq(pA, sB) && eq(sA, pB)) { atkDmg.puncture = sA; atkDmg.slash = pA; return true; }
+  return false;
+}
+function recomputeTotal(dmg) {
+  if (!dmg) return;
+  const sum = Object.entries(dmg)
+    .filter(([k]) => k !== "total")
+    .reduce((s, [,v]) => s + (Number(v)||0), 0);
+  dmg.total = Math.round(sum * 1000) / 1000;
+}
 
-def normalize_total(dmg: Dict[str, Any]) -> (bool, float, float):
-    """Assure que dmg['total'] = somme des composantes (hors 'total')."""
-    if not isinstance(dmg, dict):
-        return False, None, None
-    components_sum = sum_damage(dmg)
-    old_total = float(dmg.get("total", 0))
-    new_total = round(components_sum, 3)
-    if almost_equal(old_total, new_total):
-        return False, old_total, old_total
-    dmg["total"] = new_total
-    return True, old_total, new_total
+function indexByName(arr, nameSel) {
+  const m = new Map();
+  for (const it of asArray(arr)) {
+    const n = nameSel(it);
+    if (!n) continue;
+    m.set(keyify(n), it);
+  }
+  return m;
+}
 
-def fix_ps_swap(attack_dmg: Dict[str, Any], base_dmg: Dict[str, Any]) -> bool:
-    """
-    Si attack.damage a puncture/slash inversés vs damageTypes top-level, on les remet dans le bon sens.
-    Détection stricte : p_attack == s_base ET s_attack == p_base (à tolérance près).
-    """
-    if not isinstance(attack_dmg, dict) or not isinstance(base_dmg, dict):
-        return False
-    p_a = attack_dmg.get("puncture")
-    s_a = attack_dmg.get("slash")
-    p_b = base_dmg.get("puncture")
-    s_b = base_dmg.get("slash")
-    if p_a is None or s_a is None or p_b is None or s_b is None:
-        return False
-    if almost_equal(p_a, s_b) and almost_equal(s_a, p_b):
-        attack_dmg["puncture"], attack_dmg["slash"] = s_a, p_a
-        return True
-    return False
+// Charge datasets
+const WFSTAT = asArray(readIf(P_WFSTAT) || []);
 
-def better_record(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
-    """Choisit le meilleur doublon : privilégie celui avec plus d'infos (damageTypes, attacks avec dégâts non nuls...)."""
-    def score(rec: Dict[str, Any]) -> int:
-        s = 0
-        if isinstance(rec.get("damageTypes"), dict) and any(
-            isinstance(v, (int, float)) and v > 0
-            for v in rec["damageTypes"].values()
-            if isinstance(v, (int, float))
-        ):
-            s += 3
-        attacks = rec.get("attacks") or []
-        nz = 0
-        for atk in attacks:
-            dmg = atk.get("damage") or {}
-            if isinstance(dmg, dict) and sum_damage(dmg) > 0:
-                nz += 1
-        s += min(nz, 5)
-        s += len([k for k, v in rec.items() if v not in (None, [], {}, "", 0)]) // 10
-        return s
-    return a if score(a) >= score(b) else b
+// Export peut être un objet { ExportWeapons: [...] } ou un tableau direct
+const EXP_RAW = readIf(P_EXPORT);
+let EXPORT = [];
+if (Array.isArray(EXP_RAW)) {
+  EXPORT = EXP_RAW;
+} else if (EXP_RAW && Array.isArray(EXP_RAW.ExportWeapons)) {
+  EXPORT = EXP_RAW.ExportWeapons;
+} else {
+  EXPORT = asArray(EXP_RAW || []);
+}
 
-def clean_records(records: List[Dict[str, Any]]):
-    changes = []
-    # 1) Déduplication sur (id, slug)
-    deduped = {}
-    dup_counts = {}
-    for rec in records:
-        key = (rec.get("id"), rec.get("slug"))
-        if key in deduped:
-            chosen = better_record(deduped[key], rec)
-            if chosen is not deduped[key]:
-                deduped[key] = chosen
-            dup_counts[key] = dup_counts.get(key, 1) + 1
-        else:
-            deduped[key] = rec
-    if dup_counts:
-        for (id_, slug), cnt in dup_counts.items():
-            changes.append({
-                "slug": slug,
-                "id": id_,
-                "change": "deduplicated",
-                "details": f"Found {cnt} duplicates; kept best version."
-            })
+const OF_RAW = readIf(P_OF_ITEMS);
+let OVERFRAME = [];
+if (Array.isArray(OF_RAW)) {
+  OVERFRAME = OF_RAW;
+} else if (OF_RAW && typeof OF_RAW === "object") {
+  // overframe-items.json est un objet clé → item
+  OVERFRAME = Object.values(OF_RAW);
+}
 
-    cleaned = []
-    for (id_, slug), rec in deduped.items():
-        rec = deepcopy(rec)
-        subtype = (rec.get("subtype") or "").lower()
+const mExport = indexByName(EXPORT, (o) => o.name || o.displayName || o.uniqueName);
+const mOver   = indexByName(OVERFRAME, (o) => o.name);
 
-        # 2) Melee/Archmelee : fireRate -> attackSpeed (top-level)
-        if subtype in ("melee", "archmelee"):
-            if "fireRate" in rec:
-                old = rec.get("fireRate")
-                if not rec.get("attackSpeed"):
-                    rec["attackSpeed"] = old
-                del rec["fireRate"]
-                changes.append({
-                    "slug": slug, "id": id_, "change": "rename",
-                    "details": f"Top-level fireRate -> attackSpeed (value {old})."
-                })
+// WFCD maps
+const mWfcd = {};
+for (const [sub, p] of Object.entries(WFCD_FILES)) {
+  const data = readIf(p);
+  mWfcd[sub] = indexByName(asArray(data || []), (o) => o.name);
+}
+function subtypeFromWFCD(name) {
+  const k = keyify(name);
+  for (const [sub, map] of Object.entries(mWfcd)) if (map.has(k)) return sub;
+  return null;
+}
 
-        # 3) Normalisation des attaques
-        attacks = rec.get("attacks") or []
-        base_phys = rec.get("damageTypes") or {}
-        for atk in attacks:
-            atk_name = atk.get("name")
+// Flags
+function flagsFromName(n) {
+  const s = String(n || "").toLowerCase();
+  return {
+    isPrime:  /\bprime\b/.test(s),
+    isUmbra:  /\bumbra\b/.test(s),
+    isWraith: /\bwraith\b/.test(s),
+    isDex:    /\bdex\b/.test(s),
+  };
+}
 
-            # Melee : speed -> attackSpeed
-            if subtype in ("melee", "archmelee") and "speed" in atk:
-                old = atk["speed"]
-                atk["attackSpeed"] = old
-                del atk["speed"]
-                changes.append({
-                    "slug": slug, "id": id_, "change": "rename",
-                    "details": f"Attack '{atk_name}': speed -> attackSpeed (value {old})."
-                })
+// Mapping WFStat → subtype (filet de sécurité si WFCD ne tranche pas)
+function subtypeHeuristic(wfType, name) {
+  const t = String(wfType || "").toLowerCase();
+  if (/arch-?gun/.test(t)) return "archgun";
+  if (/arch-?melee/.test(t)) return "archmelee";
+  if (/kitgun/.test(t)) return "kitgun";
+  if (/zaw/.test(t)) return "zaw";
+  if (/melee/.test(t)) return "melee";
+  if (/secondary|pistol|dual/.test(t)) return "secondary";
+  if (/primary|rifle|shotgun|sniper|bow|assault/.test(t)) return "primary";
+  // hints nom
+  const n = String(name||"").toLowerCase();
+  if (/arquebex|morgha|kuva grattler|grattler|velocitus|larkspur/.test(n)) return "archgun";
+  return null;
+}
 
-            dmg = atk.get("damage")
-            if isinstance(dmg, dict):
-                # Correction éventuelle S/P inversés vs base
-                if fix_ps_swap(dmg, base_phys):
-                    changes.append({
-                        "slug": slug, "id": id_, "change": "fix_puncture_slash",
-                        "details": f"Attack '{atk_name}': swapped puncture/slash to match top-level breakdown."
-                    })
-                # Totaux
-                changed, old_total, new_total = normalize_total(dmg)
-                if changed:
-                    changes.append({
-                        "slug": slug, "id": id_, "change": "fix_total",
-                        "details": f"Attack '{atk_name}': total {old_total} -> {new_total}."
-                    })
+// Construction
+const out = [];
+let wfcdHits = 0, expHits = 0, ofHits = 0, heuristicHits = 0;
 
-        # 4) Total au niveau top-level damageTypes (si présent)
-        if isinstance(rec.get("damageTypes"), dict) and "total" in rec["damageTypes"]:
-            changed, old_total, new_total = normalize_total(rec["damageTypes"])
-            if changed:
-                changes.append({
-                    "slug": slug, "id": id_, "change": "fix_total",
-                    "details": f"Top-level damageTypes total {old_total} -> {new_total}."
-                })
+for (const w of WFSTAT) {
+  const name = clean(w.name || w.weaponName);
+  if (!name) continue;
 
-        cleaned.append(rec)
-
-    return cleaned, changes
-
-def main():
-    data = load_json(SRC)
-    cleaned, changes = clean_records(data)
-    save_json(cleaned, OUT_JSON)
-    pd.DataFrame(changes).to_csv(OUT_CSV, index=False)
-    print(f"Input: {len(data)} records | Output: {len(cleaned)} records | Changes: {len(changes)}")
-    print(f"Wrote: {OUT_JSON}")
-    print(f"Wrote: {OUT_CSV}")
-
-if __name__ == "__main__":
-    main()
+  // Sous-type par WFCD d’abord
+  let subtype = subtypeFromWFCD(name);
+  if (subtype) wfcdHits++;
+  if (!subtype) {
+    subtype = subtypeHeuristic(w.type, name);
+    if (subtype) heuristicHits++;
+  }
+  if (!subtype) {
+    // On reste strict : si on ne sait pas classe
