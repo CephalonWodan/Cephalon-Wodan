@@ -6,9 +6,12 @@
   "use strict";
 
   /* -------------------- Config -------------------- */
-  // URL de ton API (même domaine que le site). Fallback local si offline.
+  // API enrichie (Railway)
   const ENRICHED_WEAPONS_URL_PRIMARY = "https://cephalon-wodan-production.up.railway.app/weapons";
+  // Fallback local (optionnel)
   const ENRICHED_WEAPONS_URL_FALLBACK = "data/enriched_weapons.json";
+  // Export DE pour les images de secours
+  const EXPORT_WEAPONS_URL = "data/ExportWeapons_en.json";
 
   // On NE GARDE que ces catégories (UI)
   const KEEP_UI = new Set(["Primary", "Secondary", "Melee"]);
@@ -23,7 +26,7 @@
   const wikiImage  = (file) => file ? `https://wiki.warframe.com/images/${encodeURIComponent(file)}` : "";
   const cdnImage   = (name) => name ? `https://cdn.warframestat.us/img/${encodeURIComponent(name)}` : "";
   const localImage = (name) => name ? `img/weapons/${encodeURIComponent(name)}` : "";
-  
+
   /* -------------------- Utils -------------------- */
   const $ = (s) => document.querySelector(s);
   const norm = (s) => String(s || "").trim();
@@ -42,14 +45,12 @@
   }
   function coalesce(obj, keys, def=null){ for (const k of keys) if (obj && obj[k]!=null) return obj[k]; return def; }
   function mapByLowerName(list){ const m=new Map(); for (const it of list){ const n=norm(it.name||it.Name||""); if(n) m.set(n.toLowerCase(), it); } return m; }
-  const cap = (s) => s ? s[0].toUpperCase()+s.slice(1) : s;
-
   const subtypeToCategory = (subtype) => {
     const s = String(subtype||"").toLowerCase();
     if (s === "primary") return "Primary";
     if (s === "secondary") return "Secondary";
     if (s === "melee") return "Melee";
-    return ""; // on exclut le reste (archgun, archmelee, etc.)
+    return "";
   };
 
   /* -------------------- Loaders -------------------- */
@@ -69,7 +70,6 @@
   }
 
   async function loadEnrichedWeapons(){
-    // essaie l’API; si KO, retombe sur le JSON local
     const tryFetch = async (url) => {
       const r = await fetch(url, { cache:"no-store" });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -89,7 +89,6 @@
 
   /* -------------------- Merge model -------------------- */
   function computeDamageMap(apiRec){
-    // Dans l’enrichi: damageTypes (map), sinon rien
     const obj = apiRec && (apiRec.damageTypes || apiRec.damage);
     if (!obj || typeof obj !== "object") return null;
     const out = {};
@@ -98,50 +97,63 @@
     }
     return Object.keys(out).length ? out : null;
   }
-  function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if(!isNaN(v)) t+=v; } return t||null; }
+  function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if (!isNaN(v)) t+=v; } return t||null; }
+
+  function pickImage(apiRec, exportRec){
+    // 1) wikiaThumbnail de l'API enrichie (souvent URL absolue)
+    const thumb = apiRec?.wikiaThumbnail || "";
+    if (/^https?:\/\//i.test(thumb)) return thumb;
+    // 2) si c'est un nom de fichier (cas rarissime), tente via wikiImage
+    if (thumb) {
+      const viaWiki = wikiImage(thumb);
+      if (viaWiki) return viaWiki;
+    }
+    // 3) Export DE (champ Image) → URL wiki
+    const exportFile = coalesce(exportRec, ["Image","image"], "");
+    if (exportFile) {
+      const fromWiki = wikiImage(exportFile);
+      if (fromWiki) return fromWiki;
+    }
+    // 4) CDN wfstat / local (secours)
+    const apiImgName = apiRec?.imageName || exportFile || "";
+    return cdnImage(apiImgName) || localImage(apiImgName) || "";
+  }
 
   function unifyWeapon(name, exportRec, apiRec){
-    // Catégorie prioritaire = enriched.subtype
+    // Catégorie = subtype de l'enrichi
     let category = subtypeToCategory(apiRec?.subtype);
     if (!category) {
       category = MAP_EXPORT_TO_CAT[coalesce(exportRec, ["ProductCategory"], "")] || "";
     }
 
-    // Type + description
     const type    = apiRec?.type || exportRec?.Type || "";
     const desc    = apiRec?.description || exportRec?.Description || "";
 
-    // Champs communs
     const mastery = apiRec?.masteryReq ?? exportRec?.Mastery ?? null;
     const dispo   = apiRec?.disposition ?? exportRec?.Disposition ?? null;
     const trigger = apiRec?.trigger || exportRec?.Trigger || null;
 
-    // Stats
     const critC   = apiRec?.criticalChance ?? exportRec?.CritChance ?? null;
     const critM   = apiRec?.criticalMultiplier ?? exportRec?.CritMultiplier ?? null;
     const status  = apiRec?.statusChance ?? exportRec?.StatusChance ?? null;
-    // Fire vs Attack speed (mêlée)
+
     const isMelee = category === "Melee";
     const fire    = isMelee ? (apiRec?.attackSpeed ?? exportRec?.FireRate ?? null)
                             : (apiRec?.fireRate ?? exportRec?.FireRate ?? null);
-    const mag     = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;   // peu fréquent sur enriched
-    const reload  = apiRec?.reloadTime ?? exportRec?.Reload ?? null;       // idem
+    const mag     = apiRec?.magazineSize ?? exportRec?.Magazine ?? null;
+    const reload  = apiRec?.reloadTime ?? exportRec?.Reload ?? null;
 
-    // Dégâts
     const dmgMap  = computeDamageMap(apiRec);
     const total   = apiRec?.damageTypes?.total ?? exportRec?.TotalDamage ?? sumDamage(dmgMap);
 
-    // Image (Export DE d’abord)
-    const exportFile = coalesce(exportRec, ["Image","image"], "");
-    const apiImgName = apiRec?.imageName || ""; // rarement disponible côté enriched
-    const img = wikiImage(exportFile) || cdnImage(exportFile || apiImgName) || localImage(exportFile || apiImgName);
+    const image   = pickImage(apiRec, exportRec);
 
     return {
       name,
       category,
       type,
       description: desc,
-      image: img,
+      image,
       mastery, disposition: dispo, trigger,
       stats: { total, critC, critM, status, fire, mag, reload },
       damage: dmgMap
@@ -158,18 +170,13 @@
       const a = apiBy.get(n) || null;
       const name = (a?.name || e?.Name || e?.name || "");
       const w = unifyWeapon(name, e, a);
-      // Sécurité: ne garde que Primary/Secondary/Melee
       if (KEEP_UI.has(w.category)) out.push(w);
     }
     return out.sort(byName);
   }
 
   /* -------------------- UI -------------------- */
-  const STATE = {
-    list: [],           // tout (3 catégories)
-    tab: "Primary",     // onglet actif
-    q: ""
-  };
+  const STATE = { list: [], tab: "Primary", q: "" };
 
   const statBox = (label, value) => `
     <div class="stat">
@@ -182,7 +189,7 @@
   function damageRows(map){
     if (!map) return "";
     const rows = Object.entries(map)
-      .filter(([k])=>k!=="total")
+      .filter(([k]) => k !== "total")
       .sort((a,b)=>b[1]-a[1])
       .map(([k,v])=>`
         <div class="flex items-center justify-between py-1 border-b border-[rgba(255,255,255,.06)] last:border-0">
@@ -290,7 +297,7 @@
         loadEnrichedWeapons()
       ]);
 
-      STATE.list = mergeLists(exportList, enrichedList); // Primary/Secondary/Melee uniquement
+      STATE.list = mergeLists(exportList, enrichedList);
 
       if (!STATE.list.length){
         status.textContent = "No Weapon Found.";
