@@ -58,8 +58,8 @@
           "reduction": 0.5
         },
         "damage": {
-          "slash": 35.2,
-          "puncture": 8.8,
+          "slash": 8.8,
+          "puncture": 35.2,
           "total": 44
         }
       }
@@ -125,8 +125,8 @@
           "reduction": 0.5
         },
         "damage": {
-          "slash": 42.4,
-          "puncture": 10.6,
+          "slash": 10.6,
+          "puncture": 42.4,
           "total": 53
         }
       }
@@ -165,8 +165,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 14.9,
-          "slash": 14.9,
-          "puncture": 119.2,
+          "slash": 119.2,
+          "puncture": 14.9,
           "total": 149
         },
         "attackSpeed": 0.833
@@ -180,8 +180,8 @@
         "shotSpeed": 60,
         "damage": {
           "impact": 14.9,
-          "slash": 14.9,
-          "puncture": 119.2,
+          "slash": 119.2,
+          "puncture": 14.9,
           "total": 149
         },
         "attackSpeed": 0.833
@@ -343,8 +343,8 @@
         "shotSpeed": 30,
         "damage": {
           "impact": 4.5,
-          "slash": 1.8,
-          "puncture": 2.7,
+          "slash": 2.7,
+          "puncture": 1.8,
           "total": 9
         }
       },
@@ -412,8 +412,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 15,
-          "slash": 23,
-          "puncture": 17,
+          "slash": 17,
+          "puncture": 23,
           "radiation": 5,
           "total": 60
         }
@@ -498,8 +498,8 @@
         "shotSpeed": 90,
         "damage": {
           "impact": 20,
-          "slash": 60,
-          "puncture": 20,
+          "slash": 20,
+          "puncture": 60,
           "total": 100
         }
       },
@@ -579,8 +579,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 3,
-          "slash": 14,
-          "puncture": 3,
+          "slash": 3,
+          "puncture": 14,
           "total": 20
         }
       }
@@ -630,8 +630,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 3.9,
-          "slash": 18.2,
-          "puncture": 3.9,
+          "slash": 3.9,
+          "puncture": 18.2,
           "total": 26
         }
       }
@@ -675,8 +675,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 65.4,
-          "slash": 305.2,
-          "puncture": 65.4,
+          "slash": 65.4,
+          "puncture": 305.2,
           "total": 436
         }
       }
@@ -907,8 +907,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 4.4,
-          "slash": 37.84,
-          "puncture": 1.76,
+          "slash": 1.76,
+          "puncture": 37.84,
           "total": 44
         }
       }
@@ -1065,8 +1065,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 5.4,
-          "slash": 5.4,
-          "puncture": 25.2,
+          "slash": 25.2,
+          "puncture": 5.4,
           "total": 36
         }
       }
@@ -1115,8 +1115,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 3.8,
-          "slash": 3.8,
-          "puncture": 30.4,
+          "slash": 30.4,
+          "puncture": 3.8,
           "total": 38
         }
       }
@@ -1161,8 +1161,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 6,
-          "slash": 10,
-          "puncture": 24,
+          "slash": 24,
+          "puncture": 10,
           "total": 40
         }
       }
@@ -1207,8 +1207,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 13,
-          "slash": 104,
-          "puncture": 13,
+          "slash": 13,
+          "puncture": 104,
           "total": 130
         }
       }
@@ -1253,8 +1253,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 15,
-          "slash": 120,
-          "puncture": 15,
+          "slash": 15,
+          "puncture": 120,
           "total": 150
         }
       }
@@ -1398,8 +1398,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.8,
-          "slash": 7.2,
-          "puncture": 9,
+          "slash": 9,
+          "puncture": 7.2,
           "total": 18
         }
       }
@@ -1449,8 +1449,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 2,
-          "slash": 8,
-          "puncture": 10,
+          "slash": 10,
+          "puncture": 8,
           "total": 20
         }
       }
@@ -1498,8 +1498,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 16.8,
-          "slash": 2.8,
-          "puncture": 8.4,
+          "slash": 8.4,
+          "puncture": 2.8,
           "total": 28
         }
       }
@@ -1548,8 +1548,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 21.6,
-          "slash": 3.6,
-          "puncture": 10.8,
+          "slash": 10.8,
+          "puncture": 3.6,
           "total": 36
         }
       }
@@ -1594,8 +1594,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 22.5,
-          "slash": 22.5,
-          "puncture": 45,
+          "slash": 45,
+          "puncture": 22.5,
           "total": 90
         }
       }
@@ -1644,8 +1644,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 16.5,
-          "slash": 16.5,
-          "puncture": 77,
+          "slash": 77,
+          "puncture": 16.5,
           "total": 110
         }
       }
@@ -1693,8 +1693,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.8,
-          "slash": 8.4,
-          "puncture": 1.8,
+          "slash": 1.8,
+          "puncture": 8.4,
           "total": 12
         }
       }
@@ -1828,8 +1828,8 @@
         "critMult": 2,
         "statusChance": 0.24,
         "damage": {
-          "slash": 37.8,
-          "puncture": 88.2,
+          "slash": 88.2,
+          "puncture": 37.8,
           "total": 126
         },
         "attackSpeed": 1
@@ -2207,8 +2207,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 25.5,
-          "slash": 136,
-          "puncture": 8.5,
+          "slash": 8.5,
+          "puncture": 136,
           "total": 170
         },
         "attackSpeed": 1.08
@@ -2541,8 +2541,8 @@
         "statusChance": 0.26,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 36,
-          "puncture": 24,
+          "slash": 24,
+          "puncture": 36,
           "total": 60
         }
       }
@@ -2807,8 +2807,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 24.51,
-          "slash": 6.27,
-          "puncture": 26.22,
+          "slash": 26.22,
+          "puncture": 6.27,
           "total": 57
         }
       },
@@ -2821,8 +2821,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 24.51,
-          "slash": 6.27,
-          "puncture": 26.22,
+          "slash": 26.22,
+          "puncture": 6.27,
           "total": 57
         }
       }
@@ -2865,8 +2865,8 @@
         "statusChance": 0.37,
         "damage": {
           "impact": 35.64,
-          "slash": 59.4,
-          "puncture": 201.96,
+          "slash": 201.96,
+          "puncture": 59.4,
           "total": 297
         },
         "attackSpeed": 1.08
@@ -3021,8 +3021,8 @@
           "reduction": 0.3
         },
         "damage": {
-          "slash": 42,
-          "puncture": 78,
+          "slash": 78,
+          "puncture": 42,
           "total": 120
         }
       }
@@ -3094,8 +3094,8 @@
           "reduction": 0.3
         },
         "damage": {
-          "slash": 49,
-          "puncture": 91,
+          "slash": 91,
+          "puncture": 49,
           "total": 140
         }
       }
@@ -3268,8 +3268,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 6.45,
-          "slash": 6.45,
-          "puncture": 116.1,
+          "slash": 116.1,
+          "puncture": 6.45,
           "total": 129
         },
         "attackSpeed": 0.917
@@ -3368,8 +3368,8 @@
         "shotSpeed": 90,
         "damage": {
           "impact": 4,
-          "slash": 60,
-          "puncture": 16,
+          "slash": 16,
+          "puncture": 60,
           "total": 80
         }
       }
@@ -3464,8 +3464,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 2,
-          "slash": 5,
-          "puncture": 13,
+          "slash": 13,
+          "puncture": 5,
           "total": 20
         }
       },
@@ -3519,8 +3519,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 51,
-          "slash": 34,
-          "puncture": 85,
+          "slash": 85,
+          "puncture": 34,
           "total": 170
         },
         "attackSpeed": 1.17
@@ -3686,8 +3686,8 @@
         "chargeTime": 1,
         "damage": {
           "impact": 10,
-          "slash": 80,
-          "puncture": 10,
+          "slash": 10,
+          "puncture": 80,
           "total": 100
         }
       },
@@ -3769,8 +3769,8 @@
         "chargeTime": 0.8,
         "damage": {
           "impact": 3.8,
-          "slash": 41.8,
-          "puncture": 30.4,
+          "slash": 30.4,
+          "puncture": 41.8,
           "total": 76
         }
       }
@@ -3974,8 +3974,8 @@
         },
         "damage": {
           "impact": 5.76,
-          "slash": 6.72,
-          "puncture": 3.52,
+          "slash": 3.52,
+          "puncture": 6.72,
           "total": 16
         }
       }
@@ -4029,8 +4029,8 @@
         },
         "damage": {
           "impact": 5.76,
-          "slash": 6.72,
-          "puncture": 3.52,
+          "slash": 3.52,
+          "puncture": 6.72,
           "total": 16
         }
       }
@@ -4263,8 +4263,8 @@
         },
         "damage": {
           "impact": 12.1,
-          "slash": 3.3,
-          "puncture": 6.6,
+          "slash": 6.6,
+          "puncture": 3.3,
           "total": 22
         }
       },
@@ -4326,8 +4326,8 @@
         },
         "damage": {
           "impact": 26,
-          "slash": 6,
-          "puncture": 8,
+          "slash": 8,
+          "puncture": 6,
           "total": 40
         }
       },
@@ -4378,8 +4378,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 17.6,
-          "slash": 140.8,
-          "puncture": 17.6,
+          "slash": 17.6,
+          "puncture": 140.8,
           "total": 176
         },
         "attackSpeed": 0.917
@@ -4526,8 +4526,8 @@
         "shotSpeed": 85,
         "damage": {
           "impact": 2.5,
-          "slash": 20,
-          "puncture": 2.5,
+          "slash": 2.5,
+          "puncture": 20,
           "total": 25
         }
       },
@@ -4660,8 +4660,8 @@
         },
         "damage": {
           "impact": 9,
-          "slash": 5,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 5,
           "total": 20
         }
       }
@@ -4706,8 +4706,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 7.92,
-          "slash": 7.92,
-          "puncture": 8.16,
+          "slash": 8.16,
+          "puncture": 7.92,
           "total": 24
         }
       },
@@ -4783,8 +4783,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.75,
-          "slash": 12.25,
-          "puncture": 21,
+          "slash": 21,
+          "puncture": 12.25,
           "total": 35
         }
       },
@@ -4863,8 +4863,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 12.25,
-          "slash": 1.75,
-          "puncture": 21,
+          "slash": 21,
+          "puncture": 1.75,
           "total": 35
         }
       },
@@ -4937,8 +4937,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 125.3,
-          "slash": 17.9,
-          "puncture": 35.8,
+          "slash": 35.8,
+          "puncture": 17.9,
           "total": 179
         },
         "attackSpeed": 1.25
@@ -5031,8 +5031,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 18.7,
-          "slash": 18.7,
-          "puncture": 149.6,
+          "slash": 149.6,
+          "puncture": 18.7,
           "total": 187
         },
         "attackSpeed": 1
@@ -5277,8 +5277,8 @@
         },
         "damage": {
           "impact": 2,
-          "slash": 13,
-          "puncture": 19,
+          "slash": 19,
+          "puncture": 13,
           "toxin": 7,
           "total": 41
         }
@@ -5435,8 +5435,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 13.8,
-          "slash": 13.8,
-          "puncture": 18.4,
+          "slash": 18.4,
+          "puncture": 13.8,
           "total": 46
         }
       },
@@ -5511,8 +5511,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 30,
-          "slash": 24,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 24,
           "total": 60
         }
       },
@@ -5664,8 +5664,8 @@
         "shotType": "Projectile",
         "shotSpeed": 70,
         "damage": {
-          "slash": 27,
-          "puncture": 63,
+          "slash": 63,
+          "puncture": 27,
           "total": 90
         }
       }
@@ -5769,8 +5769,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 41.36,
-          "slash": 63.92,
-          "puncture": 82.72,
+          "slash": 82.72,
+          "puncture": 63.92,
           "total": 188
         },
         "attackSpeed": 1.17
@@ -6042,8 +6042,8 @@
         "statusChance": 0.37,
         "damage": {
           "impact": 17,
-          "slash": 71,
-          "puncture": 69,
+          "slash": 69,
+          "puncture": 71,
           "corrosive": 103,
           "total": 260
         },
@@ -6333,8 +6333,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 37.6,
-          "slash": 75.2,
-          "puncture": 263.2,
+          "slash": 263.2,
+          "puncture": 75.2,
           "total": 376
         }
       }
@@ -6501,8 +6501,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 19,
-          "slash": 36,
-          "puncture": 52,
+          "slash": 52,
+          "puncture": 36,
           "toxin": 76,
           "total": 183
         },
@@ -6891,8 +6891,8 @@
         "statusChance": 0.4,
         "damage": {
           "impact": 12,
-          "slash": 38,
-          "puncture": 66,
+          "slash": 66,
+          "puncture": 38,
           "electricity": 100,
           "total": 216
         },
@@ -7005,8 +7005,8 @@
         "shotSpeed": 120,
         "chargeTime": 1.5,
         "damage": {
-          "slash": 640,
-          "puncture": 160,
+          "slash": 160,
+          "puncture": 640,
           "total": 800
         }
       },
@@ -7419,8 +7419,8 @@
         "statusChance": 0.41,
         "damage": {
           "impact": 20,
-          "slash": 75,
-          "puncture": 70,
+          "slash": 70,
+          "puncture": 75,
           "corrosive": 120,
           "total": 285
         },
@@ -7592,8 +7592,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 26.25,
-          "slash": 140,
-          "puncture": 8.75,
+          "slash": 8.75,
+          "puncture": 140,
           "total": 175
         },
         "attackSpeed": 1
@@ -7686,8 +7686,8 @@
         "statusChance": 0.4,
         "damage": {
           "impact": 45,
-          "slash": 45,
-          "puncture": 66,
+          "slash": 66,
+          "puncture": 45,
           "toxin": 79,
           "total": 235
         },
@@ -7879,8 +7879,8 @@
         "statusChance": 0.35,
         "damage": {
           "impact": 58,
-          "slash": 55,
-          "puncture": 65,
+          "slash": 65,
+          "puncture": 55,
           "viral": 92,
           "total": 270
         },
@@ -8152,8 +8152,8 @@
         },
         "damage": {
           "impact": 101.52,
-          "slash": 116.56,
-          "puncture": 157.92,
+          "slash": 157.92,
+          "puncture": 116.56,
           "total": 376
         }
       },
@@ -8266,8 +8266,8 @@
         "shotSpeed": 75,
         "damage": {
           "impact": 18,
-          "slash": 32,
-          "puncture": 26,
+          "slash": 26,
+          "puncture": 32,
           "total": 76
         }
       },
@@ -8327,8 +8327,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.2,
-          "slash": 1.2,
-          "puncture": 9.6,
+          "slash": 9.6,
+          "puncture": 1.2,
           "total": 12
         }
       },
@@ -8396,8 +8396,8 @@
         },
         "damage": {
           "impact": 25.2,
-          "slash": 37.8,
-          "puncture": 27,
+          "slash": 27,
+          "puncture": 37.8,
           "total": 90
         }
       },
@@ -8482,8 +8482,8 @@
         },
         "damage": {
           "impact": 25.2,
-          "slash": 37.8,
-          "puncture": 27,
+          "slash": 27,
+          "puncture": 37.8,
           "total": 90
         }
       },
@@ -8625,8 +8625,8 @@
         "statusChance": 0.14,
         "damage": {
           "impact": 96,
-          "slash": 68,
-          "puncture": 36,
+          "slash": 36,
+          "puncture": 68,
           "total": 200
         },
         "attackSpeed": 1
@@ -8873,8 +8873,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 31.8,
-          "slash": 15.9,
-          "puncture": 58.3,
+          "slash": 58.3,
+          "puncture": 15.9,
           "total": 106
         },
         "attackSpeed": 0.917
@@ -9114,8 +9114,8 @@
         "statusChance": 0.3,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 8,
-          "puncture": 5,
+          "slash": 5,
+          "puncture": 8,
           "radiation": 10,
           "total": 23
         }
@@ -9167,8 +9167,8 @@
         },
         "damage": {
           "impact": 39.6,
-          "slash": 39.6,
-          "puncture": 40.8,
+          "slash": 40.8,
+          "puncture": 39.6,
           "total": 120
         }
       }
@@ -9218,8 +9218,8 @@
         "chargeTime": 1,
         "damage": {
           "impact": 210,
-          "slash": 280,
-          "puncture": 210,
+          "slash": 210,
+          "puncture": 280,
           "total": 700
         }
       }
@@ -9286,8 +9286,8 @@
         "chargeTime": 1,
         "damage": {
           "impact": 225,
-          "slash": 300,
-          "puncture": 225,
+          "slash": 225,
+          "puncture": 300,
           "total": 750
         }
       }
@@ -9330,8 +9330,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 17,
-          "slash": 17,
-          "puncture": 136,
+          "slash": 136,
+          "puncture": 17,
           "total": 170
         },
         "attackSpeed": 1
@@ -9419,8 +9419,8 @@
         "critMult": 1.5,
         "statusChance": 0.22,
         "damage": {
-          "slash": 58,
-          "puncture": 36,
+          "slash": 36,
+          "puncture": 58,
           "radiation": 60,
           "total": 154
         },
@@ -9506,8 +9506,8 @@
         "name": "Primary Fire",
         "damage": {
           "impact": 3.3333299,
-          "puncture": 3.3333299,
-          "slash": 3.3333402,
+          "puncture": 3.3333402,
+          "slash": 3.3333299,
           "total": 10
         },
         "critChance": 0,
@@ -9550,8 +9550,8 @@
         "critMult": 1.5,
         "statusChance": 0.4,
         "damage": {
-          "slash": 120,
-          "puncture": 60,
+          "slash": 60,
+          "puncture": 120,
           "radiation": 80,
           "total": 260
         },
@@ -9714,8 +9714,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 6,
-          "slash": 22.5,
-          "puncture": 1.5,
+          "slash": 1.5,
+          "puncture": 22.5,
           "total": 30
         }
       },
@@ -9776,8 +9776,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 6.4,
-          "slash": 24,
-          "puncture": 1.6,
+          "slash": 1.6,
+          "puncture": 24,
           "total": 32
         }
       },
@@ -9842,8 +9842,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 2.9,
-          "slash": 46.4,
-          "puncture": 8.7,
+          "slash": 8.7,
+          "puncture": 46.4,
           "total": 58
         }
       },
@@ -9917,8 +9917,8 @@
         "statusChance": 0.14,
         "damage": {
           "impact": 3.95,
-          "slash": 134.3,
-          "puncture": 19.75,
+          "slash": 19.75,
+          "puncture": 134.3,
           "total": 158
         },
         "attackSpeed": 1
@@ -10011,8 +10011,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 20.4,
-          "slash": 119,
-          "puncture": 30.6,
+          "slash": 30.6,
+          "puncture": 119,
           "total": 170
         },
         "attackSpeed": 0.917
@@ -10152,8 +10152,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 14.2,
-          "slash": 14.2,
-          "puncture": 113.6,
+          "slash": 113.6,
+          "puncture": 14.2,
           "total": 142
         },
         "attackSpeed": 0.883
@@ -10251,8 +10251,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 2.4,
-          "slash": 11.2,
-          "puncture": 2.4,
+          "slash": 2.4,
+          "puncture": 11.2,
           "total": 16
         }
       }
@@ -10295,8 +10295,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 16.8,
-          "slash": 25.2,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 25.2,
           "total": 168
         },
         "attackSpeed": 1
@@ -10391,8 +10391,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 22.5,
-          "slash": 18.75,
-          "puncture": 33.75,
+          "slash": 33.75,
+          "puncture": 18.75,
           "total": 75
         }
       },
@@ -10573,8 +10573,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 9.4,
-          "slash": 18.8,
-          "puncture": 159.8,
+          "slash": 159.8,
+          "puncture": 18.8,
           "total": 188
         },
         "attackSpeed": 1
@@ -10686,8 +10686,8 @@
         "chargeTime": 0.5,
         "damage": {
           "impact": 7,
-          "slash": 7,
-          "puncture": 56,
+          "slash": 56,
+          "puncture": 7,
           "total": 70
         }
       }
@@ -10753,8 +10753,8 @@
         "chargeTime": 0.5,
         "damage": {
           "impact": 16.8,
-          "slash": 16.8,
-          "puncture": 302.4,
+          "slash": 302.4,
+          "puncture": 16.8,
           "total": 336
         }
       },
@@ -10860,8 +10860,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 23.55,
-          "slash": 23.55,
-          "puncture": 109.9,
+          "slash": 109.9,
+          "puncture": 23.55,
           "total": 157
         },
         "attackSpeed": 0.833
@@ -10957,8 +10957,8 @@
         "statusChance": 0.28,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 17.5,
-          "puncture": 32.5,
+          "slash": 32.5,
+          "puncture": 17.5,
           "total": 50
         }
       }
@@ -11049,8 +11049,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 27,
-          "slash": 27,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 27,
           "total": 180
         },
         "attackSpeed": 1
@@ -11142,8 +11142,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 22.05,
-          "slash": 22.05,
-          "puncture": 102.9,
+          "slash": 102.9,
+          "puncture": 22.05,
           "total": 147
         },
         "attackSpeed": 0.917
@@ -11236,8 +11236,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 19,
-          "slash": 11,
-          "puncture": 45,
+          "slash": 45,
+          "puncture": 11,
           "toxin": 47,
           "total": 122
         },
@@ -11327,8 +11327,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 4.8,
-          "slash": 9.6,
-          "puncture": 81.6,
+          "slash": 81.6,
+          "puncture": 9.6,
           "total": 96
         },
         "attackSpeed": 1.17
@@ -11420,8 +11420,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 8,
-          "slash": 32,
-          "puncture": 120,
+          "slash": 120,
+          "puncture": 32,
           "total": 160
         },
         "attackSpeed": 1.17
@@ -11510,8 +11510,8 @@
         "statusChance": 0.14,
         "damage": {
           "impact": 13.8,
-          "slash": 34.5,
-          "puncture": 66.7,
+          "slash": 66.7,
+          "puncture": 34.5,
           "total": 115
         },
         "attackSpeed": 1.25
@@ -11604,8 +11604,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 21.6,
-          "slash": 54,
-          "puncture": 104.4,
+          "slash": 104.4,
+          "puncture": 54,
           "total": 180
         },
         "attackSpeed": 1.25
@@ -11694,8 +11694,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 11,
-          "slash": 33,
-          "puncture": 66,
+          "slash": 66,
+          "puncture": 33,
           "total": 110
         },
         "attackSpeed": 0.917
@@ -11784,8 +11784,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 18,
-          "slash": 18,
-          "puncture": 84,
+          "slash": 84,
+          "puncture": 18,
           "total": 120
         },
         "attackSpeed": 0.833
@@ -11884,8 +11884,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 7.5,
-          "slash": 60,
-          "puncture": 7.5,
+          "slash": 7.5,
+          "puncture": 60,
           "total": 75
         }
       },
@@ -12031,8 +12031,8 @@
         "statusChance": 0.05,
         "damage": {
           "impact": 3.5,
-          "slash": 3.5,
-          "puncture": 63,
+          "slash": 63,
+          "puncture": 3.5,
           "total": 70
         },
         "attackSpeed": 1.17
@@ -12126,8 +12126,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 7,
-          "slash": 7,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 7,
           "total": 140
         },
         "attackSpeed": 1.25
@@ -12221,8 +12221,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 44,
-          "slash": 66,
-          "puncture": 110,
+          "slash": 110,
+          "puncture": 66,
           "total": 220
         },
         "attackSpeed": 1
@@ -12351,8 +12351,8 @@
         "statusChance": 0.25,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 31,
-          "puncture": 23,
+          "slash": 23,
+          "puncture": 31,
           "corrosive": 7,
           "total": 61
         }
@@ -12813,8 +12813,8 @@
         "statusChance": 0.36,
         "damage": {
           "impact": 10,
-          "slash": 140,
-          "puncture": 50,
+          "slash": 50,
+          "puncture": 140,
           "total": 200
         },
         "attackSpeed": 0.917
@@ -12915,8 +12915,8 @@
         "chargeTime": 0.4,
         "damage": {
           "impact": 120,
-          "slash": 45,
-          "puncture": 135,
+          "slash": 135,
+          "puncture": 45,
           "total": 300
         }
       },
@@ -12999,8 +12999,8 @@
         "chargeTime": 0.4,
         "damage": {
           "impact": 126,
-          "slash": 47.25,
-          "puncture": 141.75,
+          "slash": 141.75,
+          "puncture": 47.25,
           "total": 315
         }
       },
@@ -13074,8 +13074,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 33.6,
-          "slash": 33.6,
-          "puncture": 156.8,
+          "slash": 156.8,
+          "puncture": 33.6,
           "total": 224
         },
         "attackSpeed": 0.833
@@ -13167,8 +13167,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 27,
-          "slash": 27,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 27,
           "total": 180
         },
         "attackSpeed": 1.08
@@ -13257,8 +13257,8 @@
         "statusChance": 0.34,
         "damage": {
           "impact": 28.8,
-          "slash": 28.8,
-          "puncture": 134.4,
+          "slash": 134.4,
+          "puncture": 28.8,
           "total": 192
         },
         "attackSpeed": 1
@@ -13517,8 +13517,8 @@
         },
         "damage": {
           "impact": 20,
-          "slash": 120,
-          "puncture": 260,
+          "slash": 260,
+          "puncture": 120,
           "radiation": 140,
           "total": 540
         }
@@ -13559,8 +13559,8 @@
         "statusChance": 0.34,
         "damage": {
           "impact": 36,
-          "slash": 18,
-          "puncture": 92,
+          "slash": 92,
+          "puncture": 18,
           "electricity": 84,
           "total": 230
         },
@@ -13756,8 +13756,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 16.2,
-          "slash": 75.6,
-          "puncture": 16.2,
+          "slash": 16.2,
+          "puncture": 75.6,
           "total": 108
         },
         "attackSpeed": 0.917
@@ -13849,8 +13849,8 @@
         "statusChance": 0.26,
         "damage": {
           "impact": 26.7,
-          "slash": 124.6,
-          "puncture": 26.7,
+          "slash": 26.7,
+          "puncture": 124.6,
           "total": 178
         },
         "attackSpeed": 1
@@ -13954,8 +13954,8 @@
         },
         "damage": {
           "impact": 38,
-          "slash": 68.4,
-          "puncture": 83.6,
+          "slash": 83.6,
+          "puncture": 68.4,
           "total": 190
         }
       },
@@ -14019,8 +14019,8 @@
         "chargeTime": 0.5,
         "damage": {
           "impact": 35,
-          "slash": 245,
-          "puncture": 70,
+          "slash": 70,
+          "puncture": 245,
           "total": 350
         }
       },
@@ -14118,8 +14118,8 @@
         },
         "damage": {
           "impact": 50,
-          "slash": 25,
-          "puncture": 175,
+          "slash": 175,
+          "puncture": 25,
           "total": 250
         }
       }
@@ -14162,8 +14162,8 @@
         "statusChance": 0.24,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 4.84,
-          "puncture": 17.16,
+          "slash": 17.16,
+          "puncture": 4.84,
           "total": 22
         }
       }
@@ -14703,8 +14703,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 3,
-          "slash": 14,
-          "puncture": 3,
+          "slash": 3,
+          "puncture": 14,
           "total": 20
         }
       },
@@ -14768,8 +14768,8 @@
         "shotType": "Projectile",
         "shotSpeed": 50,
         "damage": {
-          "slash": 30.8,
-          "puncture": 46.2,
+          "slash": 46.2,
+          "puncture": 30.8,
           "total": 77
         }
       },
@@ -14782,8 +14782,8 @@
         "shotType": "Projectile",
         "shotSpeed": 50,
         "damage": {
-          "slash": 30.8,
-          "puncture": 46.2,
+          "slash": 46.2,
+          "puncture": 30.8,
           "total": 77
         }
       }
@@ -14825,8 +14825,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 4.55,
-          "slash": 4.55,
-          "puncture": 172.9,
+          "slash": 172.9,
+          "puncture": 4.55,
           "total": 182
         },
         "attackSpeed": 1
@@ -14919,8 +14919,8 @@
         "statusChance": 0.26,
         "damage": {
           "impact": 7,
-          "slash": 7,
-          "puncture": 266,
+          "slash": 266,
+          "puncture": 7,
           "total": 280
         },
         "attackSpeed": 1
@@ -15010,8 +15010,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 12,
-          "slash": 38,
-          "puncture": 64,
+          "slash": 64,
+          "puncture": 38,
           "electricity": 96,
           "total": 210
         },
@@ -15179,8 +15179,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 17.8,
-          "slash": 26.7,
-          "puncture": 133.5,
+          "slash": 133.5,
+          "puncture": 26.7,
           "total": 178
         },
         "attackSpeed": 1
@@ -15269,8 +15269,8 @@
         "statusChance": 0.27,
         "damage": {
           "impact": 37.43,
-          "slash": 45.31,
-          "puncture": 114.26,
+          "slash": 114.26,
+          "puncture": 45.31,
           "total": 197
         },
         "attackSpeed": 1
@@ -15363,8 +15363,8 @@
         "statusChance": 0.12,
         "damage": {
           "impact": 15.75,
-          "slash": 15.75,
-          "puncture": 73.5,
+          "slash": 73.5,
+          "puncture": 15.75,
           "total": 105
         },
         "attackSpeed": 1
@@ -15558,8 +15558,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 24.6,
-          "slash": 24.6,
-          "puncture": 114.8,
+          "slash": 114.8,
+          "puncture": 24.6,
           "total": 164
         },
         "attackSpeed": 1.25
@@ -15839,8 +15839,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 18.75,
-          "slash": 3.75,
-          "puncture": 2.5,
+          "slash": 2.5,
+          "puncture": 3.75,
           "total": 25
         }
       },
@@ -15916,8 +15916,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 22.95,
-          "slash": 2.7,
-          "puncture": 1.35,
+          "slash": 1.35,
+          "puncture": 2.7,
           "total": 27
         }
       },
@@ -16080,8 +16080,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 24,
-          "slash": 24,
-          "puncture": 112,
+          "slash": 112,
+          "puncture": 24,
           "total": 160
         },
         "attackSpeed": 0.95
@@ -16174,8 +16174,8 @@
         "statusChance": 0.32,
         "damage": {
           "impact": 60,
-          "slash": 15,
-          "puncture": 225,
+          "slash": 225,
+          "puncture": 15,
           "total": 300
         },
         "attackSpeed": 0.8
@@ -16480,8 +16480,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 93.5,
-          "slash": 18.7,
-          "puncture": 74.8,
+          "slash": 74.8,
+          "puncture": 18.7,
           "total": 187
         }
       }
@@ -16524,8 +16524,8 @@
         "statusChance": 0.04,
         "damage": {
           "impact": 50.5,
-          "slash": 10.1,
-          "puncture": 141.4,
+          "slash": 141.4,
+          "puncture": 10.1,
           "total": 202
         },
         "attackSpeed": 0.833
@@ -16619,8 +16619,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 60,
-          "slash": 12,
-          "puncture": 168,
+          "slash": 168,
+          "puncture": 12,
           "total": 240
         },
         "attackSpeed": 1
@@ -16712,8 +16712,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 12.8,
-          "slash": 19.2,
-          "puncture": 128,
+          "slash": 128,
+          "puncture": 19.2,
           "total": 160
         },
         "attackSpeed": 1.17
@@ -16806,8 +16806,8 @@
         "statusChance": 0.34,
         "damage": {
           "impact": 9,
-          "slash": 13.5,
-          "puncture": 202.5,
+          "slash": 202.5,
+          "puncture": 13.5,
           "total": 225
         },
         "attackSpeed": 1.17
@@ -16900,8 +16900,8 @@
         "statusChance": 0.29,
         "damage": {
           "impact": 14.9,
-          "slash": 119.2,
-          "puncture": 14.9,
+          "slash": 14.9,
+          "puncture": 119.2,
           "total": 149
         },
         "attackSpeed": 1.17
@@ -17096,8 +17096,8 @@
         "statusChance": 0.35,
         "damage": {
           "impact": 22.5,
-          "slash": 180,
-          "puncture": 22.5,
+          "slash": 22.5,
+          "puncture": 180,
           "total": 225
         },
         "attackSpeed": 1.17
@@ -17289,8 +17289,8 @@
         "critMult": 2.2,
         "statusChance": 0.36,
         "damage": {
-          "slash": 168,
-          "puncture": 72,
+          "slash": 72,
+          "puncture": 168,
           "total": 240
         },
         "attackSpeed": 1.083
@@ -17389,8 +17389,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 5,
-          "slash": 37.5,
-          "puncture": 7.5,
+          "slash": 7.5,
+          "puncture": 37.5,
           "total": 50
         }
       },
@@ -17444,8 +17444,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 34.5,
-          "slash": 34.5,
-          "puncture": 161,
+          "slash": 161,
+          "puncture": 34.5,
           "total": 230
         },
         "attackSpeed": 0.917
@@ -17570,8 +17570,8 @@
         "statusChance": 0.14,
         "damage": {
           "impact": 14,
-          "slash": 76,
-          "puncture": 56,
+          "slash": 56,
+          "puncture": 76,
           "heat": 62,
           "total": 208
         },
@@ -17664,8 +17664,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 14.7,
-          "slash": 14.7,
-          "puncture": 117.6,
+          "slash": 117.6,
+          "puncture": 14.7,
           "total": 147
         },
         "attackSpeed": 0.917
@@ -17765,8 +17765,8 @@
         },
         "damage": {
           "impact": 11.25,
-          "slash": 48.75,
-          "puncture": 15,
+          "slash": 15,
+          "puncture": 48.75,
           "total": 75
         }
       }
@@ -17805,8 +17805,8 @@
         "statusChance": 0.12,
         "damage": {
           "impact": 238,
-          "slash": 28,
-          "puncture": 14,
+          "slash": 14,
+          "puncture": 28,
           "total": 280
         },
         "attackSpeed": 0.833
@@ -17944,8 +17944,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 112,
-          "slash": 33.6,
-          "puncture": 134.4,
+          "slash": 134.4,
+          "puncture": 33.6,
           "total": 280
         },
         "attackSpeed": 1
@@ -18042,8 +18042,8 @@
         "shotType": "Projectile",
         "shotSpeed": 100,
         "damage": {
-          "slash": 15.6,
-          "puncture": 10.4,
+          "slash": 10.4,
+          "puncture": 15.6,
           "total": 26
         }
       },
@@ -18106,8 +18106,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 2.6,
-          "slash": 15.6,
-          "puncture": 7.8,
+          "slash": 7.8,
+          "puncture": 15.6,
           "total": 26
         }
       }
@@ -18157,8 +18157,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 3.6,
-          "slash": 30.6,
-          "puncture": 1.8,
+          "slash": 1.8,
+          "puncture": 30.6,
           "total": 36
         }
       }
@@ -18206,8 +18206,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 7.5,
-          "slash": 7.5,
-          "puncture": 15,
+          "slash": 15,
+          "puncture": 7.5,
           "total": 30
         }
       },
@@ -18262,8 +18262,8 @@
         "statusChance": 0.11,
         "damage": {
           "impact": 19.5,
-          "slash": 104,
-          "puncture": 6.5,
+          "slash": 6.5,
+          "puncture": 104,
           "total": 130
         },
         "attackSpeed": 1
@@ -18362,8 +18362,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 2.16,
-          "slash": 30.96,
-          "puncture": 2.88,
+          "slash": 2.88,
+          "puncture": 30.96,
           "total": 36
         }
       },
@@ -18407,8 +18407,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 2.16,
-          "slash": 30.96,
-          "puncture": 2.88,
+          "slash": 2.88,
+          "puncture": 30.96,
           "total": 36
         }
       }
@@ -18458,8 +18458,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 2.76,
-          "slash": 39.56,
-          "puncture": 3.68,
+          "slash": 3.68,
+          "puncture": 39.56,
           "total": 46
         }
       },
@@ -18473,8 +18473,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 2.76,
-          "slash": 39.56,
-          "puncture": 3.68,
+          "slash": 3.68,
+          "puncture": 39.56,
           "total": 46
         }
       },
@@ -18488,8 +18488,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 2.76,
-          "slash": 39.56,
-          "puncture": 3.68,
+          "slash": 3.68,
+          "puncture": 39.56,
           "total": 46
         }
       },
@@ -18503,8 +18503,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 2.76,
-          "slash": 39.56,
-          "puncture": 3.68,
+          "slash": 3.68,
+          "puncture": 39.56,
           "total": 46
         }
       }
@@ -18642,8 +18642,8 @@
         },
         "damage": {
           "impact": 20,
-          "slash": 17.5,
-          "puncture": 12.5,
+          "slash": 12.5,
+          "puncture": 17.5,
           "total": 50
         }
       }
@@ -18697,8 +18697,8 @@
         },
         "damage": {
           "impact": 20,
-          "slash": 17.5,
-          "puncture": 12.5,
+          "slash": 12.5,
+          "puncture": 17.5,
           "total": 50
         }
       }
@@ -18741,8 +18741,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 36,
-          "slash": 144,
-          "puncture": 180,
+          "slash": 180,
+          "puncture": 144,
           "total": 360
         },
         "attackSpeed": 0.75
@@ -18915,8 +18915,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 160,
-          "slash": 30,
-          "puncture": 10,
+          "slash": 10,
+          "puncture": 30,
           "total": 200
         },
         "attackSpeed": 1
@@ -19010,8 +19010,8 @@
         "statusChance": 0.19,
         "damage": {
           "impact": 79,
-          "slash": 13,
-          "puncture": 45,
+          "slash": 45,
+          "puncture": 13,
           "heat": 81,
           "total": 218
         },
@@ -19201,8 +19201,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 6,
-          "slash": 24,
-          "puncture": 90,
+          "slash": 90,
+          "puncture": 24,
           "total": 120
         },
         "attackSpeed": 0.917
@@ -19326,8 +19326,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 13.5,
-          "slash": 13.5,
-          "puncture": 63,
+          "slash": 63,
+          "puncture": 13.5,
           "total": 90
         },
         "attackSpeed": 1.17
@@ -19425,8 +19425,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 13.05,
-          "slash": 8.7,
-          "puncture": 7.25,
+          "slash": 7.25,
+          "puncture": 8.7,
           "total": 29
         }
       }
@@ -19474,8 +19474,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 13.95,
-          "slash": 9.3,
-          "puncture": 7.75,
+          "slash": 7.75,
+          "puncture": 9.3,
           "total": 31
         }
       }
@@ -19518,8 +19518,8 @@
         "statusChance": 0.26,
         "damage": {
           "impact": 30,
-          "slash": 84,
-          "puncture": 72,
+          "slash": 72,
+          "puncture": 84,
           "toxin": 87,
           "total": 273
         },
@@ -19614,8 +19614,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 50,
-          "slash": 96,
-          "puncture": 102,
+          "slash": 102,
+          "puncture": 96,
           "toxin": 96,
           "total": 344
         },
@@ -19751,8 +19751,8 @@
         "statusChance": 0.29,
         "damage": {
           "impact": 79,
-          "slash": 45,
-          "puncture": 87,
+          "slash": 87,
+          "puncture": 45,
           "viral": 33,
           "total": 244
         },
@@ -19845,8 +19845,8 @@
         "statusChance": 0.23,
         "damage": {
           "impact": 96.4,
-          "slash": 24.1,
-          "puncture": 120.5,
+          "slash": 120.5,
+          "puncture": 24.1,
           "total": 241
         },
         "attackSpeed": 0.833
@@ -20136,8 +20136,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 63,
-          "slash": 69,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 69,
           "total": 150
         }
       }
@@ -20186,8 +20186,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 75.6,
-          "slash": 82.8,
-          "puncture": 21.6,
+          "slash": 21.6,
+          "puncture": 82.8,
           "total": 180
         }
       }
@@ -20470,8 +20470,8 @@
         },
         "damage": {
           "impact": 6,
-          "slash": 6,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 6,
           "total": 30
         }
       },
@@ -20489,8 +20489,8 @@
         },
         "damage": {
           "impact": 6,
-          "slash": 6,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 6,
           "total": 30
         }
       }
@@ -20543,8 +20543,8 @@
         },
         "damage": {
           "impact": 6,
-          "slash": 6,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 6,
           "total": 30
         }
       },
@@ -20562,8 +20562,8 @@
         },
         "damage": {
           "impact": 6,
-          "slash": 6,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 6,
           "total": 30
         }
       }
@@ -20831,8 +20831,8 @@
         "statusChance": 0.09,
         "damage": {
           "impact": 110.01,
-          "slash": 5.79,
-          "puncture": 77.2,
+          "slash": 77.2,
+          "puncture": 5.79,
           "total": 193
         },
         "attackSpeed": 0.833
@@ -21081,8 +21081,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 30,
-          "slash": 15,
-          "puncture": 45,
+          "slash": 45,
+          "puncture": 15,
           "heat": 100,
           "total": 190
         },
@@ -21262,8 +21262,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 13,
-          "slash": 13,
-          "puncture": 104,
+          "slash": 104,
+          "puncture": 13,
           "total": 130
         },
         "attackSpeed": 1.08
@@ -21356,8 +21356,8 @@
         "statusChance": 0.34,
         "damage": {
           "impact": 21.2,
-          "slash": 21.2,
-          "puncture": 169.6,
+          "slash": 169.6,
+          "puncture": 21.2,
           "total": 212
         },
         "attackSpeed": 1.17
@@ -21647,8 +21647,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 4.6,
-          "slash": 34.5,
-          "puncture": 6.9,
+          "slash": 6.9,
+          "puncture": 34.5,
           "total": 46
         }
       },
@@ -21782,8 +21782,8 @@
         },
         "damage": {
           "impact": 6.75,
-          "slash": 3.75,
-          "puncture": 4.5,
+          "slash": 4.5,
+          "puncture": 3.75,
           "total": 15
         }
       }
@@ -21948,8 +21948,8 @@
           "reduction": 0.3
         },
         "damage": {
-          "slash": 52,
-          "puncture": 29,
+          "slash": 29,
+          "puncture": 52,
           "blast": 25,
           "total": 106
         }
@@ -22012,8 +22012,8 @@
         "chargeTime": 0.3,
         "damage": {
           "impact": 4.6,
-          "slash": 4.6,
-          "puncture": 36.8,
+          "slash": 36.8,
+          "puncture": 4.6,
           "total": 46
         }
       }
@@ -22137,8 +22137,8 @@
         },
         "damage": {
           "impact": 13.05,
-          "slash": 56.55,
-          "puncture": 17.4,
+          "slash": 17.4,
+          "puncture": 56.55,
           "total": 87
         }
       },
@@ -22156,8 +22156,8 @@
         },
         "damage": {
           "impact": 13.05,
-          "slash": 56.55,
-          "puncture": 17.4,
+          "slash": 17.4,
+          "puncture": 56.55,
           "total": 87
         }
       }
@@ -22205,8 +22205,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 7.5,
-          "slash": 7.5,
-          "puncture": 15,
+          "slash": 15,
+          "puncture": 7.5,
           "total": 30
         }
       },
@@ -22282,8 +22282,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 7.13,
-          "slash": 6.21,
-          "puncture": 9.66,
+          "slash": 9.66,
+          "puncture": 6.21,
           "total": 23
         }
       }
@@ -22336,8 +22336,8 @@
         },
         "damage": {
           "impact": 4,
-          "slash": 4,
-          "puncture": 12,
+          "slash": 12,
+          "puncture": 4,
           "total": 20
         }
       },
@@ -22355,8 +22355,8 @@
         },
         "damage": {
           "impact": 4,
-          "slash": 4,
-          "puncture": 12,
+          "slash": 12,
+          "puncture": 4,
           "total": 20
         }
       }
@@ -22573,8 +22573,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 19.98,
-          "slash": 15.66,
-          "puncture": 18.36,
+          "slash": 18.36,
+          "puncture": 15.66,
           "total": 54
         }
       },
@@ -22635,8 +22635,8 @@
         "shotSpeed": 200,
         "damage": {
           "impact": 26.2,
-          "slash": 68.12,
-          "puncture": 36.68,
+          "slash": 36.68,
+          "puncture": 68.12,
           "total": 131
         }
       },
@@ -22695,8 +22695,8 @@
         "statusChance": 0.27,
         "damage": {
           "impact": 75.85,
-          "slash": 100.45,
-          "puncture": 28.7,
+          "slash": 28.7,
+          "puncture": 100.45,
           "total": 205
         },
         "attackSpeed": 0.917
@@ -22909,8 +22909,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 11.61,
-          "slash": 2.7,
-          "puncture": 12.69,
+          "slash": 12.69,
+          "puncture": 2.7,
           "total": 27
         }
       }
@@ -23100,8 +23100,8 @@
         "statusChance": 0.45,
         "damage": {
           "impact": 12,
-          "slash": 38,
-          "puncture": 66,
+          "slash": 66,
+          "puncture": 38,
           "electricity": 100,
           "total": 216
         },
@@ -23533,8 +23533,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 10,
-          "slash": 10,
-          "puncture": 20,
+          "slash": 20,
+          "puncture": 10,
           "total": 40
         }
       },
@@ -23597,8 +23597,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 6,
-          "slash": 12,
-          "puncture": 42,
+          "slash": 42,
+          "puncture": 12,
           "total": 60
         }
       },
@@ -23660,8 +23660,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 6.9,
-          "slash": 11.5,
-          "puncture": 27.6,
+          "slash": 27.6,
+          "puncture": 11.5,
           "total": 46
         }
       },
@@ -23723,8 +23723,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 8.25,
-          "slash": 38.5,
-          "puncture": 8.25,
+          "slash": 8.25,
+          "puncture": 38.5,
           "total": 55
         }
       },
@@ -23803,8 +23803,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 9,
-          "slash": 72,
-          "puncture": 9,
+          "slash": 9,
+          "puncture": 72,
           "total": 90
         }
       },
@@ -23882,8 +23882,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 15.5,
-          "slash": 43.4,
-          "puncture": 3.1,
+          "slash": 3.1,
+          "puncture": 43.4,
           "total": 62
         }
       },
@@ -23951,8 +23951,8 @@
         "critMult": 1.5,
         "statusChance": 0.25,
         "damage": {
-          "slash": 20,
-          "puncture": 25,
+          "slash": 25,
+          "puncture": 20,
           "electricity": 56,
           "total": 101
         },
@@ -24130,8 +24130,8 @@
         "statusChance": 0.37,
         "damage": {
           "impact": 47.4,
-          "slash": 11.85,
-          "puncture": 177.75,
+          "slash": 177.75,
+          "puncture": 11.85,
           "total": 237
         },
         "attackSpeed": 1
@@ -24229,8 +24229,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 13,
-          "slash": 104,
-          "puncture": 13,
+          "slash": 13,
+          "puncture": 104,
           "total": 130
         }
       },
@@ -24292,8 +24292,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 18,
-          "slash": 144,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 144,
           "total": 180
         }
       },
@@ -24351,8 +24351,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 18,
-          "slash": 18,
-          "puncture": 84,
+          "slash": 84,
+          "puncture": 18,
           "total": 120
         },
         "attackSpeed": 0.917
@@ -24445,8 +24445,8 @@
         "statusChance": 0.33,
         "damage": {
           "impact": 31.65,
-          "slash": 31.65,
-          "puncture": 147.7,
+          "slash": 147.7,
+          "puncture": 31.65,
           "total": 211
         },
         "attackSpeed": 1.08
@@ -24535,8 +24535,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 168,
-          "slash": 31.5,
-          "puncture": 10.5,
+          "slash": 10.5,
+          "puncture": 31.5,
           "total": 210
         },
         "attackSpeed": 0.833
@@ -24826,8 +24826,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 80,
-          "slash": 16,
-          "puncture": 64,
+          "slash": 64,
+          "puncture": 16,
           "total": 160
         }
       }
@@ -25218,8 +25218,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 53.1,
-          "slash": 44.25,
-          "puncture": 79.65,
+          "slash": 79.65,
+          "puncture": 44.25,
           "total": 177
         },
         "attackSpeed": 1.08
@@ -25309,8 +25309,8 @@
         "statusChance": 0.31,
         "damage": {
           "impact": 23,
-          "slash": 23,
-          "puncture": 47,
+          "slash": 47,
+          "puncture": 23,
           "toxin": 65,
           "total": 158
         },
@@ -25595,8 +25595,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 4.5,
-          "slash": 4.5,
-          "puncture": 9,
+          "slash": 9,
+          "puncture": 4.5,
           "total": 18
         }
       },
@@ -25765,8 +25765,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.95,
-          "slash": 9.1,
-          "puncture": 1.95,
+          "slash": 1.95,
+          "puncture": 9.1,
           "total": 13
         }
       },
@@ -25833,8 +25833,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 4,
-          "slash": 30,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 30,
           "total": 40
         }
       },
@@ -25914,8 +25914,8 @@
         "chargeTime": 0.5,
         "damage": {
           "impact": 11.5,
-          "slash": 184,
-          "puncture": 34.5,
+          "slash": 34.5,
+          "puncture": 184,
           "total": 230
         }
       },
@@ -25983,8 +25983,8 @@
         },
         "damage": {
           "impact": 9.9,
-          "slash": 2.7,
-          "puncture": 5.4,
+          "slash": 5.4,
+          "puncture": 2.7,
           "total": 18
         }
       },
@@ -26244,8 +26244,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 2.5,
-          "slash": 15,
-          "puncture": 7.5,
+          "slash": 7.5,
+          "puncture": 15,
           "total": 25
         }
       },
@@ -26449,8 +26449,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 18.75,
-          "slash": 18.75,
-          "puncture": 87.5,
+          "slash": 87.5,
+          "puncture": 18.75,
           "total": 125
         },
         "attackSpeed": 0.917
@@ -26544,8 +26544,8 @@
         "statusChance": 0.34,
         "damage": {
           "impact": 18,
-          "slash": 36,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 36,
           "total": 180
         },
         "attackSpeed": 1.33
@@ -26637,8 +26637,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 25.8,
-          "slash": 25.8,
-          "puncture": 120.4,
+          "slash": 120.4,
+          "puncture": 25.8,
           "total": 172
         },
         "attackSpeed": 1
@@ -26753,8 +26753,8 @@
         "shotSpeed": 70,
         "chargeTime": 1,
         "damage": {
-          "slash": 648,
-          "puncture": 252,
+          "slash": 252,
+          "puncture": 648,
           "total": 900
         }
       },
@@ -26768,8 +26768,8 @@
         "shotSpeed": 70,
         "chargeTime": 0.7,
         "damage": {
-          "slash": 648,
-          "puncture": 252,
+          "slash": 252,
+          "puncture": 648,
           "total": 900
         }
       }
@@ -26812,8 +26812,8 @@
         "statusChance": 0.33,
         "damage": {
           "impact": 21,
-          "slash": 63,
-          "puncture": 85,
+          "slash": 85,
+          "puncture": 63,
           "heat": 92,
           "total": 261
         },
@@ -26919,8 +26919,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 7.1,
-          "slash": 14.2,
-          "puncture": 120.7,
+          "slash": 120.7,
+          "puncture": 14.2,
           "total": 142
         },
         "attackSpeed": 0.917
@@ -27013,8 +27013,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 9.9,
-          "slash": 9.9,
-          "puncture": 178.2,
+          "slash": 178.2,
+          "puncture": 9.9,
           "total": 198
         },
         "attackSpeed": 1.08
@@ -27196,8 +27196,8 @@
         "statusChance": 0.36,
         "damage": {
           "impact": 66,
-          "slash": 28,
-          "puncture": 50,
+          "slash": 50,
+          "puncture": 28,
           "electricity": 90,
           "total": 234
         },
@@ -27617,8 +27617,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 7,
-          "slash": 63,
-          "puncture": 70,
+          "slash": 70,
+          "puncture": 63,
           "total": 140
         },
         "attackSpeed": 1.08
@@ -27743,8 +27743,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 9.2,
-          "slash": 64.4,
-          "puncture": 110.4,
+          "slash": 110.4,
+          "puncture": 64.4,
           "total": 184
         },
         "attackSpeed": 1.17
@@ -27870,8 +27870,8 @@
         "statusChance": 0.05,
         "damage": {
           "impact": 123.6,
-          "slash": 82.4,
-          "puncture": 206,
+          "slash": 206,
+          "puncture": 82.4,
           "total": 412
         }
       }
@@ -28074,8 +28074,8 @@
         "chargeTime": 2,
         "damage": {
           "impact": 100,
-          "slash": 850,
-          "puncture": 50,
+          "slash": 50,
+          "puncture": 850,
           "total": 1000
         }
       },
@@ -28172,8 +28172,8 @@
         "chargeTime": 0.6,
         "damage": {
           "impact": 40,
-          "slash": 280,
-          "puncture": 80,
+          "slash": 80,
+          "puncture": 280,
           "total": 400
         }
       },
@@ -28259,8 +28259,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 27.75,
-          "slash": 27.75,
-          "puncture": 129.5,
+          "slash": 129.5,
+          "puncture": 27.75,
           "total": 185
         },
         "attackSpeed": 0.917
@@ -28349,8 +28349,8 @@
         "statusChance": 0.36,
         "damage": {
           "impact": 35.1,
-          "slash": 35.1,
-          "puncture": 163.8,
+          "slash": 163.8,
+          "puncture": 35.1,
           "total": 234
         },
         "attackSpeed": 1.17
@@ -28443,8 +28443,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 39,
-          "slash": 9.75,
-          "puncture": 146.25,
+          "slash": 146.25,
+          "puncture": 9.75,
           "total": 195
         },
         "attackSpeed": 0.75
@@ -28651,8 +28651,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 18,
-          "slash": 18,
-          "puncture": 36,
+          "slash": 36,
+          "puncture": 18,
           "total": 72
         }
       },
@@ -28665,8 +28665,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 18,
-          "slash": 18,
-          "puncture": 36,
+          "slash": 36,
+          "puncture": 18,
           "total": 72
         }
       }
@@ -28714,8 +28714,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 26,
-          "slash": 26,
-          "puncture": 52,
+          "slash": 52,
+          "puncture": 26,
           "total": 104
         }
       },
@@ -28727,8 +28727,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 26,
-          "slash": 26,
-          "puncture": 52,
+          "slash": 52,
+          "puncture": 26,
           "total": 104
         }
       }
@@ -28771,8 +28771,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 12.4,
-          "slash": 37.2,
-          "puncture": 198.4,
+          "slash": 198.4,
+          "puncture": 37.2,
           "total": 248
         },
         "attackSpeed": 0.917
@@ -28864,8 +28864,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 7.5,
-          "slash": 22.5,
-          "puncture": 120,
+          "slash": 120,
+          "puncture": 22.5,
           "total": 150
         },
         "attackSpeed": 0.917
@@ -28964,8 +28964,8 @@
         "shotSpeed": 60,
         "damage": {
           "impact": 20,
-          "slash": 10,
-          "puncture": 70,
+          "slash": 70,
+          "puncture": 10,
           "total": 100
         }
       },
@@ -29285,8 +29285,8 @@
         "chargeTime": 0.5,
         "damage": {
           "impact": 16,
-          "slash": 256,
-          "puncture": 48,
+          "slash": 48,
+          "puncture": 256,
           "total": 320
         }
       },
@@ -29367,8 +29367,8 @@
         "chargeTime": 0.5,
         "damage": {
           "impact": 9,
-          "slash": 288,
-          "puncture": 63,
+          "slash": 63,
+          "puncture": 288,
           "total": 360
         }
       },
@@ -29427,8 +29427,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 57,
-          "slash": 55,
-          "puncture": 61,
+          "slash": 61,
+          "puncture": 55,
           "viral": 89,
           "total": 262
         },
@@ -29621,8 +29621,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 20,
-          "slash": 140,
-          "puncture": 40,
+          "slash": 40,
+          "puncture": 140,
           "total": 200
         },
         "attackSpeed": 0.917
@@ -29787,8 +29787,8 @@
         },
         "damage": {
           "impact": 20.64,
-          "slash": 96.32,
-          "puncture": 55.04,
+          "slash": 55.04,
+          "puncture": 96.32,
           "total": 172
         }
       }
@@ -29873,8 +29873,8 @@
         },
         "damage": {
           "impact": 14,
-          "slash": 36.4,
-          "puncture": 5.6,
+          "slash": 5.6,
+          "puncture": 36.4,
           "total": 56
         }
       }
@@ -30176,8 +30176,8 @@
         "shotType": "Projectile",
         "shotSpeed": 120,
         "damage": {
-          "slash": 42,
-          "puncture": 98,
+          "slash": 98,
+          "puncture": 42,
           "total": 140
         }
       },
@@ -30427,8 +30427,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 34,
-          "slash": 12,
-          "puncture": 88,
+          "slash": 88,
+          "puncture": 12,
           "electricity": 66,
           "total": 200
         },
@@ -30630,8 +30630,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 20,
-          "slash": 20,
-          "puncture": 160,
+          "slash": 160,
+          "puncture": 20,
           "total": 200
         },
         "attackSpeed": 1.17
@@ -30801,8 +30801,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 13.3,
-          "slash": 13.3,
-          "puncture": 106.4,
+          "slash": 106.4,
+          "puncture": 13.3,
           "total": 133
         },
         "attackSpeed": 1
@@ -30953,8 +30953,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 17.25,
-          "slash": 3.45,
-          "puncture": 2.3,
+          "slash": 2.3,
+          "puncture": 3.45,
           "total": 23
         }
       },
@@ -31030,8 +31030,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 6,
-          "slash": 5,
-          "puncture": 4,
+          "slash": 4,
+          "puncture": 5,
           "total": 15
         }
       }
@@ -31079,8 +31079,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 74.8,
-          "slash": 18.7,
-          "puncture": 93.5,
+          "slash": 93.5,
+          "puncture": 18.7,
           "total": 187
         }
       }
@@ -31205,8 +31205,8 @@
         "statusChance": 0.31,
         "damage": {
           "impact": 28.95,
-          "slash": 28.95,
-          "puncture": 135.1,
+          "slash": 135.1,
+          "puncture": 28.95,
           "total": 193
         },
         "attackSpeed": 0.917
@@ -31479,8 +31479,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 25.5,
-          "slash": 25.5,
-          "puncture": 119,
+          "slash": 119,
+          "puncture": 25.5,
           "total": 170
         },
         "attackSpeed": 1
@@ -31624,8 +31624,8 @@
         "shotSpeed": 90,
         "damage": {
           "impact": 2.97,
-          "slash": 12.69,
-          "puncture": 11.34,
+          "slash": 11.34,
+          "puncture": 12.69,
           "total": 27
         }
       }
@@ -31669,8 +31669,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 59.1,
-          "slash": 59.1,
-          "puncture": 275.8,
+          "slash": 275.8,
+          "puncture": 59.1,
           "total": 394
         }
       }
@@ -31721,8 +31721,8 @@
         "chargeTime": 0.7,
         "damage": {
           "impact": 103.23,
-          "slash": 30.69,
-          "puncture": 145.08,
+          "slash": 145.08,
+          "puncture": 30.69,
           "total": 279
         }
       },
@@ -32215,8 +32215,8 @@
         },
         "damage": {
           "impact": 2.2,
-          "slash": 2.2,
-          "puncture": 17.6,
+          "slash": 17.6,
+          "puncture": 2.2,
           "total": 22
         }
       }
@@ -32270,8 +32270,8 @@
         },
         "damage": {
           "impact": 1.92,
-          "slash": 1.92,
-          "puncture": 20.16,
+          "slash": 20.16,
+          "puncture": 1.92,
           "total": 24
         }
       }
@@ -32502,8 +32502,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 18.13,
-          "slash": 14.21,
-          "puncture": 16.66,
+          "slash": 16.66,
+          "puncture": 14.21,
           "total": 49
         }
       }
@@ -32542,8 +32542,8 @@
         "statusChance": 0.12,
         "damage": {
           "impact": 27.6,
-          "slash": 46,
-          "puncture": 156.4,
+          "slash": 156.4,
+          "puncture": 46,
           "total": 230
         },
         "attackSpeed": 0.833
@@ -32723,8 +32723,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 9,
-          "slash": 2,
-          "puncture": 7,
+          "slash": 7,
+          "puncture": 2,
           "electricity": 11,
           "total": 29
         }
@@ -32738,8 +32738,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 9,
-          "slash": 2,
-          "puncture": 7,
+          "slash": 7,
+          "puncture": 2,
           "electricity": 11,
           "total": 29
         }
@@ -32790,8 +32790,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 8,
-          "slash": 22,
-          "puncture": 12,
+          "slash": 12,
+          "puncture": 22,
           "cold": 16,
           "total": 58
         }
@@ -32898,8 +32898,8 @@
         "chargeTime": 1,
         "damage": {
           "impact": 15,
-          "slash": 270,
-          "puncture": 15,
+          "slash": 15,
+          "puncture": 270,
           "total": 300
         }
       },
@@ -33023,8 +33023,8 @@
         "critMult": 1.8,
         "statusChance": 0.3,
         "damage": {
-          "slash": 88,
-          "puncture": 62,
+          "slash": 62,
+          "puncture": 88,
           "radiation": 96,
           "total": 246
         },
@@ -33119,8 +33119,8 @@
         "statusChance": 0.12,
         "damage": {
           "impact": 360,
-          "slash": 67.5,
-          "puncture": 22.5,
+          "slash": 22.5,
+          "puncture": 67.5,
           "total": 450
         }
       }
@@ -33173,8 +33173,8 @@
         },
         "damage": {
           "impact": 26,
-          "slash": 26,
-          "puncture": 78,
+          "slash": 78,
+          "puncture": 26,
           "total": 130
         }
       }
@@ -33213,8 +33213,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 30,
-          "slash": 30,
-          "puncture": 140,
+          "slash": 140,
+          "puncture": 30,
           "total": 200
         },
         "attackSpeed": 1.08
@@ -33351,8 +33351,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 18,
-          "slash": 36,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 36,
           "total": 180
         },
         "attackSpeed": 0.833
@@ -33463,8 +33463,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 21.2,
-          "slash": 42.4,
-          "puncture": 148.4,
+          "slash": 148.4,
+          "puncture": 42.4,
           "total": 212
         },
         "attackSpeed": 0.917
@@ -33638,8 +33638,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 8.65,
-          "slash": 17.3,
-          "puncture": 147.05,
+          "slash": 147.05,
+          "puncture": 17.3,
           "total": 173
         },
         "attackSpeed": 0.883
@@ -33739,8 +33739,8 @@
         },
         "damage": {
           "impact": 144,
-          "slash": 27,
-          "puncture": 9,
+          "slash": 9,
+          "puncture": 27,
           "total": 180
         }
       }
@@ -34240,8 +34240,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 192,
-          "slash": 36,
-          "puncture": 12,
+          "slash": 12,
+          "puncture": 36,
           "total": 240
         },
         "attackSpeed": 1
@@ -34346,8 +34346,8 @@
         },
         "damage": {
           "impact": 21,
-          "slash": 21,
-          "puncture": 168,
+          "slash": 168,
+          "puncture": 21,
           "total": 210
         }
       }
@@ -34389,8 +34389,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 80,
-          "slash": 8,
-          "puncture": 112,
+          "slash": 112,
+          "puncture": 8,
           "total": 200
         },
         "attackSpeed": 1.17
@@ -34482,8 +34482,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 16,
-          "slash": 32,
-          "puncture": 112,
+          "slash": 112,
+          "puncture": 32,
           "total": 160
         },
         "attackSpeed": 1
@@ -34592,8 +34592,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 20,
-          "slash": 20,
-          "puncture": 160,
+          "slash": 160,
+          "puncture": 20,
           "total": 200
         },
         "attackSpeed": 0.917
@@ -34685,8 +34685,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 25,
-          "slash": 25,
-          "puncture": 200,
+          "slash": 200,
+          "puncture": 25,
           "total": 250
         },
         "attackSpeed": 0.967
@@ -34778,8 +34778,8 @@
         "statusChance": 0.29,
         "damage": {
           "impact": 22.5,
-          "slash": 22.5,
-          "puncture": 105,
+          "slash": 105,
+          "puncture": 22.5,
           "total": 150
         },
         "attackSpeed": 1.25
@@ -35173,8 +35173,8 @@
         "critMult": 1.5,
         "statusChance": 0.3,
         "damage": {
-          "slash": 30,
-          "puncture": 66,
+          "slash": 66,
+          "puncture": 30,
           "electricity": 80,
           "total": 176
         },
@@ -35451,8 +35451,8 @@
         "shotSpeed": 200,
         "damage": {
           "impact": 9.6,
-          "slash": 26.88,
-          "puncture": 11.52,
+          "slash": 11.52,
+          "puncture": 26.88,
           "total": 48
         }
       },
@@ -35785,8 +35785,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 13.5,
-          "slash": 13.5,
-          "puncture": 243,
+          "slash": 243,
+          "puncture": 13.5,
           "total": 270
         },
         "attackSpeed": 0.667
@@ -35910,8 +35910,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 70,
-          "slash": 20,
-          "puncture": 50,
+          "slash": 50,
+          "puncture": 20,
           "cold": 130,
           "total": 270
         },
@@ -36127,8 +36127,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 38.28,
-          "slash": 27.84,
-          "puncture": 107.88,
+          "slash": 107.88,
+          "puncture": 27.84,
           "total": 174
         },
         "attackSpeed": 1.08
@@ -36554,8 +36554,8 @@
         "statusChance": 0.16,
         "damage": {
           "impact": 18,
-          "slash": 18,
-          "puncture": 84,
+          "slash": 84,
+          "puncture": 18,
           "total": 120
         },
         "attackSpeed": 0.833
@@ -36648,8 +36648,8 @@
         "statusChance": 0.26,
         "damage": {
           "impact": 31.5,
-          "slash": 31.5,
-          "puncture": 147,
+          "slash": 147,
+          "puncture": 31.5,
           "total": 210
         },
         "attackSpeed": 1
@@ -36742,8 +36742,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 26.25,
-          "slash": 12.25,
-          "puncture": 136.5,
+          "slash": 136.5,
+          "puncture": 12.25,
           "total": 175
         },
         "attackSpeed": 1.17
@@ -36836,8 +36836,8 @@
         "statusChance": 0.35,
         "damage": {
           "impact": 73.26,
-          "slash": 93.24,
-          "puncture": 166.5,
+          "slash": 166.5,
+          "puncture": 93.24,
           "total": 333
         },
         "attackSpeed": 0.833
@@ -36940,8 +36940,8 @@
         },
         "damage": {
           "impact": 18,
-          "slash": 144,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 144,
           "total": 180
         }
       }
@@ -36994,8 +36994,8 @@
         },
         "damage": {
           "impact": 10,
-          "slash": 180,
-          "puncture": 10,
+          "slash": 10,
+          "puncture": 180,
           "total": 200
         }
       }
@@ -37095,8 +37095,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.2,
-          "slash": 4.8,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 4.8,
           "total": 12
         }
       },
@@ -37164,8 +37164,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 1.2,
-          "slash": 4.8,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 4.8,
           "total": 12
         }
       },
@@ -37290,8 +37290,8 @@
         "statusChance": 0.22,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 7.56,
-          "puncture": 10.44,
+          "slash": 10.44,
+          "puncture": 7.56,
           "total": 18
         }
       }
@@ -37334,8 +37334,8 @@
         "statusChance": 0.28,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 9.24,
-          "puncture": 12.76,
+          "slash": 12.76,
+          "puncture": 9.24,
           "total": 22
         }
       }
@@ -37464,8 +37464,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 8.2,
-          "slash": 49.2,
-          "puncture": 24.6,
+          "slash": 24.6,
+          "puncture": 49.2,
           "total": 82
         }
       }
@@ -37515,8 +37515,8 @@
         "shotSpeed": 70,
         "damage": {
           "impact": 6,
-          "slash": 48,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 48,
           "total": 60
         }
       }
@@ -37570,8 +37570,8 @@
         },
         "damage": {
           "impact": 100.17,
-          "slash": 115.01,
-          "puncture": 155.82,
+          "slash": 155.82,
+          "puncture": 115.01,
           "total": 371
         }
       },
@@ -37638,8 +37638,8 @@
         "shotSpeed": 120,
         "damage": {
           "impact": 7.28,
-          "slash": 16.64,
-          "puncture": 28.08,
+          "slash": 28.08,
+          "puncture": 16.64,
           "total": 52
         }
       },
@@ -37869,8 +37869,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 9.8,
-          "slash": 9.8,
-          "puncture": 8.4,
+          "slash": 8.4,
+          "puncture": 9.8,
           "total": 28
         }
       },
@@ -37934,8 +37934,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 10.5,
-          "slash": 10.5,
-          "puncture": 9,
+          "slash": 9,
+          "puncture": 10.5,
           "total": 30
         }
       },
@@ -37988,8 +37988,8 @@
         "statusChance": 0.14,
         "damage": {
           "impact": 61.6,
-          "slash": 74.8,
-          "puncture": 83.6,
+          "slash": 83.6,
+          "puncture": 74.8,
           "total": 220
         },
         "attackSpeed": 1
@@ -38111,8 +38111,8 @@
         },
         "damage": {
           "impact": 13.75,
-          "slash": 3.75,
-          "puncture": 7.5,
+          "slash": 7.5,
+          "puncture": 3.75,
           "total": 25
         }
       },
@@ -38199,8 +38199,8 @@
         },
         "damage": {
           "impact": 24.3,
-          "slash": 8.1,
-          "puncture": 21.6,
+          "slash": 21.6,
+          "puncture": 8.1,
           "total": 54
         }
       },
@@ -38285,8 +38285,8 @@
         },
         "damage": {
           "impact": 26,
-          "slash": 6,
-          "puncture": 8,
+          "slash": 8,
+          "puncture": 6,
           "total": 40
         }
       },
@@ -38363,8 +38363,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 14.19,
-          "slash": 3.3,
-          "puncture": 15.51,
+          "slash": 15.51,
+          "puncture": 3.3,
           "total": 33
         }
       }
@@ -38474,8 +38474,8 @@
         "statusChance": 0.22,
         "damage": {
           "impact": 38,
-          "slash": 45.6,
-          "puncture": 106.4,
+          "slash": 106.4,
+          "puncture": 45.6,
           "total": 190
         },
         "attackSpeed": 1
@@ -38571,8 +38571,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 4,
-          "slash": 30,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 30,
           "total": 40
         }
       }
@@ -38622,8 +38622,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 4,
-          "slash": 30,
-          "puncture": 6,
+          "slash": 6,
+          "puncture": 30,
           "total": 40
         }
       }
@@ -38786,8 +38786,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 26.4,
-          "slash": 26.4,
-          "puncture": 27.2,
+          "slash": 27.2,
+          "puncture": 26.4,
           "total": 80
         }
       },
@@ -38851,8 +38851,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 29.04,
-          "slash": 29.04,
-          "puncture": 29.92,
+          "slash": 29.92,
+          "puncture": 29.04,
           "total": 88
         }
       },
@@ -39111,8 +39111,8 @@
         "statusChance": 0.4,
         "damage": {
           "impact": 238,
-          "slash": 28,
-          "puncture": 14,
+          "slash": 14,
+          "puncture": 28,
           "total": 280
         },
         "attackSpeed": 1.08
@@ -39459,8 +39459,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 20,
-          "slash": 54,
-          "puncture": 68,
+          "slash": 68,
+          "puncture": 54,
           "radiation": 72,
           "total": 214
         },
@@ -39567,8 +39567,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 20,
-          "slash": 54,
-          "puncture": 76,
+          "slash": 76,
+          "puncture": 54,
           "radiation": 80,
           "total": 230
         },
@@ -39673,8 +39673,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 32,
-          "slash": 16,
-          "puncture": 112,
+          "slash": 112,
+          "puncture": 16,
           "total": 160
         },
         "attackSpeed": 0.917
@@ -39767,8 +39767,8 @@
         "statusChance": 0.26,
         "damage": {
           "impact": 39.6,
-          "slash": 25.2,
-          "puncture": 115.2,
+          "slash": 115.2,
+          "puncture": 25.2,
           "total": 180
         },
         "attackSpeed": 1
@@ -39909,8 +39909,8 @@
         "statusChance": 0.35,
         "damage": {
           "impact": 21,
-          "slash": 178.5,
-          "puncture": 10.5,
+          "slash": 10.5,
+          "puncture": 178.5,
           "total": 210
         },
         "attackSpeed": 1.08
@@ -40573,8 +40573,8 @@
         "chargeTime": 0.4,
         "damage": {
           "impact": 20,
-          "slash": 140,
-          "puncture": 40,
+          "slash": 40,
+          "puncture": 140,
           "total": 200
         }
       },
@@ -40663,8 +40663,8 @@
         "statusChance": 0.26,
         "shotType": "Hit-Scan",
         "damage": {
-          "slash": 4.84,
-          "puncture": 17.16,
+          "slash": 17.16,
+          "puncture": 4.84,
           "total": 22
         }
       }
@@ -40854,8 +40854,8 @@
         "statusChance": 0.28,
         "damage": {
           "impact": 9.9,
-          "slash": 9.9,
-          "puncture": 178.2,
+          "slash": 178.2,
+          "puncture": 9.9,
           "total": 198
         },
         "attackSpeed": 1.08
@@ -41098,8 +41098,8 @@
         "shotSpeed": 100,
         "damage": {
           "impact": 13.2,
-          "slash": 33.6,
-          "puncture": 13.2,
+          "slash": 13.2,
+          "puncture": 33.6,
           "total": 60
         }
       },
@@ -41174,8 +41174,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 7.2,
-          "slash": 9.6,
-          "puncture": 7.2,
+          "slash": 7.2,
+          "puncture": 9.6,
           "total": 24
         }
       },
@@ -41239,8 +41239,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 8.4,
-          "slash": 11.2,
-          "puncture": 8.4,
+          "slash": 8.4,
+          "puncture": 11.2,
           "total": 28
         }
       },
@@ -41337,8 +41337,8 @@
         "critMult": 2.2,
         "statusChance": 0.24,
         "damage": {
-          "slash": 90,
-          "puncture": 210,
+          "slash": 210,
+          "puncture": 90,
           "total": 300
         },
         "attackSpeed": 0.917
@@ -41436,8 +41436,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 11,
-          "slash": 22,
-          "puncture": 11,
+          "slash": 11,
+          "puncture": 22,
           "total": 44
         }
       }
@@ -41487,8 +41487,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 14.4,
-          "slash": 19.2,
-          "puncture": 14.4,
+          "slash": 14.4,
+          "puncture": 19.2,
           "total": 48
         }
       },
@@ -41501,8 +41501,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 14.4,
-          "slash": 19.2,
-          "puncture": 14.4,
+          "slash": 14.4,
+          "puncture": 19.2,
           "total": 48
         }
       },
@@ -41515,8 +41515,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 14.4,
-          "slash": 19.2,
-          "puncture": 14.4,
+          "slash": 14.4,
+          "puncture": 19.2,
           "total": 48
         }
       }
@@ -41566,8 +41566,8 @@
         },
         "damage": {
           "impact": 21,
-          "slash": 21,
-          "puncture": 168,
+          "slash": 168,
+          "puncture": 21,
           "total": 210
         }
       }
@@ -41621,8 +41621,8 @@
         },
         "damage": {
           "impact": 19.5,
-          "slash": 19.5,
-          "puncture": 156,
+          "slash": 156,
+          "puncture": 19.5,
           "total": 195
         }
       }
@@ -41664,8 +41664,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 12.4,
-          "slash": 12.4,
-          "puncture": 99.2,
+          "slash": 99.2,
+          "puncture": 12.4,
           "total": 124
         },
         "attackSpeed": 1.33
@@ -41758,8 +41758,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 17,
-          "slash": 17,
-          "puncture": 136,
+          "slash": 136,
+          "puncture": 17,
           "total": 170
         },
         "attackSpeed": 1.17
@@ -41851,8 +41851,8 @@
         "statusChance": 0.25,
         "damage": {
           "impact": 18.4,
-          "slash": 27.6,
-          "puncture": 138,
+          "slash": 138,
+          "puncture": 27.6,
           "total": 184
         },
         "attackSpeed": 1
@@ -41942,8 +41942,8 @@
         "critMult": 2.1,
         "statusChance": 0.21,
         "damage": {
-          "slash": 33,
-          "puncture": 132,
+          "slash": 132,
+          "puncture": 33,
           "total": 165
         },
         "attackSpeed": 1.0833
@@ -42351,8 +42351,8 @@
         "statusChance": 0.4,
         "damage": {
           "impact": 55,
-          "slash": 15,
-          "puncture": 55,
+          "slash": 55,
+          "puncture": 15,
           "heat": 85,
           "total": 210
         },
@@ -42555,8 +42555,8 @@
         },
         "damage": {
           "impact": 6,
-          "slash": 6,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 6,
           "total": 30
         }
       },
@@ -42574,8 +42574,8 @@
         },
         "damage": {
           "impact": 6,
-          "slash": 6,
-          "puncture": 18,
+          "slash": 18,
+          "puncture": 6,
           "total": 30
         }
       }
@@ -42614,8 +42614,8 @@
         "statusChance": 0.33,
         "damage": {
           "impact": 30,
-          "slash": 45,
-          "puncture": 175,
+          "slash": 175,
+          "puncture": 45,
           "total": 250
         },
         "attackSpeed": 0.917
@@ -42719,8 +42719,8 @@
         },
         "damage": {
           "impact": 18.8,
-          "slash": 23.5,
-          "puncture": 4.7,
+          "slash": 4.7,
+          "puncture": 23.5,
           "total": 47
         }
       }
@@ -42768,8 +42768,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 10.2,
-          "slash": 1.7,
-          "puncture": 5.1,
+          "slash": 5.1,
+          "puncture": 1.7,
           "total": 17
         }
       }
@@ -42865,8 +42865,8 @@
         "shotSpeed": 75,
         "damage": {
           "impact": 9,
-          "slash": 23,
-          "puncture": 17,
+          "slash": 17,
+          "puncture": 23,
           "total": 49
         }
       },
@@ -43150,8 +43150,8 @@
         "statusChance": 0.31,
         "damage": {
           "impact": 19.53,
-          "slash": 25.11,
-          "puncture": 234.36,
+          "slash": 234.36,
+          "puncture": 25.11,
           "total": 279
         },
         "attackSpeed": 1
@@ -43269,8 +43269,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 22.5,
-          "slash": 22.5,
-          "puncture": 45,
+          "slash": 45,
+          "puncture": 22.5,
           "total": 90
         }
       },
@@ -43338,8 +43338,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 16.5,
-          "slash": 16.5,
-          "puncture": 77,
+          "slash": 77,
+          "puncture": 16.5,
           "total": 110
         }
       },
@@ -43412,8 +43412,8 @@
         },
         "damage": {
           "impact": 11.25,
-          "slash": 48.75,
-          "puncture": 15,
+          "slash": 15,
+          "puncture": 48.75,
           "total": 75
         }
       }
@@ -43462,8 +43462,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 96,
-          "slash": 16,
-          "puncture": 48,
+          "slash": 48,
+          "puncture": 16,
           "total": 160
         }
       }
@@ -43607,8 +43607,8 @@
         },
         "damage": {
           "impact": 90,
-          "slash": 78.75,
-          "puncture": 56.25,
+          "slash": 56.25,
+          "puncture": 78.75,
           "total": 225
         }
       }
@@ -43662,8 +43662,8 @@
         },
         "damage": {
           "impact": 140,
-          "slash": 157.5,
-          "puncture": 52.5,
+          "slash": 52.5,
+          "puncture": 157.5,
           "total": 350
         }
       }
@@ -43711,8 +43711,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 23.4,
-          "slash": 23.4,
-          "puncture": 43.2,
+          "slash": 43.2,
+          "puncture": 23.4,
           "total": 90
         }
       }
@@ -43827,8 +43827,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 4.32,
-          "slash": 8.16,
-          "puncture": 11.52,
+          "slash": 11.52,
+          "puncture": 8.16,
           "total": 24
         }
       }
@@ -43878,8 +43878,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 6.48,
-          "slash": 7.56,
-          "puncture": 12.96,
+          "slash": 12.96,
+          "puncture": 7.56,
           "total": 27
         }
       }
@@ -43918,8 +43918,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 33,
-          "slash": 110,
-          "puncture": 77,
+          "slash": 77,
+          "puncture": 110,
           "total": 220
         },
         "attackSpeed": 1.08
@@ -44011,8 +44011,8 @@
         "statusChance": 0.32,
         "damage": {
           "impact": 36.75,
-          "slash": 122.5,
-          "puncture": 85.75,
+          "slash": 85.75,
+          "puncture": 122.5,
           "total": 245
         },
         "attackSpeed": 1.166
@@ -44101,8 +44101,8 @@
         "statusChance": 0.15,
         "damage": {
           "impact": 7,
-          "slash": 35,
-          "puncture": 98,
+          "slash": 98,
+          "puncture": 35,
           "total": 140
         },
         "attackSpeed": 1
@@ -44195,8 +44195,8 @@
         "statusChance": 0.24,
         "damage": {
           "impact": 9.4,
-          "slash": 37.6,
-          "puncture": 141,
+          "slash": 141,
+          "puncture": 37.6,
           "total": 188
         },
         "attackSpeed": 1.05
@@ -44285,8 +44285,8 @@
         "statusChance": 0.21,
         "damage": {
           "impact": 21.3,
-          "slash": 85.2,
-          "puncture": 106.5,
+          "slash": 106.5,
+          "puncture": 85.2,
           "total": 213
         },
         "attackSpeed": 1
@@ -44401,8 +44401,8 @@
         "statusChance": 0.2,
         "damage": {
           "impact": 21.6,
-          "slash": 28.8,
-          "puncture": 129.6,
+          "slash": 129.6,
+          "puncture": 28.8,
           "total": 180
         },
         "attackSpeed": 1
@@ -44496,8 +44496,8 @@
         "statusChance": 0.1,
         "damage": {
           "impact": 70.5,
-          "slash": 70.5,
-          "puncture": 329,
+          "slash": 329,
+          "puncture": 70.5,
           "total": 470
         }
       }
@@ -44593,8 +44593,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 10.2,
-          "slash": 1.7,
-          "puncture": 5.1,
+          "slash": 5.1,
+          "puncture": 1.7,
           "total": 17
         }
       }
@@ -44686,8 +44686,8 @@
         "statusChance": 0.33,
         "damage": {
           "impact": 99.9,
-          "slash": 99.9,
-          "puncture": 133.2,
+          "slash": 133.2,
+          "puncture": 99.9,
           "total": 333
         },
         "attackSpeed": 0.833
@@ -44798,8 +44798,8 @@
         "statusChance": 0.3,
         "damage": {
           "impact": 48.4,
-          "slash": 70.4,
-          "puncture": 101.2,
+          "slash": 101.2,
+          "puncture": 70.4,
           "total": 220
         },
         "attackSpeed": 1.2
@@ -44892,8 +44892,8 @@
         "statusChance": 0.34,
         "damage": {
           "impact": 55,
-          "slash": 80,
-          "puncture": 115,
+          "slash": 115,
+          "puncture": 80,
           "total": 250
         },
         "attackSpeed": 1.2
@@ -45088,8 +45088,8 @@
         "statusChance": 0.26,
         "damage": {
           "impact": 120,
-          "slash": 60,
-          "puncture": 70,
+          "slash": 70,
+          "puncture": 60,
           "total": 250
         },
         "attackSpeed": 0.917
@@ -45178,8 +45178,8 @@
         "statusChance": 0.33,
         "damage": {
           "impact": 132.09,
-          "slash": 7.77,
-          "puncture": 119.14,
+          "slash": 119.14,
+          "puncture": 7.77,
           "total": 259
         },
         "attackSpeed": 1
@@ -45317,8 +45317,8 @@
         "statusChance": 0.18,
         "damage": {
           "impact": 24,
-          "slash": 40.8,
-          "puncture": 55.2,
+          "slash": 55.2,
+          "puncture": 40.8,
           "total": 120
         },
         "attackSpeed": 1.17
@@ -45332,8 +45332,8 @@
         "shotSpeed": 25,
         "damage": {
           "impact": 24,
-          "slash": 40.8,
-          "puncture": 55.2,
+          "slash": 55.2,
+          "puncture": 40.8,
           "total": 120
         },
         "attackSpeed": 1.17
@@ -45912,8 +45912,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 4.5,
-          "slash": 6,
-          "puncture": 19.5,
+          "slash": 19.5,
+          "puncture": 6,
           "total": 30
         }
       },
@@ -45976,8 +45976,8 @@
         "shotSpeed": 90,
         "damage": {
           "impact": 5,
-          "slash": 75,
-          "puncture": 20,
+          "slash": 20,
+          "puncture": 75,
           "total": 100
         }
       }
@@ -46028,8 +46028,8 @@
         "shotSpeed": 80,
         "damage": {
           "impact": 10,
-          "slash": 22.5,
-          "puncture": 17.5,
+          "slash": 17.5,
+          "puncture": 22.5,
           "total": 50
         }
       },
@@ -46093,8 +46093,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 44.8,
-          "slash": 16.8,
-          "puncture": 78.4,
+          "slash": 78.4,
+          "puncture": 16.8,
           "total": 140
         }
       },
@@ -46174,8 +46174,8 @@
         "shotType": "Hit-Scan",
         "damage": {
           "impact": 63,
-          "slash": 21,
-          "puncture": 126,
+          "slash": 126,
+          "puncture": 21,
           "total": 210
         }
       },
