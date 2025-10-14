@@ -1,0 +1,109 @@
+# .github/workflows/enrich-weapons.yml
+name: Enrich weapons (WFStat + complements)
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  schedule:
+    - cron: "17 4 * * *"  # tous les jours à 04:17 UTC
+
+  # Relance si les scripts / données utiles changent (et évite les boucles de commit)
+  push:
+    paths:
+      - "tools/fetch_wfstat_weapons.js"
+      - "tools/enrich_weapons.js"
+      - "data/overframe/**"
+      - ".github/workflows/enrich-weapons.yml"
+      # éviter toute boucle
+      - "!data/wfstat_weapons.json"
+      - "!data/enriched_weapons.json"
+      - "!data/enriched_weapons.csv"
+      - "!data/enriched_weapons_report.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-weapons
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # nécessaire pour rebase/pull propre
+          persist-credentials: true # utiliser le token par défaut
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Optionnel: fallback éventuel côté enrich, si tu l'utilises
+      - name: Install optional deps (fallback sources)
+        run: |
+          set -e
+          npm -v >/dev/null 2>&1 || exit 0
+          npm i --no-save @wfcd/items@latest || true
+
+      - name: Ensure data/
+        run: mkdir -p data
+
+      - name: Fetch WFStat weapons (EN)
+        env:
+          WFSTAT_WEAPONS_URL: "https://api.warframestat.us/weapons?language=en"
+        run: |
+          node tools/fetch_wfstat_weapons.js
+          test -s data/wfstat_weapons.json
+
+      - name: Run enrich_weapons
+        run: |
+          node tools/enrich_weapons.js
+          test -s data/enriched_weapons.json
+
+      - name: Preview (head/tail)
+        run: |
+          echo "wfstat_weapons.json:"
+          head -n 20 data/wfstat_weapons.json || true
+          echo
+          echo "enriched_weapons.json (tail):"
+          tail -n 20 data/enriched_weapons.json || true
+
+      - name: Upload artifact (overwrite)
+        uses: actions/upload-artifact@v4
+        with:
+          name: weapons-bundle
+          path: |
+            data/wfstat_weapons.json
+            data/enriched_weapons.json
+            data/enriched_weapons.csv
+            data/enriched_weapons_report.json
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 7
+
+      - name: Commit data if changed (with rebase)
+        run: |
+          set -e
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Suivre TOUT ce qui a été généré/modifié (évite 'untracked files present')
+          git add -A
+          git update-index -q --refresh
+
+          if git diff --cached --quiet; then
+            echo "Aucun changement à committer."
+            exit 0
+          fi
+
+          BRANCH="${GITHUB_HEAD_REF:-${GITHUB_REF_NAME:-main}}"
+          git fetch origin "$BRANCH"
+          git pull --rebase --autostash origin "$BRANCH" || true
+
+          git commit -m "chore(weapons): refresh WFStat + enriched ($(date -u +'%Y-%m-%d %H:%M:%S UTC'))"
+          git push origin HEAD:"$BRANCH"
