@@ -32,6 +32,7 @@ const asArray = (v) => (Array.isArray(v) ? v : v ? Object.values(v) : []);
 const clean   = (s) => String(s ?? "").replace(/<[^>]+>\s*/g, "").trim();
 const keyify  = (s) => clean(s).toLowerCase().replace(/[\s\-–_'"`]+/g, " ").replace(/\s+/g, " ");
 const slugify = (s) => clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const round3  = (x) => Math.round(Number(x) * 1000) / 1000;
 
 // Helpers dégâts/attaques
 function normalizeDamageMap(dmg) {
@@ -39,10 +40,10 @@ function normalizeDamageMap(dmg) {
   if (!dmg || typeof dmg !== "object") return out;
   for (const [k, v] of Object.entries(dmg)) {
     if (k === "total") continue;
-    const val = Number(v) || 0;
+    const val = round3(v);
     if (val > 0) { out[k] = val; total += val; }
   }
-  if (total > 0) out.total = Math.round(total * 1000) / 1000;
+  if (total > 0) out.total = round3(total);
   return out;
 }
 const pctToFrac = (v) => (v == null ? undefined : Number(v) / 100);
@@ -54,22 +55,12 @@ function hydrateAttackWithItemStats(a, item) {
   if (a.speed == null) a.speed = baseSpeed;
   return a;
 }
-// gardé pour référence, non utilisé
-function maybeSwapPS(atkDmg, baseDmg) {
-  if (!atkDmg || !baseDmg) return false;
-  const { puncture:pA, slash:sA } = atkDmg;
-  const { puncture:pB, slash:sB } = baseDmg;
-  if ([pA,sA,pB,sB].some(v => v == null)) return false;
-  const eq = (x,y)=>Math.abs(Number(x)-Number(y))<=1e-3;
-  if (eq(pA,sB) && eq(sA,pB)) { atkDmg.puncture = sA; atkDmg.slash = pA; return true; }
-  return false;
-}
 function recomputeTotal(dmg) {
   if (!dmg || typeof dmg !== "object") return;
   const sum = Object.entries(dmg)
     .filter(([k]) => k !== "total")
     .reduce((s,[,v]) => s + (Number(v)||0), 0);
-  dmg.total = Math.round(sum * 1000) / 1000;
+  dmg.total = round3(sum);
 }
 function indexByName(arr, nameSel) {
   const m = new Map();
@@ -80,34 +71,62 @@ function indexByName(arr, nameSel) {
   return m;
 }
 
-// 🔧 Hotfix ciblé Acceltra (normal + prime) : répartit IPS Projectile/AoE depuis le top-level
+// Mapping Export DE → damageTypes via damagePerShot (ordre connu)
+const DAMAGE_KEYS = [
+  "impact","puncture","slash","heat","cold","electricity","toxin",
+  "blast","radiation","gas","magnetic","viral","corrosive",
+  "void","tau","cinematic","shieldDrain","healthDrain","energyDrain","true"
+];
+function mapExportDamage(ex) {
+  const arr = ex && Array.isArray(ex.damagePerShot) ? ex.damagePerShot : null;
+  if (!arr) return null;
+  const out = {};
+  let total = 0;
+  for (let i = 0; i < Math.min(arr.length, DAMAGE_KEYS.length); i++) {
+    const v = round3(arr[i]);
+    if (v > 0) { out[DAMAGE_KEYS[i]] = v; total += v; }
+  }
+  if (total > 0) out.total = round3(total);
+  return out;
+}
+
+// 🔧 Hotfix Acceltra (normal + prime)
+// - Impact = projectile (Rocket Impact)
+// - Explosion = distribution IPS spécifique par version (Prime inverse S/P pour l’explosion)
 function applyWeaponHotfixes(item) {
-  const k = keyify(item.slug || item.name);
+  const k  = keyify(item.slug || item.name);
   if (k !== "acceltra" && k !== "acceltra-prime") return;
 
   const dt = item.damageTypes || {};
-  const imp = Number(dt.impact || 0);
-  const pun = Number(dt.puncture || 0);
-  const sl  = Number(dt.slash || 0);
+  const get = (key, def) => (dt[key] != null ? Number(dt[key]) : def);
 
-  // Repère les deux attaques (par nom en priorité, puis par shotType)
+  // Repère les attaques
   const by = (a) => keyify(a.name || a.shotType || "");
-  let impactAtk    = item.attacks.find(a => by(a) === "rocket impact")
-                  || item.attacks.find(a => keyify(a.shotType) === "projectile");
-  let explosionAtk = item.attacks.find(a => by(a) === "rocket explosion")
-                  || item.attacks.find(a => keyify(a.shotType) === "aoe");
+  const impactAtk    = item.attacks.find(a => by(a) === "rocket impact")
+                    || item.attacks.find(a => keyify(a.shotType) === "projectile");
+  const explosionAtk = item.attacks.find(a => by(a) === "rocket explosion")
+                    || item.attacks.find(a => keyify(a.shotType) === "aoe");
 
-  if (!impactAtk && !explosionAtk) return;
-
+  // Projectile = impact pur
   if (impactAtk) {
+    const imp = get("impact", k === "acceltra-prime" ? 44 : 26);
     impactAtk.damage = normalizeDamageMap(imp > 0 ? { impact: imp } : {});
     recomputeTotal(impactAtk.damage);
   }
+
+  // Explosion : distribution par version
   if (explosionAtk) {
-    const dmg = {};
-    if (sl  > 0) dmg.slash    = sl;
-    if (pun > 0) dmg.puncture = pun;
-    explosionAtk.damage = normalizeDamageMap(dmg);
+    let slashVal, punctureVal;
+    if (k === "acceltra-prime") {
+      // attendu: slash 10.6 / puncture 42.4
+      slashVal    = get("puncture", 10.6); // slash explosion = puncture top-level
+      punctureVal = get("slash",    42.4); // puncture explosion = slash top-level
+    } else {
+      // Acceltra normal: attendu: slash 8.8 / puncture 35.2
+      slashVal    = get("slash",    8.8);
+      punctureVal = get("puncture", 35.2);
+    }
+    explosionAtk.damage = normalizeDamageMap({ slash: slashVal, puncture: punctureVal });
     recomputeTotal(explosionAtk.damage);
   }
 }
@@ -124,8 +143,8 @@ let OVERFRAME = [];
 if (Array.isArray(OF_RAW)) OVERFRAME = OF_RAW;
 else if (OF_RAW && typeof OF_RAW === "object") OVERFRAME = Object.values(OF_RAW);
 
-// Index
-const mExport = indexByName(EXPORT, (o) => o.name || o.displayName || o.uniqueName);
+// Index (➕ on inclut aussi la clé `Name` d’Export)
+const mExport = indexByName(EXPORT, (o) => o.name || o.displayName || o.uniqueName || o.Name);
 const mOver   = indexByName(OVERFRAME, (o) => o.name);
 
 // WFCD maps
@@ -195,25 +214,34 @@ for (const w of WFSTAT) {
     damageTypes: w.damageTypes || w.damage || undefined,
     polarities: w.polarities || undefined,
 
-    // ✅ NOUVEAU : miniature wiki depuis WFStat (si présente)
+    // miniature wiki depuis WFStat (si présente)
     wikiaThumbnail: w.wikiaThumbnail ?? undefined,
 
     ...flags
   };
 
-  // Compléments Export
+  // Compléments Export (et préférence dégâts DE si dispos)
   if (ex) {
     if (item.type === undefined && ex.type) item.type = ex.type;
     if (item.criticalChance === undefined && ex.criticalChance != null) item.criticalChance = ex.criticalChance;
     if (item.criticalMultiplier === undefined && ex.criticalMultiplier != null) item.criticalMultiplier = ex.criticalMultiplier;
     if (item.statusChance === undefined && ex.procChance != null) item.statusChance = ex.procChance;
     if (item.fireRate === undefined && ex.fireRate != null) item.fireRate = ex.fireRate;
-    if (!item.damageTypes && (ex.damageTypes || ex.damage)) item.damageTypes = ex.damageTypes || ex.damage;
+
+    const exDmg = mapExportDamage(ex);
+    if (exDmg && Object.keys(exDmg).length) {
+      item.damageTypes = exDmg; // ex.: Acceltra → 26 / 35.2 / 8.8 / 70
+    } else if (!item.damageTypes && (ex.damageTypes || ex.damage)) {
+      item.damageTypes = ex.damageTypes || ex.damage;
+    }
   }
 
   // Description
   const descriptionText = w.description || ex?.description || "";
   if (descriptionText) item.description = clean(descriptionText);
+
+  // damageTypes final (top-level) AVANT les attaques (pour nourrir le hotfix)
+  if (item.damageTypes) item.damageTypes = normalizeDamageMap(item.damageTypes);
 
   // Attaques
   let attacks = [];
@@ -237,11 +265,8 @@ for (const w of WFSTAT) {
   for (const atk of attacks) recomputeTotal(atk.damage);
   item.attacks = attacks;
 
-  // ✅ Hotfixs ciblés
+  // ✅ Hotfixs ciblés (une seule définition de la fonction, appelée ici)
   applyWeaponHotfixes(item);
-
-  // damageTypes final (top-level)
-  if (item.damageTypes) item.damageTypes = normalizeDamageMap(item.damageTypes);
 
   // Spécifique mêlée
   const isMelee = (item.subtype === "melee") || (String(item.type||"").toLowerCase() === "melee");
