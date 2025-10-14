@@ -179,6 +179,10 @@ for (const w of WFSTAT) {
     fireRate: w.fireRate ?? undefined,   // renommé → attackSpeed si melee
     damageTypes: w.damageTypes || w.damage || undefined,
     polarities: w.polarities || undefined,
+
+    // ✅ NOUVEAU : miniature wiki depuis WFStat (si présente)
+    wikiaThumbnail: w.wikiaThumbnail ?? undefined,
+
     ...flags
   };
 
