@@ -2290,6 +2290,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 0,
+    "disposition": 3,
     "criticalChance": 0.31999999,
     "criticalMultiplier": 2.4000001,
     "statusChance": 0.24000001,
@@ -2317,6 +2318,11 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "vazarin"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2774,6 +2780,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 12,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 133.33333,
     "noise": "Alarming",
@@ -2804,6 +2811,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5398,6 +5409,7 @@
     "subtype": "primary",
     "type": "Shotgun",
     "masteryReq": 17,
+    "disposition": 1,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -5428,6 +5440,9 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5504,6 +5519,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 17,
+    "disposition": 1,
     "criticalChance": 0.19,
     "criticalMultiplier": 2.3,
     "statusChance": 0.40999997,
@@ -5531,6 +5547,9 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5552,6 +5571,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 17,
+    "disposition": 2,
     "trigger": "Burst",
     "accuracy": 20,
     "noise": "Alarming",
@@ -5582,6 +5602,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5759,6 +5783,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 17,
+    "disposition": 1,
     "criticalChance": 0.2,
     "criticalMultiplier": 2.3,
     "statusChance": 0.35000002,
@@ -5786,6 +5811,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5918,6 +5947,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 17,
+    "disposition": 1,
     "trigger": "Held",
     "accuracy": 100,
     "noise": "Alarming",
@@ -5948,6 +5978,9 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5969,6 +6002,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 17,
+    "disposition": 1,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -5999,6 +6033,9 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "vazarin"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8729,6 +8766,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 14,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 133.33333,
     "noise": "Alarming",
@@ -8759,6 +8797,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8780,6 +8822,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 14,
+    "disposition": 2,
     "trigger": "Semi",
     "accuracy": 10,
     "noise": "Alarming",
@@ -8810,6 +8853,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "vazarin"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10984,6 +11031,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 14,
+    "disposition": 1,
     "trigger": "Auto",
     "accuracy": 100,
     "noise": "Alarming",
@@ -11014,6 +11062,11 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "naramon"
+    ],
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -12194,6 +12247,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 2,
+    "disposition": 3,
     "trigger": "Burst",
     "accuracy": 100,
     "noise": "Alarming",
@@ -12224,6 +12278,9 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "vazarin"
+    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14085,6 +14142,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 13,
+    "disposition": 1,
     "trigger": "Auto",
     "accuracy": 3.7735848,
     "noise": "Alarming",
@@ -14115,6 +14173,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "vazarin",
+      "naramon"
+    ],
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -15568,6 +15630,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 15,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 9.090909,
     "noise": "Alarming",
@@ -24765,6 +24828,7 @@
     "subtype": "primary",
     "type": "Pistol",
     "masteryReq": 0,
+    "disposition": 3,
     "trigger": "Semi",
     "accuracy": 16,
     "noise": "Silent",
@@ -26679,9 +26743,6 @@
       "energyDrain": 0,
       "true": 0
     },
-    "polarities": [
-      "madurai"
-    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28933,6 +28994,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 15,
+    "disposition": 1,
     "trigger": "Auto",
     "accuracy": 200,
     "noise": "Alarming",
@@ -28963,6 +29025,10 @@
       "energyDrain": 0,
       "true": 0
     },
+    "polarities": [
+      "vazarin",
+      "madurai"
+    ],
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -29447,9 +29513,6 @@
       "energyDrain": 0,
       "true": 0
     },
-    "polarities": [
-      "vazarin"
-    ],
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
