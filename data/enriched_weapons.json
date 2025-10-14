@@ -26,6 +26,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Acceltra.png?d00f4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -93,6 +94,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AcceltraPrime.png?0686c",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -276,6 +278,7 @@
       "toxin": 43,
       "total": 43
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Acrid.png?57294",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -327,6 +330,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Aegrit.png?33219",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -396,6 +400,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Aeolak.png?3b3ec",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -482,6 +487,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Afentis.png?33fce",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -564,6 +570,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Afuris.png?adcc0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -615,6 +622,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AfurisPrime.png?06de8",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -661,6 +669,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Agkuza.png?5cbfc",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -709,6 +718,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akarius.png?42673",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -775,6 +785,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkariusPrime.png?6acd9",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -839,6 +850,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akbolto.png?efe31",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -891,6 +903,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkboltoPrime.png?df159",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -941,6 +954,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akbronco.png?d5e63",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -996,6 +1010,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkbroncoPrime.png?9e11e",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1050,6 +1065,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akjagara.png?00e91",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1100,6 +1116,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkjagaraPrime.png?3821b",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1146,6 +1163,7 @@
       "slash": 10,
       "total": 40
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Aklato.png?8d913",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1192,6 +1210,7 @@
       "slash": 104,
       "total": 130
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Aklex.png?57eb2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1238,6 +1257,7 @@
       "slash": 120,
       "total": 150
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AklexPrime.png?37975",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1284,6 +1304,7 @@
       "slash": 26.950001,
       "total": 98
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akmagnus.png?74a24",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1334,6 +1355,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkmagnusPrime.png?c2bbb",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1383,6 +1405,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Aksomati.png?d8360",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1434,6 +1457,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AksomatiPrime.png?ce035",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1483,6 +1507,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akstiletto.png?e644d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1533,6 +1558,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkstilettoPrime.png?b2b01",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1579,6 +1605,7 @@
       "slash": 22.5,
       "total": 90
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akvasto.png?9ba62",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1629,6 +1656,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AkvastoPrime.png?d97f1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -1678,6 +1706,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Akzani.png?22127",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1725,6 +1754,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Alternox.png?d4760",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -1907,6 +1937,7 @@
       "electricity": 29,
       "total": 29
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ambassador.png?d16a5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2073,6 +2104,7 @@
       "electricity": 22,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Amprex.png?a040e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2118,6 +2150,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Angstrum.png?11bdd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2474,6 +2507,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArcaPlasmor.png?a77f1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2527,6 +2561,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ArcaScisco.png?8e4dd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2792,6 +2827,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Argonak.png?cff62",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -2984,6 +3020,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Astilla.png?f85fd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3057,6 +3094,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AstillaPrime.png?7a8c1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -3127,6 +3165,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Athodai.png?5f25a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3185,6 +3224,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Atomos.png?91d61",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3352,6 +3392,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Attica.png?6cad7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3401,6 +3442,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AX-52.png?5aa25",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3449,6 +3491,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Azima.png?ab365",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3621,6 +3664,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Balla.png?3df29",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3669,6 +3713,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ballistica.png?dbef0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3737,6 +3782,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BallisticaPrime.png?142e6",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -3802,6 +3848,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Basmu.png?5c634",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3875,6 +3922,7 @@
       "magnetic": 42,
       "total": 66
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Battacor.png?8b844",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -3954,6 +4002,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Baza.png?018da",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -4009,6 +4058,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BazaPrime.png?c1df2",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -4243,6 +4293,7 @@
       "slash": 3.3000002,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Boar.png?f5d59",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -4306,6 +4357,7 @@
       "slash": 6,
       "total": 40
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BoarPrime.png?a4f85",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -4461,6 +4513,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Bolto.png?5ba94",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -4510,6 +4563,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Boltor.png?92b9c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -4575,6 +4629,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BoltorPrime.png?c7e19",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -4640,6 +4695,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Brakk.png?624b1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -4691,6 +4747,7 @@
       "slash": 7.9200001,
       "total": 24
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Braton.png?95621",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -4768,6 +4825,7 @@
       "slash": 12.25,
       "total": 35
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BratonPrime.png?c49e4",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -4848,6 +4906,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BratonVandal.png?b43a3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5112,6 +5171,7 @@
       "slash": 4.2000003,
       "total": 42
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Bronco.png?6e7f7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5182,6 +5242,7 @@
       "slash": 5,
       "total": 50
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BroncoPrime.png?a83e3",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -5256,6 +5317,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Bubonico.png?e6eb9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5342,6 +5404,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Burston.png?3e21c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5420,6 +5483,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/BurstonPrime.png?8fc05",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -5495,6 +5559,7 @@
       "slash": 24,
       "total": 60
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Buzlok.png?32c00",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5553,6 +5618,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cadus.png?bd981",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5649,6 +5715,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cantare.png?9e871",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5694,6 +5761,7 @@
       "blast": 350,
       "total": 425
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CarminePenta.png?79c2a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5756,6 +5824,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cassowar.png?c342d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5852,6 +5921,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Castanas.png?328f9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -5920,6 +5990,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Catabolyst.png?984d0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6029,6 +6100,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Caustacyst.png?71317",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6158,6 +6230,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cedo.png?0aaf5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6240,6 +6313,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CedoPrime.png?1d21b",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -6319,6 +6393,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Centaur.png?ad3fd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6362,6 +6437,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CeramicDagger.png?063e0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6488,6 +6564,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cerata.png?74108",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6689,6 +6766,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cernos.png?8ac24",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6756,6 +6834,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CernosPrime.png?20e5e",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -6818,6 +6897,7 @@
       "slash": 20.800001,
       "total": 26
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cestra.png?302b1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6878,6 +6958,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CetiLacera.png?55f56",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -6975,6 +7056,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cinta.png?bac02",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -7232,6 +7314,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaBassocyst.png?2407f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -7297,6 +7380,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaCatabolyst.png?2407f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -7535,6 +7619,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaHema.png?f76ee",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8066,6 +8151,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaPox.png?6edfb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8131,6 +8217,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaSporothrix.png?6edfb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8202,6 +8289,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaSynapse.png?6edfb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8250,6 +8338,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaTysis.png?09ea2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8312,6 +8401,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Convectrix.png?373e0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8376,6 +8466,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Corinth.png?951c8",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8462,6 +8553,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CorinthPrime.png?5c1bb",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -8541,6 +8633,7 @@
       "heat": 90,
       "total": 90
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cortege.png?b7e25",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8726,6 +8819,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Corvas.png?2ae6a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -8795,6 +8889,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CorvasPrime.png?290fd",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -8953,6 +9048,7 @@
       "gas": 41,
       "total": 91
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cyanex.png?56ba3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9051,6 +9147,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cyath.png?02b17",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9100,6 +9197,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cycron.png?4e3db",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9146,6 +9244,7 @@
       "slash": 39.600002,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cyngas.png?1a357",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9201,6 +9300,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Daikyu.png?5dbd0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9253,6 +9353,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DaikyuPrime.png?445ed",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -9653,6 +9754,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dehtat.png?4999e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9698,6 +9800,7 @@
       "slash": 22.5,
       "total": 30
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dera.png?54065",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9760,6 +9863,7 @@
       "slash": 24,
       "total": 32
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DeraVandal.png?91020",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -9826,6 +9930,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Despair.png?14725",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10090,6 +10195,7 @@
       "radiation": 40,
       "total": 40
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Detron.png?b201d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10236,6 +10342,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DexFuris.png?77f85",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10376,6 +10483,7 @@
       "slash": 18.75,
       "total": 75
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DexSybaris.png?cf8ee",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10426,6 +10534,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dokrahm.png?ca7fa",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10654,6 +10763,7 @@
       "slash": 7,
       "total": 70
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Drakgoon.png?805b5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10721,6 +10831,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dread.png?06d56",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10802,6 +10913,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualCestra.png?28e58",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10943,6 +11055,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualCodaTorxica.png?56d53",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -10988,6 +11101,7 @@
       "slash": 30.25,
       "total": 110
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualDecurion.png?9569b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -11869,6 +11983,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualToxocyst.png?13be4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -12337,6 +12452,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EFV-5Jupiter.png?be8ed",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -12406,6 +12522,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EFV-8Mars.png?be8ed",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -12757,6 +12874,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Embolist.png?a05c2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -12898,6 +13016,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Epitaph.png?77a9d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -12982,6 +13101,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EpitaphPrime.png?21ae3",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -13343,6 +13463,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EuphonaPrime.png?08a88",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -13412,6 +13533,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Evensong.png?f9f28",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -13496,6 +13618,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Exergis.png?63524",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -13546,6 +13669,7 @@
       "electricity": 84,
       "total": 230
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Falcor.png?4acc7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -13743,6 +13867,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Fang.png?dbd6b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -13836,6 +13961,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FangPrime.png?73eaa",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -13933,6 +14059,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Felarx.png?4d866",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14003,6 +14130,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ferrox.png?9fe92",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14097,6 +14225,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Fluctus.png?e32bf",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14148,6 +14277,7 @@
       "slash": 4.8400002,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FluxRifle.png?8694d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14189,6 +14319,7 @@
       "slash": 30.000002,
       "total": 200
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Fragor.png?36f9b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14282,6 +14413,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FragorPrime.png?e97e2",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -14375,6 +14507,7 @@
       "electricity": 400,
       "total": 500
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Fulmin.png?4d4d0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14441,6 +14574,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FulminPrime.png?00eea",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -14501,6 +14635,7 @@
       "slash": 20.25,
       "total": 135
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Furax.png?e515a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14591,6 +14726,7 @@
       "slash": 20.85,
       "total": 139
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/FuraxWraith.png?ec8d7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -14688,6 +14824,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Furis.png?a1a15",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14753,6 +14890,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Fusilai.png?eb3f9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14812,6 +14950,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Galatine.png?ffdee",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -14906,6 +15045,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GalatinePrime.png?3dd53",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -14997,6 +15137,7 @@
       "electricity": 96,
       "total": 210
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Galvacord.png?43869",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15093,6 +15234,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Gammacor.png?a5120",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15166,6 +15308,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GazalMachete.png?f75b4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15256,6 +15399,7 @@
       "slash": 45.310001,
       "total": 197
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ghoulsaw.png?0ee00",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15350,6 +15494,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Glaive.png?a7f2a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15545,6 +15690,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GlaivePrime.png?fd8a2",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -15738,6 +15884,7 @@
       "cold": 26,
       "total": 26
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Glaxion.png?ce575",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15780,6 +15927,7 @@
       "cold": 29,
       "total": 29
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GlaxionVandal.png?f5763",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15824,6 +15972,7 @@
       "slash": 3.7500002,
       "total": 25
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Gorgon.png?e66de",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -15901,6 +16050,7 @@
       "slash": 2.7,
       "total": 27
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GorgonWraith.png?505bf",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -15981,6 +16131,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GotvaPrime.png?d08b7",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -16025,6 +16176,7 @@
       "slash": 3.6666629,
       "total": 11
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Grakata.png?fb846",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16067,6 +16219,7 @@
       "slash": 24,
       "total": 160
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Gram.png?ff14e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16161,6 +16314,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GramPrime.png?89383",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -16259,6 +16413,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Grattler.png?fa336",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16371,6 +16526,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Grimoire.png?e8ce6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16465,6 +16621,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Grinlok.png?41a55",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16511,6 +16668,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Guandao.png?846dd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16606,6 +16764,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GuandaoPrime.png?2a02e",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -16699,6 +16858,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Gunsen.png?31e8a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -16793,6 +16953,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GunsenPrime.png?3d9f9",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -16887,6 +17048,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Halikar.png?99ebd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17083,6 +17245,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HalikarWraith.png?ada65",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -17277,6 +17440,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Harmony.png?30099",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17373,6 +17537,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Harpak.png?f2a34",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17431,6 +17596,7 @@
       "slash": 34.5,
       "total": 230
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hate.png?bbaf9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17557,6 +17723,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HeatDagger.png?179da",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17651,6 +17818,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HeatSword.png?4bd81",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17745,6 +17913,7 @@
       "slash": 48.75,
       "total": 75
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hek.png?6e042",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17792,6 +17961,7 @@
       "slash": 28,
       "total": 280
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Heliocor.png?47879",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17887,6 +18057,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hema.png?cd1ac",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -17931,6 +18102,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hespar.png?d6897",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18027,6 +18199,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Higasa.png?40efb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18090,6 +18263,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hikou.png?e3ccb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18141,6 +18315,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HikouPrime.png?4c978",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -18191,6 +18366,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hind.png?4ba98",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18249,6 +18425,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hirudo.png?b7b83",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18346,6 +18523,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Hystrix.png?f96d3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18442,6 +18620,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/HystrixPrime.png?51199",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -18532,6 +18711,7 @@
       "heat": 33,
       "total": 33
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ignis.png?5e768",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18574,6 +18754,7 @@
       "heat": 35,
       "total": 35
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/IgnisWraith.png?c3df1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -18621,6 +18802,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Imperator.png?3a6f3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18676,6 +18858,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ImperatorVandal.png?a8014",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18728,6 +18911,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Innodem.png?24109",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18902,6 +19086,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/JatKittag.png?23945",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -18997,6 +19182,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/JatKusar.png?69aa5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19094,6 +19280,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Javlok.png?fe674",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19188,6 +19375,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/JawSword.png?82748",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19313,6 +19501,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kama.png?1f972",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19410,6 +19599,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Karak.png?6c90d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19459,6 +19649,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KarakWraith.png?b3879",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -19505,6 +19696,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Karyst.png?02c04",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19601,6 +19793,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KarystPrime.png?ba1c9",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -19696,6 +19889,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kaszas.png?9fcb4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19738,6 +19932,7 @@
       "viral": 33,
       "total": 244
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Keratinos.png?be85c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19832,6 +20027,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kesheg.png?53247",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -19926,6 +20122,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kestrel.png?d398c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20121,6 +20318,7 @@
       "slash": 69,
       "total": 150
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Knell.png?b8147",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20171,6 +20369,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KnellPrime.png?08b42",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -20217,6 +20416,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Knux.png?2d0e0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20258,6 +20458,7 @@
       "slash": 18,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kogake.png?d2579",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20353,6 +20554,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KogakePrime.png?ad6ea",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -20450,6 +20652,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kohm.png?45fe3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20523,6 +20726,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kohmak.png?2f892",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20593,6 +20797,7 @@
       "slash": 40.739998,
       "total": 97
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Komorex.png?9dff4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20662,6 +20867,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kompressa.png?acdfa",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20726,6 +20932,7 @@
       "vazarin",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KompressaPrime.png?bba71",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -20818,6 +21025,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Korrudo.png?ab27b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -20911,6 +21119,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Korumm.png?96fd2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21022,6 +21231,7 @@
       "slash": 6.125,
       "total": 49
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kraken.png?619e6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21068,6 +21278,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kreska.png?fb4c9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21159,6 +21370,7 @@
       "slash": 39.060001,
       "total": 217
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Krohkur.png?eb7cd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21249,6 +21461,7 @@
       "slash": 13,
       "total": 130
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kronen.png?03309",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21343,6 +21556,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KronenPrime.png?badf1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -21458,6 +21672,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kronsh.png?8a416",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21535,6 +21750,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kulstar.png?c910a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21631,6 +21847,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kunai.png?0d29e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21692,6 +21909,7 @@
       "blast": 187,
       "total": 274
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaAyanga.png?098c6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21762,6 +21980,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaBrakk.png?1c1e5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21815,6 +22034,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaBramma.png?e3603",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21916,6 +22136,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaChakkhurr.png?becac",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -21980,6 +22201,7 @@
       "slash": 4.5999999,
       "total": 46
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaDrakgoon.png?1b428",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22049,6 +22271,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaGrattler.png?baf07",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22117,6 +22340,7 @@
       "slash": 56.549999,
       "total": 87
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaHek.png?a27b6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22190,6 +22414,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaHind.png?a568a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22267,6 +22492,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaKarak.png?df32b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22316,6 +22542,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaKohm.png?a9f0f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22386,6 +22613,7 @@
       "slash": 5.375,
       "total": 43
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaKraken.png?6fa90",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22444,6 +22672,7 @@
       "radiation": 21,
       "total": 21
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaNukor.png?73f99",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22489,6 +22718,7 @@
       "blast": 348.99997,
       "total": 714
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaOgris.png?e9ee4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22558,6 +22788,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaQuartakk.png?e2838",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22619,6 +22850,7 @@
       "corrosive": 69,
       "total": 200
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaSeer.png?be10c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22682,6 +22914,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaShildeg.png?4038c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22776,6 +23009,7 @@
       "slash": 9.625,
       "total": 77
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaSobek.png?94bd0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22827,6 +23061,7 @@
       "blast": 302,
       "total": 733
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaTonkor.png?e43aa",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22894,6 +23129,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaTwinStubbas.png?93b2f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -22944,6 +23180,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaZarr.png?53490",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23087,6 +23324,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lacera.png?2d024",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23184,6 +23422,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Laetum.png?b6a44",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23289,6 +23528,7 @@
       "electricity": 525,
       "total": 525
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lanka.png?b8db7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23356,6 +23596,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Larkspur.png?15f51",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23439,6 +23680,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/LarkspurPrime.png?fdc3a",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -23518,6 +23760,7 @@
       "slash": 10,
       "total": 40
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lato.png?4f4b6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23582,6 +23825,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/LatoPrime.png?ec016",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -23645,6 +23889,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/LatoVandal.png?6fc4a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23708,6 +23953,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Latron.png?ed575",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -23788,6 +24034,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/LatronPrime.png?38b80",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -23867,6 +24114,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/LatronWraith.png?ae9cf",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -23939,6 +24187,7 @@
       "electricity": 56,
       "total": 101
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lecta.png?90873",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24036,6 +24285,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lenz.png?31ae3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24117,6 +24367,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lesion.png?5e555",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24214,6 +24465,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Lex.png?8c63b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24277,6 +24529,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/LexPrime.png?422f9",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -24338,6 +24591,7 @@
       "slash": 18,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Machete.png?0b037",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24432,6 +24686,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MacheteWraith.png?1c3b6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -24522,6 +24777,7 @@
       "slash": 31.500002,
       "total": 210
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Magistar.png?0fd31",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24619,6 +24875,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Magnus.png?ea7d4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24668,6 +24925,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MagnusPrime.png?fe7c8",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -24758,6 +25016,7 @@
       "radiation": 40,
       "total": 40
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MaraDetron.png?ee5b8",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24811,6 +25070,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Marelok.png?4bb88",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24852,6 +25112,7 @@
       "puncture": 106.04,
       "total": 241
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Masseter.png?8e624",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -24944,6 +25205,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MasseterPrime.png?434ac",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -25040,6 +25302,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mausolon.png?65300",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25161,6 +25424,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mewan.png?c84ff",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25205,6 +25469,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mios.png?98255",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25296,6 +25561,7 @@
       "toxin": 65,
       "total": 158
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mire.png?a4c1e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25394,6 +25660,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Miter.png?23f64",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25487,6 +25754,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MK1-Bo.png?19de3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25580,6 +25848,7 @@
       "slash": 4.5,
       "total": 18
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Braton.png?95621",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25653,6 +25922,7 @@
       "slash": 13.500001,
       "total": 90
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MK1-Furax.png?0b91a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25750,6 +26020,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Furis.png?a1a15",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25817,6 +26088,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kunai.png?0d29e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25882,6 +26154,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Paris.png?50495",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -25963,6 +26236,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Strun.png?c7981",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26048,6 +26322,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Morgha.png?fc121",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26145,6 +26420,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MutalistCernos.png?c4259",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26228,6 +26504,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/MutalistQuanta.png?1ea7a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26313,6 +26590,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nagantaka.png?1a545",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26378,6 +26656,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/NagantakaPrime.png?8eb34",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -26436,6 +26715,7 @@
       "slash": 18.75,
       "total": 125
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/NamiSkyla.png?63a97",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26531,6 +26811,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/NamiSkylaPrime.png?93606",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -26624,6 +26905,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/NamiSolo.png?9b269",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26723,6 +27005,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nataruk.png?4b210",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26799,6 +27082,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nepheri.png?24dbb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -26906,6 +27190,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nikana.png?b9996",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27000,6 +27285,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/NikanaPrime.png?5dadf",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -27089,6 +27375,7 @@
       "electricity": 100,
       "total": 190
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ninkondi.png?4caef",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27183,6 +27470,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/NinkondiPrime.png?551b0",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -27276,6 +27564,7 @@
       "radiation": 22,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Nukor.png?3cfea",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27316,6 +27605,7 @@
       "slash": 18,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Obex.png?78ef5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27409,6 +27699,7 @@
       "radiation": 10,
       "total": 11
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ocucor.png?af707",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27452,6 +27743,7 @@
       "blast": 700,
       "total": 700
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ogris.png?ffb4a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27511,6 +27803,7 @@
       "electricity": 110,
       "total": 224
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ohma.png?a0d9c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27604,6 +27897,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Okina.png?6bf0d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27730,6 +28024,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OkinaPrime.png?bf801",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -27856,6 +28151,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Onorix.png?f4784",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -27902,6 +28198,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Onos.png?2a4ee",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28010,6 +28307,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ooltha.png?2d710",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28058,6 +28356,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Opticor.png?78ee2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28156,6 +28455,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OpticorVandal.png?64244",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28246,6 +28546,7 @@
       "slash": 27.750002,
       "total": 185
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Orthos.png?86c84",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28336,6 +28637,7 @@
       "slash": 35.100002,
       "total": 234
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/OrthosPrime.png?c2a65",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -28430,6 +28732,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Orvius.png?d4116",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28636,6 +28939,7 @@
       "slash": 18,
       "total": 72
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pandero.png?73540",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28699,6 +29003,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PanderoPrime.png?a28a1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -28758,6 +29063,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PangolinPrime.png?51917",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -28851,6 +29157,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PangolinSword.png?a9948",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -28948,6 +29255,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Panthera.png?2e956",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29013,6 +29321,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PantheraPrime.png?a55ec",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -29085,6 +29394,7 @@
       "slash": 17.76,
       "total": 222
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Paracesis.png?f1231",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29180,6 +29490,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Paracyst.png?adc4b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29253,6 +29564,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Paris.png?50495",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29335,6 +29647,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ParisPrime.png?3163e",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -29414,6 +29727,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pathocyst.png?a51a6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29608,6 +29922,7 @@
       "slash": 140,
       "total": 200
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pennant.png?e55f5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29701,6 +30016,7 @@
       "blast": 350,
       "total": 425
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Penta.png?648ff",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29767,6 +30083,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Perigale.png?bded2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29852,6 +30169,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Phaedra.png?154a1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29905,6 +30223,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Phage.png?10a4c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -29952,6 +30271,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Phantasma.png?245de",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30057,6 +30377,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PhantasmaPrime.png?1b4e1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -30161,6 +30482,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Phenmor.png?c36f7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30273,6 +30595,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PlagueKeewar.png?9d7ee",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30340,6 +30663,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PlagueKripath.png?3949e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30414,6 +30738,7 @@
       "electricity": 66,
       "total": 200
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PlasmaSword.png?a7944",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30508,6 +30833,7 @@
       "heat": 20,
       "total": 46
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Plinx.png?cf2e4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30555,6 +30881,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pox.png?71e2b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30617,6 +30944,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Praedos.png?217dc",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30712,6 +31040,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaAngstrum.png?33189",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30788,6 +31117,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaDualCleavers.png?20b93",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30886,6 +31216,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaDualDecurions.png?25327",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -30938,6 +31269,7 @@
       "slash": 3.45,
       "total": 23
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaGorgon.png?59620",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31015,6 +31347,7 @@
       "slash": 4.9999948,
       "total": 15
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaGrakata.png?a1a5f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31064,6 +31397,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaGrinlok.png?def14",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31114,6 +31448,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaLenz.png?ca162",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31192,6 +31527,7 @@
       "slash": 28.950001,
       "total": 193
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaMachete.png?02d9d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31282,6 +31618,7 @@
       "slash": 22.5,
       "total": 150
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaObex.png?ff26a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31376,6 +31713,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaOhma.png?5eedd",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31466,6 +31804,7 @@
       "slash": 25.500002,
       "total": 170
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaSkana.png?517e0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31559,6 +31898,7 @@
       "slash": 30.4,
       "total": 38
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaTetra.png?f36a2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31608,6 +31948,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaTwinGremlins.png?95972",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31655,6 +31996,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PrismaVeritux.png?571f6",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31704,6 +32046,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ProboscisCernos.png?c4d63",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31784,6 +32127,7 @@
       "electricity": 76,
       "total": 128
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Prova.png?1e046",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31872,6 +32216,7 @@
       "electricity": 118,
       "total": 198
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ProvaVandal.png?8a8cb",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -31964,6 +32309,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pulmonars.png?17ee7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32055,6 +32401,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pupacyst.png?dea83",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32149,6 +32496,7 @@
       "slash": 429.55002,
       "total": 781
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Purgator1.png?0d013",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32195,6 +32543,7 @@
       "slash": 2.2,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pyrana.png?d63ef",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32250,6 +32599,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PyranaPrime.png?1404a",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -32302,6 +32652,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Quanta.png?1f3f4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32393,6 +32744,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/QuantaVandal.png?6fa9f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32487,6 +32839,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Quartakk.png?9817c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32529,6 +32882,7 @@
       "slash": 46,
       "total": 230
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Quassus.png?c5024",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32708,6 +33062,7 @@
       "electricity": 11,
       "total": 29
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Quatz.png?9e0a0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32775,6 +33130,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Quellor.png?8f996",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32832,6 +33188,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Rabvee.png?de34e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32881,6 +33238,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RaktaBallistica.png?250be",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -32949,6 +33307,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RaktaCernos.png?49093",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33011,6 +33370,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RaktaDarkDagger.png?3d82b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33105,6 +33465,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Rathbone.png?255ff",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33153,6 +33514,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Rauta.png?84303",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33200,6 +33562,7 @@
       "slash": 30.000002,
       "total": 200
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ReaperPrime.png?95e53",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -33297,6 +33660,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Reconifex.png?f40f7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33338,6 +33702,7 @@
       "slash": 36,
       "total": 180
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Redeemer.png?7a716",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33450,6 +33815,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RedeemerPrime.png?aa29f",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -33564,6 +33930,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Riot-848.png?eee6b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33625,6 +33992,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ripkas.png?56db5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33719,6 +34087,7 @@
       "slash": 27.000002,
       "total": 180
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Rubico.png?b8a35",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33774,6 +34143,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/RubicoPrime.png?d10e7",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -33882,6 +34252,7 @@
       "electricity": 180,
       "total": 300
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Rumblejack.png?867de",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -33972,6 +34343,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ruvox.png?01731",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34064,6 +34436,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sampotes.png?3d0bf",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34161,6 +34534,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SanctiCastanas.png?cd68b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34227,6 +34601,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SanctiMagistar.png?7cde2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34326,6 +34701,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SanctiTigris.png?2e7f8",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34376,6 +34752,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sarofang.png?ddb75",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34469,6 +34846,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sarpa.png?5a43c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34579,6 +34957,7 @@
       "slash": 20,
       "total": 200
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Scindo.png?12fd7",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34672,6 +35051,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ScindoPrime.png?fefd2",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -34765,6 +35145,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Scoliac.png?857e0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34861,6 +35242,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Scourge.png?af7ad",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -34959,6 +35341,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ScourgePrime.png?a0ef5",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -35055,6 +35438,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Scyotid.png?d8a2e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35116,6 +35500,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SecuraDualCestra.png?6a867",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35161,6 +35546,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SecuraLecta.png?d2e7c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35259,6 +35645,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SecuraPenta.png?37a85",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35352,6 +35739,7 @@
       "slash": 33.666668,
       "total": 101
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Seer.png?5f753",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35389,6 +35777,7 @@
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sepfahn.png?cc3e1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35435,6 +35824,7 @@
       "heat": 46,
       "total": 94
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sepulcrum.png?50ee9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35529,6 +35919,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Serro.png?44619",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35616,6 +36007,7 @@
       "impact": 180,
       "total": 180
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Shaku.png?8bb96",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35711,6 +36103,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Shedu.png?173ce",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35772,6 +36165,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sheev.png?bd022",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35897,6 +36291,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sibear.png?a5886",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -35995,6 +36390,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sicarus.png?017e9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -36058,6 +36454,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SicarusPrime.png?b6255",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -36419,6 +36816,7 @@
       "vazarin",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Simulor.png?aa24a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -36489,6 +36887,7 @@
       "void": 2000,
       "total": 2000
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sirocco.png?76b26",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -36920,6 +37319,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Snipetron.png?b2a01",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -36974,6 +37374,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SnipetronVandal.png?05e52",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37025,6 +37426,7 @@
       "slash": 8.75,
       "total": 70
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sobek.png?753a8",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37080,6 +37482,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Soma.png?b2ba2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37149,6 +37552,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SomaPrime.png?4ae3f",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -37215,6 +37619,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sonicor.png?ee6d0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37276,6 +37681,7 @@
       "slash": 7.5599999,
       "total": 18
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Spectra.png?ddeb8",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37320,6 +37726,7 @@
       "slash": 9.2399998,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SpectraVandal.png?6057b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37448,6 +37855,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Spira.png?421cc",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37499,6 +37907,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SpiraPrime.png?82a7f",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -37549,6 +37958,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sporothrix.png?106dc",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37622,6 +38032,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Stahlta.png?c7c0d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37703,6 +38114,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Staticor.png?ab6ac",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37799,6 +38211,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Steflos.png?4a335",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37854,6 +38267,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Stradavar.png?bb33b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -37919,6 +38333,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/StradavarPrime.png?cbb56",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -38091,6 +38506,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Strun.png?c7981",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -38179,6 +38595,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/StrunPrime.png?85980",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -38265,6 +38682,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/StrunWraith.png?d9d6d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -38348,6 +38766,7 @@
       "slash": 3.3,
       "total": 33
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Stubba.png?61d87",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -38395,6 +38814,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Stug.png?67414",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -38555,6 +38975,7 @@
       "slash": 30,
       "total": 40
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Supra.png?7949d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -38606,6 +39027,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SupraVandal.png?b1f12",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -38771,6 +39193,7 @@
       "slash": 26.400002,
       "total": 80
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Sybaris.png?896be",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -38836,6 +39259,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SybarisPrime.png?369aa",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -38982,6 +39406,7 @@
       "corrosive": 20,
       "total": 20
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Synapse.png?4e9a1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -39028,6 +39453,7 @@
       "vazarin",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SynoidGammacor.png?cc4e5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -39195,6 +39621,7 @@
       "vazarin",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SynoidSimulor.png?aa990",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -39381,6 +39808,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Talons.png?111e8",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -39851,6 +40279,7 @@
       "vazarin",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TelosAkbolto.png?6ca02",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40006,6 +40435,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TelosBoltor.png?4238c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40176,6 +40606,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetArcaPlasmor.png?a6d9a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40228,6 +40659,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetCycron.png?3a27e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40270,6 +40702,7 @@
       "radiation": 26,
       "total": 26
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetDetron.png?0f208",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40341,6 +40774,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetDiplos.png?b553c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40402,6 +40836,7 @@
       "cold": 640,
       "total": 740
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetEnvoy.png?9f00a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40557,6 +40992,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetFerrox.png?170fa",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40649,6 +41085,7 @@
       "slash": 4.8400002,
       "total": 22
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetFluxRifle.png?a0124",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40692,6 +41129,7 @@
       "cold": 34,
       "total": 34
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetGlaxion.png?d3aaa",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -40938,6 +41376,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetPlinx.png?d3d96",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41018,6 +41457,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetSpirex.png?696b4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41082,6 +41522,7 @@
       "slash": 33.599998,
       "total": 60
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetTetra.png?a34b1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41159,6 +41600,7 @@
       "slash": 9.6000004,
       "total": 24
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tenora.png?9d913",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41224,6 +41666,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenoraPrime.png?c7070",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -41284,6 +41727,7 @@
       "slash": 25.6,
       "total": 32
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tetra.png?030e4",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41421,6 +41865,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tiberon.png?ef3d3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41472,6 +41917,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TiberonPrime.png?68645",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -41546,6 +41992,7 @@
       "slash": 21,
       "total": 210
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tigris.png?80648",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41601,6 +42048,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TigrisPrime.png?0f2b3",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -41651,6 +42099,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tipedo.png?3ee6e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41745,6 +42194,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TipedoPrime.png?57cc6",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -41838,6 +42288,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonbo.png?e141d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -41930,6 +42381,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonkkatt.png?363a0",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42022,6 +42474,7 @@
       "blast": 650,
       "total": 725
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonkor.png?75c8c",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42082,6 +42535,7 @@
       "toxin": 140,
       "total": 140
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Torid.png?74a4a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42155,6 +42609,7 @@
       "heat": 53,
       "total": 82
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Trumna.png?13adf",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42248,6 +42703,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TrumnaPrime.png?e7b4e",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -42338,6 +42794,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinBasolk.png?ad177",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42436,6 +42893,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinGrakatas.png?60e22",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42485,6 +42943,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinGremlins.png?126ee",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42535,6 +42994,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinKohmak.png?e4621",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42601,6 +43061,7 @@
       "slash": 45,
       "total": 250
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinKrohkur.png?9e026",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42699,6 +43160,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinRogga.png?12308",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42753,6 +43215,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinVipers.png?7ce4e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42802,6 +43265,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinVipersWraith.png?d8de2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -42849,6 +43313,7 @@
       "corrosive": 27,
       "total": 76
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tysis.png?35fde",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -42910,6 +43375,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VadaryaPrime.png?40feb",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -43137,6 +43603,7 @@
       "slash": 25.110001,
       "total": 279
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vastilok.png?fdf3e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43254,6 +43721,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vasto.png?98c12",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43323,6 +43791,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VastoPrime.png?2b77c",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -43392,6 +43861,7 @@
       "vazarin",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VaykorHek.png?1b6e2",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43447,6 +43917,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VaykorMarelok.png?1c135",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43491,6 +43962,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VaykorSydon.png?1524e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43587,6 +44059,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vectis.png?403a3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43642,6 +44115,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VectisPrime.png?12ec1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -43696,6 +44170,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Veldt.png?21718",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43743,6 +44218,7 @@
       "magnetic": 400,
       "total": 1600
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Velocitus.png?26b5b",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43812,6 +44288,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Velox.png?3690a",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43863,6 +44340,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VeloxPrime.png?261a8",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -43905,6 +44383,7 @@
       "slash": 110,
       "total": 220
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Venato.png?56f40",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -43998,6 +44477,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VenatoPrime.png?eb0e1",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -44088,6 +44568,7 @@
       "slash": 35,
       "total": 140
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Venka.png?03dd1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44182,6 +44663,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VenkaPrime.png?7ea5c",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -44272,6 +44754,7 @@
       "slash": 85.200005,
       "total": 213
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Verdilac.png?6e3c1",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44388,6 +44871,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vericres.png?bcc94",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44482,6 +44966,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Veritux.png?e0827",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44530,6 +45015,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vesper77.png?d4c30",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44578,6 +45064,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Viper.png?52862",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44627,6 +45114,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ViperWraith.png?e61ac",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -44673,6 +45161,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vitrica.png?54002",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44785,6 +45274,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Volnus.png?18bd9",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -44879,6 +45369,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VolnusPrime.png?34775",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -44973,6 +45464,7 @@
       "slash": 33.75,
       "total": 225
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vulkar.png?28b30",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45026,6 +45518,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VulkarWraith.png?581ef",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": true,
@@ -45075,6 +45568,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/War.png?42c4e",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45165,6 +45659,7 @@
       "slash": 7.77,
       "total": 259
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/WolfSledge.png?02419",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45304,6 +45799,7 @@
       "slash": 40.799999,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Xoris.png?5c2e5",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45502,6 +45998,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zakti.png?2807d",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45569,6 +46066,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ZaktiPrime.png?48c9f",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -45634,6 +46132,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zarr.png?0bf8f",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45740,6 +46239,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zenistar.png?27d70",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45897,6 +46397,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zenith.png?88106",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -45960,6 +46461,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zhuge.png?b38f3",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -46012,6 +46514,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ZhugePrime.png?56973",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -46078,6 +46581,7 @@
       "slash": 16.799999,
       "total": 140
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zylok.png?9a401",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
@@ -46159,6 +46663,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/ZylokPrime.png?9c426",
     "isPrime": true,
     "isUmbra": false,
     "isWraith": false,
@@ -46240,6 +46745,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zymos.png?6e643",
     "isPrime": false,
     "isUmbra": false,
     "isWraith": false,
