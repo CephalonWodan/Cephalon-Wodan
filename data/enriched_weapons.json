@@ -19,8 +19,8 @@
     "fireRate": 12.000001,
     "damageTypes": {
       "impact": 26,
-      "puncture": 8.7999992,
-      "slash": 35.200001,
+      "puncture": 35.200001,
+      "slash": 8.7999992,
       "total": 70
     },
     "polarities": [
@@ -85,8 +85,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 44,
-      "puncture": 10.599999,
-      "slash": 42.400002,
+      "puncture": 42.400002,
+      "slash": 10.599999,
       "total": 97
     },
     "polarities": [
@@ -148,8 +148,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 14.900001,
-      "puncture": 119.2,
-      "slash": 14.900001,
+      "puncture": 14.900001,
+      "slash": 119.2,
       "total": 149
     },
     "isPrime": false,
@@ -317,8 +317,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 4.5,
-      "puncture": 2.7,
-      "slash": 1.8000001,
+      "puncture": 1.8000001,
+      "slash": 2.7,
       "blast": 797,
       "total": 806
     },
@@ -387,8 +387,8 @@
     "fireRate": 6.0000005,
     "damageTypes": {
       "impact": 15,
-      "puncture": 17,
-      "slash": 23,
+      "puncture": 23,
+      "slash": 17,
       "radiation": 5,
       "total": 60
     },
@@ -473,8 +473,8 @@
     "fireRate": 0.83333337,
     "damageTypes": {
       "impact": 20,
-      "puncture": 19.999998,
-      "slash": 60.000004,
+      "puncture": 60.000004,
+      "slash": 19.999998,
       "total": 100
     },
     "polarities": [
@@ -557,8 +557,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 3,
-      "puncture": 2.9999995,
-      "slash": 14,
+      "puncture": 14,
+      "slash": 2.9999995,
       "total": 20
     },
     "polarities": [
@@ -606,8 +606,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 3.9000001,
-      "puncture": 3.8999994,
-      "slash": 18.199999,
+      "puncture": 18.199999,
+      "slash": 3.8999994,
       "total": 26
     },
     "polarities": [
@@ -654,8 +654,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 65.400002,
-      "puncture": 65.399986,
-      "slash": 305.19998,
+      "puncture": 305.19998,
+      "slash": 65.399986,
       "total": 436
     },
     "polarities": [
@@ -833,7 +833,7 @@
     "fireRate": 4.5,
     "damageTypes": {
       "impact": 6.4000001,
-      "slash": 57.599998,
+      "puncture": 57.599998,
       "total": 64
     },
     "polarities": [
@@ -881,8 +881,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 4.4000001,
-      "puncture": 1.7599983,
-      "slash": 37.84,
+      "puncture": 37.84,
+      "slash": 1.7599983,
       "total": 44
     },
     "polarities": [
@@ -934,8 +934,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 33.600002,
-      "puncture": 4.1999984,
-      "slash": 4.2000003,
+      "puncture": 4.2000003,
+      "slash": 4.1999984,
       "total": 42
     },
     "polarities": [
@@ -988,8 +988,8 @@
     "fireRate": 4.3333335,
     "damageTypes": {
       "impact": 40,
-      "puncture": 4.9999981,
-      "slash": 5,
+      "puncture": 5,
+      "slash": 4.9999981,
       "total": 50
     },
     "polarities": [
@@ -1043,8 +1043,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 5.4000001,
-      "puncture": 25.199999,
-      "slash": 5.4000001,
+      "puncture": 5.4000001,
+      "slash": 25.199999,
       "total": 36
     },
     "polarities": [
@@ -1092,8 +1092,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 3.8,
-      "puncture": 30.4,
-      "slash": 3.8,
+      "puncture": 3.8,
+      "slash": 30.4,
       "total": 38
     },
     "polarities": [
@@ -1142,8 +1142,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 6,
-      "puncture": 24,
-      "slash": 10,
+      "puncture": 10,
+      "slash": 24,
       "total": 40
     },
     "isPrime": false,
@@ -1188,8 +1188,8 @@
     "fireRate": 1.5833334,
     "damageTypes": {
       "impact": 13,
-      "puncture": 12.999995,
-      "slash": 104,
+      "puncture": 104,
+      "slash": 12.999995,
       "total": 130
     },
     "isPrime": false,
@@ -1234,8 +1234,8 @@
     "fireRate": 2.6666667,
     "damageTypes": {
       "impact": 15,
-      "puncture": 14.999994,
-      "slash": 120,
+      "puncture": 120,
+      "slash": 14.999994,
       "total": 150
     },
     "isPrime": true,
@@ -1280,8 +1280,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 44.099998,
-      "puncture": 26.949997,
-      "slash": 26.950001,
+      "puncture": 26.950001,
+      "slash": 26.949997,
       "total": 98
     },
     "isPrime": false,
@@ -1326,8 +1326,8 @@
     "fireRate": 5.666667,
     "damageTypes": {
       "impact": 44.099998,
-      "puncture": 26.949997,
-      "slash": 26.950001,
+      "puncture": 26.950001,
+      "slash": 26.949997,
       "total": 98
     },
     "polarities": [
@@ -1376,8 +1376,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 1.8000001,
-      "puncture": 9,
-      "slash": 7.2000003,
+      "puncture": 7.2000003,
+      "slash": 9,
       "total": 18
     },
     "polarities": [
@@ -1425,8 +1425,8 @@
     "fireRate": 13.333334,
     "damageTypes": {
       "impact": 2,
-      "puncture": 10,
-      "slash": 8,
+      "puncture": 8,
+      "slash": 10,
       "total": 20
     },
     "polarities": [
@@ -1476,8 +1476,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 16.800001,
-      "puncture": 8.3999987,
-      "slash": 2.8,
+      "puncture": 2.8,
+      "slash": 8.3999987,
       "total": 28
     },
     "polarities": [
@@ -1525,8 +1525,8 @@
     "fireRate": 7.0833335,
     "damageTypes": {
       "impact": 21.6,
-      "puncture": 10.799998,
-      "slash": 3.6000001,
+      "puncture": 3.6000001,
+      "slash": 10.799998,
       "total": 36
     },
     "polarities": [
@@ -1575,8 +1575,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 22.5,
-      "puncture": 45,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 45,
       "total": 90
     },
     "isPrime": false,
@@ -1621,8 +1621,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 16.5,
-      "puncture": 77,
-      "slash": 16.5,
+      "puncture": 16.5,
+      "slash": 77,
       "total": 110
     },
     "polarities": [
@@ -1671,8 +1671,8 @@
     "fireRate": 20.000002,
     "damageTypes": {
       "impact": 1.8000001,
-      "puncture": 1.7999997,
-      "slash": 8.3999996,
+      "puncture": 8.3999996,
+      "slash": 1.7999997,
       "total": 12
     },
     "polarities": [
@@ -1809,8 +1809,8 @@
     "criticalMultiplier": 2,
     "statusChance": 0.24000001,
     "damageTypes": {
-      "puncture": 88.199997,
-      "slash": 37.800003,
+      "puncture": 37.800003,
+      "slash": 88.199997,
       "total": 126
     },
     "polarities": [
@@ -1974,8 +1974,8 @@
     "statusChance": 0.20999998,
     "damageTypes": {
       "impact": 91,
-      "puncture": 19.499996,
-      "slash": 19.5,
+      "puncture": 19.5,
+      "slash": 19.499996,
       "total": 130
     },
     "polarities": [
@@ -2187,8 +2187,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 25.500002,
-      "puncture": 8.4999924,
-      "slash": 136,
+      "puncture": 136,
+      "slash": 8.4999924,
       "total": 170
     },
     "polarities": [
@@ -2280,8 +2280,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 63,
-      "puncture": 13.499998,
-      "slash": 13.500001,
+      "puncture": 13.500001,
+      "slash": 13.499998,
       "total": 90
     },
     "isPrime": false,
@@ -2370,8 +2370,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 89.599998,
-      "puncture": 19.199997,
-      "slash": 19.200001,
+      "puncture": 19.200001,
+      "slash": 19.199997,
       "total": 128
     },
     "polarities": [
@@ -2519,8 +2519,8 @@
     "statusChance": 0.25999999,
     "fireRate": 4.666667,
     "damageTypes": {
-      "puncture": 23.999998,
-      "slash": 36,
+      "puncture": 36,
+      "slash": 23.999998,
       "total": 60
     },
     "polarities": [
@@ -2564,7 +2564,7 @@
     "statusChance": 0.38,
     "damageTypes": {
       "impact": 233.99998,
-      "puncture": 126.00001,
+      "slash": 126.00001,
       "total": 360
     },
     "polarities": [
@@ -2656,7 +2656,7 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 60,
-      "puncture": 240,
+      "slash": 240,
       "total": 300
     },
     "polarities": [
@@ -2784,8 +2784,8 @@
     "fireRate": 4.3333335,
     "damageTypes": {
       "impact": 24.51,
-      "puncture": 26.219999,
-      "slash": 6.27,
+      "puncture": 6.27,
+      "slash": 26.219999,
       "total": 57
     },
     "polarities": [
@@ -2844,8 +2844,8 @@
     "statusChance": 0.37,
     "damageTypes": {
       "impact": 35.639999,
-      "puncture": 201.96001,
-      "slash": 59.400002,
+      "puncture": 59.400002,
+      "slash": 201.96001,
       "total": 297
     },
     "polarities": [
@@ -2976,8 +2976,8 @@
     "fireRate": 4.3333335,
     "damageTypes": {
       "impact": 70,
-      "puncture": 78,
-      "slash": 42,
+      "puncture": 42,
+      "slash": 78,
       "total": 190
     },
     "polarities": [
@@ -3048,8 +3048,8 @@
     "fireRate": 4.3333335,
     "damageTypes": {
       "impact": 100,
-      "puncture": 91,
-      "slash": 49,
+      "puncture": 49,
+      "slash": 91,
       "total": 240
     },
     "polarities": [
@@ -3120,7 +3120,7 @@
     "statusChance": 0.079999983,
     "fireRate": 5.0000005,
     "damageTypes": {
-      "slash": 22,
+      "puncture": 22,
       "heat": 48,
       "total": 70
     },
@@ -3251,8 +3251,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 6.4500003,
-      "puncture": 116.1,
-      "slash": 6.4500003,
+      "puncture": 6.4500003,
+      "slash": 116.1,
       "total": 129
     },
     "isPrime": false,
@@ -3345,8 +3345,8 @@
     "fireRate": 3.6666667,
     "damageTypes": {
       "impact": 4,
-      "puncture": 15.999999,
-      "slash": 60,
+      "puncture": 60,
+      "slash": 15.999999,
       "total": 80
     },
     "polarities": [
@@ -3394,7 +3394,7 @@
     "statusChance": 0.18000001,
     "fireRate": 10.000001,
     "damageTypes": {
-      "slash": 40,
+      "puncture": 40,
       "total": 40
     },
     "polarities": [
@@ -3441,8 +3441,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 2,
-      "puncture": 13,
-      "slash": 5,
+      "puncture": 5,
+      "slash": 13,
       "total": 20
     },
     "polarities": [
@@ -3498,8 +3498,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 51.000004,
-      "puncture": 85,
-      "slash": 34,
+      "puncture": 34,
+      "slash": 85,
       "total": 170
     },
     "polarities": [
@@ -3662,8 +3662,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 10,
-      "puncture": 9.9999962,
-      "slash": 80,
+      "puncture": 80,
+      "slash": 9.9999962,
       "total": 100
     },
     "polarities": [
@@ -3728,8 +3728,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 3.8,
-      "puncture": 30.399998,
-      "slash": 41.799999,
+      "puncture": 41.799999,
+      "slash": 30.399998,
       "total": 76
     },
     "polarities": [
@@ -3871,7 +3871,7 @@
     "statusChance": 0.18000001,
     "fireRate": 3.571429,
     "damageTypes": {
-      "slash": 24,
+      "puncture": 24,
       "magnetic": 42,
       "total": 66
     },
@@ -3947,8 +3947,8 @@
     "fireRate": 16.666668,
     "damageTypes": {
       "impact": 5.7600002,
-      "puncture": 3.5200005,
-      "slash": 6.7199998,
+      "puncture": 6.7199998,
+      "slash": 3.5200005,
       "total": 16
     },
     "polarities": [
@@ -4001,8 +4001,8 @@
     "fireRate": 16.666668,
     "damageTypes": {
       "impact": 5.7600002,
-      "puncture": 3.5200005,
-      "slash": 6.7199998,
+      "puncture": 6.7199998,
+      "slash": 3.5200005,
       "total": 16
     },
     "polarities": [
@@ -4052,7 +4052,7 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 126,
-      "slash": 14,
+      "puncture": 14,
       "total": 140
     },
     "polarities": [
@@ -4143,7 +4143,7 @@
     "statusChance": 0.31999999,
     "damageTypes": {
       "impact": 158.39999,
-      "slash": 17.6,
+      "puncture": 17.6,
       "total": 176
     },
     "polarities": [
@@ -4239,8 +4239,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 12.1,
-      "puncture": 6.599999,
-      "slash": 3.3000002,
+      "puncture": 3.3000002,
+      "slash": 6.599999,
       "total": 22
     },
     "isPrime": false,
@@ -4302,8 +4302,8 @@
     "fireRate": 4.666667,
     "damageTypes": {
       "impact": 26,
-      "puncture": 8.0000019,
-      "slash": 6,
+      "puncture": 6,
+      "slash": 8.0000019,
       "total": 40
     },
     "isPrime": true,
@@ -4361,8 +4361,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 17.6,
-      "puncture": 17.599995,
-      "slash": 140.8,
+      "puncture": 140.8,
+      "slash": 17.599995,
       "total": 176
     },
     "isPrime": false,
@@ -4455,7 +4455,7 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 6.4000001,
-      "slash": 57.599998,
+      "puncture": 57.599998,
       "total": 64
     },
     "polarities": [
@@ -4503,8 +4503,8 @@
     "fireRate": 8.75,
     "damageTypes": {
       "impact": 2.5,
-      "puncture": 2.499999,
-      "slash": 20,
+      "puncture": 20,
+      "slash": 2.499999,
       "total": 25
     },
     "polarities": [
@@ -4568,7 +4568,7 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 4.5999999,
-      "slash": 41.399998,
+      "puncture": 41.399998,
       "total": 46
     },
     "polarities": [
@@ -4632,8 +4632,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 9,
-      "puncture": 6,
-      "slash": 5,
+      "puncture": 5,
+      "slash": 6,
       "total": 20
     },
     "polarities": [
@@ -4687,8 +4687,8 @@
     "fireRate": 8.75,
     "damageTypes": {
       "impact": 7.9200001,
-      "puncture": 8.1599998,
-      "slash": 7.9200001,
+      "puncture": 7.9200001,
+      "slash": 8.1599998,
       "total": 24
     },
     "isPrime": false,
@@ -4764,8 +4764,8 @@
     "fireRate": 9.583334,
     "damageTypes": {
       "impact": 1.75,
-      "puncture": 21,
-      "slash": 12.25,
+      "puncture": 12.25,
+      "slash": 21,
       "total": 35
     },
     "isPrime": true,
@@ -4841,8 +4841,8 @@
     "fireRate": 7.5000005,
     "damageTypes": {
       "impact": 12.25,
-      "puncture": 21,
-      "slash": 1.75,
+      "puncture": 1.75,
+      "slash": 21,
       "total": 35
     },
     "polarities": [
@@ -4917,8 +4917,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 125.3,
-      "puncture": 35.799999,
-      "slash": 17.9,
+      "puncture": 17.9,
+      "slash": 35.799999,
       "total": 179
     },
     "polarities": [
@@ -5010,8 +5010,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 18.700001,
-      "puncture": 149.60001,
-      "slash": 18.700001,
+      "puncture": 18.700001,
+      "slash": 149.60001,
       "total": 187
     },
     "polarities": [
@@ -5108,8 +5108,8 @@
     "fireRate": 4,
     "damageTypes": {
       "impact": 33.600002,
-      "puncture": 4.1999984,
-      "slash": 4.2000003,
+      "puncture": 4.2000003,
+      "slash": 4.1999984,
       "total": 42
     },
     "isPrime": false,
@@ -5178,8 +5178,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 40,
-      "puncture": 4.9999981,
-      "slash": 5,
+      "puncture": 5,
+      "slash": 4.9999981,
       "total": 50
     },
     "isPrime": true,
@@ -5248,8 +5248,8 @@
     "fireRate": 3.8333335,
     "damageTypes": {
       "impact": 1.9999999,
-      "puncture": 19,
-      "slash": 13,
+      "puncture": 13,
+      "slash": 19,
       "toxin": 7,
       "total": 41
     },
@@ -5335,8 +5335,8 @@
     "fireRate": 7.8328986,
     "damageTypes": {
       "impact": 9.9999895,
-      "puncture": 10.000021,
-      "slash": 9.9999895,
+      "puncture": 9.9999895,
+      "slash": 10.000021,
       "total": 30
     },
     "polarities": [
@@ -5413,8 +5413,8 @@
     "fireRate": 9.375,
     "damageTypes": {
       "impact": 13.8,
-      "puncture": 18.4,
-      "slash": 13.8,
+      "puncture": 13.8,
+      "slash": 18.4,
       "total": 46
     },
     "polarities": [
@@ -5491,8 +5491,8 @@
     "fireRate": 6.2500005,
     "damageTypes": {
       "impact": 30,
-      "puncture": 6.0000014,
-      "slash": 24,
+      "puncture": 24,
+      "slash": 6.0000014,
       "total": 60
     },
     "isPrime": false,
@@ -5641,8 +5641,8 @@
     "statusChance": 0.22000003,
     "fireRate": 3.3333335,
     "damageTypes": {
-      "puncture": 63,
-      "slash": 27.000002,
+      "puncture": 27.000002,
+      "slash": 63,
       "total": 90
     },
     "polarities": [
@@ -5748,8 +5748,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 41.360001,
-      "puncture": 82.720001,
-      "slash": 63.920002,
+      "puncture": 63.920002,
+      "slash": 82.720001,
       "total": 188
     },
     "polarities": [
@@ -6021,8 +6021,8 @@
     "statusChance": 0.37,
     "damageTypes": {
       "impact": 17,
-      "puncture": 69,
-      "slash": 71,
+      "puncture": 71,
+      "slash": 69,
       "corrosive": 103,
       "total": 260
     },
@@ -6151,7 +6151,7 @@
     "statusChance": 0.0033333302,
     "fireRate": 3.8333335,
     "damageTypes": {
-      "slash": 30,
+      "puncture": 30,
       "total": 30
     },
     "polarities": [
@@ -6232,7 +6232,7 @@
     "statusChance": 0.019999981,
     "fireRate": 4.5,
     "damageTypes": {
-      "slash": 32,
+      "puncture": 32,
       "total": 32
     },
     "polarities": [
@@ -6312,8 +6312,8 @@
     "fireRate": 1.0833334,
     "damageTypes": {
       "impact": 37.600002,
-      "puncture": 263.19998,
-      "slash": 75.200005,
+      "puncture": 75.200005,
+      "slash": 263.19998,
       "total": 376
     },
     "polarities": [
@@ -6356,7 +6356,7 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 14,
-      "slash": 126,
+      "puncture": 126,
       "total": 140
     },
     "polarities": [
@@ -6479,8 +6479,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 19,
-      "puncture": 52,
-      "slash": 36,
+      "puncture": 36,
+      "slash": 52,
       "toxin": 76,
       "total": 183
     },
@@ -6682,8 +6682,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 342,
-      "puncture": 19.000004,
-      "slash": 19,
+      "puncture": 19,
+      "slash": 19.000004,
       "total": 380
     },
     "polarities": [
@@ -6748,8 +6748,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 165.59999,
-      "puncture": 9.2000027,
-      "slash": 9.1999998,
+      "puncture": 9.1999998,
+      "slash": 9.2000027,
       "total": 184
     },
     "polarities": [
@@ -6815,7 +6815,7 @@
     "fireRate": 8.333334,
     "damageTypes": {
       "impact": 5.2000003,
-      "slash": 20.800001,
+      "puncture": 20.800001,
       "total": 26
     },
     "isPrime": false,
@@ -6870,8 +6870,8 @@
     "statusChance": 0.39999998,
     "damageTypes": {
       "impact": 12,
-      "puncture": 66,
-      "slash": 38,
+      "puncture": 38,
+      "slash": 66,
       "electricity": 100,
       "total": 216
     },
@@ -6968,8 +6968,8 @@
     "statusChance": 0.31999999,
     "fireRate": 0.66666669,
     "damageTypes": {
-      "puncture": 159.99998,
-      "slash": 640,
+      "puncture": 640,
+      "slash": 159.99998,
       "total": 800
     },
     "polarities": [
@@ -7042,7 +7042,7 @@
     "statusChance": 0.36000001,
     "damageTypes": {
       "impact": 207.2,
-      "slash": 88.800003,
+      "puncture": 88.800003,
       "total": 296
     },
     "isPrime": false,
@@ -7130,7 +7130,7 @@
     "statusChance": 0.38,
     "damageTypes": {
       "impact": 210,
-      "slash": 90,
+      "puncture": 90,
       "total": 300
     },
     "polarities": [
@@ -7398,8 +7398,8 @@
     "statusChance": 0.40999997,
     "damageTypes": {
       "impact": 20,
-      "puncture": 70,
-      "slash": 75,
+      "puncture": 75,
+      "slash": 70,
       "corrosive": 120,
       "total": 285
     },
@@ -7572,8 +7572,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 26.250002,
-      "puncture": 8.7499914,
-      "slash": 140,
+      "puncture": 140,
+      "slash": 8.7499914,
       "total": 175
     },
     "polarities": [
@@ -7665,8 +7665,8 @@
     "statusChance": 0.39999998,
     "damageTypes": {
       "impact": 45,
-      "puncture": 66,
-      "slash": 45,
+      "puncture": 45,
+      "slash": 66,
       "toxin": 79,
       "total": 235
     },
@@ -7760,8 +7760,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 83.324997,
-      "puncture": 83.350006,
-      "slash": 83.324997,
+      "puncture": 83.324997,
+      "slash": 83.350006,
       "total": 250
     },
     "polarities": [
@@ -7857,8 +7857,8 @@
     "statusChance": 0.35000002,
     "damageTypes": {
       "impact": 58,
-      "puncture": 65,
-      "slash": 55,
+      "puncture": 55,
+      "slash": 65,
       "viral": 92,
       "total": 270
     },
@@ -8124,8 +8124,8 @@
     "fireRate": 1.8333334,
     "damageTypes": {
       "impact": 101.52,
-      "puncture": 157.91998,
-      "slash": 116.56,
+      "puncture": 116.56,
+      "slash": 157.91998,
       "total": 376
     },
     "polarities": [
@@ -8242,8 +8242,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 18,
-      "puncture": 26,
-      "slash": 32,
+      "puncture": 32,
+      "slash": 26,
       "corrosive": 59,
       "total": 135
     },
@@ -8305,8 +8305,8 @@
     "fireRate": 12.000001,
     "damageTypes": {
       "impact": 1.2,
-      "puncture": 9.6000004,
-      "slash": 1.2,
+      "puncture": 1.2,
+      "slash": 9.6000004,
       "total": 12
     },
     "polarities": [
@@ -8368,8 +8368,8 @@
     "fireRate": 1.1666667,
     "damageTypes": {
       "impact": 25.200001,
-      "puncture": 27.000002,
-      "slash": 37.799999,
+      "puncture": 37.799999,
+      "slash": 27.000002,
       "total": 90
     },
     "polarities": [
@@ -8453,8 +8453,8 @@
     "fireRate": 1.4166667,
     "damageTypes": {
       "impact": 25.200001,
-      "puncture": 27.000002,
-      "slash": 37.799999,
+      "puncture": 37.799999,
+      "slash": 27.000002,
       "total": 90
     },
     "polarities": [
@@ -8605,8 +8605,8 @@
     "statusChance": 0.13999999,
     "damageTypes": {
       "impact": 96,
-      "puncture": 36,
-      "slash": 68,
+      "puncture": 68,
+      "slash": 36,
       "total": 200
     },
     "polarities": [
@@ -8853,8 +8853,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 31.800001,
-      "puncture": 58.299995,
-      "slash": 15.900001,
+      "puncture": 15.900001,
+      "slash": 58.299995,
       "total": 106
     },
     "polarities": [
@@ -9091,8 +9091,8 @@
     "statusChance": 0.30000001,
     "fireRate": 12.000001,
     "damageTypes": {
-      "puncture": 5,
-      "slash": 8,
+      "puncture": 8,
+      "slash": 5,
       "radiation": 10,
       "total": 23
     },
@@ -9142,8 +9142,8 @@
     "fireRate": 9.09091,
     "damageTypes": {
       "impact": 39.600002,
-      "puncture": 40.799995,
-      "slash": 39.600002,
+      "puncture": 39.600002,
+      "slash": 40.799995,
       "total": 120
     },
     "isPrime": false,
@@ -9194,8 +9194,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 210.00002,
-      "puncture": 209.99997,
-      "slash": 280,
+      "puncture": 280,
+      "slash": 209.99997,
       "total": 700
     },
     "polarities": [
@@ -9245,8 +9245,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 225.00002,
-      "puncture": 224.99997,
-      "slash": 300,
+      "puncture": 300,
+      "slash": 224.99997,
       "total": 750
     },
     "polarities": [
@@ -9309,8 +9309,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 17,
-      "puncture": 136,
-      "slash": 17,
+      "puncture": 17,
+      "slash": 136,
       "total": 170
     },
     "polarities": [
@@ -9402,8 +9402,8 @@
     "criticalMultiplier": 1.5,
     "statusChance": 0.22000003,
     "damageTypes": {
-      "puncture": 36,
-      "slash": 57.999996,
+      "puncture": 57.999996,
+      "slash": 36,
       "radiation": 60,
       "total": 154
     },
@@ -9492,8 +9492,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 3.3333299,
-      "puncture": 3.3333402,
-      "slash": 3.3333299,
+      "puncture": 3.3333299,
+      "slash": 3.3333402,
       "total": 10
     },
     "isPrime": false,
@@ -9506,8 +9506,8 @@
         "name": "Primary Fire",
         "damage": {
           "impact": 3.3333299,
-          "puncture": 3.3333402,
-          "slash": 3.3333299,
+          "puncture": 3.3333299,
+          "slash": 3.3333402,
           "total": 10
         },
         "critChance": 0,
@@ -9533,8 +9533,8 @@
     "criticalMultiplier": 1.5,
     "statusChance": 0.39999998,
     "damageTypes": {
-      "puncture": 60,
-      "slash": 120,
+      "puncture": 120,
+      "slash": 60,
       "radiation": 80,
       "total": 260
     },
@@ -9694,8 +9694,8 @@
     "fireRate": 11.250001,
     "damageTypes": {
       "impact": 6,
-      "puncture": 1.5000004,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 1.5000004,
       "total": 30
     },
     "isPrime": false,
@@ -9756,8 +9756,8 @@
     "fireRate": 11.250001,
     "damageTypes": {
       "impact": 6.4000001,
-      "puncture": 1.6000004,
-      "slash": 24,
+      "puncture": 24,
+      "slash": 1.6000004,
       "total": 32
     },
     "isPrime": false,
@@ -9818,8 +9818,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 2.9000001,
-      "puncture": 8.6999989,
-      "slash": 46.400002,
+      "puncture": 46.400002,
+      "slash": 8.6999989,
       "total": 58
     },
     "polarities": [
@@ -9897,8 +9897,8 @@
     "statusChance": 0.13999999,
     "damageTypes": {
       "impact": 3.95,
-      "puncture": 19.75,
-      "slash": 134.3,
+      "puncture": 134.3,
+      "slash": 19.75,
       "total": 158
     },
     "polarities": [
@@ -9990,8 +9990,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 20.4,
-      "puncture": 30.6,
-      "slash": 119,
+      "puncture": 119,
+      "slash": 30.6,
       "total": 170
     },
     "polarities": [
@@ -10132,8 +10132,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 14.2,
-      "puncture": 113.6,
-      "slash": 14.2,
+      "puncture": 14.2,
+      "slash": 113.6,
       "total": 142
     },
     "polarities": [
@@ -10229,8 +10229,8 @@
     "fireRate": 20.000002,
     "damageTypes": {
       "impact": 2.4000001,
-      "puncture": 2.3999996,
-      "slash": 11.2,
+      "puncture": 11.2,
+      "slash": 2.3999996,
       "total": 16
     },
     "polarities": [
@@ -10274,8 +10274,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 16.800001,
-      "puncture": 126,
-      "slash": 25.200001,
+      "puncture": 25.200001,
+      "slash": 126,
       "total": 168
     },
     "polarities": [
@@ -10372,8 +10372,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 22.5,
-      "puncture": 33.75,
-      "slash": 18.75,
+      "puncture": 18.75,
+      "slash": 33.75,
       "total": 75
     },
     "isPrime": false,
@@ -10462,7 +10462,7 @@
     "criticalMultiplier": 2.2,
     "statusChance": 0.24000001,
     "damageTypes": {
-      "puncture": 222,
+      "slash": 222,
       "total": 222
     },
     "polarities": [
@@ -10552,8 +10552,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 9.4000006,
-      "puncture": 159.8,
-      "slash": 18.800001,
+      "puncture": 18.800001,
+      "slash": 159.8,
       "total": 188
     },
     "polarities": [
@@ -10650,8 +10650,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 7,
-      "puncture": 56,
-      "slash": 7,
+      "puncture": 7,
+      "slash": 56,
       "total": 70
     },
     "isPrime": false,
@@ -10713,8 +10713,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 16.800001,
-      "puncture": 302.39999,
-      "slash": 16.800001,
+      "puncture": 16.800001,
+      "slash": 302.39999,
       "total": 336
     },
     "polarities": [
@@ -10796,7 +10796,7 @@
     "fireRate": 18.750002,
     "damageTypes": {
       "impact": 5.2000003,
-      "slash": 20.800001,
+      "puncture": 20.800001,
       "total": 26
     },
     "polarities": [
@@ -10840,8 +10840,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 23.550001,
-      "puncture": 109.9,
-      "slash": 23.550001,
+      "puncture": 23.550001,
+      "slash": 109.9,
       "total": 157
     },
     "polarities": [
@@ -10936,8 +10936,8 @@
     "statusChance": 0.27999997,
     "fireRate": 6.0000005,
     "damageTypes": {
-      "puncture": 32.5,
-      "slash": 17.5,
+      "puncture": 17.5,
+      "slash": 32.5,
       "total": 50
     },
     "polarities": [
@@ -10984,8 +10984,8 @@
     "fireRate": 10.416667,
     "damageTypes": {
       "impact": 49.5,
-      "puncture": 30.249998,
-      "slash": 30.25,
+      "puncture": 30.25,
+      "slash": 30.249998,
       "total": 110
     },
     "isPrime": false,
@@ -11032,8 +11032,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 27.000002,
-      "puncture": 126,
-      "slash": 27.000002,
+      "puncture": 27.000002,
+      "slash": 126,
       "total": 180
     },
     "isPrime": false,
@@ -11122,8 +11122,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 22.050001,
-      "puncture": 102.9,
-      "slash": 22.050001,
+      "puncture": 22.050001,
+      "slash": 102.9,
       "total": 147
     },
     "polarities": [
@@ -11215,8 +11215,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 19,
-      "puncture": 45,
-      "slash": 11,
+      "puncture": 11,
+      "slash": 45,
       "toxin": 47,
       "total": 122
     },
@@ -11310,8 +11310,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 4.8000002,
-      "puncture": 81.600006,
-      "slash": 9.6000004,
+      "puncture": 9.6000004,
+      "slash": 81.600006,
       "total": 96
     },
     "isPrime": false,
@@ -11400,8 +11400,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 8,
-      "puncture": 120,
-      "slash": 32,
+      "puncture": 32,
+      "slash": 120,
       "total": 160
     },
     "polarities": [
@@ -11493,8 +11493,8 @@
     "statusChance": 0.13999999,
     "damageTypes": {
       "impact": 13.799999,
-      "puncture": 66.699997,
-      "slash": 34.5,
+      "puncture": 34.5,
+      "slash": 66.699997,
       "total": 115
     },
     "isPrime": false,
@@ -11583,8 +11583,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 21.6,
-      "puncture": 104.39999,
-      "slash": 54.000004,
+      "puncture": 54.000004,
+      "slash": 104.39999,
       "total": 180
     },
     "polarities": [
@@ -11677,8 +11677,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 11,
-      "puncture": 66,
-      "slash": 33,
+      "puncture": 33,
+      "slash": 66,
       "total": 110
     },
     "isPrime": false,
@@ -11767,8 +11767,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 18,
-      "puncture": 84,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 84,
       "total": 120
     },
     "isPrime": false,
@@ -11861,8 +11861,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 7.5,
-      "puncture": 7.4999971,
-      "slash": 60,
+      "puncture": 60,
+      "slash": 7.4999971,
       "total": 75
     },
     "polarities": [
@@ -12011,8 +12011,8 @@
     "statusChance": 0.050000012,
     "damageTypes": {
       "impact": 3.5,
-      "puncture": 63,
-      "slash": 3.5,
+      "puncture": 3.5,
+      "slash": 63,
       "total": 70
     },
     "polarities": [
@@ -12104,8 +12104,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 7,
-      "puncture": 126,
-      "slash": 7,
+      "puncture": 7,
+      "slash": 126,
       "total": 140
     },
     "polarities": [
@@ -12199,8 +12199,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 44,
-      "puncture": 110,
-      "slash": 66,
+      "puncture": 66,
+      "slash": 110,
       "total": 220
     },
     "polarities": [
@@ -12328,8 +12328,8 @@
     "statusChance": 0.25,
     "fireRate": 7.833334,
     "damageTypes": {
-      "puncture": 23,
-      "slash": 31,
+      "puncture": 31,
+      "slash": 23,
       "corrosive": 7,
       "total": 61
     },
@@ -12399,7 +12399,7 @@
     "fireRate": 6.5000005,
     "damageTypes": {
       "impact": 20.000002,
-      "slash": 55,
+      "puncture": 55,
       "total": 75
     },
     "polarities": [
@@ -12793,8 +12793,8 @@
     "statusChance": 0.36000001,
     "damageTypes": {
       "impact": 10,
-      "puncture": 50,
-      "slash": 140,
+      "puncture": 140,
+      "slash": 50,
       "total": 200
     },
     "polarities": [
@@ -12890,8 +12890,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 120,
-      "puncture": 135,
-      "slash": 45,
+      "puncture": 45,
+      "slash": 135,
       "total": 300
     },
     "polarities": [
@@ -12974,8 +12974,8 @@
     "fireRate": 1.7500001,
     "damageTypes": {
       "impact": 126,
-      "puncture": 141.75,
-      "slash": 47.25,
+      "puncture": 47.25,
+      "slash": 141.75,
       "total": 315
     },
     "polarities": [
@@ -13054,8 +13054,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 33.600002,
-      "puncture": 156.8,
-      "slash": 33.600002,
+      "puncture": 33.600002,
+      "slash": 156.8,
       "total": 224
     },
     "polarities": [
@@ -13147,8 +13147,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 27.000002,
-      "puncture": 126,
-      "slash": 27.000002,
+      "puncture": 27.000002,
+      "slash": 126,
       "total": 180
     },
     "polarities": [
@@ -13240,8 +13240,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 28.800001,
-      "puncture": 134.39999,
-      "slash": 28.800001,
+      "puncture": 28.800001,
+      "slash": 134.39999,
       "total": 192
     },
     "isPrime": false,
@@ -13334,8 +13334,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 292.5,
-      "puncture": 16.250004,
-      "slash": 16.25,
+      "puncture": 16.25,
+      "slash": 16.250004,
       "total": 325
     },
     "polarities": [
@@ -13404,8 +13404,8 @@
     "statusChance": 0.38,
     "fireRate": 1,
     "damageTypes": {
-      "puncture": 455,
-      "slash": 195,
+      "puncture": 195,
+      "slash": 455,
       "total": 650
     },
     "polarities": [
@@ -13488,8 +13488,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 20,
-      "puncture": 260,
-      "slash": 120,
+      "puncture": 120,
+      "slash": 260,
       "radiation": 140,
       "total": 540
     },
@@ -13541,8 +13541,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 36,
-      "puncture": 92,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 92,
       "electricity": 84,
       "total": 230
     },
@@ -13736,8 +13736,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 16.200001,
-      "puncture": 16.199997,
-      "slash": 75.599998,
+      "puncture": 75.599998,
+      "slash": 16.199997,
       "total": 108
     },
     "polarities": [
@@ -13829,8 +13829,8 @@
     "statusChance": 0.25999999,
     "damageTypes": {
       "impact": 26.700001,
-      "puncture": 26.699995,
-      "slash": 124.6,
+      "puncture": 124.6,
+      "slash": 26.699995,
       "total": 178
     },
     "polarities": [
@@ -13926,8 +13926,8 @@
     "fireRate": 3.0000002,
     "damageTypes": {
       "impact": 38,
-      "puncture": 83.599998,
-      "slash": 68.400002,
+      "puncture": 68.400002,
+      "slash": 83.599998,
       "total": 190
     },
     "polarities": [
@@ -13995,8 +13995,8 @@
     "fireRate": 1.3333334,
     "damageTypes": {
       "impact": 35,
-      "puncture": 69.999992,
-      "slash": 245,
+      "puncture": 245,
+      "slash": 69.999992,
       "total": 350
     },
     "polarities": [
@@ -14090,8 +14090,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 50,
-      "puncture": 175,
-      "slash": 25,
+      "puncture": 25,
+      "slash": 175,
       "total": 250
     },
     "polarities": [
@@ -14144,8 +14144,8 @@
     "statusChance": 0.24000001,
     "fireRate": 12.000001,
     "damageTypes": {
-      "puncture": 17.16,
-      "slash": 4.8400002,
+      "puncture": 4.8400002,
+      "slash": 17.16,
       "total": 22
     },
     "isPrime": false,
@@ -14185,8 +14185,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 140,
-      "puncture": 29.999996,
-      "slash": 30.000002,
+      "puncture": 30.000002,
+      "slash": 29.999996,
       "total": 200
     },
     "isPrime": false,
@@ -14275,8 +14275,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 189,
-      "puncture": 40.499992,
-      "slash": 40.5,
+      "puncture": 40.5,
+      "slash": 40.499992,
       "total": 270
     },
     "polarities": [
@@ -14497,8 +14497,8 @@
     "statusChance": 0.11000001,
     "damageTypes": {
       "impact": 94.5,
-      "puncture": 20.249996,
-      "slash": 20.25,
+      "puncture": 20.25,
+      "slash": 20.249996,
       "total": 135
     },
     "isPrime": false,
@@ -14587,8 +14587,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 97.299995,
-      "puncture": 20.849997,
-      "slash": 20.85,
+      "puncture": 20.85,
+      "slash": 20.849997,
       "total": 139
     },
     "isPrime": false,
@@ -14681,8 +14681,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 3,
-      "puncture": 2.9999995,
-      "slash": 14,
+      "puncture": 14,
+      "slash": 2.9999995,
       "total": 20
     },
     "polarities": [
@@ -14746,8 +14746,8 @@
     "statusChance": 0.28999996,
     "fireRate": 2.8333335,
     "damageTypes": {
-      "puncture": 46.200001,
-      "slash": 30.800001,
+      "puncture": 30.800001,
+      "slash": 46.200001,
       "total": 77
     },
     "polarities": [
@@ -14805,8 +14805,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 4.5500002,
-      "puncture": 172.89999,
-      "slash": 4.5500002,
+      "puncture": 4.5500002,
+      "slash": 172.89999,
       "total": 182
     },
     "polarities": [
@@ -14898,8 +14898,8 @@
     "statusChance": 0.25999999,
     "damageTypes": {
       "impact": 7,
-      "puncture": 266,
-      "slash": 7,
+      "puncture": 7,
+      "slash": 266,
       "total": 280
     },
     "polarities": [
@@ -14992,8 +14992,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 12,
-      "puncture": 64,
-      "slash": 38,
+      "puncture": 38,
+      "slash": 64,
       "electricity": 96,
       "total": 210
     },
@@ -15159,8 +15159,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 17.800001,
-      "puncture": 133.5,
-      "slash": 26.700001,
+      "puncture": 26.700001,
+      "slash": 133.5,
       "total": 178
     },
     "polarities": [
@@ -15252,8 +15252,8 @@
     "statusChance": 0.26999998,
     "damageTypes": {
       "impact": 37.43,
-      "puncture": 114.25999,
-      "slash": 45.310001,
+      "puncture": 45.310001,
+      "slash": 114.25999,
       "total": 197
     },
     "isPrime": false,
@@ -15342,8 +15342,8 @@
     "statusChance": 0.12,
     "damageTypes": {
       "impact": 15.750001,
-      "puncture": 73.5,
-      "slash": 15.750001,
+      "puncture": 15.750001,
+      "slash": 73.5,
       "total": 105
     },
     "polarities": [
@@ -15537,8 +15537,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 24.6,
-      "puncture": 114.8,
-      "slash": 24.6,
+      "puncture": 24.6,
+      "slash": 114.8,
       "total": 164
     },
     "polarities": [
@@ -15820,8 +15820,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 18.75,
-      "puncture": 2.5000005,
-      "slash": 3.7500002,
+      "puncture": 3.7500002,
+      "slash": 2.5000005,
       "total": 25
     },
     "isPrime": false,
@@ -15897,8 +15897,8 @@
     "fireRate": 13.333334,
     "damageTypes": {
       "impact": 22.950001,
-      "puncture": 1.3499987,
-      "slash": 2.7,
+      "puncture": 2.7,
+      "slash": 1.3499987,
       "total": 27
     },
     "isPrime": false,
@@ -15973,7 +15973,7 @@
     "statusChance": 0.26999998,
     "fireRate": 13.333334,
     "damageTypes": {
-      "slash": 25,
+      "puncture": 25,
       "total": 25
     },
     "polarities": [
@@ -16021,8 +16021,8 @@
     "fireRate": 20.000002,
     "damageTypes": {
       "impact": 4.4000001,
-      "puncture": 2.9333372,
-      "slash": 3.6666629,
+      "puncture": 3.6666629,
+      "slash": 2.9333372,
       "total": 11
     },
     "isPrime": false,
@@ -16063,8 +16063,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 24,
-      "puncture": 112,
-      "slash": 24,
+      "puncture": 24,
+      "slash": 112,
       "total": 160
     },
     "isPrime": false,
@@ -16153,8 +16153,8 @@
     "statusChance": 0.31999999,
     "damageTypes": {
       "impact": 60,
-      "puncture": 225,
-      "slash": 15,
+      "puncture": 15,
+      "slash": 225,
       "total": 300
     },
     "polarities": [
@@ -16251,8 +16251,8 @@
     "fireRate": 6.2500005,
     "damageTypes": {
       "impact": 22.5,
-      "puncture": 22.499992,
-      "slash": 180,
+      "puncture": 180,
+      "slash": 22.499992,
       "blast": 310,
       "total": 535
     },
@@ -16322,7 +16322,7 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 17.5,
-      "slash": 7.5000005,
+      "puncture": 7.5000005,
       "total": 25
     },
     "isPrime": false,
@@ -16335,7 +16335,7 @@
         "name": "Primary Fire",
         "damage": {
           "impact": 17.5,
-          "slash": 7.5000005,
+          "puncture": 7.5000005,
           "total": 25
         },
         "critChance": 0.079999998,
@@ -16364,8 +16364,9 @@
     "statusChance": 0.25999999,
     "fireRate": 1.5000001,
     "damageTypes": {
-      "electricity": 150,
-      "total": 150
+      "impact": 17.5,
+      "puncture": 7.5000005,
+      "total": 25
     },
     "polarities": [
       "madurai",
@@ -16458,8 +16459,8 @@
     "fireRate": 1.6666667,
     "damageTypes": {
       "impact": 93.5,
-      "puncture": 74.799995,
-      "slash": 18.700001,
+      "puncture": 18.700001,
+      "slash": 74.799995,
       "total": 187
     },
     "polarities": [
@@ -16503,8 +16504,8 @@
     "statusChance": 0.040000021,
     "damageTypes": {
       "impact": 50.5,
-      "puncture": 141.39999,
-      "slash": 10.1,
+      "puncture": 10.1,
+      "slash": 141.39999,
       "total": 202
     },
     "polarities": [
@@ -16597,8 +16598,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 60,
-      "puncture": 168,
-      "slash": 12,
+      "puncture": 12,
+      "slash": 168,
       "total": 240
     },
     "polarities": [
@@ -16692,8 +16693,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 12.799999,
-      "puncture": 128,
-      "slash": 19.199999,
+      "puncture": 19.199999,
+      "slash": 128,
       "total": 160
     },
     "polarities": [
@@ -16785,8 +16786,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 9,
-      "puncture": 202.5,
-      "slash": 13.5,
+      "puncture": 13.5,
+      "slash": 202.5,
       "total": 225
     },
     "polarities": [
@@ -16879,8 +16880,8 @@
     "statusChance": 0.28999996,
     "damageTypes": {
       "impact": 14.900001,
-      "puncture": 14.899995,
-      "slash": 119.2,
+      "puncture": 119.2,
+      "slash": 14.899995,
       "total": 149
     },
     "polarities": [
@@ -17074,8 +17075,8 @@
     "statusChance": 0.35000002,
     "damageTypes": {
       "impact": 22.5,
-      "puncture": 22.499992,
-      "slash": 180,
+      "puncture": 180,
+      "slash": 22.499992,
       "total": 225
     },
     "polarities": [
@@ -17269,8 +17270,8 @@
     "criticalMultiplier": 2.2,
     "statusChance": 0.36000001,
     "damageTypes": {
-      "puncture": 72,
-      "slash": 168,
+      "puncture": 168,
+      "slash": 72,
       "total": 240
     },
     "polarities": [
@@ -17366,8 +17367,8 @@
     "fireRate": 6,
     "damageTypes": {
       "impact": 5,
-      "puncture": 7.499999,
-      "slash": 37.5,
+      "puncture": 37.5,
+      "slash": 7.499999,
       "total": 50
     },
     "polarities": [
@@ -17427,8 +17428,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 34.5,
-      "puncture": 161,
-      "slash": 34.5,
+      "puncture": 34.5,
+      "slash": 161,
       "total": 230
     },
     "isPrime": false,
@@ -17549,8 +17550,8 @@
     "statusChance": 0.13999999,
     "damageTypes": {
       "impact": 14.000001,
-      "puncture": 56.000004,
-      "slash": 76,
+      "puncture": 76,
+      "slash": 56.000004,
       "heat": 62,
       "total": 208
     },
@@ -17644,8 +17645,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 14.7,
-      "puncture": 117.6,
-      "slash": 14.7,
+      "puncture": 14.7,
+      "slash": 117.6,
       "total": 147
     },
     "polarities": [
@@ -17741,8 +17742,8 @@
     "fireRate": 2.1666667,
     "damageTypes": {
       "impact": 11.25,
-      "puncture": 15.000004,
-      "slash": 48.75,
+      "puncture": 48.75,
+      "slash": 15.000004,
       "total": 75
     },
     "isPrime": false,
@@ -17788,8 +17789,8 @@
     "statusChance": 0.12,
     "damageTypes": {
       "impact": 238,
-      "puncture": 13.999987,
-      "slash": 28,
+      "puncture": 28,
+      "slash": 13.999987,
       "total": 280
     },
     "isPrime": false,
@@ -17924,8 +17925,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 112,
-      "puncture": 134.40001,
-      "slash": 33.599998,
+      "puncture": 33.599998,
+      "slash": 134.40001,
       "total": 280
     },
     "polarities": [
@@ -18020,8 +18021,8 @@
     "statusChance": 0.18000001,
     "fireRate": 5.5555558,
     "damageTypes": {
-      "puncture": 10.4,
-      "slash": 15.6,
+      "puncture": 15.6,
+      "slash": 10.4,
       "total": 26
     },
     "polarities": [
@@ -18082,8 +18083,8 @@
     "fireRate": 6.666667,
     "damageTypes": {
       "impact": 2.6000001,
-      "puncture": 7.7999988,
-      "slash": 15.6,
+      "puncture": 15.6,
+      "slash": 7.7999988,
       "total": 26
     },
     "polarities": [
@@ -18133,8 +18134,8 @@
     "fireRate": 5.8333335,
     "damageTypes": {
       "impact": 3.6000001,
-      "puncture": 1.7999983,
-      "slash": 30.6,
+      "puncture": 30.6,
+      "slash": 1.7999983,
       "total": 36
     },
     "polarities": [
@@ -18184,8 +18185,8 @@
     "fireRate": 6.2500005,
     "damageTypes": {
       "impact": 7.5,
-      "puncture": 15,
-      "slash": 7.5,
+      "puncture": 7.5,
+      "slash": 15,
       "total": 30
     },
     "polarities": [
@@ -18242,8 +18243,8 @@
     "statusChance": 0.11000001,
     "damageTypes": {
       "impact": 19.5,
-      "puncture": 6.4999938,
-      "slash": 104,
+      "puncture": 104,
+      "slash": 6.4999938,
       "total": 130
     },
     "polarities": [
@@ -18339,8 +18340,8 @@
     "fireRate": 7.0000005,
     "damageTypes": {
       "impact": 2.1599998,
-      "puncture": 2.8799994,
-      "slash": 30.960001,
+      "puncture": 30.960001,
+      "slash": 2.8799994,
       "total": 36
     },
     "polarities": [
@@ -18434,8 +18435,8 @@
     "fireRate": 7.0000005,
     "damageTypes": {
       "impact": 2.76,
-      "puncture": 3.6799994,
-      "slash": 39.560001,
+      "puncture": 39.560001,
+      "slash": 3.6799994,
       "total": 46
     },
     "polarities": [
@@ -18614,8 +18615,8 @@
     "fireRate": 16.666668,
     "damageTypes": {
       "impact": 20,
-      "puncture": 12.5,
-      "slash": 17.5,
+      "puncture": 17.5,
+      "slash": 12.5,
       "total": 50
     },
     "polarities": [
@@ -18669,8 +18670,8 @@
     "fireRate": 25.000002,
     "damageTypes": {
       "impact": 20,
-      "puncture": 12.5,
-      "slash": 17.5,
+      "puncture": 17.5,
+      "slash": 12.5,
       "total": 50
     },
     "polarities": [
@@ -18720,8 +18721,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 36,
-      "puncture": 180,
-      "slash": 144,
+      "puncture": 144,
+      "slash": 180,
       "total": 360
     },
     "polarities": [
@@ -18894,8 +18895,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 160,
-      "puncture": 9.9999905,
-      "slash": 30.000002,
+      "puncture": 30.000002,
+      "slash": 9.9999905,
       "total": 200
     },
     "polarities": [
@@ -18988,8 +18989,8 @@
     "statusChance": 0.19,
     "damageTypes": {
       "impact": 79,
-      "puncture": 45,
-      "slash": 13,
+      "puncture": 13,
+      "slash": 45,
       "heat": 81,
       "total": 218
     },
@@ -19181,8 +19182,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 6,
-      "puncture": 90,
-      "slash": 24,
+      "puncture": 24,
+      "slash": 90,
       "total": 120
     },
     "polarities": [
@@ -19305,8 +19306,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 13.500001,
-      "puncture": 63,
-      "slash": 13.500001,
+      "puncture": 13.500001,
+      "slash": 63,
       "total": 90
     },
     "polarities": [
@@ -19403,8 +19404,8 @@
     "fireRate": 11.666667,
     "damageTypes": {
       "impact": 13.049999,
-      "puncture": 7.25,
-      "slash": 8.7000008,
+      "puncture": 8.7000008,
+      "slash": 7.25,
       "total": 29
     },
     "polarities": [
@@ -19452,8 +19453,8 @@
     "fireRate": 11.666667,
     "damageTypes": {
       "impact": 13.95,
-      "puncture": 7.75,
-      "slash": 9.3000002,
+      "puncture": 9.3000002,
+      "slash": 7.75,
       "total": 31
     },
     "polarities": [
@@ -19497,8 +19498,8 @@
     "statusChance": 0.25999999,
     "damageTypes": {
       "impact": 30,
-      "puncture": 72.000008,
-      "slash": 84,
+      "puncture": 84,
+      "slash": 72.000008,
       "toxin": 87,
       "total": 273
     },
@@ -19592,8 +19593,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 50,
-      "puncture": 102,
-      "slash": 96.000008,
+      "puncture": 96.000008,
+      "slash": 102,
       "toxin": 96.000008,
       "total": 344
     },
@@ -19689,8 +19690,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 19.6,
-      "puncture": 58.799992,
-      "slash": 313.60001,
+      "puncture": 313.60001,
+      "slash": 58.799992,
       "total": 392
     },
     "polarities": [
@@ -19733,8 +19734,8 @@
     "statusChance": 0.28999996,
     "damageTypes": {
       "impact": 79,
-      "puncture": 87,
-      "slash": 45,
+      "puncture": 45,
+      "slash": 87,
       "viral": 33,
       "total": 244
     },
@@ -19825,8 +19826,8 @@
     "statusChance": 0.23000002,
     "damageTypes": {
       "impact": 96.400002,
-      "puncture": 120.5,
-      "slash": 24.1,
+      "puncture": 24.1,
+      "slash": 120.5,
       "total": 241
     },
     "polarities": [
@@ -19918,8 +19919,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 58.799999,
-      "puncture": 12.599998,
-      "slash": 12.6,
+      "puncture": 12.6,
+      "slash": 12.599998,
       "total": 84
     },
     "polarities": [
@@ -20117,8 +20118,8 @@
     "fireRate": 4,
     "damageTypes": {
       "impact": 62.999996,
-      "puncture": 18,
-      "slash": 69,
+      "puncture": 69,
+      "slash": 18,
       "total": 150
     },
     "isPrime": false,
@@ -20163,8 +20164,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 75.599998,
-      "puncture": 21.6,
-      "slash": 82.800003,
+      "puncture": 82.800003,
+      "slash": 21.6,
       "total": 180
     },
     "polarities": [
@@ -20210,8 +20211,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 400.5,
-      "puncture": 22.250006,
-      "slash": 22.25,
+      "puncture": 22.25,
+      "slash": 22.250006,
       "total": 445
     },
     "polarities": [
@@ -20254,8 +20255,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 84,
-      "puncture": 17.999996,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 17.999996,
       "total": 120
     },
     "isPrime": false,
@@ -20344,8 +20345,8 @@
     "statusChance": 0.38,
     "damageTypes": {
       "impact": 169.39999,
-      "puncture": 36.299995,
-      "slash": 36.300003,
+      "puncture": 36.300003,
+      "slash": 36.299995,
       "total": 242
     },
     "polarities": [
@@ -20443,8 +20444,8 @@
     "fireRate": 3.6666667,
     "damageTypes": {
       "impact": 6,
-      "puncture": 18,
-      "slash": 6,
+      "puncture": 6,
+      "slash": 18,
       "total": 30
     },
     "polarities": [
@@ -20516,8 +20517,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 6,
-      "puncture": 18,
-      "slash": 6,
+      "puncture": 6,
+      "slash": 18,
       "total": 30
     },
     "polarities": [
@@ -20589,8 +20590,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 9.6999998,
-      "puncture": 46.560001,
-      "slash": 40.739998,
+      "puncture": 40.739998,
+      "slash": 46.560001,
       "total": 97
     },
     "isPrime": false,
@@ -20811,8 +20812,8 @@
     "statusChance": 0.090000033,
     "damageTypes": {
       "impact": 110.01,
-      "puncture": 77.200005,
-      "slash": 5.79,
+      "puncture": 5.79,
+      "slash": 77.200005,
       "total": 193
     },
     "polarities": [
@@ -20904,8 +20905,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 52,
-      "puncture": 103.99999,
-      "slash": 104,
+      "puncture": 104,
+      "slash": 103.99999,
       "total": 260
     },
     "polarities": [
@@ -21060,8 +21061,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 29.999998,
-      "puncture": 45,
-      "slash": 14.999999,
+      "puncture": 14.999999,
+      "slash": 45,
       "heat": 100,
       "total": 190
     },
@@ -21155,8 +21156,8 @@
     "statusChance": 0.19,
     "damageTypes": {
       "impact": 26.039999,
-      "puncture": 151.89999,
-      "slash": 39.060001,
+      "puncture": 39.060001,
+      "slash": 151.89999,
       "total": 217
     },
     "isPrime": false,
@@ -21245,8 +21246,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 13,
-      "puncture": 104,
-      "slash": 13,
+      "puncture": 13,
+      "slash": 104,
       "total": 130
     },
     "isPrime": false,
@@ -21335,8 +21336,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 21.200001,
-      "puncture": 169.60001,
-      "slash": 21.200001,
+      "puncture": 21.200001,
+      "slash": 169.60001,
       "total": 212
     },
     "polarities": [
@@ -21623,8 +21624,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 4.5999999,
-      "puncture": 6.8999987,
-      "slash": 34.5,
+      "puncture": 34.5,
+      "slash": 6.8999987,
       "total": 46
     },
     "polarities": [
@@ -21754,8 +21755,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 6.75,
-      "puncture": 4.5,
-      "slash": 3.75,
+      "puncture": 3.75,
+      "slash": 4.5,
       "total": 15
     },
     "polarities": [
@@ -21907,8 +21908,8 @@
     "fireRate": 1.1666667,
     "damageTypes": {
       "impact": 260,
-      "puncture": 29,
-      "slash": 52,
+      "puncture": 52,
+      "slash": 29,
       "blast": 25,
       "total": 366
     },
@@ -21976,8 +21977,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 4.5999999,
-      "puncture": 36.799999,
-      "slash": 4.5999999,
+      "puncture": 4.5999999,
+      "slash": 36.799999,
       "total": 46
     },
     "isPrime": false,
@@ -22039,8 +22040,8 @@
     "fireRate": 5.5500002,
     "damageTypes": {
       "impact": 5,
-      "puncture": 4.9999981,
-      "slash": 40,
+      "puncture": 40,
+      "slash": 4.9999981,
       "blast": 155,
       "total": 205
     },
@@ -22113,8 +22114,8 @@
     "fireRate": 2.1666667,
     "damageTypes": {
       "impact": 13.05,
-      "puncture": 17.400003,
-      "slash": 56.549999,
+      "puncture": 56.549999,
+      "slash": 17.400003,
       "total": 87
     },
     "isPrime": false,
@@ -22183,8 +22184,8 @@
     "fireRate": 9.09091,
     "damageTypes": {
       "impact": 7.5,
-      "puncture": 15,
-      "slash": 7.5,
+      "puncture": 7.5,
+      "slash": 15,
       "total": 30
     },
     "polarities": [
@@ -22260,8 +22261,8 @@
     "fireRate": 11.666667,
     "damageTypes": {
       "impact": 7.1300001,
-      "puncture": 9.6599989,
-      "slash": 6.21,
+      "puncture": 6.21,
+      "slash": 9.6599989,
       "total": 23
     },
     "polarities": [
@@ -22309,8 +22310,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 4,
-      "puncture": 12,
-      "slash": 4,
+      "puncture": 4,
+      "slash": 12,
       "total": 20
     },
     "polarities": [
@@ -22484,8 +22485,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 18.9,
-      "puncture": 155,
-      "slash": 191.10001,
+      "puncture": 191.10001,
+      "slash": 155,
       "blast": 348.99997,
       "total": 714
     },
@@ -22550,8 +22551,8 @@
     "fireRate": 4.8333335,
     "damageTypes": {
       "impact": 19.98,
-      "puncture": 18.360003,
-      "slash": 15.66,
+      "puncture": 15.66,
+      "slash": 18.360003,
       "total": 54
     },
     "polarities": [
@@ -22614,8 +22615,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 26.200001,
-      "puncture": 36.680004,
-      "slash": 68.119995,
+      "puncture": 68.119995,
+      "slash": 36.680004,
       "corrosive": 69,
       "total": 200
     },
@@ -22675,8 +22676,8 @@
     "statusChance": 0.26999998,
     "damageTypes": {
       "impact": 75.849998,
-      "puncture": 28.699997,
-      "slash": 100.45,
+      "puncture": 100.45,
+      "slash": 28.699997,
       "total": 205
     },
     "polarities": [
@@ -22822,8 +22823,8 @@
     "statusChance": 0.17000002,
     "fireRate": 3.1666667,
     "damageTypes": {
-      "puncture": 204,
-      "slash": 227,
+      "puncture": 227,
+      "slash": 204,
       "blast": 302,
       "total": 733
     },
@@ -22887,8 +22888,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 11.610001,
-      "puncture": 12.69,
-      "slash": 2.7,
+      "puncture": 2.7,
+      "slash": 12.69,
       "total": 27
     },
     "polarities": [
@@ -23079,8 +23080,8 @@
     "statusChance": 0.44999999,
     "damageTypes": {
       "impact": 12,
-      "puncture": 66,
-      "slash": 38,
+      "puncture": 38,
+      "slash": 66,
       "electricity": 100,
       "total": 216
     },
@@ -23178,7 +23179,7 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 64,
-      "puncture": 96,
+      "slash": 96,
       "total": 160
     },
     "polarities": [
@@ -23514,8 +23515,8 @@
     "fireRate": 4.5,
     "damageTypes": {
       "impact": 10,
-      "puncture": 20,
-      "slash": 10,
+      "puncture": 10,
+      "slash": 20,
       "total": 40
     },
     "isPrime": false,
@@ -23574,8 +23575,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 6,
-      "puncture": 42,
-      "slash": 12,
+      "puncture": 12,
+      "slash": 42,
       "total": 60
     },
     "polarities": [
@@ -23638,8 +23639,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 6.9000001,
-      "puncture": 27.6,
-      "slash": 11.5,
+      "puncture": 11.5,
+      "slash": 27.6,
       "total": 46
     },
     "polarities": [
@@ -23701,8 +23702,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 8.25,
-      "puncture": 8.249999,
-      "slash": 38.5,
+      "puncture": 38.5,
+      "slash": 8.249999,
       "total": 55
     },
     "polarities": [
@@ -23780,8 +23781,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 9,
-      "puncture": 8.9999971,
-      "slash": 72,
+      "puncture": 72,
+      "slash": 8.9999971,
       "total": 90
     },
     "polarities": [
@@ -23860,8 +23861,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 15.5,
-      "puncture": 3.1000009,
-      "slash": 43.399998,
+      "puncture": 43.399998,
+      "slash": 3.1000009,
       "total": 62
     },
     "polarities": [
@@ -23934,8 +23935,8 @@
     "criticalMultiplier": 1.5,
     "statusChance": 0.25,
     "damageTypes": {
-      "puncture": 25,
-      "slash": 20,
+      "puncture": 20,
+      "slash": 25,
       "electricity": 56,
       "total": 101
     },
@@ -24110,8 +24111,8 @@
     "statusChance": 0.37,
     "damageTypes": {
       "impact": 47.400002,
-      "puncture": 177.75,
-      "slash": 11.85,
+      "puncture": 11.85,
+      "slash": 177.75,
       "total": 237
     },
     "polarities": [
@@ -24207,8 +24208,8 @@
     "fireRate": 1.0833334,
     "damageTypes": {
       "impact": 13,
-      "puncture": 12.999995,
-      "slash": 104,
+      "puncture": 104,
+      "slash": 12.999995,
       "total": 130
     },
     "polarities": [
@@ -24270,8 +24271,8 @@
     "fireRate": 2.0833335,
     "damageTypes": {
       "impact": 18,
-      "puncture": 17.999994,
-      "slash": 144,
+      "puncture": 144,
+      "slash": 17.999994,
       "total": 180
     },
     "polarities": [
@@ -24334,8 +24335,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 18,
-      "puncture": 84,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 84,
       "total": 120
     },
     "isPrime": false,
@@ -24424,8 +24425,8 @@
     "statusChance": 0.33000004,
     "damageTypes": {
       "impact": 31.650002,
-      "puncture": 147.7,
-      "slash": 31.650002,
+      "puncture": 31.650002,
+      "slash": 147.7,
       "total": 211
     },
     "polarities": [
@@ -24518,8 +24519,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 168,
-      "puncture": 10.49999,
-      "slash": 31.500002,
+      "puncture": 31.500002,
+      "slash": 10.49999,
       "total": 210
     },
     "isPrime": false,
@@ -24612,8 +24613,8 @@
     "fireRate": 4.3333335,
     "damageTypes": {
       "impact": 44.099998,
-      "puncture": 26.949997,
-      "slash": 26.950001,
+      "puncture": 26.950001,
+      "slash": 26.949997,
       "total": 98
     },
     "polarities": [
@@ -24661,8 +24662,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 44.099998,
-      "puncture": 26.949997,
-      "slash": 26.950001,
+      "puncture": 26.950001,
+      "slash": 26.949997,
       "total": 98
     },
     "polarities": [
@@ -24709,8 +24710,8 @@
     "fireRate": 3.0000002,
     "damageTypes": {
       "impact": 25.000002,
-      "puncture": 10,
-      "slash": 15,
+      "puncture": 15,
+      "slash": 10,
       "radiation": 40,
       "total": 90
     },
@@ -24724,8 +24725,8 @@
         "name": "Primary Fire",
         "damage": {
           "impact": 25.000002,
-          "puncture": 10,
-          "slash": 15,
+          "puncture": 15,
+          "slash": 10,
           "radiation": 40,
           "total": 90
         },
@@ -24804,8 +24805,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 80,
-      "puncture": 63.999996,
-      "slash": 16,
+      "puncture": 16,
+      "slash": 63.999996,
       "total": 160
     },
     "polarities": [
@@ -24849,7 +24850,7 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 134.96001,
-      "puncture": 106.04,
+      "slash": 106.04,
       "total": 241
     },
     "isPrime": false,
@@ -24937,7 +24938,7 @@
     "statusChance": 0.36000001,
     "damageTypes": {
       "impact": 145.60001,
-      "puncture": 114.4,
+      "slash": 114.4,
       "total": 260
     },
     "polarities": [
@@ -25033,7 +25034,7 @@
     "fireRate": 8.333334,
     "damageTypes": {
       "impact": 24,
-      "slash": 46,
+      "puncture": 46,
       "heat": 50,
       "total": 120
     },
@@ -25198,8 +25199,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 53.100002,
-      "puncture": 79.650002,
-      "slash": 44.25,
+      "puncture": 44.25,
+      "slash": 79.650002,
       "total": 177
     },
     "polarities": [
@@ -25291,8 +25292,8 @@
     "statusChance": 0.31,
     "damageTypes": {
       "impact": 23,
-      "puncture": 47,
-      "slash": 23,
+      "puncture": 23,
+      "slash": 47,
       "toxin": 65,
       "total": 158
     },
@@ -25387,8 +25388,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 12.5,
-      "puncture": 225,
-      "slash": 12.5,
+      "puncture": 12.5,
+      "slash": 225,
       "total": 250
     },
     "polarities": [
@@ -25481,7 +25482,7 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 81,
-      "slash": 9,
+      "puncture": 9,
       "total": 90
     },
     "polarities": [
@@ -25576,8 +25577,8 @@
     "fireRate": 7.5000005,
     "damageTypes": {
       "impact": 4.5,
-      "puncture": 9,
-      "slash": 4.5,
+      "puncture": 4.5,
+      "slash": 9,
       "total": 18
     },
     "isPrime": false,
@@ -25649,8 +25650,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 63,
-      "puncture": 13.499998,
-      "slash": 13.500001,
+      "puncture": 13.500001,
+      "slash": 13.499998,
       "total": 90
     },
     "isPrime": false,
@@ -25743,8 +25744,8 @@
     "fireRate": 8.333334,
     "damageTypes": {
       "impact": 1.95,
-      "puncture": 1.9499997,
-      "slash": 9.0999994,
+      "puncture": 9.0999994,
+      "slash": 1.9499997,
       "total": 13
     },
     "polarities": [
@@ -25809,8 +25810,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 4,
-      "puncture": 5.999999,
-      "slash": 30,
+      "puncture": 30,
+      "slash": 5.999999,
       "total": 40
     },
     "polarities": [
@@ -25875,8 +25876,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 11.5,
-      "puncture": 34.499996,
-      "slash": 184,
+      "puncture": 184,
+      "slash": 34.499996,
       "total": 230
     },
     "polarities": [
@@ -25956,8 +25957,8 @@
     "fireRate": 2.0833335,
     "damageTypes": {
       "impact": 9.9000006,
-      "puncture": 5.3999991,
-      "slash": 2.7,
+      "puncture": 2.7,
+      "slash": 5.3999991,
       "total": 18
     },
     "polarities": [
@@ -26137,8 +26138,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 369,
-      "puncture": 20.500006,
-      "slash": 20.5,
+      "puncture": 20.5,
+      "slash": 20.500006,
       "toxin": 5,
       "total": 415
     },
@@ -26221,8 +26222,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 2.5,
-      "puncture": 7.499999,
-      "slash": 15.000001,
+      "puncture": 15.000001,
+      "slash": 7.499999,
       "total": 25
     },
     "polarities": [
@@ -26306,8 +26307,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 1.5899999,
-      "puncture": 143.09999,
-      "slash": 14.31,
+      "puncture": 14.31,
+      "slash": 143.09999,
       "total": 159
     },
     "polarities": [
@@ -26371,8 +26372,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 1.73,
-      "puncture": 155.7,
-      "slash": 15.570001,
+      "puncture": 15.570001,
+      "slash": 155.7,
       "total": 173
     },
     "polarities": [
@@ -26432,8 +26433,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 18.75,
-      "puncture": 87.5,
-      "slash": 18.75,
+      "puncture": 18.75,
+      "slash": 87.5,
       "total": 125
     },
     "isPrime": false,
@@ -26522,8 +26523,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 18,
-      "puncture": 126,
-      "slash": 36,
+      "puncture": 36,
+      "slash": 126,
       "total": 180
     },
     "polarities": [
@@ -26617,8 +26618,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 25.800001,
-      "puncture": 120.4,
-      "slash": 25.800001,
+      "puncture": 25.800001,
+      "slash": 120.4,
       "total": 172
     },
     "polarities": [
@@ -26713,8 +26714,8 @@
     "statusChance": 0.5,
     "fireRate": 0.66666669,
     "damageTypes": {
-      "puncture": 251.99997,
-      "slash": 648,
+      "puncture": 648,
+      "slash": 251.99997,
       "total": 900
     },
     "polarities": [
@@ -26791,8 +26792,8 @@
     "statusChance": 0.33000004,
     "damageTypes": {
       "impact": 21,
-      "puncture": 85,
-      "slash": 63,
+      "puncture": 63,
+      "slash": 85,
       "heat": 92,
       "total": 261
     },
@@ -26898,8 +26899,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 7.0999999,
-      "puncture": 120.7,
-      "slash": 14.2,
+      "puncture": 14.2,
+      "slash": 120.7,
       "total": 142
     },
     "polarities": [
@@ -26992,8 +26993,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 9.9000006,
-      "puncture": 178.2,
-      "slash": 9.9000006,
+      "puncture": 9.9000006,
+      "slash": 178.2,
       "total": 198
     },
     "polarities": [
@@ -27174,8 +27175,8 @@
     "statusChance": 0.36000001,
     "damageTypes": {
       "impact": 66,
-      "puncture": 50,
-      "slash": 28,
+      "puncture": 28,
+      "slash": 50,
       "electricity": 90,
       "total": 234
     },
@@ -27312,8 +27313,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 84,
-      "puncture": 17.999996,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 17.999996,
       "total": 120
     },
     "isPrime": false,
@@ -27405,7 +27406,7 @@
     "statusChance": 0.24000001,
     "fireRate": 12.000001,
     "damageTypes": {
-      "slash": 1,
+      "puncture": 1,
       "radiation": 10,
       "total": 11
     },
@@ -27507,7 +27508,7 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 76,
-      "puncture": 38,
+      "slash": 38,
       "electricity": 110,
       "total": 224
     },
@@ -27597,8 +27598,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 7,
-      "puncture": 70,
-      "slash": 63,
+      "puncture": 63,
+      "slash": 70,
       "total": 140
     },
     "polarities": [
@@ -27722,8 +27723,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 9.1999998,
-      "puncture": 110.4,
-      "slash": 64.400002,
+      "puncture": 64.400002,
+      "slash": 110.4,
       "total": 184
     },
     "polarities": [
@@ -27849,8 +27850,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 123.60001,
-      "puncture": 206,
-      "slash": 82.400002,
+      "puncture": 82.400002,
+      "slash": 206,
       "total": 412
     },
     "polarities": [
@@ -27896,7 +27897,7 @@
     "statusChance": 0.22000003,
     "fireRate": 1.4000001,
     "damageTypes": {
-      "slash": 220,
+      "puncture": 220,
       "total": 220
     },
     "polarities": [
@@ -28051,8 +28052,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 100,
-      "puncture": 49.999954,
-      "slash": 850,
+      "puncture": 850,
+      "slash": 49.999954,
       "total": 1000
     },
     "polarities": [
@@ -28149,8 +28150,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 40,
-      "puncture": 79.999992,
-      "slash": 280,
+      "puncture": 280,
+      "slash": 79.999992,
       "total": 400
     },
     "polarities": [
@@ -28242,8 +28243,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 27.750002,
-      "puncture": 129.5,
-      "slash": 27.750002,
+      "puncture": 27.750002,
+      "slash": 129.5,
       "total": 185
     },
     "isPrime": false,
@@ -28332,8 +28333,8 @@
     "statusChance": 0.36000001,
     "damageTypes": {
       "impact": 35.100002,
-      "puncture": 163.8,
-      "slash": 35.100002,
+      "puncture": 35.100002,
+      "slash": 163.8,
       "total": 234
     },
     "isPrime": true,
@@ -28422,8 +28423,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 39,
-      "puncture": 146.25,
-      "slash": 9.75,
+      "puncture": 9.75,
+      "slash": 146.25,
       "total": 195
     },
     "polarities": [
@@ -28632,8 +28633,8 @@
     "fireRate": 3.0000002,
     "damageTypes": {
       "impact": 18,
-      "puncture": 36,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 36,
       "total": 72
     },
     "isPrime": false,
@@ -28692,8 +28693,8 @@
     "fireRate": 3.0000002,
     "damageTypes": {
       "impact": 26,
-      "puncture": 52,
-      "slash": 26,
+      "puncture": 26,
+      "slash": 52,
       "total": 104
     },
     "polarities": [
@@ -28750,8 +28751,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 12.400001,
-      "puncture": 198.40001,
-      "slash": 37.200001,
+      "puncture": 37.200001,
+      "slash": 198.40001,
       "total": 248
     },
     "polarities": [
@@ -28844,8 +28845,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 7.5,
-      "puncture": 120,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 120,
       "total": 150
     },
     "polarities": [
@@ -28941,8 +28942,8 @@
     "fireRate": 3.0000002,
     "damageTypes": {
       "impact": 20,
-      "puncture": 70,
-      "slash": 10,
+      "puncture": 10,
+      "slash": 70,
       "total": 100
     },
     "polarities": [
@@ -29005,8 +29006,8 @@
     "fireRate": 3.6666667,
     "damageTypes": {
       "impact": 20,
-      "puncture": 90,
-      "slash": 10,
+      "puncture": 10,
+      "slash": 90,
       "total": 120
     },
     "polarities": [
@@ -29081,8 +29082,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 48.84,
-      "puncture": 155.39999,
-      "slash": 17.76,
+      "puncture": 17.76,
+      "slash": 155.39999,
       "total": 222
     },
     "isPrime": false,
@@ -29246,8 +29247,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 16,
-      "puncture": 47.999992,
-      "slash": 256,
+      "puncture": 256,
+      "slash": 47.999992,
       "total": 320
     },
     "polarities": [
@@ -29327,8 +29328,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 9,
-      "puncture": 63.000004,
-      "slash": 288,
+      "puncture": 288,
+      "slash": 63.000004,
       "total": 360
     },
     "polarities": [
@@ -29405,8 +29406,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 57,
-      "puncture": 61,
-      "slash": 55,
+      "puncture": 55,
+      "slash": 61,
       "viral": 89,
       "total": 262
     },
@@ -29604,8 +29605,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 20,
-      "puncture": 39.999996,
-      "slash": 140,
+      "puncture": 140,
+      "slash": 39.999996,
       "total": 200
     },
     "isPrime": false,
@@ -29759,8 +29760,8 @@
     "fireRate": 6.0606065,
     "damageTypes": {
       "impact": 20.639999,
-      "puncture": 55.039997,
-      "slash": 96.32,
+      "puncture": 96.32,
+      "slash": 55.039997,
       "total": 172
     },
     "polarities": [
@@ -29845,8 +29846,8 @@
     "fireRate": 18.750002,
     "damageTypes": {
       "impact": 14,
-      "puncture": 5.6000013,
-      "slash": 36.399998,
+      "puncture": 36.399998,
+      "slash": 5.6000013,
       "total": 56
     },
     "polarities": [
@@ -30153,8 +30154,8 @@
     "statusChance": 0.19999999,
     "fireRate": 3.0000002,
     "damageTypes": {
-      "puncture": 98,
-      "slash": 42,
+      "puncture": 42,
+      "slash": 98,
       "total": 140
     },
     "polarities": [
@@ -30409,8 +30410,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 34,
-      "puncture": 88,
-      "slash": 12,
+      "puncture": 12,
+      "slash": 88,
       "electricity": 66,
       "total": 200
     },
@@ -30504,7 +30505,7 @@
     "statusChance": 0.040000021,
     "fireRate": 3.3333335,
     "damageTypes": {
-      "slash": 26,
+      "puncture": 26,
       "heat": 20,
       "total": 46
     },
@@ -30609,8 +30610,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 20,
-      "puncture": 160,
-      "slash": 20,
+      "puncture": 20,
+      "slash": 160,
       "total": 200
     },
     "polarities": [
@@ -30781,8 +30782,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 13.3,
-      "puncture": 106.4,
-      "slash": 13.3,
+      "puncture": 13.3,
+      "slash": 106.4,
       "total": 133
     },
     "polarities": [
@@ -30878,8 +30879,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 49.5,
-      "puncture": 30.249998,
-      "slash": 30.25,
+      "puncture": 30.25,
+      "slash": 30.249998,
       "total": 110
     },
     "polarities": [
@@ -30934,8 +30935,8 @@
     "fireRate": 14.166667,
     "damageTypes": {
       "impact": 17.25,
-      "puncture": 2.3000007,
-      "slash": 3.45,
+      "puncture": 3.45,
+      "slash": 2.3000007,
       "total": 23
     },
     "isPrime": false,
@@ -31011,8 +31012,8 @@
     "fireRate": 21.666668,
     "damageTypes": {
       "impact": 6,
-      "puncture": 4.0000052,
-      "slash": 4.9999948,
+      "puncture": 4.9999948,
+      "slash": 4.0000052,
       "total": 15
     },
     "isPrime": false,
@@ -31057,8 +31058,8 @@
     "fireRate": 1.6666667,
     "damageTypes": {
       "impact": 74.800003,
-      "puncture": 93.5,
-      "slash": 18.700001,
+      "puncture": 18.700001,
+      "slash": 93.5,
       "total": 187
     },
     "polarities": [
@@ -31188,8 +31189,8 @@
     "statusChance": 0.31,
     "damageTypes": {
       "impact": 28.950001,
-      "puncture": 135.09999,
-      "slash": 28.950001,
+      "puncture": 28.950001,
+      "slash": 135.09999,
       "total": 193
     },
     "isPrime": false,
@@ -31278,8 +31279,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 105,
-      "puncture": 22.499996,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 22.499996,
       "total": 150
     },
     "isPrime": false,
@@ -31368,7 +31369,7 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 82,
-      "puncture": 44,
+      "slash": 44,
       "electricity": 124,
       "total": 250
     },
@@ -31462,8 +31463,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 25.500002,
-      "puncture": 119,
-      "slash": 25.500002,
+      "puncture": 25.500002,
+      "slash": 119,
       "total": 170
     },
     "isPrime": false,
@@ -31556,7 +31557,7 @@
     "fireRate": 7.0833335,
     "damageTypes": {
       "impact": 7.5999999,
-      "slash": 30.4,
+      "puncture": 30.4,
       "total": 38
     },
     "isPrime": false,
@@ -31601,8 +31602,8 @@
     "fireRate": 8.833334,
     "damageTypes": {
       "impact": 2.97,
-      "puncture": 11.34,
-      "slash": 12.69,
+      "puncture": 12.69,
+      "slash": 11.34,
       "total": 27
     },
     "polarities": [
@@ -31648,8 +31649,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 59.100002,
-      "puncture": 275.79999,
-      "slash": 59.100002,
+      "puncture": 59.100002,
+      "slash": 275.79999,
       "total": 394
     },
     "polarities": [
@@ -31696,8 +31697,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 103.23,
-      "puncture": 145.08,
-      "slash": 30.690001,
+      "puncture": 30.690001,
+      "slash": 145.08,
       "total": 279
     },
     "polarities": [
@@ -32146,7 +32147,7 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 351.44998,
-      "slash": 429.55002,
+      "puncture": 429.55002,
       "total": 781
     },
     "isPrime": false,
@@ -32191,8 +32192,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 2.2,
-      "puncture": 17.6,
-      "slash": 2.2,
+      "puncture": 2.2,
+      "slash": 17.6,
       "total": 22
     },
     "isPrime": false,
@@ -32242,8 +32243,8 @@
     "fireRate": 4,
     "damageTypes": {
       "impact": 1.92,
-      "puncture": 20.16,
-      "slash": 1.92,
+      "puncture": 1.92,
+      "slash": 20.16,
       "total": 24
     },
     "polarities": [
@@ -32479,8 +32480,8 @@
     "fireRate": 6.3333335,
     "damageTypes": {
       "impact": 18.130001,
-      "puncture": 16.660002,
-      "slash": 14.21,
+      "puncture": 14.21,
+      "slash": 16.660002,
       "total": 49
     },
     "polarities": [
@@ -32525,8 +32526,8 @@
     "statusChance": 0.12,
     "damageTypes": {
       "impact": 27.599998,
-      "puncture": 156.40001,
-      "slash": 46,
+      "puncture": 46,
+      "slash": 156.40001,
       "total": 230
     },
     "isPrime": false,
@@ -32644,8 +32645,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 26,
-      "puncture": 182,
-      "slash": 52,
+      "puncture": 52,
+      "slash": 182,
       "total": 260
     },
     "isPrime": true,
@@ -32658,8 +32659,8 @@
         "name": "Primary Fire",
         "damage": {
           "impact": 26,
-          "puncture": 182,
-          "slash": 52,
+          "puncture": 52,
+          "slash": 182,
           "total": 260
         },
         "critChance": 0.34999999,
@@ -32703,8 +32704,8 @@
     "fireRate": 15.000001,
     "damageTypes": {
       "impact": 9,
-      "puncture": 7,
-      "slash": 2,
+      "puncture": 2,
+      "slash": 7,
       "electricity": 11,
       "total": 29
     },
@@ -32766,8 +32767,8 @@
     "fireRate": 6.0000005,
     "damageTypes": {
       "impact": 8,
-      "puncture": 12,
-      "slash": 22,
+      "puncture": 22,
+      "slash": 12,
       "cold": 16,
       "total": 58
     },
@@ -32873,8 +32874,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 15,
-      "puncture": 15.000004,
-      "slash": 270,
+      "puncture": 270,
+      "slash": 15.000004,
       "total": 300
     },
     "polarities": [
@@ -32940,8 +32941,8 @@
     "fireRate": 1,
     "damageTypes": {
       "impact": 423,
-      "puncture": 23.500006,
-      "slash": 23.5,
+      "puncture": 23.5,
+      "slash": 23.500006,
       "total": 470
     },
     "polarities": [
@@ -33003,8 +33004,8 @@
     "criticalMultiplier": 1.8,
     "statusChance": 0.30000001,
     "damageTypes": {
-      "puncture": 62,
-      "slash": 88,
+      "puncture": 88,
+      "slash": 62,
       "radiation": 96,
       "total": 246
     },
@@ -33098,8 +33099,8 @@
     "fireRate": 0.91666669,
     "damageTypes": {
       "impact": 360,
-      "puncture": 22.499979,
-      "slash": 67.5,
+      "puncture": 67.5,
+      "slash": 22.499979,
       "total": 450
     },
     "polarities": [
@@ -33146,8 +33147,8 @@
     "fireRate": 0.80000007,
     "damageTypes": {
       "impact": 26,
-      "puncture": 78,
-      "slash": 26,
+      "puncture": 26,
+      "slash": 78,
       "total": 130
     },
     "polarities": [
@@ -33196,8 +33197,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 30.000002,
-      "puncture": 140,
-      "slash": 30.000002,
+      "puncture": 30.000002,
+      "slash": 140,
       "total": 200
     },
     "isPrime": true,
@@ -33290,7 +33291,7 @@
     "fireRate": 8,
     "damageTypes": {
       "impact": 16,
-      "slash": 24,
+      "puncture": 24,
       "total": 40
     },
     "polarities": [
@@ -33334,8 +33335,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 18,
-      "puncture": 126,
-      "slash": 36,
+      "puncture": 36,
+      "slash": 126,
       "total": 180
     },
     "isPrime": false,
@@ -33442,8 +33443,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 21.200001,
-      "puncture": 148.39999,
-      "slash": 42.400002,
+      "puncture": 42.400002,
+      "slash": 148.39999,
       "total": 212
     },
     "polarities": [
@@ -33557,7 +33558,7 @@
     "statusChance": 0.25999999,
     "fireRate": 8,
     "damageTypes": {
-      "slash": 12,
+      "puncture": 12,
       "blast": 48,
       "total": 60
     },
@@ -33618,8 +33619,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 8.6500006,
-      "puncture": 147.05,
-      "slash": 17.300001,
+      "puncture": 17.300001,
+      "slash": 147.05,
       "total": 173
     },
     "polarities": [
@@ -33715,8 +33716,8 @@
     "fireRate": 2.6666667,
     "damageTypes": {
       "impact": 144,
-      "puncture": 8.9999914,
-      "slash": 27.000002,
+      "puncture": 27.000002,
+      "slash": 8.9999914,
       "total": 180
     },
     "isPrime": false,
@@ -33766,8 +33767,8 @@
     "fireRate": 3.6666667,
     "damageTypes": {
       "impact": 149.60001,
-      "puncture": 9.3499908,
-      "slash": 28.050001,
+      "puncture": 28.050001,
+      "slash": 9.3499908,
       "total": 187
     },
     "polarities": [
@@ -34056,8 +34057,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 173.59999,
-      "puncture": 37.199993,
-      "slash": 37.200001,
+      "puncture": 37.200001,
+      "slash": 37.199993,
       "total": 248
     },
     "polarities": [
@@ -34220,8 +34221,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 192,
-      "puncture": 11.999989,
-      "slash": 36,
+      "puncture": 36,
+      "slash": 11.999989,
       "total": 240
     },
     "polarities": [
@@ -34317,8 +34318,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 21,
-      "puncture": 168,
-      "slash": 21,
+      "puncture": 21,
+      "slash": 168,
       "total": 210
     },
     "polarities": [
@@ -34369,8 +34370,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 80,
-      "puncture": 112,
-      "slash": 8,
+      "puncture": 8,
+      "slash": 112,
       "total": 200
     },
     "polarities": [
@@ -34462,8 +34463,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 16,
-      "puncture": 112,
-      "slash": 32,
+      "puncture": 32,
+      "slash": 112,
       "total": 160
     },
     "polarities": [
@@ -34575,8 +34576,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 20,
-      "puncture": 160,
-      "slash": 20,
+      "puncture": 20,
+      "slash": 160,
       "total": 200
     },
     "isPrime": false,
@@ -34665,8 +34666,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 25,
-      "puncture": 200,
-      "slash": 25,
+      "puncture": 25,
+      "slash": 200,
       "total": 250
     },
     "polarities": [
@@ -34758,8 +34759,8 @@
     "statusChance": 0.28999996,
     "damageTypes": {
       "impact": 22.5,
-      "puncture": 105,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 105,
       "total": 150
     },
     "polarities": [
@@ -35048,7 +35049,7 @@
     "statusChance": 0.18000001,
     "fireRate": 2.4000001,
     "damageTypes": {
-      "slash": 8,
+      "puncture": 8,
       "toxin": 32,
       "total": 40
     },
@@ -35109,7 +35110,7 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 5.5999999,
-      "slash": 22.4,
+      "puncture": 22.4,
       "total": 28
     },
     "polarities": [
@@ -35153,8 +35154,8 @@
     "criticalMultiplier": 1.5,
     "statusChance": 0.30000001,
     "damageTypes": {
-      "puncture": 66,
-      "slash": 30,
+      "puncture": 30,
+      "slash": 66,
       "electricity": 80,
       "total": 176
     },
@@ -35348,8 +35349,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 33.666668,
-      "puncture": 33.666664,
-      "slash": 33.666668,
+      "puncture": 33.666668,
+      "slash": 33.666664,
       "total": 101
     },
     "isPrime": false,
@@ -35430,8 +35431,8 @@
     "fireRate": 3.6666665,
     "damageTypes": {
       "impact": 9.6000004,
-      "puncture": 11.52,
-      "slash": 26.880001,
+      "puncture": 26.880001,
+      "slash": 11.52,
       "heat": 46,
       "total": 94
     },
@@ -35522,7 +35523,7 @@
     "criticalMultiplier": 1.5,
     "statusChance": 0.25999999,
     "damageTypes": {
-      "puncture": 96,
+      "slash": 96,
       "electricity": 138,
       "total": 234
     },
@@ -35765,8 +35766,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 13.5,
-      "puncture": 243,
-      "slash": 13.5,
+      "puncture": 13.5,
+      "slash": 243,
       "total": 270
     },
     "polarities": [
@@ -35889,8 +35890,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 70,
-      "puncture": 50,
-      "slash": 20,
+      "puncture": 20,
+      "slash": 50,
       "cold": 130,
       "total": 270
     },
@@ -35988,8 +35989,8 @@
     "fireRate": 7.3943663,
     "damageTypes": {
       "impact": 21,
-      "puncture": 4.499999,
-      "slash": 4.5,
+      "puncture": 4.5,
+      "slash": 4.499999,
       "total": 30
     },
     "polarities": [
@@ -36051,8 +36052,8 @@
     "fireRate": 9.375,
     "damageTypes": {
       "impact": 20,
-      "puncture": 14.999998,
-      "slash": 15.000001,
+      "puncture": 15.000001,
+      "slash": 14.999998,
       "total": 50
     },
     "polarities": [
@@ -36110,8 +36111,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 38.279999,
-      "puncture": 107.88,
-      "slash": 27.84,
+      "puncture": 27.84,
+      "slash": 107.88,
       "total": 174
     },
     "isPrime": false,
@@ -36537,8 +36538,8 @@
     "statusChance": 0.15999997,
     "damageTypes": {
       "impact": 18,
-      "puncture": 84,
-      "slash": 18,
+      "puncture": 18,
+      "slash": 84,
       "total": 120
     },
     "isPrime": false,
@@ -36627,8 +36628,8 @@
     "statusChance": 0.25999999,
     "damageTypes": {
       "impact": 31.500002,
-      "puncture": 147,
-      "slash": 31.500002,
+      "puncture": 31.500002,
+      "slash": 147,
       "total": 210
     },
     "polarities": [
@@ -36721,8 +36722,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 26.250002,
-      "puncture": 136.5,
-      "slash": 12.25,
+      "puncture": 12.25,
+      "slash": 136.5,
       "total": 175
     },
     "polarities": [
@@ -36815,8 +36816,8 @@
     "statusChance": 0.35000002,
     "damageTypes": {
       "impact": 73.260002,
-      "puncture": 166.5,
-      "slash": 93.239998,
+      "puncture": 93.239998,
+      "slash": 166.5,
       "total": 333
     },
     "polarities": [
@@ -36913,8 +36914,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 18,
-      "puncture": 17.999994,
-      "slash": 144,
+      "puncture": 144,
+      "slash": 17.999994,
       "total": 180
     },
     "polarities": [
@@ -36967,8 +36968,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 10,
-      "puncture": 10.000002,
-      "slash": 180,
+      "puncture": 180,
+      "slash": 10.000002,
       "total": 200
     },
     "polarities": [
@@ -37072,8 +37073,8 @@
     "fireRate": 15.000001,
     "damageTypes": {
       "impact": 1.2,
-      "puncture": 6,
-      "slash": 4.8000002,
+      "puncture": 4.8000002,
+      "slash": 6,
       "total": 12
     },
     "polarities": [
@@ -37141,8 +37142,8 @@
     "fireRate": 15.000001,
     "damageTypes": {
       "impact": 1.2,
-      "puncture": 6,
-      "slash": 4.8000002,
+      "puncture": 4.8000002,
+      "slash": 6,
       "total": 12
     },
     "polarities": [
@@ -37272,8 +37273,8 @@
     "statusChance": 0.22000003,
     "fireRate": 12.000001,
     "damageTypes": {
-      "puncture": 10.440001,
-      "slash": 7.5599999,
+      "puncture": 7.5599999,
+      "slash": 10.440001,
       "total": 18
     },
     "isPrime": false,
@@ -37316,8 +37317,8 @@
     "statusChance": 0.27999997,
     "fireRate": 12.000001,
     "damageTypes": {
-      "puncture": 12.760001,
-      "slash": 9.2399998,
+      "puncture": 9.2399998,
+      "slash": 12.760001,
       "total": 22
     },
     "isPrime": false,
@@ -37440,8 +37441,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 8.1999998,
-      "puncture": 24.599997,
-      "slash": 49.200001,
+      "puncture": 49.200001,
+      "slash": 24.599997,
       "total": 82
     },
     "polarities": [
@@ -37491,8 +37492,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 6,
-      "puncture": 5.9999981,
-      "slash": 48,
+      "puncture": 48,
+      "slash": 5.9999981,
       "total": 60
     },
     "polarities": [
@@ -37542,8 +37543,8 @@
     "fireRate": 1.8333334,
     "damageTypes": {
       "impact": 100.17001,
-      "puncture": 155.81998,
-      "slash": 115.01,
+      "puncture": 115.01,
+      "slash": 155.81998,
       "total": 371
     },
     "polarities": [
@@ -37615,8 +37616,8 @@
     "fireRate": 6.0000005,
     "damageTypes": {
       "impact": 7.2800002,
-      "puncture": 28.080002,
-      "slash": 16.639999,
+      "puncture": 16.639999,
+      "slash": 28.080002,
       "total": 52
     },
     "polarities": [
@@ -37846,8 +37847,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 9.8000002,
-      "puncture": 8.4000006,
-      "slash": 9.8000002,
+      "puncture": 9.8000002,
+      "slash": 8.4000006,
       "total": 28
     },
     "polarities": [
@@ -37910,8 +37911,8 @@
     "fireRate": 10.000001,
     "damageTypes": {
       "impact": 10.5,
-      "puncture": 9,
-      "slash": 10.5,
+      "puncture": 10.5,
+      "slash": 9,
       "total": 30
     },
     "polarities": [
@@ -37971,8 +37972,8 @@
     "statusChance": 0.13999999,
     "damageTypes": {
       "impact": 61.599998,
-      "puncture": 83.599998,
-      "slash": 74.800003,
+      "puncture": 74.800003,
+      "slash": 83.599998,
       "total": 220
     },
     "isPrime": false,
@@ -38084,8 +38085,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 13.75,
-      "puncture": 7.499999,
-      "slash": 3.7500002,
+      "puncture": 3.7500002,
+      "slash": 7.499999,
       "total": 25
     },
     "polarities": [
@@ -38170,8 +38171,8 @@
     "fireRate": 3.3333335,
     "damageTypes": {
       "impact": 24.299999,
-      "puncture": 21.599998,
-      "slash": 8.1000004,
+      "puncture": 8.1000004,
+      "slash": 21.599998,
       "total": 54
     },
     "polarities": [
@@ -38258,8 +38259,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 26,
-      "puncture": 8.0000019,
-      "slash": 6,
+      "puncture": 6,
+      "slash": 8.0000019,
       "total": 40
     },
     "polarities": [
@@ -38344,8 +38345,8 @@
     "fireRate": 6.3333335,
     "damageTypes": {
       "impact": 14.190001,
-      "puncture": 15.509999,
-      "slash": 3.3,
+      "puncture": 3.3,
+      "slash": 15.509999,
       "total": 33
     },
     "isPrime": false,
@@ -38454,8 +38455,8 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 38,
-      "puncture": 106.4,
-      "slash": 45.599998,
+      "puncture": 45.599998,
+      "slash": 106.4,
       "total": 190
     },
     "polarities": [
@@ -38551,8 +38552,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 4,
-      "puncture": 5.999999,
-      "slash": 30,
+      "puncture": 30,
+      "slash": 5.999999,
       "total": 40
     },
     "isPrime": false,
@@ -38598,8 +38599,8 @@
     "fireRate": 12.500001,
     "damageTypes": {
       "impact": 4,
-      "puncture": 5.999999,
-      "slash": 30,
+      "puncture": 30,
+      "slash": 5.999999,
       "total": 40
     },
     "polarities": [
@@ -38645,8 +38646,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 54,
-      "puncture": 107.99999,
-      "slash": 108,
+      "puncture": 108,
+      "slash": 107.99999,
       "total": 270
     },
     "polarities": [
@@ -38767,8 +38768,8 @@
     "fireRate": 3.9840639,
     "damageTypes": {
       "impact": 26.400002,
-      "puncture": 27.199997,
-      "slash": 26.400002,
+      "puncture": 26.400002,
+      "slash": 27.199997,
       "total": 80
     },
     "isPrime": false,
@@ -38827,8 +38828,8 @@
     "fireRate": 4.7169814,
     "damageTypes": {
       "impact": 29.040001,
-      "puncture": 29.919998,
-      "slash": 29.040001,
+      "puncture": 29.040001,
+      "slash": 29.919998,
       "total": 88
     },
     "polarities": [
@@ -38888,7 +38889,7 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 11.25,
-      "slash": 213.75,
+      "puncture": 213.75,
       "total": 225
     },
     "isPrime": false,
@@ -39094,8 +39095,8 @@
     "statusChance": 0.39999998,
     "damageTypes": {
       "impact": 238,
-      "puncture": 13.999987,
-      "slash": 28,
+      "puncture": 28,
+      "slash": 13.999987,
       "total": 280
     },
     "isPrime": false,
@@ -39280,7 +39281,7 @@
     "statusChance": 0.31,
     "damageTypes": {
       "impact": 39.400002,
-      "puncture": 157.60001,
+      "slash": 157.60001,
       "total": 197
     },
     "polarities": [
@@ -39441,8 +39442,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 20,
-      "puncture": 68,
-      "slash": 54,
+      "puncture": 54,
+      "slash": 68,
       "radiation": 72,
       "total": 214
     },
@@ -39545,8 +39546,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 20,
-      "puncture": 76,
-      "slash": 54,
+      "puncture": 54,
+      "slash": 76,
       "radiation": 80,
       "total": 230
     },
@@ -39653,8 +39654,8 @@
     "statusChance": 0.10000002,
     "damageTypes": {
       "impact": 32,
-      "puncture": 112,
-      "slash": 16,
+      "puncture": 16,
+      "slash": 112,
       "total": 160
     },
     "polarities": [
@@ -39746,8 +39747,8 @@
     "statusChance": 0.25999999,
     "damageTypes": {
       "impact": 39.599998,
-      "puncture": 115.2,
-      "slash": 25.200001,
+      "puncture": 25.200001,
+      "slash": 115.2,
       "total": 180
     },
     "polarities": [
@@ -39844,7 +39845,7 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 7,
-      "slash": 63,
+      "puncture": 63,
       "total": 70
     },
     "polarities": [
@@ -39889,8 +39890,8 @@
     "statusChance": 0.35000002,
     "damageTypes": {
       "impact": 21,
-      "puncture": 10.49999,
-      "slash": 178.5,
+      "puncture": 178.5,
+      "slash": 10.49999,
       "total": 210
     },
     "polarities": [
@@ -39999,7 +40000,7 @@
     "fireRate": 9.333334,
     "damageTypes": {
       "impact": 3,
-      "slash": 27,
+      "puncture": 27,
       "total": 30
     },
     "polarities": [
@@ -40334,8 +40335,8 @@
     "fireRate": 9.666667,
     "damageTypes": {
       "impact": 11.2,
-      "puncture": 7.8399992,
-      "slash": 8.96,
+      "puncture": 8.96,
+      "slash": 7.8399992,
       "total": 28
     },
     "polarities": [
@@ -40456,7 +40457,7 @@
     "statusChance": 0.22000003,
     "damageTypes": {
       "impact": 102.60001,
-      "puncture": 87.399994,
+      "slash": 87.399994,
       "total": 190
     },
     "isPrime": false,
@@ -40548,8 +40549,8 @@
     "fireRate": 2.6666667,
     "damageTypes": {
       "impact": 20,
-      "puncture": 39.999996,
-      "slash": 140,
+      "puncture": 140,
+      "slash": 39.999996,
       "total": 200
     },
     "polarities": [
@@ -40645,8 +40646,8 @@
     "statusChance": 0.25999999,
     "fireRate": 15.000001,
     "damageTypes": {
-      "puncture": 17.16,
-      "slash": 4.8400002,
+      "puncture": 4.8400002,
+      "slash": 17.16,
       "total": 22
     },
     "isPrime": false,
@@ -40728,8 +40729,8 @@
     "statusChance": 0.38,
     "damageTypes": {
       "impact": 9.1199999,
-      "puncture": 136.8,
-      "slash": 82.080002,
+      "puncture": 82.080002,
+      "slash": 136.8,
       "total": 228
     },
     "polarities": [
@@ -40837,8 +40838,8 @@
     "statusChance": 0.27999997,
     "damageTypes": {
       "impact": 9.9000006,
-      "puncture": 178.2,
-      "slash": 9.9000006,
+      "puncture": 9.9000006,
+      "slash": 178.2,
       "total": 198
     },
     "isPrime": false,
@@ -40930,7 +40931,7 @@
     "statusChance": 0.12,
     "fireRate": 3.3333335,
     "damageTypes": {
-      "slash": 40,
+      "puncture": 40,
       "heat": 30,
       "total": 70
     },
@@ -41010,7 +41011,7 @@
     "fireRate": 2.3333335,
     "damageTypes": {
       "impact": 40,
-      "slash": 20,
+      "puncture": 20,
       "heat": 140,
       "total": 200
     },
@@ -41078,8 +41079,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 13.2,
-      "puncture": 13.200002,
-      "slash": 33.599998,
+      "puncture": 33.599998,
+      "slash": 13.200002,
       "total": 60
     },
     "isPrime": false,
@@ -41155,8 +41156,8 @@
     "fireRate": 11.666667,
     "damageTypes": {
       "impact": 7.2000003,
-      "puncture": 7.1999989,
-      "slash": 9.6000004,
+      "puncture": 9.6000004,
+      "slash": 7.1999989,
       "total": 24
     },
     "isPrime": false,
@@ -41216,8 +41217,8 @@
     "fireRate": 12.666667,
     "damageTypes": {
       "impact": 8.4000006,
-      "puncture": 8.3999987,
-      "slash": 11.2,
+      "puncture": 11.2,
+      "slash": 8.3999987,
       "total": 28
     },
     "polarities": [
@@ -41281,7 +41282,7 @@
     "fireRate": 6.666667,
     "damageTypes": {
       "impact": 6.4000001,
-      "slash": 25.6,
+      "puncture": 25.6,
       "total": 32
     },
     "isPrime": false,
@@ -41321,8 +41322,8 @@
     "criticalMultiplier": 2.2,
     "statusChance": 0.24000001,
     "damageTypes": {
-      "puncture": 210,
-      "slash": 90,
+      "puncture": 90,
+      "slash": 210,
       "total": 300
     },
     "isPrime": false,
@@ -41414,8 +41415,8 @@
     "fireRate": 9.09091,
     "damageTypes": {
       "impact": 11,
-      "puncture": 11,
-      "slash": 22,
+      "puncture": 22,
+      "slash": 11,
       "total": 44
     },
     "polarities": [
@@ -41463,8 +41464,8 @@
     "fireRate": 6.818182,
     "damageTypes": {
       "impact": 14.400001,
-      "puncture": 14.399998,
-      "slash": 19.200001,
+      "puncture": 19.200001,
+      "slash": 14.399998,
       "total": 48
     },
     "polarities": [
@@ -41542,8 +41543,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 21,
-      "puncture": 168,
-      "slash": 21,
+      "puncture": 21,
+      "slash": 168,
       "total": 210
     },
     "isPrime": false,
@@ -41593,8 +41594,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 19.5,
-      "puncture": 156,
-      "slash": 19.5,
+      "puncture": 19.5,
+      "slash": 156,
       "total": 195
     },
     "polarities": [
@@ -41644,8 +41645,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 12.400001,
-      "puncture": 99.200005,
-      "slash": 12.400001,
+      "puncture": 12.400001,
+      "slash": 99.200005,
       "total": 124
     },
     "polarities": [
@@ -41737,8 +41738,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 17,
-      "puncture": 136,
-      "slash": 17,
+      "puncture": 17,
+      "slash": 136,
       "total": 170
     },
     "polarities": [
@@ -41831,8 +41832,8 @@
     "statusChance": 0.25,
     "damageTypes": {
       "impact": 18.4,
-      "puncture": 138,
-      "slash": 27.6,
+      "puncture": 27.6,
+      "slash": 138,
       "total": 184
     },
     "polarities": [
@@ -41923,8 +41924,8 @@
     "criticalMultiplier": 2.0999999,
     "statusChance": 0.20999998,
     "damageTypes": {
-      "puncture": 132,
-      "slash": 33,
+      "puncture": 33,
+      "slash": 132,
       "total": 165
     },
     "polarities": [
@@ -42018,7 +42019,7 @@
     "statusChance": 0.10000002,
     "fireRate": 3.1666667,
     "damageTypes": {
-      "slash": 75,
+      "puncture": 75,
       "blast": 650,
       "total": 725
     },
@@ -42330,8 +42331,8 @@
     "statusChance": 0.39999998,
     "damageTypes": {
       "impact": 55.000004,
-      "puncture": 55.000004,
-      "slash": 15.000001,
+      "puncture": 15.000001,
+      "slash": 55.000004,
       "heat": 85,
       "total": 210
     },
@@ -42429,8 +42430,8 @@
     "fireRate": 20.000002,
     "damageTypes": {
       "impact": 4,
-      "puncture": 2.6666701,
-      "slash": 3.3333299,
+      "puncture": 3.3333299,
+      "slash": 2.6666701,
       "total": 10
     },
     "polarities": [
@@ -42478,8 +42479,8 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 12.333334,
-      "puncture": 12.333333,
-      "slash": 12.333334,
+      "puncture": 12.333334,
+      "slash": 12.333333,
       "total": 37
     },
     "polarities": [
@@ -42528,8 +42529,8 @@
     "fireRate": 6.666667,
     "damageTypes": {
       "impact": 6,
-      "puncture": 18,
-      "slash": 6,
+      "puncture": 6,
+      "slash": 18,
       "total": 30
     },
     "polarities": [
@@ -42597,8 +42598,8 @@
     "statusChance": 0.33000004,
     "damageTypes": {
       "impact": 30,
-      "puncture": 175,
-      "slash": 45,
+      "puncture": 45,
+      "slash": 175,
       "total": 250
     },
     "isPrime": false,
@@ -42691,8 +42692,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 18.800001,
-      "puncture": 4.7000012,
-      "slash": 23.5,
+      "puncture": 23.5,
+      "slash": 4.7000012,
       "total": 47
     },
     "polarities": [
@@ -42746,8 +42747,8 @@
     "fireRate": 25.000002,
     "damageTypes": {
       "impact": 10.200001,
-      "puncture": 5.0999994,
-      "slash": 1.7,
+      "puncture": 1.7,
+      "slash": 5.0999994,
       "total": 17
     },
     "polarities": [
@@ -42795,8 +42796,8 @@
     "fireRate": 25.000002,
     "damageTypes": {
       "impact": 14.400001,
-      "puncture": 1.7999994,
-      "slash": 1.8000001,
+      "puncture": 1.8000001,
+      "slash": 1.7999994,
       "total": 18
     },
     "polarities": [
@@ -42844,8 +42845,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 9,
-      "puncture": 17,
-      "slash": 23,
+      "puncture": 23,
+      "slash": 17,
       "corrosive": 27,
       "total": 76
     },
@@ -43133,8 +43134,8 @@
     "statusChance": 0.31,
     "damageTypes": {
       "impact": 19.530001,
-      "puncture": 234.36002,
-      "slash": 25.110001,
+      "puncture": 25.110001,
+      "slash": 234.36002,
       "total": 279
     },
     "isPrime": false,
@@ -43247,8 +43248,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 22.5,
-      "puncture": 45,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 45,
       "total": 90
     },
     "polarities": [
@@ -43315,8 +43316,8 @@
     "fireRate": 2.5000002,
     "damageTypes": {
       "impact": 16.5,
-      "puncture": 77,
-      "slash": 16.5,
+      "puncture": 16.5,
+      "slash": 77,
       "total": 110
     },
     "polarities": [
@@ -43384,8 +43385,8 @@
     "fireRate": 3.0000002,
     "damageTypes": {
       "impact": 11.25,
-      "puncture": 15.000004,
-      "slash": 48.75,
+      "puncture": 48.75,
+      "slash": 15.000004,
       "total": 75
     },
     "polarities": [
@@ -43439,8 +43440,8 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 96,
-      "puncture": 47.999992,
-      "slash": 16,
+      "puncture": 16,
+      "slash": 47.999992,
       "total": 160
     },
     "polarities": [
@@ -43485,7 +43486,7 @@
     "statusChance": 0.33000004,
     "damageTypes": {
       "impact": 10.650001,
-      "slash": 202.34999,
+      "puncture": 202.34999,
       "total": 213
     },
     "polarities": [
@@ -43580,8 +43581,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 90,
-      "puncture": 56.25,
-      "slash": 78.75,
+      "puncture": 78.75,
+      "slash": 56.25,
       "total": 225
     },
     "polarities": [
@@ -43634,8 +43635,8 @@
     "fireRate": 2.6666667,
     "damageTypes": {
       "impact": 140,
-      "puncture": 52.499992,
-      "slash": 157.5,
+      "puncture": 157.5,
+      "slash": 52.499992,
       "total": 350
     },
     "polarities": [
@@ -43689,8 +43690,8 @@
     "fireRate": 3.6666667,
     "damageTypes": {
       "impact": 23.4,
-      "puncture": 43.200001,
-      "slash": 23.4,
+      "puncture": 23.4,
+      "slash": 43.200001,
       "total": 90
     },
     "polarities": [
@@ -43804,8 +43805,8 @@
     "fireRate": 15.000001,
     "damageTypes": {
       "impact": 4.3200002,
-      "puncture": 11.52,
-      "slash": 8.1599998,
+      "puncture": 8.1599998,
+      "slash": 11.52,
       "total": 24
     },
     "polarities": [
@@ -43854,8 +43855,8 @@
     "fireRate": 17,
     "damageTypes": {
       "impact": 6.48,
-      "puncture": 12.960001,
-      "slash": 7.5599999,
+      "puncture": 7.5599999,
+      "slash": 12.960001,
       "total": 27
     },
     "polarities": [
@@ -43901,8 +43902,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 33,
-      "puncture": 77.000008,
-      "slash": 110,
+      "puncture": 110,
+      "slash": 77.000008,
       "total": 220
     },
     "isPrime": false,
@@ -43991,8 +43992,8 @@
     "statusChance": 0.31999999,
     "damageTypes": {
       "impact": 36.75,
-      "puncture": 85.750008,
-      "slash": 122.5,
+      "puncture": 122.5,
+      "slash": 85.750008,
       "total": 245
     },
     "polarities": [
@@ -44084,8 +44085,8 @@
     "statusChance": 0.14999998,
     "damageTypes": {
       "impact": 7,
-      "puncture": 98,
-      "slash": 35,
+      "puncture": 35,
+      "slash": 98,
       "total": 140
     },
     "isPrime": false,
@@ -44174,8 +44175,8 @@
     "statusChance": 0.24000001,
     "damageTypes": {
       "impact": 9.4000006,
-      "puncture": 141,
-      "slash": 37.600002,
+      "puncture": 37.600002,
+      "slash": 141,
       "total": 188
     },
     "polarities": [
@@ -44268,8 +44269,8 @@
     "statusChance": 0.20999998,
     "damageTypes": {
       "impact": 21.300001,
-      "puncture": 106.5,
-      "slash": 85.200005,
+      "puncture": 85.200005,
+      "slash": 106.5,
       "total": 213
     },
     "isPrime": false,
@@ -44380,8 +44381,8 @@
     "statusChance": 0.19999999,
     "damageTypes": {
       "impact": 21.6,
-      "puncture": 129.60001,
-      "slash": 28.799999,
+      "puncture": 28.799999,
+      "slash": 129.60001,
       "total": 180
     },
     "polarities": [
@@ -44475,8 +44476,8 @@
     "fireRate": 0.83333337,
     "damageTypes": {
       "impact": 70.5,
-      "puncture": 329,
-      "slash": 70.5,
+      "puncture": 70.5,
+      "slash": 329,
       "total": 470
     },
     "polarities": [
@@ -44523,7 +44524,7 @@
     "fireRate": 2.0833335,
     "damageTypes": {
       "impact": 72,
-      "slash": 108.00001,
+      "puncture": 108.00001,
       "total": 180
     },
     "polarities": [
@@ -44571,8 +44572,8 @@
     "fireRate": 14.383334,
     "damageTypes": {
       "impact": 10.200001,
-      "puncture": 5.0999994,
-      "slash": 1.7,
+      "puncture": 1.7,
+      "slash": 5.0999994,
       "total": 17
     },
     "polarities": [
@@ -44620,8 +44621,8 @@
     "fireRate": 14.383334,
     "damageTypes": {
       "impact": 14.400001,
-      "puncture": 1.7999994,
-      "slash": 1.8000001,
+      "puncture": 1.8000001,
+      "slash": 1.7999994,
       "total": 18
     },
     "polarities": [
@@ -44665,8 +44666,8 @@
     "statusChance": 0.33000004,
     "damageTypes": {
       "impact": 99.900002,
-      "puncture": 133.2,
-      "slash": 99.900002,
+      "puncture": 99.900002,
+      "slash": 133.2,
       "total": 333
     },
     "polarities": [
@@ -44778,8 +44779,8 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 48.400002,
-      "puncture": 101.20001,
-      "slash": 70.400002,
+      "puncture": 70.400002,
+      "slash": 101.20001,
       "total": 220
     },
     "polarities": [
@@ -44871,8 +44872,8 @@
     "statusChance": 0.34000003,
     "damageTypes": {
       "impact": 55,
-      "puncture": 115.00001,
-      "slash": 80,
+      "puncture": 80,
+      "slash": 115.00001,
       "total": 250
     },
     "polarities": [
@@ -44969,8 +44970,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 180,
-      "puncture": 11.24999,
-      "slash": 33.75,
+      "puncture": 33.75,
+      "slash": 11.24999,
       "total": 225
     },
     "isPrime": false,
@@ -45020,7 +45021,7 @@
     "fireRate": 2,
     "damageTypes": {
       "impact": 245.7,
-      "slash": 27.300001,
+      "puncture": 27.300001,
       "total": 273
     },
     "polarities": [
@@ -45068,8 +45069,8 @@
     "statusChance": 0.25999999,
     "damageTypes": {
       "impact": 120,
-      "puncture": 70.000008,
-      "slash": 60,
+      "puncture": 60,
+      "slash": 70.000008,
       "total": 250
     },
     "polarities": [
@@ -45161,8 +45162,8 @@
     "statusChance": 0.33000004,
     "damageTypes": {
       "impact": 132.09,
-      "puncture": 119.14001,
-      "slash": 7.77,
+      "puncture": 7.77,
+      "slash": 119.14001,
       "total": 259
     },
     "isPrime": false,
@@ -45300,8 +45301,8 @@
     "statusChance": 0.18000001,
     "damageTypes": {
       "impact": 24,
-      "puncture": 55.199997,
-      "slash": 40.799999,
+      "puncture": 40.799999,
+      "slash": 55.199997,
       "total": 120
     },
     "isPrime": false,
@@ -45495,7 +45496,7 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 12,
-      "slash": 18,
+      "puncture": 18,
       "total": 30
     },
     "polarities": [
@@ -45561,7 +45562,7 @@
     "fireRate": 5.0000005,
     "damageTypes": {
       "impact": 12,
-      "slash": 18,
+      "puncture": 18,
       "total": 30
     },
     "polarities": [
@@ -45733,7 +45734,7 @@
     "statusChance": 0.30000001,
     "damageTypes": {
       "impact": 80,
-      "puncture": 68,
+      "slash": 68,
       "heat": 150,
       "total": 298
     },
@@ -45889,8 +45890,8 @@
     "fireRate": 10.833334,
     "damageTypes": {
       "impact": 4.5,
-      "puncture": 19.5,
-      "slash": 6,
+      "puncture": 6,
+      "slash": 19.5,
       "total": 30
     },
     "polarities": [
@@ -45953,8 +45954,8 @@
     "fireRate": 4.166667,
     "damageTypes": {
       "impact": 5,
-      "puncture": 19.999998,
-      "slash": 75,
+      "puncture": 75,
+      "slash": 19.999998,
       "total": 100
     },
     "polarities": [
@@ -46003,8 +46004,8 @@
     "fireRate": 5.5000005,
     "damageTypes": {
       "impact": 10,
-      "puncture": 17.500002,
-      "slash": 22.5,
+      "puncture": 22.5,
+      "slash": 17.500002,
       "total": 50
     },
     "polarities": [
@@ -46074,8 +46075,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 44.799999,
-      "puncture": 78.400002,
-      "slash": 16.799999,
+      "puncture": 16.799999,
+      "slash": 78.400002,
       "total": 140
     },
     "isPrime": false,
@@ -46151,8 +46152,8 @@
     "fireRate": 1.5000001,
     "damageTypes": {
       "impact": 63.000004,
-      "puncture": 126.00001,
-      "slash": 21,
+      "puncture": 21,
+      "slash": 126.00001,
       "total": 210
     },
     "polarities": [
@@ -46232,7 +46233,7 @@
     "fireRate": 1.3333334,
     "damageTypes": {
       "impact": 9.1999998,
-      "slash": 13.8,
+      "puncture": 13.8,
       "toxin": 61,
       "total": 84
     },
