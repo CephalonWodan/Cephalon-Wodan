@@ -152,4 +152,152 @@ function subtypeHeuristic(wfType, name) {
 const out = [];
 let wfcdHits = 0, expHits = 0, ofHits = 0, heuristicHits = 0;
 
-for (
+for (const w of WFSTAT) {
+  const name = clean(w.name || w.weaponName);
+  if (!name) continue;
+
+  // Sous-type par WFCD d’abord
+  let subtype = subtypeFromWFCD(name);
+  if (subtype) wfcdHits++;
+  if (!subtype) {
+    subtype = subtypeHeuristic(w.type, name);
+    if (subtype) heuristicHits++;
+  }
+  if (!subtype) {
+    // strict : si non classé → on ignore
+    continue;
+  }
+
+  // overframe (id/slug pratiques si présents)
+  const of = mOver.get(keyify(name));
+  if (of) ofHits++;
+
+  // export (stats éventuelles)
+  const ex = mExport.get(keyify(name));
+  if (ex) expHits++;
+
+  // id/slug
+  const slug = of?.slug ? String(of.slug) : (w.slug ? String(w.slug) : slugify(name));
+  const id   = of?.id   ? String(of.id)   : (w.uniqueName || w._id || slug);
+
+  const flags = flagsFromName(name);
+
+  const item = {
+    id, slug, name,
+    categories: ["weapon"],
+    subtype,
+    // champs WFStat utiles
+    type: w.type || undefined,
+    masteryReq: w.masteryReq ?? w.mastery ?? undefined,
+    disposition: w.disposition ?? undefined,
+    trigger: w.trigger ?? undefined,
+    accuracy: w.accuracy ?? undefined,
+    noise: w.noise ?? undefined,
+    // dégâts/crit/status si présents
+    criticalChance: w.criticalChance ?? w.critChance ?? undefined,
+    criticalMultiplier: w.criticalMultiplier ?? w.critMultiplier ?? undefined,
+    statusChance: w.procChance ?? w.statusChance ?? undefined,
+    fireRate: w.fireRate ?? undefined,          // sera renommé → attackSpeed si melee
+    damageTypes: w.damageTypes || w.damage || undefined,
+    polarities: w.polarities || undefined,
+    // flags dérivés
+    ...flags
+    // NOTE: pas de "source" dans la sortie
+  };
+
+  // Compléments export si absents
+  if (ex) {
+    if (item.type === undefined && ex.type) item.type = ex.type;
+    if (item.criticalChance === undefined && (ex.criticalChance != null)) item.criticalChance = ex.criticalChance;
+    if (item.criticalMultiplier === undefined && (ex.criticalMultiplier != null)) item.criticalMultiplier = ex.criticalMultiplier;
+    if (item.statusChance === undefined && (ex.procChance != null)) item.statusChance = ex.procChance;
+    if (item.fireRate === undefined && (ex.fireRate != null)) item.fireRate = ex.fireRate;
+    if (!item.damageTypes && (ex.damageTypes || ex.damage)) item.damageTypes = ex.damageTypes || ex.damage;
+  }
+
+  // description (priorité WFStat, repli Export)
+  const descriptionText = w.description || ex?.description || "";
+  if (descriptionText) item.description = clean(descriptionText);
+
+  // attacks[] (WFStat → attacks; sinon synthèse depuis damageTypes)
+  let attacks = [];
+  if (Array.isArray(w.attacks) && w.attacks.length) {
+    attacks = w.attacks.map(a => {
+      const attack = {
+        name: a.name || "Primary Fire",
+        speed: a.speed, // cadence locale à l’attaque (WFStat)
+        critChance: pctToFrac(a.crit_chance),
+        critMult: a.crit_mult,
+        statusChance: pctToFrac(a.status_chance),
+        shotType: a.shot_type,
+        shotSpeed: a.shot_speed ?? a.flight,
+        chargeTime: a.charge_time,
+        falloff: a.falloff ? { ...a.falloff } : undefined,
+        damage: normalizeDamageMap(a.damage || {})
+      };
+      return hydrateAttackWithItemStats(attack, item);
+    }).filter(Boolean);
+  }
+  if (!attacks.length) {
+    // fallback: une seule attaque synthétique depuis damageTypes
+    attacks = [hydrateAttackWithItemStats({
+      name: "Primary Fire",
+      damage: normalizeDamageMap(item.damageTypes || {})
+    }, item)];
+  }
+
+  // cohérence par attaque (swap S/P si clair + total recalculé)
+  for (const atk of attacks) {
+    if (maybeSwapPS(atk.damage, item.damageTypes)) {
+      // inversions évidentes S/P corrigées
+    }
+    recomputeTotal(atk.damage);
+  }
+  item.attacks = attacks;
+
+  // damageTypes épuré/normalisé (supprime 0 et recalc total)
+  if (item.damageTypes) item.damageTypes = normalizeDamageMap(item.damageTypes);
+
+  // ---- ENRICHISSEMENTS SPÉCIFIQUES MÉLÉE ----
+  const isMelee = (item.subtype === "melee") || (String(item.type||"").toLowerCase() === "melee");
+  if (isMelee) {
+    // rename fireRate -> attackSpeed
+    if (item.fireRate !== undefined) {
+      item.attackSpeed = item.fireRate;
+      delete item.fireRate;
+    }
+    // Champs melee depuis WFStat (si présents)
+    const meleeFields = [
+      "range",
+      "slideAttack",
+      "slamAttack", "slamRadialDamage", "slamRadius",
+      "heavyAttackDamage", "heavySlamAttack", "heavySlamRadialDamage", "heavySlamRadius",
+      "comboDuration", "followThrough", "windUp", "blockingAngle", "stancePolarity",
+      // facultatif WFStat : damageBlock (peut apparaître sur certaines armes bouclier)
+      "damageBlock"
+    ];
+    for (const f of meleeFields) {
+      if (w[f] != null) item[f] = w[f];
+      else if (ex && ex[f] != null) item[f] = ex[f]; // repli Export si par hasard présent
+    }
+    // attacks[].speed -> attacks[].attackSpeed pour la mêlée
+    for (const atk of item.attacks) {
+      if ("speed" in atk) { atk.attackSpeed = atk.speed; delete atk.speed; }
+    }
+  }
+
+  out.push(item);
+}
+
+// Sorties (mêmes chemins/noms)
+out.sort((a,b)=>a.name.localeCompare(b.name));
+fs.writeFileSync(path.join(DATA, "enriched_weapons.json"), JSON.stringify(out, null, 2), "utf-8");
+
+const report = {
+  total: out.length,
+  hits: { wfcd: wfcdHits, export: expHits, overframe: ofHits, heuristicSubtype: heuristicHits }
+};
+fs.writeFileSync(path.join(DATA, "enriched_weapons_report.json"), JSON.stringify(report, null, 2), "utf-8");
+
+console.log(`OK → enriched_weapons.json (${out.length})`);
+console.log("Hits:", report.hits);
