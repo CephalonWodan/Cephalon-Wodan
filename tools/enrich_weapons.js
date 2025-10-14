@@ -33,53 +33,47 @@ const clean   = (s) => String(s ?? "").replace(/<[^>]+>\s*/g, "").trim();
 const keyify  = (s) => clean(s).toLowerCase().replace(/[\s\-–_'"`]+/g, " ").replace(/\s+/g, " ");
 const slugify = (s) => clean(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
-// ---- Helpers dégâts/attaques ----
+// Helpers dégâts/attaques
 function normalizeDamageMap(dmg) {
-  const out = {};
-  let total = 0;
+  const out = {}; let total = 0;
   if (!dmg || typeof dmg !== "object") return out;
   for (const [k, v] of Object.entries(dmg)) {
     if (k === "total") continue;
     const val = Number(v) || 0;
     if (val > 0) { out[k] = val; total += val; }
   }
-  if (total > 0) out.total = Math.round(total * 1000) / 1000; // anti 70.0000002
+  if (total > 0) out.total = Math.round(total * 1000) / 1000;
   return out;
 }
 const pctToFrac = (v) => (v == null ? undefined : Number(v) / 100);
-
-function hydrateAttackWithItemStats(attack, item) {
-  attack.critChance   = attack.critChance   ?? item.criticalChance;
-  attack.critMult     = attack.critMult     ?? item.criticalMultiplier;
-  attack.statusChance = attack.statusChance ?? item.statusChance;
+function hydrateAttackWithItemStats(a, item) {
+  if (a.critChance   == null) a.critChance   = item.criticalChance;
+  if (a.critMult     == null) a.critMult     = item.criticalMultiplier;
+  if (a.statusChance == null) a.statusChance = item.statusChance;
   const baseSpeed = item.attackSpeed ?? item.fireRate;
-  attack.speed = attack.speed ?? baseSpeed;
-  return attack;
+  if (a.speed == null) a.speed = baseSpeed;
+  return a;
 }
-
-// Swapper Puncture/Slash si clairement inversés vs dégâts globaux
 function maybeSwapPS(atkDmg, baseDmg) {
   if (!atkDmg || !baseDmg) return false;
-  const pA = atkDmg.puncture, sA = atkDmg.slash;
-  const pB = baseDmg.puncture, sB = baseDmg.slash;
-  if (pA == null || sA == null || pB == null || sB == null) return false;
-  const eq = (a,b) => Math.abs(Number(a) - Number(b)) <= 1e-3;
-  if (eq(pA, sB) && eq(sA, pB)) { atkDmg.puncture = sA; atkDmg.slash = pA; return true; }
+  const { puncture:pA, slash:sA } = atkDmg;
+  const { puncture:pB, slash:sB } = baseDmg;
+  if ([pA,sA,pB,sB].some(v => v == null)) return false;
+  const eq = (x,y)=>Math.abs(Number(x)-Number(y))<=1e-3;
+  if (eq(pA,sB) && eq(sA,pB)) { atkDmg.puncture = sA; atkDmg.slash = pA; return true; }
   return false;
 }
 function recomputeTotal(dmg) {
   if (!dmg || typeof dmg !== "object") return;
   const sum = Object.entries(dmg)
     .filter(([k]) => k !== "total")
-    .reduce((s, [,v]) => s + (Number(v)||0), 0);
+    .reduce((s,[,v]) => s + (Number(v)||0), 0);
   dmg.total = Math.round(sum * 1000) / 1000;
 }
-
 function indexByName(arr, nameSel) {
   const m = new Map();
   for (const it of asArray(arr)) {
-    const n = nameSel(it);
-    if (!n) continue;
+    const n = nameSel(it); if (!n) continue;
     m.set(keyify(n), it);
   }
   return m;
@@ -87,34 +81,24 @@ function indexByName(arr, nameSel) {
 
 // Charge datasets
 const WFSTAT = asArray(readIf(P_WFSTAT) || []);
-
-// Export peut être un objet { ExportWeapons: [...] } ou un tableau direct
 const EXP_RAW = readIf(P_EXPORT);
 let EXPORT = [];
-if (Array.isArray(EXP_RAW)) {
-  EXPORT = EXP_RAW;
-} else if (EXP_RAW && Array.isArray(EXP_RAW.ExportWeapons)) {
-  EXPORT = EXP_RAW.ExportWeapons;
-} else {
-  EXPORT = asArray(EXP_RAW || []);
-}
-
+if (Array.isArray(EXP_RAW)) EXPORT = EXP_RAW;
+else if (EXP_RAW && Array.isArray(EXP_RAW.ExportWeapons)) EXPORT = EXP_RAW.ExportWeapons;
+else EXPORT = asArray(EXP_RAW || []);
 const OF_RAW = readIf(P_OF_ITEMS);
 let OVERFRAME = [];
-if (Array.isArray(OF_RAW)) {
-  OVERFRAME = OF_RAW;
-} else if (OF_RAW && typeof OF_RAW === "object") {
-  OVERFRAME = Object.values(OF_RAW);
-}
+if (Array.isArray(OF_RAW)) OVERFRAME = OF_RAW;
+else if (OF_RAW && typeof OF_RAW === "object") OVERFRAME = Object.values(OF_RAW);
 
+// Index
 const mExport = indexByName(EXPORT, (o) => o.name || o.displayName || o.uniqueName);
 const mOver   = indexByName(OVERFRAME, (o) => o.name);
 
 // WFCD maps
 const mWfcd = {};
 for (const [sub, p] of Object.entries(WFCD_FILES)) {
-  const data = readIf(p);
-  mWfcd[sub] = indexByName(asArray(data || []), (o) => o.name);
+  mWfcd[sub] = indexByName(asArray(readIf(p) || []), (o) => o.name);
 }
 function subtypeFromWFCD(name) {
   const k = keyify(name);
@@ -122,18 +106,11 @@ function subtypeFromWFCD(name) {
   return null;
 }
 
-// Flags
+// Flags & heuristique
 function flagsFromName(n) {
   const s = String(n || "").toLowerCase();
-  return {
-    isPrime:  /\bprime\b/.test(s),
-    isUmbra:  /\bumbra\b/.test(s),
-    isWraith: /\bwraith\b/.test(s),
-    isDex:    /\bdex\b/.test(s),
-  };
+  return { isPrime:/\bprime\b/.test(s), isUmbra:/\bumbra\b/.test(s), isWraith:/\bwraith\b/.test(s), isDex:/\bdex\b/.test(s) };
 }
-
-// Mapping WFStat → subtype (filet de sécurité si WFCD ne tranche pas)
 function subtypeHeuristic(wfType, name) {
   const t = String(wfType || "").toLowerCase();
   if (/arch-?gun/.test(t)) return "archgun";
@@ -148,7 +125,7 @@ function subtypeHeuristic(wfType, name) {
   return null;
 }
 
-// Construction
+// Build
 const out = [];
 let wfcdHits = 0, expHits = 0, ofHits = 0, heuristicHits = 0;
 
@@ -156,27 +133,13 @@ for (const w of WFSTAT) {
   const name = clean(w.name || w.weaponName);
   if (!name) continue;
 
-  // Sous-type par WFCD d’abord
   let subtype = subtypeFromWFCD(name);
-  if (subtype) wfcdHits++;
-  if (!subtype) {
-    subtype = subtypeHeuristic(w.type, name);
-    if (subtype) heuristicHits++;
-  }
-  if (!subtype) {
-    // strict : si non classé → on ignore
-    continue;
-  }
+  if (subtype) wfcdHits++; else { subtype = subtypeHeuristic(w.type, name); if (subtype) heuristicHits++; }
+  if (!subtype) continue;
 
-  // overframe (id/slug pratiques si présents)
-  const of = mOver.get(keyify(name));
-  if (of) ofHits++;
+  const of = mOver.get(keyify(name)); if (of) ofHits++;
+  const ex = mExport.get(keyify(name)); if (ex) expHits++;
 
-  // export (stats éventuelles)
-  const ex = mExport.get(keyify(name));
-  if (ex) expHits++;
-
-  // id/slug
   const slug = of?.slug ? String(of.slug) : (w.slug ? String(w.slug) : slugify(name));
   const id   = of?.id   ? String(of.id)   : (w.uniqueName || w._id || slug);
 
@@ -186,101 +149,76 @@ for (const w of WFSTAT) {
     id, slug, name,
     categories: ["weapon"],
     subtype,
-    // champs WFStat utiles
-    type: w.type || undefined,
+    type: w.type ?? undefined,
     masteryReq: w.masteryReq ?? w.mastery ?? undefined,
     disposition: w.disposition ?? undefined,
     trigger: w.trigger ?? undefined,
     accuracy: w.accuracy ?? undefined,
     noise: w.noise ?? undefined,
-    // dégâts/crit/status si présents
     criticalChance: w.criticalChance ?? w.critChance ?? undefined,
     criticalMultiplier: w.criticalMultiplier ?? w.critMultiplier ?? undefined,
     statusChance: w.procChance ?? w.statusChance ?? undefined,
-    fireRate: w.fireRate ?? undefined,          // sera renommé → attackSpeed si melee
+    fireRate: w.fireRate ?? undefined,   // renommé → attackSpeed si melee
     damageTypes: w.damageTypes || w.damage || undefined,
     polarities: w.polarities || undefined,
-    // flags dérivés
     ...flags
-    // NOTE: pas de "source" dans la sortie
   };
 
-  // Compléments export si absents
+  // Compléments Export
   if (ex) {
     if (item.type === undefined && ex.type) item.type = ex.type;
-    if (item.criticalChance === undefined && (ex.criticalChance != null)) item.criticalChance = ex.criticalChance;
-    if (item.criticalMultiplier === undefined && (ex.criticalMultiplier != null)) item.criticalMultiplier = ex.criticalMultiplier;
-    if (item.statusChance === undefined && (ex.procChance != null)) item.statusChance = ex.procChance;
-    if (item.fireRate === undefined && (ex.fireRate != null)) item.fireRate = ex.fireRate;
+    if (item.criticalChance === undefined && ex.criticalChance != null) item.criticalChance = ex.criticalChance;
+    if (item.criticalMultiplier === undefined && ex.criticalMultiplier != null) item.criticalMultiplier = ex.criticalMultiplier;
+    if (item.statusChance === undefined && ex.procChance != null) item.statusChance = ex.procChance;
+    if (item.fireRate === undefined && ex.fireRate != null) item.fireRate = ex.fireRate;
     if (!item.damageTypes && (ex.damageTypes || ex.damage)) item.damageTypes = ex.damageTypes || ex.damage;
   }
 
-  // description (priorité WFStat, repli Export)
+  // Description
   const descriptionText = w.description || ex?.description || "";
   if (descriptionText) item.description = clean(descriptionText);
 
-  // attacks[] (WFStat → attacks; sinon synthèse depuis damageTypes)
+  // Attaques
   let attacks = [];
   if (Array.isArray(w.attacks) && w.attacks.length) {
-    attacks = w.attacks.map(a => {
-      const attack = {
-        name: a.name || "Primary Fire",
-        speed: a.speed, // cadence locale à l’attaque (WFStat)
-        critChance: pctToFrac(a.crit_chance),
-        critMult: a.crit_mult,
-        statusChance: pctToFrac(a.status_chance),
-        shotType: a.shot_type,
-        shotSpeed: a.shot_speed ?? a.flight,
-        chargeTime: a.charge_time,
-        falloff: a.falloff ? { ...a.falloff } : undefined,
-        damage: normalizeDamageMap(a.damage || {})
-      };
-      return hydrateAttackWithItemStats(attack, item);
-    }).filter(Boolean);
+    attacks = w.attacks.map(a => hydrateAttackWithItemStats({
+      name: a.name || "Primary Fire",
+      speed: a.speed,
+      critChance: pctToFrac(a.crit_chance),
+      critMult: a.crit_mult,
+      statusChance: pctToFrac(a.status_chance),
+      shotType: a.shot_type,
+      shotSpeed: a.shot_speed ?? a.flight,
+      chargeTime: a.charge_time,
+      falloff: a.falloff ? { ...a.falloff } : undefined,
+      damage: normalizeDamageMap(a.damage || {})
+    }, item)).filter(Boolean);
   }
   if (!attacks.length) {
-    // fallback: une seule attaque synthétique depuis damageTypes
-    attacks = [hydrateAttackWithItemStats({
-      name: "Primary Fire",
-      damage: normalizeDamageMap(item.damageTypes || {})
-    }, item)];
+    attacks = [hydrateAttackWithItemStats({ name:"Primary Fire", damage: normalizeDamageMap(item.damageTypes || {}) }, item)];
   }
-
-  // cohérence par attaque (swap S/P si clair + total recalculé)
   for (const atk of attacks) {
-    if (maybeSwapPS(atk.damage, item.damageTypes)) {
-      // inversions évidentes S/P corrigées
-    }
+    if (maybeSwapPS(atk.damage, item.damageTypes)) { /* swap P/S effectué */ }
     recomputeTotal(atk.damage);
   }
   item.attacks = attacks;
 
-  // damageTypes épuré/normalisé (supprime 0 et recalc total)
+  // damageTypes final
   if (item.damageTypes) item.damageTypes = normalizeDamageMap(item.damageTypes);
 
-  // ---- ENRICHISSEMENTS SPÉCIFIQUES MÉLÉE ----
+  // Spécifique mêlée
   const isMelee = (item.subtype === "melee") || (String(item.type||"").toLowerCase() === "melee");
   if (isMelee) {
-    // rename fireRate -> attackSpeed
-    if (item.fireRate !== undefined) {
-      item.attackSpeed = item.fireRate;
-      delete item.fireRate;
-    }
-    // Champs melee depuis WFStat (si présents)
+    if (item.fireRate !== undefined) { item.attackSpeed = item.fireRate; delete item.fireRate; }
     const meleeFields = [
-      "range",
-      "slideAttack",
-      "slamAttack", "slamRadialDamage", "slamRadius",
-      "heavyAttackDamage", "heavySlamAttack", "heavySlamRadialDamage", "heavySlamRadius",
-      "comboDuration", "followThrough", "windUp", "blockingAngle", "stancePolarity",
-      // facultatif WFStat : damageBlock (peut apparaître sur certaines armes bouclier)
-      "damageBlock"
+      "range","slideAttack",
+      "slamAttack","slamRadialDamage","slamRadius",
+      "heavyAttackDamage","heavySlamAttack","heavySlamRadialDamage","heavySlamRadius",
+      "comboDuration","followThrough","windUp","blockingAngle","stancePolarity","damageBlock"
     ];
     for (const f of meleeFields) {
-      if (w[f] != null) item[f] = w[f];
-      else if (ex && ex[f] != null) item[f] = ex[f]; // repli Export si par hasard présent
+      if (w[f] != null) item[f] = w[f]; else if (ex && ex[f] != null) item[f] = ex[f];
     }
-    // attacks[].speed -> attacks[].attackSpeed pour la mêlée
     for (const atk of item.attacks) {
       if ("speed" in atk) { atk.attackSpeed = atk.speed; delete atk.speed; }
     }
@@ -289,14 +227,11 @@ for (const w of WFSTAT) {
   out.push(item);
 }
 
-// Sorties (mêmes chemins/noms)
+// Sorties
 out.sort((a,b)=>a.name.localeCompare(b.name));
 fs.writeFileSync(path.join(DATA, "enriched_weapons.json"), JSON.stringify(out, null, 2), "utf-8");
 
-const report = {
-  total: out.length,
-  hits: { wfcd: wfcdHits, export: expHits, overframe: ofHits, heuristicSubtype: heuristicHits }
-};
+const report = { total: out.length, hits: { wfcd: wfcdHits, export: expHits, overframe: ofHits, heuristicSubtype: heuristicHits } };
 fs.writeFileSync(path.join(DATA, "enriched_weapons_report.json"), JSON.stringify(report, null, 2), "utf-8");
 
 console.log(`OK → enriched_weapons.json (${out.length})`);
