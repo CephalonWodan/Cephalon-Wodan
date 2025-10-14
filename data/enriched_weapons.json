@@ -59,8 +59,8 @@
           "reduction": 0.5
         },
         "damage": {
-          "slash": 8.8,
-          "puncture": 35.2,
+          "slash": 35.200001,
+          "puncture": 8.7999992,
           "total": 44
         }
       }
