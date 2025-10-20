@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: build-merged-warfames
+  group: build-merged-warframes
   cancel-in-progress: false
 
 jobs:
