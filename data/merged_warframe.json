@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2025-10-14T16:09:06.669Z",
-  "count": 117,
+  "generatedAt": "2025-10-20T11:12:33.676Z",
+  "count": 118,
   "entities": [
     {
       "name": "<ARCHWING> Amesha",
@@ -14974,7 +14974,7 @@
       "abilities": [
         {
           "name": "Balefire",
-          "description": "Charge and launch devastating bolts of fire.",
+          "description": "Charge and launch devastating bolts of electricity.",
           "subsumable": null,
           "augments": [],
           "summary": {
@@ -24903,6 +24903,66 @@
       ]
     },
     {
+      "name": "Nokko",
+      "type": "warframe",
+      "description": "Spring into action with Nokko! With his strong roots and an array of tricky fungi this young defender will quickly grow on you",
+      "passive": "Upon receiving fatal damage, Nokko reverts to his Sprodling form and his active mushrooms will glow, reviving Nokko when touched. Orbs spawned will grant a speed boost but not healing. If a glowing mushroom is not reached in time, Nokko will automatically use a self-revive.",
+      "baseStats": {
+        "health": 150,
+        "shields": 300,
+        "energy": 130,
+        "armor": 135,
+        "sprintSpeed": 1.25,
+        "masteryReq": 0
+      },
+      "baseStatsRank30": {
+        "health": 250,
+        "shields": 400,
+        "energy": 180,
+        "armor": 135,
+        "sprintSpeed": 1.25,
+        "masteryReq": 0
+      },
+      "polarities": [],
+      "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
+      "abilities": [
+        {
+          "name": "Stinkbrain",
+          "description": "Throw a mushroom that periodically sheds poisonous spores, inflicting Viral Damage and Status Effect upon nearby enemies while also lulling them to sleep.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        },
+        {
+          "name": "Brightbonnet",
+          "description": "Release a rejuvenating mushroom that emits a radial pulse, giving Nokko and his allies’ Energy and applying a buff to Ability Strength that lasts for a short time.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        },
+        {
+          "name": "Reroot",
+          "description": "Revert to Sprodling form, spawning orbs that heal Nokko and grant a speed boost. While in this state, Nokko is untargetable and heals gradually.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        },
+        {
+          "name": "Sporespring",
+          "description": "Unleash a chaotic ballistic mushroom that seeks enemies and bounces explosively off whatever it touches. Contact with any of Nokko’s mushrooms invigorates them, doubling their pulse rate.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        }
+      ]
+    },
+    {
       "name": "Nova",
       "type": "warframe",
       "description": "Harness antimatter. Nova uses antiparticles to provide crowd control and amplify damage output. She obliterates enemies by destabilizing matter itself.",
@@ -26325,12 +26385,11 @@
             "costType": "energy",
             "costEnergy": 25,
             "strength": 500,
-            "duration": 12,
+            "duration": null,
             "range": 50,
             "efficiency": 25,
             "affectedBy": [
               "strength",
-              "duration",
               "range",
               "efficiency"
             ]
@@ -26346,7 +26405,7 @@
               "mainNumeric": 25
             },
             {
-              "label": "Initial Impact & Radiation Damage: |val1|",
+              "label": "Initial Radiation Damage: |val1|",
               "filledLabel": "Initial Impact & Radiation Damage: 500",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
@@ -26355,31 +26414,31 @@
               "mainNumeric": 500
             },
             {
-              "label": "Orb Base Radiation Damage: |val1|",
-              "filledLabel": "Orb Base Radiation Damage: 150",
+              "label": "Additionnal Damage: |val1|",
+              "filledLabel": "Adiationnal Damage: 35%",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
-                "Val1": 150
+                "Val1": 35
               },
-              "mainNumeric": 150
+              "mainNumeric": 35
             },
             {
-              "label": "Number Of Orbs: |val1|",
-              "filledLabel": "Number Of Orbs: 6",
+              "label": "AoE Radial Damage: |val1|",
+              "filledLabel": "AoE Radial Damage: 10%",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
-                "Val1": 6
+                "Val1": 10
               },
-              "mainNumeric": 6
+              "mainNumeric": 10
             },
             {
-              "label": "Orb Duration: |val1|s",
-              "filledLabel": "Orb Duration: 12s",
-              "modifier": "AVATAR_ABILITY_DURATION",
+              "label": "Armor And Overguard Strip: |val1|%",
+              "filledLabel": "Armor And Overguard Strip: 100%",
+              "modifier": "NONE",
               "values": {
-                "Val1": 12
+                "Val1": 100
               },
-              "mainNumeric": 12
+              "mainNumeric": 100
             },
             {
               "label": "Cast Range: |val1|m",
@@ -26391,13 +26450,13 @@
               "mainNumeric": 50
             },
             {
-              "label": "Orb Range: |val1|m",
-              "filledLabel": "Orb Range: 12.5m",
+              "label": "AoE Range: |val1|m",
+              "filledLabel": "AoE Range: 6m",
               "modifier": "AVATAR_ABILITY_RANGE",
               "values": {
-                "Val1": 12.5
+                "Val1": 6
               },
-              "mainNumeric": 12.5
+              "mainNumeric": 6
             },
             {
               "label": "Knockdown Chance: |val1|%",
@@ -26416,15 +26475,6 @@
                 "Val1": 100
               },
               "mainNumeric": 100
-            },
-            {
-              "label": "Hitpoints To Damage Conversion: |val1|%",
-              "filledLabel": "Hitpoints To Damage Conversion: 35%",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 35
-              },
-              "mainNumeric": 35
             }
           ]
         },
@@ -26751,19 +26801,18 @@
       "abilities": [
         {
           "name": "Smite",
-          "description": "Focuses deadly energy within a target and then projects it outwards, damaging both the target and surrounding enemies.",
+          "description": "Focuses deadly energy within a target, dealing massive damage and removing all of its defenses, including Overguard. Enemies near the target also take a portion of the damage.",
           "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "energy",
             "costEnergy": 25,
             "strength": 500,
-            "duration": 12,
+            "duration": null,
             "range": 50,
             "efficiency": 25,
             "affectedBy": [
               "strength",
-              "duration",
               "range",
               "efficiency"
             ]
@@ -26779,7 +26828,7 @@
               "mainNumeric": 25
             },
             {
-              "label": "Initial Impact & Radiation Damage: |val1|",
+              "label": "Initial Radiation Damage: |val1|",
               "filledLabel": "Initial Impact & Radiation Damage: 500",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
@@ -26788,31 +26837,31 @@
               "mainNumeric": 500
             },
             {
-              "label": "Orb Base Radiation Damage: |val1|",
-              "filledLabel": "Orb Base Radiation Damage: 150",
+              "label": "Additionnal Damage: |val1|",
+              "filledLabel": "Adiationnal Damage: 35%",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
-                "Val1": 150
+                "Val1": 35
               },
-              "mainNumeric": 150
+              "mainNumeric": 35
             },
             {
-              "label": "Number Of Orbs: |val1|",
-              "filledLabel": "Number Of Orbs: 6",
+              "label": "AoE Radial Damage: |val1|",
+              "filledLabel": "AoE Radial Damage: 10%",
               "modifier": "AVATAR_ABILITY_STRENGTH",
               "values": {
-                "Val1": 6
+                "Val1": 10
               },
-              "mainNumeric": 6
+              "mainNumeric": 10
             },
             {
-              "label": "Orb Duration: |val1|s",
-              "filledLabel": "Orb Duration: 12s",
-              "modifier": "AVATAR_ABILITY_DURATION",
+              "label": "Armor And Overguard Strip: |val1|%",
+              "filledLabel": "Armor And Overguard Strip: 100%",
+              "modifier": "NONE",
               "values": {
-                "Val1": 12
+                "Val1": 100
               },
-              "mainNumeric": 12
+              "mainNumeric": 100
             },
             {
               "label": "Cast Range: |val1|m",
@@ -26824,13 +26873,13 @@
               "mainNumeric": 50
             },
             {
-              "label": "Orb Range: |val1|m",
-              "filledLabel": "Orb Range: 12.5m",
+              "label": "AoE Range: |val1|m",
+              "filledLabel": "AoE Range: 6m",
               "modifier": "AVATAR_ABILITY_RANGE",
               "values": {
-                "Val1": 12.5
+                "Val1": 6
               },
-              "mainNumeric": 12.5
+              "mainNumeric": 6
             },
             {
               "label": "Knockdown Chance: |val1|%",
@@ -26849,21 +26898,12 @@
                 "Val1": 100
               },
               "mainNumeric": 100
-            },
-            {
-              "label": "Hitpoints To Damage Conversion: |val1|%",
-              "filledLabel": "Hitpoints To Damage Conversion: 35%",
-              "modifier": "NONE",
-              "values": {
-                "Val1": 35
-              },
-              "mainNumeric": 35
             }
           ]
         },
         {
           "name": "Hallowed Ground",
-          "description": "Sanctifies the ground before Oberon with righteous fire, inflicting damage to any enemy that stands in the flames.",
+          "description": "Sanctifies the ground around Oberon, inflicting Radiation Damage to all enemies within the radius. Also grants protection against Status Effects for Oberon and his allies.",
           "subsumable": null,
           "augments": [],
           "summary": {
@@ -26939,7 +26979,7 @@
         },
         {
           "name": "Renewal",
-          "description": "Healing waves of energy flow outward from Oberon to his allies, regenerating Health over time.",
+          "description": "Generates a protective aura that grants bonus Armor to Oberon and his allies and restores allies’ Health over time. Healing is doubled while within the radius of Hallowed Ground.",
           "subsumable": null,
           "augments": [],
           "summary": {
@@ -27051,7 +27091,7 @@
         },
         {
           "name": "Reckoning",
-          "description": "Quickly lifts enemies into the air and then hurls them down with conviction. Enemies who succumb to this power have a chance to spawn a Health Orb.",
+          "description": "Lifts enemies into the air and then hurls them down with conviction, removing their Armor. Enemies hit by this ability will grant Oberon additional Armor and have a chance to spawn a Health Orb when they die.",
           "subsumable": null,
           "augments": [],
           "summary": {
