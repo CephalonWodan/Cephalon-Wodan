@@ -2,10 +2,11 @@
 name: Enrich weapons (WFStat + complements)
 
 on:
-  workflow_dispatch:
-  workflow_call:
-  schedule:
-    - cron: "17 4 * * *"  # tous les jours à 04:17 UTC
+  # lancement manuel
+  workflow_dispatch: {}
+
+  # permet l'appel par l'orchestrateur (pipeline)
+  workflow_call: {}
 
   # Relance si les scripts / données utiles changent (et évite les boucles de commit)
   push:
