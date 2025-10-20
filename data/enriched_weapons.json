@@ -40216,8 +40216,8 @@
     "statusChance": 0.35000002,
     "fireRate": 3.3333335,
     "damageTypes": {
-      "magnetic": 216,
-      "total": 216
+      "magnetic": 240,
+      "total": 240
     },
     "polarities": [
       "madurai",
@@ -42490,8 +42490,8 @@
     "fireRate": 9.2879257,
     "damageTypes": {
       "impact": 9.332,
-      "puncture": 9.335,
-      "slash": 9.332,
+      "puncture": 9.332,
+      "slash": 9.335,
       "total": 27.999
     },
     "polarities": [
