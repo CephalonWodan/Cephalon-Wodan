@@ -3,14 +3,15 @@ name: Orchestrator (full data pipeline)
 on:
   workflow_dispatch:
   schedule:
-    - cron: "5 */6 * * *"  # cadence globale (ajuste si besoin)
+    - cron: "5 */6 * * *"
 
 permissions:
   contents: write
 
+# Empêche deux exécutions de la pipeline de se chevaucher
 concurrency:
   group: pipeline-orchestrator
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   # 1) Exports officiels DE (PublicExport)
@@ -21,66 +22,65 @@ jobs:
     permissions:
       contents: write
 
-  # 2) Jeux de données WFCD
+  # 2) Jeux de données WFCD (après exports)
   update_wfcd:
     name: 2) Update WFCD datasets
-    uses: ./.github/workflows/update-wfcd.yml
     needs: [update_exports]
+    uses: ./.github/workflows/update-wfcd.yml
     secrets: inherit
     permissions:
       contents: write
 
-  # 3) Overframe (pages + chunks) — non critique
+  # 3) Overframe (pages + chunks)
   scrape_overframe:
     name: 3) Scrape Overframe (pages & chunks)
+    needs: [update_wfcd]
     uses: ./.github/workflows/scrape-overframe.yml
-    needs: [update_exports, update_wfcd]
     secrets: inherit
     permissions:
       contents: write
 
-  # 3b) Fetch WFStat weapons (après Overframe)
+  # 4) WFStat weapons (après Overframe)
   fetch_wfstat_weapons:
-    name: 3b) Fetch WFStat weapons
-    uses: ./.github/workflows/fetch-wfstat-weapons.yml
+    name: 4) Fetch WFStat weapons
     needs: [scrape_overframe]
+    uses: ./.github/workflows/fetch-wfstat-weapons.yml
     secrets: inherit
     permissions:
       contents: write
 
-  # 4) Enrich mods (fusion DE+WFCD; consomme Overframe si dispo)
+  # 5) Enrich mods (après WFStat)
   enrich_mods:
-    name: 4) Build enriched_mods
+    name: 5) Build enriched_mods
+    needs: [fetch_wfstat_weapons]
     uses: ./.github/workflows/enrich-mods.yml
-    # ne dépend PAS de scrape_overframe pour ne pas bloquer si ça échoue
-    needs: [update_exports, update_wfcd]
     secrets: inherit
     permissions:
       contents: write
 
-  # 4b) Enrich weapons (après enrich_mods + fetch WFStat)
+  # 6) Enrich weapons (après enrich_mods)
   enrich_weapons:
-    name: 4b) Build enriched_weapons
-    uses: ./.github/workflows/enrich-weapons.yml
-    needs: [enrich_mods, fetch_wfstat_weapons]
+    name: 6) Build enriched_weapons
+    needs: [enrich_mods]
+    uses: ./.github/workflows/enrich-weapons.yml   # <- tu as bien renommé le fichier
     secrets: inherit
     permissions:
       contents: write
 
-  # 5) Build reliques (DE + WFCD drops)
+  # 7) Build reliques (après enrich_weapons)
   build_relics:
-    name: 5) Build enriched_relics
+    name: 7) Build enriched_relics
+    needs: [enrich_weapons]
     uses: ./.github/workflows/build-relics.yml
-    needs: [update_exports, update_wfcd]
     secrets: inherit
     permissions:
       contents: write
 
-  # 6) Merge Warframes final
+  # 8) Merge Warframes final (dernier)
   build_merged_warframes:
-    name: 6) Build merged_warframe.json
+    name: 8) Build merged_warframe.json
+    needs: [build_relics]
     uses: ./.github/workflows/build-merged-warfames.yml
-    needs: [enrich_mods, build_relics, enrich_weapons]
     secrets: inherit
     permissions:
       contents: write
