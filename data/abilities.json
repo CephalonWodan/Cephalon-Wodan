@@ -15388,11 +15388,10 @@
     "summary": {
       "costEnergy": 25,
       "strength": 500,
-      "duration": 12,
+      "duration": null,
       "range": 50,
       "affectedBy": [
         "Force",
-        "Durée",
         "Portée",
         "Efficacité"
       ]
@@ -15408,7 +15407,7 @@
         "mainNumeric": 25
       },
       {
-        "label": "Initial Impact & Radiation Damage: |val1|",
+        "label": "Initial Radiation Damage: |val1|",
         "filledLabel": "Initial Impact & Radiation Damage: 500",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
@@ -15417,31 +15416,31 @@
         "mainNumeric": 500
       },
       {
-        "label": "Orb Base Radiation Damage: |val1|",
-        "filledLabel": "Orb Base Radiation Damage: 150",
+        "label": "Additionnal Damage: |val1|",
+        "filledLabel": "Adiationnal Damage: 35%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
-          "Val1": 150
+          "Val1": 35
         },
-        "mainNumeric": 150
+        "mainNumeric": 35
       },
       {
-        "label": "Number Of Orbs: |val1|",
-        "filledLabel": "Number Of Orbs: 6",
+        "label": "AoE Radial Damage: |val1|",
+        "filledLabel": "AoE Radial Damage: 10%",
         "modifier": "AVATAR_ABILITY_STRENGTH",
         "values": {
-          "Val1": 6
+          "Val1": 10
         },
-        "mainNumeric": 6
+        "mainNumeric": 10
       },
       {
-        "label": "Orb Duration: |val1|s",
-        "filledLabel": "Orb Duration: 12s",
-        "modifier": "AVATAR_ABILITY_DURATION",
+        "label": "Armor And Overguard Strip: |val1|%",
+        "filledLabel": "Armor And Overguard Strip: 100%",
+        "modifier": "NONE",
         "values": {
-          "Val1": 12
+          "Val1": 100
         },
-        "mainNumeric": 12
+        "mainNumeric": 100
       },
       {
         "label": "Cast Range: |val1|m",
@@ -15453,13 +15452,13 @@
         "mainNumeric": 50
       },
       {
-        "label": "Orb Range: |val1|m",
-        "filledLabel": "Orb Range: 12.5m",
+        "label": "AoE Range: |val1|m",
+        "filledLabel": "AoE Range: 6m",
         "modifier": "AVATAR_ABILITY_RANGE",
         "values": {
-          "Val1": 12.5
+          "Val1": 6
         },
-        "mainNumeric": 12.5
+        "mainNumeric": 6
       },
       {
         "label": "Knockdown Chance: |val1|%",
@@ -15476,17 +15475,6 @@
         "modifier": "NONE",
         "values": {
           "Val1": 100
-        },
-        "mainNumeric": 100
-      },
-      {
-        "label": "Hitpoints To Damage Conversion: |val1|%",
-        "filledLabel": "Hitpoints To Damage Conversion: 35%",
-        "modifier": "NONE",
-        "values": {
-          "Val1": 35
-        },
-        "mainNumeric": 35
       }
     ]
   },
