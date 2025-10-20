@@ -2521,6 +2521,55 @@
     "stancePolarity": "unairu"
   },
   {
+    "id": "/Lotus/Weapons/Tenno/Archwing/Primary/NokkoArchGun/NokkoArchGun",
+    "slug": "arbucep",
+    "name": "Arbucep",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "archgun",
+    "type": "Arch-Gun",
+    "masteryReq": 0,
+    "disposition": 1,
+    "trigger": "Auto",
+    "accuracy": 12.5,
+    "noise": "Alarming",
+    "criticalChance": 0.1,
+    "criticalMultiplier": 2.9000001,
+    "statusChance": 0.34900004,
+    "fireRate": 1.5000001,
+    "damageTypes": {
+      "blast": 130,
+      "total": 130
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Arbucep.png?37aa2",
+    "imageName": "arbucep-6cabdc8f25.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Nokko’s signature archgun fires six homing missiles, each bearing a payload of one of the six combined elements which detonate in an area upon impact.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 3.33,
+        "critChance": 0.5,
+        "critMult": 3,
+        "statusChance": 0.5,
+        "shotType": "Projectile",
+        "shotSpeed": 60,
+        "damage": {
+          "impact": 10,
+          "total": 10
+        }
+      }
+    ]
+  },
+  {
     "id": "927",
     "slug": "arca-plasmor",
     "name": "Arca Plasmor",
@@ -5700,7 +5749,6 @@
     "polarities": [
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Cadus.png?bd981",
     "imageName": "cadus-31f6896606.png",
     "isPrime": false,
     "isUmbra": false,
@@ -5909,7 +5957,6 @@
       "madurai",
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Cassowar.png?c342d",
     "imageName": "cassowar-ff3272dbfb.png",
     "isPrime": false,
     "isUmbra": false,
@@ -6188,7 +6235,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Caustacyst.png?71317",
     "imageName": "caustacyst-a2b014c8d4.png",
     "isPrime": false,
     "isUmbra": false,
@@ -6529,7 +6575,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CeramicDagger.png?063e0",
     "imageName": "ceramic-dagger-d35a3d97fc.png",
     "isPrime": false,
     "isUmbra": false,
@@ -6657,7 +6702,6 @@
       "madurai",
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Cerata.png?74108",
     "imageName": "cerata-91a28a3937.png",
     "isPrime": false,
     "isUmbra": false,
@@ -7055,7 +7099,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CetiLacera.png?55f56",
     "imageName": "ceti-lacera-c4a570c9b8.png",
     "isPrime": false,
     "isUmbra": false,
@@ -7593,6 +7636,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaCaustacyst.png?f76ee",
     "imageName": "coda-caustacyst-171c39f067.png",
     "isPrime": false,
     "isUmbra": false,
@@ -7769,6 +7813,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaHirudo.png?f76ee",
     "imageName": "coda-hirudo-73fbceca3a.png",
     "isPrime": false,
     "isUmbra": false,
@@ -7864,6 +7909,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMire.png?2ea1f",
     "imageName": "coda-mire-f96b19fd27.png",
     "isPrime": false,
     "isUmbra": false,
@@ -7959,6 +8005,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMotovore.png?2ea1f",
     "imageName": "coda-motovore-d83db3cb18.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8059,6 +8106,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaPathocyst.png?2ea1f",
     "imageName": "coda-pathocyst-44d3400c0d.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8822,6 +8870,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Corufell.png?5fe41",
     "imageName": "corufell-d74a908016.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9075,6 +9124,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cronus.png?b7485",
     "imageName": "cronus-f3879e63fb.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9546,6 +9596,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DakraPrime.png?2c888",
     "imageName": "dakra-prime-69b3818b88.png",
     "isPrime": true,
     "isUmbra": false,
@@ -9637,6 +9688,7 @@
       "radiation": 60,
       "total": 154
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkDagger.png?7fd23",
     "imageName": "dark-dagger-34cfc06ddf.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9706,7 +9758,7 @@
     "followThrough": 0.89999998,
     "windUp": 0.40000001,
     "blockingAngle": 45,
-    "stancePolarity": "unairu"
+    "stancePolarity": "madurai"
   },
   {
     "id": "1165",
@@ -9770,6 +9822,7 @@
       "radiation": 80,
       "total": 260
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkSword.png?18126",
     "imageName": "dark-sword-a8742e91fa.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10146,6 +10199,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Destreza.png?52b66",
     "imageName": "destreza-237f0a5096.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10241,6 +10295,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DestrezaPrime.png?ad25e",
     "imageName": "destreza-prime-603ac6abce.png",
     "isPrime": true,
     "isUmbra": false,
@@ -10385,6 +10440,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DexDakra.png?05557",
     "imageName": "dex-dakra-f39c2617fc.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10531,6 +10587,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DexNikana.png?3e3b7",
     "imageName": "dex-nikana-79f95a718c.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10722,6 +10779,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dorrclave.png?30250",
     "imageName": "dorrclave-44e8a639e2.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10815,6 +10873,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DragonNikana.png?20efa",
     "imageName": "dragon-nikana-df8b6ef90a.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11109,6 +11168,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualCleavers.png?547b9",
     "imageName": "dual-cleavers-7e804807c4.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11303,6 +11363,7 @@
       "slash": 126,
       "total": 180
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualEther.png?e911b",
     "imageName": "dual-ether-70463837b6.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11397,6 +11458,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualHeatSwords.png?bd93b",
     "imageName": "dual-heat-swords-0e3c95de91.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11492,6 +11554,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualIchor.png?caea1",
     "imageName": "dual-ichor-5c17bf66ce.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11584,6 +11647,7 @@
       "slash": 81.6,
       "total": 96
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualKamas.png?9ed01",
     "imageName": "dual-kamas-11a09f8cb1.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11678,6 +11742,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualKamasPrime.png?17c92",
     "imageName": "dual-kamas-prime-5f36995f5c.png",
     "isPrime": true,
     "isUmbra": false,
@@ -11769,6 +11834,7 @@
       "slash": 66.7,
       "total": 115
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualKeres.png?600a2",
     "imageName": "dual-keres-b112e659a1.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11864,6 +11930,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualKeresPrime.png?e0ad8",
     "imageName": "dual-keres-prime-7665aa8acb.png",
     "isPrime": true,
     "isUmbra": false,
@@ -11955,6 +12022,7 @@
       "slash": 66,
       "total": 110
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualRaza.png?3d9af",
     "imageName": "dual-raza-d9c1b54e7e.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12046,6 +12114,7 @@
       "slash": 84,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualSkana.png?af2c5",
     "imageName": "dual-skana-b1cf4bf47b.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12203,6 +12272,7 @@
       "gas": 153,
       "total": 255
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualViciss.png?be8ed",
     "imageName": "dual-viciss-f3876a2528.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12297,6 +12367,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualZoren.png?ac109",
     "imageName": "dual-zoren-bcbd4a2836.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12393,6 +12464,7 @@
       "naramon",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualZorenPrime.png?1d21b",
     "imageName": "dual-zoren-prime-e2bddd9954.png",
     "isPrime": true,
     "isUmbra": false,
@@ -12489,6 +12561,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Edun.png?09a1a",
     "imageName": "edun-2204da8ba8.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12764,6 +12837,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ekhein.png?4ac5d",
     "imageName": "ekhein-abeaf39f7b.png",
     "isPrime": false,
     "isUmbra": false,
@@ -13095,6 +13169,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Endura.png?6c6f0",
     "imageName": "endura-4831c42fc3.png",
     "isPrime": false,
     "isUmbra": false,
@@ -13361,6 +13436,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EtherDaggers.png?70d49",
     "imageName": "ether-daggers-a10b7f667c.png",
     "isPrime": false,
     "isUmbra": false,
@@ -13455,6 +13531,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EtherReaper.png?145af",
     "imageName": "ether-reaper-543ac0f467.png",
     "isPrime": false,
     "isUmbra": false,
@@ -13546,6 +13623,7 @@
       "slash": 134.4,
       "total": 192
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/EtherSword.png?76f1e",
     "imageName": "ether-sword-fb1067b033.png",
     "isPrime": false,
     "isUmbra": false,
@@ -42393,6 +42471,56 @@
     "stancePolarity": "madurai"
   },
   {
+    "id": "/Lotus/Weapons/Tenno/LongGuns/TnModQuestRifle/TnModQuestRifleWeapon",
+    "slug": "thornbak",
+    "name": "Thornbak",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 0,
+    "disposition": 1,
+    "trigger": "Burst",
+    "accuracy": 25,
+    "noise": "Alarming",
+    "criticalChance": 0.059999999,
+    "criticalMultiplier": 1.4,
+    "statusChance": 0.36000001,
+    "fireRate": 9.2879257,
+    "damageTypes": {
+      "impact": 9.332,
+      "puncture": 9.335,
+      "slash": 9.332,
+      "total": 27.999
+    },
+    "polarities": [
+      "naramon"
+    ],
+    "imageName": "thornbak-2b716e3252.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "A sturdy burst-rifle of considerable age and unknown origin collected by Teshin during his many years wandering the Origin System.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 6,
+        "critChance": 0.06,
+        "critMult": 1.4,
+        "statusChance": 0.36,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "impact": 9.33,
+          "slash": 9.34,
+          "puncture": 9.33,
+          "total": 28
+        }
+      }
+    ]
+  },
+  {
     "id": "1079",
     "slug": "tiberon",
     "name": "Tiberon",
@@ -42657,7 +42785,6 @@
     "polarities": [
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Tipedo.png?3ee6e",
     "imageName": "tipedo-939711dac4.png",
     "isPrime": false,
     "isUmbra": false,
@@ -42753,7 +42880,6 @@
       "vazarin",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TipedoPrime.png?57cc6",
     "imageName": "tipedo-prime-d092468d18.png",
     "isPrime": true,
     "isUmbra": false,
@@ -42848,7 +42974,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonbo.png?e141d",
     "imageName": "tonbo-fabec5b429.png",
     "isPrime": false,
     "isUmbra": false,
@@ -42942,7 +43067,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonkkatt.png?363a0",
     "imageName": "tonkkatt-b9790be36d.png",
     "isPrime": false,
     "isUmbra": false,
@@ -43360,7 +43484,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinBasolk.png?ad177",
     "imageName": "twin-basolk-f27c8536d2.png",
     "isPrime": false,
     "isUmbra": false,
@@ -43631,7 +43754,6 @@
       "slash": 175,
       "total": 250
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinKrohkur.png?9e026",
     "imageName": "twin-krohkur-144b945fb3.png",
     "isPrime": false,
     "isUmbra": false,
