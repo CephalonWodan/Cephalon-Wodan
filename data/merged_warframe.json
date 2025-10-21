@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2025-10-21T08:09:52.292Z",
+  "generatedAt": "2025-10-21T08:18:16.006Z",
   "count": 118,
   "entities": [
     {
@@ -24923,8 +24923,11 @@
         "sprintSpeed": 1.25,
         "masteryReq": 0
       },
-      "polarities": [],
-      "aura": null,
+      "polarities": [
+        "madurai",
+        "naramon"
+      ],
+      "aura": "madurai",
       "exilus": false,
       "exilusPolarity": null,
       "abilities": [
