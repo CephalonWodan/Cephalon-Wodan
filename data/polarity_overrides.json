@@ -77,6 +77,12 @@
     "exilus": true,
     "exilusPolarity": "Vazarin"
   },
+  "Nokko": {
+    "aura": "Madurai",
+    "slots": ["Madurai","Naramon"],
+    "exilus": null,
+    "exilusPolarity": null
+  },
   "Qorvex": {
     "aura": "Naramon",
     "slots": ["Vazarin","Naramon"],
