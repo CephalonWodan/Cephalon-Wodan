@@ -1,4 +1,259 @@
 [
+ {
+        "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoToxicShroomAbility",
+        "summary": {
+            "costEnergy": 25,
+            "strength": 250,
+            "duration": 25,
+            "range": 5,
+            "affectedBy": [
+                "Force",
+                "Durée",
+                "Portée",
+                "Efficacité"
+            ]
+        },
+        "rows": [
+            {
+                "label": "Energy Cost: |val1|",
+                "filledLabel": "Energy Cost: 25",
+                "modifier": "AVATAR_ABILITY_EFFICIENCY",
+                "values": {
+                    "Val1": 25
+                },
+                "mainNumeric": 25
+            },
+            {
+                "label": "Damage: |val1|",
+                "filledLabel": "Damage: 250",
+                "modifier": "AVATAR_ABILITY_STRENGTH",
+                "values": {
+                    "Val1": 250
+                },
+                "mainNumeric": 250
+            },
+            {
+                "label": "Stinkbrain Range: |val1|m",
+                "filledLabel": "Stinkbrain Range: 5m",
+                "modifier": "AVATAR_ABILITY_RANGE",
+                "values": {
+                    "Val1": 5
+                },
+                "mainNumeric": 5
+            },
+            {
+                "label": "Sleep and Viral Statut Chance on Pulse: |val1|%",
+                "filledLabel": "Sleep and Viral Statut Chance: 100%",
+                "modifier": "NONE",
+                "values": {
+                    "Val1": 100
+                },
+                "mainNumeric": 100
+            },
+            {
+                "label": "Pulse Interval: |val1|s",
+                "filledLabel": "Pulse Interval: 3s",
+                "modifier": "NONE",
+                "values": {
+                    "Val1": 3
+                },
+                "mainNumeric": 3
+            },
+            {
+                "label": "Stinkbrain Duration: |val1|s",
+                "filledLabel": "Stinkbrain Duration: 25s",
+                "modifier": "AVATAR_ABILITY_DURATION",
+                "values": {
+                    "Val1": 25
+                },
+                "mainNumeric": 25
+            }
+        ]
+    },
+ {
+        "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoPowerShroomAbility",
+        "summary": {
+            "costEnergy": 50,
+            "strength": 35,
+            "duration": 25,
+            "range": 15,
+            "affectedBy": [
+                "Force",
+                "Durée",
+                "Portée",
+                "Efficacité"
+            ]
+        },
+        "rows": [
+            {
+                "label": "Energy Cost: |val1|",
+                "filledLabel": "Energy Cost: 50",
+                "modifier": "AVATAR_ABILITY_EFFICIENCY",
+                "values": {
+                    "Val1": 50
+                },
+                "mainNumeric": 50
+            },
+            {
+                "label": "Strength Bonus: |val1|",
+                "filledLabel": "Strength Bonus: 35",
+                "modifier": "AVATAR_ABILITY_STRENGTH",
+                "values": {
+                    "Val1": 35
+                },
+                "mainNumeric": 35
+            },
+            {
+                "label": "Strength Bonus Duration: |val1|s",
+                "filledLabel": "Stinkbrain Duration: 5s",
+                "modifier": "AVATAR_ABILITY_DURATION",
+                "values": {
+                    "Val1": 5
+                },
+                "mainNumeric": 5
+            }
+            {
+                "label": "Energy Restore per Pulse: |val1|",
+                "filledLabel": "Energy Restore per Pulse: 15 EP",
+                "modifier": "AVATAR_ABILITY_STRENGTH",
+                "values": {
+                    "Val1": 15
+                },
+                "mainNumeric": 15
+            },
+            {
+                "label": "Brightbonnet Range: |val1|m",
+                "filledLabel": "Brightbonnet Range: 15m",
+                "modifier": "AVATAR_ABILITY_RANGE",
+                "values": {
+                    "Val1": 15
+                },
+                "mainNumeric": 15
+            },
+            {
+                "label": "Pulse Interval: |val1|s",
+                "filledLabel": "Pulse Interval: 3s",
+                "modifier": "NONE",
+                "values": {
+                    "Val1": 3
+                },
+                "mainNumeric": 3
+            },
+            {
+                "label": "Brightbonnet Duration: |val1|s",
+                "filledLabel": "Stinkbrain Duration: 25s",
+                "modifier": "AVATAR_ABILITY_DURATION",
+                "values": {
+                    "Val1": 25
+                },
+                "mainNumeric": 25
+            }
+        ]
+    },
+{
+        "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoShrinkAbility",
+        "summary": {
+            "costEnergy": 50,
+            "strength": 10,
+            "duration": 10,
+            "range": null,
+            "affectedBy": [
+                "Force",
+                "Durée",
+                "Efficacité"
+            ]
+        },
+        "rows": [
+            {
+                "label": "Energy Cost: |val1|",
+                "filledLabel": "Energy Cost: 50",
+                "modifier": "AVATAR_ABILITY_EFFICIENCY",
+                "values": {
+                    "Val1": 50
+                },
+                "mainNumeric": 50
+            },
+            {
+                "label": "Health And Shield Restore per Second: |val1| HP/SP",
+                "filledLabel": "Health And Shield Restore: 10 Per Second",
+                "modifier": "AVATAR_ABILITY_STRENGTH",
+                "values": {
+                    "Val1": 10
+                },
+                "mainNumeric": 10
+            },
+            {
+                "label": "Health And Shield Restore per Pickup: |val1| HP/SP",
+                "filledLabel": "Health And Shield Restore per Pickup: 80 HP/SP",
+                "modifier": "AVATAR_ABILITY_STRENGTH",
+                "values": {
+                    "Val1": 80
+                },
+                "mainNumeric": 80
+            }
+            {
+                "label": "Reroot Duration: |val1|s",
+                "filledLabel": "Stinkbrain Duration: 10s",
+                "modifier": "AVATAR_ABILITY_DURATION",
+                "values": {
+                    "Val1": 10
+                },
+                "mainNumeric": 10
+            }
+        ]
+    },
+{
+        "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoLaunchAbility",
+        "summary": {
+            "costEnergy": 75,
+            "strength": 2500,
+            "duration": null,
+            "range": 3,
+            "affectedBy": [
+                "Force",
+                "Portée",
+                "Efficacité"
+            ]
+        },
+        "rows": [
+            {
+                "label": "Energy Cost: |val1|",
+                "filledLabel": "Energy Cost: 75",
+                "modifier": "AVATAR_ABILITY_EFFICIENCY",
+                "values": {
+                    "Val1": 75
+                },
+                "mainNumeric": 75
+            },
+            {
+                "label": "Sporespring Toxin Damage: |val1| <DT_TOXIN_COLOR> damage ",
+                "filledLabel": "Sporespring Toxin Damage: 2500 <DT_TOXIN_COLOR> damage ",
+                "modifier": "AVATAR_ABILITY_STRENGTH",
+                "values": {
+                    "Val1": 2500
+                },
+                "mainNumeric": 2500
+            },
+            {
+                "label": "Sporespring Explosion Radius: |val1|m",
+                "filledLabel": "Sporespring Explosion Radius: 3m",
+                "modifier": "NONE",
+                "values": {
+                    "Val1": 3
+                },
+                "mainNumeric": 3
+            }
+            {
+                "label": "Sporespring Bounce Distance: |val1|m",
+                "filledLabel": "Sporespring Bounce Distance: 8m",
+                "modifier": "AVATAR_ABILITY_RANGE",
+                "values": {
+                    "Val1": 8
+                },
+                "mainNumeric": 8
+            }
+        ]
+    },
     {
         "path": "/Lotus/Powersuits/Archwing/ArchwingAbilities/ArtilleryBarrageAbility",
         "summary": {
