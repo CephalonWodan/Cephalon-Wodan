@@ -226,8 +226,8 @@
                 "mainNumeric": 75
             },
             {
-                "label": "Sporespring Toxin Damage: |val1| <DT_TOXIN_COLOR> damage ",
-                "filledLabel": "Sporespring Toxin Damage: 2500 <DT_TOXIN_COLOR> damage ",
+                "label": "Sporespring Toxin Damage: |val1| damage ",
+                "filledLabel": "Sporespring Toxin Damage: 2500 damage ",
                 "modifier": "AVATAR_ABILITY_STRENGTH",
                 "values": {
                     "Val1": 2500
