@@ -1,5 +1,59 @@
 [
   {
+    "name": "Nokko",
+    "description": "Spring into action with Nokko! With his strong roots and an array of tricky fungi this young defender will quickly grow on you",
+    "type": "Warframe",
+    "image": "https://wiki.warframe.com/images/Nokko.png?34082",
+    "stats": {
+      "health": 150,
+      "shield": 300,
+      "armor": 135,
+      "energy": 130,
+      "sprintSpeed": 1.25
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "aura": "madurai",
+    "passive": "Upon receiving fatal damage, Nokko reverts to his Sprodling form and his active mushrooms will glow, reviving Nokko when touched. Orbs spawned will grant a speed boost but not healing. If a glowing mushroom is not reached in time, Nokko will automatically use a self-revive.",
+    "abilities": [
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      },
+      {
+        "name": "",
+        "description": "",
+        "cost": null,
+        "strength": null,
+        "duration": null,
+        "range": null
+      }
+    ],
+    "blueprint": null
+  },
+  {
     "name": "Ash",
     "description": "Behold the patron saint of the Orokin school of political assassination. Ash specializes in stealth. The edge of his blade is sooner felt than seen.",
     "type": "Warframe",
