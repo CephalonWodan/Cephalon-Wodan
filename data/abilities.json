@@ -1,5 +1,5 @@
 [
- {
+    {
         "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoToxicShroomAbility",
         "summary": {
             "costEnergy": 25,
@@ -70,7 +70,7 @@
             }
         ]
     },
- {
+    {
         "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoPowerShroomAbility",
         "summary": {
             "costEnergy": 50,
@@ -111,7 +111,7 @@
                     "Val1": 5
                 },
                 "mainNumeric": 5
-            }
+            },
             {
                 "label": "Energy Restore per Pulse: |val1|",
                 "filledLabel": "Energy Restore per Pulse: 15 EP",
@@ -150,7 +150,7 @@
             }
         ]
     },
-{
+    {
         "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoShrinkAbility",
         "summary": {
             "costEnergy": 50,
@@ -190,7 +190,7 @@
                     "Val1": 80
                 },
                 "mainNumeric": 80
-            }
+            },
             {
                 "label": "Reroot Duration: |val1|s",
                 "filledLabel": "Stinkbrain Duration: 10s",
@@ -202,7 +202,7 @@
             }
         ]
     },
-{
+    {
         "path": "/Lotus/Powersuits/PowersuitAbilities/NokkoLaunchAbility",
         "summary": {
             "costEnergy": 75,
@@ -242,7 +242,7 @@
                     "Val1": 3
                 },
                 "mainNumeric": 3
-            }
+            },
             {
                 "label": "Sporespring Bounce Distance: |val1|m",
                 "filledLabel": "Sporespring Bounce Distance: 8m",
