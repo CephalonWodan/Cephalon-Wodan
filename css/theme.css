@@ -344,3 +344,36 @@ input::placeholder{ color:rgba(230,237,247,.55); }
   .btn-tab{ font-size:.82rem; }
   .card-body{ padding:.9rem; }
 }
+/* === Switch R0/R30 (glissière) === */
+.wf-switch{
+  display:flex; align-items:center; gap:.6rem;
+}
+.wf-switch .label{
+  font-size:.8rem; color:var(--muted);
+}
+.wf-switch .track{
+  position:relative; width:48px; height:26px; border-radius:999px;
+  background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.18));
+  border:1px solid rgba(230,210,142,.45);
+  box-shadow:var(--shadow);
+  transition:background .2s ease, border-color .2s ease;
+  display:inline-block;
+}
+.wf-switch .knob{
+  position:absolute; top:2px; left:2px; width:22px; height:22px; border-radius:50%;
+  background:var(--ink);
+  box-shadow:0 2px 8px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .20s ease;
+}
+.wf-switch input:focus + .track{
+  outline:none;
+  box-shadow:0 0 0 3px rgba(230,210,142,.3), 0 0 0 1px rgba(230,210,142,.8) inset;
+  border-color:var(--gold);
+}
+.wf-switch input:checked + .track{
+  background:linear-gradient(180deg, rgba(230,210,142,.18), rgba(230,210,142,.06));
+  border-color:var(--gold);
+}
+.wf-switch input:checked + .track .knob{
+  transform:translateX(22px);
+}
