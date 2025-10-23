@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Warframe Loadout Builder</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { margin-bottom: 10px; }
+    h2 { margin-top: 20px; margin-bottom: 5px; }
+    select { width: 100%; }
+    #sections { display: flex; flex-wrap: wrap; gap: 20px; }
+    .section { flex: 1 1 300px; min-width: 280px; }
+    .section label { display: block; margin-bottom: 5px; font-weight: bold; }
+    .section select { height: 160px; }
+  </style>
+</head>
+<body>
+  <h1>Warframe Loadout Builder</h1>
+  <div class="section">
+    <label for="warframe">Select Warframe:</label>
+    <select id="warframe"></select>
+  </div>
+
+  <div id="stats"></div>
+
+  <div id="sections">
+    <div id="modsSection" class="section">
+      <label for="mods">Mods (multiple selection):</label>
+      <select id="mods" multiple></select>
+    </div>
+    <div id="arcanesSection" class="section">
+      <label for="arcanes">Arcanes (max 2):</label>
+      <select id="arcanes" multiple></select>
+    </div>
+    <div id="shardsSection" class="section">
+      <label for="shards">Archon Shards (max 5):</label>
+      <select id="shards" multiple></select>
+    </div>
+  </div>
+
+  <div id="finalStats"></div>
+
+  <script>
+    async function loadData() {
+      // Fetch warframes
+      const wfRes = await fetch('https://cephalon-wodan-production.up.railway.app/warframes');
+      const wfData = await wfRes.json();
+      const warframes = wfData.entities || wfData;
+      const warframeSelect = document.getElementById('warframe');
+      warframes.forEach((w, i) => {
+        if (w.type && w.type.toLowerCase() === 'warframe') {
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.textContent = w.name;
+          warframeSelect.appendChild(opt);
+        }
+      });
+
+      // Fetch mods
+      const modsRes = await fetch('https://cephalon-wodan-production.up.railway.app/mods');
+      const mods = await modsRes.json();
+      const modsSelect = document.getElementById('mods');
+      mods.forEach(mod => {
+        const opt = document.createElement('option');
+        opt.value = mod.id;
+        opt.textContent = `${mod.name} (${mod.polarity || ''})`;
+        opt.dataset.compat = mod.compatName;
+        opt.dataset.stats = JSON.stringify(mod.levelStats);
+        modsSelect.appendChild(opt);
+      });
+
+      // Fetch arcanes
+      const arcsRes = await fetch('https://api.warframestat.us/arcanes');
+      const arcanes = await arcsRes.json();
+      const arcanesSelect = document.getElementById('arcanes');
+      arcanes.forEach(a => {
+        const opt = document.createElement('option');
+        opt.value = a.regex;
+        opt.textContent = `${a.name} (${a.rarity})`;
+        opt.dataset.effect = a.effect;
+        arcanesSelect.appendChild(opt);
+      });
+
+      // Fetch archon shards
+      const shardsRes = await fetch('https://api.warframestat.us/archonShards/');
+      const shards = await shardsRes.json();
+      const shardsSelect = document.getElementById('shards');
+      Object.keys(shards).forEach(k => {
+        const shard = shards[k];
+        const opt = document.createElement('option');
+        opt.value = k;
+        opt.textContent = shard.value;
+        opt.dataset.upgrades = JSON.stringify(shard.upgradeTypes);
+        shardsSelect.appendChild(opt);
+      });
+
+      warframeSelect.addEventListener('change', updateStats);
+      modsSelect.addEventListener('change', updateStats);
+      arcanesSelect.addEventListener('change', updateStats);
+      shardsSelect.addEventListener('change', updateStats);
+
+      // Initial display
+      if (warframeSelect.value === '') {
+        warframeSelect.selectedIndex = 0;
+      }
+      updateStats();
+
+      function updateStats() {
+        const idx = warframeSelect.value;
+        const wf = warframes[idx];
+        const statsDiv = document.getElementById('stats');
+        if (wf) {
+          const base = wf.baseStats || {};
+          const base30 = wf.baseStatsRank30 || {};
+          statsDiv.innerHTML = `<h2>${wf.name} Base Stats</h2>
+            <p>Health: ${base.health ?? '-'} / ${base30.health ?? '-'}</p>
+            <p>Shield: ${base.shields ?? base.shield ?? '-'} / ${base30.shields ?? base30.shield ?? '-'}</p>
+            <p>Armor: ${base.armor ?? '-'} / ${base30.armor ?? '-'}</p>
+            <p>Energy: ${base.energy ?? base.power ?? '-'} / ${base30.energy ?? base30.power ?? '-'}</p>
+            <p>Sprint Speed: ${base.sprintSpeed ?? '-'}</p>`;
+        }
+        // Calculate final stats (simplified)
+        document.getElementById('finalStats').innerHTML = '<h2>Final Stats</h2><p>Computation of mod, arcane and shard effects is not yet implemented in this demo.</p>';
+      }
+    }
+    loadData();
+  </script>
+</body>
+</html>
