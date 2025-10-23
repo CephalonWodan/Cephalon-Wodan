@@ -1,7 +1,15 @@
+/*
+ * Loadout Builder: script déporté.
+ *
+ * Ce fichier regroupe toute la logique JavaScript pour le builder de loadout Warframe.
+ * Les données sont chargées depuis votre API Cephalon‑Wodan (warframes et mods) et
+ * depuis les fichiers locaux (arcanes) pour assurer une liste riche et à jour.
+ */
+
 /* ==== SOURCES ==== */
 const API_WF       = "https://cephalon-wodan-production.up.railway.app/warframes";
+const API_MODS     = "https://cephalon-wodan-production.up.railway.app/mods";
 const DATA_ARCANES = "data/arcanes_map.json";                 // dataset local (riche)
-const DATA_MODS    = "data/overframe/overframe-mods.json";    // ton JSON local Overframe
 
 /* ==== HELPERS ==== */
 const $ = (q) => document.querySelector(q);
@@ -55,7 +63,7 @@ function computeBaseStats(wf){
 function renderStats(){
   const box = $("#statsList");
   box.innerHTML = "";
-  if(!STATE.current){ box.innerHTML = `<div class="muted">Aucune Warframe sélectionnée.</div>`; return;}
+  if(!STATE.current){ box.innerHTML = `<div class="muted">Aucune Warframe sélectionnée.</div>`; return; }
   const stats = computeBaseStats(STATE.current);
   Object.entries(stats).forEach(([k,v]) => box.insertAdjacentHTML("beforeend", statRow(k,v)));
   renderPolarities();
@@ -90,7 +98,7 @@ function renderCatalog(){
     cost: a.Cost || 0,
     art: a.ImageName ? `img/arcanes/${a.ImageName}` : "",
     text: a.Description || "",
-    polarity: "" // arcanes n'ont pas de polarité de slot
+    polarity: ""
   })));
 
   list = list.filter(x=>{
@@ -100,7 +108,6 @@ function renderCatalog(){
     if (rar && String(x.rarity||"").toUpperCase() !== rar) return false;
     return true;
   });
-
   list.sort((a,b)=>{
     if (sort==="cost") return (a.cost||0)-(b.cost||0);
     if (sort==="rarity") return String(a.rarity||"").localeCompare(String(b.rarity||""));
@@ -116,7 +123,7 @@ function renderCatalog(){
         <div class="small">${esc((x.text||"").replace(/\s+/g," ").trim()).slice(0,160)}</div>
         <div class="inline small">
           ${x.polarity? `<span class="chip">${esc(x.polarity)}</span>` : ""}
-          ${x.isArcane? `<span class="chip gold">Arcane</span>`:""}
+          ${x.isArcane? `<span class="chip gold">Arcane</span>`: ""}
         </div>
       </div>
     </div>
@@ -125,32 +132,35 @@ function renderCatalog(){
 
 /* ==== DATA LOADING ==== */
 async function loadAll(){
+  // charge Warframes et Arcanes
   const [wfRes, arcRes] = await Promise.all([
     fetch(API_WF).then(r=>r.json()),
     fetch(DATA_ARCANES).then(r=>r.json())
   ]);
-
   STATE.warframes = (wfRes.entities || wfRes || []).filter(x=>String(x.type||"").toLowerCase()==="warframe");
   STATE.arcanes   = Array.isArray(arcRes)? arcRes : [];
 
-  // mods (JSON local Overframe)
+  // charge mods depuis l’API Cephalon‑Wodan (plus complet que le JSON local)
   try{
-    const modsRes = await fetch(DATA_MODS);
+    const modsRes = await fetch(API_MODS);
     if (modsRes.ok){
       const modsJson = await modsRes.json();
-      STATE.mods = (modsJson || []).filter(m => String(m.compat||"").toUpperCase().includes("WARFRAME"))
-        .map(m=>({
-          name: m.name,
-          type: String(m.type||"MOD").toUpperCase(),
-          rarity: m.rarity,
-          cost: m.baseDrain,
-          polarity: String(m.polarity||"").toLowerCase(),
-          text: (m.effect||"").replace(/<[^>]+>/g,"")
-        }));
+      STATE.mods = (modsJson || []).filter(m => m.type && /warframe/i.test(m.type)).map(m=>({
+        name: m.name,
+        type: m.type,
+        rarity: m.rarity,
+        cost: m.baseDrain,
+        polarity: m.polarity ? m.polarity.toLowerCase() : "",
+        text: (Array.isArray(m.levelStats) && m.levelStats.length)
+          ? m.levelStats[m.levelStats.length - 1].stats.join(", ")
+          : ""
+      }));
     }
-  }catch(_){ /* ignore */ }
+  }catch(e){
+    console.error("Erreur de chargement des mods", e);
+  }
 
-  // remplir le picker
+  // initialise le picker
   const picker = $("#wfPicker");
   picker.innerHTML = STATE.warframes.map((w,i)=> `<option value="${i}">${esc(w.name)}</option>`).join("");
   if (STATE.warframes.length){
