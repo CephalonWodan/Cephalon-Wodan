@@ -23,32 +23,10 @@ let STATE = {
   warframes: [],
   mods: [],
   arcanes: [],
-  current: null
+  current: null,
+  // Niveau de rang (0-30). Détermine la capacité et l'interpolation des stats.
+  rank: 30
 };
-
-/* ================== Images wiki (vérifiées) ================== */
-  function wikiThumbRaw(m){ return m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || ""; }
-  function normalizeUrl(u){ return !u ? "" : (u.startsWith("//") ? "https:" + u : u); }
-  function upscaleThumb(url, size=720){
-    if (!url) return "";
-    let out = normalizeUrl(url);
-    out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
-    if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
-      out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs='') =>
-        `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
-    }
-    return out;
-  }
-  function verifiedWikiImage(m){
-    const raw = wikiThumbRaw(m);
-    if (!raw) return { url: "", verified: false };
-    return { url: upscaleThumb(raw, 720), verified: true };
-  }
-  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
-  const MOD_PLACEHOLDER =
-    'data:image/svg+xml;utf8,' +
-    encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
-
 
 /* ==== RENDER HEADER ==== */
 function renderHeader(){
@@ -65,22 +43,48 @@ function statRow(k,v){
 function computeBaseStats(wf){
   const s0  = wf.baseStats || {};
   const s30 = wf.baseStatsRank30 || {};
-  const s   = STATE.showR30 ? s30 : s0;
-  const armor  = Number(s.armor||0);
-  const hp     = Number(s.health||0);
-  const sh     = Number(s.shields||s.shield||0);
+  // Ratio d'interpolation basé sur le rang (0 à 30)
+  const r    = STATE.rank || 0;
+  const ratio = Math.max(0, Math.min(r, 30)) / 30;
+  // helper pour interpoler un champ numérique entre rang 0 et 30
+  function lerp(val0, val30){
+    const v0 = Number(val0 ?? 0);
+    const v30= Number(val30 ?? v0);
+    return Math.round(v0 + (v30 - v0) * ratio);
+  }
+  // Stats de base interpolées
+  const hp0   = s0.health ?? 0;
+  const hp30  = s30.health ?? hp0;
+  const hp    = lerp(hp0, hp30);
+  const shield0 = (s0.shields ?? s0.shield ?? 0);
+  const shield30= (s30.shields ?? s30.shield ?? shield0);
+  const sh    = lerp(shield0, shield30);
+  const armor0= s0.armor ?? 0;
+  const armor30= s30.armor ?? armor0;
+  const armor = lerp(armor0, armor30);
+  const energy0= (s0.energy ?? s0.power ?? 0);
+  const energy30 = (s30.energy ?? s30.power ?? energy0);
+  const energy = lerp(energy0, energy30);
+  const sprint0 = s0.sprintSpeed ?? 0;
+  const sprint30 = s30.sprintSpeed ?? sprint0;
+  const sprint = lerp(sprint0, sprint30);
+  // Calcul EHP et DR
   const ehp    = Math.round(hp * (1 + armor/300) + sh);
+  const dr     = armor ? Math.round(armor / (armor + 300) * 100) : null;
+  // Capacité totale (rang * 1 ou *2 avec Reactor)
+  const capTot = r * (STATE.reactor ? 2 : 1);
   return {
-    ENERGY: s.energy ?? s.power ?? "—",
+    CAPACITY: capTot || "—",
+    ENERGY: energy || "—",
     HEALTH: hp || "—",
     SHIELD: sh || "—",
-    "SPRINT SPEED": s.sprintSpeed || "—",
+    "SPRINT SPEED": sprint || "—",
     DURATION: "100%",
     EFFICIENCY: "100%",
     RANGE: "100%",
     STRENGTH: "100%",
     ARMOR: armor || "—",
-    "DAMAGE REDUCTION": armor ? Math.round(armor/(armor+300)*100) + "%" : "—",
+    "DAMAGE REDUCTION": dr != null ? dr + "%" : "—",
     "EFFECTIVE HIT POINTS": isFinite(ehp)? ehp : "—"
   };
 }
@@ -191,6 +195,13 @@ async function loadAll(){
     STATE.current = STATE.warframes[0];
     renderHeader(); renderStats();
   }
+  // synchroniser slider, label et toggle avec le rang initial
+  const sld = document.getElementById("rankSlider");
+  const vlab= document.getElementById("rankVal");
+  const tog = document.getElementById("rankToggle");
+  if(sld){ sld.value = String(STATE.rank); }
+  if(vlab){ vlab.textContent = String(STATE.rank); }
+  if(tog){ tog.checked = (STATE.rank >= 30); }
   renderCatalog();
 }
 
@@ -202,6 +213,12 @@ $("#wfPicker").addEventListener("change", e=>{
 });
 $("#rankToggle").addEventListener("change", e=>{
   STATE.showR30 = !!e.target.checked;
+  // Si on bascule le toggle, ajuster également le slider de rang
+  STATE.rank = STATE.showR30 ? 30 : 0;
+  const slider = document.getElementById("rankSlider");
+  const valLab = document.getElementById("rankVal");
+  if(slider){ slider.value = STATE.rank; }
+  if(valLab){ valLab.textContent = String(STATE.rank); }
   renderStats();
 });
 $("#reactor").addEventListener("change", e=>{ STATE.reactor = !!e.target.checked; /* hook coût/polarités plus tard */ });
@@ -216,6 +233,22 @@ $("#resetBuild").addEventListener("click", ()=>{
   $("#globalSearch").value = "";
   renderCatalog();
 });
+
+// Slider de rang
+const rankSlider = document.getElementById("rankSlider");
+if(rankSlider){
+  rankSlider.addEventListener("input", (e) => {
+    const v = parseInt(e.target.value, 10);
+    STATE.rank = isNaN(v) ? 0 : v;
+    // Met à jour le label et le toggle si nécessaire
+    const valLab = document.getElementById("rankVal");
+    if(valLab){ valLab.textContent = String(STATE.rank); }
+    // Synchronise le toggle si on atteint extrêmes
+    const tog = document.getElementById("rankToggle");
+    if(tog){ tog.checked = (STATE.rank >= 30); }
+    renderStats();
+  });
+}
 
 /* ==== BOOT ==== */
 loadAll().catch(err=>{
