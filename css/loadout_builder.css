@@ -1,3 +1,13 @@
+/*
+ * Styles spécifiques au Loadout Builder.
+ *
+ * Ce fichier définit toutes les règles CSS nécessaires à la mise en page
+ * décrite par l’utilisateur : colonnes stats/slots/mods, en-tête compact
+ * avec image, toggles et filtres, palette de couleurs cohérente avec
+ * le thème existant. Les variables CSS : --panel, --muted, etc. sont
+ * assumées définies par votre thème global (theme.css).
+ */
+
 :root{
   --gap: 16px;
   --panel: var(--panel-2, #0f172a);
@@ -12,10 +22,10 @@ body{margin:0; background:var(--bg); color:#e7f1ff; font:14px/1.45 system-ui,Seg
 .container{max-width:1400px; margin:24px auto; padding:0 16px;}
 .card{background:var(--panel); border:1px solid var(--panel-border); border-radius:14px;}
 .panel{padding:16px;}
-.muted{color:var(--muted);}
+.muted{color:var(--muted);} 
 .small{font-size:12px}
 .title{font-size:22px; font-weight:700;}
-.subtitle{font-size:13px; color:var(--muted);}
+.subtitle{font-size:13px; color:var(--muted);} 
 .inline{display:flex; align-items:center; gap:6px}
 .btn{background:#1a243b; border:1px solid var(--panel-border); color:#e7f1ff; padding:8px 10px; border-radius:10px; cursor:pointer;}
 .btn:hover{background:#1e2a46}
@@ -50,7 +60,6 @@ body{margin:0; background:var(--bg); color:#e7f1ff; font:14px/1.45 system-ui,Seg
 .toggles{display:flex; gap:12px; align-items:center; margin-top:10px}
 
 /* SLOTS (col centre) */
-.center{position:relative; min-height:540px; display:flex; flex-direction:column; gap:12px;}
 .slot-grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; padding:12px;}
 .slot{height:74px; background:#0f162a; border:1px dashed rgba(255,255,255,.14); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#8aa1bd}
 .slot-row{display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; padding:0 12px 12px}
@@ -64,7 +73,7 @@ body{margin:0; background:var(--bg); color:#e7f1ff; font:14px/1.45 system-ui,Seg
 .catalog{display:flex; flex-direction:column; gap:10px;}
 .filters{display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:8px;}
 .filters .f{display:flex; flex-direction:column; gap:6px;}
-select,.input{background:#0e1528; color:#e7f1ff; border:1px solid var(--panel-border); border-radius:10px; padding:8px}
+select, .input{background:#0e1528; color:#e7f1ff; border:1px solid var(--panel-border); border-radius:10px; padding:8px}
 .mod-list{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; max-height:640px; overflow:auto; padding:4px}
 .mod-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--panel-border); border-radius:14px; padding:10px; display:flex; gap:10px}
 .mod-art{width:66px; height:66px; border-radius:10px; background:#0b1220; border:1px solid var(--panel-border); overflow:hidden; flex:0 0 auto; display:flex; align-items:center; justify-content:center;}
