@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2025-10-23T18:39:39.625Z",
+    "generatedAt": "2025-10-23T18:53:02.501Z",
     "platforms": [
       "pc",
       "ps4",
@@ -8,7 +8,7 @@
       "swi",
       "mob"
     ],
-    "ciUpdatedAt": "2025-10-23T18:39:39.649Z"
+    "ciUpdatedAt": "2025-10-23T18:53:02.524Z"
   },
   "pc": {
     "_error": "HTTP 403 for pc"
