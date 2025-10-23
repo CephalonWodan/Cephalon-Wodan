@@ -95,26 +95,25 @@ export function mountMergedStatic(app) {
     }
   });
 
-  
   /* ---------------------------------- ARCHONSHARDS --------------------------------- */
-app.get('/archonshards/:name', async (req, res) => {
-  try {
-    const shards = await loadShards();
-    const query = String(req.params.name || '').toLowerCase();
-    // Recherche par clé ou par nom de couleur (valeur)
-    const keyMatch = Object.keys(shards).find(k => k.toLowerCase() === query);
-    const shardData = keyMatch 
-      ? shards[keyMatch] 
-      : Object.values(shards).find(s => String(s.value || '').toLowerCase() === query);
-    if (!shardData) {
-      return res.status(404).json({ error: 'archon shard not found' });
+  app.get('/archonshards/:name', async (req, res) => {
+    try {
+      const shards = await loadShards();
+      const query = String(req.params.name || '').toLowerCase();
+      // Recherche par clé ou par nom de couleur (valeur)
+      const keyMatch = Object.keys(shards).find(k => k.toLowerCase() === query);
+      const shardData = keyMatch 
+        ? shards[keyMatch] 
+        : Object.values(shards).find(s => String(s.value || '').toLowerCase() === query);
+      if (!shardData) {
+        return res.status(404).json({ error: 'archon shard not found' });
+      }
+      send(res, JSON.stringify(shardData));
+    } catch {
+      res.status(500).json({ error: 'failed to load archonshards.json' });
     }
-    send(res, JSON.stringify(shardData));
-  } catch {
-    res.status(500).json({ error: 'failed to load archonshards.json' });
-  }
-});
-  
+  });
+
   /* ---------------------------------- RELICS --------------------------------- */
   app.get('/relics', async (req, res) => {
     try {
@@ -167,29 +166,37 @@ app.get('/archonshards/:name', async (req, res) => {
 
   /* ------------------- PRIMARY / SECONDARY/ MELEE/ ARCHMELEE / ARCHGUN / ZAW / KITGUN ------------------- */
   // LISTES
-app.get('/weapons', async (req, res) => {
-  try {
-    const items = await loadWeapons();
-    // filtres : search, subtype, rarity, etc. à ajouter au besoin
-    res.set('Cache-Control','s-maxage=600, stale-while-revalidate=300');
-    res.json(items);
-  } catch {
-    res.status(500).json({error:'failed to load enriched_weapons.json'});
-  }
-});
+  app.get('/weapons', async (req, res) => {
+    try {
+      // Added filtering by search, subtype, type, and limit
+      const q = req.query.search ?? '';
+      const subtype = req.query.subtype;
+      const type = req.query.type;
+      const limit = Math.min(+req.query.limit || 0, 5000);
 
-app.get('/weapons/:slug', async (req, res) => {
-  try {
-    const items = await loadWeapons();
-    const it = items.find(x => x.slug===req.params.slug || String(x.id)===req.params.slug);
-    if (!it) return res.status(404).json({error:'weapon not found'});
-    res.set('Cache-Control','s-maxage=600, stale-while-revalidate=300');
-    res.json(it);
-  } catch {
-    res.status(500).json({error:'failed to load enriched_weapons.json'});
-  }
-});
+      let items = await loadWeapons();
+      if (q) items = items.filter((i) => contains(i.name, q));
+      if (subtype) items = items.filter((i) => eq(i.subtype, subtype));
+      if (type) items = items.filter((i) => eq(i.type, type));
+      if (limit) items = items.slice(0, limit);
+      res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+      res.json(items);
+    } catch {
+      res.status(500).json({ error: 'failed to load enriched_weapons.json' });
+    }
+  });
 
+  app.get('/weapons/:slug', async (req, res) => {
+    try {
+      const items = await loadWeapons();
+      const it = items.find(x => x.slug === req.params.slug || String(x.id) === req.params.slug);
+      if (!it) return res.status(404).json({ error: 'weapon not found' });
+      res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
+      res.json(it);
+    } catch {
+      res.status(500).json({ error: 'failed to load enriched_weapons.json' });
+    }
+  });
 
   /* ------------------- WARFRAMES / ARCHWINGS / NECRAMECHS ------------------- */
   // LISTES
