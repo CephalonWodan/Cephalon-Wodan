@@ -163,6 +163,8 @@ async function fetchWarframesWithFailover() {
       .filter((wf) => wf && String(wf.type || "").toLowerCase() === "warframe")
       .map((rec) => {
         const bs = rec.baseStats || {};
+        // rank 30 base stats (some fields may be missing)
+        const bs30 = rec.baseStatsRank30 || {};
         // image locale : img/warframes/NomSansEspace.png (ex: "Ash Prime" -> "AshPrime.png")
         const fileName = `${String(rec.name || "").replace(/\s+/g, "")}.png`;
         const img = `img/warframes/${fileName}`;
@@ -175,12 +177,21 @@ async function fetchWarframesWithFailover() {
           auraPolarity: rec.aura ?? null,
           exilus: (rec.exilus === true) ? true : (rec.exilus === false ? false : null),
           exilusPolarity: rec.exilusPolarity ?? null,
+          // expose both rank 0 and rank 30 stats; if the API provides baseStatsRank30
+          // these values will be used for the rank 30 display. Unknown values default
+          // to "—". Note: shields can be returned as either 'shields' or 'shield'
           stats: {
             health: bs.health ?? "—",
             shield: bs.shields ?? bs.shield ?? "—",
             armor:  bs.armor  ?? "—",
             energy: bs.energy ?? bs.power ?? "—",
             sprintSpeed: bs.sprintSpeed ?? "—",
+            // rank 30 stats
+            health30: bs30.health ?? "—",
+            shield30: bs30.shields ?? bs30.shield ?? "—",
+            armor30:  bs30.armor  ?? "—",
+            energy30: bs30.energy ?? bs30.power ?? "—",
+            sprintSpeed30: bs30.sprintSpeed ?? "—",
           },
         };
       })
@@ -412,6 +423,14 @@ async function fetchWarframesWithFailover() {
               ${statBox("ARMOR", wf.stats.armor)}
               ${statBox("ENERGY", wf.stats.energy)}
               ${statBox("SPRINT", wf.stats.sprintSpeed)}
+            </div>
+            <!-- Rank 30 stats row -->
+            <div class="grid grid-cols-5 gap-3 mt-2">
+              ${statBox("HP (30)", wf.stats.health30)}
+              ${statBox("SHIELD (30)", wf.stats.shield30)}
+              ${statBox("ARMOR (30)", wf.stats.armor30)}
+              ${statBox("ENERGY (30)", wf.stats.energy30)}
+              ${statBox("SPRINT (30)", wf.stats.sprintSpeed30)}
             </div>
 
             <div class="mt-2">
