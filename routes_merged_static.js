@@ -29,6 +29,8 @@ const loadMods = cachedJson(DATA('enriched_mods.json'));
 const loadRelics = cachedJson(DATA('enriched_relics.json'));
 const loadWeapons = cachedJson(DATA('enriched_weapons.json'));
 const loadShards = cachedJson(DATA('archonshards.json'));
+const loadArcanes = cachedJson(DATA('arcanes_list.json'));
+
 const send = (res, data) => {
   res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
   res.type('application/json').send(data);
@@ -51,6 +53,30 @@ export function mountMergedStatic(app) {
       res.status(404).json({ error: 'merged_warframe.json not found' });
     }
   });
+
+  /* ---------------------------------- ARCANES ---------------------------------- */
+// Liste complète
+app.get('/arcanes', async (req, res) => {
+  try {
+    const list = await loadArcanes();
+    send(res, JSON.stringify(list));
+  } catch {
+    res.status(500).json({ error: 'failed to load arcanes_list.json' });
+  }
+});
+
+// Détail par nom (case-insensitive)
+app.get('/arcanes/:name', async (req, res) => {
+  try {
+    const list = await loadArcanes();
+    const key = String(req.params.name || '').toLowerCase().trim();
+    const arc = list.find(a => String(a.name || '').toLowerCase().trim() === key);
+    if (!arc) return res.status(404).json({ error: 'arcane not found' });
+    send(res, JSON.stringify(arc));
+  } catch {
+    res.status(500).json({ error: 'failed to load arcanes_list.json' });
+  }
+});
 
   /* ----------------------------------- MODS ---------------------------------- */
   app.get('/mods', async (req, res) => {
