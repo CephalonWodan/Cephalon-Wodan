@@ -2,53 +2,51 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Warframes Loadout Builder</title>
+  <title>Warframe Loadout Builder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Tailwind -->
+  <!-- Tailwind (for quick styling) -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Thème -->
+  <!-- Theme and polarities CSS -->
   <link rel="stylesheet" href="css/theme.css?v=1" />
-  <link rel="stylesheet" href="css/polarities.css">
-  <!----Icon---->
-  <link rel="icon" type="image/x-icon" href="/img/CephalonWodan/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/img/CephalonWodan/favicon-32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/img/CephalonWodan/favicon-16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/img/CephalonWodan/icon-180-apple.png">
-<link rel="manifest" href="/img/CephalonWodan/site.webmanifest">
-<meta name="theme-color" content="#0c0b1a">
+  <link rel="stylesheet" href="css/polarities.css" />
+  <!-- Favicon and icons -->
+  <link rel="icon" type="image/x-icon" href="/img/CephalonWodan/favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/CephalonWodan/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/CephalonWodan/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/CephalonWodan/icon-180-apple.png" />
+  <link rel="manifest" href="/img/CephalonWodan/site.webmanifest" />
+  <meta name="theme-color" content="#0c0b1a" />
 </head>
-<body class="bg-[var(--bg)] text-[var(--ink)]">
-  <!-- NAV -->
-  <div id="site-nav"></div>
-<body>
-  <h1>Warframe Loadout Builder</h1>
-  <div class="section">
-    <label for="warframe">Select Warframe:</label>
-    <select id="warframe"></select>
+<body class="bg-[var(--bg)] text-[var(--ink)] p-4">
+  <h1 class="text-2xl font-bold mb-4">Warframe Loadout Builder</h1>
+
+  <div class="mb-4">
+    <label for="warframe" class="block mb-1">Select Warframe:</label>
+    <select id="warframe" class="w-full p-2 bg-[var(--panel-2)] border rounded"></select>
   </div>
 
-  <div id="stats"></div>
+  <div id="stats" class="mb-4"></div>
 
-  <div id="sections">
-    <div id="modsSection" class="section">
-      <label for="mods">Mods (multiple selection):</label>
-      <select id="mods" multiple></select>
+  <div id="sections" class="space-y-4">
+    <div id="modsSection">
+      <label for="mods" class="block mb-1">Mods (multiple selection):</label>
+      <select id="mods" multiple class="w-full p-2 bg-[var(--panel-2)] border rounded h-32"></select>
     </div>
-    <div id="arcanesSection" class="section">
-      <label for="arcanes">Arcanes (max 2):</label>
-      <select id="arcanes" multiple></select>
+    <div id="arcanesSection">
+      <label for="arcanes" class="block mb-1">Arcanes (max 2):</label>
+      <select id="arcanes" multiple class="w-full p-2 bg-[var(--panel-2)] border rounded h-32"></select>
     </div>
-    <div id="shardsSection" class="section">
-      <label for="shards">Archon Shards (max 5):</label>
-      <select id="shards" multiple></select>
+    <div id="shardsSection">
+      <label for="shards" class="block mb-1">Archon Shards (max 5):</label>
+      <select id="shards" multiple class="w-full p-2 bg-[var(--panel-2)] border rounded h-32"></select>
     </div>
   </div>
 
-  <div id="finalStats"></div>
+  <div id="finalStats" class="mt-6"></div>
 
   <script>
     async function loadData() {
-      // Fetch warframes
+      // Fetch Warframes from your API
       const wfRes = await fetch('https://cephalon-wodan-production.up.railway.app/warframes');
       const wfData = await wfRes.json();
       const warframes = wfData.entities || wfData;
@@ -62,7 +60,7 @@
         }
       });
 
-      // Fetch mods
+      // Fetch mods from your API
       const modsRes = await fetch('https://cephalon-wodan-production.up.railway.app/mods');
       const mods = await modsRes.json();
       const modsSelect = document.getElementById('mods');
@@ -75,19 +73,24 @@
         modsSelect.appendChild(opt);
       });
 
-      // Fetch arcanes
-      const arcsRes = await fetch('https://api.warframestat.us/arcanes');
-      const arcanes = await arcsRes.json();
+      // Fetch arcanes from local data (comprehensive list)
+      const arcsRes = await fetch('data/arcanes_map.json');
+      const arcsObj = await arcsRes.json();
+      const arcanes = Object.values(arcsObj);
       const arcanesSelect = document.getElementById('arcanes');
       arcanes.forEach(a => {
         const opt = document.createElement('option');
-        opt.value = a.regex;
-        opt.textContent = `${a.name} (${a.rarity})`;
-        opt.dataset.effect = a.effect;
+        opt.value = a.Name;
+        // Display type and rarity to help filtering later
+        const typeLabel = a.Type ? `${a.Type}` : '';
+        opt.textContent = `${a.Name} [${typeLabel}, ${a.Rarity}]`;
+        opt.dataset.type = a.Type;
+        opt.dataset.description = a.Description;
+        opt.dataset.criteria = a.Criteria;
         arcanesSelect.appendChild(opt);
       });
 
-      // Fetch archon shards
+      // Fetch Archon shards from WarframeStat
       const shardsRes = await fetch('https://api.warframestat.us/archonShards/');
       const shards = await shardsRes.json();
       const shardsSelect = document.getElementById('shards');
@@ -95,20 +98,22 @@
         const shard = shards[k];
         const opt = document.createElement('option');
         opt.value = k;
-        opt.textContent = shard.value;
+        opt.textContent = `${k}: ${shard.value}`;
         opt.dataset.upgrades = JSON.stringify(shard.upgradeTypes);
         shardsSelect.appendChild(opt);
       });
 
+      // Event listeners to update stats
       warframeSelect.addEventListener('change', updateStats);
       modsSelect.addEventListener('change', updateStats);
       arcanesSelect.addEventListener('change', updateStats);
       shardsSelect.addEventListener('change', updateStats);
 
-      // Initial display
+      // Initialize default selection
       if (warframeSelect.value === '') {
         warframeSelect.selectedIndex = 0;
       }
+
       updateStats();
 
       function updateStats() {
@@ -118,17 +123,21 @@
         if (wf) {
           const base = wf.baseStats || {};
           const base30 = wf.baseStatsRank30 || {};
-          statsDiv.innerHTML = `<h2>${wf.name} Base Stats</h2>
+          statsDiv.innerHTML = `<h2 class="text-xl font-semibold mb-2">${wf.name} Base Stats</h2>
             <p>Health: ${base.health ?? '-'} / ${base30.health ?? '-'}</p>
             <p>Shield: ${base.shields ?? base.shield ?? '-'} / ${base30.shields ?? base30.shield ?? '-'}</p>
             <p>Armor: ${base.armor ?? '-'} / ${base30.armor ?? '-'}</p>
             <p>Energy: ${base.energy ?? base.power ?? '-'} / ${base30.energy ?? base30.power ?? '-'}</p>
             <p>Sprint Speed: ${base.sprintSpeed ?? '-'}</p>`;
+        } else {
+          statsDiv.innerHTML = '';
         }
-        // Calculate final stats (simplified)
-        document.getElementById('finalStats').innerHTML = '<h2>Final Stats</h2><p>Computation of mod, arcane and shard effects is not yet implemented in this demo.</p>';
+
+        // TODO: compute final stats based on selected mods, arcanes, and shards
+        document.getElementById('finalStats').innerHTML = '<h2 class="text-xl font-semibold mt-4">Final Stats</h2><p class="text-[var(--muted)]">Computation of mod, arcane, and shard effects is not yet implemented in this prototype.</p>';
       }
     }
+
     loadData();
   </script>
 </body>
