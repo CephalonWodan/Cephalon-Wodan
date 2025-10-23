@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Warframe Loadout Builder</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { margin-bottom: 10px; }
-    h2 { margin-top: 20px; margin-bottom: 5px; }
-    select { width: 100%; }
-    #sections { display: flex; flex-wrap: wrap; gap: 20px; }
-    .section { flex: 1 1 300px; min-width: 280px; }
-    .section label { display: block; margin-bottom: 5px; font-weight: bold; }
-    .section select { height: 160px; }
-  </style>
+  <meta charset="utf-8" />
+  <title>Warframes Loadout Builder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Thème -->
+  <link rel="stylesheet" href="css/theme.css?v=1" />
+  <link rel="stylesheet" href="css/polarities.css">
+  <!----Icon---->
+  <link rel="icon" type="image/x-icon" href="/img/CephalonWodan/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/CephalonWodan/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/img/CephalonWodan/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/img/CephalonWodan/icon-180-apple.png">
+<link rel="manifest" href="/img/CephalonWodan/site.webmanifest">
+<meta name="theme-color" content="#0c0b1a">
 </head>
+<body class="bg-[var(--bg)] text-[var(--ink)]">
+  <!-- NAV -->
+  <div id="site-nav"></div>
 <body>
   <h1>Warframe Loadout Builder</h1>
   <div class="section">
