@@ -28,6 +28,7 @@ const loadMergedWarframe = cachedJson(DATA('merged_warframe.json'));
 const loadMods = cachedJson(DATA('enriched_mods.json'));
 const loadRelics = cachedJson(DATA('enriched_relics.json'));
 const loadWeapons = cachedJson(DATA('enriched_weapons.json'));
+const loadShards = cachedJson(DATA('archonshards.json'));
 
 const send = (res, data) => {
   res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
@@ -255,6 +256,19 @@ app.get('/weapons/:slug', async (req, res) => {
       send(res, JSON.stringify(one));
     } catch {
       res.status(500).json({ error: 'failed to load merged_warframe.json' });
+    }
+  });
+   app.get('/archonshards/:name', async (req, res) => {
+    try {
+      const data = await loadMergedWarframe();
+      const key = norm(req.params.name);
+      const one = (data.entities || []).find(
+        (e) => norm(e.name) === key && norm(e.type) === 'Archon Shard'
+      );
+      if (!one) return res.status(404).json({ error: 'not found' });
+      send(res, JSON.stringify(one));
+    } catch {
+      res.status(500).json({ error: 'failed to load archonshards.json' });
     }
   });
 }
