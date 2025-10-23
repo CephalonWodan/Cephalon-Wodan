@@ -353,13 +353,22 @@ function applyFilters() {
 }
 
 // Data load -----------------------------------------------------------
-async function loadLocalArcanes() {
-  try {
-    const r = await fetch("data/arcanes_list.json", { cache: "no-store" });
-    if (!r.ok) return [];
-    const data = await r.json();
-    return Array.isArray(data) ? data : [];
-  } catch { return []; }
+async function loadArcanes() {
+  const urls = [
+    "https://cephalon-wodan-production.up.railway.app/arcanes",
+    "data/arcanes_list.json"
+  ];
+  for (const url of urls) {
+    try {
+      const r = await fetch(url, { cache: "no-store" });
+      if (!r.ok) continue;
+      const data = await r.json();
+      if (Array.isArray(data) && data.length) return data;
+    } catch (e) {
+      console.warn("[arcanes] fallback failed:", url, e.message || e);
+    }
+  }
+  return [];
 }
 
 // Boot ----------------------------------------------------------------
@@ -368,12 +377,12 @@ async function loadLocalArcanes() {
   try {
     status.textContent = "Chargement des arcanes…";
 
-    const [localList, apiList] = await Promise.all([
-      loadLocalArcanes(),
-      loadApiArcanes() // gardé pour des infos annexes si besoin
-    ]);
-    STATE.list = localList;
-    STATE.apiByName = mapByNameCaseInsensitive(apiList);
+const [arcaneList, apiList] = await Promise.all([
+  loadArcanes(),
+  loadApiArcanes()
+]);
+STATE.list = arcaneList;
+STATE.apiByName = mapByNameCaseInsensitive(apiList);
 
     const distinctTypes = Array.from(new Set(STATE.list.map(getType))).filter(Boolean).sort();
     const distinctRarities = ["Common","Uncommon","Rare","Legendary"].filter(r => STATE.list.some(m => getRarity(m) === r));
