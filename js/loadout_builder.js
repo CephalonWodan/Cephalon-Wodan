@@ -26,6 +26,30 @@ let STATE = {
   current: null
 };
 
+/* ================== Images wiki (vérifiées) ================== */
+  function wikiThumbRaw(m){ return m.wikiaThumbnail || m.wikiathumbnail || m.wikiThumbnail || ""; }
+  function normalizeUrl(u){ return !u ? "" : (u.startsWith("//") ? "https:" + u : u); }
+  function upscaleThumb(url, size=720){
+    if (!url) return "";
+    let out = normalizeUrl(url);
+    out = out.replace(/scale-to-width-down\/\d+/i, `scale-to-width-down/${size}`);
+    if (!/scale-to-width-down\/\d+/i.test(out) && /\/latest/i.test(out)) {
+      out = out.replace(/\/latest(\/?)(\?[^#]*)?$/i, (m, slash, qs='') =>
+        `/latest${slash ? "" : "/"}scale-to-width-down/${size}${qs || ""}`);
+    }
+    return out;
+  }
+  function verifiedWikiImage(m){
+    const raw = wikiThumbRaw(m);
+    if (!raw) return { url: "", verified: false };
+    return { url: upscaleThumb(raw, 720), verified: true };
+  }
+  // Placeholder (une seule ligne → pas d’erreur de saut de ligne)
+  const MOD_PLACEHOLDER =
+    'data:image/svg+xml;utf8,' +
+    encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0b1220"/><stop offset="100%" stop-color="#101a2e"/></linearGradient></defs><rect width="600" height="360" fill="url(#g)"/><rect x="12" y="12" width="576" height="336" rx="24" ry="24" fill="none" stroke="#3d4b63" stroke-width="3"/><text x="50%" y="52%" fill="#6b7b94" font-size="28" font-family="system-ui,Segoe UI,Roboto" text-anchor="middle">Unreleased</text></svg>');
+
+
 /* ==== RENDER HEADER ==== */
 function renderHeader(){
   const wf = STATE.current;
