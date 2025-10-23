@@ -163,8 +163,7 @@ async function fetchWarframesWithFailover() {
       .filter((wf) => wf && String(wf.type || "").toLowerCase() === "warframe")
       .map((rec) => {
         const bs  = rec.baseStats || {};
-        // rank 30 base stats (si fournis par l’API)
-        const bs30 = rec.baseStatsRank30 || {};
+        const bs30 = rec.baseStatsRank30 || {}; // stats de base rang 30 si présentes
         // image locale : img/warframes/NomSansEspace.png (ex: "Ash Prime" -> "AshPrime.png")
         const fileName = `${String(rec.name || "").replace(/\s+/g, "")}.png`;
         const img = `img/warframes/${fileName}`;
@@ -422,13 +421,15 @@ async function fetchWarframesWithFailover() {
               </div>
             </div>
 
-            <!-- Header + Toggle R0 / R30 -->
+            <!-- Header + Switch R0 / R30 -->
             <div class="flex items-center justify-between">
               <div class="text-sm muted">Stats de base</div>
-              <div class="flex items-center gap-2">
-                <button class="px-2 py-1 text-xs rounded border border-[rgba(255,255,255,.12)] ${SHOW_RANK30 ? "" : "bg-[rgba(255,255,255,.08)]"}" data-rank="0">R0</button>
-                <button class="px-2 py-1 text-xs rounded border border-[rgba(255,255,255,.12)] ${SHOW_RANK30 ? "bg-[rgba(255,255,255,.08)]" : ""}" data-rank="30">R30</button>
-              </div>
+              <label class="wf-switch" title="Basculer R0 / R30">
+                <span class="label">R0</span>
+                <input type="checkbox" id="rankToggle" class="sr-only" ${SHOW_RANK30 ? "checked" : ""}>
+                <span class="track"><span class="knob"></span></span>
+                <span class="label">R30</span>
+              </label>
             </div>
 
             <!-- Grille dynamique selon le toggle -->
@@ -465,13 +466,14 @@ async function fetchWarframesWithFailover() {
         </div>
       `;
 
-      // Handlers du toggle R0 / R30
-      card.querySelectorAll("[data-rank]").forEach(btn => {
-        btn.addEventListener("click", () => {
-          SHOW_RANK30 = btn.dataset.rank === "30";
+      // Switch R0/R30
+      const rankToggle = card.querySelector("#rankToggle");
+      if (rankToggle) {
+        rankToggle.addEventListener("change", (e) => {
+          SHOW_RANK30 = e.target.checked;
           renderCard(wf, iAbility);
         });
-      });
+      }
 
       // Changement d'ability
       card.querySelectorAll("[data-abi]").forEach((btn) => {
