@@ -10,6 +10,11 @@
 const API_WF       = "https://cephalon-wodan-production.up.railway.app/warframes";
 const API_MODS     = "https://cephalon-wodan-production.up.railway.app/mods";
 const DATA_ARCANES = "data/arcanes_map.json";                 // dataset local (riche)
+// Endpoint fournissant les Archon Shards (WarframeStat). Le service Cephalon‑Wodan ne fournit pas
+// encore d'API pour les shards, nous utilisons donc cette source publique. Le jeu se
+// base sur 5 couleurs (Azure, Crimson, Amber, Topaz, Violet, Emerald) chacune avec
+// plusieurs améliorations possibles.
+const API_SHARDS  = "https://api.warframestat.us/archonShards";
 
 /* ==== HELPERS ==== */
 const $ = (q) => document.querySelector(q);
@@ -26,6 +31,12 @@ let STATE = {
   current: null,
   // Niveau de rang (0-30). Détermine la capacité et l'interpolation des stats.
   rank: 30
+  ,
+  // Données des archon shards (chargées depuis l'API).
+  shards: {},
+  // Sélections actuelles des 5 emplacements de shard. Chaque slot
+  // contient { color, label, valueNum, percent, attr }.
+  archonSlots: [null, null, null, null, null]
 };
 
 /* ==== RENDER HEADER ==== */
@@ -73,7 +84,11 @@ function computeBaseStats(wf){
   const dr     = armor ? Math.round(armor / (armor + 300) * 100) : null;
   // Capacité totale (rang * 1 ou *2 avec Reactor)
   const capTot = r * (STATE.reactor ? 2 : 1);
-  return {
+  // Stats brutes avant modifications externes (mods, shards, arcanes). On
+  // commence par appliquer les archon shards. Chaque shard peut ajouter un
+  // pourcentage ou une valeur absolue à certains champs. On clonera d'abord
+  // l'objet, puis on appliquera les modifications.
+  let stats = {
     CAPACITY: capTot || "—",
     ENERGY: energy || "—",
     HEALTH: hp || "—",
@@ -87,6 +102,52 @@ function computeBaseStats(wf){
     "DAMAGE REDUCTION": dr != null ? dr + "%" : "—",
     "EFFECTIVE HIT POINTS": isFinite(ehp)? ehp : "—"
   };
+  // Appliquer les effets des shards sélectionnés. On ignore les stats de
+  // durée/efficience/force/range pour l'instant, sauf si le label mentionne
+  // explicitement ces mots.
+  STATE.archonSlots.forEach((slot) => {
+    if (!slot) return;
+    const {valueNum, percent, attr} = slot;
+    if (!attr || valueNum == null) return;
+    // attributs supportés : health, shield, armor, energy, duration, efficiency, range, strength
+    const a = attr.toLowerCase();
+    if (a.includes('health')) {
+      if (percent) stats.HEALTH = Math.round(Number(stats.HEALTH) * (1 + valueNum/100));
+      else stats.HEALTH = Number(stats.HEALTH) + valueNum;
+    } else if (a.includes('shield')) {
+      if (percent) stats.SHIELD = Math.round(Number(stats.SHIELD) * (1 + valueNum/100));
+      else stats.SHIELD = Number(stats.SHIELD) + valueNum;
+    } else if (a.includes('armor')) {
+      if (percent) stats.ARMOR = Math.round(Number(stats.ARMOR) * (1 + valueNum/100));
+      else stats.ARMOR = Number(stats.ARMOR) + valueNum;
+    } else if (a.includes('energy')) {
+      // certains libellés disent "Energy Max", "Energy", "Max Energy"
+      if (percent) stats.ENERGY = Math.round(Number(stats.ENERGY) * (1 + valueNum/100));
+      else stats.ENERGY = Number(stats.ENERGY) + valueNum;
+    } else if (a.includes('duration')) {
+      // durée des pouvoirs
+      const n = parseFloat(stats.DURATION) || 100;
+      stats.DURATION = (percent ? n * (1 + valueNum/100) : n + valueNum) + "%";
+    } else if (a.includes('efficiency')) {
+      const n = parseFloat(stats.EFFICIENCY) || 100;
+      stats.EFFICIENCY = (percent ? n * (1 + valueNum/100) : n + valueNum) + "%";
+    } else if (a.includes('range')) {
+      const n = parseFloat(stats.RANGE) || 100;
+      stats.RANGE = (percent ? n * (1 + valueNum/100) : n + valueNum) + "%";
+    } else if (a.includes('strength')) {
+      const n = parseFloat(stats.STRENGTH) || 100;
+      stats.STRENGTH = (percent ? n * (1 + valueNum/100) : n + valueNum) + "%";
+    }
+  });
+  // Recalculer DR et EHP en fonction des modifications
+  const aVal = Number(stats.ARMOR);
+  const hVal = Number(stats.HEALTH);
+  const sVal = Number(stats.SHIELD);
+  const dr2  = aVal ? Math.round(aVal / (aVal + 300) * 100) : null;
+  const ehp2 = Math.round(hVal * (1 + aVal/300) + sVal);
+  stats["DAMAGE REDUCTION"] = dr2 != null ? dr2 + "%" : stats["DAMAGE REDUCTION"];
+  stats["EFFECTIVE HIT POINTS"] = isFinite(ehp2)? ehp2 : stats["EFFECTIVE HIT POINTS"];
+  return stats;
 }
 function renderStats(){
   const box = $("#statsList");
@@ -203,6 +264,43 @@ async function loadAll(){
   if(vlab){ vlab.textContent = String(STATE.rank); }
   if(tog){ tog.checked = (STATE.rank >= 30); }
   renderCatalog();
+
+  // Charger les Archon Shards
+  try {
+    const shRes = await fetch(API_SHARDS);
+    if (shRes.ok) {
+      const shJson = await shRes.json();
+      // Convertir la structure API WarframeStat en { couleur: [ { label, attr, valueNum, percent } ] }
+      const shards = {};
+      Object.values(shJson || {}).forEach(entry => {
+        const color = entry.value; // ex: "Azure", "Crimson", etc.
+        const upgrades = entry.upgradeTypes || {};
+        if (!shards[color]) shards[color] = [];
+        Object.values(upgrades).forEach(u => {
+          const text = (u && u.value) || "";
+          // On ignore les chaînes qui ne commencent pas par '+'
+          if (!/^\+/.test(text)) return;
+          // Extrait la valeur numérique et l'unité (% ou abs) et le nom d'attribut
+          const m = text.match(/^\+([\d.]+)(%?)\s+(.+)$/);
+          if (!m) return;
+          const val = parseFloat(m[1]);
+          const perc = m[2] === "%";
+          const attr = m[3];
+          shards[color].push({ label: text, attr, valueNum: val, percent: perc });
+        });
+      });
+      STATE.shards = shards;
+    }
+  } catch(err) {
+    console.error("Erreur chargement shards", err);
+  }
+
+  // Ajouter des gestionnaires pour les slots des archon shards
+  document.querySelectorAll('[data-slot^="archon-"]').forEach((el, idx) => {
+    el.addEventListener('click', () => {
+      selectShard(idx);
+    });
+  });
 }
 
 /* ==== EVENTS ==== */
@@ -229,7 +327,13 @@ $("#conditionals").addEventListener("change", e=>{ STATE.conditionals = !!e.targ
   document.getElementById(id).addEventListener("change", renderCatalog);
 });
 $("#resetBuild").addEventListener("click", ()=>{
-  document.querySelectorAll(".slot").forEach(el=> el.textContent = el.getAttribute("data-slot").toUpperCase());
+  document.querySelectorAll(".slot").forEach(el=> {
+    const slotId = el.getAttribute("data-slot");
+    // pour les archon slots, afficher le nom initial (archon-1 etc.)
+    el.textContent = slotId.toUpperCase();
+  });
+  // Réinitialiser les shards sélectionnés
+  STATE.archonSlots = [null, null, null, null, null];
   $("#globalSearch").value = "";
   renderCatalog();
 });
@@ -255,3 +359,35 @@ loadAll().catch(err=>{
   console.error(err);
   alert("Erreur de chargement des données.");
 });
+
+/* ==== ARCHON SHARDS SELECTION ==== */
+function selectShard(index) {
+  // index: 0-4 pour archon-1 .. archon-5
+  const colors = Object.keys(STATE.shards || {});
+  if (!colors.length) {
+    alert("Les données des Archon Shards ne sont pas disponibles.");
+    return;
+  }
+  // choisir la couleur
+  const colorPrompt = `Choisissez la couleur du Shard (1-${colors.length}):\n` +
+    colors.map((c,i)=> `${i+1}. ${c}`).join("\n");
+  const cIdx = parseInt(prompt(colorPrompt), 10);
+  if (isNaN(cIdx) || cIdx < 1 || cIdx > colors.length) return;
+  const color = colors[cIdx-1];
+  const options = STATE.shards[color] || [];
+  if (!options.length) return;
+  const upgradePrompt = `Choisissez l'amélioration pour ${color} (1-${options.length}):\n` +
+    options.map((o,i)=> `${i+1}. ${o.label}`).join("\n");
+  const uIdx = parseInt(prompt(upgradePrompt), 10);
+  if (isNaN(uIdx) || uIdx < 1 || uIdx > options.length) return;
+  const chosen = options[uIdx-1];
+  // Stocker dans l'état
+  STATE.archonSlots[index] = { ...chosen, color };
+  // Mettre à jour l'affichage du slot
+  const slotEl = document.querySelector(`[data-slot="archon-${index+1}"]`);
+  if (slotEl) {
+    slotEl.textContent = `${color[0].toUpperCase()}-${chosen.label.replace(/\+/g, '')}`;
+  }
+  // Recalculer les stats
+  renderStats();
+}
