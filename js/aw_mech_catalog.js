@@ -59,7 +59,8 @@
   }
 
   /* ----------------- État ----------------- */
-  let UI = { all: [], list: [], filtered: [], idx: 0, mode: "archwing" };
+  // Ajout: rank30 => true = R30, false = R0 (persisté tant que la page vit)
+  let UI = { all: [], list: [], filtered: [], idx: 0, mode: "archwing", rank30: false };
 
   /* ----------------- Normalisation SUITS ----------------- */
   const MECH_NAMES = new Set(["Voidrig","Bonewidow"]);
@@ -108,7 +109,7 @@
 
   /* ----------------- Dégâts (helpers robustes) ----------------- */
   const cap = (s) => String(s||"").replace(/[_-]+/g," ").replace(/\b\w/g, m=>m.toUpperCase());
-  const isTotalKey = (k) => /^total(\s|$)/i.test(String(k||""));  // ⬅️ ajoute: repère "total"
+  const isTotalKey = (k) => /^total(\s|$)/i.test(String(k||""));
   function sumDamage(map){ if(!map) return null; let t=0; for(const k in map){ const v=Number(map[k]); if(!isNaN(v)) t+=v; } return t||null; }
 
   function toDamageMap(d){
@@ -121,7 +122,7 @@
         const v = Number(e?.amount ?? e?.value ?? e?.damage ?? e?.dmg);
         if (!kRaw || isNaN(v)) continue;
         const k = cap(kRaw);
-        if (isTotalKey(k)) continue;      // ⬅️ ignore toute entrée "total"
+        if (isTotalKey(k)) continue;
         out[k] = (out[k]||0) + v;
       }
       return Object.keys(out).length ? out : null;
@@ -133,7 +134,7 @@
         const v = Number(d[kk]);
         if (isNaN(v)) continue;
         const k = cap(kk);
-        if (isTotalKey(k)) continue;      // ⬅️ ignore "total"
+        if (isTotalKey(k)) continue;
         out[k] = (out[k]||0) + v;
       }
       return Object.keys(out).length ? out : null;
@@ -168,7 +169,6 @@
     return mergeDamageMaps(parts);
   }
   function computeDamageMapFromAPI(apiRec){
-    // ws API: damageTypes (object) ou damage (object)
     const obj = apiRec && (apiRec.damageTypes || apiRec.damage);
     return toDamageMap(obj);
   }
@@ -246,7 +246,7 @@
         Reload: w.reloadTime ?? null,
         TotalDamage: total ?? null,
         DamageMap: dmgMap || null,
-        _imgSrcs: null // on garde les images locales/export
+        _imgSrcs: null
       });
     });
     return out.sort(byName);
@@ -312,28 +312,40 @@
 
   function renderSuitCard(it){
     const imgHTML = imgTag(it.Name, it._imgSrcs || []);
+
+    // valeurs R30: via overrides si présents, sinon facteur (3.5 pour H/S/A, 3.0 pour Energy)
     const r30 = (n,m=3.5)=> Math.round((Number(n)||0)*m);
     const maxH = it.HealthR30 ?? r30(it.Health);
     const maxS = it.ShieldR30 ?? r30(it.Shield);
     const maxA = it.ArmorR30  ?? r30(it.Armor);
     const maxE = it.EnergyR30 ?? r30(it.Energy, 3.0);
 
+    // helper toggle
+    const pick = (base, v0, v30) => statBox(base, UI.rank30 ? v30 : v0);
+
     $("#card").innerHTML = `
       <div class="card p-6 grid gap-8 grid-cols-1 xl:grid-cols-2">
         <div class="flex flex-col gap-3">
-          <h2 class="text-2xl font-semibold">${esc(it.Name)}</h2>
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-semibold">${esc(it.Name)}</h2>
+            <!-- Switch R0/R30 -->
+            <label class="wf-switch" title="Basculer R0 / R30">
+              <span class="label">R0</span>
+              <input type="checkbox" id="rankToggle" class="sr-only" ${UI.rank30 ? "checked" : ""}>
+              <span class="track"><span class="knob"></span></span>
+              <span class="label">R30</span>
+            </label>
+          </div>
+
           <div class="flex flex-wrap gap-2">${chips([it.Kind])}</div>
           ${it.Description ? `<p class="text-[var(--muted)] leading-relaxed">${esc(it.Description)}</p>`:""}
 
+          <!-- Grille dynamique selon le toggle -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-2">
-            ${statBox("HEALTH", it.Health)}${statBox("SHIELD", it.Shield)}${statBox("ARMOR", it.Armor)}${statBox("ENERGY", it.Energy)}
-          </div>
-
-          <div class="mt-4">
-            <div class="text-[11px] uppercase tracking-wide text-slate-200 mb-2">Max (Rang 30)</div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              ${statBox("HEALTH (R30)", maxH)}${statBox("SHIELD (R30)", maxS)}${statBox("ARMOR (R30)", maxA)}${statBox("ENERGY (R30)", maxE)}
-            </div>
+            ${pick("HEALTH", it.Health, maxH)}
+            ${pick("SHIELD", it.Shield, maxS)}
+            ${pick("ARMOR",  it.Armor,  maxA)}
+            ${pick("ENERGY", it.Energy, maxE)}
           </div>
 
           ${Array.isArray(it.Abilities)&&it.Abilities.length ? `
@@ -357,17 +369,26 @@
           </div>
         </div>
       </div>`;
+
+    // Hook switch
+    const rankToggle = $("#rankToggle");
+    if (rankToggle) {
+      rankToggle.addEventListener("change", (e) => {
+        UI.rank30 = !!e.target.checked;
+        // Re-render la même carte (même index)
+        const it2 = UI.filtered[UI.idx]; if (!it2) return;
+        renderSuitCard(it2);
+      });
+    }
   }
 
   function damagePanel(map, total){
     if (!map) return "";
 
-    // filtre toute entrée "total" et valeurs nulles
     const entries = Object.entries(map)
-      .filter(([k,v]) => !isTotalKey(k) && Number(v) > 0)
+      .filter(([k,v]) => !/^total(\s|$)/i.test(String(k||"")) && Number(v) > 0)
       .sort((a,b) => a[0].localeCompare(b[0]));
 
-    // calcule/reprend le total
     const tot = (total != null) ? total : entries.reduce((a,[,v]) => a + Number(v||0), 0);
 
     const rows = [
