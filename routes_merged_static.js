@@ -28,7 +28,7 @@ const loadMergedWarframe = cachedJson(DATA('merged_warframe.json'));
 const loadMods = cachedJson(DATA('enriched_mods.json'));
 const loadRelics = cachedJson(DATA('enriched_relics.json'));
 const loadWeapons = cachedJson(DATA('enriched_weapons.json'));
-
+const loadShards = cachedJson(DATA('archonshards.json'));
 const send = (res, data) => {
   res.set('Cache-Control', 's-maxage=600, stale-while-revalidate=300');
   res.type('application/json').send(data);
@@ -95,6 +95,26 @@ export function mountMergedStatic(app) {
     }
   });
 
+  
+  /* ---------------------------------- ARCHONSHARDS --------------------------------- */
+app.get('/archonshards/:name', async (req, res) => {
+  try {
+    const shards = await loadShards();
+    const query = String(req.params.name || '').toLowerCase();
+    // Recherche par clé ou par nom de couleur (valeur)
+    const keyMatch = Object.keys(shards).find(k => k.toLowerCase() === query);
+    const shardData = keyMatch 
+      ? shards[keyMatch] 
+      : Object.values(shards).find(s => String(s.value || '').toLowerCase() === query);
+    if (!shardData) {
+      return res.status(404).json({ error: 'archon shard not found' });
+    }
+    send(res, JSON.stringify(shardData));
+  } catch {
+    res.status(500).json({ error: 'failed to load archonshards.json' });
+  }
+});
+  
   /* ---------------------------------- RELICS --------------------------------- */
   app.get('/relics', async (req, res) => {
     try {
