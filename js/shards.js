@@ -65,7 +65,7 @@ function renderTextIcons(input){
 // js/shards.js — Archon Shards (images locales d'abord + effets API, sans lien wiki, sans bouton View)
 
 const ENDPOINTS = [
-  "https://api.warframestat.us/archonshards?language=en",
+  "https://cephalon-wodan-production.up.railway.app/archonshards",
   "https://api.warframestat.us/archonShards?language=en",
   "https://api.warframestat.us/archonshards/",
   "https://api.warframestat.us/archonShards/",
