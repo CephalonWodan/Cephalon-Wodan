@@ -71,6 +71,10 @@ body{margin:0; background:var(--bg); color:#e7f1ff; font:14px/1.45 system-ui,Seg
 .slot-aura-exilus{display:grid; grid-template-columns: 1fr 1fr; gap:12px; padding:0 12px 12px}
 .slot-large{height:86px;}
 .slot-small{height:58px;}
+
+/* Personnalisation des rangées spécifiques */
+.companion-row{ grid-template-columns: repeat(2, 1fr); }
+.archon-row{ grid-template-columns: repeat(5, 1fr); }
 .toolbar{display:flex; align-items:center; gap:8px; padding:8px; border-top:1px solid var(--panel-border); background:#0e1528; border-radius:0 0 14px 14px}
 .search{width:100%; background:#0b1220; border:1px solid var(--panel-border); color:#e7f1ff; padding:10px 12px; border-radius:10px}
 
