@@ -6,7 +6,7 @@
   const WF_EXPORT_WARFRAMES = "data/ExportWarframes_en.json";
   const WF_EXPORT_WEAPONS   = "data/ExportWeapons_en.json";
   const AW_OVERRIDES        = "data/aw_overrides.json";
-  const WF_WEAPONS_API      = "https://api.warframestat.us/weapons/?language=en";
+  const WF_WEAPONS_API      = "https://cephalon-wodan-production.up.railway.app/weapons";
 
   /* ----------------- Images ----------------- */
   const IMG_SUITS_LOCAL   = (f) => f ? `img/mobilesuits/${encodeURIComponent(f)}` : "";
