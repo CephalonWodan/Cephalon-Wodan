@@ -18,8 +18,8 @@ const DT = {
   DT_RADIANT_COLOR:    { label: "Void",       color: "#c9b6ff", icon: "Void.png" },
 };
 
-const ICON_BASE = "img/dmg/";      // <- si tu ajoutes des PNG ici
-const USE_ICONS = false;           // passe à true quand tu auras posé les fichiers
+const ICON_BASE = "img/shards/";      // <- si tu ajoutes des PNG ici
+const USE_ICONS = true;           // passe à true quand tu auras posé les fichiers
 
 function resolveDT(key){
   const k = key.toUpperCase();
