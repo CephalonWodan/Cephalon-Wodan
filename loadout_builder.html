@@ -4,76 +4,11 @@
   <meta charset="utf-8" />
   <title>Loadout Builder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <!-- Ta feuille de thème + polarités existantes -->
+  <!-- tes styles globaux -->
   <link rel="stylesheet" href="css/theme.css">
   <link rel="stylesheet" href="css/polarities.css">
-  <style>
-    :root{
-      --gap: 16px;
-      --panel: var(--panel-2, #0f172a);
-      --panel-border: rgba(255,255,255,.08);
-      --muted: var(--muted,#9fb1c5);
-      --gold: #D4AF37;
-    }
-    body{margin:0; background:var(--bg, #0b1220); color:#e7f1ff; font:14px/1.45 system-ui,Segoe UI,Roboto,Inter,sans-serif;}
-    .container{max-width:1400px; margin:24px auto; padding:0 16px;}
-    .row{display:grid; grid-template-columns: 290px 1fr 360px; gap: var(--gap);}
-    .card{background:var(--panel); border:1px solid var(--panel-border); border-radius:14px;}
-    .panel{padding:16px;}
-    .muted{color:var(--muted);}
-    .title{font-size:22px; font-weight:700;}
-    .subtitle{font-size:13px; color:var(--muted);}
-    .header{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:16px;}
-    .wf-header-left{display:flex; gap:12px; align-items:flex-start;}
-    .wf-thumb{width:72px; height:72px; border-radius:10px; overflow:hidden; background:#0b1220; border:1px solid var(--panel-border); display:flex; align-items:center; justify-content:center;}
-    .wf-thumb img{width:100%; height:100%; object-fit:contain;}
-    .wf-meta{display:flex; flex-direction:column; gap:4px;}
-    .actions{display:flex; gap:8px; align-items:center;}
-    .btn{background:#1a243b; border:1px solid var(--panel-border); color:#e7f1ff; padding:8px 10px; border-radius:10px; cursor:pointer;}
-    .btn:hover{background:#1e2a46}
-    .switch{display:inline-flex; align-items:center; gap:8px; user-select:none}
-    .switch .track{width:46px; height:24px; border-radius:999px; background:#1f2944; border:1px solid var(--panel-border); position:relative; display:inline-block;}
-    .switch .knob{position:absolute; top:2px; left:2px; width:20px; height:20px; background:#e7f1ff; border-radius:50%; transition:transform .18s ease;}
-    .switch input{display:none}
-    .switch input:checked + .track .knob{transform:translateX(22px)}
-    .switch .lab{font-size:12px; color:var(--muted)}
-    /* zone CENTRE (slots) */
-    .center{position:relative; min-height:540px; display:flex; flex-direction:column; gap:12px;}
-    .slot-grid{display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; padding:12px;}
-    .slot{height:74px; background:#0f162a; border:1px dashed rgba(255,255,255,.14); border-radius:12px; display:flex; align-items:center; justify-content:center; color:#8aa1bd}
-    .slot-row{display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; padding:0 12px 12px}
-    .slot-aura-exilus{display:grid; grid-template-columns: 1fr 1fr; gap:12px; padding:0 12px 12px}
-    .slot-large{height:86px;}
-    .slot-small{height:58px;}
-    /* panneau Stats gauche */
-    .stats-list{display:flex; flex-direction:column; gap:8px}
-    .stat{display:flex; align-items:center; justify-content:space-between; padding:8px 10px; background:#0e1528; border:1px solid var(--panel-border); border-radius:10px;}
-    .stat .k{font-size:11px; color:var(--muted); letter-spacing:.02em}
-    .stat .v{font-weight:700}
-    .toggles{display:flex; gap:12px; align-items:center; margin-top:10px}
-    .small{font-size:12px}
-    /* catalogue mods à droite */
-    .catalog{display:flex; flex-direction:column; gap:10px;}
-    .filters{display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:8px;}
-    .filters .f{display:flex; flex-direction:column; gap:6px;}
-    select, .input{background:#0e1528; color:#e7f1ff; border:1px solid var(--panel-border); border-radius:10px; padding:8px}
-    .mod-list{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; max-height:640px; overflow:auto; padding:4px}
-    .mod-card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid var(--panel-border); border-radius:14px; padding:10px; display:flex; gap:10px}
-    .mod-art{width:66px; height:66px; border-radius:10px; background:#0b1220; border:1px solid var(--panel-border); overflow:hidden; flex:0 0 auto; display:flex; align-items:center; justify-content:center;}
-    .mod-art img{width:100%; height:100%; object-fit:cover}
-    .mod-meta{display:flex; flex-direction:column; gap:4px}
-    .mod-name{font-weight:700; line-height:1.2}
-    .chip{font-size:11px; color:#bcd; border:1px solid var(--panel-border); padding:2px 6px; border-radius:999px; display:inline-block; margin-right:6px}
-    .gold{color:var(--gold); border-color:rgba(212,175,55,.35)}
-    .inline{display:flex; align-items:center; gap:6px}
-    /* petite barre “toolbar” */
-    .toolbar{display:flex; align-items:center; gap:8px; padding:8px; border-top:1px solid var(--panel-border); background:#0e1528; border-radius:0 0 14px 14px}
-    .grow{flex:1}
-    .search{width:100%; background:#0b1220; border:1px solid var(--panel-border); color:#e7f1ff; padding:10px 12px; border-radius:10px}
-    /* responsive */
-    @media (max-width:1200px){ .row{grid-template-columns: 260px 1fr 320px;} }
-    @media (max-width:1024px){ .row{grid-template-columns: 1fr; } .mod-list{max-height:none} }
-  </style>
+  <!-- styles spécifiques au builder -->
+  <link rel="stylesheet" href="loadout_builder.css">
 </head>
 <body>
   <div class="container">
@@ -87,15 +22,15 @@
           <div class="inline small">
             <label class="switch" title="Basculer stats R0/R30">
               <span class="lab">R0</span>
-              <input type="checkbox" id="rankToggle">
+              <input type="checkbox" id="rankToggle" />
               <span class="track"><span class="knob"></span></span>
               <span class="lab">R30</span>
             </label>
             <label class="inline small">
-              <input type="checkbox" id="reactor" style="margin-right:6px"> Orokin Reactor
+              <input type="checkbox" id="reactor" /> Orokin Reactor
             </label>
             <label class="inline small">
-              <input type="checkbox" id="conditionals" style="margin-right:6px"> Apply Conditionals
+              <input type="checkbox" id="conditionals" /> Apply Conditionals
             </label>
           </div>
         </div>
@@ -204,192 +139,7 @@
     </div>
   </div>
 
-  <script>
-  // ---- Sources
-  const API_WF     = "https://cephalon-wodan-production.up.railway.app/warframes";
-  const API_SHARDS = "https://api.warframestat.us/archonShards"; // Conservé pour plus tard
-  const DATA_ARCANES = "data/arcanes_map.json"; // dataset local (plus riche)
-  const DATA_MODS    = "data/overframe/overframe-mods.json"; // si tu préfères ton JSON local, sinon branche sur ton endpoint /mods
-
-  const $ = (q) => document.querySelector(q);
-  const esc = (s)=> String(s||"").replace(/[&<>"']/g,c=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
-  const fmt = (v)=> v==null?"—":(Number.isFinite(v)?String(v):String(v));
-  let STATE = {
-    showR30: false,
-    reactor: false,
-    conditionals: false,
-    warframes: [],
-    mods: [],
-    arcanes: [],
-    current: null
-  };
-
-  // ---- UI: header + stats
-  function renderHeader(){
-    const wf = STATE.current;
-    $("#wfTitle").textContent = wf ? `NEW BUILD: ${wf.name}` : "NEW BUILD";
-    $("#wfSubtitle").textContent = wf ? (wf.description || "") : "Sélectionnez une Warframe pour démarrer.";
-    $("#wfImg").src = wf ? (`img/warframes/${wf.name.replace(/\s+/g,'')}.png`) : "";
-  }
-
-  function statRow(k,v){
-    return `<div class="stat"><div class="k">${esc(k)}</div><div class="v">${esc(fmt(v))}</div></div>`;
-  }
-  function computeBaseStats(wf){
-    const s0  = wf.baseStats || {};
-    const s30 = wf.baseStatsRank30 || {};
-    const s   = STATE.showR30 ? s30 : s0;
-    // petites déductions : EHP = Health*(1+Armor/300) + Shield
-    const armor  = Number(s.armor||0);
-    const hp     = Number(s.health||0);
-    const sh     = Number(s.shields||s.shield||0);
-    const ehp    = Math.round(hp * (1 + armor/300) + sh);
-    return {
-      ENERGY: s.energy ?? s.power ?? "—",
-      HEALTH: hp || "—",
-      SHIELD: sh || "—",
-      "SPRINT SPEED": s.sprintSpeed || "—",
-      DURATION: "100%",
-      EFFICIENCY: "100%",
-      RANGE: "100%",
-      STRENGTH: "100%",
-      ARMOR: armor || "—",
-      "DAMAGE REDUCTION": armor ? Math.round(armor/(armor+300)*100) + "%" : "—",
-      "EFFECTIVE HIT POINTS": isFinite(ehp)? ehp : "—"
-    };
-  }
-  function renderStats(){
-    const box = $("#statsList");
-    box.innerHTML = "";
-    if(!STATE.current){ box.innerHTML = `<div class="muted">Aucune Warframe sélectionnée.</div>`; return;}
-    const stats = computeBaseStats(STATE.current);
-    Object.entries(stats).forEach(([k,v]) => box.insertAdjacentHTML("beforeend", statRow(k,v)));
-    renderPolarities();
-  }
-  function polarityBadge(p){
-    const nice = p.charAt(0).toUpperCase()+p.slice(1);
-    return `<span class="chip ${p==='umbra'?'gold':''}">${esc(nice)}</span>`;
-  }
-  function renderPolarities(){
-    const pols = [];
-    const wf = STATE.current; if(!wf){ $("#polList").innerHTML=""; return; }
-    if (wf.aura) pols.push("aura");
-    if (wf.exilus) pols.push("exilus");
-    (wf.polarities||[]).forEach(p=>pols.push(String(p).toLowerCase()));
-    $("#polList").innerHTML = pols.length ? pols.map(polarityBadge).join(" ") : `<span class="muted small">—</span>`;
-  }
-
-  // ---- Mods & Arcanes (catalogue)
-  function renderCatalog(){
-    const host = $("#modList");
-    const q = $("#globalSearch").value.trim().toLowerCase();
-    const pol = $("#fltPol").value;
-    const typ = $("#fltType").value;
-    const rar = $("#fltRarity").value;
-    const sort = $("#fltSort").value;
-
-    let list = STATE.mods.concat(STATE.arcanes.map(a => ({
-      isArcane: true,
-      name: a.Name,
-      type: a.Type || "ARCANE",
-      rarity: a.Rarity || "",
-      cost: a.Cost || 0,
-      art: a.ImageName ? `img/arcanes/${a.ImageName}` : "",
-      text: a.Description || ""
-    })));
-
-    // filtres
-    list = list.filter(x=>{
-      if (q && !(x.name||"").toLowerCase().includes(q) && !(x.text||"").toLowerCase().includes(q)) return false;
-      if (pol && String(x.polarity||"").toLowerCase() !== pol) return false;
-      if (typ && String(x.type||"").toUpperCase() !== typ) return false;
-      if (rar && String(x.rarity||"").toUpperCase() !== rar) return false;
-      return true;
-    });
-
-    // tri
-    list.sort((a,b)=>{
-      if (sort==="cost") return (a.cost||0)-(b.cost||0);
-      if (sort==="rarity") return String(a.rarity||"").localeCompare(String(b.rarity||""));
-      return String(a.name||"").localeCompare(String(b.name||""));
-    });
-
-    // rendu
-    host.innerHTML = list.map(x=>`
-      <div class="mod-card">
-        <div class="mod-art">${x.art?`<img src="${esc(x.art)}" alt="">`:""}</div>
-        <div class="mod-meta">
-          <div class="mod-name">${esc(x.name||"—")}</div>
-          <div class="small muted">${esc(x.isArcane ? "ARCANE" : (x.type||"MOD"))} • ${esc((x.rarity||"").toString())}${x.cost?` • Drain ${x.cost}`:""}</div>
-          <div class="small">${esc((x.text||"").replace(/\s+/g," ").trim()).slice(0,160)}</div>
-          <div class="inline small">
-            ${x.polarity? `<span class="chip">${esc(x.polarity)}</span>` : ""}
-            ${x.isArcane? `<span class="chip gold">Arcane</span>`:""}
-          </div>
-        </div>
-      </div>
-    `).join("");
-  }
-
-  // ---- Data loading
-  async function loadAll(){
-    const [wfRes, arcRes] = await Promise.all([
-      fetch(API_WF).then(r=>r.json()),
-      fetch(DATA_ARCANES).then(r=>r.json())
-    ]);
-    STATE.warframes = (wfRes.entities || wfRes || []).filter(x=>String(x.type||"").toLowerCase()==="warframe");
-    STATE.arcanes   = Array.isArray(arcRes)? arcRes : [];
-
-    // mods: soit ton JSON local Overframe (si présent), sinon vide (tu pourras raccorder plus tard à ton endpoint /mods)
-    try{
-      const modsRes = await fetch(DATA_MODS);
-      if (modsRes.ok){
-        const modsJson = await modsRes.json();
-        STATE.mods = (modsJson || []).filter(m => String(m.compat||"").toUpperCase().includes("WARFRAME"))
-          .map(m=>({
-            name: m.name, type: String(m.type||"MOD").toUpperCase(),
-            rarity: m.rarity, cost: m.baseDrain, polarity: String(m.polarity||"").toLowerCase(),
-            text: (m.effect||"").replace(/<[^>]+>/g,"")
-          }));
-      }
-    }catch(_){ /* ignore */ }
-
-    // picker
-    const picker = $("#wfPicker");
-    picker.innerHTML = STATE.warframes.map((w,i)=> `<option value="${i}">${esc(w.name)}</option>`).join("");
-    if (STATE.warframes.length){
-      STATE.current = STATE.warframes[0];
-      renderHeader(); renderStats();
-    }
-    renderCatalog();
-  }
-
-  // ---- Events
-  $("#wfPicker").addEventListener("change", e=>{
-    const idx = parseInt(e.target.value,10);
-    STATE.current = STATE.warframes[idx];
-    renderHeader(); renderStats();
-  });
-  $("#rankToggle").addEventListener("change", e=>{
-    STATE.showR30 = !!e.target.checked;
-    renderStats();
-  });
-  $("#reactor").addEventListener("change", e=>{ STATE.reactor = !!e.target.checked; /* hook coût/polarités */ });
-  $("#conditionals").addEventListener("change", e=>{ STATE.conditionals = !!e.target.checked; /* hook preview conditionnels */ });
-  ["globalSearch","fltPol","fltType","fltRarity","fltGame","fltSort"].forEach(id=>{
-    document.getElementById(id).addEventListener("input", renderCatalog);
-    document.getElementById(id).addEventListener("change", renderCatalog);
-  });
-  $("#resetBuild").addEventListener("click", ()=>{
-    document.querySelectorAll(".slot").forEach(el=> el.textContent = el.getAttribute("data-slot").toUpperCase());
-    $("#globalSearch").value = "";
-    renderCatalog();
-  });
-
-  loadAll().catch(err=>{
-    console.error(err);
-    alert("Erreur de chargement des données.");
-  });
-  </script>
+  <!-- script dédié -->
+  <script src="loadout_builder.js" defer></script>
 </body>
 </html>
