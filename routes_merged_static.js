@@ -113,6 +113,14 @@ export function mountMergedStatic(app) {
       res.status(500).json({ error: 'failed to load archonshards.json' });
     }
   });
+  app.get('/archonshards', async (req, res) => {
+  try {
+    const shards = await loadShards();
+    send(res, JSON.stringify(shards));
+  } catch {
+    res.status(500).json({ error: 'failed to load archonshards.json' });
+  }
+});
 
   /* ---------------------------------- RELICS --------------------------------- */
   app.get('/relics', async (req, res) => {
