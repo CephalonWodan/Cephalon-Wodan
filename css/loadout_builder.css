@@ -47,6 +47,11 @@ body{margin:0; background:var(--bg); color:#e7f1ff; font:14px/1.45 system-ui,Seg
 .switch input:checked + .track .knob{transform:translateX(22px)}
 .switch .lab{font-size:12px; color:var(--muted)}
 
+/* Slider de rang */
+#rankSlider{
+  width:140px;
+}
+
 /* LAYOUT */
 .row{display:grid; grid-template-columns: 290px 1fr 360px; gap: var(--gap);}
 @media (max-width:1200px){ .row{grid-template-columns: 260px 1fr 320px;} }
