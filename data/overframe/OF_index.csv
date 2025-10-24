@@ -4404,7 +4404,7 @@ id,http,status,has_next_data,name
 4403,https://overframe.gg/items/arsenal/4403,200,true,Severed Bile Sac
 4404,https://overframe.gg/items/arsenal/4404,200,true,Cross-Matrix Widget
 4405,https://overframe.gg/items/arsenal/4405,200,true,Data-Parse Widget
-4406,https://overframe.gg/items/arsenal/4406,200,true,Sol-Battery Widget
+4406,https://overframe.gg/items/arsenal/4406,0,false,
 4407,https://overframe.gg/items/arsenal/4407,200,true,Vector-Thread Widget
 4408,https://overframe.gg/items/arsenal/4408,200,true,Somatic Fibers
 4409,https://overframe.gg/items/arsenal/4409,200,true,Orokin Cipher
