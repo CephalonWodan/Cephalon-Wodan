@@ -696,7 +696,7 @@ id,era,code,name,isRequiem,isVaulted,refinements,itemsPerRefinement
 "axi-w2-relic","Axi","W2","Axi W2 Relic","0","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
 "axi-w3-relic","Axi","W3","Axi W3 Relic","0","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
 "axi-y1-relic","Axi","Y1","Axi Y1 Relic","0","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
-"axi-y2-relic","Axi","Y2","Axi Y2 Relic","0","1","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
+"axi-y2-relic","Axi","Y2","Axi Y2 Relic","0","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
 "axi-z1-relic","Axi","Z1","Axi Z1 Relic","0","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
 "axi-z2-relic","Axi","Z2","Axi Z2 Relic","0","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"
 "requiem-i-relic","Requiem","I","Requiem I Relic","1","0","Intact|Exceptional|Flawless|Radiant","Intact:6|Exceptional:6|Flawless:6|Radiant:6"

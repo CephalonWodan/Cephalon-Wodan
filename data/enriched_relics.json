@@ -96191,7 +96191,7 @@
     "code": "Y2",
     "name": "Axi Y2 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
