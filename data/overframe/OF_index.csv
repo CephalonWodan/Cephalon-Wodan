@@ -1089,7 +1089,7 @@ id,http,status,has_next_data,name
 1088,https://overframe.gg/items/arsenal/1088,200,true,Tigris Prime
 1089,https://overframe.gg/items/arsenal/1089,200,true,Vectis Prime
 1090,https://overframe.gg/items/arsenal/1090,200,true,Zhuge
-1091,https://overframe.gg/items/arsenal/1091,200,true,Stradavar
+1091,https://overframe.gg/items/arsenal/1091,0,false,
 1092,https://overframe.gg/items/arsenal/1092,200,true,Tenora
 1093,https://overframe.gg/items/arsenal/1093,200,true,Astilla
 1094,https://overframe.gg/items/arsenal/1094,200,true,Corinth
@@ -2819,7 +2819,7 @@ id,http,status,has_next_data,name
 2818,https://overframe.gg/items/arsenal/2818,200,true,Blood For Energy
 2819,https://overframe.gg/items/arsenal/2819,200,true,Blood For Life
 2820,https://overframe.gg/items/arsenal/2820,200,true,Hit And Run
-2821,https://overframe.gg/items/arsenal/2821,200,true,Auto Breach
+2821,https://overframe.gg/items/arsenal/2821,0,false,
 2822,https://overframe.gg/items/arsenal/2822,200,true,Live Wire
 2823,https://overframe.gg/items/arsenal/2823,200,true,Failsafe
 2824,https://overframe.gg/items/arsenal/2824,200,true,Untraceable
@@ -4319,7 +4319,7 @@ id,http,status,has_next_data,name
 4318,https://overframe.gg/items/arsenal/4318,200,true,Pangolin Prime
 4319,https://overframe.gg/items/arsenal/4319,200,true,Pangolin Prime
 4320,https://overframe.gg/items/arsenal/4320,200,true,Pangolin Prime Blade
-4321,https://overframe.gg/items/arsenal/4321,200,true,Pangolin Prime Handle
+4321,https://overframe.gg/items/arsenal/4321,0,false,
 4322,https://overframe.gg/items/arsenal/4322,200,true,Diwata
 4323,https://overframe.gg/items/arsenal/4323,200,true,Titania
 4324,https://overframe.gg/items/arsenal/4324,200,true,Dex Pixia
