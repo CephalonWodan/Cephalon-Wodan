@@ -1070,6 +1070,7 @@ id,name
 1088,Tigris Prime
 1089,Vectis Prime
 1090,Zhuge
+1091,Stradavar
 1092,Tenora
 1093,Astilla
 1094,Corinth
@@ -1550,7 +1551,6 @@ id,name
 2377,Cryo Coating
 2378,Ion Infusion
 2379,Infectious Injection
-2380,Ammo Chain
 2381,Quick Reload
 2382,Amalgam Organ Shatter
 2383,Amalgam Barrel Diffusion
@@ -1687,6 +1687,7 @@ id,name
 2818,Blood For Energy
 2819,Blood For Life
 2820,Hit And Run
+2821,Auto Breach
 2822,Live Wire
 2823,Failsafe
 2824,Untraceable
@@ -3041,6 +3042,7 @@ id,name
 4318,Pangolin Prime
 4319,Pangolin Prime
 4320,Pangolin Prime Blade
+4321,Pangolin Prime Handle
 4322,Diwata
 4323,Titania
 4324,Dex Pixia
