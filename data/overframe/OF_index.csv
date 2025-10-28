@@ -2378,7 +2378,7 @@ id,http,status,has_next_data,name
 2377,https://overframe.gg/items/arsenal/2377,200,true,Cryo Coating
 2378,https://overframe.gg/items/arsenal/2378,200,true,Ion Infusion
 2379,https://overframe.gg/items/arsenal/2379,200,true,Infectious Injection
-2380,https://overframe.gg/items/arsenal/2380,0,false,
+2380,https://overframe.gg/items/arsenal/2380,200,true,Ammo Chain
 2381,https://overframe.gg/items/arsenal/2381,200,true,Quick Reload
 2382,https://overframe.gg/items/arsenal/2382,200,true,Amalgam Organ Shatter
 2383,https://overframe.gg/items/arsenal/2383,200,true,Amalgam Barrel Diffusion
