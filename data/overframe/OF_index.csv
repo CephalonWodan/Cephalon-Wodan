@@ -4348,7 +4348,7 @@ id,http,status,has_next_data,name
 4347,https://overframe.gg/items/arsenal/4347,200,true,
 4348,https://overframe.gg/items/arsenal/4348,200,true,
 4349,https://overframe.gg/items/arsenal/4349,200,true,
-4350,https://overframe.gg/items/arsenal/4350,200,true,
+4350,https://overframe.gg/items/arsenal/4350,0,false,
 4351,https://overframe.gg/items/arsenal/4351,200,true,Primed Cleanse Corpus
 4352,https://overframe.gg/items/arsenal/4352,200,true,Primed Cleanse Orokin
 4353,https://overframe.gg/items/arsenal/4353,200,true,Primed Cleanse Grineer
@@ -5568,7 +5568,7 @@ id,http,status,has_next_data,name
 5567,https://overframe.gg/items/arsenal/5567,200,true,Tenet Diplos
 5568,https://overframe.gg/items/arsenal/5568,404,false,
 5569,https://overframe.gg/items/arsenal/5569,200,true,Tenet Spirex
-5570,https://overframe.gg/items/arsenal/5570,404,false,
+5570,https://overframe.gg/items/arsenal/5570,0,false,
 5571,https://overframe.gg/items/arsenal/5571,404,false,
 5572,https://overframe.gg/items/arsenal/5572,200,true,Kuva Grattler
 5573,https://overframe.gg/items/arsenal/5573,404,false,
