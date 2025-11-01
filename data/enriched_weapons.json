@@ -4152,7 +4152,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "This Sentient war instrument can either barrage targets with explosive bolts, or, draw on its regenerative battery to create twin plasma beams that chain through targets. When fully drained, Health is leached from nearby foes for a short period.",
+    "description": "This Sentient war instrument can either barrage targets with explosive bolts or draw on its regenerative battery to create twin plasma beams that chain through targets. When fully drained, Health is leeched from nearby foes for a short period.",
     "attacks": [
       {
         "name": "Auto",
@@ -8193,7 +8193,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMotovore.png?2ea1f",
     "imageName": "coda-motovore-d83db3cb18.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8294,7 +8293,6 @@
       "madurai",
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaPathocyst.png?2ea1f",
     "imageName": "coda-pathocyst-44d3400c0d.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9058,7 +9056,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Corufell.png?5fe41",
     "imageName": "corufell-d74a908016.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9312,7 +9309,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Cronus.png?b7485",
     "imageName": "cronus-f3879e63fb.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9784,7 +9780,6 @@
       "madurai",
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DakraPrime.png?2c888",
     "imageName": "dakra-prime-69b3818b88.png",
     "isPrime": true,
     "isUmbra": false,
@@ -9876,7 +9871,6 @@
       "radiation": 60,
       "total": 154
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkDagger.png?7fd23",
     "imageName": "dark-dagger-34cfc06ddf.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45380,7 +45374,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VenatoPrime.png?eb0e1",
     "imageName": "venato-prime-e72fcbb62a.png",
     "isPrime": true,
     "isUmbra": false,
@@ -45472,7 +45465,6 @@
       "slash": 98,
       "total": 140
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Venka.png?03dd1",
     "imageName": "venka-a750520352.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45568,7 +45560,6 @@
       "naramon",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VenkaPrime.png?7ea5c",
     "imageName": "venka-prime-fbb661cdcf.png",
     "isPrime": true,
     "isUmbra": false,
@@ -45660,7 +45651,6 @@
       "slash": 106.5,
       "total": 213
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Verdilac.png?6e3c1",
     "imageName": "verdilac-fba86852fc.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45778,7 +45768,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Vericres.png?bcc94",
     "imageName": "vericres-30b79546fe.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46073,7 +46062,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Vitrica.png?54002",
     "imageName": "vitrica-d0a2b456bd.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46187,7 +46175,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Volnus.png?18bd9",
     "imageName": "volnus-54a591af3c.png",
     "isPrime": false,
     "isUmbra": false,
