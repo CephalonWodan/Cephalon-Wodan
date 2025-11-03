@@ -20,9 +20,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: loadout
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -33,19 +30,20 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: loadout
         run: npm ci
 
       - name: Build
+        working-directory: loadout
         env:
-          # IMPORTANT : adapte si le nom du repo change
           BASE_PATH: "/Cephalon-Wodan/loadout/"
         run: npm run build
 
-      # ⬇️ Passe à la nouvelle version pour éviter l’erreur
+      # ✅ IMPORTANT : pointer vers le bon dossier de sortie
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: dist
+          path: loadout/dist
 
   deploy:
     needs: build
