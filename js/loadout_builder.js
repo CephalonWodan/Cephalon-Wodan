@@ -1,10 +1,10 @@
 /* 
-  Loadout Builder – v2 (inspiré de mods_catalog.js, arcanes_catalog.js, shards.js, app.js)
-  - Pas de CSS inline ; s'appuie sur racine/css/loadout_builder.css et themes.css
-  - Se branche sur le DOM existant (IDs fournis par ton HTML)
-  - Normalisation + dédoublonnage des mods (qualité), catégorisation, recherche/tri enrichis
-  - Modale détails de mod, pickers Mods/Aura/Exilus, Arcanes, Shards
+  Loadout Builder – v3
+  - Respecte VRAIMENT les filtres UI : TYPE/Polarity/Rarity/GameMode/Sort (plus de filtre WARFRAME implicite)
+  - Normalisation + dédoublonnage des mods (inspiré de mods_catalog.js)
+  - Modale "Details", pickers Mods/Aura/Exilus, Arcanes, Shards
   - Fallback API tolérant + persistance (URL + localStorage)
+  - Aucun CSS inline (tout dans /css)
 */
 
 (() => {
@@ -20,7 +20,7 @@
   };
 
   // ----------------------------
-  // Mini utilitaires DOM / data
+  // Helpers
   // ----------------------------
   const $  = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -36,6 +36,9 @@
   };
   const debounce = (fn, ms = 200) => { let t; return (...a) => (clearTimeout(t), t = setTimeout(()=>fn(...a), ms)); };
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const up = (x) => String(x || "").toUpperCase();
+  const low = (x) => String(x || "").toLowerCase();
+  const truthy = (v) => v !== undefined && v !== null && v !== "";
 
   const b64urlEncode = (obj) => {
     try { return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replaceAll("=","").replaceAll("+","-").replaceAll("/","_"); }
@@ -63,7 +66,7 @@
     reactor: true,
     aura: null,        // {mod, polarity}
     exilus: null,      // {mod, polarity}
-    slots: Array.from({length: 8}, () => ({ mod: null, polarity: null })), // 6 normaux + 2 libres si besoin
+    slots: Array.from({length: 8}, () => ({ mod: null, polarity: null })),
     arcanes: [null, null],
     shards: [null, null, null, null, null], // {color, upgrade}
     createdAt: new Date().toISOString(),
@@ -71,7 +74,7 @@
   });
 
   const STATE = loadFromURL() || JSON.parse(localStorage.getItem("wf-loadout-draft") || "null") || initial();
-  const DB = { warframes: [], mods: [], arcanes: [], shards: {}, modsIndex: new Map() };
+  const DB = { warframes: [], mods: [], arcanes: [], shards: {}, modsIndex: new Map(), debug: {} };
 
   function saveDraft() {
     STATE.updatedAt = new Date().toISOString();
@@ -88,10 +91,10 @@
   }
 
   // ----------------------------
-  // Capacity & stats (robustes)
+  // Capacity / stats
   // ----------------------------
   function frameCapacity(rank, reactor) {
-    const base = clamp(Number(rank)||0,0,60); // on accepte 60 (Prime, Helminth, etc.)
+    const base = clamp(Number(rank)||0,0,60);
     return reactor ? base * 2 : base;
   }
   function modDrain(mod, level = 0) {
@@ -134,16 +137,15 @@
   // ----------------------------
   // Normalisation (mods / arcanes / shards)
   // ----------------------------
-  const up = (x) => String(x || "").toUpperCase();
-  const low = (x) => String(x || "").toLowerCase();
-  const truthy = (v) => v !== undefined && v !== null && v !== "";
-
-  // Qualité mod (inspiré de mods_catalog)
+  function cryptoRandom() {
+    try { return crypto.getRandomValues(new Uint32Array(2)).join("-"); }
+    catch { return "rnd-" + Math.random().toString(36).slice(2); }
+  }
   function modQuality(m) {
     let q = 0;
     if (truthy(m.imageUrl) || truthy(m.img) || truthy(m.icon)) q += 2;
     if (truthy(m.description) || truthy(m.Details)) q += 1;
-    if (up(m.source || m.Source).includes("CEPHALON WODAN")) q += 1; // bonus source interne
+    if (up(m.source || m.Source).includes("CEPHALON WODAN")) q += 1;
     if (truthy(m.rarity)) q += 0.5;
     return q;
   }
@@ -161,50 +163,16 @@
     const isPvp  = !!(m.pvp || m.PvpOnly);
     const desc   = m.description || m.Details || "";
     const type   = up(m.type || m.Type || "");
-
-    return {
-      ...m,
-      id, name, displayName: name, imageUrl: img, polarity: pol, rarity, compat, set, pvp: isPvp, description: desc, type
-    };
-  }
-  function cryptoRandom() {
-    try { return crypto.getRandomValues(new Uint32Array(2)).join("-"); }
-    catch { return "rnd-" + Math.random().toString(36).slice(2); }
-  }
-  function isWarframeMod(m) {
-    const hasArr = (arr, val) => Array.isArray(arr) && arr.some(x => up(x).includes(val));
-    const W = "WARFRAME";
-    if (up(m.CompatName) === W) return true;
-    if (up(m.compat) === W) return true;
-    if (up(m.compatibility) === W) return true;
-    if (up(m.type) === W) return true;
-    if (up(m.category) === W) return true;
-    if (up(m.ModType) === W) return true;
-    if (hasArr(m.CompatNames, W) || hasArr(m.compatNames, W) || hasArr(m.tags, W) || hasArr(m.Categories, W)) return true;
-    const pol = up(m.polarity);
-    if (pol === "AURA" || pol === "EXILUS") return true;
-    return false;
-  }
-  function computeCategories(m) {
-    const cats = [];
-    const pol = up(m.polarity);
-    if (pol === "AURA") cats.push("AURA");
-    if (pol === "EXILUS") cats.push("EXILUS");
-    if (/augment/i.test(m.name || m.displayName || "")) cats.push("AUGMENT");
-    if (up(m.set) === "SET" || /set/i.test(m.set || "")) cats.push("SET");
-    // place-holder pour Companion/MOA etc. si besoin, selon tes champs
-    return cats;
+    return { ...m, id, name, displayName: name, imageUrl: img, polarity: pol, rarity, compat, set, pvp: isPvp, description: desc, type };
   }
   function mergeDuplicates(list) {
-    const map = new Map(); // key -> best mod
+    const map = new Map();
     for (const raw of list) {
       const m = normalizeMod(raw);
       const k = keyForMod(m);
       if (!map.has(k)) { map.set(k, m); continue; }
       const a = map.get(k);
-      // choisir la meilleure entrée par "qualité"
       const better = modQuality(m) > modQuality(a) ? m : a;
-      // fusion douce de champs (garder info utile si manquante)
       map.set(k, {
         ...a,
         ...better,
@@ -218,7 +186,15 @@
     }
     return Array.from(map.values());
   }
-
+  function computeCategories(m) {
+    const cats = [];
+    const pol = up(m.polarity);
+    if (pol === "AURA") cats.push("AURA");
+    if (pol === "EXILUS") cats.push("EXILUS");
+    if (/augment/i.test(m.name || m.displayName || "")) cats.push("AUGMENT");
+    if (up(m.set) === "SET" || /set/i.test(m.set || "")) cats.push("SET");
+    return cats;
+  }
   // Arcanes
   function normalizeArc(a) {
     const id = a.id || a.uniqueName || a.InternalName || a.Name;
@@ -228,7 +204,6 @@
     const type = up(a.type || a.Type || a.category || "");
     return { ...a, id, uniqueName, name, displayName: name, rarity, type };
   }
-
   // Shards
   function normalizeShards(obj) {
     const out = {};
@@ -238,7 +213,7 @@
       const uo = entry.upgradeTypes || {};
       const upgrades = [];
       for (const k in uo) {
-        const u = uo[k]; // { value: "text", tauForgedBonus?: ... }
+        const u = uo[k];
         if (u && typeof u.value === "string") upgrades.push(u.value);
       }
       if (color) out[color] = { upgrades };
@@ -247,7 +222,7 @@
   }
 
   // ----------------------------
-  // Chargement des données
+  // Chargement
   // ----------------------------
   async function loadData() {
     const [wfs, arcs, shards] = await Promise.all([
@@ -257,48 +232,90 @@
     ]);
 
     DB.warframes = Array.isArray(wfs) ? wfs : [];
-
     DB.arcanes = (Array.isArray(arcs) ? arcs : []).map(normalizeArc);
-
     DB.shards = normalizeShards(shards);
 
-    await fetchAndPrepareMods();
+    await fetchAndPrepareMods(); // <- plus de filtre implicite ici
     hydrateUI();
   }
 
   // ----------------------------
-  // Mods : fetch + normalisation + dédoublonnage + catégorisation
+  // Mods : fetch + normalisation + dédoublonnage
   // ----------------------------
   async function fetchAndPrepareMods(extra = {}) {
-    const clientFilter = (arr) => {
+    const applyClientPipeline = (arr) => {
       let items = Array.isArray(arr) ? arr : [];
+      const received = items.length;
       items = items.map(normalizeMod);
       items = mergeDuplicates(items);
-      const wfOnly = items.filter(isWarframeMod);
-      items = wfOnly.length ? wfOnly : items;
-      if (extra.polarity) {
-        items = items.filter(m => low(m.polarity) === low(extra.polarity));
-      }
-      if (extra.rarity) {
-        items = items.filter(m => up(m.rarity) === up(extra.rarity));
-      }
-      if (extra.search) {
-        const q = low(extra.search);
-        items = items.filter(m => low(m.name).includes(q) || low(m.description||"").includes(q) || low(m.set||"").includes(q));
-      }
-      if (extra.pvp != null) {
-        items = items.filter(m => (m.hasOwnProperty("pvp") ? !!m.pvp === !!extra.pvp : true));
-      }
-      // catégories
       items.forEach(m => m._categories = computeCategories(m));
+
+      // Filtres UI (lues à la volée pour éviter les décalages d'état)
+      const fltPol    = $("#fltPol")?.value || "";
+      const fltRarity = $("#fltRarity")?.value || "";
+      const fltGame   = $("#fltGame")?.value || ""; // "pvp" sinon ""
+      const fltType   = $("#fltType")?.value || ""; // "", "WARFRAME", "AURA", "EXILUS", "SET"
+      const q         = ($("#globalSearch")?.value || "").trim().toLowerCase();
+
+      // TYPE
+      if (fltType) {
+        items = items.filter(m => {
+          if (fltType === "AURA")   return up(m.polarity) === "AURA";
+          if (fltType === "EXILUS") return up(m.polarity) === "EXILUS";
+          if (fltType === "SET")    return (m._categories||[]).includes("SET");
+          if (fltType === "WARFRAME") {
+            // heuristique WARFRAME (tolérante)
+            const W = "WARFRAME";
+            const hasArr = (arr) => Array.isArray(arr) && arr.some(x => up(x).includes(W));
+            if (up(m.CompatName) === W) return true;
+            if (up(m.compat) === W) return true;
+            if (up(m.compatibility) === W) return true;
+            if (up(m.type) === W) return true;
+            if (up(m.category) === W) return true;
+            if (up(m.ModType) === W) return true;
+            if (hasArr(m.CompatNames) || hasArr(m.compatNames) || hasArr(m.tags) || hasArr(m.Categories)) return true;
+            if (up(m.polarity) === "AURA" || up(m.polarity) === "EXILUS") return true;
+            return false;
+          }
+          return true;
+        });
+      }
+
+      // POLARITY
+      if (fltPol) items = items.filter(m => low(m.polarity) === low(fltPol));
+
+      // RARITY
+      if (fltRarity) items = items.filter(m => up(m.rarity) === up(fltRarity));
+
+      // GAME MODE
+      if (fltGame === "pvp") items = items.filter(m => (m.hasOwnProperty("pvp") ? !!m.pvp : false));
+
+      // SEARCH
+      if (q) items = items.filter(m => low(m.name).includes(q) || low(m.description||"").includes(q) || low(m.set||"").includes(q));
+
+      // tri
+      const fltSort = $("#fltSort")?.value || "name";
+      switch (low(fltSort)) {
+        case "cost":
+        case "drain":
+          items.sort((a,b) => (modDrain(a) - modDrain(b)));
+          break;
+        case "rarity": {
+          const order = { COMMON:1, UNCOMMON:2, RARE:3, LEGENDARY:4 };
+          items.sort((a,b) => (order[a.rarity]||99) - (order[b.rarity]||99) || String(a.name).localeCompare(String(b.name)));
+          break;
+        }
+        default:
+          items.sort((a,b) => String(a.name||a.displayName||a.id).localeCompare(String(b.name||b.displayName||b.id)));
+      }
+
+      DB.debug = { received, afterNormalize: items.length };
       return items;
     };
 
-    // Essai serveur filtré
+    // 1) essai filtré serveur (si jamais tu veux remettre des params plus tard)
     try {
       const u = new URL(API.mods);
-      u.searchParams.set("type", "WARFRAME");
-      u.searchParams.set("compat", "WARFRAME");
       if (extra.polarity) u.searchParams.set("polarity", String(extra.polarity));
       if (extra.rarity)   u.searchParams.set("rarity", String(extra.rarity));
       if (extra.search)   u.searchParams.set("search", String(extra.search));
@@ -307,27 +324,22 @@
 
       const serverList = await getJSON(u.toString());
       let items = Array.isArray(serverList) ? serverList : (Array.isArray(serverList?.items) ? serverList.items : []);
-      items = clientFilter(items); // normalise + dédoublonne + catégories
+      items = applyClientPipeline(items);
 
       if (items.length > 0) {
-        DB.mods = items;
-        indexMods();
-        renderModList();
-        return;
+        DB.mods = items; indexMods(); renderModList(); return;
       } else {
-        console.warn("[mods] serveur filtré vide — fallback client");
+        console.warn("[mods] serveur (avec params) vide ou filtré → fallback /mods brut");
       }
     } catch (e) {
-      console.error("[mods] fetch/parse error (filtres serveur):", e);
+      console.error("[mods] fetch filtré erreur:", e);
     }
 
-    // Fallback : /mods complet
+    // 2) fallback /mods brut
     try {
       const raw = await getJSON(API.mods);
-      let items = Array.isArray(raw) ? raw : (Array.isArray(raw?.items) ? raw.items : []);
-      items = clientFilter(items);
-      DB.mods = items.length ? items : (Array.isArray(raw) ? raw.map(normalizeMod) : []);
-      // si rien après filtre, montre tout (utile debug)
+      const full = Array.isArray(raw) ? raw : (Array.isArray(raw?.items) ? raw.items : []);
+      DB.mods = applyClientPipeline(full);
     } catch (e2) {
       console.error("[mods] fallback /mods error:", e2);
       DB.mods = [];
@@ -343,27 +355,19 @@
   }
 
   // ----------------------------
-  // Hydratation UI (DOM existant)
+  // UI
   // ----------------------------
   function hydrateUI() {
     const wfPicker     = $("#wfPicker");
-    const wfImg        = $("#wfImg");
-    const wfTitle      = $("#wfTitle");
-    const wfSubtitle   = $("#wfSubtitle");
-
     const rankToggle   = $("#rankToggle");
     const rankSlider   = $("#rankSlider");
     const rankVal      = $("#rankVal");
     const reactor      = $("#reactor");
-
-    const statsList    = $("#statsList");
-    const polList      = $("#polList");
-
     const globalSearch = $("#globalSearch");
     const resetBuild   = $("#resetBuild");
     const saveBuild    = $("#saveBuild");
-
     const fltPol       = $("#fltPol");
+    const fltType      = $("#fltType");
     const fltRarity    = $("#fltRarity");
     const fltGame      = $("#fltGame");
     const fltSort      = $("#fltSort");
@@ -377,46 +381,15 @@
       wfPicker.appendChild(el("option", { value: val }, name));
     }
     wfPicker.value = STATE.warframeId || "";
-    wfPicker.addEventListener("change", () => {
-      STATE.warframeId = wfPicker.value || null;
-      updateHeaderPreview();
-      updateStats();
-      saveDraft();
-    });
+    wfPicker.addEventListener("change", () => { STATE.warframeId = wfPicker.value || null; updateHeaderPreview(); updateStats(); saveDraft(); });
 
-    rankToggle?.addEventListener("change", () => {
-      const isR30 = !!rankToggle.checked;
-      STATE.rank = isR30 ? 30 : 0;
-      if (rankSlider) rankSlider.value = String(STATE.rank);
-      if (rankVal) rankVal.textContent = String(STATE.rank);
-      updateStats(); saveDraft();
-    });
-    rankSlider?.addEventListener("input", () => {
-      STATE.rank = Number(rankSlider.value) || 0;
-      if (rankVal) rankVal.textContent = String(STATE.rank);
-      if (rankToggle) rankToggle.checked = STATE.rank >= 30;
-      updateStats(); saveDraft();
-    });
+    rankToggle?.addEventListener("change", () => { STATE.rank = rankToggle.checked ? 30 : 0; if (rankSlider) rankSlider.value = String(STATE.rank); if (rankVal) rankVal.textContent = String(STATE.rank); updateStats(); saveDraft(); });
+    rankSlider?.addEventListener("input", () => { STATE.rank = Number(rankSlider.value) || 0; if (rankVal) rankVal.textContent = String(STATE.rank); if (rankToggle) rankToggle.checked = STATE.rank >= 30; updateStats(); saveDraft(); });
     reactor?.addEventListener("change", () => { STATE.reactor = !!reactor.checked; updateStats(); saveDraft(); });
 
-    globalSearch?.addEventListener("input", debounce(() => {
-      fetchAndPrepareMods({
-        search: globalSearch.value || undefined,
-        polarity: fltPol?.value || undefined,
-        rarity: fltRarity?.value || undefined,
-        pvp: fltGame?.value === "pvp" ? true : undefined,
-      });
-    }, 200));
-
-    [fltPol, fltRarity, fltGame, fltSort].forEach(sel => sel?.addEventListener("change", () => {
-      fetchAndPrepareMods({
-        search: globalSearch?.value || undefined,
-        polarity: fltPol?.value || undefined,
-        rarity: fltRarity?.value || undefined,
-        pvp: fltGame?.value === "pvp" ? true : undefined,
-        sort: fltSort?.value || undefined,
-      });
-    }));
+    const refetch = debounce(() => fetchAndPrepareMods(), 150);
+    globalSearch?.addEventListener("input", refetch);
+    [fltPol, fltType, fltRarity, fltGame, fltSort].forEach(sel => sel?.addEventListener("change", refetch));
 
     resetBuild?.addEventListener("click", () => {
       const keepWF = STATE.warframeId;
@@ -436,19 +409,13 @@
       URL.revokeObjectURL(url);
     });
 
-    // Slots pickers
     bindSlotPickers();
-
-    // First render
     updateHeaderPreview();
     updateStats();
     renderSlotsPreview();
     renderModList();
   }
 
-  // ----------------------------
-  // Renders
-  // ----------------------------
   function updateHeaderPreview() {
     const wf = getSelectedWF();
     const wfImg = $("#wfImg");
@@ -463,7 +430,7 @@
     const name = wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName;
     wfTitle && (wfTitle.textContent = name);
     wfSubtitle && (wfSubtitle.textContent = "Régler mods, arcanes et shards pour calculer la capacité.");
-    wfImg && (wfImg.src = ""); // gérée par tes assets/thèmes si tu veux
+    wfImg && (wfImg.src = "");
   }
 
   function updateStats() {
@@ -471,7 +438,6 @@
     if (!statsList) return;
     const wf = getSelectedWF();
     statsList.innerHTML = "";
-
     const { cap, auraBonus, used, remain } = capacitySummary();
     const row = (k, v) => el("div", { class: "stat" }, el("span", { class: "k" }, k), el("span", { class: "v" }, String(v)));
 
@@ -542,40 +508,27 @@
     const fltSort = $("#fltSort");
     list.innerHTML = "";
 
-    let items = [...DB.mods];
-
-    // tri enrichi
-    switch ((fltSort?.value || "name").toLowerCase()) {
-      case "cost":
-      case "drain":
-        items.sort((a,b) => (modDrain(a) - modDrain(b)));
-        break;
-      case "rarity": {
-        const order = { COMMON:1, UNCOMMON:2, RARE:3, LEGENDARY:4 };
-        items.sort((a,b) => (order[a.rarity]||99) - (order[b.rarity]||99) || String(a.name).localeCompare(String(b.name)));
-        break;
-      }
-      default:
-        items.sort((a,b) => String(a.name||a.displayName||a.id).localeCompare(String(b.name||b.displayName||b.id)));
-    }
-
+    const items = [...DB.mods];
     if (!items.length) {
-      list.append(el("div", { class:"muted" }, "Aucun mod trouvé (vérifie les filtres / API)."));
+      const d = DB.debug || {};
+      list.append(
+        el("div", { class:"muted" }, "Aucun mod trouvé (vérifie les filtres / API)."),
+        el("div", { class:"muted small" }, `Debug: reçus=${d.received ?? "?"}, après pipeline=${d.afterNormalize ?? "?"}`)
+      );
       return;
     }
 
-    // rendu cartes (classes à styler côté CSS)
-    for (const m of items.slice(0, 200)) {
-      const badgeWrap = el("div", { class:"mod-tags" });
-      m._categories?.forEach(c => badgeWrap.append(el("span", { class:"tag" }, c)));
-      if (m.rarity) badgeWrap.append(el("span", { class:"tag" }, m.rarity));
-      if (m.polarity) badgeWrap.append(el("span", { class:"tag" }, m.polarity));
+    for (const m of items.slice(0, 300)) {
+      const tagWrap = el("div", { class: "mod-tags" });
+      (m._categories||[]).forEach(c => tagWrap.append(el("span", { class:"tag" }, c)));
+      if (m.rarity) tagWrap.append(el("span", { class:"tag" }, m.rarity));
+      if (m.polarity) tagWrap.append(el("span", { class:"tag" }, m.polarity));
 
       const card = el("div", { class: "mod-card", "data-id": m.id },
         el("div", { class: "mod-art" }, m.imageUrl ? el("img", { src: m.imageUrl, alt: "" }) : ""),
         el("div", { class: "mod-meta" },
           el("div", { class: "mod-name" }, m.name || m.displayName || m.id),
-          badgeWrap
+          tagWrap
         ),
         el("div", { class:"mod-actions" },
           el("button", { class:"btn", onclick: () => addModToFirstFree(m) }, "Add"),
@@ -587,40 +540,34 @@
   }
 
   // ----------------------------
-  // Détails mod (modale)
+  // Modale "Details"
   // ----------------------------
   function openModDetails(m) {
     const wrap = overlay(m.name || m.displayName || "Mod");
     const body = wrap.querySelector(".body");
-
     const header = el("div", { class:"mod-detail-head" },
       m.imageUrl ? el("img", { src: m.imageUrl, alt: "" }) : el("div", { class:"placeholder" }, ""),
       el("div", { class:"col" },
         el("div", { class:"title" }, m.name || m.displayName || m.id),
         el("div", { class:"subtitle" }, [
-          up(m.rarity)||"", " · ",
-          m.polarity||"", (m.set? " · Set":"")
+          up(m.rarity)||"", " · ", m.polarity||"", (m.set? " · Set":"")
         ].join(" ").replace(/\s·\s$/,""))
       )
     );
-
     const desc = el("div", { class:"mod-detail-desc" }, m.description || "—");
     const meta = el("div", { class:"mod-detail-meta" },
       el("div", {}, `Drain: ${modDrain(m)}`),
       el("div", {}, `Compat: ${m.compat || "—"}`),
       el("div", {}, `Catégories: ${(m._categories||[]).join(", ")||"—"}`),
     );
-
     const actions = el("div", { class:"mod-detail-actions" },
       el("button", { class:"btn", onclick: () => { addModToFirstFree(m); document.body.removeChild(wrap);} }, "Ajouter au build"),
       el("button", { class:"btn ghost", onclick: () => document.body.removeChild(wrap) }, "Fermer"),
     );
-
     body.append(header, desc, meta, actions);
   }
 
   function overlay(title="") {
-    // structure minimale (styler .overlay-scrim / .overlay-box / .head / .body dans ton CSS)
     const scrim = el("div", { class:"overlay-scrim" });
     const box   = el("div", { class:"overlay-box" });
     const head  = el("div", { class:"head" }, title);
@@ -633,7 +580,7 @@
   }
 
   // ----------------------------
-  // Affectation des mods / arcanes / shards
+  // Affectations
   // ----------------------------
   function addModToFirstFree(mod) {
     const idx = STATE.slots.findIndex(s => !s.mod);
@@ -654,17 +601,14 @@
     const exilusEl = $('[data-slot="exilus"]');
     auraEl && auraEl.addEventListener("click", () => openModPicker({ kind:"aura" }));
     exilusEl && exilusEl.addEventListener("click", () => openModPicker({ kind:"exilus" }));
-
     for (let i=1;i<=6;i++) {
       const slot = $(`[data-slot="${i}"]`);
       slot && slot.addEventListener("click", () => openModPicker({ kind:"normal", index:i-1 }));
     }
-
     const arc1 = $('[data-slot="Arcanes-1"]');
     const arc2 = $('[data-slot="Arcanes-2"]');
     arc1 && arc1.addEventListener("click", () => openArcanePicker(0));
     arc2 && arc2.addEventListener("click", () => openArcanePicker(1));
-
     for (let i=1;i<=5;i++) {
       const s = $(`[data-slot="archon-${i}"]`);
       s && s.addEventListener("click", () => openShardPicker(i-1));
@@ -692,8 +636,8 @@
       let items = DB.mods.filter(m => {
         const name = low(m.name || m.displayName || m.id || "");
         if (search.value && !name.includes(low(search.value))) return false;
-        if (kind === "aura"   && low(m.polarity) !== "aura") return false;
-        if (kind === "exilus" && low(m.polarity) !== "exilus") return false;
+        if (kind === "aura"   && up(m.polarity) !== "AURA") return false;
+        if (kind === "exilus" && up(m.polarity) !== "EXILUS") return false;
         if (polSel.value && low(m.polarity) !== low(polSel.value)) return false;
         return true;
       });
