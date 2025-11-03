@@ -1,9 +1,10 @@
 /* 
-  Loadout Builder – bind to existing DOM (no inline CSS, no #app rendering)
-  Se branche sur ton HTML existant + tes CSS (racine/css/loadout_builder.css & themes.css)
-  - Stats R0/R30 + capacité
-  - Pickers Mods / Arcanes / Shards
-  - Fetch résilient + fallback client (détection WARFRAME tolérante)
+  Loadout Builder – v2 (inspiré de mods_catalog.js, arcanes_catalog.js, shards.js, app.js)
+  - Pas de CSS inline ; s'appuie sur racine/css/loadout_builder.css et themes.css
+  - Se branche sur le DOM existant (IDs fournis par ton HTML)
+  - Normalisation + dédoublonnage des mods (qualité), catégorisation, recherche/tri enrichis
+  - Modale détails de mod, pickers Mods/Aura/Exilus, Arcanes, Shards
+  - Fallback API tolérant + persistance (URL + localStorage)
 */
 
 (() => {
@@ -19,7 +20,7 @@
   };
 
   // ----------------------------
-  // Helpers
+  // Mini utilitaires DOM / data
   // ----------------------------
   const $  = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -34,20 +35,15 @@
     return n;
   };
   const debounce = (fn, ms = 200) => { let t; return (...a) => (clearTimeout(t), t = setTimeout(()=>fn(...a), ms)); };
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
   const b64urlEncode = (obj) => {
-    try {
-      const json = JSON.stringify(obj);
-      const b64 = btoa(unescape(encodeURIComponent(json)));
-      return b64.replaceAll("=", "").replaceAll("+", "-").replaceAll("/", "_");
-    } catch { return ""; }
+    try { return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replaceAll("=","").replaceAll("+","-").replaceAll("/","_"); }
+    catch { return ""; }
   };
-  const b64urlDecode = (str) => {
-    try {
-      const b64 = str.replaceAll("-", "+").replaceAll("_", "/");
-      const json = decodeURIComponent(escape(atob(b64)));
-      return JSON.parse(json);
-    } catch { return null; }
+  const b64urlDecode = (s) => {
+    try { return JSON.parse(decodeURIComponent(escape(atob(s.replaceAll("-","+").replaceAll("_","/"))))); }
+    catch { return null; }
   };
 
   async function getJSON(url) {
@@ -67,15 +63,15 @@
     reactor: true,
     aura: null,        // {mod, polarity}
     exilus: null,      // {mod, polarity}
-    slots: Array.from({length: 8}, () => ({ mod: null, polarity: null })),
-    arcanes: [null, null], // 2
+    slots: Array.from({length: 8}, () => ({ mod: null, polarity: null })), // 6 normaux + 2 libres si besoin
+    arcanes: [null, null],
     shards: [null, null, null, null, null], // {color, upgrade}
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
 
   const STATE = loadFromURL() || JSON.parse(localStorage.getItem("wf-loadout-draft") || "null") || initial();
-  const DB = { warframes: [], mods: [], arcanes: [], shards: {} };
+  const DB = { warframes: [], mods: [], arcanes: [], shards: {}, modsIndex: new Map() };
 
   function saveDraft() {
     STATE.updatedAt = new Date().toISOString();
@@ -92,14 +88,14 @@
   }
 
   // ----------------------------
-  // Capacity rules
+  // Capacity & stats (robustes)
   // ----------------------------
   function frameCapacity(rank, reactor) {
-    const base = rank; // base capacity = rank
+    const base = clamp(Number(rank)||0,0,60); // on accepte 60 (Prime, Helminth, etc.)
     return reactor ? base * 2 : base;
   }
   function modDrain(mod, level = 0) {
-    const base = Number(mod?.drain ?? mod?.baseDrain ?? 0);
+    const base = Number(mod?.drain ?? mod?.baseDrain ?? mod?.cost ?? 0);
     return Math.max(0, base + (level || 0));
   }
   function effectiveDrain(mod, slotPolarity, isAura) {
@@ -130,9 +126,128 @@
     const remain = cap + auraBonus - used;
     return { cap, auraBonus, used, remain };
   }
+  const getStat = (obj, keys, fallback=0) => {
+    for (const k of keys) if (obj && obj[k] != null && isFinite(Number(obj[k]))) return Number(obj[k]);
+    return fallback;
+  };
 
   // ----------------------------
-  // Data fetching
+  // Normalisation (mods / arcanes / shards)
+  // ----------------------------
+  const up = (x) => String(x || "").toUpperCase();
+  const low = (x) => String(x || "").toLowerCase();
+  const truthy = (v) => v !== undefined && v !== null && v !== "";
+
+  // Qualité mod (inspiré de mods_catalog)
+  function modQuality(m) {
+    let q = 0;
+    if (truthy(m.imageUrl) || truthy(m.img) || truthy(m.icon)) q += 2;
+    if (truthy(m.description) || truthy(m.Details)) q += 1;
+    if (up(m.source || m.Source).includes("CEPHALON WODAN")) q += 1; // bonus source interne
+    if (truthy(m.rarity)) q += 0.5;
+    return q;
+  }
+  function keyForMod(m) {
+    return (m.uniqueName || m.id || m.slug || up(m.name || m.displayName || "")).trim();
+  }
+  function normalizeMod(m) {
+    const id   = m.id || m.uniqueName || m.slug || m.InternalName || m.Name || (m.name ? up(m.name) : null) || cryptoRandom();
+    const name = m.name || m.displayName || m.Name || m.title || id;
+    const img  = m.imageUrl || m.icon || m.img || m.ImageUrl || null;
+    const pol  = low(m.polarity || m.Polarity || "");
+    const rarity = up(m.rarity || m.Rarity || "");
+    const compat = m.CompatName || m.compat || m.compatibility || m.Category || m.category || m.ModType || null;
+    const set    = m.set || m.Set || null;
+    const isPvp  = !!(m.pvp || m.PvpOnly);
+    const desc   = m.description || m.Details || "";
+    const type   = up(m.type || m.Type || "");
+
+    return {
+      ...m,
+      id, name, displayName: name, imageUrl: img, polarity: pol, rarity, compat, set, pvp: isPvp, description: desc, type
+    };
+  }
+  function cryptoRandom() {
+    try { return crypto.getRandomValues(new Uint32Array(2)).join("-"); }
+    catch { return "rnd-" + Math.random().toString(36).slice(2); }
+  }
+  function isWarframeMod(m) {
+    const hasArr = (arr, val) => Array.isArray(arr) && arr.some(x => up(x).includes(val));
+    const W = "WARFRAME";
+    if (up(m.CompatName) === W) return true;
+    if (up(m.compat) === W) return true;
+    if (up(m.compatibility) === W) return true;
+    if (up(m.type) === W) return true;
+    if (up(m.category) === W) return true;
+    if (up(m.ModType) === W) return true;
+    if (hasArr(m.CompatNames, W) || hasArr(m.compatNames, W) || hasArr(m.tags, W) || hasArr(m.Categories, W)) return true;
+    const pol = up(m.polarity);
+    if (pol === "AURA" || pol === "EXILUS") return true;
+    return false;
+  }
+  function computeCategories(m) {
+    const cats = [];
+    const pol = up(m.polarity);
+    if (pol === "AURA") cats.push("AURA");
+    if (pol === "EXILUS") cats.push("EXILUS");
+    if (/augment/i.test(m.name || m.displayName || "")) cats.push("AUGMENT");
+    if (up(m.set) === "SET" || /set/i.test(m.set || "")) cats.push("SET");
+    // place-holder pour Companion/MOA etc. si besoin, selon tes champs
+    return cats;
+  }
+  function mergeDuplicates(list) {
+    const map = new Map(); // key -> best mod
+    for (const raw of list) {
+      const m = normalizeMod(raw);
+      const k = keyForMod(m);
+      if (!map.has(k)) { map.set(k, m); continue; }
+      const a = map.get(k);
+      // choisir la meilleure entrée par "qualité"
+      const better = modQuality(m) > modQuality(a) ? m : a;
+      // fusion douce de champs (garder info utile si manquante)
+      map.set(k, {
+        ...a,
+        ...better,
+        imageUrl: better.imageUrl || a.imageUrl,
+        description: better.description || a.description,
+        rarity: better.rarity || a.rarity,
+        polarity: better.polarity || a.polarity,
+        set: better.set || a.set,
+        compat: better.compat || a.compat,
+      });
+    }
+    return Array.from(map.values());
+  }
+
+  // Arcanes
+  function normalizeArc(a) {
+    const id = a.id || a.uniqueName || a.InternalName || a.Name;
+    const uniqueName = a.uniqueName || a.InternalName || id;
+    const name = a.name || a.displayName || a.Name || id;
+    const rarity = up(a.rarity || a.Rarity || "");
+    const type = up(a.type || a.Type || a.category || "");
+    return { ...a, id, uniqueName, name, displayName: name, rarity, type };
+  }
+
+  // Shards
+  function normalizeShards(obj) {
+    const out = {};
+    if (!obj || typeof obj !== "object") return out;
+    Object.values(obj).forEach(entry => {
+      const color = entry.value || entry.color;
+      const uo = entry.upgradeTypes || {};
+      const upgrades = [];
+      for (const k in uo) {
+        const u = uo[k]; // { value: "text", tauForgedBonus?: ... }
+        if (u && typeof u.value === "string") upgrades.push(u.value);
+      }
+      if (color) out[color] = { upgrades };
+    });
+    return out;
+  }
+
+  // ----------------------------
+  // Chargement des données
   // ----------------------------
   async function loadData() {
     const [wfs, arcs, shards] = await Promise.all([
@@ -143,87 +258,43 @@
 
     DB.warframes = Array.isArray(wfs) ? wfs : [];
 
-    DB.arcanes = Array.isArray(arcs) ? arcs.map(a => {
-      const id = a.id || a.uniqueName || a.InternalName || a.Name;
-      const uniqueName = a.uniqueName || a.InternalName || id;
-      const name = a.name || a.displayName || a.Name || id;
-      return { ...a, id, uniqueName, name, displayName: a.displayName || name };
-    }) : [];
+    DB.arcanes = (Array.isArray(arcs) ? arcs : []).map(normalizeArc);
 
-    DB.shards = {};
-    if (shards && typeof shards === "object") {
-      Object.values(shards).forEach(entry => {
-        const color = entry.value || entry.color;
-        const upgrades = [];
-        const uo = entry.upgradeTypes || {};
-        for (const k in uo) {
-          const u = uo[k];
-          if (u && typeof u.value === "string") upgrades.push(u.value);
-        }
-        if (color) DB.shards[color] = { upgrades };
-      });
-    }
+    DB.shards = normalizeShards(shards);
 
-    await fetchAndRenderMods();
+    await fetchAndPrepareMods();
     hydrateUI();
   }
 
   // ----------------------------
-  // Détection WARFRAME tolérante (fallback client)
+  // Mods : fetch + normalisation + dédoublonnage + catégorisation
   // ----------------------------
-  function isWarframeMod(m) {
-    const up = (x) => String(x || "").toUpperCase();
-    const upArrHas = (arr, val) => Array.isArray(arr) && arr.some(x => up(x).includes(val));
-    const W = "WARFRAME";
-
-    // champs possibles
-    if (up(m.CompatName) === W) return true;
-    if (up(m.compat) === W) return true;
-    if (up(m.compatibility) === W) return true;
-    if (up(m.type) === W) return true;           // certaines APIs mettent "WARFRAME" en type
-    if (up(m.category) === W) return true;
-    if (up(m.ModType) === W) return true;
-
-    // tableaux / tags
-    if (upArrHas(m.CompatNames, W)) return true;
-    if (upArrHas(m.compatNames, W)) return true;
-    if (upArrHas(m.tags, W)) return true;
-    if (upArrHas(m.Categories, W)) return true;
-
-    // heuristique douce : si polarité Aura/Exilus, c’est quasi sûrement un mod de frame
-    const pol = up(m.polarity);
-    if (pol === "AURA" || pol === "EXILUS") return true;
-
-    return false;
-  }
-
-  // *** FONCTION CLEF AVEC FALLBACK ***
-  async function fetchAndRenderMods(extra = {}) {
+  async function fetchAndPrepareMods(extra = {}) {
     const clientFilter = (arr) => {
       let items = Array.isArray(arr) ? arr : [];
-      // 1) garder WARFRAME
+      items = items.map(normalizeMod);
+      items = mergeDuplicates(items);
       const wfOnly = items.filter(isWarframeMod);
-      items = wfOnly.length ? wfOnly : items; // si on n'en détecte aucun, ne vide pas la liste
-
-      // 2) filtres UI côté client
+      items = wfOnly.length ? wfOnly : items;
       if (extra.polarity) {
-        items = items.filter(m => String(m.polarity || "").toLowerCase() === String(extra.polarity).toLowerCase());
+        items = items.filter(m => low(m.polarity) === low(extra.polarity));
       }
       if (extra.rarity) {
-        items = items.filter(m => String(m.rarity || m.Rarity || "").toUpperCase() === String(extra.rarity).toUpperCase());
+        items = items.filter(m => up(m.rarity) === up(extra.rarity));
       }
       if (extra.search) {
-        const q = String(extra.search).toLowerCase();
-        items = items.filter(m => String(m.name || m.displayName || m.id || "").toLowerCase().includes(q));
+        const q = low(extra.search);
+        items = items.filter(m => low(m.name).includes(q) || low(m.description||"").includes(q) || low(m.set||"").includes(q));
       }
       if (extra.pvp != null) {
-        // ne filtre que si le champ est présent pour ne pas tout supprimer par erreur
         items = items.filter(m => (m.hasOwnProperty("pvp") ? !!m.pvp === !!extra.pvp : true));
       }
+      // catégories
+      items.forEach(m => m._categories = computeCategories(m));
       return items;
     };
 
-    // 1) tentative filtrée côté serveur
+    // Essai serveur filtré
     try {
       const u = new URL(API.mods);
       u.searchParams.set("type", "WARFRAME");
@@ -235,39 +306,44 @@
       u.searchParams.set("limit", "2000");
 
       const serverList = await getJSON(u.toString());
-      const items = Array.isArray(serverList) ? serverList : (Array.isArray(serverList?.items) ? serverList.items : []);
+      let items = Array.isArray(serverList) ? serverList : (Array.isArray(serverList?.items) ? serverList.items : []);
+      items = clientFilter(items); // normalise + dédoublonne + catégories
 
       if (items.length > 0) {
         DB.mods = items;
-        window.__modsDebug = { serverCount: items.length, source: "server" };
+        indexMods();
         renderModList();
         return;
       } else {
-        console.warn("[mods] serveur répond vide avec filtres — fallback client");
+        console.warn("[mods] serveur filtré vide — fallback client");
       }
     } catch (e) {
       console.error("[mods] fetch/parse error (filtres serveur):", e);
     }
 
-    // 2) Fallback : charge tout et filtre localement (tolérant)
+    // Fallback : /mods complet
     try {
       const raw = await getJSON(API.mods);
-      const full = Array.isArray(raw) ? raw : (Array.isArray(raw?.items) ? raw.items : []);
-      const filtered = clientFilter(full);
-      // si filtrage aboutit vide, montre tout (meilleure UX de debug)
-      DB.mods = filtered.length ? filtered : full;
-      window.__modsDebug = { serverCount: 0, fullCount: full.length, filteredCount: filtered.length, source: "client" };
+      let items = Array.isArray(raw) ? raw : (Array.isArray(raw?.items) ? raw.items : []);
+      items = clientFilter(items);
+      DB.mods = items.length ? items : (Array.isArray(raw) ? raw.map(normalizeMod) : []);
+      // si rien après filtre, montre tout (utile debug)
     } catch (e2) {
       console.error("[mods] fallback /mods error:", e2);
       DB.mods = [];
-      window.__modsDebug = { error: String(e2) };
     }
 
+    indexMods();
     renderModList();
   }
 
+  function indexMods() {
+    DB.modsIndex = new Map();
+    DB.mods.forEach(m => DB.modsIndex.set(m.id, m));
+  }
+
   // ----------------------------
-  // Bind to existing DOM
+  // Hydratation UI (DOM existant)
   // ----------------------------
   function hydrateUI() {
     const wfPicker     = $("#wfPicker");
@@ -292,12 +368,7 @@
     const fltGame      = $("#fltGame");
     const fltSort      = $("#fltSort");
 
-    if (!wfPicker) {
-      console.warn("[builder] wfPicker non trouvé — vérifie ton HTML");
-      return;
-    }
-
-    // Populate Warframes
+    // Warframes
     wfPicker.innerHTML = "";
     wfPicker.appendChild(el("option", { value: "" }, "— Warframe —"));
     for (const wf of DB.warframes) {
@@ -306,8 +377,6 @@
       wfPicker.appendChild(el("option", { value: val }, name));
     }
     wfPicker.value = STATE.warframeId || "";
-
-    // Events
     wfPicker.addEventListener("change", () => {
       STATE.warframeId = wfPicker.value || null;
       updateHeaderPreview();
@@ -320,26 +389,18 @@
       STATE.rank = isR30 ? 30 : 0;
       if (rankSlider) rankSlider.value = String(STATE.rank);
       if (rankVal) rankVal.textContent = String(STATE.rank);
-      updateStats();
-      saveDraft();
+      updateStats(); saveDraft();
     });
-
     rankSlider?.addEventListener("input", () => {
       STATE.rank = Number(rankSlider.value) || 0;
       if (rankVal) rankVal.textContent = String(STATE.rank);
       if (rankToggle) rankToggle.checked = STATE.rank >= 30;
-      updateStats();
-      saveDraft();
+      updateStats(); saveDraft();
     });
-
-    reactor?.addEventListener("change", () => {
-      STATE.reactor = !!reactor.checked;
-      updateStats();
-      saveDraft();
-    });
+    reactor?.addEventListener("change", () => { STATE.reactor = !!reactor.checked; updateStats(); saveDraft(); });
 
     globalSearch?.addEventListener("input", debounce(() => {
-      fetchAndRenderMods({
+      fetchAndPrepareMods({
         search: globalSearch.value || undefined,
         polarity: fltPol?.value || undefined,
         rarity: fltRarity?.value || undefined,
@@ -348,7 +409,7 @@
     }, 200));
 
     [fltPol, fltRarity, fltGame, fltSort].forEach(sel => sel?.addEventListener("change", () => {
-      fetchAndRenderMods({
+      fetchAndPrepareMods({
         search: globalSearch?.value || undefined,
         polarity: fltPol?.value || undefined,
         rarity: fltRarity?.value || undefined,
@@ -364,9 +425,7 @@
       if (rankVal) rankVal.textContent = String(STATE.rank);
       if (rankToggle) rankToggle.checked = true;
       reactor && (reactor.checked = true);
-      updateStats();
-      saveDraft();
-      renderSlotsPreview();
+      updateStats(); saveDraft(); renderSlotsPreview();
     });
 
     saveBuild?.addEventListener("click", () => {
@@ -377,10 +436,10 @@
       URL.revokeObjectURL(url);
     });
 
-    // Bind pickers on your slots
+    // Slots pickers
     bindSlotPickers();
 
-    // Première hydratation
+    // First render
     updateHeaderPreview();
     updateStats();
     renderSlotsPreview();
@@ -388,14 +447,13 @@
   }
 
   // ----------------------------
-  // Renders (sur ton HTML)
+  // Renders
   // ----------------------------
   function updateHeaderPreview() {
     const wf = getSelectedWF();
     const wfImg = $("#wfImg");
     const wfTitle = $("#wfTitle");
     const wfSubtitle = $("#wfSubtitle");
-
     if (!wf) {
       wfTitle && (wfTitle.textContent = "NEW BUILD");
       wfSubtitle && (wfSubtitle.textContent = "Sélectionnez une Warframe pour démarrer.");
@@ -405,16 +463,9 @@
     const name = wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName;
     wfTitle && (wfTitle.textContent = name);
     wfSubtitle && (wfSubtitle.textContent = "Régler mods, arcanes et shards pour calculer la capacité.");
-    wfImg && (wfImg.src = ""); // image gérée par ton thème/asset si besoin
+    wfImg && (wfImg.src = ""); // gérée par tes assets/thèmes si tu veux
   }
 
-  // Robust stat extraction (+ R0/R30)
-  function getStat(obj, keys, fallback=0) {
-    for (const k of keys) {
-      if (obj && obj[k] != null && isFinite(Number(obj[k]))) return Number(obj[k]);
-    }
-    return fallback;
-  }
   function updateStats() {
     const statsList = $("#statsList");
     if (!statsList) return;
@@ -425,19 +476,13 @@
     const row = (k, v) => el("div", { class: "stat" }, el("span", { class: "k" }, k), el("span", { class: "v" }, String(v)));
 
     if (!wf) {
-      statsList.append(
-        row("Capacity", cap),
-        row("Aura bonus", `+${auraBonus}`),
-        row("Used", used),
-        row("Remain", remain)
-      );
+      statsList.append(row("Capacity", cap), row("Aura bonus", `+${auraBonus}`), row("Used", used), row("Remain", remain));
       return;
     }
 
     const isR30 = STATE.rank >= 30;
     const base   = wf.baseStats || wf.stats || wf;
     const atR30  = wf.baseStatsRank30 || wf.statsRank30 || wf.rank30 || {};
-
     const pick = (k0, k30) => isR30 ? getStat(atR30, k30) : getStat(base, k0);
 
     const health  = pick(["health","baseHealth","Health"], ["health","maxHealth","Health"]);
@@ -498,52 +543,104 @@
     list.innerHTML = "";
 
     let items = [...DB.mods];
+
+    // tri enrichi
     switch ((fltSort?.value || "name").toLowerCase()) {
       case "cost":
       case "drain":
         items.sort((a,b) => (modDrain(a) - modDrain(b)));
         break;
-      case "rarity":
+      case "rarity": {
         const order = { COMMON:1, UNCOMMON:2, RARE:3, LEGENDARY:4 };
-        items.sort((a,b) => (order[(a.rarity||"").toUpperCase()]||99) - (order[(b.rarity||"").toUpperCase()]||99));
+        items.sort((a,b) => (order[a.rarity]||99) - (order[b.rarity]||99) || String(a.name).localeCompare(String(b.name)));
         break;
+      }
       default:
         items.sort((a,b) => String(a.name||a.displayName||a.id).localeCompare(String(b.name||b.displayName||b.id)));
     }
 
     if (!items.length) {
-      list.append(el("div", {}, "Aucun mod trouvé (vérifie les filtres / CORS / API)."));
+      list.append(el("div", { class:"muted" }, "Aucun mod trouvé (vérifie les filtres / API)."));
       return;
     }
 
+    // rendu cartes (classes à styler côté CSS)
     for (const m of items.slice(0, 200)) {
-      const card = el("div", { class: "mod-card" },
+      const badgeWrap = el("div", { class:"mod-tags" });
+      m._categories?.forEach(c => badgeWrap.append(el("span", { class:"tag" }, c)));
+      if (m.rarity) badgeWrap.append(el("span", { class:"tag" }, m.rarity));
+      if (m.polarity) badgeWrap.append(el("span", { class:"tag" }, m.polarity));
+
+      const card = el("div", { class: "mod-card", "data-id": m.id },
         el("div", { class: "mod-art" }, m.imageUrl ? el("img", { src: m.imageUrl, alt: "" }) : ""),
         el("div", { class: "mod-meta" },
           el("div", { class: "mod-name" }, m.name || m.displayName || m.id),
-          el("div", { class: "mod-tags" },
-            el("span", { class: "tag" }, (m.rarity || "").toString()),
-            m.polarity ? el("span", { class: "tag" }, m.polarity) : "",
-            el("span", { class: "tag" }, `Drain ${modDrain(m)}`)
-          )
+          badgeWrap
         ),
-        el("div", {}, el("button", { class: "btn", onclick: () => { addModToFirstFree(m); } }, "Add"))
+        el("div", { class:"mod-actions" },
+          el("button", { class:"btn", onclick: () => addModToFirstFree(m) }, "Add"),
+          el("button", { class:"btn ghost", onclick: () => openModDetails(m) }, "Details")
+        ),
       );
       list.append(card);
     }
   }
 
+  // ----------------------------
+  // Détails mod (modale)
+  // ----------------------------
+  function openModDetails(m) {
+    const wrap = overlay(m.name || m.displayName || "Mod");
+    const body = wrap.querySelector(".body");
+
+    const header = el("div", { class:"mod-detail-head" },
+      m.imageUrl ? el("img", { src: m.imageUrl, alt: "" }) : el("div", { class:"placeholder" }, ""),
+      el("div", { class:"col" },
+        el("div", { class:"title" }, m.name || m.displayName || m.id),
+        el("div", { class:"subtitle" }, [
+          up(m.rarity)||"", " · ",
+          m.polarity||"", (m.set? " · Set":"")
+        ].join(" ").replace(/\s·\s$/,""))
+      )
+    );
+
+    const desc = el("div", { class:"mod-detail-desc" }, m.description || "—");
+    const meta = el("div", { class:"mod-detail-meta" },
+      el("div", {}, `Drain: ${modDrain(m)}`),
+      el("div", {}, `Compat: ${m.compat || "—"}`),
+      el("div", {}, `Catégories: ${(m._categories||[]).join(", ")||"—"}`),
+    );
+
+    const actions = el("div", { class:"mod-detail-actions" },
+      el("button", { class:"btn", onclick: () => { addModToFirstFree(m); document.body.removeChild(wrap);} }, "Ajouter au build"),
+      el("button", { class:"btn ghost", onclick: () => document.body.removeChild(wrap) }, "Fermer"),
+    );
+
+    body.append(header, desc, meta, actions);
+  }
+
+  function overlay(title="") {
+    // structure minimale (styler .overlay-scrim / .overlay-box / .head / .body dans ton CSS)
+    const scrim = el("div", { class:"overlay-scrim" });
+    const box   = el("div", { class:"overlay-box" });
+    const head  = el("div", { class:"head" }, title);
+    const body  = el("div", { class:"body" });
+    box.append(head, body);
+    scrim.append(box);
+    scrim.addEventListener("click", (e) => { if (e.target === scrim) document.body.removeChild(scrim); });
+    document.body.appendChild(scrim);
+    return scrim;
+  }
+
+  // ----------------------------
+  // Affectation des mods / arcanes / shards
+  // ----------------------------
   function addModToFirstFree(mod) {
     const idx = STATE.slots.findIndex(s => !s.mod);
-    if (idx >= 0) {
-      STATE.slots[idx].mod = mod;
-    } else {
-      if (!STATE.exilus?.mod) STATE.exilus = { mod, polarity: null };
-      else STATE.aura = { mod, polarity: null };
-    }
-    saveDraft();
-    updateStats();
-    renderSlotsPreview();
+    if (idx >= 0) STATE.slots[idx].mod = mod;
+    else if (!STATE.exilus?.mod) STATE.exilus = { mod, polarity: null };
+    else STATE.aura = { mod, polarity: null };
+    saveDraft(); updateStats(); renderSlotsPreview();
   }
 
   function getSelectedWF() {
@@ -552,9 +649,6 @@
     return DB.warframes.find(w => w.uniqueName === id || w.id === id || w.name === id || w.type === id || w.displayName === id || w.warframe === id) || null;
   }
 
-  // ----------------------------
-  // Slot pickers (minimal, sans CSS inline)
-  // ----------------------------
   function bindSlotPickers() {
     const auraEl   = $('[data-slot="aura"]');
     const exilusEl = $('[data-slot="exilus"]');
@@ -579,8 +673,9 @@
 
   function openModPicker({ kind, index }) {
     const wrap = overlay("Choisir un Mod");
-    const search = el("input", { placeholder:"Rechercher…" });
-    const polSel = el("select", {},
+    const body = wrap.querySelector(".body");
+    const search = el("input", { placeholder:"Rechercher…", class:"picker-search" });
+    const polSel = el("select", { class:"picker-select" },
       el("option", { value: "" }, "Toutes polarités"),
       el("option", { value: "madurai" }, "Madurai"),
       el("option", { value: "naramon" }, "Naramon"),
@@ -590,85 +685,76 @@
       el("option", { value: "aura" }, "Aura"),
       el("option", { value: "exilus" }, "Exilus"),
     );
-    const list = el("div");
+    const list = el("div", { class:"picker-list" });
 
     const applyFilter = () => {
       list.innerHTML = "";
       let items = DB.mods.filter(m => {
-        const name = (m.name || m.displayName || m.id || "").toLowerCase();
-        if (search.value && !name.includes(search.value.toLowerCase())) return false;
-        if (kind === "aura"   && String(m.polarity||"").toLowerCase() !== "aura") return false;
-        if (kind === "exilus" && String(m.polarity||"").toLowerCase() !== "exilus") return false;
+        const name = low(m.name || m.displayName || m.id || "");
+        if (search.value && !name.includes(low(search.value))) return false;
+        if (kind === "aura"   && low(m.polarity) !== "aura") return false;
+        if (kind === "exilus" && low(m.polarity) !== "exilus") return false;
+        if (polSel.value && low(m.polarity) !== low(polSel.value)) return false;
         return true;
       });
-      if (!items.length) list.append(el("div", {}, "Aucun résultat."));
-      items.slice(0, 200).forEach(m => {
-        const row = el("div", {},
-          el("span", {}, m.name || m.displayName || m.id),
-          el("button", { onclick: () => {
-            if (kind === "aura") STATE.aura = { mod:m, polarity: STATE.aura?.polarity || null };
-            else if (kind === "exilus") STATE.exilus = { mod:m, polarity: STATE.exilus?.polarity || null };
-            else STATE.slots[index] = { ...(STATE.slots[index]||{}), mod:m };
-            saveDraft(); updateStats(); renderSlotsPreview();
-            document.body.removeChild(wrap);
-          }}, "Sélectionner")
+      if (!items.length) list.append(el("div", { class:"muted" }, "Aucun résultat."));
+      items.slice(0, 250).forEach(m => {
+        const row = el("div", { class:"picker-row" },
+          el("span", { class:"picker-name" }, m.name || m.displayName || m.id),
+          el("div", { class:"picker-actions" },
+            el("button", { class:"btn ghost", onclick: () => openModDetails(m) }, "Détails"),
+            el("button", { class:"btn", onclick: () => {
+              if (kind === "aura") STATE.aura = { mod:m, polarity: STATE.aura?.polarity || null };
+              else if (kind === "exilus") STATE.exilus = { mod:m, polarity: STATE.exilus?.polarity || null };
+              else STATE.slots[index] = { ...(STATE.slots[index]||{}), mod:m };
+              saveDraft(); updateStats(); renderSlotsPreview(); document.body.removeChild(wrap);
+            } }, "Sélectionner")
+          )
         );
         list.append(row);
       });
     };
     search.addEventListener("input", debounce(applyFilter, 150));
-    polSel.addEventListener("change", () => {
-      fetchAndRenderMods({
-        search: search.value || undefined,
-        polarity: polSel.value || undefined
-      }).then(applyFilter);
-    });
+    polSel.addEventListener("change", applyFilter);
 
-    wrap.querySelector(".body").append(
-      el("div", {}, search, polSel),
-      list,
-      el("div", {}, el("button", { onclick: () => document.body.removeChild(wrap) }, "Fermer"))
-    );
+    body.append(el("div", { class:"picker-bar" }, search, polSel), list, el("div", { class:"picker-actions" }, el("button", { class:"btn ghost", onclick: () => document.body.removeChild(wrap) }, "Fermer")));
     applyFilter();
   }
 
   function openArcanePicker(slotIndex) {
     const wrap = overlay(`Choisir un Arcane (${slotIndex+1})`);
-    const search = el("input", { placeholder:"Rechercher…" });
-    const list = el("div");
+    const body = wrap.querySelector(".body");
+    const search = el("input", { placeholder:"Rechercher…", class:"picker-search" });
+    const list = el("div", { class:"picker-list" });
 
     const applyFilter = () => {
       list.innerHTML = "";
-      const items = DB.arcanes.filter(a => (a.name||"").toLowerCase().includes(search.value.toLowerCase()));
-      if (!items.length) list.append(el("div", {}, "Aucun résultat."));
+      const items = DB.arcanes.filter(a => low(a.name||"").includes(low(search.value)));
+      if (!items.length) list.append(el("div", { class:"muted" }, "Aucun résultat."));
       items.slice(0, 200).forEach(a => {
-        const row = el("div", {},
-          el("span", {}, a.name || a.displayName || a.id),
-          el("button", { onclick: () => {
+        const row = el("div", { class:"picker-row" },
+          el("span", { class:"picker-name" }, a.name || a.displayName || a.id),
+          el("button", { class:"btn", onclick: () => {
             STATE.arcanes[slotIndex] = a.id || a.uniqueName || a.name;
-            saveDraft(); renderSlotsPreview();
-            document.body.removeChild(wrap);
+            saveDraft(); renderSlotsPreview(); document.body.removeChild(wrap);
           }}, "Sélectionner")
         );
         list.append(row);
       });
     };
     search.addEventListener("input", debounce(applyFilter, 150));
-
-    wrap.querySelector(".body").append(
-      search, list,
-      el("div", {}, el("button", { onclick: () => document.body.removeChild(wrap) }, "Fermer"))
-    );
+    body.append(search, list, el("div", { class:"picker-actions" }, el("button", { class:"btn ghost", onclick: () => document.body.removeChild(wrap) }, "Fermer")));
     applyFilter();
   }
 
   function openShardPicker(idx) {
     const wrap = overlay(`Configurer Archon Shard #${idx+1}`);
-    const colorSel = el("select", {},
+    const body = wrap.querySelector(".body");
+    const colorSel = el("select", { class:"picker-select" },
       el("option", { value:"" }, "— Couleur —"),
       ...Object.keys(DB.shards||{}).map(c => el("option", { value:c }, c))
     );
-    const upgradeSel = el("select", { disabled:"" }, el("option", { value:"" }, "— Amélioration —"));
+    const upgradeSel = el("select", { class:"picker-select", disabled:"" }, el("option", { value:"" }, "— Amélioration —"));
 
     colorSel.addEventListener("change", () => {
       upgradeSel.innerHTML = "";
@@ -680,32 +766,17 @@
       } else upgradeSel.setAttribute("disabled","");
     });
 
-    const actions = el("div", {},
-      el("button", { onclick: () => {
+    const actions = el("div", { class:"picker-actions" },
+      el("button", { class:"btn", onclick: () => {
         if (!colorSel.value || !upgradeSel.value) return;
         STATE.shards[idx] = { color: colorSel.value, upgrade: upgradeSel.value };
         saveDraft(); renderSlotsPreview(); document.body.removeChild(wrap);
       }}, "Appliquer"),
-      el("button", { onclick: () => {
-        STATE.shards[idx] = null; saveDraft(); renderSlotsPreview(); document.body.removeChild(wrap);
-      }}, "Retirer"),
-      el("button", { onclick: () => document.body.removeChild(wrap) }, "Fermer"),
+      el("button", { class:"btn ghost", onclick: () => { STATE.shards[idx] = null; saveDraft(); renderSlotsPreview(); document.body.removeChild(wrap); } }, "Retirer"),
+      el("button", { class:"btn ghost", onclick: () => document.body.removeChild(wrap) }, "Fermer"),
     );
 
-    wrap.querySelector(".body").append(colorSel, upgradeSel, actions);
-  }
-
-  function overlay(title="") {
-    // structure minimale (à styler dans ton CSS .overlay-scrim / .overlay-box / .head / .body)
-    const scrim = el("div", { class:"overlay-scrim" });
-    const box   = el("div", { class:"overlay-box" });
-    const head  = el("div", { class:"head" }, title);
-    const body  = el("div", { class:"body" });
-    box.append(head, body);
-    scrim.append(box);
-    scrim.addEventListener("click", (e) => { if (e.target === scrim) document.body.removeChild(scrim); });
-    document.body.appendChild(scrim);
-    return scrim;
+    body.append(el("div", { class:"picker-bar" }, colorSel, upgradeSel), actions);
   }
 
   // ----------------------------
