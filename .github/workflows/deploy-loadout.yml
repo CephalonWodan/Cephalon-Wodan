@@ -1,62 +1,59 @@
 name: Deploy Loadout Builder to GitHub Pages
 
-# Cette workflow déploie le builder React situé dans le dossier `loadout/` vers
-# GitHub Pages. Elle s'exécute uniquement lorsque des fichiers du dossier
-# `loadout/` ou ce fichier de workflow changent sur la branche `main`.
-
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
       - 'loadout/**'
       - '.github/workflows/deploy-loadout.yml'
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 concurrency:
-  group: pages-loadout
+  group: "pages-loadout"
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: loadout
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Use Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 20
 
       - name: Install dependencies
-        working-directory: loadout
         run: npm ci
 
-      - name: Build loadout app
-        working-directory: loadout
+      - name: Build
         env:
-          # Spécifie le chemin de base du site pour que Vite génère des URLs
-          # correctes dans un sous-dossier. Adapté au nom du dépôt.
-          BASE_PATH: '/Cephalon-Wodan/loadout/'
+          # IMPORTANT : adapte si le nom du repo change
+          BASE_PATH: "/Cephalon-Wodan/loadout/"
         run: npm run build
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+      # ⬇️ Passe à la nouvelle version pour éviter l’erreur
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          # Le chemin vers le dossier de sortie (dist) relatif à la racine
-          path: loadout/dist
+          path: dist
 
   deploy:
-    runs-on: ubuntu-latest
     needs: build
+    runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
