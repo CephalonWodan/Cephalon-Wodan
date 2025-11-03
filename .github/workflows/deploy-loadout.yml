@@ -33,17 +33,21 @@ jobs:
         working-directory: loadout
         run: npm ci
 
-      - name: Build
+      - name: Build (Vite)
         working-directory: loadout
-        env:
-          BASE_PATH: "/Cephalon-Wodan/loadout/"
         run: npm run build
 
-      # ✅ IMPORTANT : pointer vers le bon dossier de sortie
+      # ✅ Publie le build dans un sous-dossier loadout/
+      - name: Prepare site structure
+        run: |
+          rm -rf site
+          mkdir -p site/loadout
+          cp -r loadout/dist/* site/loadout/
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: loadout/dist
+          path: site
 
   deploy:
     needs: build
