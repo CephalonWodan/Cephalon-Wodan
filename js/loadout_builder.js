@@ -165,25 +165,66 @@
     hydrateUI();
   }
 
+  // *** FONCTION CLEF AVEC FALLBACK ***
   async function fetchAndRenderMods(extra = {}) {
-    try {
-      const url = new URL(API.mods);
-      url.searchParams.set("type", "WARFRAME");
-      url.searchParams.set("compat", "WARFRAME");
-      if (extra.polarity) url.searchParams.set("polarity", String(extra.polarity));
-      if (extra.rarity)   url.searchParams.set("rarity", String(extra.rarity));
-      if (extra.search)   url.searchParams.set("search", String(extra.search));
-      if (extra.pvp)      url.searchParams.set("pvp", String(extra.pvp));
-      url.searchParams.set("limit", "2000");
+    // filtre client (fallback)
+    const clientFilter = (arr) => {
+      let items = Array.isArray(arr) ? arr : [];
+      items = items.filter(m =>
+        String(m.CompatName || m.compat || m.type || "").toUpperCase() === "WARFRAME"
+      );
+      if (extra.polarity) {
+        items = items.filter(m => String(m.polarity || "").toLowerCase() === String(extra.polarity).toLowerCase());
+      }
+      if (extra.rarity) {
+        items = items.filter(m => String(m.rarity || m.Rarity || "").toUpperCase() === String(extra.rarity).toUpperCase());
+      }
+      if (extra.search) {
+        const q = String(extra.search).toLowerCase();
+        items = items.filter(m => String(m.name || m.displayName || m.id || "").toLowerCase().includes(q));
+      }
+      if (extra.pvp != null) {
+        items = items.filter(m => !!m.pvp === !!extra.pvp);
+      }
+      return items;
+    };
 
-      const list = await getJSON(url.toString());
-      DB.mods = Array.isArray(list) ? list : (Array.isArray(list?.items) ? list.items : []);
-      renderModList();
+    try {
+      // tentative filtrée côté serveur
+      const u = new URL(API.mods);
+      u.searchParams.set("type", "WARFRAME");
+      u.searchParams.set("compat", "WARFRAME");
+      if (extra.polarity) u.searchParams.set("polarity", String(extra.polarity));
+      if (extra.rarity)   u.searchParams.set("rarity", String(extra.rarity));
+      if (extra.search)   u.searchParams.set("search", String(extra.search));
+      if (extra.pvp)      u.searchParams.set("pvp", String(extra.pvp));
+      u.searchParams.set("limit", "2000");
+
+      const serverList = await getJSON(u.toString());
+      const items = Array.isArray(serverList) ? serverList : (Array.isArray(serverList?.items) ? serverList.items : []);
+
+      if (items.length > 0) {
+        DB.mods = items;
+        renderModList();
+        return;
+      } else {
+        console.warn("[mods] serveur répond vide avec filtres — fallback client");
+      }
     } catch (e) {
-      console.error("[mods] fetch error:", e);
-      DB.mods = [];
-      renderModList();
+      console.error("[mods] fetch/parse error (filtres serveur):", e);
     }
+
+    // Fallback : charge tout et filtre localement
+    try {
+      const raw = await getJSON(API.mods);
+      const full = Array.isArray(raw) ? raw : (Array.isArray(raw?.items) ? raw.items : []);
+      DB.mods = clientFilter(full);
+    } catch (e2) {
+      console.error("[mods] fallback /mods error:", e2);
+      DB.mods = [];
+    }
+
+    renderModList();
   }
 
   // ----------------------------
@@ -343,7 +384,6 @@
     const wf = getSelectedWF();
     statsList.innerHTML = "";
 
-    // capacity bloc
     const { cap, auraBonus, used, remain } = capacitySummary();
     const row = (k, v) => el("div", { class: "stat" }, el("span", { class: "k" }, k), el("span", { class: "v" }, String(v)));
 
@@ -357,10 +397,8 @@
       return;
     }
 
-    // lecture stats R0/R30 selon champ dispo
-    // essaie plusieurs conventions: health/baseHealth/maxHealth, shields/shield, armor/armour, energy/power, sprint/sprintSpeed
     const isR30 = STATE.rank >= 30;
-    const base   = wf.baseStats || wf.stats || wf; // structure la plus permissive
+    const base   = wf.baseStats || wf.stats || wf;
     const atR30  = wf.baseStatsRank30 || wf.statsRank30 || wf.rank30 || {};
 
     const pick = (k0, k30) => isR30 ? getStat(atR30, k30) : getStat(base, k0);
@@ -384,7 +422,6 @@
       row("Remain", remain)
     );
 
-    // Polarity preview (si fourni)
     const polList = $("#polList");
     if (polList) {
       polList.innerHTML = "";
@@ -424,7 +461,6 @@
     list.innerHTML = "";
 
     let items = [...DB.mods];
-    // tri client si demandé
     switch ((fltSort?.value || "name").toLowerCase()) {
       case "cost":
       case "drain":
@@ -461,7 +497,6 @@
   }
 
   function addModToFirstFree(mod) {
-    // place le mod dans le premier slot libre 1..6 (démo rapide)
     const idx = STATE.slots.findIndex(s => !s.mod);
     if (idx >= 0) {
       STATE.slots[idx].mod = mod;
@@ -484,25 +519,21 @@
   // Slot pickers (minimal, sans CSS inline)
   // ----------------------------
   function bindSlotPickers() {
-    // Aura / Exilus
     const auraEl   = $('[data-slot="aura"]');
     const exilusEl = $('[data-slot="exilus"]');
     auraEl && auraEl.addEventListener("click", () => openModPicker({ kind:"aura" }));
     exilusEl && exilusEl.addEventListener("click", () => openModPicker({ kind:"exilus" }));
 
-    // 6 slots
     for (let i=1;i<=6;i++) {
       const slot = $(`[data-slot="${i}"]`);
       slot && slot.addEventListener("click", () => openModPicker({ kind:"normal", index:i-1 }));
     }
 
-    // Arcanes
     const arc1 = $('[data-slot="Arcanes-1"]');
     const arc2 = $('[data-slot="Arcanes-2"]');
     arc1 && arc1.addEventListener("click", () => openArcanePicker(0));
     arc2 && arc2.addEventListener("click", () => openArcanePicker(1));
 
-    // Shards
     for (let i=1;i<=5;i++) {
       const s = $(`[data-slot="archon-${i}"]`);
       s && s.addEventListener("click", () => openShardPicker(i-1));
