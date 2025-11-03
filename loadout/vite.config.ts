@@ -1,16 +1,9 @@
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
-// Set the base path for deployment. When deploying under a subfolder,
-// GitHub Pages will serve the built assets from that folder. The base path can
-// be overridden via the BASE_PATH environment variable in the CI workflow.
-const base = process.env.BASE_PATH || '/loadout/';
-
+// Configuration prévue pour GitHub Pages sous /Cephalon-Wodan/loadout/
 export default defineConfig({
-  base,
+  base: '/Cephalon-Wodan/loadout/',
   plugins: [react()],
-  optimizeDeps: {
-    exclude: ['lucide-react'],
-  },
-});
+  optimizeDeps: { exclude: ['lucide-react'] },
+})
