@@ -1,36 +1,44 @@
 /* 
-  Warframe Loadout Builder – Vanilla JS (API Railway, sans CSS inline)
-  -------------------------------------------------------------------
-  - Monte une UI dans <div id="app"></div>
-  - Consomme votre API Railway:
-      /warframes, /mods, /arcanes, /archonshards
-  - Fonctionnalités:
-      • Sélection Warframe + Rang 0–30 + Réacteur
-      • Capacité (drain, bonus Aura), Exilus, polarités, Forma par slot
-      • 8 slots de mods + Aura + Exilus
-      • 2 Arcanes
-      • 5 Archon Shards via modal (plus de prompt())
-      • Filtres catalogue (server-side quand possible)
-      • Autosave localStorage + partage par URL (?s=base64url)
+  Loadout Builder – bind to existing DOM (no inline CSS, no #app rendering)
+  - Se branche sur les IDs de ton HTML existant:
+    wfPicker, wfImg, wfTitle, wfSubtitle,
+    rankToggle, rankSlider, rankVal, reactor,
+    statsList, polList,
+    globalSearch, resetBuild, saveBuild,
+    fltPol, fltType, fltRarity, fltGame, fltSort,
+    modList,
+    slots (data-slot="aura|exilus|1..6", archon-1..5, Arcanes-1..2).
+  - Consomme ton API Railway.
 */
 
 (() => {
   // ----------------------------
+  // API endpoints
+  // ----------------------------
+  const API_BASE = "https://cephalon-wodan-production.up.railway.app";
+  const API = {
+    warframes: `${API_BASE}/warframes`,
+    mods: `${API_BASE}/mods`,
+    arcanes: `${API_BASE}/arcanes`,
+    shards: `${API_BASE}/archonshards`,
+  };
+
+  // ----------------------------
   // Helpers
   // ----------------------------
-  const $ = (sel, root = document) => root.querySelector(sel);
+  const $  = (sel, root = document) => root.querySelector(sel);
   const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
   const el = (tag, props = {}, ...children) => {
-    const node = document.createElement(tag);
+    const n = document.createElement(tag);
     Object.entries(props || {}).forEach(([k, v]) => {
-      if (k === "class") node.className = v;
-      else if (k === "dataset") Object.assign(node.dataset, v);
-      else if (k.startsWith("on") && typeof v === "function") node.addEventListener(k.slice(2), v);
-      else if (v !== undefined && v !== null) node.setAttribute(k, v);
+      if (k === "class") n.className = v;
+      else if (k.startsWith("on") && typeof v === "function") n.addEventListener(k.slice(2), v);
+      else if (v !== undefined && v !== null) n.setAttribute(k, v);
     });
-    for (const c of children) node.append(c && c.nodeType ? c : document.createTextNode(String(c ?? "")));
-    return node;
+    for (const c of children) n.append(c && c.nodeType ? c : document.createTextNode(String(c ?? "")));
+    return n;
   };
+  const debounce = (fn, ms = 200) => { let t; return (...a) => (clearTimeout(t), t = setTimeout(()=>fn(...a), ms)); };
 
   const b64urlEncode = (obj) => {
     try {
@@ -47,23 +55,6 @@
     } catch { return null; }
   };
 
-  const debounce = (fn, ms = 200) => {
-    let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
-  };
-
-  const fmt = (n) => Number.isFinite(n) ? n.toLocaleString() : "-";
-
-  // ----------------------------
-  // API endpoints (absolute -> peut être hébergé n'importe où)
-  // ----------------------------
-  const API_BASE = "https://cephalon-wodan-production.up.railway.app";
-  const API = {
-    warframes: `${API_BASE}/warframes`,
-    mods: `${API_BASE}/mods`,
-    arcanes: `${API_BASE}/arcanes`,
-    shards: `${API_BASE}/archonshards`,
-  };
-
   async function getJSON(url) {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Failed ${url}`);
@@ -71,37 +62,33 @@
   }
 
   // ----------------------------
-  // State
+  // State & caches
   // ----------------------------
   const initial = () => ({
+    warframeId: null,
     title: "Mon Loadout",
     notes: "",
-    warframeId: null,
     rank: 30,
     reactor: true,
-    aura: null,         // { id, polarity }
-    exilus: null,       // { id, polarity }
-    slots: Array.from({ length: 8 }, () => ({ mod: null, polarity: null })),
-    arcanes: [null, null], // two arcane ids
+    aura: null,        // {mod, polarity}
+    exilus: null,      // {mod, polarity}
+    slots: Array.from({length: 8}, () => ({ mod: null, polarity: null })),
+    arcanes: [null, null], // 2
     shards: [null, null, null, null, null], // {color, upgrade}
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
 
   const STATE = loadFromURL() || JSON.parse(localStorage.getItem("wf-loadout-draft") || "null") || initial();
+  const DB = { warframes: [], mods: [], arcanes: [], shards: {} };
 
   function saveDraft() {
     STATE.updatedAt = new Date().toISOString();
     localStorage.setItem("wf-loadout-draft", JSON.stringify(STATE));
-    updateShareURL();
-  }
-
-  function updateShareURL() {
     const url = new URL(location.href);
     url.searchParams.set("s", b64urlEncode(STATE));
     history.replaceState(null, "", url.toString());
   }
-
   function loadFromURL() {
     const url = new URL(location.href);
     const s = url.searchParams.get("s");
@@ -110,28 +97,21 @@
   }
 
   // ----------------------------
-  // Data caches
-  // ----------------------------
-  const DB = { warframes: [], mods: [], arcanes: [], shards: {} };
-
-  // ----------------------------
-  // Capacity & drain rules
+  // Capacity rules (no CSS)
   // ----------------------------
   function frameCapacity(rank, reactor) {
     const base = rank;
     return reactor ? base * 2 : base;
   }
-
   function modDrain(mod, level = 0) {
     const base = Number(mod?.drain ?? mod?.baseDrain ?? 0);
     return Math.max(0, base + (level || 0));
   }
-
   function effectiveDrain(mod, slotPolarity, isAura) {
     if (!mod) return 0;
-    if (isAura) return 0; // aura ajoute de la capacité
+    if (isAura) return 0;
     let drain = modDrain(mod, mod.level || 0);
-    const modPol = (mod.polarity || "").toLowerCase();
+    const modPol  = (mod.polarity || "").toLowerCase();
     const slotPol = (slotPolarity || "").toLowerCase();
     if (slotPol && modPol) {
       if (slotPol === modPol) drain = Math.ceil(drain / 2);
@@ -139,15 +119,13 @@
     }
     return drain;
   }
-
   function auraBonusCapacity(auraMod, slotPolarity) {
     if (!auraMod) return 0;
     const base = modDrain(auraMod, auraMod.level || 0);
-    const modPol = (auraMod.polarity || "").toLowerCase();
+    const modPol  = (auraMod.polarity || "").toLowerCase();
     const slotPol = (slotPolarity || "").toLowerCase();
     return (slotPol && modPol && slotPol === modPol) ? base * 2 : base;
   }
-
   function capacitySummary() {
     const cap = frameCapacity(STATE.rank, STATE.reactor);
     const auraBonus = auraBonusCapacity(STATE.aura?.mod || null, STATE.aura?.polarity || null);
@@ -159,7 +137,7 @@
   }
 
   // ----------------------------
-  // Fetching
+  // Data fetching
   // ----------------------------
   async function loadData() {
     const [wfs, arcs, shards] = await Promise.all([
@@ -167,9 +145,9 @@
       getJSON(API.arcanes),
       getJSON(API.shards),
     ]);
+
     DB.warframes = Array.isArray(wfs) ? wfs : [];
 
-    // Normalise les arcanes -> id/name présents
     DB.arcanes = Array.isArray(arcs) ? arcs.map(a => {
       const id = a.id || a.uniqueName || a.InternalName || a.Name;
       const uniqueName = a.uniqueName || a.InternalName || id;
@@ -177,7 +155,6 @@
       return { ...a, id, uniqueName, name, displayName: a.displayName || name };
     }) : [];
 
-    // Convertit shards en { Color: { upgrades: [...] } }
     DB.shards = {};
     if (shards && typeof shards === "object") {
       Object.values(shards).forEach(entry => {
@@ -190,11 +167,10 @@
         }
         if (color) DB.shards[color] = { upgrades };
       });
-    } else {
-      DB.shards = shards;
     }
 
     await fetchAndRenderMods();
+    hydrateUI();
   }
 
   async function fetchAndRenderMods(extra = {}) {
@@ -202,438 +178,284 @@
     url.searchParams.set("type", "WARFRAME");
     url.searchParams.set("compat", "WARFRAME");
     if (extra.polarity) url.searchParams.set("polarity", String(extra.polarity));
-    if (extra.rarity) url.searchParams.set("rarity", String(extra.rarity));
-    if (extra.search) url.searchParams.set("search", String(extra.search));
+    if (extra.rarity)   url.searchParams.set("rarity", String(extra.rarity));
+    if (extra.search)   url.searchParams.set("search", String(extra.search));
+    if (extra.pvp)      url.searchParams.set("pvp", String(extra.pvp));
     url.searchParams.set("limit", "2000");
 
     const list = await getJSON(url.toString());
     DB.mods = Array.isArray(list) ? list : (list?.items || []);
-    renderCatalog();
+    renderModList();
   }
 
   // ----------------------------
-  // Rendering – container
+  // Bind to existing DOM
   // ----------------------------
-  const root = el("div", { class: "wf-builder" },
-    headerView(),
-    gridView()
-  );
+  function hydrateUI() {
+    // Header bits
+    const wfPicker     = $("#wfPicker");
+    const wfImg        = $("#wfImg");
+    const wfTitle      = $("#wfTitle");
+    const wfSubtitle   = $("#wfSubtitle");
 
-  function mount() {
-    let container = document.getElementById("app");
-    if (!container) {
-      container = document.body.appendChild(el("div", { id: "app" }));
+    const rankToggle   = $("#rankToggle");
+    const rankSlider   = $("#rankSlider");
+    const rankVal      = $("#rankVal");
+    const reactor      = $("#reactor");
+
+    const statsList    = $("#statsList");
+    const polList      = $("#polList");
+
+    const globalSearch = $("#globalSearch");
+    const resetBuild   = $("#resetBuild");
+    const saveBuild    = $("#saveBuild");
+
+    const fltPol       = $("#fltPol");
+    const fltType      = $("#fltType");
+    const fltRarity    = $("#fltRarity");
+    const fltGame      = $("#fltGame");
+    const fltSort      = $("#fltSort");
+
+    if (!wfPicker) {
+      console.warn("[builder] wfPicker non trouvé — vérifie ton HTML");
+      return;
     }
-    container.innerHTML = "";
-    container.appendChild(root);
-  }
 
-  // ----------------------------
-  // Header (title + share)
-  // ----------------------------
-  function headerView() {
-    const title = el("input", { class: "wf-input", value: STATE.title, placeholder: "Titre du build" });
-    title.addEventListener("input", () => { STATE.title = title.value; saveDraft(); });
+    // Populate Warframes
+    wfPicker.innerHTML = "";
+    wfPicker.appendChild(el("option", { value: "" }, "— Warframe —"));
+    for (const wf of DB.warframes) {
+      const name = wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName;
+      const val  = wf.uniqueName || wf.id || name;
+      wfPicker.appendChild(el("option", { value: val }, name));
+    }
+    wfPicker.value = STATE.warframeId || "";
 
-    const shareBtn = el("button", { class: "wf-btn" }, "Partager (URL)");
-    shareBtn.addEventListener("click", () => {
-      updateShareURL();
-      navigator.clipboard?.writeText(location.href);
-      toast("Lien copié dans le presse-papiers ✨");
+    // Events
+    wfPicker.addEventListener("change", () => {
+      STATE.warframeId = wfPicker.value || null;
+      updateHeaderPreview();
+      updateStats();
+      saveDraft();
+      // si tu veux filtrer les augments par frame, tu peux relancer:
+      // fetchAndRenderMods();
     });
 
-    const notes = el("textarea", { class: "wf-notes", placeholder: "Notes…" }, STATE.notes);
-    notes.addEventListener("input", () => { STATE.notes = notes.value; saveDraft(); });
-
-    return el("div", { class: "wf-header" },
-      el("div", { class: "wf-titlebar" }, title, shareBtn),
-      notes
-    );
-  }
-
-  // ----------------------------
-  // Main Grid (left: controls; middle: slots; right: catalog)
-  // ----------------------------
-  function gridView() {
-    const left = controlsView();
-    const mid  = slotsView();
-    const right = catalogView();
-
-    const wrap = el("div", { class: "wf-grid" }, left, mid, right);
-    return wrap;
-  }
-
-  // ----------------------------
-  // Left: Controls (WF, rank, reactor, capacity, arcanes, shards)
-  // ----------------------------
-  function controlsView() {
-    const wfSelect = el("select", { class: "wf-select" });
-    wfSelect.appendChild(el("option", { value: "" }, "— Warframe —"));
-
-    for (const wf of DB.warframes)
-      wfSelect.appendChild(el("option", { value: wf.uniqueName || wf.id }, wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName));
-    wfSelect.value = STATE.warframeId || "";
-    wfSelect.addEventListener("change", () => { STATE.warframeId = wfSelect.value || null; saveDraft(); renderCapacity(); });
-
-    const rank = el("input", { type: "range", min: 0, max: 30, value: String(STATE.rank), class: "wf-range" });
-    const rankLabel = el("div", { class: "wf-label" }, `Rank: ${STATE.rank}`);
-    rank.addEventListener("input", () => { STATE.rank = Number(rank.value) || 0; rankLabel.textContent = `Rank: ${STATE.rank}`; renderCapacity(); saveDraft(); });
-
-    const reactor = el("label", { class: "wf-switch" },
-      el("input", { type: "checkbox", checked: STATE.reactor ? "" : null }),
-      el("span", {}, "Reacteur Orokin (x2)")
-    );
-    const reactorInput = reactor.querySelector("input");
-    reactorInput.checked = !!STATE.reactor;
-    reactorInput.addEventListener("change", () => { STATE.reactor = !!reactorInput.checked; renderCapacity(); saveDraft(); });
-
-    const capacityBox = el("div", { class: "wf-capacity" });
-
-    // Arcanes (2)
-    const arcWrap = el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Arcanes (x2)"));
-    const arcSlots = [0,1].map(idx => {
-      const slot = el("div", { class: "wf-pill" }, STATE.arcanes[idx] ? arcLabel(STATE.arcanes[idx]) : "+ Arcane");
-      slot.addEventListener("click", () => openArcanePicker(idx, slot));
-      return slot;
+    rankToggle?.addEventListener("change", () => {
+      // R0/R30: on synchronise avec le slider pour que l’UI reste cohérente
+      const isR30 = !!rankToggle.checked;
+      STATE.rank = isR30 ? 30 : 0;
+      if (rankSlider) rankSlider.value = String(STATE.rank);
+      if (rankVal) rankVal.textContent = String(STATE.rank);
+      updateStats();
+      saveDraft();
     });
-    arcWrap.append(...arcSlots);
 
-    // Shards (5)
-    const shardWrap = el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Archon Shards (x5)"));
-    const shardSlots = STATE.shards.map((s, i) => shardPill(i));
-    shardWrap.append(...shardSlots);
+    rankSlider?.addEventListener("input", () => {
+      STATE.rank = Number(rankSlider.value) || 0;
+      if (rankVal) rankVal.textContent = String(STATE.rank);
+      if (rankToggle) rankToggle.checked = STATE.rank >= 30;
+      updateStats();
+      saveDraft();
+    });
 
-    const left = el("div", { class: "wf-left" },
-      section("Warframe", wfSelect),
-      section("Niveau & capacité", el("div", {}, rankLabel, rank), reactor, capacityBox),
-      arcWrap,
-      shardWrap
+    reactor?.addEventListener("change", () => {
+      STATE.reactor = !!reactor.checked;
+      updateStats();
+      saveDraft();
+    });
+
+    globalSearch?.addEventListener("input", debounce(() => {
+      fetchAndRenderMods({
+        search: globalSearch.value || undefined,
+        polarity: fltPol?.value || undefined,
+        rarity: fltRarity?.value || undefined,
+        pvp: fltGame?.value === "pvp" ? true : undefined,
+      });
+    }, 200));
+
+    [fltPol, fltRarity, fltGame, fltSort].forEach(sel => sel?.addEventListener("change", () => {
+      fetchAndRenderMods({
+        search: globalSearch?.value || undefined,
+        polarity: fltPol?.value || undefined,
+        rarity: fltRarity?.value || undefined,
+        pvp: fltGame?.value === "pvp" ? true : undefined,
+        sort: fltSort?.value || undefined, // à trier côté client ci-dessous
+      });
+    }));
+
+    resetBuild?.addEventListener("click", () => {
+      const keepWF = STATE.warframeId;
+      Object.assign(STATE, initial(), { warframeId: keepWF });
+      if (rankSlider) rankSlider.value = String(STATE.rank);
+      if (rankVal) rankVal.textContent = String(STATE.rank);
+      if (rankToggle) rankToggle.checked = true;
+      reactor && (reactor.checked = true);
+      updateStats();
+      saveDraft();
+      renderSlotsPreview();
+    });
+
+    saveBuild?.addEventListener("click", () => {
+      // simple export local
+      const blob = new Blob([JSON.stringify(STATE, null, 2)], { type: "application/json" });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href = url; a.download = "loadout.json"; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Première hydratation
+    updateHeaderPreview();
+    updateStats();
+    renderSlotsPreview();
+    renderModList();
+  }
+
+  // ----------------------------
+  // Renders (sur ton HTML)
+  // ----------------------------
+  function updateHeaderPreview() {
+    const wf = getSelectedWF();
+    const wfImg = $("#wfImg");
+    const wfTitle = $("#wfTitle");
+    const wfSubtitle = $("#wfSubtitle");
+
+    if (!wf) {
+      wfTitle && (wfTitle.textContent = "NEW BUILD");
+      wfSubtitle && (wfSubtitle.textContent = "Sélectionnez une Warframe pour démarrer.");
+      wfImg && (wfImg.src = "");
+      return;
+    }
+    const name = wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName;
+    wfTitle && (wfTitle.textContent = name);
+    wfSubtitle && (wfSubtitle.textContent = "Régler mods, arcanes et shards pour calculer la capacité.");
+    // si tu as un mapping d’images dans ton CSS/thème, laisse vide ou mets ton URL logique:
+    wfImg && (wfImg.src = "");
+  }
+
+  function updateStats() {
+    const statsList = $("#statsList");
+    if (!statsList) return;
+    const wf = getSelectedWF();
+    statsList.innerHTML = "";
+
+    const { cap, auraBonus, used, remain } = capacitySummary();
+    const capRow = (k, v) => el("div", { class: "stat" }, el("span", { class: "k" }, k), el("span", { class: "v" }, String(v)));
+
+    statsList.append(
+      capRow("Capacity", cap),
+      capRow("Aura bonus", `+${auraBonus}`),
+      capRow("Used", used),
+      capRow("Remain", remain)
     );
 
-    function renderCapacity() {
-      const { cap, auraBonus, used, remain } = capacitySummary();
-      capacityBox.innerHTML = "";
-      capacityBox.append(
-        el("div", { class: remain < 0 ? "wf-capacity-row neg" : "wf-capacity-row" }, `Capacité: ${cap}`),
-        el("div", { class: "wf-capacity-row" }, `Bonus Aura: +${auraBonus}`),
-        el("div", { class: "wf-capacity-row" }, `Utilisé: ${used}`),
-        el("div", { class: remain < 0 ? "wf-capacity-row neg" : "wf-capacity-row" }, `Restant: ${remain}`),
-      );
+    // Polarity preview (si tu veux refléter la frame)
+    const polList = $("#polList");
+    if (polList) {
+      polList.innerHTML = "";
+      const polys = wf?.polarities || [];
+      polys.forEach(p => polList.append(el("span", {}, String(p))));
     }
+  }
 
-    function shardPill(idx) {
-      const data = STATE.shards[idx];
-      const text = data ? `${data.color} – ${data.upgrade}` : "+ Shard";
-      const pill = el("div", { class: "wf-pill" }, text);
-      pill.addEventListener("click", () => openShardModal(idx, pill));
-      return pill;
+  function renderSlotsPreview() {
+    // Branchement basique sur les slots affichés (sans UI avancée ici)
+    // Tu peux ajouter des gestionnaires de clic pour ouvrir un picker si tu veux
+    const auraEl   = $('[data-slot="aura"]');
+    const exilusEl = $('[data-slot="exilus"]');
+    auraEl && (auraEl.textContent   = STATE.aura?.mod?.name || "Aura");
+    exilusEl && (exilusEl.textContent = STATE.exilus?.mod?.name || "Exilus");
+    for (let i = 0; i < 6; i++) {
+      const slot = $(`[data-slot="${i+1}"]`);
+      slot && (slot.textContent = STATE.slots[i]?.mod?.name || String(i+1));
     }
-
-    renderCapacity();
-    return left;
+    // Arcanes, Shards rapides
+    $('[data-slot="Arcanes-1"]') && ($('[data-slot="Arcanes-1"]').textContent = arcLabel(STATE.arcanes[0]) || "Arcane 1");
+    $('[data-slot="Arcanes-2"]') && ($('[data-slot="Arcanes-2"]').textContent = arcLabel(STATE.arcanes[1]) || "Arcane 2");
+    for (let i=1;i<=5;i++) {
+      const s = STATE.shards[i-1];
+      const elx = $(`[data-slot="archon-${i}"]`);
+      elx && (elx.textContent = s ? `${s.color} – ${s.upgrade}` : "Archon Shard");
+    }
   }
 
   function arcLabel(arcId) {
+    if (!arcId) return "";
     const a = DB.arcanes.find(x => x.id === arcId || x.uniqueName === arcId || x.name === arcId);
     return a ? (a.name || a.displayName || a.id) : String(arcId);
   }
 
-  function openArcanePicker(idx, anchor) {
-    const menu = popup(anchor, "Choisir un arcane");
-    const input = el("input", { class: "wf-input", placeholder: "Recherche…" });
-    const list = el("div", { class: "wf-list" });
+  function renderModList() {
+    const list = $("#modList");
+    if (!list) return;
+    const fltSort = $("#fltSort");
+    list.innerHTML = "";
 
-    function render(q = "") {
-      list.innerHTML = "";
-      const items = DB.arcanes.filter(a => (a.name || a.displayName || "").toLowerCase().includes(q.toLowerCase()));
-      for (const a of items) {
-        const row = el("div", { class: "wf-row" }, a.name || a.displayName || a.id);
-        row.addEventListener("click", () => { STATE.arcanes[idx] = a.id || a.uniqueName || a.name; saveDraft(); anchor.textContent = arcLabel(STATE.arcanes[idx]); menu.remove(); });
-        list.appendChild(row);
-      }
+    let items = [...DB.mods];
+
+    // tri client si demandé
+    switch ((fltSort?.value || "name").toLowerCase()) {
+      case "cost":
+      case "drain":
+        items.sort((a,b) => (modDrain(a) - modDrain(b)));
+        break;
+      case "rarity":
+        const order = { COMMON:1, UNCOMMON:2, RARE:3, LEGENDARY:4 };
+        items.sort((a,b) => (order[(a.rarity||"").toUpperCase()]||99) - (order[(b.rarity||"").toUpperCase()]||99));
+        break;
+      default:
+        items.sort((a,b) => String(a.name||a.displayName||a.id).localeCompare(String(b.name||b.displayName||b.id)));
     }
 
-    input.addEventListener("input", () => render(input.value));
-    render();
-    menu.append(input, list);
-  }
-
-  function openShardModal(idx, anchor) {
-    const modal = dialog("Configurer un Archon Shard");
-    const colorSel = el("select", { class: "wf-select" });
-    colorSel.appendChild(el("option", { value: "" }, "— Couleur —"));
-    for (const key of Object.keys(DB.shards || {})) colorSel.appendChild(el("option", { value: key }, key));
-
-    const upgradeSel = el("select", { class: "wf-select", disabled: "" });
-    upgradeSel.appendChild(el("option", { value: "" }, "— Amélioration —"));
-
-    colorSel.addEventListener("change", () => {
-      upgradeSel.innerHTML = "";
-      upgradeSel.appendChild(el("option", { value: "" }, "— Amélioration —"));
-      const chosen = DB.shards[colorSel.value];
-      if (chosen && Array.isArray(chosen.upgrades)) {
-        upgradeSel.removeAttribute("disabled");
-        for (const u of chosen.upgrades) upgradeSel.appendChild(el("option", { value: u }, u));
-      } else upgradeSel.setAttribute("disabled", "");
-    });
-
-    const apply = el("button", { class: "wf-btn primary" }, "Appliquer");
-    const removeBtn = el("button", { class: "wf-btn danger" }, "Retirer");
-    const close = el("button", { class: "wf-btn" }, "Fermer");
-
-    apply.addEventListener("click", () => {
-      if (!colorSel.value || !upgradeSel.value) return;
-      STATE.shards[idx] = { color: colorSel.value, upgrade: upgradeSel.value };
-      saveDraft();
-      anchor.textContent = `${colorSel.value} – ${upgradeSel.value}`;
-      modal.remove();
-    });
-    removeBtn.addEventListener("click", () => { STATE.shards[idx] = null; saveDraft(); anchor.textContent = "+ Shard"; modal.remove(); });
-    close.addEventListener("click", () => modal.remove());
-
-    modal.body.append(
-      section("Couleur", colorSel),
-      section("Amélioration", upgradeSel),
-      el("div", { class: "wf-actions" }, apply, removeBtn, close)
-    );
-  }
-
-  // ----------------------------
-  // Middle: Mod slots (8 + aura + exilus)
-  // ----------------------------
-  function slotsView() {
-    const mid = el("div", { class: "wf-mid" });
-
-    const auraRow = slotRow("Aura", true);
-    const exilusRow = slotRow("Exilus", false, true);
-    const rows = [0,1,2,3,4,5,6,7].map(i => slotRow(`Slot ${i+1}`, false, false, i));
-
-    mid.append(
-      el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Aura"), auraRow),
-      el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Exilus"), exilusRow),
-      el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Mods (8)"), ...rows)
-    );
-
-    return mid;
-  }
-
-  function slotRow(label, isAura = false, isExilus = false, idx = -1) {
-    const row = el("div", { class: "wf-slot" });
-
-    const polBtn = el("button", { class: "wf-chip" }, "Polarity: —");
-    const modBtn = el("button", { class: "wf-chip" }, isAura ? "+ Aura" : isExilus ? "+ Exilus" : "+ Mod");
-    const drainLbl = el("span", { class: "wf-drain" }, "");
-
-    function cyclePolarity(current) {
-      const order = [null, "madurai", "vazarin", "naramon", "zenurik", "unairu", "penjaga", "umbra"];
-      const i = order.indexOf((current || null));
-      return order[(i + 1) % order.length];
-    }
-
-    function refresh() {
-      if (isAura) {
-        const m = STATE.aura?.mod || null; const pol = STATE.aura?.polarity || null;
-        polBtn.textContent = `Polarity: ${pol || "—"}`;
-        modBtn.textContent = m ? (m.name || m.displayName || m.id) : "+ Aura";
-        drainLbl.textContent = `Bonus +${auraBonusCapacity(m, pol)}`;
-      } else if (isExilus) {
-        const m = STATE.exilus?.mod || null; const pol = STATE.exilus?.polarity || null;
-        polBtn.textContent = `Polarity: ${pol || "—"}`;
-        modBtn.textContent = m ? (m.name || m.displayName || m.id) : "+ Exilus";
-        drainLbl.textContent = `Drain ${effectiveDrain(m, pol, false)}`;
-      } else {
-        const s = STATE.slots[idx];
-        polBtn.textContent = `Polarity: ${s.polarity || "—"}`;
-        modBtn.textContent = s.mod ? (s.mod.name || s.mod.displayName || s.mod.id) : "+ Mod";
-        drainLbl.textContent = `Drain ${effectiveDrain(s.mod, s.polarity, false)}`;
-      }
-      const box = $(".wf-capacity");
-      if (box) {
-        const { cap, auraBonus, used, remain } = capacitySummary();
-        box.innerHTML =
-          `<div class="wf-capacity-row${remain<0?" neg":""}">Capacité: ${cap}</div>` +
-          `<div class="wf-capacity-row">Bonus Aura: +${auraBonus}</div>` +
-          `<div class="wf-capacity-row">Utilisé: ${used}</div>` +
-          `<div class="wf-capacity-row${remain<0?" neg":""}">Restant: ${remain}</div>`;
-      }
-    }
-
-    polBtn.addEventListener("click", () => {
-      if (isAura) {
-        const next = cyclePolarity(STATE.aura?.polarity || null);
-        STATE.aura = { ...(STATE.aura || { mod: null }), polarity: next };
-      } else if (isExilus) {
-        const next = cyclePolarity(STATE.exilus?.polarity || null);
-        STATE.exilus = { ...(STATE.exilus || { mod: null }), polarity: next };
-      } else {
-        STATE.slots[idx].polarity = cyclePolarity(STATE.slots[idx].polarity || null);
-      }
-      saveDraft();
-      refresh();
-    });
-
-    modBtn.addEventListener("click", () => openModPicker({
-      isAura, isExilus, idx,
-      onPick(mod){
-        if (isAura) STATE.aura = { mod, polarity: (STATE.aura?.polarity || null) };
-        else if (isExilus) STATE.exilus = { mod, polarity: (STATE.exilus?.polarity || null) };
-        else STATE.slots[idx].mod = mod;
-        saveDraft();
-        refresh();
-      }
-    }));
-
-    refresh();
-    row.append(el("span", { class: "wf-slot-label" }, label), polBtn, modBtn, drainLbl);
-    return row;
-  }
-
-  function openModPicker({ isAura, isExilus, idx, onPick }) {
-    const modal = dialog(isAura ? "Choisir une Aura" : isExilus ? "Choisir un Mod Exilus" : "Choisir un Mod");
-
-    const search = el("input", { class: "wf-input", placeholder: "Recherche mod…" });
-    const polSel = el("select", { class: "wf-select" },
-      el("option", { value: "" }, "Toutes polarités"),
-      el("option", { value: "madurai" }, "Madurai"),
-      el("option", { value: "vazarin" }, "Vazarin"),
-      el("option", { value: "naramon" }, "Naramon"),
-      el("option", { value: "zenurik" }, "Zenurik"),
-      el("option", { value: "unairu" }, "Unairu"),
-      el("option", { value: "penjaga" }, "Penjaga"),
-      el("option", { value: "umbra" }, "Umbra"),
-      el("option", { value: "aura" }, "Aura"),
-      el("option", { value: "exilus" }, "Exilus"),
-    );
-    const rarSel = el("select", { class: "wf-select" },
-      el("option", { value: "" }, "Toutes raretés"),
-      el("option", { value: "Common" }, "Common"),
-      el("option", { value: "Uncommon" }, "Uncommon"),
-      el("option", { value: "Rare" }, "Rare"),
-      el("option", { value: "Legendary" }, "Legendary"),
-    );
-
-    const list = el("div", { class: "wf-list" });
-
-    const doFilter = debounce(async () => {
-      await fetchAndRenderMods({
-        polarity: polSel.value || undefined,
-        rarity: rarSel.value || undefined,
-        search: search.value || undefined,
-      });
-      renderRows();
-    }, 150);
-
-    search.addEventListener("input", doFilter);
-    polSel.addEventListener("change", doFilter);
-    rarSel.addEventListener("change", doFilter);
-
-    function renderRows() {
-      list.innerHTML = "";
-      const items = DB.mods.filter(m => {
-        const name = (m.name || m.displayName || m.id || "").toLowerCase();
-        if (search.value && !name.includes(search.value.toLowerCase())) return false;
-        if (isAura && String(m.polarity || "").toLowerCase() !== "aura") return false;
-        if (isExilus && String(m.polarity || "").toLowerCase() !== "exilus") return false;
-        return true;
-      });
-
-      for (const m of items) {
-        const row = el("div", { class: "wf-row" });
-        const name = el("div", { class: "wf-row-name" }, m.name || m.displayName || m.id);
-        const tags = el("div", { class: "wf-row-tags" },
-          el("span", { class: "tag" }, m.rarity || ""),
-          m.polarity ? el("span", { class: "tag" }, m.polarity) : "",
-          el("span", { class: "tag" }, `Drain ${modDrain(m, m.level || 0)}`),
-        );
-        const pick = el("button", { class: "wf-btn small" }, "Choisir");
-        pick.addEventListener("click", () => { onPick(m); modal.remove(); });
-        row.append(name, tags, pick);
-        list.appendChild(row);
-      }
-    }
-
-    renderRows();
-
-    modal.body.append(
-      el("div", { class: "wf-filter" }, search, polSel, rarSel),
-      list
-    );
-  }
-
-  // ----------------------------
-  // Right: Catalog (aperçu)
-  // ----------------------------
-  function catalogView() {
-    const wrap = el("div", { class: "wf-right" });
-
-    const title = el("div", { class: "wf-card-title" }, "Catalogue (aperçu)");
-    const list = el("div", { class: "wf-list" });
-
-    function render() {
-      list.innerHTML = "";
-      for (const m of DB.mods.slice(0, 50)) {
-        const row = el("div", { class: "wf-row" });
-        row.append(
-          el("div", { class: "wf-row-name" }, m.name || m.displayName || m.id),
-          el("div", { class: "wf-row-tags" },
-            el("span", { class: "tag" }, m.rarity || ""),
+    // rendu "cartes" simple (utilise tes classes CSS existantes .mod-card, etc.)
+    for (const m of items.slice(0, 200)) {
+      const card = el("div", { class: "mod-card" },
+        el("div", { class: "mod-art" }, m.imageUrl ? el("img", { src: m.imageUrl, alt: "" }) : ""),
+        el("div", { class: "mod-meta" },
+          el("div", { class: "mod-name" }, m.name || m.displayName || m.id),
+          el("div", { class: "mod-tags" },
+            el("span", { class: "tag" }, (m.rarity || "").toString()),
             m.polarity ? el("span", { class: "tag" }, m.polarity) : "",
-            el("span", { class: "tag" }, `Drain ${modDrain(m, m.level || 0)}`),
+            el("span", { class: "tag" }, `Drain ${modDrain(m)}`)
           )
-        );
-        list.appendChild(row);
-      }
+        ),
+        el("div", {}, el("button", { class: "btn", onclick: () => { addModToFirstFree(m); } }, "Add"))
+      );
+      list.append(card);
     }
-
-    renderCatalog = render;
-    render();
-
-    wrap.append(el("div", { class: "wf-card" }, title, list));
-    return wrap;
   }
 
-  let renderCatalog = () => {};
-
-  // ----------------------------
-  // UI helpers – sections, dialog, popup, toast
-  // ----------------------------
-  function section(title, ...children) {
-    return el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, title), ...children);
+  function addModToFirstFree(mod) {
+    // place le mod dans le premier slot libre 1..6 (démo)
+    const idx = STATE.slots.findIndex(s => !s.mod);
+    if (idx >= 0) {
+      STATE.slots[idx].mod = mod;
+    } else {
+      // sinon en exilus si vide
+      if (!STATE.exilus?.mod) STATE.exilus = { mod, polarity: null };
+      else STATE.aura = { mod, polarity: null }; // fallback
+    }
+    saveDraft();
+    updateStats();
+    renderSlotsPreview();
   }
 
-  function dialog(title) {
-    const scrim = el("div", { class: "wf-scrim" });
-    const box = el("div", { class: "wf-dialog" });
-    const head = el("div", { class: "wf-dialog-head" }, title);
-    const body = el("div", { class: "wf-dialog-body" });
-    box.append(head, body);
-    scrim.append(box);
-    scrim.addEventListener("click", (e) => { if (e.target === scrim) scrim.remove(); });
-    document.body.appendChild(scrim);
-    return { body, remove: () => scrim.remove() };
-  }
-
-  function popup(anchor, title = "") {
-    const pop = el("div", { class: "wf-popup" }, title ? el("div", { class: "wf-popup-title" }, title) : "");
-    document.body.appendChild(pop);
-    const r = anchor.getBoundingClientRect();
-    pop.style.left = `${r.left + window.scrollX}px`;
-    pop.style.top = `${r.bottom + window.scrollY + 6}px`;
-    const off = (ev) => { if (!pop.contains(ev.target)) { pop.remove(); document.removeEventListener("mousedown", off); } };
-    document.addEventListener("mousedown", off);
-    return pop;
-  }
-
-  function toast(msg) {
-    const t = el("div", { class: "wf-toast" }, msg);
-    document.body.appendChild(t);
-    setTimeout(() => t.classList.add("show"), 10);
-    setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 1800);
+  function getSelectedWF() {
+    if (!STATE.warframeId) return null;
+    const id = STATE.warframeId;
+    return DB.warframes.find(w => w.uniqueName === id || w.id === id || w.name === id || w.type === id || w.displayName === id || w.warframe === id) || null;
   }
 
   // ----------------------------
   // Boot
   // ----------------------------
-  mount();
-  loadData().catch(err => { console.error(err); toast("Erreur de chargement des données"); });
+  document.addEventListener("DOMContentLoaded", () => {
+    // on ne crée rien: on se branche sur le HTML existant
+    loadData().catch(err => {
+      console.error(err);
+      // laisse la page s’afficher quand même
+    });
+  });
+
 })();
