@@ -1,22 +1,17 @@
-/*
- Warframe Loadout Builder – Vanilla JS (prod-ready base)
- ------------------------------------------------------
- - Self-rendered UI inside a container with id="app"
- - Data sources expected on your backend routes (routes_merged_static.js):
-   /warframes, /mods, /arcanes, /archonshards
- - Features:
-   • Warframe selection + Rank 0–30 + Reactor toggle
-   • Capacity calc with polarity matching, Aura bonus, Exilus slot, Forma (per-slot polarity)
-   • 8 frame mod slots + Aura + Exilus
-   • 2 Warframe Arcanes
-   • 5 Archon Shard slots with modal selector (no prompt())
-   • Mods catalog with search, rarity, polarity filters (server-side when possible)
-   • Local autosave + URL share (?s=base64url)
-   • Small, dependency-free. You can skin it with your CSS framework.
-
-   NOTE: This is a solid base you can drop into any page. If your existing HTML
-   already has IDs/structure, either adapt bindings at the bottom or mount
-   this builder into a dedicated <div id="app"></div>.
+/* 
+  Warframe Loadout Builder – Vanilla JS (API Railway, sans CSS inline)
+  -------------------------------------------------------------------
+  - Monte une UI dans <div id="app"></div>
+  - Consomme votre API Railway:
+      /warframes, /mods, /arcanes, /archonshards
+  - Fonctionnalités:
+      • Sélection Warframe + Rang 0–30 + Réacteur
+      • Capacité (drain, bonus Aura), Exilus, polarités, Forma par slot
+      • 8 slots de mods + Aura + Exilus
+      • 2 Arcanes
+      • 5 Archon Shards via modal (plus de prompt())
+      • Filtres catalogue (server-side quand possible)
+      • Autosave localStorage + partage par URL (?s=base64url)
 */
 
 (() => {
@@ -59,13 +54,14 @@
   const fmt = (n) => Number.isFinite(n) ? n.toLocaleString() : "-";
 
   // ----------------------------
-  // API endpoints (adjust base if needed)
+  // API endpoints (absolute -> peut être hébergé n'importe où)
   // ----------------------------
+  const API_BASE = "https://cephalon-wodan-production.up.railway.app";
   const API = {
-    warframes: "/warframes",
-    mods: "/mods",
-    arcanes: "/arcanes",
-    shards: "/archonshards",
+    warframes: `${API_BASE}/warframes`,
+    mods: `${API_BASE}/mods`,
+    arcanes: `${API_BASE}/arcanes`,
+    shards: `${API_BASE}/archonshards`,
   };
 
   async function getJSON(url) {
@@ -87,7 +83,7 @@
     exilus: null,       // { id, polarity }
     slots: Array.from({ length: 8 }, () => ({ mod: null, polarity: null })),
     arcanes: [null, null], // two arcane ids
-    shards: [null, null, null, null, null], // up to 5 shard entries {color, upgradeType}
+    shards: [null, null, null, null, null], // {color, upgrade}
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
@@ -127,14 +123,13 @@
   }
 
   function modDrain(mod, level = 0) {
-    // expect mod.baseDrain or mod.drain; and level increases cost by level (common builder rule)
     const base = Number(mod?.drain ?? mod?.baseDrain ?? 0);
     return Math.max(0, base + (level || 0));
   }
 
   function effectiveDrain(mod, slotPolarity, isAura) {
     if (!mod) return 0;
-    if (isAura) return 0; // aura adds capacity instead
+    if (isAura) return 0; // aura ajoute de la capacité
     let drain = modDrain(mod, mod.level || 0);
     const modPol = (mod.polarity || "").toLowerCase();
     const slotPol = (slotPolarity || "").toLowerCase();
@@ -172,17 +167,38 @@
       getJSON(API.arcanes),
       getJSON(API.shards),
     ]);
-    DB.warframes = wfs;
-    DB.arcanes = arcs;
-    DB.shards = shards; // { Azure: { upgrades: [...] }, ... }
+    DB.warframes = Array.isArray(wfs) ? wfs : [];
 
-    // initial mods fetch for WARFRAME catalog
+    // Normalise les arcanes -> id/name présents
+    DB.arcanes = Array.isArray(arcs) ? arcs.map(a => {
+      const id = a.id || a.uniqueName || a.InternalName || a.Name;
+      const uniqueName = a.uniqueName || a.InternalName || id;
+      const name = a.name || a.displayName || a.Name || id;
+      return { ...a, id, uniqueName, name, displayName: a.displayName || name };
+    }) : [];
+
+    // Convertit shards en { Color: { upgrades: [...] } }
+    DB.shards = {};
+    if (shards && typeof shards === "object") {
+      Object.values(shards).forEach(entry => {
+        const color = entry.value || entry.color;
+        const upgrades = [];
+        const uo = entry.upgradeTypes || {};
+        for (const k in uo) {
+          const u = uo[k];
+          if (u && typeof u.value === "string") upgrades.push(u.value);
+        }
+        if (color) DB.shards[color] = { upgrades };
+      });
+    } else {
+      DB.shards = shards;
+    }
+
     await fetchAndRenderMods();
   }
 
   async function fetchAndRenderMods(extra = {}) {
     const url = new URL(API.mods, location.origin);
-    // Server-side filters when possible
     url.searchParams.set("type", "WARFRAME");
     url.searchParams.set("compat", "WARFRAME");
     if (extra.polarity) url.searchParams.set("polarity", String(extra.polarity));
@@ -248,416 +264,11 @@
   }
 
   // ----------------------------
-  // Left: Controls (WF, rank, reactor, stats/capacity, arcanes, shards)
+  // Left: Controls (WF, rank, reactor, capacity, arcanes, shards)
   // ----------------------------
   function controlsView() {
     const wfSelect = el("select", { class: "wf-select" });
     wfSelect.appendChild(el("option", { value: "" }, "— Warframe —"));
 
-    for (const wf of DB.warframes) wfSelect.appendChild(el("option", { value: wf.uniqueName || wf.id }, wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName));
-    wfSelect.value = STATE.warframeId || "";
-    wfSelect.addEventListener("change", () => { STATE.warframeId = wfSelect.value || null; saveDraft(); renderCapacity(); });
-
-    const rank = el("input", { type: "range", min: 0, max: 30, value: String(STATE.rank), class: "wf-range" });
-    const rankLabel = el("div", { class: "wf-label" }, `Rank: ${STATE.rank}`);
-    rank.addEventListener("input", () => { STATE.rank = Number(rank.value) || 0; rankLabel.textContent = `Rank: ${STATE.rank}`; renderCapacity(); saveDraft(); });
-
-    const reactor = el("label", { class: "wf-switch" },
-      el("input", { type: "checkbox", checked: STATE.reactor ? "" : null }),
-      el("span", {}, "Reacteur Orokin (x2)")
-    );
-    const reactorInput = reactor.querySelector("input");
-    reactorInput.checked = !!STATE.reactor;
-    reactorInput.addEventListener("change", () => { STATE.reactor = !!reactorInput.checked; renderCapacity(); saveDraft(); });
-
-    const capacityBox = el("div", { class: "wf-capacity" });
-
-    // Arcanes (2)
-    const arcWrap = el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Arcanes (x2)"));
-    const arcSlots = [0,1].map(idx => {
-      const slot = el("div", { class: "wf-pill" }, STATE.arcanes[idx] ? arcLabel(STATE.arcanes[idx]) : "+ Arcane");
-      slot.addEventListener("click", () => openArcanePicker(idx, slot));
-      return slot;
-    });
-    arcWrap.append(...arcSlots);
-
-    // Shards (5)
-    const shardWrap = el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Archon Shards (x5)"));
-    const shardSlots = STATE.shards.map((s, i) => shardPill(i));
-    shardWrap.append(...shardSlots);
-
-    const left = el("div", { class: "wf-left" },
-      section("Warframe", wfSelect),
-      section("Niveau & capacité", el("div", {}, rankLabel, rank), reactor, capacityBox),
-      arcWrap,
-      shardWrap
-    );
-
-    function renderCapacity() {
-      const { cap, auraBonus, used, remain } = capacitySummary();
-      capacityBox.innerHTML = "";
-      capacityBox.append(
-        el("div", { class: remain < 0 ? "wf-capacity-row neg" : "wf-capacity-row" }, `Capacité: ${cap}`),
-        el("div", { class: "wf-capacity-row" }, `Bonus Aura: +${auraBonus}`),
-        el("div", { class: "wf-capacity-row" }, `Utilisé: ${used}`),
-        el("div", { class: remain < 0 ? "wf-capacity-row neg" : "wf-capacity-row" }, `Restant: ${remain}`),
-      );
-    }
-
-    function shardPill(idx) {
-      const data = STATE.shards[idx];
-      const text = data ? `${data.color} – ${data.upgrade}` : "+ Shard";
-      const pill = el("div", { class: "wf-pill" }, text);
-      pill.addEventListener("click", () => openShardModal(idx, pill));
-      return pill;
-    }
-
-    renderCapacity();
-    return left;
-  }
-
-  function arcLabel(arcId) {
-    const a = DB.arcanes.find(x => x.id === arcId || x.uniqueName === arcId || x.name === arcId);
-    return a ? (a.name || a.displayName || a.id) : String(arcId);
-  }
-
-  function openArcanePicker(idx, anchor) {
-    const menu = popup(anchor, "Choisir un arcane");
-    const input = el("input", { class: "wf-input", placeholder: "Recherche…" });
-    const list = el("div", { class: "wf-list" });
-
-    function render(q = "") {
-      list.innerHTML = "";
-      const items = DB.arcanes.filter(a => (a.name || a.displayName || "").toLowerCase().includes(q.toLowerCase()));
-      for (const a of items) {
-        const row = el("div", { class: "wf-row" }, a.name || a.displayName || a.id);
-        row.addEventListener("click", () => { STATE.arcanes[idx] = a.id || a.uniqueName || a.name; saveDraft(); anchor.textContent = arcLabel(STATE.arcanes[idx]); menu.remove(); });
-        list.appendChild(row);
-      }
-    }
-
-    input.addEventListener("input", () => render(input.value));
-    render();
-    menu.append(input, list);
-  }
-
-  function openShardModal(idx, anchor) {
-    const modal = dialog("Configurer un Archon Shard");
-    const colorSel = el("select", { class: "wf-select" });
-    colorSel.appendChild(el("option", { value: "" }, "— Couleur —"));
-    for (const key of Object.keys(DB.shards || {})) colorSel.appendChild(el("option", { value: key }, key));
-
-    const upgradeSel = el("select", { class: "wf-select", disabled: "" });
-    upgradeSel.appendChild(el("option", { value: "" }, "— Amélioration —"));
-
-    colorSel.addEventListener("change", () => {
-      upgradeSel.innerHTML = "";
-      upgradeSel.appendChild(el("option", { value: "" }, "— Amélioration —"));
-      const chosen = DB.shards[colorSel.value];
-      if (chosen && Array.isArray(chosen.upgrades)) {
-        upgradeSel.removeAttribute("disabled");
-        for (const u of chosen.upgrades) upgradeSel.appendChild(el("option", { value: u }, u));
-      } else upgradeSel.setAttribute("disabled", "");
-    });
-
-    const apply = el("button", { class: "wf-btn primary" }, "Appliquer");
-    const removeBtn = el("button", { class: "wf-btn danger" }, "Retirer");
-    const close = el("button", { class: "wf-btn" }, "Fermer");
-
-    apply.addEventListener("click", () => {
-      if (!colorSel.value || !upgradeSel.value) return;
-      STATE.shards[idx] = { color: colorSel.value, upgrade: upgradeSel.value };
-      saveDraft();
-      anchor.textContent = `${colorSel.value} – ${upgradeSel.value}`;
-      modal.remove();
-    });
-    removeBtn.addEventListener("click", () => { STATE.shards[idx] = null; saveDraft(); anchor.textContent = "+ Shard"; modal.remove(); });
-    close.addEventListener("click", () => modal.remove());
-
-    modal.body.append(
-      section("Couleur", colorSel),
-      section("Amélioration", upgradeSel),
-      el("div", { class: "wf-actions" }, apply, removeBtn, close)
-    );
-  }
-
-  // ----------------------------
-  // Middle: Mod slots (8 + aura + exilus)
-  // ----------------------------
-  function slotsView() {
-    const mid = el("div", { class: "wf-mid" });
-
-    const auraRow = slotRow("Aura", true);
-    const exilusRow = slotRow("Exilus", false, true);
-    const rows = [0,1,2,3,4,5,6,7].map(i => slotRow(`Slot ${i+1}`, false, false, i));
-
-    mid.append(
-      el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Aura"), auraRow),
-      el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Exilus"), exilusRow),
-      el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, "Mods (8)"), ...rows)
-    );
-
-    return mid;
-  }
-
-  function slotRow(label, isAura = false, isExilus = false, idx = -1) {
-    const row = el("div", { class: "wf-slot" });
-
-    const polBtn = el("button", { class: "wf-chip" }, "Polarity: —");
-    const modBtn = el("button", { class: "wf-chip" }, isAura ? "+ Aura" : isExilus ? "+ Exilus" : "+ Mod");
-    const drainLbl = el("span", { class: "wf-drain" }, "");
-
-    function cyclePolarity(current) {
-      const order = [null, "madurai", "vazarin", "naramon", "zenurik", "unairu", "penjaga", "umbra"];
-      const i = order.indexOf((current || null));
-      return order[(i + 1) % order.length];
-    }
-
-    function refresh() {
-      if (isAura) {
-        const m = STATE.aura?.mod || null; const pol = STATE.aura?.polarity || null;
-        polBtn.textContent = `Polarity: ${pol || "—"}`;
-        modBtn.textContent = m ? (m.name || m.displayName || m.id) : "+ Aura";
-        drainLbl.textContent = `Bonus +${auraBonusCapacity(m, pol)}`;
-      } else if (isExilus) {
-        const m = STATE.exilus?.mod || null; const pol = STATE.exilus?.polarity || null;
-        polBtn.textContent = `Polarity: ${pol || "—"}`;
-        modBtn.textContent = m ? (m.name || m.displayName || m.id) : "+ Exilus";
-        drainLbl.textContent = `Drain ${effectiveDrain(m, pol, false)}`;
-      } else {
-        const s = STATE.slots[idx];
-        polBtn.textContent = `Polarity: ${s.polarity || "—"}`;
-        modBtn.textContent = s.mod ? (s.mod.name || s.mod.displayName || s.mod.id) : "+ Mod";
-        drainLbl.textContent = `Drain ${effectiveDrain(s.mod, s.polarity, false)}`;
-      }
-      // Update capacity box as well
-      const box = $(".wf-capacity");
-      if (box) { const { cap, auraBonus, used, remain } = capacitySummary(); box.innerHTML = `<div class="wf-capacity-row${remain<0?" neg":""}">Capacité: ${cap}</div><div class="wf-capacity-row">Bonus Aura: +${auraBonus}</div><div class="wf-capacity-row">Utilisé: ${used}</div><div class="wf-capacity-row${remain<0?" neg":""}">Restant: ${remain}</div>`; }
-    }
-
-    polBtn.addEventListener("click", () => {
-      if (isAura) {
-        const next = cyclePolarity(STATE.aura?.polarity || null);
-        STATE.aura = { ...(STATE.aura || { mod: null }), polarity: next };
-      } else if (isExilus) {
-        const next = cyclePolarity(STATE.exilus?.polarity || null);
-        STATE.exilus = { ...(STATE.exilus || { mod: null }), polarity: next };
-      } else {
-        STATE.slots[idx].polarity = cyclePolarity(STATE.slots[idx].polarity || null);
-      }
-      saveDraft();
-      refresh();
-    });
-
-    modBtn.addEventListener("click", () => openModPicker({ isAura, isExilus, idx, onPick(mod){
-      if (isAura) STATE.aura = { mod, polarity: (STATE.aura?.polarity || null) };
-      else if (isExilus) STATE.exilus = { mod, polarity: (STATE.exilus?.polarity || null) };
-      else STATE.slots[idx].mod = mod;
-      saveDraft();
-      refresh();
-    }}));
-
-    refresh();
-    row.append(el("span", { class: "wf-slot-label" }, label), polBtn, modBtn, drainLbl);
-    return row;
-  }
-
-  function openModPicker({ isAura, isExilus, idx, onPick }) {
-    const modal = dialog(isAura ? "Choisir une Aura" : isExilus ? "Choisir un Mod Exilus" : "Choisir un Mod");
-
-    const search = el("input", { class: "wf-input", placeholder: "Recherche mod…" });
-    const polSel = el("select", { class: "wf-select" },
-      el("option", { value: "" }, "Toutes polarités"),
-      el("option", { value: "madurai" }, "Madurai"),
-      el("option", { value: "vazarin" }, "Vazarin"),
-      el("option", { value: "naramon" }, "Naramon"),
-      el("option", { value: "zenurik" }, "Zenurik"),
-      el("option", { value: "unairu" }, "Unairu"),
-      el("option", { value: "penjaga" }, "Penjaga"),
-      el("option", { value: "umbra" }, "Umbra"),
-      el("option", { value: "aura" }, "Aura"),
-      el("option", { value: "exilus" }, "Exilus"),
-    );
-    const rarSel = el("select", { class: "wf-select" },
-      el("option", { value: "" }, "Toutes raretés"),
-      el("option", { value: "Common" }, "Common"),
-      el("option", { value: "Uncommon" }, "Uncommon"),
-      el("option", { value: "Rare" }, "Rare"),
-      el("option", { value: "Legendary" }, "Legendary"),
-    );
-
-    const list = el("div", { class: "wf-list" });
-
-    const doFilter = debounce(async () => {
-      await fetchAndRenderMods({
-        polarity: polSel.value || undefined,
-        rarity: rarSel.value || undefined,
-        search: search.value || undefined,
-      });
-      renderRows();
-    }, 150);
-
-    search.addEventListener("input", doFilter);
-    polSel.addEventListener("change", doFilter);
-    rarSel.addEventListener("change", doFilter);
-
-    function renderRows() {
-      list.innerHTML = "";
-      const items = DB.mods.filter(m => {
-        const name = (m.name || m.displayName || m.id || "").toLowerCase();
-        if (search.value && !name.includes(search.value.toLowerCase())) return false;
-        if (isAura && String(m.polarity || "").toLowerCase() !== "aura") return false;
-        if (isExilus && String(m.polarity || "").toLowerCase() !== "exilus") return false;
-        return true;
-      });
-
-      for (const m of items) {
-        const row = el("div", { class: "wf-row" });
-        const name = el("div", { class: "wf-row-name" }, m.name || m.displayName || m.id);
-        const tags = el("div", { class: "wf-row-tags" },
-          el("span", { class: "tag" }, m.rarity || ""),
-          m.polarity ? el("span", { class: "tag" }, m.polarity) : "",
-          el("span", { class: "tag" }, `Drain ${modDrain(m, m.level || 0)}`),
-        );
-        const pick = el("button", { class: "wf-btn small" }, "Choisir");
-        pick.addEventListener("click", () => { onPick(m); modal.remove(); });
-        row.append(name, tags, pick);
-        list.appendChild(row);
-      }
-    }
-
-    renderRows();
-
-    modal.body.append(
-      el("div", { class: "wf-filter" }, search, polSel, rarSel),
-      list
-    );
-  }
-
-  // ----------------------------
-  // Right: Catalog (read-only preview of mods list under current filters)
-  // ----------------------------
-  function catalogView() {
-    const wrap = el("div", { class: "wf-right" });
-
-    const title = el("div", { class: "wf-card-title" }, "Catalogue (aperçu)");
-    const list = el("div", { class: "wf-list" });
-
-    function render() {
-      list.innerHTML = "";
-      for (const m of DB.mods.slice(0, 50)) {
-        const row = el("div", { class: "wf-row" });
-        row.append(
-          el("div", { class: "wf-row-name" }, m.name || m.displayName || m.id),
-          el("div", { class: "wf-row-tags" },
-            el("span", { class: "tag" }, m.rarity || ""),
-            m.polarity ? el("span", { class: "tag" }, m.polarity) : "",
-            el("span", { class: "tag" }, `Drain ${modDrain(m, m.level || 0)}`),
-          )
-        );
-        list.appendChild(row);
-      }
-    }
-
-    renderCatalog = render; // expose to fetchAndRenderMods
-    render();
-
-    wrap.append(el("div", { class: "wf-card" }, title, list));
-    return wrap;
-  }
-
-  // placeholder replaced by catalogView
-  let renderCatalog = () => {};
-
-  // ----------------------------
-  // UI helpers – sections, dialog, popup, toast
-  // ----------------------------
-  function section(title, ...children) {
-    return el("div", { class: "wf-card" }, el("div", { class: "wf-card-title" }, title), ...children);
-  }
-
-  function dialog(title) {
-    const scrim = el("div", { class: "wf-scrim" });
-    const box = el("div", { class: "wf-dialog" });
-    const head = el("div", { class: "wf-dialog-head" }, title);
-    const body = el("div", { class: "wf-dialog-body" });
-    box.append(head, body);
-    scrim.append(box);
-    scrim.addEventListener("click", (e) => { if (e.target === scrim) scrim.remove(); });
-    document.body.appendChild(scrim);
-    return { body, remove: () => scrim.remove() };
-  }
-
-  function popup(anchor, title = "") {
-    const pop = el("div", { class: "wf-popup" }, title ? el("div", { class: "wf-popup-title" }, title) : "");
-    document.body.appendChild(pop);
-    const r = anchor.getBoundingClientRect();
-    pop.style.left = `${r.left + window.scrollX}px`;
-    pop.style.top = `${r.bottom + window.scrollY + 6}px`;
-    const off = (ev) => { if (!pop.contains(ev.target)) { pop.remove(); document.removeEventListener("mousedown", off); } };
-    document.addEventListener("mousedown", off);
-    return pop;
-  }
-
-  function toast(msg) {
-    const t = el("div", { class: "wf-toast" }, msg);
-    document.body.appendChild(t);
-    setTimeout(() => t.classList.add("show"), 10);
-    setTimeout(() => { t.classList.remove("show"); setTimeout(() => t.remove(), 300); }, 1800);
-  }
-
-  // ----------------------------
-  // Minimal styles
-  // ----------------------------
-  const styles = `
-  :root{ --b:#111; --c:#e5e7eb; --m:#9ca3af; --p:#3b82f6; --bg:#0b0b0c; --card:#15151a; --g:#1f2937; }
-  body{ background:var(--bg); color:var(--c); font:14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu; }
-  .wf-header{ margin:16px auto; max-width:1200px; }
-  .wf-titlebar{ display:flex; gap:8px; }
-  .wf-input, .wf-select, .wf-notes{ background:#0f0f13; border:1px solid #27272a; color:var(--c); padding:8px 10px; border-radius:10px; width:100%; }
-  .wf-notes{ margin-top:8px; min-height:64px; }
-  .wf-btn{ background:#1d2433; border:1px solid #2b3447; color:#dbe3ff; padding:8px 12px; border-radius:10px; cursor:pointer; }
-  .wf-btn.small{ padding:4px 8px; font-size:12px; }
-  .wf-btn.primary{ background:#1e293b; border-color:#334155; }
-  .wf-btn.danger{ background:#3b1e1e; border-color:#512b2b; }
-  .wf-grid{ display:grid; grid-template-columns: 330px 1fr 360px; gap:16px; max-width:1200px; margin:0 auto 40px; }
-  .wf-card{ background:var(--card); border:1px solid #20232e; border-radius:16px; padding:12px; margin-bottom:12px; }
-  .wf-card-title{ font-weight:600; margin:0 0 8px; color:#e2e8f0; }
-  .wf-left{ }
-  .wf-mid{ }
-  .wf-right{ }
-  .wf-range{ width:100%; }
-  .wf-capacity{ display:grid; gap:4px; }
-  .wf-capacity-row{ background:#0f1220; border:1px solid #1b2141; border-radius:8px; padding:6px 8px; }
-  .wf-capacity-row.neg{ border-color:#5f1a1a; background:#1a0f10; }
-  .wf-slot{ display:flex; align-items:center; gap:8px; padding:6px; border:1px dashed #2b2f3f; border-radius:12px; margin-bottom:6px; }
-  .wf-slot-label{ width:84px; color:#cbd5e1; }
-  .wf-chip{ background:#101421; border:1px solid #1f2739; color:#e5e7eb; padding:6px 10px; border-radius:999px; }
-  .wf-drain{ margin-left:auto; color:#9aa3b2; }
-  .wf-list{ display:flex; flex-direction:column; gap:6px; max-height:460px; overflow:auto; }
-  .wf-row{ display:flex; align-items:center; gap:8px; background:#0d0f17; border:1px solid #1a1d2a; border-radius:10px; padding:8px; }
-  .wf-row-name{ flex:1; }
-  .wf-row-tags .tag{ background:#121629; border:1px solid #1f2748; color:#c7d2fe; padding:2px 6px; border-radius:999px; margin-right:6px; font-size:12px; }
-  .wf-filter{ display:flex; gap:8px; margin-bottom:8px; }
-  .wf-scrim{ position:fixed; inset:0; background:rgba(0,0,0,.6); display:grid; place-items:center; z-index:50; }
-  .wf-dialog{ background:#0e1019; border:1px solid #23263b; border-radius:16px; width:720px; max-width:94vw; max-height:80vh; overflow:auto; }
-  .wf-dialog-head{ padding:12px; font-weight:600; border-bottom:1px solid #1d2031; }
-  .wf-dialog-body{ padding:12px; display:flex; flex-direction:column; gap:12px; }
-  .wf-popup{ position:absolute; min-width:280px; background:#0e1019; border:1px solid #23263b; border-radius:12px; padding:8px; z-index:60; }
-  .wf-popup-title{ font-weight:600; margin-bottom:6px; }
-  .wf-pill{ display:inline-flex; align-items:center; gap:6px; background:#0d101a; border:1px solid #1e2437; border-radius:999px; padding:6px 10px; margin:4px; cursor:pointer; }
-  .wf-label{ margin-bottom:6px; color:#cbd5e1; }
-  .wf-actions{ display:flex; gap:8px; justify-content:flex-end; }
-  .wf-toast{ position:fixed; left:50%; bottom:24px; transform:translateX(-50%); background:#0d1326; border:1px solid #25305a; padding:10px 14px; border-radius:12px; opacity:0; transition:.25s; }
-  .wf-toast.show{ opacity:1; }
-  `;
-
-  const styleTag = el("style", {}, styles);
-  document.head.appendChild(styleTag);
-
-  // ----------------------------
-  // Boot
-  // ----------------------------
-  mount();
-  loadData().catch(err => { console.error(err); toast("Erreur de chargement des données"); });
-})();
+    for (const wf of DB.warframes)
+      wfSelect.appendChild(el("option", { value: wf.uniqueName || wf.id }, wf.name || wf.type || w
