@@ -1,6 +1,9 @@
 /* 
   Loadout Builder – bind to existing DOM (no inline CSS, no #app rendering)
   Se branche sur ton HTML existant + tes CSS (racine/css/loadout_builder.css & themes.css)
+  - Stats R0/R30 + capacité
+  - Pickers Mods / Arcanes / Shards
+  - Fetch résilient + fallback client (détection WARFRAME tolérante)
 */
 
 (() => {
@@ -165,14 +168,44 @@
     hydrateUI();
   }
 
+  // ----------------------------
+  // Détection WARFRAME tolérante (fallback client)
+  // ----------------------------
+  function isWarframeMod(m) {
+    const up = (x) => String(x || "").toUpperCase();
+    const upArrHas = (arr, val) => Array.isArray(arr) && arr.some(x => up(x).includes(val));
+    const W = "WARFRAME";
+
+    // champs possibles
+    if (up(m.CompatName) === W) return true;
+    if (up(m.compat) === W) return true;
+    if (up(m.compatibility) === W) return true;
+    if (up(m.type) === W) return true;           // certaines APIs mettent "WARFRAME" en type
+    if (up(m.category) === W) return true;
+    if (up(m.ModType) === W) return true;
+
+    // tableaux / tags
+    if (upArrHas(m.CompatNames, W)) return true;
+    if (upArrHas(m.compatNames, W)) return true;
+    if (upArrHas(m.tags, W)) return true;
+    if (upArrHas(m.Categories, W)) return true;
+
+    // heuristique douce : si polarité Aura/Exilus, c’est quasi sûrement un mod de frame
+    const pol = up(m.polarity);
+    if (pol === "AURA" || pol === "EXILUS") return true;
+
+    return false;
+  }
+
   // *** FONCTION CLEF AVEC FALLBACK ***
   async function fetchAndRenderMods(extra = {}) {
-    // filtre client (fallback)
     const clientFilter = (arr) => {
       let items = Array.isArray(arr) ? arr : [];
-      items = items.filter(m =>
-        String(m.CompatName || m.compat || m.type || "").toUpperCase() === "WARFRAME"
-      );
+      // 1) garder WARFRAME
+      const wfOnly = items.filter(isWarframeMod);
+      items = wfOnly.length ? wfOnly : items; // si on n'en détecte aucun, ne vide pas la liste
+
+      // 2) filtres UI côté client
       if (extra.polarity) {
         items = items.filter(m => String(m.polarity || "").toLowerCase() === String(extra.polarity).toLowerCase());
       }
@@ -184,13 +217,14 @@
         items = items.filter(m => String(m.name || m.displayName || m.id || "").toLowerCase().includes(q));
       }
       if (extra.pvp != null) {
-        items = items.filter(m => !!m.pvp === !!extra.pvp);
+        // ne filtre que si le champ est présent pour ne pas tout supprimer par erreur
+        items = items.filter(m => (m.hasOwnProperty("pvp") ? !!m.pvp === !!extra.pvp : true));
       }
       return items;
     };
 
+    // 1) tentative filtrée côté serveur
     try {
-      // tentative filtrée côté serveur
       const u = new URL(API.mods);
       u.searchParams.set("type", "WARFRAME");
       u.searchParams.set("compat", "WARFRAME");
@@ -205,6 +239,7 @@
 
       if (items.length > 0) {
         DB.mods = items;
+        window.__modsDebug = { serverCount: items.length, source: "server" };
         renderModList();
         return;
       } else {
@@ -214,14 +249,18 @@
       console.error("[mods] fetch/parse error (filtres serveur):", e);
     }
 
-    // Fallback : charge tout et filtre localement
+    // 2) Fallback : charge tout et filtre localement (tolérant)
     try {
       const raw = await getJSON(API.mods);
       const full = Array.isArray(raw) ? raw : (Array.isArray(raw?.items) ? raw.items : []);
-      DB.mods = clientFilter(full);
+      const filtered = clientFilter(full);
+      // si filtrage aboutit vide, montre tout (meilleure UX de debug)
+      DB.mods = filtered.length ? filtered : full;
+      window.__modsDebug = { serverCount: 0, fullCount: full.length, filteredCount: filtered.length, source: "client" };
     } catch (e2) {
       console.error("[mods] fallback /mods error:", e2);
       DB.mods = [];
+      window.__modsDebug = { error: String(e2) };
     }
 
     renderModList();
@@ -231,7 +270,6 @@
   // Bind to existing DOM
   // ----------------------------
   function hydrateUI() {
-    // Header bits
     const wfPicker     = $("#wfPicker");
     const wfImg        = $("#wfImg");
     const wfTitle      = $("#wfTitle");
@@ -275,7 +313,6 @@
       updateHeaderPreview();
       updateStats();
       saveDraft();
-      // fetchAndRenderMods(); // décommente si tu veux filtrer les augments par frame
     });
 
     rankToggle?.addEventListener("change", () => {
@@ -368,7 +405,7 @@
     const name = wf.name || wf.type || wf.displayName || wf.warframe || wf.uniqueName;
     wfTitle && (wfTitle.textContent = name);
     wfSubtitle && (wfSubtitle.textContent = "Régler mods, arcanes et shards pour calculer la capacité.");
-    wfImg && (wfImg.src = ""); // laisse vide (tu gères l’image côté CSS/asset)
+    wfImg && (wfImg.src = ""); // image gérée par ton thème/asset si besoin
   }
 
   // Robust stat extraction (+ R0/R30)
@@ -659,7 +696,7 @@
   }
 
   function overlay(title="") {
-    // simple structure sans styles inline (à styler dans ton CSS si tu veux)
+    // structure minimale (à styler dans ton CSS .overlay-scrim / .overlay-box / .head / .body)
     const scrim = el("div", { class:"overlay-scrim" });
     const box   = el("div", { class:"overlay-box" });
     const head  = el("div", { class:"head" }, title);
