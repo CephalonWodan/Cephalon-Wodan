@@ -46,7 +46,7 @@ id,http,status,has_next_data,name
 45,https://overframe.gg/items/arsenal/45,200,true,Hydroid Prime
 46,https://overframe.gg/items/arsenal/46,200,true,Hydroid
 47,https://overframe.gg/items/arsenal/47,200,true,Harrow
-48,https://overframe.gg/items/arsenal/48,0,false,
+48,https://overframe.gg/items/arsenal/48,200,true,Ivara
 49,https://overframe.gg/items/arsenal/49,200,true,Rhino
 50,https://overframe.gg/items/arsenal/50,200,true,Rhino Prime
 51,https://overframe.gg/items/arsenal/51,200,true,Inaros
