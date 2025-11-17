@@ -972,7 +972,7 @@ id,http,status,has_next_data,name
 971,https://overframe.gg/items/arsenal/971,200,true,Ripkas
 972,https://overframe.gg/items/arsenal/972,200,true,Sheev
 973,https://overframe.gg/items/arsenal/973,200,true,Kesheg
-974,https://overframe.gg/items/arsenal/974,200,true,Jat Kittag
+974,https://overframe.gg/items/arsenal/974,0,false,
 975,https://overframe.gg/items/arsenal/975,200,true,Dual Cleavers
 976,https://overframe.gg/items/arsenal/976,200,true,Machete
 977,https://overframe.gg/items/arsenal/977,200,true,Prisma Dual Cleavers
