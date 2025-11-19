@@ -850,16 +850,16 @@ id,http,status,has_next_data,name
 849,https://overframe.gg/items/arsenal/849,200,true,Rending Turn
 850,https://overframe.gg/items/arsenal/850,200,true,Patagium
 851,https://overframe.gg/items/arsenal/851,200,true,Toxic Flight
-852,https://overframe.gg/items/arsenal/852,200,true,Rending Crane
-853,https://overframe.gg/items/arsenal/853,200,true,Tempo Royale
-854,https://overframe.gg/items/arsenal/854,200,true,Cleaving Whirlwind
-855,https://overframe.gg/items/arsenal/855,200,true,Malicious Raptor
-856,https://overframe.gg/items/arsenal/856,200,true,Four Riders
-857,https://overframe.gg/items/arsenal/857,200,true,Vermillion Storm
-858,https://overframe.gg/items/arsenal/858,200,true,Crimson Dervish
-859,https://overframe.gg/items/arsenal/859,200,true,Homing Fang
-860,https://overframe.gg/items/arsenal/860,200,true,Stinging Thorn
-861,https://overframe.gg/items/arsenal/861,200,true,Pointed Wind
+852,https://overframe.gg/items/arsenal/852,502,false,
+853,https://overframe.gg/items/arsenal/853,502,false,
+854,https://overframe.gg/items/arsenal/854,502,false,
+855,https://overframe.gg/items/arsenal/855,502,false,
+856,https://overframe.gg/items/arsenal/856,502,false,
+857,https://overframe.gg/items/arsenal/857,502,false,
+858,https://overframe.gg/items/arsenal/858,502,false,
+859,https://overframe.gg/items/arsenal/859,502,false,
+860,https://overframe.gg/items/arsenal/860,502,false,
+861,https://overframe.gg/items/arsenal/861,502,false,
 862,https://overframe.gg/items/arsenal/862,200,true,Sinking Talon
 863,https://overframe.gg/items/arsenal/863,200,true,Spinning Needle
 864,https://overframe.gg/items/arsenal/864,200,true,Gnashing Payara
