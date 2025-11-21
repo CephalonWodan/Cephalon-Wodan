@@ -960,7 +960,7 @@ id,http,status,has_next_data,name
 959,https://overframe.gg/items/arsenal/959,200,true,Vulkar
 960,https://overframe.gg/items/arsenal/960,200,true,Vulkar Wraith
 961,https://overframe.gg/items/arsenal/961,200,true,Zarr
-962,https://overframe.gg/items/arsenal/962,200,true,Javlok
+962,https://overframe.gg/items/arsenal/962,0,false,
 963,https://overframe.gg/items/arsenal/963,200,true,Quartakk
 964,https://overframe.gg/items/arsenal/964,200,true,Buzlok
 965,https://overframe.gg/items/arsenal/965,200,true,Tonkor
@@ -1625,7 +1625,7 @@ id,http,status,has_next_data,name
 1624,https://overframe.gg/items/arsenal/1624,404,false,
 1625,https://overframe.gg/items/arsenal/1625,404,false,
 1626,https://overframe.gg/items/arsenal/1626,404,false,
-1627,https://overframe.gg/items/arsenal/1627,404,false,
+1627,https://overframe.gg/items/arsenal/1627,0,false,
 1628,https://overframe.gg/items/arsenal/1628,404,false,
 1629,https://overframe.gg/items/arsenal/1629,404,false,
 1630,https://overframe.gg/items/arsenal/1630,404,false,
