@@ -981,7 +981,7 @@ id,http,status,has_next_data,name
 980,https://overframe.gg/items/arsenal/980,200,true,Ack & Brunt
 981,https://overframe.gg/items/arsenal/981,200,true,Atterax
 982,https://overframe.gg/items/arsenal/982,200,true,Halikar
-983,https://overframe.gg/items/arsenal/983,200,true,Twin Basolk
+983,https://overframe.gg/items/arsenal/983,0,false,
 984,https://overframe.gg/items/arsenal/984,200,true,Twin Krohkur
 985,https://overframe.gg/items/arsenal/985,200,true,Krohkur
 986,https://overframe.gg/items/arsenal/986,200,true,Jat Kusar
