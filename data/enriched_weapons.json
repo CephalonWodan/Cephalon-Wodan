@@ -10004,6 +10004,7 @@
       "radiation": 80,
       "total": 260
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkSword.png?18126",
     "imageName": "dark-sword-a8742e91fa.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46269,6 +46270,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VolnusPrime.png?34775",
     "imageName": "volnus-prime-9c82528e61.png",
     "isPrime": true,
     "isUmbra": false,
@@ -46470,6 +46472,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/War.png?42c4e",
     "imageName": "war-369ff36cf2.png",
     "isPrime": false,
     "isUmbra": false,
