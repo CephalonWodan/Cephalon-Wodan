@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2025-12-10T15:28:23.454Z",
-  "count": 118,
+  "generatedAt": "2025-12-14T21:06:53.648Z",
+  "count": 120,
   "entities": [
     {
       "name": "<ARCHWING> Amesha",
@@ -13890,6 +13890,430 @@
           "name": "Rotorswell",
           "description": "Gyre’s mechanisms spin at incredible speeds, generating an Electric Field that shocks nearby enemies. When Gyre gets a critical hit, a large electrical discharge will chain from the enemy that was hit to nearby enemies.",
           "subsumable": false,
+          "augments": [],
+          "summary": {
+            "costType": "energy",
+            "costEnergy": 100,
+            "strength": 500,
+            "duration": 22,
+            "range": 4,
+            "efficiency": 100,
+            "affectedBy": [
+              "strength",
+              "efficiency",
+              "duration",
+              "range"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 100",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              },
+              "mainNumeric": 100
+            },
+            {
+              "label": "Electric Damage On Discharge: |val1|",
+              "filledLabel": "Electric Damage On Discharge: 500",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              },
+              "mainNumeric": 500
+            },
+            {
+              "label": "Electric Damage Per Second On Field: |val1| per second",
+              "filledLabel": "Electric Damage Per Second On Field: 250 per second",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              },
+              "mainNumeric": 250
+            },
+            {
+              "label": "Electric Field Radius: |val1|m",
+              "filledLabel": "Electric Field Radius: 4m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 4
+              },
+              "mainNumeric": 4
+            },
+            {
+              "label": "Discharge Range: |val1|m",
+              "filledLabel": "Discharge Range: 10m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Rotorswell Duration: |val1|s",
+              "filledLabel": "Rotorswell Duration: 22s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 22
+              },
+              "mainNumeric": 22
+            },
+            {
+              "label": "Move Speed Multiplier: |val1|x",
+              "filledLabel": "Move Speed Multiplier: 1.5x",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 1.5
+              },
+              "mainNumeric": 1.5
+            },
+            {
+              "label": "Discharge Chained Target: |val1|",
+              "filledLabel": "Discharge Chained Target: 5 enemies",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 5
+              },
+              "mainNumeric": 5
+            },
+            {
+              "label": "Simultaneous Discharges Cap: |val1|",
+              "filledLabel": "Active Spheres Cap: 2 discharges",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            },
+            {
+              "label": "Ability Critical Chance: |val1|% to |val2|%",
+              "filledLabel": "Ability Critical Chance: 0% to 300%",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 0,
+                "Val2": 300
+              },
+              "mainNumeric": 300
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gyre Prime",
+      "type": "warframe",
+      "description": "Gilded circuits spark and energize frenetic movements that echo through the ages. Dance into eternity with Gyre Prime.",
+      "passive": "Gyre's abilities have a 10% chance to deal critical damage for each Electrical status that affects the enemy.",
+      "baseStats": {
+        "health": 345,
+        "shields": 640,
+        "energy": 190,
+        "armor": 105,
+        "sprintSpeed": 1.05,
+        "masteryReq": 0
+      },
+      "baseStatsRank30": {
+        "health": 445,
+        "shields": 740,
+        "energy": 240,
+        "armor": 105,
+        "sprintSpeed": 1.05,
+        "masteryReq": 0
+      },
+      "polarities": [],
+      "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
+      "abilities": [
+        {
+          "name": "Arcsphere",
+          "description": "Launch a Gyratory Sphere that will deal high damage on impact and periodically deal electrical shocks to nearby enemies. Hit multiple enemies at once with the initial launch to enhance damage.",
+          "subsumable": null,
+          "augments": [],
+          "summary": {
+            "costType": "energy",
+            "costEnergy": 25,
+            "strength": 2000,
+            "duration": 10,
+            "range": 4,
+            "efficiency": 25,
+            "affectedBy": [
+              "strength",
+              "efficiency",
+              "duration",
+              "range"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 25",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              },
+              "mainNumeric": 25
+            },
+            {
+              "label": "Electric Damage On Deployment: |val1|",
+              "filledLabel": "Electric Damage On Deployment: 2000",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2000
+              },
+              "mainNumeric": 2000
+            },
+            {
+              "label": "Electric Damage Per Second On Field: |val1| per second",
+              "filledLabel": "Electric Damage Per Second On Field: 250 per second",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              },
+              "mainNumeric": 250
+            },
+            {
+              "label": "Impact Radius: |val1|m",
+              "filledLabel": "Impact Radius: 4m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 4
+              },
+              "mainNumeric": 4
+            },
+            {
+              "label": "Field Radius: |val1|m",
+              "filledLabel": "Field Radius: 7m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 7
+              },
+              "mainNumeric": 7
+            },
+            {
+              "label": "ArcSphere Duration: |val1|s",
+              "filledLabel": "ArcSphere Duration: 10s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              },
+              "mainNumeric": 10
+            },
+            {
+              "label": "Enhanced Damage Multiplier: |val1|x",
+              "filledLabel": "Enhanced Damage Multiplier: 2.0x",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            },
+            {
+              "label": "Initial enemies hit for enhanced damage: |val1|",
+              "filledLabel": "Initial enemies hit for enhanced damage: 3 enemies",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Active Spheres Cap: |val1|",
+              "filledLabel": "Active Spheres Cap: 3 spheres",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Ability Critical Chance: |val1|% to |val2|%",
+              "filledLabel": "Ability Critical Chance: 0% to 300%",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 0,
+                "Val2": 300
+              },
+              "mainNumeric": 300
+            }
+          ]
+        },
+        {
+          "name": "Coil Horizon",
+          "description": "Throw forward a Gyratory Sphere that will implode after a few seconds or can be manually triggered.",
+          "subsumable": null,
+          "augments": [],
+          "summary": {
+            "costType": "energy",
+            "costEnergy": 50,
+            "strength": 1250,
+            "duration": null,
+            "range": 12,
+            "efficiency": 50,
+            "affectedBy": [
+              "strength",
+              "efficiency",
+              "range"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 50",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "Electric Damage On Explosion: |val1|",
+              "filledLabel": "Electric Damage On Explosion: 1250",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1250
+              },
+              "mainNumeric": 1250
+            },
+            {
+              "label": "Contact Electric Damage Per Second: |val1| per second",
+              "filledLabel": "Electric Damage Per Second On Field: 1500 per second",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1500
+              },
+              "mainNumeric": 1500
+            },
+            {
+              "label": "Explosion Radius: |val1|m",
+              "filledLabel": "Explosion Radius: 12m",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 12
+              },
+              "mainNumeric": 12
+            },
+            {
+              "label": "Sphere Lifetime: |val1|s",
+              "filledLabel": "Sphere Lifetime: 2s",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            },
+            {
+              "label": "Explosion Lifetime: |val1|s",
+              "filledLabel": "ArcSphere Duration: 2s",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 2
+              },
+              "mainNumeric": 2
+            },
+            {
+              "label": "Ability Critical Chance: |val1|% to |val2|%",
+              "filledLabel": "Ability Critical Chance: 0% to 300%",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 0,
+                "Val2": 300
+              },
+              "mainNumeric": 300
+            }
+          ]
+        },
+        {
+          "name": "Cathode Grace",
+          "description": "Gain a brief burst of increased Critical Chance and Energy Regen, with each kill extending duration of Cathode Grace. Casting is on a cooldown.",
+          "subsumable": null,
+          "augments": [],
+          "summary": {
+            "costType": "energy",
+            "costEnergy": 75,
+            "strength": 1.5,
+            "duration": 8,
+            "range": null,
+            "efficiency": 75,
+            "affectedBy": [
+              "strength",
+              "duration",
+              "cooldown",
+              "efficiency"
+            ]
+          },
+          "rows": [
+            {
+              "label": "Energy Cost: |val1|",
+              "filledLabel": "Energy Cost: 75",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              },
+              "mainNumeric": 75
+            },
+            {
+              "label": "Cooldown: |val1|",
+              "filledLabel": "Cooldown: 60",
+              "modifier": "NONE",
+              "values": {
+                "Val1": 60
+              },
+              "mainNumeric": 60
+            },
+            {
+              "label": "Duration: |val1|s",
+              "filledLabel": "Duration: 8",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              },
+              "mainNumeric": 8
+            },
+            {
+              "label": "Duration Per Kill: +|val1|s",
+              "filledLabel": "Duration Per Kill: +3s",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 3
+              },
+              "mainNumeric": 3
+            },
+            {
+              "label": "Energy Rate: +|val1| per second",
+              "filledLabel": "Energy Rate: +1.5 per second",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1.5
+              },
+              "mainNumeric": 1.5
+            },
+            {
+              "label": "Weapon Critical Chance: x|val1|%",
+              "filledLabel": "Weapon Critical Chance: x50%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            },
+            {
+              "label": "ability Critical Chance: +|val1|%",
+              "filledLabel": "Weapon Critical Chance: +50%",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              },
+              "mainNumeric": 50
+            }
+          ]
+        },
+        {
+          "name": "Rotorswell",
+          "description": "Gyre’s mechanisms spin at incredible speeds, generating an Electric Field that shocks nearby enemies. When Gyre gets a critical hit, a large electrical discharge will chain from the enemy that was hit to nearby enemies.",
+          "subsumable": null,
           "augments": [],
           "summary": {
             "costType": "energy",
@@ -35215,6 +35639,66 @@
               "mainNumeric": 75
             }
           ]
+        }
+      ]
+    },
+    {
+      "name": "Uriel",
+      "type": "warframe",
+      "description": "To fight as the Heretic of Xata is to have demons at your back. Uriel incinerates foes with searing brimstone, and commands three fiendish summons to do his devil’s work.",
+      "passive": "Uriel commands, empowers, and protects three unique demons. CATENACH: Snares and slows enemies chaining them together. Damage dealt to any target in the chain is inflicted on all snared enemies. (Unlocks with Infernalis) GULPHAGOR : Latches onto foes dealing damage over time. If killed, a circle of pain is spawned. (Unlocks with Remedium) VYTHELAS: Inscribes demonic runes upon fallen foes that add Fire Rate and Heat Damage when collected. (Unlocks with Demonium)",
+      "baseStats": {
+        "health": 566,
+        "shields": 566,
+        "energy": 100,
+        "armor": 105,
+        "sprintSpeed": 1.1,
+        "masteryReq": 0
+      },
+      "baseStatsRank30": {
+        "health": 666,
+        "shields": 666,
+        "energy": 150,
+        "armor": 105,
+        "sprintSpeed": 1.1,
+        "masteryReq": 0
+      },
+      "polarities": [],
+      "aura": null,
+      "exilus": null,
+      "exilusPolarity": null,
+      "abilities": [
+        {
+          "name": "Infernalis",
+          "description": "Manifest an aura of flames inflicting Heat Damage and Status Effect on nearby enemies. Tap Dodge while airborne to take flight as a flaming meteor of destruction.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        },
+        {
+          "name": "Remedium",
+          "description": "Uriel heals himself and his demons. If his demons are dead, they are resurrected.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        },
+        {
+          "name": "Demonium",
+          "description": "Uriel rips out the souls of his demons, draining their health, and sends them in search of new victims. Souls explode on contact with an enemy, rendering it vulnerable to Damage.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
+        },
+        {
+          "name": "Brimstone",
+          "description": "Uriel and his demons create a growing ring of flaming brimstone. Charge the ability by utilizing demon abilities. Damage inflicted increases with each consecutive hit.",
+          "subsumable": null,
+          "augments": [],
+          "summary": null,
+          "rows": []
         }
       ]
     },
