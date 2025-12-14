@@ -43495,6 +43495,9 @@
     "compatName": "WARFRAME",
     "baseDrain": 10,
     "fusionLimit": 5,
+    "description": [
+      "Health Orbs grant |ARMOUR| Armor, stacking up to |STACKS|x. Taking damage will consume a stack after |DURATION|s."
+    ],
     "wikiaThumbnail": "https://wiki.warframe.com/images/HealthConversionMod.png?be441",
     "isAugment": false,
     "drops": [
@@ -57834,6 +57837,24 @@
         ]
       }
     ]
+  },
+  {
+    "id": 7188,
+    "slug": "magnetic-rush",
+    "name": "Magnetic Rush",
+    "categories": [
+      "mod"
+    ],
+    "uniqueName": "/Lotus/Upgrades/Mods/Melee/DualStat/MagneticAttackSpeedMeleeMod",
+    "type": "MELEE",
+    "rarity": "RARE",
+    "polarity": "madurai",
+    "compatName": "Melee",
+    "baseDrain": 4,
+    "fusionLimit": 3,
+    "isAugment": false,
+    "drops": [],
+    "levelStats": []
   },
   {
     "id": 7197,
