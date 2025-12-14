@@ -5520,6 +5520,144 @@
     }
   },
   {
+    "id": "lith-d7-relic",
+    "era": "Lith",
+    "code": "D7",
+    "name": "Lith D7 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuGrip",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VeloxPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeBlade",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/EpitaphPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuGrip",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VeloxPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeBlade",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/EpitaphPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuGrip",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VeloxPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeBlade",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/EpitaphPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuGrip",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VeloxPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeBlade",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/EpitaphPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
     "id": "lith-e1-relic",
     "era": "Lith",
     "code": "E1",
@@ -6077,7 +6215,7 @@
     "code": "F3",
     "name": "Lith F3 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
@@ -7997,6 +8135,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/MasseterPrimeHandle",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "lith-g14-relic",
+    "era": "Lith",
+    "code": "G14",
+    "name": "Lith G14 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangHandle",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowLowerLimb",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangHandle",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowLowerLimb",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangHandle",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowLowerLimb",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangHandle",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowLowerLimb",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -11873,7 +12149,7 @@
     "code": "L6",
     "name": "Lith L6 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
@@ -11999,6 +12275,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "lith-l7-relic",
+    "era": "Lith",
+    "code": "L7",
+    "name": "Lith L7 Relic",
+    "isRequiem": false,
+    "isVaulted": true,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunBarrel",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeCarapace",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeBlade",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunBarrel",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeCarapace",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeBlade",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunBarrel",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeCarapace",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeBlade",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunBarrel",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeCarapace",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeBlade",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -15725,6 +16139,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "lith-n18-relic",
+    "era": "Lith",
+    "code": "N18",
+    "name": "Lith N18 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/SentinelRecipes/NautilusPrimeSentinelBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/QuassusPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeStock",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/SentinelRecipes/NautilusPrimeSentinelBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/QuassusPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeStock",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/SentinelRecipes/NautilusPrimeSentinelBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/QuassusPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeStock",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/SentinelRecipes/NautilusPrimeSentinelBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/QuassusPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeStock",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BroncoPrimeBlueprint",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -26496,6 +27048,144 @@
     }
   },
   {
+    "id": "meso-a9-relic",
+    "era": "Meso",
+    "code": "A9",
+    "name": "Meso A9 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeStock",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuLowerLimb",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VentoPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeStock",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuLowerLimb",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VentoPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeStock",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuLowerLimb",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VentoPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeStock",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuLowerLimb",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/VentoPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
     "id": "meso-b1-relic",
     "era": "Meso",
     "code": "B1",
@@ -32987,7 +33677,7 @@
     "code": "G10",
     "name": "Meso G10 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
@@ -41952,6 +42642,144 @@
     }
   },
   {
+    "id": "meso-p17-relic",
+    "era": "Meso",
+    "code": "P17",
+    "name": "Meso P17 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeChassisBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KestrelPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeHandle",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AkbroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangBlade",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeChassisBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KestrelPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeHandle",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AkbroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangBlade",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeChassisBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KestrelPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeHandle",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AkbroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangBlade",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeChassisBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KestrelPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeHandle",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AkbroncoPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeFangBlade",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
     "id": "meso-r1-relic",
     "era": "Meso",
     "code": "R1",
@@ -47610,6 +48438,282 @@
     }
   },
   {
+    "id": "meso-v13-relic",
+    "era": "Meso",
+    "code": "V13",
+    "name": "Meso V13 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeBlade",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BratonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeBlade",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BratonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeBlade",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BratonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VentoPrimeBlade",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BratonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BroncoPrimeReceiver",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "meso-v14-relic",
+    "era": "Meso",
+    "code": "V14",
+    "name": "Meso V14 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeStock",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmHandle",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeStock",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmHandle",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeStock",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmHandle",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeStock",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmHandle",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
     "id": "meso-w1-relic",
     "era": "Meso",
     "code": "W1",
@@ -48293,6 +49397,282 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AcceltraPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "meso-x1-relic",
+    "era": "Meso",
+    "code": "X1",
+    "name": "Meso X1 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/DualZorenPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowGrip",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunStock",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/DualZorenPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowGrip",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunStock",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/DualZorenPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowGrip",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunStock",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/DualZorenPrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowGrip",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunStock",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeReceiver",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "meso-y1-relic",
+    "era": "Meso",
+    "code": "Y1",
+    "name": "Meso Y1 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeHandle",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/TrumnaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeHandle",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/TrumnaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeHandle",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/TrumnaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeChassisBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/YareliPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/OkinaPrimeHandle",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/TrumnaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeChassisBlueprint",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -53130,6 +54510,144 @@
     }
   },
   {
+    "id": "neo-c7-relic",
+    "era": "Neo",
+    "code": "C7",
+    "name": "Neo C7 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuUpperLimb",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KompressaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeBarrel",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuUpperLimb",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KompressaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeBarrel",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuUpperLimb",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KompressaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeBarrel",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/CalibanPrimeHelmetBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuUpperLimb",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeLightningGunReceiver",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/KompressaPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeBarrel",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
     "id": "neo-d1-relic",
     "era": "Neo",
     "code": "D1",
@@ -57137,7 +58655,7 @@
     "code": "H4",
     "name": "Neo H4 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
@@ -58781,6 +60299,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "neo-k9-relic",
+    "era": "Neo",
+    "code": "K9",
+    "name": "Neo K9 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeGrip",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BurstonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeGrip",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BurstonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeGrip",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BurstonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KestrelPrimeGrip",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/SevagothPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/BurstonPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeReceiver",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -63480,6 +65136,144 @@
     }
   },
   {
+    "id": "neo-o3-relic",
+    "era": "Neo",
+    "code": "O3",
+    "name": "Neo O3 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/OkinaPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AkbroncoPrimeLink",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeSystemsBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowUpperLimb",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeBarrel",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/OkinaPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AkbroncoPrimeLink",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeSystemsBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowUpperLimb",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeBarrel",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/OkinaPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AkbroncoPrimeLink",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeSystemsBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowUpperLimb",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeBarrel",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/OkinaPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AkbroncoPrimeLink",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeSystemsBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowUpperLimb",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/LexPrimeBarrel",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
     "id": "neo-p1-relic",
     "era": "Neo",
     "code": "P1",
@@ -64577,6 +66371,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "neo-p9-relic",
+    "era": "Neo",
+    "code": "P9",
+    "name": "Neo P9 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmBlade",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/EpitaphPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowString",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/FangPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmBlade",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/EpitaphPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowString",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/FangPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmBlade",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/EpitaphPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowString",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/FangPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/ProteaPrimeSystemsBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimePolearmBlade",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/EpitaphPrimeBarrel",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/AlternoxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeBowString",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/FangPrimeBlueprint",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -69131,6 +71063,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BratonPrimeBarrel",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "neo-t10-relic",
+    "era": "Neo",
+    "code": "T10",
+    "name": "Neo T10 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeReceiver",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeSystems",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/LexPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/DualZorenPrimeHandle",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeReceiver",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeSystems",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/LexPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/DualZorenPrimeHandle",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeReceiver",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeSystems",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/LexPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/DualZorenPrimeHandle",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeReceiver",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/NautilusPrimeSystems",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/LexPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/DualZorenPrimeHandle",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -75065,6 +77135,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/Weapons/EpitaphPrimeBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "axi-a20-relic",
+    "era": "Axi",
+    "code": "A20",
+    "name": "Axi A20 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AlternoxPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KompressaPrimeReceiver",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeStock",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuString",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AlternoxPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KompressaPrimeReceiver",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeStock",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuString",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AlternoxPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KompressaPrimeReceiver",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeStock",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuString",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeReceiver",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/AlternoxPrimeBlueprint",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/KompressaPrimeReceiver",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/LavosPrimeHelmetBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/CedoPrimeStock",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/PrimeDaikyuString",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/VeloxPrimeReceiver",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -92741,7 +94949,7 @@
     "code": "S19",
     "name": "Axi S19 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
@@ -94523,6 +96731,144 @@
         },
         {
           "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/HildrynPrimeSystemsBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        }
+      ]
+    }
+  },
+  {
+    "id": "axi-t13-relic",
+    "era": "Axi",
+    "code": "T13",
+    "name": "Axi T13 Relic",
+    "isRequiem": false,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 2
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 11
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeStock",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 25.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/QuassusPrimeHandle",
+          "rarity": "Common",
+          "chance": 25.333
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 4
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 13
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeStock",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 23.333
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/QuassusPrimeHandle",
+          "rarity": "Common",
+          "chance": 23.333
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 6
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 17
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeStock",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/QuassusPrimeHandle",
+          "rarity": "Common",
+          "chance": 20
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/TrumnaPrimeBarrel",
+          "rarity": "Rare",
+          "chance": 10
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Components/FormaBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/GyrePrimeChassisBlueprint",
+          "rarity": "Uncommon",
+          "chance": 20
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/BurstonPrimeStock",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/WarframeRecipes/XakuPrimeHelmetBlueprint",
+          "rarity": "Common",
+          "chance": 16.667
+        },
+        {
+          "item": "/Lotus/StoreItems/Types/Recipes/Weapons/WeaponParts/QuassusPrimeHandle",
           "rarity": "Common",
           "chance": 16.667
         }
@@ -96743,7 +99089,7 @@
     "code": "W4",
     "name": "Axi W4 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
