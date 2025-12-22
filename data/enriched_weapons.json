@@ -1856,6 +1856,102 @@
     ]
   },
   {
+    "id": "/Lotus/Weapons/Tenno/LongGuns/PrimeAlternox/PrimeAlternoxWeapon",
+    "slug": "alternox-prime",
+    "name": "Alternox Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 13,
+    "disposition": 1,
+    "trigger": "Auto",
+    "accuracy": 18.181818,
+    "noise": "Alarming",
+    "criticalChance": 0.2,
+    "criticalMultiplier": 2.2,
+    "statusChance": 0.39999998,
+    "fireRate": 5.3333335,
+    "damageTypes": {
+      "electricity": 75,
+      "total": 75
+    },
+    "polarities": [
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AlternoxPrime.png?707c8",
+    "imageName": "alternox-prime-d1224efc39.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Orokin gold enhances the conductivity of Gyre Prime's signature rifle, enabling it to fire massive electrifying orbs.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 5.33,
+        "critChance": 0.2,
+        "critMult": 2.2,
+        "statusChance": 0.4,
+        "shotType": "Projectile",
+        "shotSpeed": 60,
+        "damage": {
+          "electricity": 75,
+          "total": 75
+        }
+      },
+      {
+        "name": "Alt-Fire Contact",
+        "speed": 1.5,
+        "critChance": 0.02,
+        "critMult": 2,
+        "statusChance": 0.5,
+        "shotType": "Projectile",
+        "shotSpeed": 60,
+        "damage": {
+          "impact": 7,
+          "slash": 10.5,
+          "puncture": 52.5,
+          "total": 70
+        }
+      },
+      {
+        "name": "Alt-Fire Damage over Time",
+        "speed": 1,
+        "critChance": 0.02,
+        "critMult": 2,
+        "statusChance": 0.5,
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0.6
+        },
+        "damage": {
+          "electricity": 70,
+          "total": 70
+        }
+      },
+      {
+        "name": "Alt-Fire Explosion",
+        "speed": 1,
+        "critChance": 0.02,
+        "critMult": 2,
+        "statusChance": 0.5,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0.6
+        },
+        "damage": {
+          "electricity": 140,
+          "total": 140
+        }
+      }
+    ]
+  },
+  {
     "id": "7140",
     "slug": "amanata",
     "name": "Amanata",
@@ -2967,7 +3063,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 0,
-    "disposition": 3,
+    "disposition": 4,
     "criticalChance": 0.31999999,
     "criticalMultiplier": 2.4000001,
     "statusChance": 0.24000001,
@@ -7451,7 +7547,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 10,
-    "disposition": 4,
+    "disposition": 5,
     "criticalChance": 0.15000001,
     "criticalMultiplier": 1.5,
     "statusChance": 0.36000001,
@@ -7813,7 +7909,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 17,
-    "disposition": 1,
+    "disposition": 2,
     "criticalChance": 0.19,
     "criticalMultiplier": 2.3,
     "statusChance": 0.40999997,
@@ -7941,7 +8037,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 17,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Burst",
     "accuracy": 20,
     "noise": "Alarming",
@@ -8478,7 +8574,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 17,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Auto",
     "accuracy": 100,
     "noise": "Silent",
@@ -8544,7 +8640,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 17,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -8619,7 +8715,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 17,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Held",
     "accuracy": 100,
     "noise": "Alarming",
@@ -8666,7 +8762,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 17,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -9696,7 +9792,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 15,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Charge",
     "accuracy": 16.666666,
     "noise": "Silent",
@@ -9780,6 +9876,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DakraPrime.png?2c888",
     "imageName": "dakra-prime-69b3818b88.png",
     "isPrime": true,
     "isUmbra": false,
@@ -9871,6 +9968,7 @@
       "radiation": 60,
       "total": 154
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkDagger.png?7fd23",
     "imageName": "dark-dagger-34cfc06ddf.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12856,7 +12954,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 14,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Auto",
     "accuracy": 133.33333,
     "noise": "Alarming",
@@ -12928,7 +13026,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 14,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Semi",
     "accuracy": 10,
     "noise": "Alarming",
@@ -13960,7 +14058,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 10,
-    "disposition": 3,
+    "disposition": 4,
     "trigger": "Charge",
     "accuracy": 16.666666,
     "noise": "Silent",
@@ -15389,6 +15487,102 @@
     ]
   },
   {
+    "id": "/Lotus/Weapons/Grineer/Melee/Scythe/GrnDrillScythe/GrnDrillScythe",
+    "slug": "galariak-prime",
+    "name": "Galariak Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 14,
+    "disposition": 1,
+    "criticalChance": 0.19,
+    "criticalMultiplier": 2.5,
+    "statusChance": 0.31999999,
+    "damageTypes": {
+      "impact": 30.306,
+      "puncture": 190.479,
+      "slash": 13.215,
+      "total": 234
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/GalariakPrime.png?af707",
+    "imageName": "galariak-prime-6c2e122db0.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Orokin-era Grineer plated their scythes with gold as a symbol of dedication to their Golden Lords. Gains a percentage of Critical Chance with each Status Type affecting the target.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "critChance": 0.19,
+        "critMult": 2.5,
+        "statusChance": 0.32,
+        "damage": {
+          "impact": 30.3,
+          "slash": 13.2,
+          "puncture": 190.5,
+          "total": 234
+        },
+        "attackSpeed": 1.083
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.19,
+        "critMult": 2.5,
+        "statusChance": 0.32,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 8,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 702,
+          "total": 702
+        },
+        "attackSpeed": 1.083
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.19,
+        "critMult": 2.5,
+        "statusChance": 0.32,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 9,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 1170,
+          "total": 1170
+        },
+        "attackSpeed": 1.083
+      }
+    ],
+    "attackSpeed": 1.0833334,
+    "range": 2.8,
+    "slideAttack": 468,
+    "slamAttack": 702,
+    "slamRadialDamage": 468,
+    "slamRadius": 8,
+    "heavyAttackDamage": 1404,
+    "heavySlamAttack": 1170,
+    "heavySlamRadialDamage": 702,
+    "heavySlamRadius": 9,
+    "comboDuration": 5,
+    "followThrough": 0.60000002,
+    "windUp": 1,
+    "blockingAngle": 60,
+    "stancePolarity": "zenurik"
+  },
+  {
     "id": "1167",
     "slug": "galatine",
     "name": "Galatine",
@@ -16587,7 +16781,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 100,
     "noise": "Alarming",
@@ -18680,7 +18874,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 2,
-    "disposition": 3,
+    "disposition": 4,
     "trigger": "Burst",
     "accuracy": 100,
     "noise": "Alarming",
@@ -20812,6 +21006,203 @@
     "heavyAttackDamage": 84,
     "heavySlamAttack": 336,
     "heavySlamRadialDamage": 252,
+    "heavySlamRadius": 6,
+    "comboDuration": 5,
+    "followThrough": 0.69999999,
+    "windUp": 1.2,
+    "blockingAngle": 55,
+    "stancePolarity": "naramon"
+  },
+  {
+    "id": "/Lotus/Weapons/Tenno/Melee/Glaives/PrimeKestrel/PrimeKestrel",
+    "slug": "kestrel-prime",
+    "name": "Kestrel Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 11,
+    "disposition": 1,
+    "criticalChance": 0.2,
+    "criticalMultiplier": 2.2,
+    "statusChance": 0.39999998,
+    "damageTypes": {
+      "impact": 157.5,
+      "puncture": 21,
+      "slash": 31.5,
+      "total": 210
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KestrelPrime.png?707c8",
+    "imageName": "kestrel-prime-9352f905b1.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "With heightened agility and power the Kestrel Prime’s heavy attacks easily knock down foes, ensuring none shall stand before it.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "critChance": 0.2,
+        "critMult": 2.2,
+        "statusChance": 0.4,
+        "damage": {
+          "impact": 157.5,
+          "slash": 31.5,
+          "puncture": 21,
+          "total": 210
+        },
+        "attackSpeed": 1.25
+      },
+      {
+        "name": "Throw",
+        "critChance": 0.22,
+        "critMult": 2.1,
+        "statusChance": 0.4,
+        "shotType": "Thrown",
+        "shotSpeed": 30,
+        "damage": {
+          "impact": 184,
+          "slash": 23,
+          "puncture": 23,
+          "total": 230
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Throw Bounce Explosion",
+        "critChance": 0.22,
+        "critMult": 2.1,
+        "statusChance": 0.4,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 3.6,
+          "reduction": 0.4
+        },
+        "damage": {
+          "blast": 315,
+          "total": 315
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Throw Recall Explosion",
+        "critChance": 0.12,
+        "critMult": 2.1,
+        "statusChance": 0.4,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 3.6,
+          "reduction": 0
+        },
+        "damage": {
+          "blast": 630,
+          "total": 630
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Charged Throw",
+        "critChance": 0.24,
+        "critMult": 2.2,
+        "statusChance": 0.4,
+        "shotType": "Thrown",
+        "shotSpeed": 40,
+        "chargeTime": 1.2,
+        "damage": {
+          "impact": 368,
+          "slash": 46,
+          "puncture": 46,
+          "total": 460
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Charged Throw Bounce Explosion",
+        "critChance": 0.24,
+        "critMult": 2.2,
+        "statusChance": 0.4,
+        "shotType": "AoE",
+        "chargeTime": 1.2,
+        "falloff": {
+          "start": 0,
+          "end": 4,
+          "reduction": 0.4
+        },
+        "damage": {
+          "blast": 630,
+          "total": 630
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Charged Throw Recall Explosion",
+        "critChance": 0.24,
+        "critMult": 2.2,
+        "statusChance": 0.4,
+        "shotType": "AoE",
+        "chargeTime": 1.2,
+        "falloff": {
+          "start": 0,
+          "end": 4,
+          "reduction": 0
+        },
+        "damage": {
+          "blast": 1260,
+          "total": 1260
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.2,
+        "critMult": 2.2,
+        "statusChance": 0.4,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 5,
+          "reduction": 0.5
+        },
+        "damage": {
+          "magnetic": 420,
+          "total": 420
+        },
+        "attackSpeed": 1.25
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.1,
+        "critMult": 2,
+        "statusChance": 0.4,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0.3
+        },
+        "damage": {
+          "magnetic": 630,
+          "total": 630
+        },
+        "attackSpeed": 1.25
+      }
+    ],
+    "attackSpeed": 1.2500001,
+    "range": 1.2,
+    "slideAttack": 420,
+    "slamAttack": 630,
+    "slamRadialDamage": 420,
+    "slamRadius": 5,
+    "heavyAttackDamage": 210,
+    "heavySlamAttack": 840,
+    "heavySlamRadialDamage": 630,
     "heavySlamRadius": 6,
     "comboDuration": 5,
     "followThrough": 0.69999999,
@@ -31016,7 +31407,7 @@
     "subtype": "primary",
     "type": "Shotgun",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Held",
     "accuracy": 100,
     "noise": "Alarming",
@@ -32377,7 +32768,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 12,
-    "disposition": 2,
+    "disposition": 3,
     "criticalChance": 0.30000001,
     "criticalMultiplier": 2.2,
     "statusChance": 0.19999999,
@@ -33566,7 +33957,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 8,
-    "disposition": 3,
+    "disposition": 4,
     "criticalChance": 0.30000001,
     "criticalMultiplier": 2,
     "statusChance": 0.12,
@@ -34256,7 +34647,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 10,
-    "disposition": 1,
+    "disposition": 2,
     "criticalChance": 0.34999999,
     "criticalMultiplier": 2.5,
     "statusChance": 0.25,
@@ -34348,7 +34739,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 14,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Auto",
     "accuracy": 33.333332,
     "noise": "Alarming",
@@ -34622,7 +35013,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 23.529411,
     "noise": "Alarming",
@@ -35047,7 +35438,7 @@
     "subtype": "melee",
     "type": "Rifle",
     "masteryReq": 14,
-    "disposition": 2,
+    "disposition": 3,
     "criticalChance": 0.25999999,
     "criticalMultiplier": 2.2,
     "statusChance": 0.19999999,
@@ -35127,6 +35518,58 @@
     "windUp": 0.60000002,
     "blockingAngle": 50,
     "stancePolarity": "vazarin"
+  },
+  {
+    "id": "/Lotus/Weapons/Grineer/Pistols/GrnOrokinPistol/GrnOrokinPistol",
+    "slug": "sagek-prime",
+    "name": "Sagek Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "secondary",
+    "type": "Pistol",
+    "masteryReq": 14,
+    "disposition": 1,
+    "trigger": "Auto",
+    "accuracy": 15.384615,
+    "noise": "Alarming",
+    "criticalChance": 0.30000001,
+    "criticalMultiplier": 2.2,
+    "statusChance": 0.0099999905,
+    "fireRate": 12.333334,
+    "damageTypes": {
+      "impact": 6.112,
+      "puncture": 8.246,
+      "slash": 11.642,
+      "total": 26
+    },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SagekPrime.png?fafd2",
+    "imageName": "sagek-prime-b32c6fddb7.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The sidearm of choice for Prime Grineer warriors, Sagek Prime blends Grineer brutality with Orokin aesthetics. When Sagek Prime inflicts a critical hit, its next shot has a chance to gain significant Status Chance.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 12.33,
+        "critChance": 0.3,
+        "critMult": 2.2,
+        "statusChance": 0.01,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "impact": 6.11,
+          "slash": 11.64,
+          "puncture": 8.25,
+          "total": 26
+        }
+      }
+    ]
   },
   {
     "id": "6171",
@@ -40756,7 +41199,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 14,
-    "disposition": 2,
+    "disposition": 3,
     "criticalChance": 0.22,
     "criticalMultiplier": 2.4000001,
     "statusChance": 0.30000001,
@@ -41556,7 +41999,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 16,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 100,
     "noise": "Alarming",
@@ -42662,7 +43105,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 0,
-    "disposition": 1,
+    "disposition": 3,
     "trigger": "Burst",
     "accuracy": 25,
     "noise": "Alarming",
@@ -44480,7 +44923,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 9,
-    "disposition": 2,
+    "disposition": 3,
     "criticalChance": 0.19,
     "criticalMultiplier": 1.7,
     "statusChance": 0.31,
@@ -45560,6 +46003,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VenkaPrime.png?7ea5c",
     "imageName": "venka-prime-fbb661cdcf.png",
     "isPrime": true,
     "isUmbra": false,
@@ -45651,6 +46095,7 @@
       "slash": 106.5,
       "total": 213
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Verdilac.png?6e3c1",
     "imageName": "verdilac-fba86852fc.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45768,6 +46213,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vericres.png?bcc94",
     "imageName": "vericres-30b79546fe.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45937,6 +46383,56 @@
     ]
   },
   {
+    "id": "/Lotus/Weapons/Tenno/Bayonet/TnBayonetRifleWeapon",
+    "slug": "vinquibus",
+    "name": "Vinquibus",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 14,
+    "disposition": 1,
+    "trigger": "Semi",
+    "accuracy": 28.571428,
+    "noise": "Alarming",
+    "criticalChance": 0.40000001,
+    "criticalMultiplier": 3.2,
+    "statusChance": 0.19999999,
+    "fireRate": 1.5000001,
+    "damageTypes": {
+      "puncture": 280,
+      "slash": 120,
+      "total": 400
+    },
+    "polarities": [
+      "madurai",
+      "aura"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vinquibus.png?71a64",
+    "imageName": "vinquibus-51734ff1a5.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Bring hell to the battlefield with Uriel's signature rifle and bayonet combination. Occupying both primary and melee slots, this unique weapon blends precision marksmanship with unrelenting melee combat.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 1.5,
+        "critChance": 0.4,
+        "critMult": 3.2,
+        "statusChance": 0.2,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "slash": 120,
+          "puncture": 280,
+          "total": 400
+        }
+      }
+    ]
+  },
+  {
     "id": "948",
     "slug": "viper",
     "name": "Viper",
@@ -46062,6 +46558,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vitrica.png?54002",
     "imageName": "vitrica-d0a2b456bd.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46175,6 +46672,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Volnus.png?18bd9",
     "imageName": "volnus-54a591af3c.png",
     "isPrime": false,
     "isUmbra": false,
