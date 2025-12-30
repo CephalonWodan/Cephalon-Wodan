@@ -3455,7 +3455,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 14,
     "disposition": 4,
     "trigger": "Auto",
@@ -5711,7 +5711,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 13,
     "disposition": 1,
     "trigger": "Auto",
@@ -5960,7 +5960,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 11,
     "disposition": 5,
     "trigger": "Auto",
@@ -6165,7 +6165,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 6,
     "disposition": 4,
     "trigger": "Active",
@@ -6717,7 +6717,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 15,
     "disposition": 1,
     "trigger": "Auto",
@@ -7172,7 +7172,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 6,
     "disposition": 4,
     "trigger": "Charge",
@@ -7240,7 +7240,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 12,
     "disposition": 4,
     "trigger": "Charge",
@@ -7466,7 +7466,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 6,
     "disposition": 4,
     "trigger": "Charge",
@@ -8638,7 +8638,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 17,
     "disposition": 2,
     "trigger": "Semi",
@@ -8825,7 +8825,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 7,
     "disposition": 5,
     "trigger": "Held",
@@ -8977,7 +8977,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 14,
     "disposition": 3,
     "trigger": "Semi",
@@ -9737,7 +9737,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 10,
     "disposition": 4,
     "trigger": "Charge",
@@ -9790,7 +9790,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 15,
     "disposition": 2,
     "trigger": "Charge",
@@ -11233,7 +11233,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 5,
     "disposition": 5,
     "trigger": "Charge",
@@ -11298,7 +11298,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 5,
     "disposition": 4,
     "trigger": "Charge",
@@ -14056,7 +14056,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 10,
     "disposition": 4,
     "trigger": "Charge",
@@ -17138,7 +17138,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 10,
     "trigger": "Auto",
     "accuracy": 100,
@@ -17181,7 +17181,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 10,
     "disposition": 1,
     "trigger": "Auto",
@@ -21554,7 +21554,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 5,
     "disposition": 4,
     "trigger": "Auto",
@@ -21704,7 +21704,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 8,
     "disposition": 4,
     "trigger": "Semi",
@@ -22900,7 +22900,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 13,
     "disposition": 3,
     "trigger": "Semi",
@@ -22957,7 +22957,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 15,
     "disposition": 1,
     "trigger": "Charge",
@@ -23128,7 +23128,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 13,
     "disposition": 4,
     "trigger": "Charge",
@@ -23269,7 +23269,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 15,
     "disposition": 3,
     "trigger": "Semi",
@@ -23471,7 +23471,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 13,
     "disposition": 3,
     "trigger": "Auto",
@@ -23546,7 +23546,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 15,
     "disposition": 3,
     "trigger": "Burst",
@@ -23608,7 +23608,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 13,
     "disposition": 1,
     "trigger": "Held",
@@ -23652,7 +23652,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 15,
     "disposition": 1,
     "trigger": "Semi",
@@ -23786,7 +23786,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 15,
     "disposition": 3,
     "trigger": "Semi",
@@ -23948,7 +23948,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 15,
     "disposition": 2,
     "trigger": "Auto",
@@ -24001,7 +24001,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 13,
     "disposition": 3,
     "trigger": "Semi",
@@ -24067,7 +24067,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Dual Pistols",
     "masteryReq": 13,
     "disposition": 3,
     "trigger": "Auto",
@@ -24118,7 +24118,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 15,
     "disposition": 1,
     "trigger": "Semi",
@@ -24477,7 +24477,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 10,
     "disposition": 3,
     "trigger": "Charge",
@@ -25239,7 +25239,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 8,
     "disposition": 3,
     "trigger": "Charge",
@@ -25985,7 +25985,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 9,
     "disposition": 4,
     "trigger": "Semi",
@@ -26997,7 +26997,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 0,
     "disposition": 5,
     "trigger": "Auto",
@@ -27065,7 +27065,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Throwing",
     "masteryReq": 0,
     "disposition": 5,
     "trigger": "Auto",
@@ -27133,7 +27133,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 0,
     "disposition": 5,
     "trigger": "Charge",
@@ -27216,7 +27216,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 0,
     "disposition": 5,
     "trigger": "Semi",
@@ -27992,7 +27992,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 0,
     "disposition": 1,
     "trigger": "Charge",
@@ -28746,7 +28746,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 9,
     "disposition": 4,
     "trigger": "Charge",
@@ -29203,7 +29203,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Pistol",
     "masteryReq": 14,
     "disposition": 2,
     "trigger": "Auto",
@@ -30583,7 +30583,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 0,
     "disposition": 5,
     "trigger": "Charge",
@@ -30666,7 +30666,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 8,
     "disposition": 5,
     "trigger": "Charge",
@@ -31043,7 +31043,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 6,
     "disposition": 5,
     "trigger": "Active",
@@ -31106,7 +31106,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 8,
     "disposition": 4,
     "trigger": "Burst",
@@ -32494,7 +32494,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 12,
     "disposition": 3,
     "trigger": "Charge",
@@ -33100,7 +33100,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 15,
     "disposition": 3,
     "trigger": "Charge",
@@ -34377,7 +34377,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Bow",
     "masteryReq": 12,
     "disposition": 4,
     "trigger": "Charge",
@@ -35172,7 +35172,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 6,
     "disposition": 3,
     "trigger": "Semi",
@@ -35225,7 +35225,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 12,
     "disposition": 1,
     "trigger": "Semi",
@@ -35842,7 +35842,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 12,
     "disposition": 3,
     "trigger": "Duplex",
@@ -36798,7 +36798,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 12,
     "disposition": 4,
     "trigger": "Active",
@@ -38495,7 +38495,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 0,
     "disposition": 4,
     "trigger": "Semi",
@@ -38551,7 +38551,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 5,
     "disposition": 4,
     "trigger": "Semi",
@@ -39145,7 +39145,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 13,
     "disposition": 4,
     "trigger": "Semi",
@@ -41827,7 +41827,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 16,
     "disposition": 1,
     "trigger": "Semi",
@@ -42064,7 +42064,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 16,
     "disposition": 1,
     "trigger": "Auto",
@@ -43339,7 +43339,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 13,
     "disposition": 3,
     "trigger": "Duplex",
@@ -43771,7 +43771,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 5,
     "disposition": 4,
     "trigger": "Semi",
@@ -43834,7 +43834,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 4,
     "disposition": 4,
     "trigger": "Semi",
@@ -44190,7 +44190,7 @@
       "weapon"
     ],
     "subtype": "secondary",
-    "type": "Rifle",
+    "type": "Dual Pistols",
     "masteryReq": 9,
     "disposition": 4,
     "trigger": "Auto",
@@ -44680,7 +44680,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 15,
     "disposition": 1,
     "trigger": "Charge",
@@ -45173,7 +45173,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Shotgun",
     "masteryReq": 12,
     "disposition": 4,
     "trigger": "Semi",
@@ -45374,7 +45374,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 2,
     "disposition": 4,
     "trigger": "Semi",
@@ -45430,7 +45430,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 14,
     "disposition": 3,
     "trigger": "Semi",
@@ -46848,7 +46848,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 3,
     "disposition": 5,
     "trigger": "Semi",
@@ -46901,7 +46901,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Sniper",
     "masteryReq": 7,
     "disposition": 5,
     "trigger": "Semi",
@@ -47521,7 +47521,7 @@
       "weapon"
     ],
     "subtype": "primary",
-    "type": "Rifle",
+    "type": "Launcher",
     "masteryReq": 7,
     "disposition": 4,
     "trigger": "Semi",
