@@ -21743,8 +21743,8 @@
         },
         "damage": {
           "impact": 9.7,
-          "slash": 46.6,
-          "puncture": 40.7,
+          "slash": 46.56,
+          "puncture": 40.74,
           "total": 97
         }
       },
@@ -23770,9 +23770,9 @@
         "statusChance": 0.27,
         "shotType": "Hit-Scan",
         "damage": {
-          "impact": 20,
-          "slash": 18.35,
-          "puncture": 15.65,
+          "impact": 19.98,
+          "slash": 18.36,
+          "puncture": 15.66,
           "total": 54
         }
       }
@@ -39267,7 +39267,7 @@
         "speed": 0.667,
         "critChance": 0.4,
         "critMult": 3,
-        "statusChance": 0.5,
+        "statusChance": 0.32,
         "shotType": "Projectile",
         "shotSpeed": 300,
         "chargeTime": 1.6,
