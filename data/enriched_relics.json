@@ -12287,7 +12287,7 @@
     "code": "L7",
     "name": "Lith L7 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
