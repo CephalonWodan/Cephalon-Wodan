@@ -7030,7 +7030,7 @@
         "name": "Throw Bounce Explosion",
         "critChance": 0.19,
         "critMult": 2.1,
-        "statusChance": 0.33,
+        "statusChance": 0.3,
         "shotType": "AoE",
         "falloff": {
           "start": 0,
@@ -7047,7 +7047,7 @@
         "name": "Throw Recall Explosion",
         "critChance": 0.19,
         "critMult": 2.1,
-        "statusChance": 0.33,
+        "statusChance": 0.3,
         "shotType": "AoE",
         "falloff": {
           "start": 0,
@@ -7081,7 +7081,7 @@
         "name": "Charged Throw Bounce Explosion",
         "critChance": 0.21,
         "critMult": 2.3,
-        "statusChance": 0.34,
+        "statusChance": 0.3,
         "shotType": "AoE",
         "chargeTime": 1.2,
         "falloff": {
@@ -7099,7 +7099,7 @@
         "name": "Charged Throw Recall Explosion",
         "critChance": 0.21,
         "critMult": 2.3,
-        "statusChance": 0.34,
+        "statusChance": 0.3,
         "shotType": "AoE",
         "chargeTime": 1.2,
         "falloff": {
@@ -47282,10 +47282,10 @@
         "shotSpeed": 25,
         "chargeTime": 1.2,
         "damage": {
-          "impact": 48,
-          "slash": 110.4,
-          "puncture": 81.6,
-          "total": 240
+          "impact": 24,
+          "slash": 55.2,
+          "puncture": 40.8,
+          "total": 120
         },
         "attackSpeed": 0.833
       },
