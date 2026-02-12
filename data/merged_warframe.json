@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-11T15:53:19.935Z",
+  "generatedAt": "2026-02-12T21:29:36.109Z",
   "count": 120,
   "entities": [
     {
@@ -36937,7 +36937,7 @@
       "abilities": [
         {
           "name": "Tesla Nervos",
-          "description": "Deploy a roller drone that attaches itself to enemies and delivers bursts of arcing electricity to anything in the immediate area.",
+          "description": "Deploy a roller drone that attaches itself to enemies and delivers bursts of arcing Electricity Damage to anything in the immediate area.",
           "subsumable": null,
           "augments": [],
           "summary": {
@@ -37040,7 +37040,7 @@
         },
         {
           "name": "Minelayer",
-          "description": "Cycle through four deployable mines. Tether Coil immobilizes and groups enemies together. Flechette Orb fires out deadly nails in all directions. Vector Pad accelerates enemies and allies in the pad's direction. Overdriver latches onto the nearest ally and boosts their weapon damage.",
+          "description": "Control the battlefield with masterful mines. Vauban's Tether-Flechette orb immobilizes and draws in enemies while launching deadly nails in all directions. HOLD to launch a Vector-Overdrive pad that accelerates foes and allies alike in the pad's direction, increasing ally Movement Speed and Weapon Damage.",
           "subsumable": null,
           "augments": [],
           "summary": {
@@ -37285,7 +37285,7 @@
         },
         {
           "name": "Photon Strike",
-          "description": "Drop a targeting beacon that calls in a devastating laser artillery strike.",
+          "description": "Drop a targeting beacon that calls in a devastating laser artillery strike. Deals doubled damage to enemies with Overguard.",
           "subsumable": null,
           "augments": [],
           "summary": {
@@ -37360,7 +37360,7 @@
         },
         {
           "name": "Bastille",
-          "description": "Erect a containment field to capture enemies and suspended them in stasis, stripping their armor. Hold to collapse all Bastilles into a single damaging vortex.",
+          "description": "Erect a containment field to capture enemies and suspended them in stasis, stripping their armor. HOLD to collapse all Bastilles into a single damaging vortex.",
           "subsumable": null,
           "augments": [],
           "summary": {
