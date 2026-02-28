@@ -2017,7 +2017,7 @@
         "shotType": "AoE",
         "falloff": {
           "start": 0,
-          "end": 9,
+          "end": 8,
           "reduction": 0.3
         },
         "damage": {
