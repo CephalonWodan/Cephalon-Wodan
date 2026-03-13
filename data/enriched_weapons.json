@@ -3635,7 +3635,7 @@
         "critMult": 3,
         "statusChance": 0.41,
         "shotType": "Projectile",
-        "shotSpeed": 0,
+        "shotSpeed": 50,
         "damage": {
           "impact": 100,
           "total": 100
@@ -9405,6 +9405,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cronus.png?b7485",
     "imageName": "cronus-f3879e63fb.png",
     "isPrime": false,
     "isUmbra": false,
@@ -13066,7 +13067,7 @@
       },
       {
         "name": "Alt-Fire",
-        "speed": 6.5,
+        "speed": 1.5,
         "critChance": 0.27,
         "critMult": 2.1,
         "statusChance": 0.33,
@@ -45908,6 +45909,7 @@
       "slash": 98,
       "total": 140
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Venka.png?03dd1",
     "imageName": "venka-a750520352.png",
     "isPrime": false,
     "isUmbra": false,
