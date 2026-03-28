@@ -161,7 +161,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Tyl Regor’s custom axe and shield are how he likes to eliminate ‘frustrations’.",
+    "description": "Tyl Regor's custom axe and shield are how he likes to eliminate ‘frustrations'.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -6139,7 +6139,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "In moments of despair, let the battle resonate with song. Cantare's blades lodge into the battlefield and return upon reload. When returning blades strike enemies, Cantare empowers allies with increased Reload Speed.\n\nExperience the true power of Jade’s Ensemble when Evensong, Cantare, and Harmony sing together.",
+    "description": "In moments of despair, let the battle resonate with song. Cantare's blades lodge into the battlefield and return upon reload. When returning blades strike enemies, Cantare empowers allies with increased Reload Speed.\n\nExperience the true power of Jade's Ensemble when Evensong, Cantare, and Harmony sing together.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -7788,6 +7788,97 @@
     ]
   },
   {
+    "id": "/Lotus/Weapons/Infested/InfestedLich/LongGuns/CodaBubonico/CodaBubonicoCannon",
+    "slug": "coda-bubonico",
+    "name": "Coda Bubonico",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 17,
+    "disposition": 1,
+    "trigger": "Auto",
+    "accuracy": 25,
+    "noise": "Alarming",
+    "criticalChance": 0.27000001,
+    "criticalMultiplier": 2.3,
+    "statusChance": 0.10142857,
+    "fireRate": 5.3333335,
+    "damageTypes": {
+      "impact": 2,
+      "puncture": 13,
+      "slash": 19,
+      "toxin": 7,
+      "total": 41
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaBubonico.png?5fc88",
+    "imageName": "coda-bubonico-354ba9ee4a.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "With increased magazine size, the Coda Bubonico was born of the Technocyte virus' need to spread infection. Primary Fire rate ramps up with continuous fire.",
+    "attacks": [
+      {
+        "name": "Auto",
+        "speed": 5.33,
+        "critChance": 0.27,
+        "critMult": 2.3,
+        "statusChance": 0.1014,
+        "shotType": "Projectile",
+        "shotSpeed": 57,
+        "falloff": {
+          "start": 19,
+          "end": 41,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 2,
+          "slash": 19,
+          "puncture": 13,
+          "toxin": 7,
+          "total": 41
+        }
+      },
+      {
+        "name": "Burst",
+        "speed": 7,
+        "critChance": 0.05,
+        "critMult": 3.5,
+        "statusChance": 0.61,
+        "shotType": "Projectile",
+        "shotSpeed": 25,
+        "damage": {
+          "impact": 9,
+          "total": 9
+        }
+      },
+      {
+        "name": "Radial Attack",
+        "speed": 3.37,
+        "critChance": 0.05,
+        "critMult": 3.5,
+        "statusChance": 0.57,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 7,
+          "reduction": 0.5
+        },
+        "damage": {
+          "viral": 143,
+          "total": 143
+        }
+      }
+    ]
+  },
+  {
     "id": "7333",
     "slug": "coda-catabolyst",
     "name": "Coda Catabolyst",
@@ -8289,6 +8380,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMotovore.png?2ea1f",
     "imageName": "coda-motovore-d83db3cb18.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8389,6 +8481,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaPathocyst.png?2ea1f",
     "imageName": "coda-pathocyst-44d3400c0d.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11651,7 +11744,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Fast and precise. The Dual Ether cuts so cleanly that it was considered by the Tenno to be a more humane weapon for ‘cleansing’ infested allies. Capable of hitting multiple targets.",
+    "description": "Fast and precise. The Dual Ether cuts so cleanly that it was considered by the Tenno to be a more humane weapon for ‘cleansing' infested allies. Capable of hitting multiple targets.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -13524,6 +13617,49 @@
     "stancePolarity": "naramon"
   },
   {
+    "id": "/Lotus/Weapons/Tenno/LongGuns/TnInkRifle/TnInkRifleWeapon",
+    "slug": "enkaus",
+    "name": "Enkaus",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 12,
+    "trigger": "Held",
+    "accuracy": 100,
+    "noise": "Alarming",
+    "criticalChance": 0.16,
+    "criticalMultiplier": 1.8,
+    "statusChance": 0.31999999,
+    "fireRate": 12.000001,
+    "damageTypes": {
+      "puncture": 8,
+      "corrosive": 20,
+      "total": 28
+    },
+    "imageName": "enkaus-0ffed0644c.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Turn the enemy's worst nightmare into reality with Follie's signature rifle. The Enkaus will instantly kill and dissolve inked enemies that are damaged at low health. Shooting inked enemies siphons ink back into the Enkaus, allowing for a constant flow of creative destruction.",
+    "attacks": [
+      {
+        "name": "Primary Fire",
+        "damage": {
+          "puncture": 8,
+          "corrosive": 20,
+          "total": 28
+        },
+        "critChance": 0.16,
+        "critMult": 1.8,
+        "statusChance": 0.31999999,
+        "speed": 12.000001
+      }
+    ]
+  },
+  {
     "id": "5439",
     "slug": "epitaph",
     "name": "Epitaph",
@@ -14012,7 +14148,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Banshee Prime’s signature shotgun is an instrument of devastation that fires both focused and broad shots.",
+    "description": "Banshee Prime's signature shotgun is an instrument of devastation that fires both focused and broad shots.",
     "attacks": [
       {
         "name": "Slug",
@@ -14083,7 +14219,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Counter the dread of battle with a song of praise. Enemies cannot hurt your allies while wounded by Evensong's arrows. Kills with Evensong empower ally weapons with Multishot.\n\nExperience the true power of Jade’s Ensemble when Evensong, Cantare, and Harmony sing together.",
+    "description": "Counter the dread of battle with a song of praise. Enemies cannot hurt your allies while wounded by Evensong's arrows. Kills with Evensong empower ally weapons with Multishot.\n\nExperience the true power of Jade's Ensemble when Evensong, Cantare, and Harmony sing together.",
     "attacks": [
       {
         "name": "Quick Shot",
@@ -18130,7 +18266,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Harmony triumphs over hate. Heavy Attacks condense Status Effect damage into a single instance. Heavy Attack kills empower allies with increased Status Duration.\n\nExperience the true power of Jade’s Ensemble when Evensong, Cantare, and Harmony sing together.",
+    "description": "Harmony triumphs over hate. Heavy Attacks condense Status Effect damage into a single instance. Heavy Attack kills empower allies with increased Status Duration.\n\nExperience the true power of Jade's Ensemble when Evensong, Cantare, and Harmony sing together.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -23186,6 +23322,61 @@
         }
       }
     ]
+  },
+  {
+    "id": "/Lotus/Weapons/Grineer/KuvaLich/Melee/Ghoulsaw/KuvaGhoulSaw",
+    "slug": "kuva-ghoulsaw",
+    "name": "Kuva Ghoulsaw",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 13,
+    "criticalChance": 0.25,
+    "criticalMultiplier": 2.0999999,
+    "statusChance": 0.31999999,
+    "damageTypes": {
+      "impact": 40.09,
+      "puncture": 48.53,
+      "slash": 122.38,
+      "total": 211
+    },
+    "imageName": "kuva-ghoulsaw-9bd7ec9493.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The addition of Kuva has forged the savage Ghoulsaw into an even more brutal weapon, allowing for faster attacks.",
+    "attacks": [
+      {
+        "name": "Primary Fire",
+        "damage": {
+          "impact": 40.09,
+          "puncture": 48.53,
+          "slash": 122.38,
+          "total": 211
+        },
+        "critChance": 0.25,
+        "critMult": 2.0999999,
+        "statusChance": 0.31999999,
+        "attackSpeed": 1.2
+      }
+    ],
+    "attackSpeed": 1.2,
+    "range": 2.1530571,
+    "slideAttack": 422,
+    "slamAttack": 633,
+    "slamRadialDamage": 422,
+    "slamRadius": 7,
+    "heavyAttackDamage": 1266,
+    "heavySlamAttack": 211,
+    "heavySlamRadialDamage": 633,
+    "heavySlamRadius": 9,
+    "comboDuration": 5,
+    "followThrough": 1,
+    "windUp": 1,
+    "blockingAngle": 90
   },
   {
     "id": "5572",
@@ -34566,7 +34757,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Using Archwing’s jets for thrust, this massive hammer crushes anything in its path.",
+    "description": "Using Archwing's jets for thrust, this massive hammer crushes anything in its path.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -40857,7 +41048,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Cephalon Suda’s custom issue Simulor was built to satisfy her curiosity.",
+    "description": "Cephalon Suda's custom issue Simulor was built to satisfy her curiosity.",
     "attacks": [
       {
         "name": "Orb Launch",
@@ -41112,7 +41303,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Fearsome and noble, the elegant two-handed Nikana is the pride of any Arsenal. Kills build charges and seeking projectiles are unleashed with a Slide Attack to find and stun unwitting enemies. When Revenant wields this blade, Tatsu’s charge cap is increased.",
+    "description": "Fearsome and noble, the elegant two-handed Nikana is the pride of any Arsenal. Kills build charges and seeking projectiles are unleashed with a Slide Attack to find and stun unwitting enemies. When Revenant wields this blade, Tatsu's charge cap is increased.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -42678,6 +42869,101 @@
         "damage": {
           "radiation": 100,
           "total": 100
+        }
+      }
+    ]
+  },
+  {
+    "id": "/Lotus/Weapons/Corpus/BoardExec/Primary/CrpBEQuanta/CrpBEQuanta",
+    "slug": "tenet-quanta",
+    "name": "Tenet Quanta",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 16,
+    "disposition": 1,
+    "trigger": "Held",
+    "accuracy": 100,
+    "noise": "Alarming",
+    "criticalChance": 0.31,
+    "criticalMultiplier": 2.5,
+    "statusChance": 0.25999999,
+    "fireRate": 10.000001,
+    "damageTypes": {
+      "electricity": 18,
+      "total": 18
+    },
+    "polarities": [
+      "vazarin",
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TenetQuanta.png?5fc88",
+    "imageName": "tenet-quanta-44e361e0ec.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Once a mining tool adapted for military purposes, Parvosian engineering has enhanced the Quanta's lethality even further.",
+    "attacks": [
+      {
+        "name": "Beam",
+        "speed": 10,
+        "critChance": 0.31,
+        "critMult": 2.5,
+        "statusChance": 0.26,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "electricity": 18,
+          "total": 18
+        }
+      },
+      {
+        "name": "Cube (direct hit)",
+        "speed": 4,
+        "critChance": 0.05,
+        "critMult": 1.5,
+        "statusChance": 1,
+        "shotType": "Projectile",
+        "shotSpeed": 25,
+        "damage": {
+          "electricity": 180,
+          "total": 180
+        }
+      },
+      {
+        "name": "Cube Explosion",
+        "speed": 4,
+        "critChance": 0.05,
+        "critMult": 1.5,
+        "statusChance": 0.26,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 0.5,
+          "reduction": 0
+        },
+        "damage": {
+          "blast": 150,
+          "total": 150
+        }
+      },
+      {
+        "name": "Cube (shot by player)",
+        "speed": 4,
+        "critChance": 0.05,
+        "critMult": 1.5,
+        "statusChance": 0.26,
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0
+        },
+        "damage": {
+          "blast": 600,
+          "total": 600
         }
       }
     ]
@@ -44935,6 +45221,7 @@
       "slash": 234.36,
       "total": 279
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vastilok.png?fdf3e",
     "imageName": "vastilok-9dadf9c436.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45298,6 +45585,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VaykorSydon.png?1524e",
     "imageName": "vaykor-sydon-e298fb49c4.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45725,6 +46013,7 @@
       "slash": 77,
       "total": 220
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Venato.png?56f40",
     "imageName": "venato-54532048ec.png",
     "isPrime": false,
     "isUmbra": false,
