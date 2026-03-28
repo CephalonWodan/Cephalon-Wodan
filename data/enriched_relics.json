@@ -99774,6 +99774,184 @@
     }
   },
   {
+    "id": "requiem-relic",
+    "era": "Requiem",
+    "code": null,
+    "name": "Requiem Eterna Relic",
+    "isRequiem": true,
+    "isVaulted": false,
+    "rewards": {
+      "Intact": [
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalOneMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalTwoMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalThreeMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFourMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFiveMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSixMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSevenMod",
+          "rarity": "Common",
+          "chance": 9.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalEightMod",
+          "rarity": "Common",
+          "chance": 9.5
+        }
+      ],
+      "Exceptional": [
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalOneMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalTwoMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalThreeMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFourMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFiveMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSixMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSevenMod",
+          "rarity": "Common",
+          "chance": 8.75
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalEightMod",
+          "rarity": "Common",
+          "chance": 8.75
+        }
+      ],
+      "Flawless": [
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalOneMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalTwoMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalThreeMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFourMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFiveMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSixMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSevenMod",
+          "rarity": "Common",
+          "chance": 7.5
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalEightMod",
+          "rarity": "Common",
+          "chance": 7.5
+        }
+      ],
+      "Radiant": [
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalOneMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalTwoMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalThreeMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFourMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalFiveMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSixMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalSevenMod",
+          "rarity": "Common",
+          "chance": 6.25
+        },
+        {
+          "item": "/Lotus/StoreItems/Upgrades/Mods/Immortal/ImmortalEightMod",
+          "rarity": "Common",
+          "chance": 6.25
+        }
+      ]
+    }
+  },
+  {
     "id": "requiem-i-relic",
     "era": "Requiem",
     "code": "I",
