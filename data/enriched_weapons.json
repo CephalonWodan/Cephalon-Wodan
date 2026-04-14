@@ -8285,6 +8285,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMire.png?2ea1f",
     "imageName": "coda-mire-f96b19fd27.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8733,7 +8734,7 @@
     "subtype": "primary",
     "type": "Sniper",
     "masteryReq": 17,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -8808,7 +8809,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 17,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Held",
     "accuracy": 100,
     "noise": "Alarming",
@@ -8855,7 +8856,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 17,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -8898,7 +8899,7 @@
       },
       {
         "name": "Corrosive DoT",
-        "speed": 2.5000002,
+        "speed": 0,
         "critChance": 0.13,
         "critMult": 2,
         "statusChance": 0.5,
@@ -9887,7 +9888,7 @@
     "subtype": "primary",
     "type": "Bow",
     "masteryReq": 15,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Charge",
     "accuracy": 16.666666,
     "noise": "Silent",
@@ -12637,7 +12638,7 @@
     "subtype": "melee",
     "type": "Rifle",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "criticalChance": 0.23,
     "criticalMultiplier": 2.0999999,
     "statusChance": 0.28999996,
@@ -12824,7 +12825,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 13,
-    "disposition": 2,
+    "disposition": 3,
     "criticalChance": 0.30000001,
     "criticalMultiplier": 3.2,
     "statusChance": 0.22000003,
@@ -19245,7 +19246,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 7,
-    "disposition": 3,
+    "disposition": 4,
     "criticalChance": 0.30000001,
     "criticalMultiplier": 3,
     "statusChance": 0.11000001,
@@ -30945,7 +30946,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 9,
-    "disposition": 4,
+    "disposition": 5,
     "criticalChance": 0.15000001,
     "criticalMultiplier": 2.0999999,
     "statusChance": 0.30000001,
@@ -31344,6 +31345,64 @@
           "slash": 55.04,
           "puncture": 96.32,
           "total": 172
+        }
+      }
+    ]
+  },
+  {
+    "id": "/Lotus/Weapons/Tenno/LongGuns/PrimePerigale/PrimePerigaleSniper",
+    "slug": "perigale-prime",
+    "name": "Perigale Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 14,
+    "disposition": 1,
+    "trigger": "Burst",
+    "accuracy": 833.33331,
+    "noise": "Alarming",
+    "criticalChance": 0.31999999,
+    "criticalMultiplier": 2.5999999,
+    "statusChance": 0.19999999,
+    "fireRate": 6.0606065,
+    "damageTypes": {
+      "impact": 22.08,
+      "puncture": 103.04,
+      "slash": 58.88,
+      "total": 184
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PerigalePrime.png?f520e",
+    "imageName": "perigale-prime-da5d0412e2.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The one who exalted Voruna to her Prime form imbued her signature sniper rifle with increased magazine size and ammo capacity, as if to arm her for a long hunt.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 2,
+        "critChance": 0.32,
+        "critMult": 2.6,
+        "statusChance": 0.2,
+        "shotType": "Hit-Scan",
+        "falloff": {
+          "start": 300,
+          "end": 600,
+          "reduction": 0.2
+        },
+        "damage": {
+          "impact": 22.08,
+          "slash": 58.88,
+          "puncture": 103.04,
+          "total": 184
         }
       }
     ]
@@ -35206,7 +35265,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 14,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Auto",
     "accuracy": 23.529411,
     "noise": "Alarming",
@@ -36095,7 +36154,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 8,
-    "disposition": 3,
+    "disposition": 4,
     "criticalChance": 0.2,
     "criticalMultiplier": 2,
     "statusChance": 0.19999999,
@@ -36173,6 +36232,101 @@
     "heavyAttackDamage": 1200,
     "heavySlamAttack": 1000,
     "heavySlamRadialDamage": 600,
+    "heavySlamRadius": 9,
+    "comboDuration": 5,
+    "followThrough": 0.60000002,
+    "windUp": 1.1,
+    "blockingAngle": 55,
+    "stancePolarity": "madurai"
+  },
+  {
+    "id": "/Lotus/Weapons/Tenno/Melee/Axe/PrimeVorunaAxeWeapon",
+    "slug": "sarofang-prime",
+    "name": "Sarofang Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 16,
+    "disposition": 1,
+    "criticalChance": 0.30000001,
+    "criticalMultiplier": 3,
+    "statusChance": 0.30000001,
+    "damageTypes": {
+      "impact": 66,
+      "puncture": 8.8,
+      "slash": 145.2,
+      "total": 220
+    },
+    "polarities": [
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/SarofangPrime.png?a466a",
+    "imageName": "sarofang-prime-cab6a3b1c3.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Voruna Prime's signature axe is adorned with Orokin gold. She personally ensured that the former owners would have no further use for it.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "critChance": 0.3,
+        "critMult": 3,
+        "statusChance": 0.3,
+        "damage": {
+          "impact": 66,
+          "slash": 145.2,
+          "puncture": 8.8,
+          "total": 220
+        },
+        "attackSpeed": 1.17
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.3,
+        "critMult": 3,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 8,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 440,
+          "total": 440
+        },
+        "attackSpeed": 1.17
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.3,
+        "critMult": 3,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 9,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 660,
+          "total": 660
+        },
+        "attackSpeed": 1.17
+      }
+    ],
+    "attackSpeed": 1.1666667,
+    "range": 2.5999999,
+    "slideAttack": 440,
+    "slamAttack": 660,
+    "slamRadialDamage": 440,
+    "slamRadius": 8,
+    "heavyAttackDamage": 1320,
+    "heavySlamAttack": 1100,
+    "heavySlamRadialDamage": 660,
     "heavySlamRadius": 9,
     "comboDuration": 5,
     "followThrough": 0.60000002,
@@ -40888,8 +41042,8 @@
         "statusChance": 0.28,
         "shotType": "Hit-Scan",
         "damage": {
-          "magnetic": 20,
-          "total": 20
+          "magnetic": 21,
+          "total": 21
         }
       },
       {
@@ -44948,7 +45102,7 @@
       },
       {
         "name": "Corrosive DoT",
-        "speed": 2.5000002,
+        "speed": 0,
         "critChance": 0.03,
         "critMult": 1.5,
         "statusChance": 0.5,
@@ -46635,7 +46789,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Semi",
     "accuracy": 16,
     "noise": "Silent",
@@ -48351,7 +48505,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 13,
-    "disposition": 2,
+    "disposition": 3,
     "trigger": "Duplex",
     "accuracy": 23.529411,
     "noise": "Alarming",
