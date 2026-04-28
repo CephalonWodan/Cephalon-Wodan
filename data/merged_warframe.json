@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T21:56:23.678Z",
+  "generatedAt": "2026-04-28T16:51:16.779Z",
   "count": 122,
   "entities": [
     {
@@ -6617,7 +6617,7 @@
       "name": "Follie",
       "type": "warframe",
       "description": "Follie, the merry, macabre Shadowgrapher, brings ink to life. Support her squad and control enemy crowds with a myriad of versatile sketches and tricks.",
-      "passive": "INKBLOT: Follie's abilities coat enemies in ink that slows their movement by |SLOW|% for a few seconds. Afflicted enemies have a |CHANCE|% chance to drop Health and Energy Orbs.",
+      "passive": "INKBLOT: Follie's abilities coat enemies in ink that slows their movement by |SLOW|% for |DURATION|s. Afflicted enemies have a |CHANCE|% chance to drop Health and Energy Orbs.",
       "baseStats": {
         "health": 485,
         "shields": 225,
