@@ -1790,7 +1790,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Gyre’s signature weapon has two fire modes. Primary fire shocks enemies with electrical orbs. Alternate fire is a large ball of electricity that sticks to any surface and pulses Electricity before it explodes. In Gyre's hands, the weapon has a small amount of multishot.",
+    "description": "Gyre's signature weapon has two fire modes. Primary fire shocks enemies with electrical orbs. Alternate fire is a large ball of electricity that sticks to any surface and pulses Electricity before it explodes. In Gyre's hands, the weapon has a small amount of multishot.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -9252,7 +9252,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Heavy attacks briefly transform the Corufell into a Gunblade. After the Gunblade fires, the Corufell returns to its Heavy Scythe state. Its transformation is fastest in Citrine’s hands.",
+    "description": "Heavy attacks briefly transform the Corufell into a Gunblade. After the Gunblade fires, the Corufell returns to its Heavy Scythe state. Its transformation is fastest in Citrine's hands.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -21182,7 +21182,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "With heightened agility and power the Kestrel Prime’s heavy attacks easily knock down foes, ensuring none shall stand before it.",
+    "description": "With heightened agility and power the Kestrel Prime's heavy attacks easily knock down foes, ensuring none shall stand before it.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -24164,7 +24164,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "The Kuva Sobek’s exceptional Reload Speed, Critical Chance, and Status Chance make it a natural fit for the Kuva Lich’s dominant spirit.",
+    "description": "The Kuva Sobek's exceptional Reload Speed, Critical Chance, and Status Chance make it a natural fit for the Kuva Lich's dominant spirit.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -27860,7 +27860,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "A golden version of Garuda’s versatile crossbow, as fashioned by the Orokin’s finest weaponsmiths. Alt-fire to let loose a barrage of bolts. All bolts have a chance to cause Slash Status, and Headshot kills have a chance to increase Reload Speed. When wielded by Garuda the Nagantaka gains a slight Punch Through.",
+    "description": "A golden version of Garuda's versatile crossbow, as fashioned by the Orokin's finest weaponsmiths. Alt-fire to let loose a barrage of bolts. All bolts have a chance to cause Slash Status, and Headshot kills have a chance to increase Reload Speed. When wielded by Garuda the Nagantaka gains a slight Punch Through.",
     "attacks": [
       {
         "name": "Semi-Auto",
