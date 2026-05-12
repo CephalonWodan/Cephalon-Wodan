@@ -2328,7 +2328,7 @@
         "critMult": 1.8,
         "statusChance": 0.18,
         "shotType": "Projectile",
-        "shotSpeed": 0,
+        "shotSpeed": 80,
         "damage": {
           "heat": 30,
           "total": 30
@@ -14780,7 +14780,7 @@
         "critMult": 3,
         "statusChance": 0.2,
         "shotType": "Projectile",
-        "shotSpeed": 160,
+        "shotSpeed": 100,
         "damage": {
           "impact": 200,
           "radiation": 400,
@@ -16805,6 +16805,7 @@
         "critMult": 1.9,
         "statusChance": 0.19,
         "shotType": "Projectile",
+        "shotSpeed": 120,
         "damage": {
           "impact": 20,
           "slash": 20,
@@ -16884,6 +16885,7 @@
         "critMult": 2.1,
         "statusChance": 0.27,
         "shotType": "Projectile",
+        "shotSpeed": 120,
         "damage": {
           "impact": 25,
           "slash": 25,
@@ -32399,7 +32401,7 @@
         "critMult": 2.2,
         "statusChance": 0.2,
         "shotType": "Projectile",
-        "shotSpeed": 0,
+        "shotSpeed": 80,
         "damage": {
           "heat": 50,
           "total": 50
@@ -32613,6 +32615,7 @@
         "critMult": 2.3,
         "statusChance": 0.21,
         "shotType": "Projectile",
+        "shotSpeed": 120,
         "damage": {
           "impact": 15,
           "slash": 15,
