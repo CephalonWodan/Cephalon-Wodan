@@ -184,8 +184,8 @@
         "shotType": "Projectile",
         "shotSpeed": 60,
         "damage": {
-          "impact": 14.9,
-          "slash": 119.2,
+          "impact": 29.8,
+          "slash": 104.3,
           "puncture": 14.9,
           "total": 149
         },
@@ -521,12 +521,12 @@
         "speed": 0.833,
         "critChance": 0.26,
         "critMult": 2.2,
-        "statusChance": 0.24,
+        "statusChance": 0.1,
         "shotType": "AoE",
         "falloff": {
           "start": 0,
           "end": 3,
-          "reduction": 0.4
+          "reduction": 0.2
         },
         "damage": {
           "blast": 800,
@@ -546,6 +546,93 @@
           "slash": 40,
           "puncture": 120,
           "total": 400
+        }
+      }
+    ]
+  },
+  {
+    "id": "/Lotus/Weapons/Tenno/LongGuns/PrimeAfentis/PrimeAfentisWeapon",
+    "slug": "afentis-prime",
+    "name": "Afentis Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 13,
+    "disposition": 1,
+    "trigger": "Semi",
+    "accuracy": 100,
+    "noise": "Alarming",
+    "criticalChance": 0.25999999,
+    "criticalMultiplier": 2.5999999,
+    "statusChance": 0.30000001,
+    "fireRate": 0.83333337,
+    "damageTypes": {
+      "impact": 40,
+      "puncture": 120,
+      "slash": 40,
+      "total": 200
+    },
+    "polarities": [
+      "naramon",
+      "madurai",
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AfentisPrime.png?7c419",
+    "imageName": "AfentisPrime.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The gilded speargun of Styanax Prime shines like a beacon across the battlefield, invigorating allies and stunning enemies.",
+    "attacks": [
+      {
+        "name": "Semi",
+        "speed": 0.833,
+        "critChance": 0.26,
+        "critMult": 2.6,
+        "statusChance": 0.3,
+        "shotType": "Projectile",
+        "shotSpeed": 90,
+        "damage": {
+          "impact": 40,
+          "slash": 40,
+          "puncture": 120,
+          "total": 200
+        }
+      },
+      {
+        "name": "Radial Attack",
+        "speed": 0.833,
+        "critChance": 0.26,
+        "critMult": 2.6,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 5.5,
+          "reduction": 0.5
+        },
+        "damage": {
+          "heat": 250,
+          "blast": 800,
+          "total": 1050
+        }
+      },
+      {
+        "name": "Spear Throw",
+        "speed": 1,
+        "critChance": 0.4,
+        "critMult": 3,
+        "statusChance": 0.3,
+        "shotType": "Projectile",
+        "shotSpeed": 90,
+        "damage": {
+          "impact": 330,
+          "slash": 55,
+          "puncture": 165,
+          "total": 550
         }
       }
     ]
@@ -1865,7 +1952,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 13,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 18.181818,
     "noise": "Alarming",
@@ -1973,7 +2060,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Amanata.png?75649",
     "imageName": "NaginataWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -2142,7 +2228,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Amphis.png?fb18b",
     "imageName": "AmphisMelee.png",
     "isPrime": false,
     "isUmbra": false,
@@ -2361,7 +2446,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Anku.png?6a32d",
     "imageName": "Anku.png",
     "isPrime": false,
     "isUmbra": false,
@@ -2453,7 +2537,6 @@
       "slash": 13.5,
       "total": 90
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Ankyros.png?e40f8",
     "imageName": "Ankyros.png",
     "isPrime": false,
     "isUmbra": false,
@@ -2549,7 +2632,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/AnkyrosPrime.png?3beee",
     "imageName": "AnkyrosPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -2988,7 +3070,6 @@
       "madurai",
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/ArcaTitron.png?125c4",
     "imageName": "ArcaTitron.png",
     "isPrime": false,
     "isUmbra": false,
@@ -3585,6 +3666,69 @@
         "damage": {
           "heat": 88,
           "total": 88
+        }
+      }
+    ]
+  },
+  {
+    "id": "/Lotus/Weapons/Tenno/Pistols/PrimeAthodai/PrimeAthodaiPistolWeapon",
+    "slug": "athodai-prime",
+    "name": "Athodai Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "secondary",
+    "type": "Pistol",
+    "masteryReq": 14,
+    "disposition": 1,
+    "trigger": "Auto",
+    "accuracy": 50,
+    "noise": "Alarming",
+    "criticalChance": 0.40000001,
+    "criticalMultiplier": 2,
+    "statusChance": 0.10000002,
+    "fireRate": 5.0000005,
+    "damageTypes": {
+      "puncture": 24,
+      "heat": 56,
+      "total": 80
+    },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/AthodaiPrime.png?7c419",
+    "imageName": "AthodaiPrime.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Unleash the song of the righteous warrior with this gilded pistol that goes into Overdrive on headshot kills, maximizing fire rate and ammo efficiency for a short time.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 5,
+        "critChance": 0.4,
+        "critMult": 2,
+        "statusChance": 0.1,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "puncture": 24,
+          "heat": 56,
+          "total": 80
+        }
+      },
+      {
+        "name": "Alt-Fire",
+        "speed": 12,
+        "critChance": 0.2,
+        "critMult": 2.5,
+        "statusChance": 0.35,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "heat": 100,
+          "total": 100
         }
       }
     ]
@@ -8020,6 +8164,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaCaustacyst.png?f76ee",
     "imageName": "CodaCaustacyst.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8196,6 +8341,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaHirudo.png?f76ee",
     "imageName": "CodaHirudo.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8291,6 +8437,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMire.png?2ea1f",
     "imageName": "CodaMire.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8373,7 +8520,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 17,
-    "disposition": 1,
+    "disposition": 2,
     "criticalChance": 0.25,
     "criticalMultiplier": 2.3,
     "statusChance": 0.30000001,
@@ -8386,6 +8533,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMotovore.png?2ea1f",
     "imageName": "InfLichHammerWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8486,6 +8634,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaPathocyst.png?2ea1f",
     "imageName": "CodaPathocyst.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9249,6 +9398,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Corufell.png?5fe41",
     "imageName": "ExaltedAWScytheWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9502,6 +9652,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cronus.png?b7485",
     "imageName": "Cronus.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9973,6 +10124,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DakraPrime.png?2c888",
     "imageName": "DakraPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -10064,6 +10216,7 @@
       "radiation": 60,
       "total": 154
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkDagger.png?7fd23",
     "imageName": "DarkDagger.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10197,6 +10350,7 @@
       "radiation": 80,
       "total": 260
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkSword.png?18126",
     "imageName": "DarkSword.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10573,6 +10727,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Destreza.png?52b66",
     "imageName": "Destreza.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10668,6 +10823,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DestrezaPrime.png?ad25e",
     "imageName": "DestrezaPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -10812,6 +10968,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DexDakra.png?05557",
     "imageName": "DexDakra.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10958,6 +11115,7 @@
       "madurai",
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DexNikana.png?3e3b7",
     "imageName": "Dex2023Nikana.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11149,6 +11307,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dorrclave.png?30250",
     "imageName": "Dorrclave.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11242,6 +11401,7 @@
       "madurai",
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DragonNikana.png?20efa",
     "imageName": "DragonNikana.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11536,6 +11696,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualCleavers.png?547b9",
     "imageName": "DualCleavers.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11730,6 +11891,7 @@
       "slash": 126,
       "total": 180
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualEther.png?e911b",
     "imageName": "DualEther.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11824,6 +11986,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualHeatSwords.png?bd93b",
     "imageName": "DualHeatSwords.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11919,6 +12082,7 @@
     "polarities": [
       "vazarin"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualIchor.png?caea1",
     "imageName": "DualIchor.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12011,6 +12175,7 @@
       "slash": 81.6,
       "total": 96
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/DualKamas.png?9ed01",
     "imageName": "DualKamas.png",
     "isPrime": false,
     "isUmbra": false,
@@ -12909,7 +13074,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 0,
-    "disposition": 3,
+    "disposition": 4,
     "criticalChance": 0.34,
     "criticalMultiplier": 2.5999999,
     "statusChance": 0.19999999,
@@ -15622,7 +15787,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "criticalChance": 0.19,
     "criticalMultiplier": 2.5,
     "statusChance": 0.31999999,
@@ -15661,7 +15826,7 @@
         "name": "Slam Attack",
         "critChance": 0.19,
         "critMult": 2.5,
-        "statusChance": 0.32,
+        "statusChance": 0.1,
         "shotType": "AoE",
         "falloff": {
           "start": 0,
@@ -15678,7 +15843,7 @@
         "name": "Heavy Slam Attack",
         "critChance": 0.19,
         "critMult": 2.5,
-        "statusChance": 0.32,
+        "statusChance": 0.1,
         "shotType": "AoE",
         "falloff": {
           "start": 0,
@@ -26493,10 +26658,10 @@
           "reduction": 1
         },
         "damage": {
-          "impact": 35,
-          "puncture": 70,
-          "heat": 75,
-          "total": 180
+          "impact": 24,
+          "puncture": 46,
+          "heat": 50,
+          "total": 120
         }
       },
       {
@@ -26512,8 +26677,8 @@
           "reduction": 0.1
         },
         "damage": {
-          "heat": 72,
-          "total": 72
+          "heat": 48,
+          "total": 48
         }
       },
       {
@@ -26525,10 +26690,10 @@
         "shotType": "Hit-Scan",
         "chargeTime": 0.8,
         "damage": {
-          "impact": 150,
-          "puncture": 600,
-          "heat": 750,
-          "total": 1500
+          "impact": 100,
+          "puncture": 400,
+          "heat": 500,
+          "total": 1000
         }
       },
       {
@@ -26544,8 +26709,8 @@
           "reduction": 0.4
         },
         "damage": {
-          "heat": 4500,
-          "total": 4500
+          "heat": 3000,
+          "total": 3000
         }
       }
     ]
@@ -31315,7 +31480,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Like a breath of wind, shots fired by this multi-barrel sniper are felt but never seen by its targets. Headshots in quick succession increase the Perigale’s ammo efficiency. When the Perigale is wielded by Voruna, its ammo pool increases.",
+    "description": "Like a breath of wind, shots fired by this multi-barrel sniper are felt but never seen by its targets. Headshots in quick succession increase the Perigale's ammo efficiency. When the Perigale is wielded by Voruna, its ammo pool increases.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -32314,6 +32479,99 @@
     "followThrough": 0.60000002,
     "windUp": 0.69999999,
     "blockingAngle": 60,
+    "stancePolarity": "madurai"
+  },
+  {
+    "id": "/Lotus/Weapons/Tenno/Melee/HeavyScythe/TnOrionSiriusScythe/TnSiriusScytheWeapon",
+    "slug": "pride",
+    "name": "Pride",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 14,
+    "disposition": 1,
+    "criticalChance": 0.15000001,
+    "criticalMultiplier": 2,
+    "statusChance": 0.35000002,
+    "damageTypes": {
+      "puncture": 125,
+      "slash": 125,
+      "total": 250
+    },
+    "polarities": [
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Pride.png?917b2",
+    "imageName": "TnSiriusScytheWeapon.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The pride of one that knows their worth. Sirius' signature Heavy Scythe.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "critChance": 0.15,
+        "critMult": 2,
+        "statusChance": 0.35,
+        "damage": {
+          "slash": 125,
+          "puncture": 125,
+          "total": 250
+        },
+        "attackSpeed": 1.2
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.15,
+        "critMult": 2,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 8,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 500,
+          "total": 500
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.15,
+        "critMult": 2,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 9,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 750,
+          "total": 750
+        },
+        "attackSpeed": 1
+      }
+    ],
+    "attackSpeed": 1.2,
+    "range": 2.8,
+    "slideAttack": 500,
+    "slamAttack": 750,
+    "slamRadialDamage": 500,
+    "slamRadius": 8,
+    "heavyAttackDamage": 4500,
+    "heavySlamAttack": 1250,
+    "heavySlamRadialDamage": 750,
+    "heavySlamRadius": 9,
+    "comboDuration": 5,
+    "followThrough": 0.40000001,
+    "windUp": 1,
+    "blockingAngle": 65,
     "stancePolarity": "madurai"
   },
   {
@@ -33804,7 +34062,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 14,
-    "disposition": 3,
+    "disposition": 4,
     "trigger": "Semi",
     "accuracy": 100,
     "noise": "Alarming",
@@ -35277,7 +35535,7 @@
     "isUmbra": false,
     "isWraith": false,
     "isDex": false,
-    "description": "Never stop fighting, never run out of ammo. Temple’s signature machine pistol was modified by Albrecht Entrati to warp fired bullets back into the magazine when reloaded.",
+    "description": "Never stop fighting, never run out of ammo. Temple's signature machine pistol was modified by Albrecht Entrati to warp fired bullets back into the magazine when reloaded.",
     "attacks": [
       {
         "name": "Normal Attack",
@@ -35771,7 +36029,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 14,
-    "disposition": 1,
+    "disposition": 2,
     "trigger": "Auto",
     "accuracy": 15.384615,
     "noise": "Alarming",
@@ -38658,7 +38916,6 @@
       "umbra",
       "umbra"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Skiajati.png?929c5",
     "imageName": "Skiajati.png",
     "isPrime": false,
     "isUmbra": false,
@@ -38754,7 +39011,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Slaytra.png?a775f",
     "imageName": "GrnSharbolaWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -39311,7 +39567,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Spinnerex.png?7d5c8",
     "imageName": "SpiderWhip.png",
     "isPrime": false,
     "isUmbra": false,
@@ -39942,7 +40197,6 @@
       "slash": 83.6,
       "total": 220
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Stropha.png?f8de6",
     "imageName": "CrpGunBladeWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -41271,7 +41525,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 9,
-    "disposition": 1,
+    "disposition": 3,
     "criticalChance": 0.20999999,
     "criticalMultiplier": 1.9,
     "statusChance": 0.31,
@@ -43541,7 +43795,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 0,
-    "disposition": 3,
+    "disposition": 4,
     "trigger": "Burst",
     "accuracy": 25,
     "noise": "Alarming",
@@ -44117,7 +44371,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 9,
-    "disposition": 1,
+    "disposition": 2,
     "criticalChance": 0.23,
     "criticalMultiplier": 2.0999999,
     "statusChance": 0.20999998,
@@ -44129,6 +44383,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonkkatt.png?363a0",
     "imageName": "GrnChainSawTonfa.png",
     "isPrime": false,
     "isUmbra": false,
@@ -44546,6 +44801,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinBasolk.png?ad177",
     "imageName": "TwinBasolk.png",
     "isPrime": false,
     "isUmbra": false,
@@ -44816,6 +45072,7 @@
       "slash": 175,
       "total": 250
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinKrohkur.png?9e026",
     "imageName": "TwinKrohkur.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45369,6 +45626,7 @@
       "slash": 234.36,
       "total": 279
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vastilok.png?fdf3e",
     "imageName": "GrnGunblade.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45732,6 +45990,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VaykorSydon.png?1524e",
     "imageName": "Sydon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45855,6 +46114,53 @@
           "puncture": 78.75,
           "total": 225
         }
+      },
+      {
+        "name": "Incarnon Form",
+        "speed": 1.333,
+        "critChance": 0.3,
+        "critMult": 2.5,
+        "statusChance": 0.3,
+        "shotType": "Projectile",
+        "shotSpeed": 200,
+        "damage": {
+          "cold": 5,
+          "total": 5
+        }
+      },
+      {
+        "name": "Incarnon Form Headshot AoE",
+        "speed": 1.33,
+        "critChance": 0.3,
+        "critMult": 2.5,
+        "statusChance": 0.3,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6.7,
+          "reduction": 0
+        },
+        "damage": {
+          "cold": 5,
+          "total": 5
+        }
+      },
+      {
+        "name": "Incarnon Form Embed AoE",
+        "speed": 1.33,
+        "critChance": 0.3,
+        "critMult": 2.5,
+        "statusChance": 0.3,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 0.15,
+          "reduction": 0
+        },
+        "damage": {
+          "cold": 5,
+          "total": 5
+        }
       }
     ]
   },
@@ -45911,6 +46217,53 @@
           "slash": 52.5,
           "puncture": 157.5,
           "total": 350
+        }
+      },
+      {
+        "name": "Incarnon Form",
+        "speed": 1.333,
+        "critChance": 0.35,
+        "critMult": 3,
+        "statusChance": 0.3,
+        "shotType": "Projectile",
+        "shotSpeed": 200,
+        "damage": {
+          "cold": 150,
+          "total": 150
+        }
+      },
+      {
+        "name": "Incarnon Form Headshot AoE",
+        "speed": 1.333,
+        "critChance": 0.35,
+        "critMult": 3,
+        "statusChance": 0.3,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6.7,
+          "reduction": 0
+        },
+        "damage": {
+          "cold": 150,
+          "total": 150
+        }
+      },
+      {
+        "name": "Incarnon Form Embed AoE",
+        "speed": 1.333,
+        "critChance": 0.35,
+        "critMult": 3,
+        "statusChance": 0.3,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 0.15,
+          "reduction": 0
+        },
+        "damage": {
+          "cold": 25,
+          "total": 25
         }
       }
     ]
@@ -46159,6 +46512,7 @@
       "slash": 77,
       "total": 220
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Venato.png?56f40",
     "imageName": "SentJointedScytheWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46253,6 +46607,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VenatoPrime.png?eb0e1",
     "imageName": "VenatoPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -46344,6 +46699,7 @@
       "slash": 98,
       "total": 140
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Venka.png?03dd1",
     "imageName": "Venka.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46439,6 +46795,7 @@
       "naramon",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VenkaPrime.png?7ea5c",
     "imageName": "VenkaPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -46530,6 +46887,7 @@
       "slash": 106.5,
       "total": 213
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Verdilac.png?6e3c1",
     "imageName": "ArchonWhip.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46647,6 +47005,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vericres.png?bcc94",
     "imageName": "MoonWarfan.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46991,6 +47350,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Vitrica.png?54002",
     "imageName": "NWOrokinSword.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47104,6 +47464,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Volnus.png?18bd9",
     "imageName": "Volnus.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47199,6 +47560,7 @@
       "madurai",
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/VolnusPrime.png?34775",
     "imageName": "VolnusPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -47400,6 +47762,7 @@
     "polarities": [
       "naramon"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/War.png?42c4e",
     "imageName": "War.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47472,6 +47835,101 @@
     "stancePolarity": "vazarin"
   },
   {
+    "id": "/Lotus/Weapons/Tenno/Melee/Swords/PrimeWar/PrimeWarWeapon",
+    "slug": "war-prime",
+    "name": "War Prime",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 15,
+    "disposition": 1,
+    "criticalChance": 0.25999999,
+    "criticalMultiplier": 3.2,
+    "statusChance": 0.31999999,
+    "damageTypes": {
+      "impact": 194.4,
+      "puncture": 32.4,
+      "slash": 43.2,
+      "total": 270
+    },
+    "polarities": [
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/WarPrime.png?e3f3a",
+    "imageName": "WarPrime.png",
+    "isPrime": true,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The blade of the world-destroyer reaches its apotheosis, severing conflict itself. In forging this weapon, you have brought unrealized dreams to their ultimate conclusion.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "critChance": 0.26,
+        "critMult": 3.2,
+        "statusChance": 0.32,
+        "damage": {
+          "impact": 194.4,
+          "slash": 43.2,
+          "puncture": 32.4,
+          "total": 270
+        },
+        "attackSpeed": 0.917
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.26,
+        "critMult": 3.2,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 8,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 500,
+          "total": 500
+        },
+        "attackSpeed": 0.917
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.26,
+        "critMult": 3.2,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 9,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 810,
+          "total": 810
+        },
+        "attackSpeed": 0.917
+      }
+    ],
+    "attackSpeed": 0.91666669,
+    "range": 3.2,
+    "slideAttack": 540,
+    "slamAttack": 810,
+    "slamRadialDamage": 540,
+    "slamRadius": 8,
+    "heavyAttackDamage": 1620,
+    "heavySlamAttack": 1350,
+    "heavySlamRadialDamage": 810,
+    "heavySlamRadius": 9,
+    "comboDuration": 5,
+    "followThrough": 0.60000002,
+    "windUp": 1.1,
+    "blockingAngle": 55,
+    "stancePolarity": "vazarin"
+  },
+  {
     "id": "2471",
     "slug": "wolf-sledge",
     "name": "Wolf Sledge",
@@ -47491,6 +47949,7 @@
       "slash": 119.14,
       "total": 259
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/WolfSledge.png?02419",
     "imageName": "WolfHammerSkin.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47612,6 +48071,99 @@
     "stancePolarity": "madurai"
   },
   {
+    "id": "/Lotus/Weapons/Tenno/Melee/HeavyScythe/TnOrionSiriusScythe/TnOrionScytheWeapon",
+    "slug": "wrath",
+    "name": "Wrath",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "melee",
+    "type": "Melee",
+    "masteryReq": 14,
+    "disposition": 1,
+    "criticalChance": 0.30000001,
+    "criticalMultiplier": 2,
+    "statusChance": 0.14999998,
+    "damageTypes": {
+      "puncture": 44,
+      "slash": 176,
+      "total": 220
+    },
+    "polarities": [
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Wrath.png?ff3cf",
+    "imageName": "TnOrionScytheWeapon.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "The wrath of one who knows revenge is all about timing. Orion's signature Heavy Scythe.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "critChance": 0.3,
+        "critMult": 2,
+        "statusChance": 0.15,
+        "damage": {
+          "slash": 176,
+          "puncture": 44,
+          "total": 220
+        },
+        "attackSpeed": 1.2
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.3,
+        "critMult": 2,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 8,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 440,
+          "total": 440
+        },
+        "attackSpeed": 1
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.3,
+        "critMult": 2,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 9,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 660,
+          "total": 660
+        },
+        "attackSpeed": 1
+      }
+    ],
+    "attackSpeed": 1.2,
+    "range": 2.8,
+    "slideAttack": 440,
+    "slamAttack": 660,
+    "slamRadialDamage": 440,
+    "slamRadius": 8,
+    "heavyAttackDamage": 3960,
+    "heavySlamAttack": 1100,
+    "heavySlamRadialDamage": 660,
+    "heavySlamRadius": 9,
+    "comboDuration": 5,
+    "followThrough": 0.40000001,
+    "windUp": 1,
+    "blockingAngle": 65,
+    "stancePolarity": "madurai"
+  },
+  {
     "id": "4660",
     "slug": "xoris",
     "name": "Xoris",
@@ -47631,6 +48183,7 @@
       "slash": 55.2,
       "total": 120
     },
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Xoris.png?5c2e5",
     "imageName": "ProteaPolarizerCrpGlaive.png",
     "isPrime": false,
     "isUmbra": false,
@@ -48074,6 +48627,7 @@
     "polarities": [
       "madurai"
     ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Zenistar.png?27d70",
     "imageName": "Zenistar.png",
     "isPrime": false,
     "isUmbra": false,
