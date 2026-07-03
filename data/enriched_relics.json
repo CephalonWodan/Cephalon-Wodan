@@ -76595,7 +76595,7 @@
     "code": "V12",
     "name": "Neo V12 Relic",
     "isRequiem": false,
-    "isVaulted": true,
+    "isVaulted": false,
     "rewards": {
       "Intact": [
         {
