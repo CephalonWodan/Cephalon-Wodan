@@ -3189,6 +3189,7 @@
         "critMult": 2.4,
         "statusChance": 0.24,
         "shotType": "Projectile",
+        "shotSpeed": 75,
         "damage": {
           "impact": 40,
           "slash": 160,
@@ -4169,9 +4170,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 2,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Balla.png?3df29",
     "imageName": "TipOne.png",
     "isPrime": false,
     "isUmbra": false,
@@ -4179,14 +4182,17 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Balla Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 11.2,
+          "slash": 78.4,
+          "puncture": 134.4,
+          "total": 224
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 1
       }
     ],
     "attackSpeed": 0
@@ -8192,7 +8198,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaCaustacyst.png?f76ee",
     "imageName": "CodaCaustacyst.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8369,7 +8374,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaHirudo.png?f76ee",
     "imageName": "CodaHirudo.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8465,7 +8469,6 @@
     "polarities": [
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMire.png?2ea1f",
     "imageName": "CodaMire.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8561,7 +8564,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaMotovore.png?2ea1f",
     "imageName": "InfLichHammerWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -8662,7 +8664,6 @@
       "madurai",
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/CodaPathocyst.png?2ea1f",
     "imageName": "CodaPathocyst.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9426,7 +9427,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Corufell.png?5fe41",
     "imageName": "ExaltedAWScytheWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9680,7 +9680,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Cronus.png?b7485",
     "imageName": "Cronus.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9840,9 +9839,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 3,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Cyath.png?02b17",
     "imageName": "TipFour.png",
     "isPrime": false,
     "isUmbra": false,
@@ -9850,14 +9851,17 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Cyath Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 46,
+          "slash": 172.5,
+          "puncture": 11.5,
+          "total": 230
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.92
       }
     ],
     "attackSpeed": 0
@@ -10152,7 +10156,6 @@
       "madurai",
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DakraPrime.png?2c888",
     "imageName": "DakraPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -10244,7 +10247,6 @@
       "radiation": 60,
       "total": 154
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkDagger.png?7fd23",
     "imageName": "DarkDagger.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10378,7 +10380,6 @@
       "radiation": 80,
       "total": 260
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DarkSword.png?18126",
     "imageName": "DarkSword.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10460,9 +10461,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 4,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Dehtat.png?4999e",
     "imageName": "TipFive.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10470,14 +10473,17 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Dehtat Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 22.4,
+          "slash": 89.6,
+          "puncture": 112,
+          "total": 224
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.92
       }
     ],
     "attackSpeed": 0
@@ -10705,7 +10711,7 @@
         "critMult": 3,
         "statusChance": 0.2,
         "shotType": "Projectile",
-        "shotSpeed": 0,
+        "shotSpeed": 50,
         "damage": {
           "impact": 3,
           "slash": 9,
@@ -10755,7 +10761,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Destreza.png?52b66",
     "imageName": "Destreza.png",
     "isPrime": false,
     "isUmbra": false,
@@ -10851,7 +10856,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DestrezaPrime.png?ad25e",
     "imageName": "DestrezaPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -10996,7 +11000,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DexDakra.png?05557",
     "imageName": "DexDakra.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11143,7 +11146,6 @@
       "madurai",
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DexNikana.png?3e3b7",
     "imageName": "Dex2023Nikana.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11335,7 +11337,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Dorrclave.png?30250",
     "imageName": "Dorrclave.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11429,7 +11430,6 @@
       "madurai",
       "vazarin"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/DragonNikana.png?20efa",
     "imageName": "DragonNikana.png",
     "isPrime": false,
     "isUmbra": false,
@@ -11640,7 +11640,7 @@
         "critMult": 3,
         "statusChance": 0.3,
         "shotType": "Projectile",
-        "shotSpeed": 0,
+        "shotSpeed": 90,
         "chargeTime": 0.6,
         "damage": {
           "impact": 100,
@@ -13144,6 +13144,7 @@
         "critMult": 2.6,
         "statusChance": 0.2,
         "shotType": "Projectile",
+        "shotSpeed": 50,
         "damage": {
           "impact": 144,
           "slash": 144,
@@ -13807,6 +13808,7 @@
     "subtype": "primary",
     "type": "Rifle",
     "masteryReq": 12,
+    "disposition": 1,
     "trigger": "Held",
     "accuracy": 100,
     "noise": "Alarming",
@@ -13819,6 +13821,10 @@
       "corrosive": 20,
       "total": 28
     },
+    "polarities": [
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Enkaus.png?5fc88",
     "imageName": "TnInkRifleWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -13827,16 +13833,49 @@
     "description": "Turn the enemy's worst nightmare into reality with Follie's signature rifle. The Enkaus will instantly kill and dissolve inked enemies that are damaged at low health. Shooting inked enemies siphons ink back into the Enkaus, allowing for a constant flow of creative destruction.",
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Primary",
+        "speed": 12,
+        "critChance": 0.16,
+        "critMult": 1.8,
+        "statusChance": 0.32,
+        "shotType": "Hit-Scan",
         "damage": {
           "puncture": 8,
           "corrosive": 20,
           "total": 28
-        },
+        }
+      },
+      {
+        "name": "Alt-Fire",
+        "speed": 2,
         "critChance": 0.16,
         "critMult": 1.8,
-        "statusChance": 0.31999999,
-        "speed": 12.000001
+        "statusChance": 0.32,
+        "shotType": "Projectile",
+        "shotSpeed": 40,
+        "damage": {
+          "puncture": 4,
+          "corrosive": 12,
+          "total": 16
+        }
+      },
+      {
+        "name": "Alt-Fire Radial Attack",
+        "speed": 1,
+        "critChance": 0.16,
+        "critMult": 1.8,
+        "statusChance": 0.32,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 8,
+          "reduction": 0.5
+        },
+        "damage": {
+          "puncture": 4,
+          "corrosive": 10,
+          "total": 14
+        }
       }
     ]
   },
@@ -14437,7 +14476,7 @@
         "critChance": 0.25,
         "critMult": 2.2,
         "statusChance": 0.38,
-        "shotType": "Projectile",
+        "shotType": "AoE",
         "chargeTime": 1.2,
         "falloff": {
           "start": 0.9,
@@ -17461,6 +17500,7 @@
     "subtype": "secondary",
     "type": "Pistol",
     "masteryReq": 10,
+    "disposition": 1,
     "trigger": "Auto",
     "accuracy": 100,
     "noise": "Alarming",
@@ -17473,6 +17513,11 @@
       "puncture": 7.5,
       "total": 25
     },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Grimoire.png?e8ce6",
     "imageName": "Grimoire.png",
     "isPrime": false,
     "isUmbra": false,
@@ -17481,16 +17526,64 @@
     "description": "Claim the power of Albrecht Entrati's knowledge. Customize the Grimoire with Tome Mods that enhance Warframe Abilities and reward strategic combat. Its alternate attack releases a voltaic orb with guaranteed Electricity Status.",
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Normal Attack",
+        "speed": 1.5,
+        "critChance": 0.2,
+        "critMult": 2,
+        "statusChance": 0.26,
+        "shotType": "Projectile",
+        "shotSpeed": 40,
         "damage": {
-          "impact": 17.5,
-          "puncture": 7.5,
-          "total": 25
+          "electricity": 100,
+          "total": 100
+        }
+      },
+      {
+        "name": "Normal Radial Attack",
+        "speed": 1.5,
+        "critChance": 0.2,
+        "critMult": 2,
+        "statusChance": 0.26,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 1,
+          "reduction": 0.8
         },
-        "critChance": 0.079999998,
-        "critMult": 1.6,
-        "statusChance": 0.10000002,
-        "speed": 1.5000001
+        "damage": {
+          "electricity": 50,
+          "total": 50
+        }
+      },
+      {
+        "name": "Active Attack",
+        "speed": 1,
+        "critChance": 0.2,
+        "critMult": 2,
+        "statusChance": 0.26,
+        "shotType": "Projectile",
+        "shotSpeed": 6,
+        "damage": {
+          "electricity": 350,
+          "total": 350
+        }
+      },
+      {
+        "name": "Active Radial Attack",
+        "speed": 1,
+        "critChance": 0.2,
+        "critMult": 2,
+        "statusChance": 0.26,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0.8
+        },
+        "damage": {
+          "electricity": 250,
+          "total": 250
+        }
       }
     ]
   },
@@ -17536,6 +17629,7 @@
         "critMult": 2,
         "statusChance": 0.26,
         "shotType": "Projectile",
+        "shotSpeed": 40,
         "damage": {
           "electricity": 100,
           "total": 100
@@ -18024,6 +18118,64 @@
     "windUp": 0.5,
     "blockingAngle": 55,
     "stancePolarity": "naramon"
+  },
+  {
+    "id": "/Lotus/Weapons/Sentients/SentOctaMiniGun/SentOctaMiniGun",
+    "slug": "haalvu",
+    "name": "Haalvu",
+    "categories": [
+      "weapon"
+    ],
+    "subtype": "primary",
+    "type": "Rifle",
+    "masteryReq": 14,
+    "disposition": 1,
+    "trigger": "Auto",
+    "accuracy": 100,
+    "noise": "Alarming",
+    "criticalChance": 0.25,
+    "criticalMultiplier": 2.5,
+    "statusChance": 0.19,
+    "fireRate": 13.000001,
+    "damageTypes": {
+      "tau": 33,
+      "total": 33
+    },
+    "polarities": [
+      "madurai",
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Haalvu.png?c2ddd",
+    "imageName": "TnoOctaMiniGun.png",
+    "isPrime": false,
+    "isUmbra": false,
+    "isWraith": false,
+    "isDex": false,
+    "description": "Deliver a ruthless barrage of Sentient artillery from this instrument of death. Alt-fire splits the weapon apart into separate rifles, expanding its devastation by tracking up to 4 targets at once, while consuming more ammo per shot.",
+    "attacks": [
+      {
+        "name": "Normal Attack",
+        "speed": 13,
+        "critChance": 0.25,
+        "critMult": 2.5,
+        "statusChance": 0.19,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "total": 0
+        }
+      },
+      {
+        "name": "Alt-Fire",
+        "speed": 12,
+        "critChance": 0.2,
+        "critMult": 1.8,
+        "statusChance": 0.26,
+        "shotType": "Hit-Scan",
+        "damage": {
+          "total": 0
+        }
+      }
+    ]
   },
   {
     "id": "982",
@@ -22892,9 +23044,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 4,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Kronsh.png?8a416",
     "imageName": "TipSix.png",
     "isPrime": false,
     "isUmbra": false,
@@ -22902,14 +23056,16 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Kronsh Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 163.8,
+          "slash": 70.2,
+          "total": 234
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.85
       }
     ],
     "attackSpeed": 0
@@ -23169,6 +23325,9 @@
       "blast": 187,
       "total": 274
     },
+    "polarities": [
+      "naramon"
+    ],
     "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaAyanga.png?098c6",
     "imageName": "GrnHeavyGrenadeLauncher.png",
     "isPrime": false,
@@ -23516,6 +23675,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 13,
+    "disposition": 1,
     "criticalChance": 0.25,
     "criticalMultiplier": 2.0999999,
     "statusChance": 0.31999999,
@@ -23525,6 +23685,11 @@
       "slash": 122.38,
       "total": 211
     },
+    "polarities": [
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/KuvaGhoulsaw.png?938a6",
     "imageName": "KuvaGhoulSaw.png",
     "isPrime": false,
     "isUmbra": false,
@@ -23533,16 +23698,50 @@
     "description": "The addition of Kuva has forged the savage Ghoulsaw into an even more brutal weapon, allowing for faster attacks.",
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Normal Attack",
+        "critChance": 0.25,
+        "critMult": 2.1,
+        "statusChance": 0.32,
         "damage": {
           "impact": 40.09,
-          "puncture": 48.53,
           "slash": 122.38,
+          "puncture": 48.53,
           "total": 211
         },
+        "attackSpeed": 1.2
+      },
+      {
+        "name": "Slam Attack",
         "critChance": 0.25,
-        "critMult": 2.0999999,
-        "statusChance": 0.31999999,
+        "critMult": 2.1,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 7,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 422,
+          "total": 422
+        },
+        "attackSpeed": 1.2
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.25,
+        "critMult": 2.1,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 9,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 633,
+          "total": 633
+        },
         "attackSpeed": 1.2
       }
     ],
@@ -23559,7 +23758,8 @@
     "comboDuration": 5,
     "followThrough": 1,
     "windUp": 1,
-    "blockingAngle": 90
+    "blockingAngle": 90,
+    "stancePolarity": "naramon"
   },
   {
     "id": "5572",
@@ -25327,6 +25527,7 @@
         "critMult": 3,
         "statusChance": 0.24,
         "shotType": "Projectile",
+        "shotSpeed": 120,
         "damage": {
           "impact": 50,
           "total": 50
@@ -25409,6 +25610,7 @@
         "critMult": 3.4,
         "statusChance": 0.3,
         "shotType": "Projectile",
+        "shotSpeed": 120,
         "damage": {
           "impact": 50,
           "total": 50
@@ -25490,6 +25692,7 @@
         "critMult": 3.4,
         "statusChance": 0.28,
         "shotType": "Projectile",
+        "shotSpeed": 120,
         "damage": {
           "impact": 50,
           "total": 50
@@ -25845,7 +26048,7 @@
         "critMult": 3,
         "statusChance": 0.22,
         "shotType": "Projectile",
-        "shotSpeed": 0,
+        "shotSpeed": 120,
         "damage": {
           "impact": 300,
           "radiation": 700,
@@ -26316,6 +26519,7 @@
     "subtype": "archgun",
     "type": "Arch-Gun",
     "masteryReq": 10,
+    "disposition": 3,
     "trigger": "Charge",
     "accuracy": 1.4285715,
     "noise": "Alarming",
@@ -26330,6 +26534,10 @@
       "radiation": 40,
       "total": 90
     },
+    "polarities": [
+      "madurai"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mandonel.png?e64d1",
     "imageName": "TnConcreteArchgun.png",
     "isPrime": false,
     "isUmbra": false,
@@ -26338,18 +26546,35 @@
     "description": "Mandonel fires Radiation Damage projectiles. Partially charged shots release a spread and fully charged shots release a beam that dissolves into a radiation field. Projectiles that pass through the field are empowered.",
     "attacks": [
       {
-        "name": "Primary Fire",
-        "damage": {
-          "impact": 25,
-          "puncture": 15,
-          "slash": 10,
-          "radiation": 40,
-          "total": 90
-        },
+        "name": "Horizontal Spread",
+        "speed": 3,
         "critChance": 0.25,
         "critMult": 2,
-        "statusChance": 0.14999998,
-        "speed": 3.0000002
+        "statusChance": 0.15,
+        "shotType": "Projectile",
+        "shotSpeed": 125,
+        "damage": {
+          "impact": 25,
+          "slash": 10,
+          "puncture": 15,
+          "radiation": 40,
+          "total": 90
+        }
+      },
+      {
+        "name": "Charge",
+        "speed": 3,
+        "critChance": 0.3,
+        "critMult": 2.5,
+        "statusChance": 0.2,
+        "shotType": "Hit-Scan",
+        "chargeTime": 1.5,
+        "damage": {
+          "puncture": 200,
+          "heat": 300,
+          "radiation": 400,
+          "total": 900
+        }
       }
     ]
   },
@@ -26753,9 +26978,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 4,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Mewan.png?c84ff",
     "imageName": "TipThree.png",
     "isPrime": false,
     "isUmbra": false,
@@ -26763,14 +26990,17 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Mewan Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 56,
+          "slash": 89.6,
+          "puncture": 78.4,
+          "total": 224
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.85
       }
     ],
     "attackSpeed": 0
@@ -29671,9 +29901,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 4,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/Ooltha.png?2d710",
     "imageName": "TipTwo.png",
     "isPrime": false,
     "isUmbra": false,
@@ -29681,14 +29913,17 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Ooltha Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 22.4,
+          "slash": 112,
+          "puncture": 89.6,
+          "total": 224
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.92
       }
     ],
     "attackSpeed": 0
@@ -29886,6 +30121,7 @@
         "critChance": 0.24,
         "critMult": 2.6,
         "statusChance": 0.3,
+        "shotType": "AoE",
         "falloff": {
           "start": 0,
           "end": 4.6,
@@ -32115,9 +32351,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 2,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PlagueKeewar.png?9d7ee",
     "imageName": "InfestedTipTwo.png",
     "isPrime": false,
     "isUmbra": false,
@@ -32125,14 +32363,18 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Plague Keewar Strike",
+        "critChance": 0.18,
+        "critMult": 2,
+        "statusChance": 0.22,
         "damage": {
-          "total": 0
+          "impact": 88,
+          "slash": 91,
+          "puncture": 57,
+          "viral": 70,
+          "total": 306
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.88
       }
     ],
     "attackSpeed": 0
@@ -32185,9 +32427,11 @@
     "subtype": "melee",
     "type": "Zaw Component",
     "masteryReq": 0,
+    "disposition": 1,
     "criticalChance": 0,
     "criticalMultiplier": 0,
     "statusChance": 0,
+    "wikiaThumbnail": "https://wiki.warframe.com/images/PlagueKripath.png?3949e",
     "imageName": "InfestedTipOne.png",
     "isPrime": false,
     "isUmbra": false,
@@ -32195,14 +32439,18 @@
     "isDex": false,
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Plague Kripath Strike",
+        "critChance": 0.22,
+        "critMult": 2.2,
+        "statusChance": 0.18,
         "damage": {
-          "total": 0
+          "impact": 30,
+          "slash": 49,
+          "puncture": 70,
+          "viral": 64,
+          "total": 213
         },
-        "critChance": 0,
-        "critMult": 0,
-        "statusChance": 0,
-        "attackSpeed": 0
+        "attackSpeed": 0.95
       }
     ],
     "attackSpeed": 0
@@ -34607,6 +34855,7 @@
     "subtype": "melee",
     "type": "Melee",
     "masteryReq": 13,
+    "disposition": 3,
     "criticalChance": 0.34999999,
     "criticalMultiplier": 2.5,
     "statusChance": 0.18000001,
@@ -34616,6 +34865,12 @@
       "slash": 182,
       "total": 260
     },
+    "polarities": [
+      "madurai",
+      "madurai",
+      "naramon"
+    ],
+    "wikiaThumbnail": "https://wiki.warframe.com/images/QuassusPrime.png?a9584",
     "imageName": "QuassusPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -34624,17 +34879,81 @@
     "description": "Wield Xaku Prime’s elegant fan, its gilded edges crafted for both precision and prestige.",
     "attacks": [
       {
-        "name": "Primary Fire",
+        "name": "Normal Attack",
+        "critChance": 0.35,
+        "critMult": 2.5,
+        "statusChance": 0.18,
         "damage": {
           "impact": 26,
-          "puncture": 52,
           "slash": 182,
+          "puncture": 52,
           "total": 260
         },
-        "critChance": 0.34999999,
+        "attackSpeed": 0.833
+      },
+      {
+        "name": "First Heavy Attack - Ethereal Daggers",
+        "critChance": 0.35,
         "critMult": 2.5,
-        "statusChance": 0.18000001,
-        "attackSpeed": 0.83333337
+        "statusChance": 0.01,
+        "shotType": "Projectile",
+        "shotSpeed": 46,
+        "chargeTime": 0.5,
+        "damage": {
+          "slash": 114,
+          "puncture": 76,
+          "total": 190
+        },
+        "attackSpeed": 2
+      },
+      {
+        "name": "Second Heavy Attack - Ethereal Daggers",
+        "critChance": 0.35,
+        "critMult": 2.5,
+        "statusChance": 0.02,
+        "shotType": "Projectile",
+        "shotSpeed": 46,
+        "chargeTime": 0.5,
+        "damage": {
+          "slash": 228,
+          "puncture": 152,
+          "total": 380
+        },
+        "attackSpeed": 2
+      },
+      {
+        "name": "Slam Attack",
+        "critChance": 0.35,
+        "critMult": 2.5,
+        "statusChance": 0.1,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 5,
+          "reduction": 0.5
+        },
+        "damage": {
+          "impact": 520,
+          "total": 520
+        },
+        "attackSpeed": 0.833
+      },
+      {
+        "name": "Heavy Slam Attack",
+        "critChance": 0.35,
+        "critMult": 2.5,
+        "statusChance": 0.34,
+        "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0.3
+        },
+        "damage": {
+          "blast": 780,
+          "total": 780
+        },
+        "attackSpeed": 0.833
       }
     ],
     "attackSpeed": 0.83333337,
@@ -34650,7 +34969,8 @@
     "comboDuration": 5,
     "followThrough": 0.69999999,
     "windUp": 0.5,
-    "blockingAngle": 55
+    "blockingAngle": 55,
+    "stancePolarity": "naramon"
   },
   {
     "id": "2683",
@@ -38668,6 +38988,7 @@
         "critChance": 0.12,
         "critMult": 2,
         "statusChance": 0.3,
+        "shotType": "AoE",
         "damage": {
           "magnetic": 100,
           "total": 100
@@ -39633,6 +39954,11 @@
         "critMult": 2.4,
         "statusChance": 0.1,
         "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 5,
+          "reduction": 0.5
+        },
         "damage": {
           "toxin": 168,
           "total": 168
@@ -39645,6 +39971,11 @@
         "critMult": 2.4,
         "statusChance": 0.1,
         "shotType": "AoE",
+        "falloff": {
+          "start": 0,
+          "end": 6,
+          "reduction": 0.3
+        },
         "damage": {
           "toxin": 504,
           "total": 504
@@ -41592,11 +41923,12 @@
         }
       },
       {
-        "name": "Singularity",
+        "name": "Fully Stacked Orb Singularity",
         "speed": 4,
         "critChance": 0,
         "critMult": 0,
         "statusChance": 0,
+        "shotType": "DoT",
         "falloff": {
           "start": 0,
           "end": 5,
@@ -41821,6 +42153,7 @@
         "critMult": 1.9,
         "statusChance": 0.23,
         "shotType": "Projectile",
+        "shotSpeed": 20,
         "damage": {
           "radiation": 96,
           "total": 96
@@ -41930,6 +42263,7 @@
         "critMult": 1.9,
         "statusChance": 0.23,
         "shotType": "Projectile",
+        "shotSpeed": 20,
         "damage": {
           "radiation": 96,
           "total": 96
@@ -44477,7 +44811,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Tonkkatt.png?363a0",
     "imageName": "GrnChainSawTonfa.png",
     "isPrime": false,
     "isUmbra": false,
@@ -44895,7 +45228,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinBasolk.png?ad177",
     "imageName": "TwinBasolk.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45166,7 +45498,6 @@
       "slash": 175,
       "total": 250
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/TwinKrohkur.png?9e026",
     "imageName": "TwinKrohkur.png",
     "isPrime": false,
     "isUmbra": false,
@@ -45720,7 +46051,6 @@
       "slash": 234.36,
       "total": 279
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Vastilok.png?fdf3e",
     "imageName": "GrnGunblade.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46084,7 +46414,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VaykorSydon.png?1524e",
     "imageName": "Sydon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46606,7 +46935,6 @@
       "slash": 77,
       "total": 220
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Venato.png?56f40",
     "imageName": "SentJointedScytheWeapon.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46701,7 +47029,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VenatoPrime.png?eb0e1",
     "imageName": "VenatoPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -46793,7 +47120,6 @@
       "slash": 98,
       "total": 140
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Venka.png?03dd1",
     "imageName": "Venka.png",
     "isPrime": false,
     "isUmbra": false,
@@ -46889,7 +47215,6 @@
       "naramon",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VenkaPrime.png?7ea5c",
     "imageName": "VenkaPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -46981,7 +47306,6 @@
       "slash": 106.5,
       "total": 213
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Verdilac.png?6e3c1",
     "imageName": "ArchonWhip.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47099,7 +47423,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Vericres.png?bcc94",
     "imageName": "MoonWarfan.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47444,7 +47767,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Vitrica.png?54002",
     "imageName": "NWOrokinSword.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47558,7 +47880,6 @@
     "polarities": [
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/Volnus.png?18bd9",
     "imageName": "Volnus.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47654,7 +47975,6 @@
       "madurai",
       "madurai"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/VolnusPrime.png?34775",
     "imageName": "VolnusPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -47856,7 +48176,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/War.png?42c4e",
     "imageName": "War.png",
     "isPrime": false,
     "isUmbra": false,
@@ -47951,7 +48270,6 @@
     "polarities": [
       "naramon"
     ],
-    "wikiaThumbnail": "https://wiki.warframe.com/images/WarPrime.png?e3f3a",
     "imageName": "WarPrime.png",
     "isPrime": true,
     "isUmbra": false,
@@ -48043,7 +48361,6 @@
       "slash": 119.14,
       "total": 259
     },
-    "wikiaThumbnail": "https://wiki.warframe.com/images/WolfSledge.png?02419",
     "imageName": "WolfHammerSkin.png",
     "isPrime": false,
     "isUmbra": false,
@@ -48670,7 +48987,7 @@
         "critChance": 0.15,
         "critMult": 2,
         "statusChance": 0.1,
-        "shotType": "Projectile",
+        "shotType": "AoE",
         "falloff": {
           "start": 0,
           "end": 3,
