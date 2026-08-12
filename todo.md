@@ -31,3 +31,16 @@ Phase en cours : checkpoint final et livraison.
 ## Décision de conception
 
 L’aperçu est intégré directement dans chaque carte Arcane du sélecteur, avec un bloc « APERÇU DE L’EFFET » et le rang maximal. La sélection reste une action séparée : consulter l’effet ne modifie pas le build ; seul le clic de la carte applique l’Arcane.
+
+
+## TODO — Ajout de Sirius & Orion et Uriel
+
+- [x] Vérifier les données officielles et les noms canoniques des nouvelles Warframes.
+- [x] Ajouter Sirius & Orion comme entrée unique conformément à leur occupation d’un seul slot de Warframe.
+- [x] Ajouter Uriel avec ses statistiques, capacités, rôle et polarité d’aura.
+- [x] Vérifier compteurs, filtres, cartes catalogue et sélection dans le builder.
+- [ ] Créer le checkpoint final et publier la mise à jour.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
