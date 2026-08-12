@@ -44,3 +44,11 @@ L’aperçu est intégré directement dans chaque carte Arcane du sélecteur, av
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Workflow GitHub Actions hebdomadaire
+
+- [x] Définir la structure du script d’audit et du rapport JSON.
+- [x] Créer le fichier `.github/workflows/data-audit.yml` (exécution chaque lundi à 8h00 UTC).
+- [x] Valider localement l’exécution du script d’audit et le build de production.
+- [ ] Publier le workflow et le script sur GitHub.
