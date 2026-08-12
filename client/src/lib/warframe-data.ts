@@ -1,11 +1,26 @@
 // ============================================================
-// WARFRAME SET BUILDER — Data Layer
-// Tenno Codex dark theme: #0a0e14 bg, #4fc3f7 cyan accent
+// WARFRAME SET BUILDER — Cephalon-Wodan catalog adapter
+// Design reminder: Tenno Codex HUD — dense but readable, technical labels,
+// cyan hierarchy with Prime orange, and predictable category sorting.
 // ============================================================
+
+import catalog from "./warframe-data-full.json";
 
 export type Rarity = "common" | "uncommon" | "rare" | "legendary" | "prime";
 export type WeaponType = "primary" | "secondary" | "melee" | "archgun" | "archmelee";
 export type DamageType = "impact" | "puncture" | "slash" | "heat" | "cold" | "electricity" | "toxin" | "blast" | "corrosive" | "gas" | "magnetic" | "radiation" | "viral";
+export type CompanionType = "sentinel" | "beast" | "moa" | "hound" | "predasite" | "vulpaphyla";
+export type ModType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "archwing" | "necramech" | "parazon" | "kdrive" | "universal";
+export type Polarity = "madurai" | "vazarin" | "naramon" | "zenurik" | "unairu" | "penjaga" | "umbra" | "any";
+
+type CatalogData = {
+  warframes: Array<Record<string, any>>;
+  weapons: Array<Record<string, any>>;
+  mods: Array<Record<string, any>>;
+  companions: Array<Record<string, any>>;
+};
+
+const fullData = catalog as CatalogData;
 
 export interface Warframe {
   id: string;
@@ -21,6 +36,8 @@ export interface Warframe {
   description: string;
   imageUrl?: string;
   rarity: Rarity;
+  polarities?: Polarity[];
+  aura?: Polarity;
 }
 
 export interface Weapon {
@@ -37,12 +54,20 @@ export interface Weapon {
   rarity: Rarity;
   description: string;
   imageUrl?: string;
+  weaponClass?: string;
+  trigger?: string;
+  accuracy?: number;
+  magazineSize?: number;
+  reloadTime?: number;
+  disposition?: number;
+  damageTypes?: Record<string, number>;
+  polarities?: Polarity[];
 }
 
 export interface Companion {
   id: string;
   name: string;
-  type: "sentinel" | "beast" | "moa" | "hound" | "predasite" | "vulpaphyla";
+  type: CompanionType;
   mastery: number;
   health: number;
   shield: number;
@@ -50,6 +75,7 @@ export interface Companion {
   rarity: Rarity;
   description: string;
   imageUrl?: string;
+  polarities?: Polarity[];
 }
 
 export interface Mod {
@@ -57,10 +83,14 @@ export interface Mod {
   name: string;
   rarity: Rarity;
   maxRank: number;
-  polarity: "madurai" | "vazarin" | "naramon" | "zenurik" | "unairu" | "penjaga" | "umbra" | "any";
-  type: "warframe" | "primary" | "secondary" | "melee" | "companion" | "archwing" | "universal";
+  polarity: Polarity;
+  type: ModType;
   description: string;
   effect: string;
+  compatName?: string;
+  isAugment?: boolean;
+  imageUrl?: string;
+  dropCount?: number;
 }
 
 export interface BuildSet {
@@ -79,75 +109,18 @@ export interface BuildSet {
   createdAt: string;
 }
 
-// ---- WARFRAMES DATA ----
-// Charger les données complètes depuis le fichier JSON
-import fullData from './warframe-data-full.json';
+export const WARFRAMES: Warframe[] = fullData.warframes as Warframe[];
+export const WEAPONS: Weapon[] = fullData.weapons as Weapon[];
+export const MODS: Mod[] = fullData.mods as Mod[];
+export const COMPANIONS: Companion[] = fullData.companions as Companion[];
 
-// Convertir les données brutes en interfaces TypeScript
-const convertedWarframes = fullData.warframes.map((w: any) => ({
-  id: w.id,
-  name: w.name,
-  isPrime: w.name.includes('Prime'),
-  role: 'Guerrier',
-  health: w.health,
-  shield: w.shield,
-  armor: w.armor,
-  energy: w.energy,
-  mastery: 0,
-  abilities: [],
-  description: w.description || '',
-  rarity: w.rarity,
-}));
+export const CATALOG_COUNTS = {
+  warframes: WARFRAMES.length,
+  weapons: WEAPONS.length,
+  mods: MODS.length,
+  companions: COMPANIONS.length,
+};
 
-export const WARFRAMES: Warframe[] = convertedWarframes;
-
-// ---- WEAPONS DATA ----
-const convertedWeapons = fullData.weapons.map((w: any) => ({
-  id: w.id,
-  name: w.name,
-  type: (w.id.includes('melee') ? 'melee' : w.id.includes('secondary') ? 'secondary' : 'primary') as WeaponType,
-  isPrime: w.name.includes('Prime'),
-  mastery: 0,
-  damage: w.damage || 10,
-  critChance: w.critChance || 0,
-  critMultiplier: w.critMult || 1,
-  statusChance: w.procChance || 0,
-  fireRate: w.fireRate || 1,
-  rarity: w.rarity,
-  description: w.description || '',
-}));
-
-export const WEAPONS: Weapon[] = convertedWeapons;
-
-// ---- COMPANIONS DATA ----
-const convertedCompanions = fullData.companions.map((c: any) => ({
-  id: c.id,
-  name: c.name,
-  type: (c.type || 'sentinel') as any,
-  mastery: 0,
-  health: c.health || 100,
-  shield: c.shield || 0,
-  armor: c.armor || 0,
-  rarity: c.rarity,
-  description: c.description || '',
-}));
-
-export const COMPANIONS: Companion[] = convertedCompanions;
-
-// ---- MODS DATA ----
-const convertedMods = fullData.mods.map((m: any) => ({
-  id: m.id,
-  name: m.name,
-  rarity: m.rarity,
-  maxRank: 10,
-  polarity: ('madurai') as any,
-  type: (m.type === 'Warframe' ? 'warframe' : 'primary') as any,
-  description: m.description || '',
-  effect: `${m.baseDrain ? '+' + m.baseDrain + ' drain' : 'Mod'}`,
-}));
-
-export const MODS: Mod[] = convertedMods.slice(0, 300);
-// ---- HELPER FUNCTIONS ----
 export function getRarityColor(rarity: Rarity): string {
   const colors: Record<Rarity, string> = {
     common: "#b0bec5",
@@ -156,7 +129,7 @@ export function getRarityColor(rarity: Rarity): string {
     legendary: "#ffd700",
     prime: "#ff6b35",
   };
-  return colors[rarity];
+  return colors[rarity] || colors.common;
 }
 
 export function getRarityLabel(rarity: Rarity): string {
@@ -167,7 +140,7 @@ export function getRarityLabel(rarity: Rarity): string {
     legendary: "Légendaire",
     prime: "Prime",
   };
-  return labels[rarity];
+  return labels[rarity] || labels.common;
 }
 
 export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {

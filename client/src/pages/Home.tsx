@@ -5,13 +5,13 @@
 import { Link } from "wouter";
 import { Zap, Shield, Sword, Star, Users, ChevronRight, Clock, BookOpen, Crosshair, Package, Settings, Map } from "lucide-react";
 import Layout from "@/components/Layout";
-import { WARFRAMES, WEAPONS, MODS } from "@/lib/warframe-data";
+import { WARFRAMES, WEAPONS, MODS, COMPANIONS } from "@/lib/warframe-data";
 
 const CATEGORY_ITEMS = [
   { label: "WARFRAMES", href: "/warframes", Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
   { label: "ARMES", href: "/weapons", Icon: Sword, count: WEAPONS.length, color: "#ff6b35" },
   { label: "MODS", href: "/mods", Icon: Star, count: MODS.length, color: "#ffd700" },
-  { label: "COMPAGNONS", href: "/companions", Icon: Users, count: 10, color: "#66bb6a" },
+  { label: "COMPAGNONS", href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#66bb6a" },
   { label: "CRÉER UN SET", href: "/builder", Icon: Crosshair, count: null, color: "#a78bfa" },
   { label: "GUIDES", href: "/guides", Icon: BookOpen, count: null, color: "#4fc3f7" },
 ];
@@ -94,6 +94,7 @@ export default function Home() {
               { label: "Warframes", value: WARFRAMES.length, icon: Shield },
               { label: "Armes", value: WEAPONS.length, icon: Sword },
               { label: "Mods", value: MODS.length, icon: Star },
+              { label: "Compagnons", value: COMPANIONS.length, icon: Users },
             ].map(({ label, value, icon: Icon }) => (
               <div key={label} className="flex items-center justify-between py-1.5 border-b last:border-0" style={{ borderColor: "var(--wf-border)" }}>
                 <div className="flex items-center gap-2 text-xs" style={{ color: "#7fb3c8" }}>
