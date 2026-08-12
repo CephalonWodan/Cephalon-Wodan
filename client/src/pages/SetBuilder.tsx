@@ -13,9 +13,69 @@ import {
 import { toast } from "sonner";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
 
 const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
+
+type BuildItem = { id?: string; name?: string };
+
+function itemIdentity(item: BuildItem | null | undefined): string {
+  if (!item) return "";
+  return String(item.id || item.name || "").trim().toLowerCase();
+}
+
+function normalizeUniqueArray<T extends BuildItem>(value: unknown, length: number): (T | null)[] {
+  const seen = new Set<string>();
+  return Array.from({ length }, (_, index) => {
+    const item = Array.isArray(value) ? (value[index] as T | null | undefined) : null;
+    const identity = itemIdentity(item);
+    if (!item || !identity || seen.has(identity)) return null;
+    seen.add(identity);
+    return item;
+  });
+}
+
+function getSlotItems(build: BuildSet, type: SlotType): (BuildItem | null)[] {
+  switch (type) {
+    case "mod-warframe": return build.warframeMods;
+    case "mod-primary": return build.primaryMods;
+    case "mod-secondary": return build.secondaryMods;
+    case "mod-melee": return build.meleeMods;
+    case "mod-companion": return build.companionMods;
+    case "arcane-warframe": return build.warframeArcanes;
+    case "arcane-primary": return build.primaryArcanes;
+    case "arcane-secondary": return build.secondaryArcanes;
+    case "arcane-melee": return build.meleeArcanes;
+    default: return [];
+  }
+}
+
+function getUnavailableIds(build: BuildSet, type: SlotType, currentIndex?: number): string[] {
+  return getSlotItems(build, type)
+    .filter((item, index) => index !== currentIndex && item)
+    .map(item => itemIdentity(item))
+    .filter(Boolean);
+}
+
+function isCompanionModCompatible(mod: Mod, companion?: Companion): boolean {
+  if (mod.type === "universal") return true;
+  if (mod.type !== "companion" || !companion) return mod.type === "companion";
+  const compat = (mod.compatName || "").trim().toLowerCase();
+  const name = companion.name.trim().toLowerCase();
+  const family = companion.type.trim().toLowerCase();
+  if (!compat || compat === "companion") return true;
+  if (compat === name || name.includes(compat) || compat.includes(name)) return true;
+  if (compat === family || family.includes(compat)) return true;
+  const aliases: Record<string, string[]> = {
+    beast: ["beast", "kubrow", "kavat", "vulpaphyla", "predasite", "claws"],
+    sentinel: ["sentinel", "robotic"],
+    moa: ["moa", "robotic"],
+    hound: ["hound", "robotic"],
+    predasite: ["predasite", "beast", "claws"],
+    vulpaphyla: ["vulpaphyla", "beast", "claws"],
+  };
+  return (aliases[family] || []).some(alias => compat === alias || compat.includes(alias));
+}
 
 function normalizeBuild(raw: unknown): BuildSet | null {
   if (!raw || typeof raw !== "object") return null;
@@ -37,14 +97,15 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     id: typeof candidate.id === "string" ? candidate.id : fallback.id,
     name: typeof candidate.name === "string" ? candidate.name : fallback.name,
     description: typeof candidate.description === "string" ? candidate.description : "",
-    warframeMods: normalizeArray(candidate.warframeMods, 8),
-    primaryMods: normalizeArray(candidate.primaryMods, 8),
-    secondaryMods: normalizeArray(candidate.secondaryMods, 8),
-    meleeMods: normalizeArray(candidate.meleeMods, 8),
-    warframeArcanes: normalizeArray(candidate.warframeArcanes, 2),
-    primaryArcanes: normalizeArray(candidate.primaryArcanes, 1),
-    secondaryArcanes: normalizeArray(candidate.secondaryArcanes, 1),
-    meleeArcanes: normalizeArray(candidate.meleeArcanes, 1),
+    warframeMods: normalizeUniqueArray(candidate.warframeMods, 8),
+    primaryMods: normalizeUniqueArray(candidate.primaryMods, 8),
+    secondaryMods: normalizeUniqueArray(candidate.secondaryMods, 8),
+    meleeMods: normalizeUniqueArray(candidate.meleeMods, 8),
+    companionMods: normalizeUniqueArray(candidate.companionMods, 8),
+    warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
+    primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
+    secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
+    meleeArcanes: normalizeUniqueArray(candidate.meleeArcanes, 1),
     archonShards: normalizeShards(candidate.archonShards),
     createdAt: typeof candidate.createdAt === "string" ? candidate.createdAt : fallback.createdAt,
   };
@@ -65,11 +126,13 @@ function loadPersistedBuildState(): { builds: BuildSet[]; savedBuilds: BuildSet[
 interface SelectorModalProps {
   type: SlotType;
   modSlotIndex?: number;
+  unavailableIds?: string[];
+  companion?: Companion;
   onSelect: (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => void;
   onClose: () => void;
 }
 
-function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalProps) {
+function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onSelect, onClose }: SelectorModalProps) {
   const [search, setSearch] = useState("");
 
   const getItems = () => {
@@ -88,6 +151,7 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
+      case "mod-companion": return MODS.filter(mod => isCompanionModCompatible(mod, companion));
       default: return [];
     }
   };
@@ -112,6 +176,7 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
       "mod-primary": "SÉLECTIONNER UN MOD PRIMAIRE",
       "mod-secondary": "SÉLECTIONNER UN MOD SECONDAIRE",
       "mod-melee": "SÉLECTIONNER UN MOD MÊLÉE",
+      "mod-companion": "SÉLECTIONNER UN MOD COMPAGNON",
     };
     return titles[type];
   };
@@ -152,14 +217,16 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
             {items.map(item => {
               const rarityColor = getRarityColor((item as any).rarity || "common");
               const isPrime = (item as any).isPrime;
+              const isUnavailable = unavailableIds.includes(itemIdentity(item));
               return (
                 <button
                   key={item.id}
-                  onClick={() => { onSelect(item); onClose(); }}
-                  className="flex items-center gap-3 p-2.5 rounded-sm text-left transition-all duration-150 hover:bg-white/5"
-                  style={{ border: "1px solid var(--wf-border)" }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = rarityColor)}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--wf-border)")}
+                  disabled={isUnavailable}
+                  onClick={() => { if (!isUnavailable) { onSelect(item); onClose(); } }}
+                  className={`flex items-center gap-3 p-2.5 rounded-sm text-left transition-all duration-150 ${isUnavailable ? "cursor-not-allowed opacity-40" : "hover:bg-white/5"}`}
+                  style={{ border: `1px solid ${isUnavailable ? "rgba(148,163,184,.18)" : "var(--wf-border)"}` }}
+                  onMouseEnter={e => { if (!isUnavailable) e.currentTarget.style.borderColor = rarityColor; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = isUnavailable ? "rgba(148,163,184,.18)" : "var(--wf-border)"; }}
                 >
                   <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${rarityColor}20`, border: `1px solid ${rarityColor}40` }}>
@@ -172,6 +239,7 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
                       </span>
                       {type === "archon-shard" && <span className="shrink-0 text-[8px]" style={{ color: "#ffca28", fontFamily: "var(--font-mono)" }}>{(item as any).sourceKey}</span>}
                       {isPrime && <span className="text-xs shrink-0" style={{ color: "#ff6b35", fontSize: "9px" }}>PRIME</span>}
+                      {isUnavailable && <span className="ml-auto shrink-0 text-[8px] uppercase" style={{ color: "#94a3b8", fontFamily: "var(--font-mono)" }}>DÉJÀ UTILISÉ</span>}
                     </div>
                     <div className="text-xs" style={{ color: rarityColor, fontFamily: "var(--font-display)", fontSize: "9px", letterSpacing: "0.05em" }}>
                       {getRarityLabel((item as any).rarity || "common").toUpperCase()}
@@ -325,7 +393,7 @@ function ModSlot({ mod, index, onSelect, onClear }: ModSlotProps) {
 interface ModGridProps {
   label: string;
   mods: (Mod | null)[];
-  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee";
+  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
   onSelectMod: (index: number, type: SlotType) => void;
   onClearMod: (index: number, type: SlotType) => void;
   accentColor?: string;
@@ -484,8 +552,9 @@ function StatsPanel({ build }: { build: BuildSet }) {
             </>
           )}
 
-          <div className="mt-3 grid grid-cols-2 gap-2 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
+          <div className="mt-3 grid grid-cols-3 gap-2 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Arcanes</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{[...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).length}</div></div>
+            <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Mods comp.</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{build.companionMods.filter(Boolean).length}/{build.companionMods.length}</div></div>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(255,202,40,.08)", border: "1px solid rgba(255,202,40,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#ffca28", fontFamily: "var(--font-display)" }}>Éclats</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{build.archonShards.filter(Boolean).length}/5</div></div>
           </div>
 
@@ -533,6 +602,11 @@ export default function SetBuilder() {
   const handleSelect = (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => {
     if (!selectorOpen) return;
     const { type, modIndex } = selectorOpen;
+    const identity = itemIdentity(item);
+    if ((type.startsWith("mod-") || type.startsWith("arcane-")) && identity && getUnavailableIds(activeBuild, type, modIndex).includes(identity)) {
+      toast.error("Cet élément est déjà utilisé dans cette catégorie.");
+      return;
+    }
 
     updateBuild(b => {
       const nb = { ...b };
@@ -540,7 +614,11 @@ export default function SetBuilder() {
       else if (type === "primary") nb.primaryWeapon = item as Weapon;
       else if (type === "secondary") nb.secondaryWeapon = item as Weapon;
       else if (type === "melee") nb.meleeWeapon = item as Weapon;
-      else if (type === "companion") nb.companion = item as Companion;
+      else if (type === "companion") {
+        const nextCompanion = item as Companion;
+        nb.companion = nextCompanion;
+        nb.companionMods = b.companionMods.map(mod => mod && isCompanionModCompatible(mod, nextCompanion) ? mod : null);
+      }
       else if (type === "arcane-warframe" && modIndex !== undefined) {
         nb.warframeArcanes = [...b.warframeArcanes];
         nb.warframeArcanes[modIndex] = item as Arcane;
@@ -568,6 +646,9 @@ export default function SetBuilder() {
       } else if (type === "mod-melee" && modIndex !== undefined) {
         nb.meleeMods = [...b.meleeMods];
         nb.meleeMods[modIndex] = item as Mod;
+      } else if (type === "mod-companion" && modIndex !== undefined) {
+        nb.companionMods = [...b.companionMods];
+        nb.companionMods[modIndex] = item as Mod;
       }
       return nb;
     });
@@ -580,7 +661,10 @@ export default function SetBuilder() {
       else if (type === "primary") nb.primaryWeapon = undefined;
       else if (type === "secondary") nb.secondaryWeapon = undefined;
       else if (type === "melee") nb.meleeWeapon = undefined;
-      else if (type === "companion") nb.companion = undefined;
+      else if (type === "companion") {
+        nb.companion = undefined;
+        nb.companionMods = Array(8).fill(null);
+      }
       return nb;
     });
   };
@@ -598,6 +682,7 @@ export default function SetBuilder() {
       else if (type === "mod-primary") { nb.primaryMods = [...b.primaryMods]; nb.primaryMods[index] = null; }
       else if (type === "mod-secondary") { nb.secondaryMods = [...b.secondaryMods]; nb.secondaryMods[index] = null; }
       else if (type === "mod-melee") { nb.meleeMods = [...b.meleeMods]; nb.meleeMods[index] = null; }
+      else if (type === "mod-companion") { nb.companionMods = [...b.companionMods]; nb.companionMods[index] = null; }
       return nb;
     });
   };
@@ -842,6 +927,20 @@ export default function SetBuilder() {
               onClearMod={clearMod}
               accentColor="#66bb6a"
             />
+            <ModGrid
+              label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name}` : "COMPAGNON"}
+              mods={activeBuild.companionMods}
+              modType="mod-companion"
+              onSelectMod={(idx, type) => {
+                if (!activeBuild.companion) {
+                  toast.error("Sélectionnez d’abord un compagnon.");
+                  return;
+                }
+                setSelectorOpen({ type, modIndex: idx });
+              }}
+              onClearMod={clearMod}
+              accentColor="#a78bfa"
+            />
           </div>
         </div>
 
@@ -895,6 +994,8 @@ export default function SetBuilder() {
               {[
                 "Clique sur un slot pour sélectionner l'équipement",
                 "Les mods améliorent les statistiques en temps réel",
+                "Chaque mod et Arcane ne peut être utilisé qu’une fois par catégorie",
+                "Les mods compagnon se débloquent après la sélection d’un compagnon",
                 "Sauvegarde plusieurs sets pour différentes missions",
                 "Les sets Prime offrent de meilleures statistiques",
               ].map((tip, i) => (
@@ -912,6 +1013,8 @@ export default function SetBuilder() {
         <SelectorModal
           type={selectorOpen.type}
           modSlotIndex={selectorOpen.modIndex}
+          unavailableIds={getUnavailableIds(activeBuild, selectorOpen.type, selectorOpen.modIndex)}
+          companion={activeBuild.companion}
           onSelect={handleSelect}
           onClose={() => setSelectorOpen(null)}
         />
