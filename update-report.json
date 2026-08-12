@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-08-12T22:58:16.089Z",
+  "counts": {
+    "warframes": 117,
+    "weapons": 746,
+    "mods": 1368,
+    "companions": 41,
+    "arcanes": 148,
+    "archonShards": 12
+  },
+  "recentEntries": {
+    "warframes": [
+      {
+        "id": "zephyr",
+        "name": "Zephyr",
+        "role": "Standard"
+      },
+      {
+        "id": "sirius-orion",
+        "name": "Sirius & Orion",
+        "role": "Support"
+      },
+      {
+        "id": "uriel",
+        "name": "Uriel",
+        "role": "Damage / Crowd Control"
+      }
+    ],
+    "weapons": [
+      {
+        "id": "wrath",
+        "name": "Wrath",
+        "type": "melee"
+      },
+      {
+        "id": "xoris",
+        "name": "Xoris",
+        "type": "melee"
+      },
+      {
+        "id": "zenistar",
+        "name": "Zenistar",
+        "type": "melee"
+      }
+    ],
+    "arcanes": [
+      {
+        "id": "exodia-might",
+        "name": "Exodia Might",
+        "type": "zaw"
+      },
+      {
+        "id": "exodia-triumph",
+        "name": "Exodia Triumph",
+        "type": "zaw"
+      },
+      {
+        "id": "exodia-valor",
+        "name": "Exodia Valor",
+        "type": "zaw"
+      }
+    ]
+  }
+}
