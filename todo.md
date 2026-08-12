@@ -1,20 +1,20 @@
-# TODO — Arcanes et éclats d’Archonte
+# TODO — Effets d’éclats, persistance et bonus de build
 
-- [x] Inspecter les fichiers de données Cephalon-Wodan dédiés aux arcanes et aux éclats d’Archonte.
-- [x] Définir les types TypeScript et normaliser les champs utiles à l’affichage et au builder.
-- [x] Intégrer les catalogues dans `warframe-data.ts` et le JSON embarqué.
-- [x] Ajouter les pages catalogues avec recherche, filtres, rareté et polarité.
-- [x] Ajouter les emplacements d’arcanes et d’éclats au builder avec sélection et suppression.
-- [x] Synchroniser les compteurs de l’accueil et les données de build.
-- [x] Vérifier TypeScript, le build de production, les pages et le rendu responsive.
-- [ ] Créer le checkpoint final et livrer la version complète.
+- [x] Ajouter un effet sélectionné à chaque emplacement d’Éclat d’Archonte.
+- [x] Préserver l’effet choisi dans le modèle `BuildSet` et dans les données exportées.
+- [x] Ajouter la persistance `localStorage` des builds actifs et sauvegardés.
+- [x] Ajouter l’export JSON d’un set complet et l’import JSON avec validation.
+- [x] Définir les règles de calcul des bonus d’Arcanes et d’Éclats à partir des descriptions disponibles.
+- [x] Afficher les bonus détectés dans le panneau de statistiques finales.
+- [x] Vérifier TypeScript, build production, responsive et flux de stockage/import/export.
+- [ ] Créer le checkpoint final et livrer la version améliorée.
 
 ## Décisions
 
-- Source prioritaire : dépôt Cephalon-Wodan fourni par l’utilisateur.
-- Les données doivent rester statiques et embarquées côté frontend, comme le projet actuel.
-- Les emplacements d’équipement doivent conserver la compatibilité avec les builds existants.
-- Les arcanes et éclats doivent être triables et filtrables sans dépendre d’un backend.
+- Un emplacement d’Éclat conserve l’éclat choisi et l’index de son effet sélectionné.
+- Les données source restent celles du dépôt Cephalon-Wodan ; le calcul applique uniquement les effets explicitement sélectionnés.
+- L’import JSON accepte uniquement un format de build compatible et ignore les entrées invalides avec un message utilisateur.
+- Le calcul des bonus reste transparent : les effets reconnus sont affichés avec leur source, les autres restent visibles comme effets sélectionnés non agrégés.
 
 ## État
 

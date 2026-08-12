@@ -122,6 +122,11 @@ export interface ArchonShard {
   imageUrl?: string;
 }
 
+export interface SelectedArchonShard {
+  shard: ArchonShard;
+  effectIndex: number;
+}
+
 export interface BuildSet {
   id: string;
   name: string;
@@ -139,7 +144,7 @@ export interface BuildSet {
   primaryArcanes: (Arcane | null)[];
   secondaryArcanes: (Arcane | null)[];
   meleeArcanes: (Arcane | null)[];
-  archonShards: (ArchonShard | null)[];
+  archonShards: (SelectedArchonShard | null)[];
   createdAt: string;
 }
 

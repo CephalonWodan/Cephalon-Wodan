@@ -2,18 +2,65 @@
 // WARFRAME SET BUILDER — Set Builder Page (Core Feature)
 // Tenno Codex dark theme — Build your complete loadout
 // ============================================================
-import { useState, useCallback } from "react";
-import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check } from "lucide-react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check, Download, Upload } from "lucide-react";
 import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS,
-  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, BuildSet,
+  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet,
   getRarityColor, getRarityLabel, createEmptyBuild
 } from "@/lib/warframe-data";
 import { toast } from "sonner";
 
 // ---- Slot Selector Modal ----
 type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee";
+
+const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
+
+function normalizeBuild(raw: unknown): BuildSet | null {
+  if (!raw || typeof raw !== "object") return null;
+  const candidate = raw as Partial<BuildSet> & Record<string, any>;
+  const fallback = createEmptyBuild(typeof candidate.name === "string" && candidate.name.trim() ? candidate.name : "Set importé");
+  const normalizeArray = <T,>(value: unknown, length: number, fallbackValue: T | null = null): (T | null)[] => Array.from({ length }, (_, index) => Array.isArray(value) ? (value[index] ?? fallbackValue) : fallbackValue);
+  const normalizeShards = (value: unknown): (SelectedArchonShard | null)[] => Array.from({ length: 5 }, (_, index) => {
+    const entry = Array.isArray(value) ? value[index] : null;
+    if (!entry || typeof entry !== "object") return null;
+    if ("shard" in entry && entry.shard && typeof entry.shard === "object") {
+      return { shard: entry.shard as ArchonShard, effectIndex: Math.max(0, Math.min(Number((entry as any).effectIndex) || 0, ((entry.shard as ArchonShard).effects?.length || 1) - 1)) };
+    }
+    if ("effects" in entry && Array.isArray((entry as any).effects)) return { shard: entry as ArchonShard, effectIndex: 0 };
+    return null;
+  });
+  return {
+    ...fallback,
+    ...candidate,
+    id: typeof candidate.id === "string" ? candidate.id : fallback.id,
+    name: typeof candidate.name === "string" ? candidate.name : fallback.name,
+    description: typeof candidate.description === "string" ? candidate.description : "",
+    warframeMods: normalizeArray(candidate.warframeMods, 8),
+    primaryMods: normalizeArray(candidate.primaryMods, 8),
+    secondaryMods: normalizeArray(candidate.secondaryMods, 8),
+    meleeMods: normalizeArray(candidate.meleeMods, 8),
+    warframeArcanes: normalizeArray(candidate.warframeArcanes, 2),
+    primaryArcanes: normalizeArray(candidate.primaryArcanes, 1),
+    secondaryArcanes: normalizeArray(candidate.secondaryArcanes, 1),
+    meleeArcanes: normalizeArray(candidate.meleeArcanes, 1),
+    archonShards: normalizeShards(candidate.archonShards),
+    createdAt: typeof candidate.createdAt === "string" ? candidate.createdAt : fallback.createdAt,
+  };
+}
+
+function loadPersistedBuildState(): { builds: BuildSet[]; savedBuilds: BuildSet[] } {
+  if (typeof window === "undefined") return { builds: [createEmptyBuild("Mon Premier Set")], savedBuilds: [] };
+  try {
+    const raw = JSON.parse(window.localStorage.getItem(BUILD_STORAGE_KEY) || "null");
+    const builds = Array.isArray(raw?.builds) ? raw.builds.map(normalizeBuild).filter(Boolean) as BuildSet[] : [];
+    const savedBuilds = Array.isArray(raw?.savedBuilds) ? raw.savedBuilds.map(normalizeBuild).filter(Boolean) as BuildSet[] : [];
+    return { builds: builds.length ? builds : [createEmptyBuild("Mon Premier Set")], savedBuilds };
+  } catch {
+    return { builds: [createEmptyBuild("Mon Premier Set")], savedBuilds: [] };
+  }
+}
 
 interface SelectorModalProps {
   type: SlotType;
@@ -323,8 +370,53 @@ function ArcaneGrid({ label, arcanes, arcaneType, onSelect, onClear, accentColor
   return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: accentColor, fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
 }
 
-function ArchonShardGrid({ shards, onSelect, onClear }: { shards: (ArchonShard | null)[]; onSelect: (index: number, type: SlotType) => void; onClear: (index: number, type: SlotType) => void }) {
-  return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length}</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.effects[0]}</div></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
+function ArchonShardGrid({ shards, onSelect, onClear, onEffectChange }: { shards: (SelectedArchonShard | null)[]; onSelect: (index: number, type: SlotType) => void; onClear: (index: number, type: SlotType) => void; onEffectChange: (index: number, effectIndex: number) => void }) {
+  return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length}</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
+}
+
+interface EnhancementBonusSummary {
+  flatHealth: number;
+  flatShield: number;
+  flatArmor: number;
+  flatEnergy: number;
+  abilityStrengthPct: number;
+  abilityDurationPct: number;
+  castingSpeedPct: number;
+  parkourVelocityPct: number;
+  primaryStatusPct: number;
+  secondaryCritPct: number;
+  meleeCritDamagePct: number;
+  activeEffects: Array<{ source: string; effect: string; recognized: boolean }>;
+}
+
+function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
+  const summary: EnhancementBonusSummary = { flatHealth: 0, flatShield: 0, flatArmor: 0, flatEnergy: 0, abilityStrengthPct: 0, abilityDurationPct: 0, castingSpeedPct: 0, parkourVelocityPct: 0, primaryStatusPct: 0, secondaryCritPct: 0, meleeCritDamagePct: 0, activeEffects: [] };
+  const effects: Array<{ source: string; effect: string }> = [];
+  [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].forEach(arcane => { if (arcane) effects.push({ source: `Arcane · ${arcane.name}`, effect: arcane.description }); });
+  build.archonShards.forEach(selected => { if (selected) effects.push({ source: `Éclat · ${selected.shard.name}`, effect: selected.shard.effects[selected.effectIndex] || selected.shard.effects[0] || selected.shard.description }); });
+
+  effects.forEach(({ source, effect }) => {
+    let recognized = false;
+    const add = (pattern: RegExp, key: keyof EnhancementBonusSummary) => {
+      const match = effect.match(pattern);
+      if (!match) return;
+      (summary[key] as number) += Number(match[1]);
+      recognized = true;
+    };
+    add(/\+(\d+(?:\.\d+)?)\s+(?:Maximum\s+)?Health\b(?!\s*\/s|\s*Orbs)/i, "flatHealth");
+    add(/\+(\d+(?:\.\d+)?)\s+Shield(?:\s+Capacity)?\b(?!\s*Recharge)/i, "flatShield");
+    add(/\+(\d+(?:\.\d+)?)\s+Armor\b/i, "flatArmor");
+    add(/\+(\d+(?:\.\d+)?)\s+Energy\s+Max\b/i, "flatEnergy");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Ability\s+Strength\b/i, "abilityStrengthPct");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Ability\s+Duration\b/i, "abilityDurationPct");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Casting\s+Speed\b/i, "castingSpeedPct");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Parkour\s+Velocity\b/i, "parkourVelocityPct");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Primary\s+Status\s+Chance\b/i, "primaryStatusPct");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Secondary\s+Critical\s+Chance\b/i, "secondaryCritPct");
+    add(/\+?(\d+(?:\.\d+)?)%\s+Melee\s+Critical\s+Damage\b/i, "meleeCritDamagePct");
+    summary.activeEffects.push({ source, effect, recognized });
+  });
+  return summary;
 }
 
 // ---- Stats Panel ----
@@ -333,10 +425,12 @@ function StatsPanel({ build }: { build: BuildSet }) {
   const vitality = build.warframeMods.find(m => m?.id === "vitality");
   const redirection = build.warframeMods.find(m => m?.id === "redirection");
   const steelFiber = build.warframeMods.find(m => m?.id === "steel-fiber");
+  const enhancements = calculateEnhancementBonuses(build);
 
-  const health = wf ? Math.round(wf.health * (1 + (vitality ? 4.4 : 0))) : 0;
-  const shield = wf ? Math.round(wf.shield * (1 + (redirection ? 4.4 : 0))) : 0;
-  const armor = wf ? Math.round(wf.armor * (1 + (steelFiber ? 1.1 : 0))) : 0;
+  const health = wf ? Math.round((wf.health + enhancements.flatHealth) * (1 + (vitality ? 4.4 : 0))) : 0;
+  const shield = wf ? Math.round((wf.shield + enhancements.flatShield) * (1 + (redirection ? 4.4 : 0))) : 0;
+  const armor = wf ? Math.round((wf.armor + enhancements.flatArmor) * (1 + (steelFiber ? 1.1 : 0))) : 0;
+  const energy = wf ? wf.energy + enhancements.flatEnergy : 0;
   const ehp = wf ? Math.round(health * (1 + armor / 300)) : 0;
 
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
@@ -355,7 +449,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
             { label: "Points de Vie", value: health, max: 1500, color: "#ef5350" },
             { label: "Boucliers", value: shield, max: 1500, color: "#42a5f5" },
             { label: "Armure", value: armor, max: 1000, color: "#ffa726" },
-            { label: "Énergie", value: wf.energy, max: 400, color: "#ab47bc" },
+            { label: "Énergie", value: energy, max: 400, color: "#ab47bc" },
             { label: "PV Effectifs", value: ehp, max: 5000, color: "#26c6da" },
           ].map(({ label, value, max, color }) => (
             <div key={label}>
@@ -378,7 +472,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
               {[
                 { label: "Dégâts", value: Math.round(primaryDmg), color: "#ff6b35" },
                 { label: "Critique", value: `${(build.primaryWeapon.critChance * 100).toFixed(0)}%`, color: "#ffd700" },
-                { label: "Statut", value: `${(build.primaryWeapon.statusChance * 100).toFixed(0)}%`, color: "#66bb6a" },
+                { label: "Statut", value: `${(build.primaryWeapon.statusChance * 100 + enhancements.primaryStatusPct).toFixed(0)}%`, color: "#66bb6a" },
               ].map(({ label, value, color }) => (
                 <div key={label} className="flex justify-between text-xs py-1 border-b last:border-0" style={{ borderColor: "var(--wf-border)" }}>
                   <span style={{ color: "var(--wf-text-dim)" }}>{label}</span>
@@ -392,6 +486,14 @@ function StatsPanel({ build }: { build: BuildSet }) {
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Arcanes</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{[...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).length}</div></div>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(255,202,40,.08)", border: "1px solid rgba(255,202,40,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#ffca28", fontFamily: "var(--font-display)" }}>Éclats</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{build.archonShards.filter(Boolean).length}/5</div></div>
           </div>
+
+          {enhancements.activeEffects.length > 0 && <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
+            <div className="mb-2 text-[10px] font-bold uppercase tracking-widest" style={{ color: "#ffca28", fontFamily: "var(--font-display)" }}>BONUS ACTIFS</div>
+            <div className="mb-2 grid grid-cols-2 gap-1.5">
+              {[{ label: "PV", value: enhancements.flatHealth, color: "#ef5350" }, { label: "Boucliers", value: enhancements.flatShield, color: "#42a5f5" }, { label: "Armure", value: enhancements.flatArmor, color: "#ffa726" }, { label: "Énergie", value: enhancements.flatEnergy, color: "#ab47bc" }, { label: "Force", value: enhancements.abilityStrengthPct, color: "#66bb6a", suffix: "%" }, { label: "Durée", value: enhancements.abilityDurationPct, color: "#4fc3f7", suffix: "%" }, { label: "Parkour", value: enhancements.parkourVelocityPct, color: "#ffd700", suffix: "%" }, { label: "Crit. mêlée", value: enhancements.meleeCritDamagePct, color: "#ff6b35", suffix: "%" }].filter(metric => metric.value !== 0).map(metric => <div key={metric.label} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${metric.color}10`, color: "var(--wf-text-dim)" }}><span>{metric.label}</span><span style={{ color: metric.color, fontFamily: "var(--font-mono)" }}>+{metric.value}{metric.suffix || ""}</span></div>)}
+            </div>
+            <div className="max-h-44 space-y-1 overflow-y-auto">{enhancements.activeEffects.map((entry, index) => <div key={`${entry.source}-${index}`} className="rounded-sm px-2 py-1.5" style={{ backgroundColor: "rgba(0,0,0,.2)", borderLeft: `2px solid ${entry.recognized ? "#66bb6a" : "#6b7280"}` }}><div className="flex items-center justify-between gap-2 text-[9px] uppercase" style={{ color: entry.recognized ? "#66bb6a" : "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><span className="truncate">{entry.source}</span><span>{entry.recognized ? "CALCULÉ" : "DÉTAIL"}</span></div><div className="mt-0.5 text-[10px]" style={{ color: "var(--wf-text)" }}>{entry.effect}</div></div>)}</div>
+          </div>}
         </div>
       ) : (
         <div className="text-center py-6" style={{ color: "var(--wf-text-dim)" }}>
@@ -405,12 +507,20 @@ function StatsPanel({ build }: { build: BuildSet }) {
 
 // ---- MAIN SetBuilder Page ----
 export default function SetBuilder() {
-  const [builds, setBuilds] = useState<BuildSet[]>([createEmptyBuild("Mon Premier Set")]);
+  const [initialState] = useState(loadPersistedBuildState);
+  const [builds, setBuilds] = useState<BuildSet[]>(initialState.builds);
   const [activeBuildIndex, setActiveBuildIndex] = useState(0);
   const [selectorOpen, setSelectorOpen] = useState<{ type: SlotType; modIndex?: number } | null>(null);
-  const [savedBuilds, setSavedBuilds] = useState<BuildSet[]>([]);
-  const [buildName, setBuildName] = useState("Mon Premier Set");
+  const [savedBuilds, setSavedBuilds] = useState<BuildSet[]>(initialState.savedBuilds);
+  const [buildName, setBuildName] = useState(initialState.builds[0]?.name || "Mon Premier Set");
   const [activeTab, setActiveTab] = useState<"equipment" | "mods">("equipment");
+  const importInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem(BUILD_STORAGE_KEY, JSON.stringify({ version: 2, builds, savedBuilds }));
+    }
+  }, [builds, savedBuilds]);
 
   const activeBuild = builds[activeBuildIndex];
 
@@ -443,7 +553,7 @@ export default function SetBuilder() {
         nb.meleeArcanes[modIndex] = item as Arcane;
       } else if (type === "archon-shard" && modIndex !== undefined) {
         nb.archonShards = [...b.archonShards];
-        nb.archonShards[modIndex] = item as ArchonShard;
+        nb.archonShards[modIndex] = { shard: item as ArchonShard, effectIndex: 0 };
       } else if (type === "mod-warframe" && modIndex !== undefined) {
         nb.warframeMods = [...b.warframeMods];
         nb.warframeMods[modIndex] = item as Mod;
@@ -490,12 +600,52 @@ export default function SetBuilder() {
     });
   };
 
+  const setShardEffect = (index: number, effectIndex: number) => {
+    updateBuild(build => {
+      const next = { ...build, archonShards: [...build.archonShards] };
+      const selected = next.archonShards[index];
+      if (selected) next.archonShards[index] = { ...selected, effectIndex: Math.max(0, Math.min(effectIndex, selected.shard.effects.length - 1)) };
+      return next;
+    });
+  };
+
   const saveBuild = () => {
     const buildToSave = { ...activeBuild, name: buildName, id: Date.now().toString() };
     setSavedBuilds(prev => [...prev, buildToSave]);
     toast.success(`Set "${buildName}" sauvegardé !`, {
       style: { backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-cyan)", color: "var(--wf-text)" }
     });
+  };
+
+  const exportBuild = () => {
+    const payload = { format: "warframe-set-builder", version: 2, exportedAt: new Date().toISOString(), build: { ...activeBuild, name: buildName } };
+    const blobUrl = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
+    const anchor = document.createElement("a");
+    anchor.href = blobUrl;
+    anchor.download = `${buildName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "warframe-build"}.json`;
+    anchor.click();
+    URL.revokeObjectURL(blobUrl);
+    toast.success("Set exporté en JSON !");
+  };
+
+  const importBuildFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const raw = JSON.parse(await file.text());
+      const source = raw?.build ?? (Array.isArray(raw?.builds) ? raw.builds[0] : raw);
+      const imported = normalizeBuild(source);
+      if (!imported) throw new Error("Format invalide");
+      const nextBuild = { ...imported, id: Date.now().toString() };
+      setBuilds(prev => [...prev, nextBuild]);
+      setActiveBuildIndex(builds.length);
+      setBuildName(nextBuild.name);
+      toast.success(`Set "${nextBuild.name}" importé !`);
+    } catch {
+      toast.error("Impossible d’importer ce fichier JSON.");
+    } finally {
+      event.target.value = "";
+    }
   };
 
   const addNewBuild = () => {
@@ -570,7 +720,7 @@ export default function SetBuilder() {
         {/* Left: Equipment + Mods */}
         <div className="xl:col-span-3 space-y-4">
           {/* Build name input */}
-          <div className="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
             <span className="text-xs font-bold tracking-widest" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text-dim)", fontSize: "10px", whiteSpace: "nowrap" }}>
               NOM DU SET
             </span>
@@ -592,6 +742,15 @@ export default function SetBuilder() {
               <Save size={12} />
               <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>SAUVEGARDER</span>
             </button>
+            <button onClick={exportBuild} className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all" style={{ border: "1px solid rgba(167,139,250,.65)", color: "#c4b5fd", backgroundColor: "rgba(167,139,250,.08)" }}>
+              <Download size={12} />
+              <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>EXPORTER</span>
+            </button>
+            <button onClick={() => importInputRef.current?.click()} className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all" style={{ border: "1px solid rgba(255,202,40,.65)", color: "#ffca28", backgroundColor: "rgba(255,202,40,.08)" }}>
+              <Upload size={12} />
+              <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>IMPORTER</span>
+            </button>
+            <input ref={importInputRef} type="file" accept="application/json,.json" onChange={importBuildFile} className="hidden" />
           </div>
 
           {/* Equipment slots */}
@@ -641,7 +800,7 @@ export default function SetBuilder() {
           {/* Arcanes and Archon Shards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <ArcaneGrid label="WARFRAME" arcanes={activeBuild.warframeArcanes} arcaneType="arcane-warframe" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#a78bfa" />
-            <ArchonShardGrid shards={activeBuild.archonShards} onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} />
+            <ArchonShardGrid shards={activeBuild.archonShards} onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} onEffectChange={setShardEffect} />
             <ArcaneGrid label="PRIMAIRE" arcanes={activeBuild.primaryArcanes} arcaneType="arcane-primary" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#ff6b35" />
             <ArcaneGrid label="SECONDAIRE" arcanes={activeBuild.secondaryArcanes} arcaneType="arcane-secondary" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#ffd700" />
             <ArcaneGrid label="MÊLÉE" arcanes={activeBuild.meleeArcanes} arcaneType="arcane-melee" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#66bb6a" />
