@@ -35,6 +35,20 @@ function normalizeUniqueArray<T extends BuildItem>(value: unknown, length: numbe
   });
 }
 
+function normalizeModArray(value: unknown, length: number): (Mod | null)[] {
+  return normalizeUniqueArray<Mod>(value, length).map(mod => {
+    if (!mod) return null;
+    const maxRank = Math.max(0, Number(mod.maxRank) || 0);
+    const parsedRank = Number(mod.selectedRank);
+    const selectedRank = Number.isFinite(parsedRank) ? Math.max(0, Math.min(Math.round(parsedRank), maxRank)) : maxRank;
+    return { ...mod, selectedRank };
+  });
+}
+
+function selectModAtMaxRank(item: Mod): Mod {
+  return { ...item, selectedRank: Math.max(0, Number(item.maxRank) || 0) };
+}
+
 function getSlotItems(build: BuildSet, type: SlotType): (BuildItem | null)[] {
   switch (type) {
     case "mod-warframe": return build.warframeMods;
@@ -68,8 +82,8 @@ const POLARITY_GLYPHS: Record<string, string> = {
   any: "✦",
 };
 
-function modBaseCost(mod: Mod): number {
-  return Math.max(2, 2 + Math.min(10, Number(mod.maxRank) || 0));
+function modBaseCost(mod: Mod, rank = mod.selectedRank ?? mod.maxRank): number {
+  return Math.max(2, 2 + Math.min(10, Math.max(0, Number(rank) || 0)));
 }
 
 function modCost(mod: Mod, slotPolarity?: Polarity): number {
@@ -129,11 +143,11 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       ...fallback.capacityBoosts,
       ...(candidate.capacityBoosts && typeof candidate.capacityBoosts === "object" ? candidate.capacityBoosts : {}),
     },
-    warframeMods: normalizeUniqueArray(candidate.warframeMods, 8),
-    primaryMods: normalizeUniqueArray(candidate.primaryMods, 8),
-    secondaryMods: normalizeUniqueArray(candidate.secondaryMods, 8),
-    meleeMods: normalizeUniqueArray(candidate.meleeMods, 8),
-    companionMods: normalizeUniqueArray(candidate.companionMods, 8),
+    warframeMods: normalizeModArray(candidate.warframeMods, 8),
+    primaryMods: normalizeModArray(candidate.primaryMods, 8),
+    secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
+    meleeMods: normalizeModArray(candidate.meleeMods, 8),
+    companionMods: normalizeModArray(candidate.companionMods, 8),
     warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
     primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
@@ -308,7 +322,7 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
   const rarityColor = item ? getRarityColor((item as any).rarity || "common") : accentColor;
   return (
     <div
-      className="rounded-sm overflow-hidden transition-all duration-200"
+      className="wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200"
       style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${item ? rarityColor : "var(--wf-border)"}`, position: "relative" }}
     >
       {/* HUD corner decoration */}
@@ -322,7 +336,7 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
       <div className="flex items-center justify-between px-3 py-2 border-b" style={{ borderColor: "var(--wf-border)" }}>
         <div className="flex items-center gap-2">
           <span style={{ color: accentColor }}>{icon}</span>
-          <span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text-dim)", fontSize: "10px" }}>
+          <span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>
             {label}
           </span>
         </div>
@@ -355,10 +369,11 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-2 py-1" style={{ color: "var(--wf-text-dim)" }}>
-            <Plus size={14} />
-            <span className="text-xs" style={{ fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
-              Sélectionner {label.toLowerCase()}
+          <div className="wf-empty-slot relative flex items-center gap-2 py-3 px-1" style={{ color: "var(--wf-text-dim)" }}>
+            <div className="wf-slot-trace" />
+            <Plus size={14} style={{ color: "var(--wf-cyan-dim)" }} />
+            <span className="text-xs" style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>
+              INITIALISER {label.toLowerCase()}
             </span>
           </div>
         )}
@@ -375,13 +390,14 @@ interface ModSlotProps {
   cost?: number;
   onSelect: (index: number) => void;
   onClear: (index: number) => void;
+  onRankChange?: (index: number, rank: number) => void;
 }
 
-function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear }: ModSlotProps) {
+function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChange }: ModSlotProps) {
   const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
   return (
     <div
-      className="relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group"
+      className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${mod ? "" : "wf-empty-slot"}`}
       style={{
         backgroundColor: mod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
         border: `1px solid ${mod ? rarityColor : "var(--wf-border)"}`,
@@ -411,16 +427,27 @@ function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear }: ModSlotP
             <span style={{ color: slotPolarity && mod.polarity === slotPolarity ? "#66bb6a" : rarityColor }}>COÛT {cost ?? modBaseCost(mod)}</span>
             {slotPolarity && <span style={{ color: "#a78bfa" }}>SLOT {POLARITY_GLYPHS[slotPolarity] || slotPolarity}</span>}
           </div>
+          <select
+            value={mod.selectedRank ?? mod.maxRank}
+            onClick={event => event.stopPropagation()}
+            onChange={event => { event.stopPropagation(); onRankChange?.(index, Number(event.target.value)); }}
+            className="mt-1 w-full rounded-sm px-1 py-0.5 text-[9px] outline-none"
+            style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${rarityColor}50`, color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+            aria-label={`Rang de ${mod.name}`}
+          >
+            {Array.from({ length: mod.maxRank + 1 }, (_, rank) => <option key={rank} value={rank}>RANG {rank}/{mod.maxRank} — COÛT {modCost({ ...mod, selectedRank: rank }, slotPolarity)}</option>)}
+          </select>
           {/* Rank dots */}
           <div className="flex gap-0.5 mt-1">
-            {Array.from({ length: Math.min(mod.maxRank, 6) }).map((_, i) => (
+            {Array.from({ length: Math.min(mod.selectedRank ?? mod.maxRank, 6) }).map((_, i) => (
               <div key={i} className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: rarityColor }} />
             ))}
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center h-full p-3">
-          <Plus size={16} style={{ color: "var(--wf-border)" }} />
+        <div className="relative flex items-center justify-center h-full min-h-16 p-3">
+          <div className="wf-slot-trace" />
+          <Plus size={16} style={{ color: "var(--wf-cyan-dim)" }} />
         </div>
       )}
     </div>
@@ -437,19 +464,20 @@ interface ModGridProps {
   onToggleCapacity: () => void;
   onSelectMod: (index: number, type: SlotType) => void;
   onClearMod: (index: number, type: SlotType) => void;
+  onRankChange: (index: number, rank: number, type: SlotType) => void;
   accentColor?: string;
 }
 
-function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, accentColor = "#4fc3f7" }: ModGridProps) {
+function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, accentColor = "#4fc3f7" }: ModGridProps) {
   const slotPolarities = equipment?.polarities || [];
   const capacityMax = capacityBoosted ? 60 : 30;
   const usedCapacity = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, slotPolarities[index]) : 0), 0);
   const isOverCapacity = usedCapacity > capacityMax;
   return (
-    <div className="rounded-sm overflow-hidden" style={{ border: `1px solid ${isOverCapacity ? "#ef5350" : "var(--wf-border)"}` }}>
+    <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: `1px solid ${isOverCapacity ? "#ef5350" : "var(--wf-border)"}` }}>
       <div className="px-3 py-2 border-b flex flex-wrap items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}>
         <Star size={12} style={{ color: accentColor }} />
-        <span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: accentColor, fontSize: "10px" }}>
+        <span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>
           MODS — {label}
         </span>
         <span className="ml-auto text-xs" style={{ color: isOverCapacity ? "#ef5350" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
@@ -460,7 +488,7 @@ function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCap
         </button>
       </div>
       <div className="px-3 py-1 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-        {equipment ? `POLARITÉS : ${(equipment.polarities || []).map(polarity => POLARITY_GLYPHS[polarity] || polarity).join(" ") || "AUCUNE"} · COÛTS AU RANG MAX` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
+        {equipment ? `POLARITÉS : ${(equipment.polarities || []).map(polarity => POLARITY_GLYPHS[polarity] || polarity).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
         {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
       <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
@@ -473,6 +501,7 @@ function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCap
             cost={mod ? modCost(mod, slotPolarities[i]) : undefined}
             onSelect={(idx) => onSelectMod(idx, modType)}
             onClear={(idx) => onClearMod(idx, modType)}
+            onRankChange={(idx, rank) => onRankChange(idx, rank, modType)}
           />
         ))}
       </div>
@@ -491,11 +520,11 @@ interface ArcaneGridProps {
 }
 
 function ArcaneGrid({ label, arcanes, arcaneType, onSelect, onClear, accentColor }: ArcaneGridProps) {
-  return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: accentColor, fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
+  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
 }
 
 function ArchonShardGrid({ shards, onSelect, onClear, onEffectChange }: { shards: (SelectedArchonShard | null)[]; onSelect: (index: number, type: SlotType) => void; onClear: (index: number, type: SlotType) => void; onEffectChange: (index: number, effectIndex: number) => void }) {
-  return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-right text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length} · {ARCHON_SHARD_EFFECT_TOTAL} effets</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
+  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-right text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length} · {ARCHON_SHARD_EFFECT_TOTAL} effets</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
 }
 
 interface EnhancementBonusSummary {
@@ -611,7 +640,7 @@ function buildSummaryMarkdown(build: BuildSet): string {
     const polarities = equipment?.polarities || [];
     const used = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, polarities[index]) : 0), 0);
     const max = boosted ? 60 : 30;
-    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — coût ${modCost(mod, polarities[index])}${polarities[index] ? ` — polarité ${POLARITY_GLYPHS[polarities[index]] || polarities[index]}` : ""}` : null).filter(Boolean).join("\n");
+    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — rang ${mod.selectedRank ?? mod.maxRank}/${mod.maxRank} — coût ${modCost(mod, polarities[index])}${polarities[index] ? ` — polarité ${POLARITY_GLYPHS[polarities[index]] || polarities[index]}` : ""}` : null).filter(Boolean).join("\n");
     return `### ${label} — capacité ${used}/${max}${used > max ? " (DÉPASSÉE)" : ""}\n${entries || "- Aucun mod équipé"}`;
   };
   const arcanes = [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).map(arcane => `- ${arcane?.name}: ${arcane?.description}`).join("\n") || "- Aucun Arcane équipé";
@@ -673,7 +702,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
   return (
-    <div className="wf-panel rounded-sm p-4 hud-frame">
+    <div className="wf-panel wf-hud-panel rounded-sm p-4 hud-frame">
       <div className="wf-section-label mb-4">STATISTIQUES DU SET</div>
 
       {wf ? (
@@ -751,8 +780,11 @@ function StatsPanel({ build }: { build: BuildSet }) {
         </div>
       ) : (
         <div className="text-center py-6" style={{ color: "var(--wf-text-dim)" }}>
-          <Shield size={32} className="mx-auto mb-2 opacity-30" />
-          <p className="text-xs">Sélectionne un Warframe pour voir les statistiques</p>
+          <div className="relative mx-auto mb-3 flex h-16 w-24 items-center justify-center wf-empty-slot">
+            <Shield size={32} className="opacity-50" style={{ color: "var(--wf-cyan)" }} />
+            <div className="wf-slot-trace" />
+          </div>
+          <p className="text-xs" style={{ fontFamily: "var(--font-display)", letterSpacing: "0.06em" }}>INITIALISER UN WARFRAME POUR DÉPLOYER LES STATISTIQUES</p>
         </div>
       )}
     </div>
@@ -819,19 +851,19 @@ export default function SetBuilder() {
         nb.archonShards[modIndex] = { shard: item as ArchonShard, effectIndex: 0 };
       } else if (type === "mod-warframe" && modIndex !== undefined) {
         nb.warframeMods = [...b.warframeMods];
-        nb.warframeMods[modIndex] = item as Mod;
+        nb.warframeMods[modIndex] = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-primary" && modIndex !== undefined) {
         nb.primaryMods = [...b.primaryMods];
-        nb.primaryMods[modIndex] = item as Mod;
+        nb.primaryMods[modIndex] = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-secondary" && modIndex !== undefined) {
         nb.secondaryMods = [...b.secondaryMods];
-        nb.secondaryMods[modIndex] = item as Mod;
+        nb.secondaryMods[modIndex] = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-melee" && modIndex !== undefined) {
         nb.meleeMods = [...b.meleeMods];
-        nb.meleeMods[modIndex] = item as Mod;
+        nb.meleeMods[modIndex] = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-companion" && modIndex !== undefined) {
         nb.companionMods = [...b.companionMods];
-        nb.companionMods[modIndex] = item as Mod;
+        nb.companionMods[modIndex] = selectModAtMaxRank(item as Mod);
       }
       return nb;
     });
@@ -884,6 +916,24 @@ export default function SetBuilder() {
       ...build,
       capacityBoosts: { ...build.capacityBoosts, [key]: !build.capacityBoosts[key] },
     }));
+  };
+
+  const setModRank = (index: number, rank: number, type: SlotType) => {
+    updateBuild(build => {
+      const slots = getSlotItems(build, type);
+      const current = slots[index] as Mod | null | undefined;
+      if (!current) return build;
+      const maxRank = Math.max(0, Number(current.maxRank) || 0);
+      const selectedRank = Math.max(0, Math.min(Math.round(rank), maxRank));
+      const nextSlots = [...slots] as (Mod | null)[];
+      nextSlots[index] = { ...current, selectedRank };
+      if (type === "mod-warframe") return { ...build, warframeMods: nextSlots };
+      if (type === "mod-primary") return { ...build, primaryMods: nextSlots };
+      if (type === "mod-secondary") return { ...build, secondaryMods: nextSlots };
+      if (type === "mod-melee") return { ...build, meleeMods: nextSlots };
+      if (type === "mod-companion") return { ...build, companionMods: nextSlots };
+      return build;
+    });
   };
 
   const saveBuild = () => {
@@ -1019,9 +1069,9 @@ export default function SetBuilder() {
         {/* Left: Equipment + Mods */}
         <div className="xl:col-span-3 space-y-4">
           {/* Build name input */}
-          <div className="flex flex-wrap items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+          <div className="wf-panel wf-hud-panel hud-frame flex flex-wrap items-center gap-3 p-3 rounded-sm" style={{ border: "1px solid var(--wf-border)" }}>
             <span className="text-xs font-bold tracking-widest" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text-dim)", fontSize: "10px", whiteSpace: "nowrap" }}>
-              NOM DU SET
+              LOADOUT // NOM TACTIQUE
             </span>
             <input
               type="text"
@@ -1032,7 +1082,7 @@ export default function SetBuilder() {
               }}
               className="min-w-[180px] flex-1 px-3 py-1.5 text-sm rounded-sm outline-none"
               style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
-              placeholder="Nom de votre set..."
+              placeholder="Ex. Steel Path // Survie"
             />
             <button
               onClick={saveBuild}
@@ -1124,6 +1174,7 @@ export default function SetBuilder() {
               onToggleCapacity={() => toggleCapacity("warframe")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
+              onRankChange={setModRank}
               accentColor="#4fc3f7"
             />
             <ModGrid
@@ -1135,6 +1186,7 @@ export default function SetBuilder() {
               onToggleCapacity={() => toggleCapacity("primary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
+              onRankChange={setModRank}
               accentColor="#ff6b35"
             />
             <ModGrid
@@ -1146,6 +1198,7 @@ export default function SetBuilder() {
               onToggleCapacity={() => toggleCapacity("secondary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
+              onRankChange={setModRank}
               accentColor="#ffd700"
             />
             <ModGrid
@@ -1157,6 +1210,7 @@ export default function SetBuilder() {
               onToggleCapacity={() => toggleCapacity("melee")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
+              onRankChange={setModRank}
               accentColor="#66bb6a"
             />
             <ModGrid
@@ -1174,6 +1228,7 @@ export default function SetBuilder() {
                 setSelectorOpen({ type, modIndex: idx });
               }}
               onClearMod={clearMod}
+              onRankChange={setModRank}
               accentColor="#a78bfa"
             />
           </div>
@@ -1185,7 +1240,7 @@ export default function SetBuilder() {
 
           {/* Saved builds */}
           {savedBuilds.length > 0 && (
-            <div className="wf-panel rounded-sm p-4">
+            <div className="wf-panel wf-hud-panel hud-frame rounded-sm p-4">
               <div className="text-xs font-bold tracking-widest mb-3" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
                 SETS SAUVEGARDÉS ({savedBuilds.length})
               </div>
@@ -1233,9 +1288,9 @@ export default function SetBuilder() {
           )}
 
           {/* Tips */}
-          <div className="rounded-sm p-3" style={{ backgroundColor: "rgba(79,195,247,0.05)", border: "1px solid rgba(79,195,247,0.2)" }}>
+          <div className="wf-panel wf-hud-panel hud-frame rounded-sm p-3" style={{ backgroundColor: "rgba(79,195,247,0.05)", border: "1px solid rgba(79,195,247,0.2)" }}>
             <div className="text-xs font-bold mb-2" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
-              💡 CONSEILS
+              CONSEILS DE L’ARSENAL
             </div>
             <ul className="space-y-1">
               {[

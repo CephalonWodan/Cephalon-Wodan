@@ -87,6 +87,7 @@ export interface Mod {
   name: string;
   rarity: Rarity;
   maxRank: number;
+  selectedRank?: number;
   polarity: Polarity;
   type: ModType;
   description: string;
