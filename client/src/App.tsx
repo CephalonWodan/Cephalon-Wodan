@@ -13,6 +13,8 @@ import Companions from "./pages/Companions";
 import Guides from "./pages/Guides";
 import Resources from "./pages/Resources";
 import Settings from "./pages/Settings";
+import Arcanes from "./pages/Arcanes";
+import ArchonShards from "./pages/ArchonShards";
 
 function Router() {
   return (
@@ -23,6 +25,8 @@ function Router() {
       <Route path={"/weapons"} component={Weapons} />
       <Route path={"/mods"} component={Mods} />
       <Route path={"/companions"} component={Companions} />
+      <Route path={"/arcanes"} component={Arcanes} />
+      <Route path={"/archon-shards"} component={ArchonShards} />
       <Route path={"/guides"} component={Guides} />
       <Route path={"/resources"} component={Resources} />
       <Route path={"/settings"} component={Settings} />

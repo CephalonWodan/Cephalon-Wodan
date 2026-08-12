@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Shield, Sword, Users, BookOpen, Settings, ChevronRight,
-  Menu, X, Search, Zap, Star, Package, Home
+  Menu, X, Search, Zap, Star, Package, Home, Sparkles, Gem
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +25,8 @@ const NAV_ITEMS = [
       { label: "Armes", href: "/weapons", icon: Sword },
       { label: "Compagnons", href: "/companions", icon: Users },
       { label: "Mods", href: "/mods", icon: Star },
+      { label: "Arcanes", href: "/arcanes", icon: Sparkles },
+      { label: "Éclats d’Archonte", href: "/archon-shards", icon: Gem },
     ]
   },
   {
@@ -94,8 +96,8 @@ export default function Layout({ children, title }: LayoutProps) {
 
         {/* Top nav links */}
         <nav className="hidden lg:flex items-center gap-1 text-xs">
-          {["MAIN PAGE", "WARFRAMES", "ARMES", "MODS", "BUILDER"].map((item, i) => {
-            const hrefs = ["/", "/warframes", "/weapons", "/mods", "/builder"];
+          {["MAIN PAGE", "WARFRAMES", "ARMES", "MODS", "ARCANES", "BUILDER"].map((item, i) => {
+            const hrefs = ["/", "/warframes", "/weapons", "/mods", "/arcanes", "/builder"];
             const isActive = location === hrefs[i];
             return (
               <Link

@@ -12,6 +12,8 @@ export type DamageType = "impact" | "puncture" | "slash" | "heat" | "cold" | "el
 export type CompanionType = "sentinel" | "beast" | "moa" | "hound" | "predasite" | "vulpaphyla";
 export type ModType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "archwing" | "necramech" | "parazon" | "kdrive" | "universal";
 export type Polarity = "madurai" | "vazarin" | "naramon" | "zenurik" | "unairu" | "penjaga" | "umbra" | "any";
+export type ArcaneType = "warframe" | "primary" | "secondary" | "melee" | "operator" | "amp" | "kitgun" | "zaw" | "bow" | "shotgun";
+export type ArchonShardVariant = "standard" | "tauforged";
 
 type CatalogData = {
   warframes: Array<Record<string, any>>;
@@ -93,6 +95,33 @@ export interface Mod {
   dropCount?: number;
 }
 
+export interface Arcane {
+  id: string;
+  name: string;
+  type: ArcaneType | string;
+  rarity: Rarity;
+  maxRank: number;
+  criteria: string;
+  description: string;
+  dissolution: number;
+  introduced?: string;
+  isRefreshable?: boolean;
+  upgradeTypes?: string[];
+  imageUrl?: string;
+  iconUrl?: string;
+}
+
+export interface ArchonShard {
+  id: string;
+  name: string;
+  color: string;
+  variant: ArchonShardVariant;
+  rarity: Rarity;
+  effects: string[];
+  description: string;
+  imageUrl?: string;
+}
+
 export interface BuildSet {
   id: string;
   name: string;
@@ -106,6 +135,11 @@ export interface BuildSet {
   primaryMods: (Mod | null)[];
   secondaryMods: (Mod | null)[];
   meleeMods: (Mod | null)[];
+  warframeArcanes: (Arcane | null)[];
+  primaryArcanes: (Arcane | null)[];
+  secondaryArcanes: (Arcane | null)[];
+  meleeArcanes: (Arcane | null)[];
+  archonShards: (ArchonShard | null)[];
   createdAt: string;
 }
 
@@ -113,12 +147,16 @@ export const WARFRAMES: Warframe[] = fullData.warframes as Warframe[];
 export const WEAPONS: Weapon[] = fullData.weapons as Weapon[];
 export const MODS: Mod[] = fullData.mods as Mod[];
 export const COMPANIONS: Companion[] = fullData.companions as Companion[];
+export const ARCANES: Arcane[] = (fullData as any).arcanes as Arcane[];
+export const ARCHON_SHARDS: ArchonShard[] = (fullData as any).archonShards as ArchonShard[];
 
 export const CATALOG_COUNTS = {
   warframes: WARFRAMES.length,
   weapons: WEAPONS.length,
   mods: MODS.length,
   companions: COMPANIONS.length,
+  arcanes: ARCANES.length,
+  archonShards: ARCHON_SHARDS.length,
 };
 
 export function getRarityColor(rarity: Rarity): string {
@@ -152,6 +190,11 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     primaryMods: Array(8).fill(null),
     secondaryMods: Array(8).fill(null),
     meleeMods: Array(8).fill(null),
+    warframeArcanes: Array(2).fill(null),
+    primaryArcanes: Array(1).fill(null),
+    secondaryArcanes: Array(1).fill(null),
+    meleeArcanes: Array(1).fill(null),
+    archonShards: Array(5).fill(null),
     createdAt: new Date().toISOString(),
   };
 }

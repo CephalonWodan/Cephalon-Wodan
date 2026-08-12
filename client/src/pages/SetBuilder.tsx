@@ -3,22 +3,22 @@
 // Tenno Codex dark theme — Build your complete loadout
 // ============================================================
 import { useState, useCallback } from "react";
-import { Shield, Sword, Users, Star, ChevronDown, X, Plus, Save, Trash2, Copy, Check } from "lucide-react";
+import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check } from "lucide-react";
 import Layout from "@/components/Layout";
 import {
-  WARFRAMES, WEAPONS, COMPANIONS, MODS,
-  Warframe, Weapon, Companion, Mod, BuildSet,
+  WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS,
+  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, BuildSet,
   getRarityColor, getRarityLabel, createEmptyBuild
 } from "@/lib/warframe-data";
 import { toast } from "sonner";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee";
 
 interface SelectorModalProps {
   type: SlotType;
   modSlotIndex?: number;
-  onSelect: (item: Warframe | Weapon | Companion | Mod) => void;
+  onSelect: (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => void;
   onClose: () => void;
 }
 
@@ -32,6 +32,11 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
       case "secondary": return WEAPONS.filter(w => w.type === "secondary");
       case "melee": return WEAPONS.filter(w => w.type === "melee");
       case "companion": return COMPANIONS;
+      case "arcane-warframe": return ARCANES.filter(arcane => arcane.type === "warframe");
+      case "arcane-primary": return ARCANES.filter(arcane => ["primary", "kitgun", "bow", "shotgun"].includes(arcane.type));
+      case "arcane-secondary": return ARCANES.filter(arcane => ["secondary", "kitgun"].includes(arcane.type));
+      case "arcane-melee": return ARCANES.filter(arcane => ["melee", "zaw"].includes(arcane.type));
+      case "archon-shard": return ARCHON_SHARDS;
       case "mod-warframe": return MODS.filter(m => m.type === "warframe" || m.type === "universal");
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
@@ -51,6 +56,11 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
       secondary: "SÉLECTIONNER UNE ARME SECONDAIRE",
       melee: "SÉLECTIONNER UNE ARME DE MÊLÉE",
       companion: "SÉLECTIONNER UN COMPAGNON",
+      "arcane-warframe": "SÉLECTIONNER UN ARCANE WARFRAME",
+      "arcane-primary": "SÉLECTIONNER UN ARCANE PRIMAIRE",
+      "arcane-secondary": "SÉLECTIONNER UN ARCANE SECONDAIRE",
+      "arcane-melee": "SÉLECTIONNER UN ARCANE MÊLÉE",
+      "archon-shard": "SÉLECTIONNER UN ÉCLAT D’ARCHONTE",
       "mod-warframe": "SÉLECTIONNER UN MOD WARFRAME",
       "mod-primary": "SÉLECTIONNER UN MOD PRIMAIRE",
       "mod-secondary": "SÉLECTIONNER UN MOD SECONDAIRE",
@@ -106,7 +116,7 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
                 >
                   <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0"
                     style={{ backgroundColor: `${rarityColor}20`, border: `1px solid ${rarityColor}40` }}>
-                    <span className="text-sm">{type === "warframe" ? "⚡" : type.includes("mod") ? "🔷" : type === "companion" ? "🐾" : "⚔️"}</span>
+                    {type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
@@ -118,6 +128,8 @@ function SelectorModal({ type, modSlotIndex, onSelect, onClose }: SelectorModalP
                     <div className="text-xs" style={{ color: rarityColor, fontFamily: "var(--font-display)", fontSize: "9px", letterSpacing: "0.05em" }}>
                       {getRarityLabel((item as any).rarity || "common").toUpperCase()}
                       {(item as any).effect && ` — ${(item as any).effect}`}
+                      {(item as any).criteria && ` — ${(item as any).criteria}`}
+                      {(item as any).effects?.[0] && ` — ${(item as any).effects[0]}`}
                     </div>
                   </div>
                 </button>
@@ -297,6 +309,24 @@ function ModGrid({ label, mods, modType, onSelectMod, onClearMod, accentColor = 
   );
 }
 
+// ---- Arcane and Archon Shard Grids ----
+interface ArcaneGridProps {
+  label: string;
+  arcanes: (Arcane | null)[];
+  arcaneType: SlotType;
+  onSelect: (index: number, type: SlotType) => void;
+  onClear: (index: number, type: SlotType) => void;
+  accentColor: string;
+}
+
+function ArcaneGrid({ label, arcanes, arcaneType, onSelect, onClear, accentColor }: ArcaneGridProps) {
+  return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: accentColor, fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
+}
+
+function ArchonShardGrid({ shards, onSelect, onClear }: { shards: (ArchonShard | null)[]; onSelect: (index: number, type: SlotType) => void; onClear: (index: number, type: SlotType) => void }) {
+  return <div className="rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length}</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.effects[0]}</div></> : <div className="flex items-center gap-2 py-1 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
+}
+
 // ---- Stats Panel ----
 function StatsPanel({ build }: { build: BuildSet }) {
   const wf = build.warframe;
@@ -357,6 +387,11 @@ function StatsPanel({ build }: { build: BuildSet }) {
               ))}
             </>
           )}
+
+          <div className="mt-3 grid grid-cols-2 gap-2 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
+            <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Arcanes</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{[...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).length}</div></div>
+            <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(255,202,40,.08)", border: "1px solid rgba(255,202,40,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#ffca28", fontFamily: "var(--font-display)" }}>Éclats</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{build.archonShards.filter(Boolean).length}/5</div></div>
+          </div>
         </div>
       ) : (
         <div className="text-center py-6" style={{ color: "var(--wf-text-dim)" }}>
@@ -383,7 +418,7 @@ export default function SetBuilder() {
     setBuilds(prev => prev.map((b, i) => i === activeBuildIndex ? updater(b) : b));
   }, [activeBuildIndex]);
 
-  const handleSelect = (item: Warframe | Weapon | Companion | Mod) => {
+  const handleSelect = (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => {
     if (!selectorOpen) return;
     const { type, modIndex } = selectorOpen;
 
@@ -394,7 +429,22 @@ export default function SetBuilder() {
       else if (type === "secondary") nb.secondaryWeapon = item as Weapon;
       else if (type === "melee") nb.meleeWeapon = item as Weapon;
       else if (type === "companion") nb.companion = item as Companion;
-      else if (type === "mod-warframe" && modIndex !== undefined) {
+      else if (type === "arcane-warframe" && modIndex !== undefined) {
+        nb.warframeArcanes = [...b.warframeArcanes];
+        nb.warframeArcanes[modIndex] = item as Arcane;
+      } else if (type === "arcane-primary" && modIndex !== undefined) {
+        nb.primaryArcanes = [...b.primaryArcanes];
+        nb.primaryArcanes[modIndex] = item as Arcane;
+      } else if (type === "arcane-secondary" && modIndex !== undefined) {
+        nb.secondaryArcanes = [...b.secondaryArcanes];
+        nb.secondaryArcanes[modIndex] = item as Arcane;
+      } else if (type === "arcane-melee" && modIndex !== undefined) {
+        nb.meleeArcanes = [...b.meleeArcanes];
+        nb.meleeArcanes[modIndex] = item as Arcane;
+      } else if (type === "archon-shard" && modIndex !== undefined) {
+        nb.archonShards = [...b.archonShards];
+        nb.archonShards[modIndex] = item as ArchonShard;
+      } else if (type === "mod-warframe" && modIndex !== undefined) {
         nb.warframeMods = [...b.warframeMods];
         nb.warframeMods[modIndex] = item as Mod;
       } else if (type === "mod-primary" && modIndex !== undefined) {
@@ -426,6 +476,12 @@ export default function SetBuilder() {
   const clearMod = (index: number, type: SlotType) => {
     updateBuild(b => {
       const nb = { ...b };
+      if (type === "arcane-warframe") { nb.warframeArcanes = [...b.warframeArcanes]; nb.warframeArcanes[index] = null; }
+      else if (type === "arcane-primary") { nb.primaryArcanes = [...b.primaryArcanes]; nb.primaryArcanes[index] = null; }
+      else if (type === "arcane-secondary") { nb.secondaryArcanes = [...b.secondaryArcanes]; nb.secondaryArcanes[index] = null; }
+      else if (type === "arcane-melee") { nb.meleeArcanes = [...b.meleeArcanes]; nb.meleeArcanes[index] = null; }
+      else if (type === "archon-shard") { nb.archonShards = [...b.archonShards]; nb.archonShards[index] = null; }
+      else
       if (type === "mod-warframe") { nb.warframeMods = [...b.warframeMods]; nb.warframeMods[index] = null; }
       else if (type === "mod-primary") { nb.primaryMods = [...b.primaryMods]; nb.primaryMods[index] = null; }
       else if (type === "mod-secondary") { nb.secondaryMods = [...b.secondaryMods]; nb.secondaryMods[index] = null; }
@@ -514,7 +570,7 @@ export default function SetBuilder() {
         {/* Left: Equipment + Mods */}
         <div className="xl:col-span-3 space-y-4">
           {/* Build name input */}
-          <div className="flex items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+          <div className="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
             <span className="text-xs font-bold tracking-widest" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text-dim)", fontSize: "10px", whiteSpace: "nowrap" }}>
               NOM DU SET
             </span>
@@ -525,13 +581,13 @@ export default function SetBuilder() {
                 setBuildName(e.target.value);
                 updateBuild(b => ({ ...b, name: e.target.value }));
               }}
-              className="flex-1 px-3 py-1.5 text-sm rounded-sm outline-none"
+              className="min-w-0 w-full px-3 py-1.5 text-sm rounded-sm outline-none"
               style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
               placeholder="Nom de votre set..."
             />
             <button
               onClick={saveBuild}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all wf-btn-primary shrink-0"
+              className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all wf-btn-primary shrink-0"
             >
               <Save size={12} />
               <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>SAUVEGARDER</span>
@@ -580,6 +636,15 @@ export default function SetBuilder() {
               onClear={() => clearSlot("companion")}
               accentColor="#a78bfa"
             />
+          </div>
+
+          {/* Arcanes and Archon Shards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ArcaneGrid label="WARFRAME" arcanes={activeBuild.warframeArcanes} arcaneType="arcane-warframe" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#a78bfa" />
+            <ArchonShardGrid shards={activeBuild.archonShards} onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} />
+            <ArcaneGrid label="PRIMAIRE" arcanes={activeBuild.primaryArcanes} arcaneType="arcane-primary" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#ff6b35" />
+            <ArcaneGrid label="SECONDAIRE" arcanes={activeBuild.secondaryArcanes} arcaneType="arcane-secondary" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#ffd700" />
+            <ArcaneGrid label="MÊLÉE" arcanes={activeBuild.meleeArcanes} arcaneType="arcane-melee" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#66bb6a" />
           </div>
 
           {/* Mod grids */}
