@@ -20,6 +20,8 @@ type CatalogData = {
   weapons: Array<Record<string, any>>;
   mods: Array<Record<string, any>>;
   companions: Array<Record<string, any>>;
+  arcanes?: Array<Record<string, any>>;
+  archonShards?: Array<Record<string, any>>;
 };
 
 const fullData = catalog as CatalogData;
@@ -118,6 +120,9 @@ export interface ArchonShard {
   variant: ArchonShardVariant;
   rarity: Rarity;
   effects: string[];
+  effectCount?: number;
+  effectIds?: string[];
+  sourceKey?: string;
   description: string;
   imageUrl?: string;
 }
@@ -153,7 +158,8 @@ export const WEAPONS: Weapon[] = fullData.weapons as Weapon[];
 export const MODS: Mod[] = fullData.mods as Mod[];
 export const COMPANIONS: Companion[] = fullData.companions as Companion[];
 export const ARCANES: Arcane[] = (fullData as any).arcanes as Arcane[];
-export const ARCHON_SHARDS: ArchonShard[] = (fullData as any).archonShards as ArchonShard[];
+export const ARCHON_SHARDS: ArchonShard[] = fullData.archonShards as ArchonShard[];
+export const ARCHON_SHARD_EFFECT_TOTAL = ARCHON_SHARDS.reduce((total, shard) => total + (shard.effectCount ?? shard.effects.length), 0);
 
 export const CATALOG_COUNTS = {
   warframes: WARFRAMES.length,

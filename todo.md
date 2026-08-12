@@ -1,20 +1,19 @@
-# TODO — Effets d’éclats, persistance et bonus de build
+# TODO — Compléter les effets d’Éclats d’Archonte
 
-- [x] Ajouter un effet sélectionné à chaque emplacement d’Éclat d’Archonte.
-- [x] Préserver l’effet choisi dans le modèle `BuildSet` et dans les données exportées.
-- [x] Ajouter la persistance `localStorage` des builds actifs et sauvegardés.
-- [x] Ajouter l’export JSON d’un set complet et l’import JSON avec validation.
-- [x] Définir les règles de calcul des bonus d’Arcanes et d’Éclats à partir des descriptions disponibles.
-- [x] Afficher les bonus détectés dans le panneau de statistiques finales.
-- [x] Vérifier TypeScript, build production, responsive et flux de stockage/import/export.
-- [ ] Créer le checkpoint final et livrer la version améliorée.
+- [x] Comparer le fichier source Cephalon-Wodan avec `ARCHON_SHARDS`.
+- [x] Identifier les couleurs, variantes, effets et images manquants.
+- [x] Régénérer le catalogue normalisé sans perdre les effets déjà présents.
+- [x] Vérifier que le catalogue et le builder exposent chaque effet sélectionnable.
+- [x] Ajuster les règles de calcul pour les nouvelles formulations reconnues.
+- [x] Vérifier TypeScript, le build, les filtres et le rendu responsive.
+- [ ] Créer le checkpoint final et livrer la correction.
 
 ## Décisions
 
-- Un emplacement d’Éclat conserve l’éclat choisi et l’index de son effet sélectionné.
-- Les données source restent celles du dépôt Cephalon-Wodan ; le calcul applique uniquement les effets explicitement sélectionnés.
-- L’import JSON accepte uniquement un format de build compatible et ignore les entrées invalides avec un message utilisateur.
-- Le calcul des bonus reste transparent : les effets reconnus sont affichés avec leur source, les autres restent visibles comme effets sélectionnés non agrégés.
+- La source prioritaire reste le dépôt Cephalon-Wodan fourni par l’utilisateur.
+- Aucun effet ne sera inventé : les données manquantes seront récupérées uniquement depuis la source inspectée.
+- Les variantes normales et Tauforgées resteront distinctes.
+- Chaque effet sera conservé dans l’ordre source afin que le choix dans le builder reste fidèle au jeu.
 
 ## État
 

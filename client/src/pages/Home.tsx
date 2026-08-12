@@ -5,7 +5,7 @@
 import { Link } from "wouter";
 import { Zap, Shield, Sword, Star, Users, ChevronRight, Clock, BookOpen, Crosshair, Package, Settings, Map, Gem } from "lucide-react";
 import Layout from "@/components/Layout";
-import { WARFRAMES, WEAPONS, MODS, COMPANIONS, ARCANES, ARCHON_SHARDS } from "@/lib/warframe-data";
+import { WARFRAMES, WEAPONS, MODS, COMPANIONS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL } from "@/lib/warframe-data";
 
 const CATEGORY_ITEMS = [
   { label: "WARFRAMES", href: "/warframes", Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
@@ -99,6 +99,7 @@ export default function Home() {
               { label: "Compagnons", value: COMPANIONS.length, icon: Users },
               { label: "Arcanes", value: ARCANES.length, icon: Star },
               { label: "Éclats", value: ARCHON_SHARDS.length, icon: Gem },
+              { label: "Effets d’éclats", value: ARCHON_SHARD_EFFECT_TOTAL, icon: Gem },
             ].map(({ label, value, icon: Icon }) => (
               <div key={label} className="flex items-center justify-between py-1.5 border-b last:border-0" style={{ borderColor: "var(--wf-border)" }}>
                 <div className="flex items-center gap-2 text-xs" style={{ color: "#7fb3c8" }}>
