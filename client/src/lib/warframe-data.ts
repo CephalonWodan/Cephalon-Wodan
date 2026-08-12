@@ -133,6 +133,42 @@ export interface SelectedArchonShard {
   effectIndex: number;
 }
 
+export interface ItemDropSource {
+  location: string;
+  type: string;
+  chance: number;
+  rarity?: string;
+}
+
+export interface PrimeRelicReward {
+  itemName: string;
+  rarity: "Common" | "Uncommon" | "Rare";
+  chance: number;
+}
+
+export interface PrimeRelic {
+  id: string;
+  era: "Lith" | "Meso" | "Neo" | "Axi" | "Requiem";
+  name: string;
+  state: "Intact" | "Exceptional" | "Flawless" | "Radiant";
+  rewards: PrimeRelicReward[];
+}
+
+export interface WorldStateAlert {
+  id: string;
+  type: string;
+  missionNode: string;
+  faction: string;
+  reward: string;
+  eta: string;
+}
+
+export interface WorldStateData {
+  fissures: { id: string; node: string; tier: string; missionType: string; active: boolean }[];
+  alerts: WorldStateAlert[];
+  cycles: { name: string; state: string; timeRemaining: string }[];
+}
+
 export interface BuildSet {
   id: string;
   name: string;
@@ -220,3 +256,77 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     createdAt: new Date().toISOString(),
   };
 }
+
+
+export const PRIME_RELICS: PrimeRelic[] = [
+  {
+    id: "lith-a1-rad",
+    era: "Lith",
+    name: "Lith A1",
+    state: "Radiant",
+    rewards: [
+      { itemName: "Ash Prime Neuroptics", rarity: "Common", chance: 23.33 },
+      { itemName: "Braton Prime Receiver", rarity: "Common", chance: 23.33 },
+      { itemName: "Saryn Prime Blueprint", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Lex Prime Barrel", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Glaive Prime Blueprint", rarity: "Rare", chance: 10.0 },
+    ]
+  },
+  {
+    id: "meso-s10-rad",
+    era: "Meso",
+    name: "Meso S10",
+    state: "Radiant",
+    rewards: [
+      { itemName: "Saryn Prime Systems", rarity: "Common", chance: 23.33 },
+      { itemName: "Galatine Prime Blade", rarity: "Common", chance: 23.33 },
+      { itemName: "Volt Prime Chassis", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Rhino Prime Systems", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Saryn Prime Blueprint", rarity: "Rare", chance: 10.0 },
+    ]
+  },
+  {
+    id: "neo-v8-rad",
+    era: "Neo",
+    name: "Neo V8",
+    state: "Radiant",
+    rewards: [
+      { itemName: "Volt Prime Neuroptics", rarity: "Common", chance: 23.33 },
+      { itemName: "Braton Prime Stock", rarity: "Common", chance: 23.33 },
+      { itemName: "Loki Prime Blueprint", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Ash Prime Systems", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Volt Prime Blueprint", rarity: "Rare", chance: 10.0 },
+    ]
+  },
+  {
+    id: "axi-g2-rad",
+    era: "Axi",
+    name: "Axi G2",
+    state: "Radiant",
+    rewards: [
+      { itemName: "Nova Prime Chassis", rarity: "Common", chance: 23.33 },
+      { itemName: "Soma Prime Barrel", rarity: "Common", chance: 23.33 },
+      { itemName: "Rhino Prime Blueprint", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Oberon Prime Systems", rarity: "Uncommon", chance: 20.0 },
+      { itemName: "Glaive Prime Disc", rarity: "Rare", chance: 10.0 },
+    ]
+  }
+];
+
+export const WORLD_STATE_MOCK: WorldStateData = {
+  fissures: [
+    { id: "f1", node: "Hydron (Sedna)", tier: "Axi", missionType: "Défense", active: true },
+    { id: "f2", node: "Helene (Saturne)", tier: "Neo", missionType: "Défense", active: true },
+    { id: "f3", node: "Io (Jupiter)", tier: "Meso", missionType: "Défense", active: true },
+    { id: "f4", node: "Tethys (Saturne)", tier: "Lith", missionType: "Assassinat", active: true },
+  ],
+  alerts: [
+    { id: "a1", type: "Alerte de Fissure Spéciale", missionNode: "Marduk (Void)", faction: "Corrupted", reward: "Adaptation (Mod) + 15,000 CR", eta: "1h 24m" },
+    { id: "a2", type: "Invasion Grineer vs Corpus", missionNode: "Stöfler (Lua)", faction: "Grineer", reward: "Orokin Catalyst Blueprint", eta: "4h 12m" }
+  ],
+  cycles: [
+    { name: "Cetus (Plaines d'Eidolon)", state: "Nuit", timeRemaining: "31m 45s" },
+    { name: "Vallée Orbis (Venus)", state: "Chaud", timeRemaining: "12m 10s" },
+    { name: "Deimos (Cambion)", state: "Ferm", timeRemaining: "54m 02s" }
+  ]
+};
