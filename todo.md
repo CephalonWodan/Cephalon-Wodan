@@ -15,3 +15,19 @@ Le rang par défaut d’un mod nouvellement ajouté sera `maxRank`, afin de pré
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Aperçu des effets d’Arcanes
+
+- [x] Afficher la description complète d’un Arcane dans le sélecteur avant validation.
+- [x] Afficher le rang maximal et les métadonnées utiles de l’Arcane dans l’aperçu.
+- [x] Vérifier la sélection finale, le responsive, TypeScript et le build.
+- [ ] Créer le checkpoint final et livrer la mise à jour.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
+
+## Décision de conception
+
+L’aperçu est intégré directement dans chaque carte Arcane du sélecteur, avec un bloc « APERÇU DE L’EFFET » et le rang maximal. La sélection reste une action séparée : consulter l’effet ne modifie pas le build ; seul le clic de la carte applique l’Arcane.

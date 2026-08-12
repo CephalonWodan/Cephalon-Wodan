@@ -263,13 +263,15 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
             {items.map(item => {
               const rarityColor = getRarityColor((item as any).rarity || "common");
               const isPrime = (item as any).isPrime;
+              const isArcane = type.startsWith("arcane-");
+              const arcane = isArcane ? item as Arcane : null;
               const isUnavailable = unavailableIds.includes(itemIdentity(item));
               return (
                 <button
                   key={item.id}
                   disabled={isUnavailable}
                   onClick={() => { if (!isUnavailable) { onSelect(item); onClose(); } }}
-                  className={`flex items-center gap-3 p-2.5 rounded-sm text-left transition-all duration-150 ${isUnavailable ? "cursor-not-allowed opacity-40" : "hover:bg-white/5"}`}
+                  className={`flex items-start gap-3 p-2.5 rounded-sm text-left transition-all duration-150 ${isUnavailable ? "cursor-not-allowed opacity-40" : "hover:bg-white/5"}`}
                   style={{ border: `1px solid ${isUnavailable ? "rgba(148,163,184,.18)" : "var(--wf-border)"}` }}
                   onMouseEnter={e => { if (!isUnavailable) e.currentTarget.style.borderColor = rarityColor; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = isUnavailable ? "rgba(148,163,184,.18)" : "var(--wf-border)"; }}
@@ -294,6 +296,17 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
                       {(item as any).effects?.[0] && ` — ${(item as any).effects[0]}`}
                       {type === "archon-shard" && ` · ${(item as any).effectCount ?? (item as any).effects?.length ?? 0} effets`}
                     </div>
+                    {arcane && (
+                      <div className="mt-2 rounded-sm px-2 py-1.5" style={{ backgroundColor: `${rarityColor}0d`, borderLeft: `2px solid ${rarityColor}80` }}>
+                        <div className="flex items-center justify-between gap-2 text-[8px] uppercase" style={{ color: rarityColor, fontFamily: "var(--font-mono)", letterSpacing: "0.1em" }}>
+                          <span>APERÇU DE L’EFFET</span>
+                          <span>RANG MAX {arcane.maxRank}</span>
+                        </div>
+                        <div className="mt-1 line-clamp-3 text-[10px] leading-relaxed" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+                          {arcane.description || "Effet détaillé indisponible dans le catalogue."}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </button>
               );
