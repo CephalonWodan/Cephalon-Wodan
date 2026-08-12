@@ -26,15 +26,28 @@ jobs:
           version: 9
           run_install: false
 
+      - name: Create dataset snapshot backup
+        run: |
+          node scripts/dataset-snapshot.mjs backup
+
       - name: Run automated data sync and validation
         run: |
           node scripts/auto-sync-data.mjs
 
       - name: Run type check and production build
+        id: build-step
+        continue-on-error: true
         run: |
           pnpm install --frozen-lockfile || pnpm install
           pnpm run check
           pnpm run build
+
+      - name: Restore backup if build or validation failed
+        if: steps.build-step.outcome != 'success'
+        run: |
+          echo "Échec des tests ou du build. Restauration instantanée du dataset précédent..."
+          node scripts/dataset-snapshot.mjs restore
+          exit 1
 
       - name: Commit and push updates if any
         env:
@@ -42,5 +55,5 @@ jobs:
         run: |
           git config --global user.name "Warframe Bot Auto-Sync"
           git config --global user.action "bot@users.noreply.github.com"
-          git add sync-report.json client/src/lib/warframe-data-full.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(data): automated weekly warframe dataset sync [skip ci]" && git push origin main)
+          git add sync-report.json client/src/lib/warframe-data-full.json backups/datasets/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore(data): automated weekly warframe dataset sync with safety snapshot [skip ci]" && git push origin main)
