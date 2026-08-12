@@ -3,11 +3,11 @@
 // Tenno Codex dark theme — Build your complete loadout
 // ============================================================
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check, Download, Upload } from "lucide-react";
+import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check, Download, Upload, FileText } from "lucide-react";
 import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
-  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet,
+  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity,
   getRarityColor, getRarityLabel, createEmptyBuild
 } from "@/lib/warframe-data";
 import { toast } from "sonner";
@@ -57,6 +57,34 @@ function getUnavailableIds(build: BuildSet, type: SlotType, currentIndex?: numbe
     .filter(Boolean);
 }
 
+const POLARITY_GLYPHS: Record<string, string> = {
+  madurai: "V",
+  vazarin: "D",
+  naramon: "—",
+  zenurik: "∩",
+  unairu: "W",
+  penjaga: "◇",
+  umbra: "U",
+  any: "✦",
+};
+
+function modBaseCost(mod: Mod): number {
+  return Math.max(2, 2 + Math.min(10, Number(mod.maxRank) || 0));
+}
+
+function modCost(mod: Mod, slotPolarity?: Polarity): number {
+  const base = modBaseCost(mod);
+  return slotPolarity && slotPolarity !== "any" && mod.polarity === slotPolarity ? Math.ceil(base / 2) : base;
+}
+
+function capacityKeyForModType(type: ModGridProps["modType"]): keyof BuildSet["capacityBoosts"] {
+  if (type === "mod-warframe") return "warframe";
+  if (type === "mod-primary") return "primary";
+  if (type === "mod-secondary") return "secondary";
+  if (type === "mod-melee") return "melee";
+  return "companion";
+}
+
 function isCompanionModCompatible(mod: Mod, companion?: Companion): boolean {
   if (mod.type === "universal") return true;
   if (mod.type !== "companion" || !companion) return mod.type === "companion";
@@ -97,6 +125,10 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     id: typeof candidate.id === "string" ? candidate.id : fallback.id,
     name: typeof candidate.name === "string" ? candidate.name : fallback.name,
     description: typeof candidate.description === "string" ? candidate.description : "",
+    capacityBoosts: {
+      ...fallback.capacityBoosts,
+      ...(candidate.capacityBoosts && typeof candidate.capacityBoosts === "object" ? candidate.capacityBoosts : {}),
+    },
     warframeMods: normalizeUniqueArray(candidate.warframeMods, 8),
     primaryMods: normalizeUniqueArray(candidate.primaryMods, 8),
     secondaryMods: normalizeUniqueArray(candidate.secondaryMods, 8),
@@ -339,11 +371,13 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
 interface ModSlotProps {
   mod: Mod | null;
   index: number;
+  slotPolarity?: Polarity;
+  cost?: number;
   onSelect: (index: number) => void;
   onClear: (index: number) => void;
 }
 
-function ModSlot({ mod, index, onSelect, onClear }: ModSlotProps) {
+function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear }: ModSlotProps) {
   const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
   return (
     <div
@@ -373,6 +407,10 @@ function ModSlot({ mod, index, onSelect, onClear }: ModSlotProps) {
           <div className="text-xs mt-0.5" style={{ color: rarityColor, fontSize: "9px", fontFamily: "var(--font-display)" }}>
             {mod.effect}
           </div>
+          <div className="mt-1 flex items-center gap-1.5 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+            <span style={{ color: slotPolarity && mod.polarity === slotPolarity ? "#66bb6a" : rarityColor }}>COÛT {cost ?? modBaseCost(mod)}</span>
+            {slotPolarity && <span style={{ color: "#a78bfa" }}>SLOT {POLARITY_GLYPHS[slotPolarity] || slotPolarity}</span>}
+          </div>
           {/* Rank dots */}
           <div className="flex gap-0.5 mt-1">
             {Array.from({ length: Math.min(mod.maxRank, 6) }).map((_, i) => (
@@ -394,22 +432,36 @@ interface ModGridProps {
   label: string;
   mods: (Mod | null)[];
   modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
+  equipment?: Warframe | Weapon | Companion;
+  capacityBoosted: boolean;
+  onToggleCapacity: () => void;
   onSelectMod: (index: number, type: SlotType) => void;
   onClearMod: (index: number, type: SlotType) => void;
   accentColor?: string;
 }
 
-function ModGrid({ label, mods, modType, onSelectMod, onClearMod, accentColor = "#4fc3f7" }: ModGridProps) {
+function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, accentColor = "#4fc3f7" }: ModGridProps) {
+  const slotPolarities = equipment?.polarities || [];
+  const capacityMax = capacityBoosted ? 60 : 30;
+  const usedCapacity = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, slotPolarities[index]) : 0), 0);
+  const isOverCapacity = usedCapacity > capacityMax;
   return (
-    <div className="rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}>
-      <div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}>
+    <div className="rounded-sm overflow-hidden" style={{ border: `1px solid ${isOverCapacity ? "#ef5350" : "var(--wf-border)"}` }}>
+      <div className="px-3 py-2 border-b flex flex-wrap items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}>
         <Star size={12} style={{ color: accentColor }} />
         <span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: accentColor, fontSize: "10px" }}>
           MODS — {label}
         </span>
-        <span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
-          {mods.filter(Boolean).length}/{mods.length}
+        <span className="ml-auto text-xs" style={{ color: isOverCapacity ? "#ef5350" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
+          {usedCapacity}/{capacityMax}
         </span>
+        <button disabled={!equipment} onClick={onToggleCapacity} className="rounded-sm px-1.5 py-0.5 text-[8px] uppercase transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40" style={{ color: capacityBoosted ? "#66bb6a" : "var(--wf-text-dim)", border: `1px solid ${capacityBoosted ? "#66bb6a80" : "var(--wf-border)"}`, fontFamily: "var(--font-mono)" }} title="Ajouter ou retirer un Réacteur/Catalyseur">
+          {capacityBoosted ? "CAP +30" : "AJOUTER +30"}
+        </button>
+      </div>
+      <div className="px-3 py-1 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+        {equipment ? `POLARITÉS : ${(equipment.polarities || []).map(polarity => POLARITY_GLYPHS[polarity] || polarity).join(" ") || "AUCUNE"} · COÛTS AU RANG MAX` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
+        {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
       <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
         {mods.map((mod, i) => (
@@ -417,6 +469,8 @@ function ModGrid({ label, mods, modType, onSelectMod, onClearMod, accentColor = 
             key={i}
             mod={mod}
             index={i}
+            slotPolarity={slotPolarities[i]}
+            cost={mod ? modCost(mod, slotPolarities[i]) : undefined}
             onSelect={(idx) => onSelectMod(idx, modType)}
             onClear={(idx) => onClearMod(idx, modType)}
           />
@@ -489,6 +543,118 @@ function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
   return summary;
 }
 
+interface CompanionStatSummary {
+  health: number;
+  shield: number;
+  armor: number;
+  damagePct: number;
+  criticalChancePct: number;
+  statusChancePct: number;
+  statusDamagePct: number;
+  healthRegen: number;
+  activeEffects: Array<{ name: string; effect: string; recognized: boolean }>;
+}
+
+function calculateCompanionStats(build: BuildSet): CompanionStatSummary | null {
+  const companion = build.companion;
+  if (!companion) return null;
+  const warframeHealth = build.warframe?.health || 0;
+  const warframeShield = build.warframe?.shield || 0;
+  const warframeArmor = build.warframe?.armor || 0;
+  const summary: CompanionStatSummary = {
+    health: companion.health,
+    shield: companion.shield,
+    armor: companion.armor,
+    damagePct: 0,
+    criticalChancePct: 0,
+    statusChancePct: 0,
+    statusDamagePct: 0,
+    healthRegen: 0,
+    activeEffects: [],
+  };
+  build.companionMods.filter(Boolean).forEach(mod => {
+    if (!mod) return;
+    const effect = mod.effect || mod.description || "";
+    let recognized = false;
+    const linkHealth = effect.match(/\+(\d+(?:\.\d+)?)%\s+of\s+Warframe(?:'s|’s)\s+Max\s+Health/i);
+    const linkShield = effect.match(/\+(\d+(?:\.\d+)?)%\s+of\s+Warframe(?:'s|’s)\s+Max\s+Shield/i);
+    const linkArmor = effect.match(/\+(\d+(?:\.\d+)?)%\s+of\s+Warframe(?:'s|’s)\s+Armor/i);
+    const flatHealth = effect.match(/\+(\d+(?:\.\d+)?)\s+(?:Companion\s+)?Health\b(?!\s+Regen)/i);
+    const flatShield = effect.match(/\+(\d+(?:\.\d+)?)\s+(?:Companion\s+)?Shield\b/i);
+    const flatArmor = effect.match(/\+(\d+(?:\.\d+)?)\s+(?:Companion\s+)?Armor\b/i);
+    const damage = effect.match(/\+(\d+(?:\.\d+)?)%\s+(?:Melee\s+)?Damage\b/i);
+    const critical = effect.match(/\+(\d+(?:\.\d+)?)%\s+(?:Primary\s+Weapon\s+)?Critical\s+Chance/i);
+    const statusChance = effect.match(/\+(\d+(?:\.\d+)?)%\s+(?:Primary\s+Weapon\s+)?Status\s+Chance/i);
+    const statusDamage = effect.match(/\+(\d+(?:\.\d+)?)%\s+Status\s+Damage/i);
+    const regen = effect.match(/\+(\d+(?:\.\d+)?)\s+Companion\s+Health\s+Regen\/s/i);
+    if (linkHealth) { summary.health += warframeHealth * Number(linkHealth[1]) / 100; recognized = true; }
+    if (linkShield) { summary.shield += warframeShield * Number(linkShield[1]) / 100; recognized = true; }
+    if (linkArmor) { summary.armor += warframeArmor * Number(linkArmor[1]) / 100; recognized = true; }
+    if (flatHealth) { summary.health += Number(flatHealth[1]); recognized = true; }
+    if (flatShield) { summary.shield += Number(flatShield[1]); recognized = true; }
+    if (flatArmor) { summary.armor += Number(flatArmor[1]); recognized = true; }
+    if (damage) { summary.damagePct += Number(damage[1]); recognized = true; }
+    if (critical) { summary.criticalChancePct += Number(critical[1]); recognized = true; }
+    if (statusChance) { summary.statusChancePct += Number(statusChance[1]); recognized = true; }
+    if (statusDamage) { summary.statusDamagePct += Number(statusDamage[1]); recognized = true; }
+    if (regen) { summary.healthRegen += Number(regen[1]); recognized = true; }
+    summary.activeEffects.push({ name: mod.name, effect, recognized });
+  });
+  summary.health = Math.round(summary.health);
+  summary.shield = Math.round(summary.shield);
+  summary.armor = Math.round(summary.armor);
+  return summary;
+}
+
+function buildSummaryMarkdown(build: BuildSet): string {
+  const capacityLine = (label: string, mods: (Mod | null)[], equipment: Warframe | Weapon | Companion | undefined, boosted: boolean) => {
+    const polarities = equipment?.polarities || [];
+    const used = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, polarities[index]) : 0), 0);
+    const max = boosted ? 60 : 30;
+    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — coût ${modCost(mod, polarities[index])}${polarities[index] ? ` — polarité ${POLARITY_GLYPHS[polarities[index]] || polarities[index]}` : ""}` : null).filter(Boolean).join("\n");
+    return `### ${label} — capacité ${used}/${max}${used > max ? " (DÉPASSÉE)" : ""}\n${entries || "- Aucun mod équipé"}`;
+  };
+  const arcanes = [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).map(arcane => `- ${arcane?.name}: ${arcane?.description}`).join("\n") || "- Aucun Arcane équipé";
+  const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
+  const enhancements = calculateEnhancementBonuses(build);
+  const companionStats = calculateCompanionStats(build);
+  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} — PV ${companionStats.health}, boucliers ${companionStats.shield}, armure ${companionStats.armor}\n- Bonus dégâts : +${companionStats.damagePct}% · critique : +${companionStats.criticalChancePct}% · statut : +${companionStats.statusChancePct}% · dégâts de statut : +${companionStats.statusDamagePct}% · régénération : +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
+  return [
+    `# ${build.name}`,
+    "",
+    build.description ? `> ${build.description}` : "> Résumé de build WARFRAME Set Builder",
+    "",
+    "## Équipement",
+    `- Warframe : ${build.warframe?.name || "—"}`,
+    `- Arme primaire : ${build.primaryWeapon?.name || "—"}`,
+    `- Arme secondaire : ${build.secondaryWeapon?.name || "—"}`,
+    `- Arme de mêlée : ${build.meleeWeapon?.name || "—"}`,
+    `- Compagnon : ${build.companion?.name || "—"}`,
+    "",
+    "## Mods",
+    capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe),
+    "",
+    capacityLine("Arme primaire", build.primaryMods, build.primaryWeapon, build.capacityBoosts.primary),
+    "",
+    capacityLine("Arme secondaire", build.secondaryMods, build.secondaryWeapon, build.capacityBoosts.secondary),
+    "",
+    capacityLine("Arme de mêlée", build.meleeMods, build.meleeWeapon, build.capacityBoosts.melee),
+    "",
+    capacityLine("Compagnon", build.companionMods, build.companion, build.capacityBoosts.companion),
+    "",
+    "## Arcanes",
+    arcanes,
+    "",
+    "## Éclats d’Archonte",
+    shards,
+    companionBlock,
+    "",
+    "## Bonus reconnus",
+    `- PV : +${enhancements.flatHealth} · Boucliers : +${enhancements.flatShield} · Armure : +${enhancements.flatArmor} · Énergie : +${enhancements.flatEnergy}`,
+    `- Force : +${enhancements.abilityStrengthPct}% · Durée : +${enhancements.abilityDurationPct}% · Parkour : +${enhancements.parkourVelocityPct}%`,
+  ].join("\n");
+}
+
 // ---- Stats Panel ----
 function StatsPanel({ build }: { build: BuildSet }) {
   const wf = build.warframe;
@@ -496,6 +662,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
   const redirection = build.warframeMods.find(m => m?.id === "redirection");
   const steelFiber = build.warframeMods.find(m => m?.id === "steel-fiber");
   const enhancements = calculateEnhancementBonuses(build);
+  const companionStats = calculateCompanionStats(build);
 
   const health = wf ? Math.round((wf.health + enhancements.flatHealth) * (1 + (vitality ? 4.4 : 0))) : 0;
   const shield = wf ? Math.round((wf.shield + enhancements.flatShield) * (1 + (redirection ? 4.4 : 0))) : 0;
@@ -550,6 +717,22 @@ function StatsPanel({ build }: { build: BuildSet }) {
                 </div>
               ))}
             </>
+          )}
+
+          {companionStats && (
+            <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
+              <div className="mb-2 flex items-center justify-between gap-2">
+                <div className="text-xs font-semibold" style={{ color: "#a78bfa", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>{build.companion?.name.toUpperCase()}</div>
+                <span className="text-[9px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>STATS COMPAGNON</span>
+              </div>
+              <div className="grid grid-cols-3 gap-1.5">
+                {[{ label: "PV", value: companionStats.health, color: "#ef5350" }, { label: "Bouclier", value: companionStats.shield, color: "#42a5f5" }, { label: "Armure", value: companionStats.armor, color: "#ffa726" }].map(metric => <div key={metric.label} className="rounded-sm px-2 py-1.5" style={{ backgroundColor: `${metric.color}10`, border: `1px solid ${metric.color}35` }}><div className="text-[8px] uppercase" style={{ color: "var(--wf-text-dim)" }}>{metric.label}</div><div className="text-sm font-bold" style={{ color: metric.color, fontFamily: "var(--font-mono)" }}>{metric.value}</div></div>)}
+              </div>
+              <div className="mt-1.5 grid grid-cols-2 gap-1.5">
+                {[{ label: "Dégâts", value: companionStats.damagePct, suffix: "%" }, { label: "Critique", value: companionStats.criticalChancePct, suffix: "%" }, { label: "Statut", value: companionStats.statusChancePct, suffix: "%" }, { label: "Dégâts statut", value: companionStats.statusDamagePct, suffix: "%" }, { label: "Régénération", value: companionStats.healthRegen, suffix: "/s" }].filter(metric => metric.value !== 0).map(metric => <div key={metric.label} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: "rgba(167,139,250,.08)", color: "var(--wf-text-dim)" }}><span>{metric.label}</span><span style={{ color: "#a78bfa", fontFamily: "var(--font-mono)" }}>+{metric.value}{metric.suffix}</span></div>)}
+              </div>
+              <div className="mt-1.5 max-h-32 space-y-1 overflow-y-auto">{companionStats.activeEffects.map(entry => <div key={entry.name} className="rounded-sm px-2 py-1" style={{ borderLeft: `2px solid ${entry.recognized ? "#66bb6a" : "#6b7280"}`, backgroundColor: "rgba(0,0,0,.18)" }}><div className="text-[9px] font-bold" style={{ color: entry.recognized ? "#66bb6a" : "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{entry.name} · {entry.recognized ? "CALCULÉ" : "DÉTAIL"}</div><div className="text-[9px]" style={{ color: "var(--wf-text)" }}>{entry.effect}</div></div>)}</div>
+            </div>
           )}
 
           <div className="mt-3 grid grid-cols-3 gap-2 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
@@ -696,6 +879,13 @@ export default function SetBuilder() {
     });
   };
 
+  const toggleCapacity = (key: keyof BuildSet["capacityBoosts"]) => {
+    updateBuild(build => ({
+      ...build,
+      capacityBoosts: { ...build.capacityBoosts, [key]: !build.capacityBoosts[key] },
+    }));
+  };
+
   const saveBuild = () => {
     const buildToSave = { ...activeBuild, name: buildName, id: Date.now().toString() };
     setSavedBuilds(prev => [...prev, buildToSave]);
@@ -713,6 +903,28 @@ export default function SetBuilder() {
     anchor.click();
     URL.revokeObjectURL(blobUrl);
     toast.success("Set exporté en JSON !");
+  };
+
+  const exportBuildSummary = () => {
+    const blobUrl = URL.createObjectURL(new Blob([buildSummaryMarkdown({ ...activeBuild, name: buildName })], { type: "text/markdown;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = blobUrl;
+    anchor.download = `${buildName.trim().replace(/[^a-z0-9]+/gi, "-").toLowerCase() || "warframe-build"}-resume.md`;
+    anchor.click();
+    URL.revokeObjectURL(blobUrl);
+    toast.success("Résumé du build exporté !");
+  };
+
+  const duplicateBuild = (source: BuildSet = activeBuild) => {
+    const duplicated = normalizeBuild(JSON.parse(JSON.stringify(source)));
+    if (!duplicated) return;
+    duplicated.id = Date.now().toString();
+    duplicated.name = `${source.name} — COPIE`;
+    duplicated.createdAt = new Date().toISOString();
+    setBuilds(prev => [...prev, duplicated]);
+    setActiveBuildIndex(builds.length);
+    setBuildName(duplicated.name);
+    toast.success(`Set "${duplicated.name}" dupliqué !`);
   };
 
   const importBuildFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -807,7 +1019,7 @@ export default function SetBuilder() {
         {/* Left: Equipment + Mods */}
         <div className="xl:col-span-3 space-y-4">
           {/* Build name input */}
-          <div className="grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)_auto_auto_auto] items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+          <div className="flex flex-wrap items-center gap-3 p-3 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
             <span className="text-xs font-bold tracking-widest" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text-dim)", fontSize: "10px", whiteSpace: "nowrap" }}>
               NOM DU SET
             </span>
@@ -818,7 +1030,7 @@ export default function SetBuilder() {
                 setBuildName(e.target.value);
                 updateBuild(b => ({ ...b, name: e.target.value }));
               }}
-              className="min-w-0 w-full px-3 py-1.5 text-sm rounded-sm outline-none"
+              className="min-w-[180px] flex-1 px-3 py-1.5 text-sm rounded-sm outline-none"
               style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
               placeholder="Nom de votre set..."
             />
@@ -829,9 +1041,17 @@ export default function SetBuilder() {
               <Save size={12} />
               <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>SAUVEGARDER</span>
             </button>
+            <button onClick={() => duplicateBuild()} className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all" style={{ border: "1px solid rgba(79,195,247,.65)", color: "var(--wf-cyan)", backgroundColor: "rgba(79,195,247,.08)" }}>
+              <Copy size={12} />
+              <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>DUPLIQUER</span>
+            </button>
             <button onClick={exportBuild} className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all" style={{ border: "1px solid rgba(167,139,250,.65)", color: "#c4b5fd", backgroundColor: "rgba(167,139,250,.08)" }}>
               <Download size={12} />
-              <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>EXPORTER</span>
+              <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>EXPORTER JSON</span>
+            </button>
+            <button onClick={exportBuildSummary} className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all" style={{ border: "1px solid rgba(102,187,106,.65)", color: "#66bb6a", backgroundColor: "rgba(102,187,106,.08)" }}>
+              <FileText size={12} />
+              <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>RÉSUMÉ</span>
             </button>
             <button onClick={() => importInputRef.current?.click()} className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all" style={{ border: "1px solid rgba(255,202,40,.65)", color: "#ffca28", backgroundColor: "rgba(255,202,40,.08)" }}>
               <Upload size={12} />
@@ -899,6 +1119,9 @@ export default function SetBuilder() {
               label="WARFRAME"
               mods={activeBuild.warframeMods}
               modType="mod-warframe"
+              equipment={activeBuild.warframe}
+              capacityBoosted={activeBuild.capacityBoosts.warframe}
+              onToggleCapacity={() => toggleCapacity("warframe")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               accentColor="#4fc3f7"
@@ -907,6 +1130,9 @@ export default function SetBuilder() {
               label="PRIMAIRE"
               mods={activeBuild.primaryMods}
               modType="mod-primary"
+              equipment={activeBuild.primaryWeapon}
+              capacityBoosted={activeBuild.capacityBoosts.primary}
+              onToggleCapacity={() => toggleCapacity("primary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               accentColor="#ff6b35"
@@ -915,6 +1141,9 @@ export default function SetBuilder() {
               label="SECONDAIRE"
               mods={activeBuild.secondaryMods}
               modType="mod-secondary"
+              equipment={activeBuild.secondaryWeapon}
+              capacityBoosted={activeBuild.capacityBoosts.secondary}
+              onToggleCapacity={() => toggleCapacity("secondary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               accentColor="#ffd700"
@@ -923,6 +1152,9 @@ export default function SetBuilder() {
               label="MÊLÉE"
               mods={activeBuild.meleeMods}
               modType="mod-melee"
+              equipment={activeBuild.meleeWeapon}
+              capacityBoosted={activeBuild.capacityBoosts.melee}
+              onToggleCapacity={() => toggleCapacity("melee")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               accentColor="#66bb6a"
@@ -931,6 +1163,9 @@ export default function SetBuilder() {
               label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name}` : "COMPAGNON"}
               mods={activeBuild.companionMods}
               modType="mod-companion"
+              equipment={activeBuild.companion}
+              capacityBoosted={activeBuild.capacityBoosts.companion}
+              onToggleCapacity={() => toggleCapacity("companion")}
               onSelectMod={(idx, type) => {
                 if (!activeBuild.companion) {
                   toast.error("Sélectionnez d’abord un compagnon.");
@@ -967,18 +1202,30 @@ export default function SetBuilder() {
                         {sb.warframe?.name || "—"} / {sb.primaryWeapon?.name || "—"}
                       </div>
                     </div>
-                    <button
-                      onClick={() => {
-                        setBuilds(prev => [...prev, { ...sb, id: Date.now().toString() }]);
-                        setActiveBuildIndex(builds.length);
-                        setBuildName(sb.name);
-                        toast.success("Set chargé !");
-                      }}
-                      className="text-xs px-2 py-1 rounded-sm wf-btn-primary"
-                      style={{ fontSize: "10px" }}
-                    >
-                      CHARGER
-                    </button>
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => duplicateBuild(sb)}
+                          className="p-1.5 rounded-sm transition-colors hover:bg-white/10"
+                          style={{ color: "var(--wf-cyan)", border: "1px solid var(--wf-border)" }}
+                          title="Dupliquer ce set"
+                        >
+                          <Copy size={11} />
+                        </button>
+                        <button
+                          onClick={() => {
+                            const loaded = normalizeBuild(sb);
+                            if (!loaded) return;
+                            setBuilds(prev => [...prev, { ...loaded, id: Date.now().toString() }]);
+                            setActiveBuildIndex(builds.length);
+                            setBuildName(sb.name);
+                            toast.success("Set chargé !");
+                          }}
+                          className="text-xs px-2 py-1 rounded-sm wf-btn-primary"
+                          style={{ fontSize: "10px" }}
+                        >
+                          CHARGER
+                        </button>
+                      </div>
                   </div>
                 ))}
               </div>

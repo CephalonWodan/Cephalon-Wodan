@@ -1,19 +1,22 @@
-# TODO — Mods uniques, arcanes uniques et mods de compagnons
+# TODO — Polarités, capacités, statistiques compagnons et duplication
 
-- [x] Auditer les modèles de `BuildSet`, les catégories de mods et les handlers de sélection.
-- [x] Définir une validation anti-doublon par catégorie de mods, sans bloquer le même nom dans une autre catégorie compatible.
-- [x] Empêcher la sélection d’un même Arcane plus d’une fois dans l’ensemble de ses emplacements applicables.
-- [x] Ajouter les emplacements de mods dédiés au compagnon sélectionné.
-- [x] Filtrer les mods de compagnon selon la compatibilité et la catégorie compagnon.
-- [x] Afficher les doublons comme indisponibles avec un message explicite dans le sélecteur.
-- [x] Préserver les nouveaux slots dans `localStorage`, l’export JSON et l’import JSON.
-- [x] Vérifier TypeScript, build, persistance, responsive et flux de sélection.
+- [x] Auditer les champs de polarités, capacité et statistiques dans le catalogue Cephalon-Wodan.
+- [x] Étendre le modèle d’équipement et `BuildSet` avec polarités, capacité et métadonnées de slots.
+- [x] Calculer le coût des mods avec réduction lorsque la polarité correspond.
+- [x] Afficher capacité utilisée/restante et état de surcharge dans chaque grille.
+- [x] Calculer les statistiques détaillées du compagnon et les bonus de ses mods.
+- [x] Ajouter un bouton de duplication pour les sets actifs et sauvegardés.
+- [x] Ajouter un résumé exportable du build complet, lisible et contenant toutes les sections.
+- [x] Vérifier TypeScript, build production, persistance, import/export et responsive.
 - [ ] Créer le checkpoint final et livrer la mise à jour.
 
 ## Décisions
 
-Les règles anti-doublon doivent être appliquées à la sélection et à la normalisation des builds importés afin qu’un JSON ancien ou modifié ne puisse pas réintroduire de doublons. Les mods de compagnon resteront distincts des mods Warframe, primaire, secondaire et mêlée. Le nombre de slots compagnon sera défini par le modèle du builder et restera compatible avec les sets déjà sauvegardés.
+- Les valeurs disponibles dans le catalogue source seront prioritaires ; aucune statistique ne sera inventée.
+- Les polarités seront représentées par des codes courts compatibles avec les données source.
+- Le calcul de capacité sera explicite : coût du mod, réduction de polarité, capacité utilisée, capacité maximale et dépassement éventuel.
+- Le résumé exportable contiendra l’équipement, les mods par catégorie, les Arcanes, les Éclats avec effets sélectionnés, les capacités et les statistiques finales.
 
 ## État
 
-Phase en cours : préparation du checkpoint final.
+- Phase en cours : préparation du checkpoint final.

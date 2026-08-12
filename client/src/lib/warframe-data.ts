@@ -136,6 +136,13 @@ export interface BuildSet {
   id: string;
   name: string;
   description: string;
+  capacityBoosts: {
+    warframe: boolean;
+    primary: boolean;
+    secondary: boolean;
+    melee: boolean;
+    companion: boolean;
+  };
   warframe?: Warframe;
   primaryWeapon?: Weapon;
   secondaryWeapon?: Weapon;
@@ -198,6 +205,7 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     id: Date.now().toString(),
     name,
     description: "",
+    capacityBoosts: { warframe: false, primary: false, secondary: false, melee: false, companion: false },
     warframeMods: Array(8).fill(null),
     primaryMods: Array(8).fill(null),
     secondaryMods: Array(8).fill(null),
