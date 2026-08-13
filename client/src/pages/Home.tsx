@@ -5,7 +5,7 @@ import React from "react";
 import { Link } from "wouter";
 import { Zap, Shield, Sword, Star, Users, ChevronRight, Clock, BookOpen, Crosshair, Package, Settings, Map, Gem } from "lucide-react";
 import Layout from "@/components/Layout";
-import { WARFRAMES, WEAPONS, MODS, COMPANIONS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL } from "@/lib/warframe-data";
+import { WARFRAMES, WEAPONS, MODS, COMPANIONS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL, PRIME_RELICS } from "@/lib/warframe-data";
 import WorldStateHUD from "@/components/WorldStateHUD";
 
 const CATEGORY_ITEMS = [
@@ -15,7 +15,7 @@ const CATEGORY_ITEMS = [
   { label: "COMPAGNONS", href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#66bb6a" },
   { label: "ARCANES", href: "/arcanes", Icon: Star, count: ARCANES.length, color: "#ab7cff" },
   { label: "ÉCLATS", href: "/archon-shards", Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffca28" },
-  { label: "RELIQUES", href: "/relics", Icon: Package, count: 4, color: "#00bcd4" },
+  { label: "RELIQUES", href: "/relics", Icon: Package, count: PRIME_RELICS.length, color: "#00bcd4" },
   { label: "CRÉER UN SET", href: "/builder", Icon: Crosshair, count: null, color: "#ff6b35" },
   { label: "GUIDES", href: "/guides", Icon: BookOpen, count: null, color: "#ab7cff" },
 ];
@@ -124,7 +124,7 @@ export default function Home() {
                 { label: "Arcanes", value: ARCANES.length, icon: Star },
                 { label: "Éclats d'Archonte", value: ARCHON_SHARDS.length, icon: Gem },
                 { label: "Effets d'éclats", value: ARCHON_SHARD_EFFECT_TOTAL, icon: Zap },
-                { label: "Reliques Prime", value: 4, icon: Package },
+                { label: "Reliques Prime", value: PRIME_RELICS.length, icon: Package },
               ].map(({ label, value, icon: Icon }) => (
                 <div key={label} className="flex items-center justify-between p-2 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)" }}>
                   <span className="flex items-center gap-2 text-[11px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>

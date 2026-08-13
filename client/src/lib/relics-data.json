@@ -1,0 +1,3962 @@
+[
+  {
+    "id": "lith-a1",
+    "era": "Lith",
+    "name": "Lith A1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-a2",
+    "era": "Lith",
+    "name": "Lith A2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-a3",
+    "era": "Lith",
+    "name": "Lith A3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-b1",
+    "era": "Lith",
+    "name": "Lith B1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-b2",
+    "era": "Lith",
+    "name": "Lith B2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-b3",
+    "era": "Lith",
+    "name": "Lith B3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-c1",
+    "era": "Lith",
+    "name": "Lith C1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-c2",
+    "era": "Lith",
+    "name": "Lith C2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-c3",
+    "era": "Lith",
+    "name": "Lith C3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-d1",
+    "era": "Lith",
+    "name": "Lith D1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-d2",
+    "era": "Lith",
+    "name": "Lith D2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-d3",
+    "era": "Lith",
+    "name": "Lith D3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-e1",
+    "era": "Lith",
+    "name": "Lith E1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-e2",
+    "era": "Lith",
+    "name": "Lith E2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-e3",
+    "era": "Lith",
+    "name": "Lith E3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-f1",
+    "era": "Lith",
+    "name": "Lith F1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-f2",
+    "era": "Lith",
+    "name": "Lith F2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-f3",
+    "era": "Lith",
+    "name": "Lith F3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-g1",
+    "era": "Lith",
+    "name": "Lith G1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-g2",
+    "era": "Lith",
+    "name": "Lith G2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-g3",
+    "era": "Lith",
+    "name": "Lith G3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "lith-h1",
+    "era": "Lith",
+    "name": "Lith H1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "lith-h2",
+    "era": "Lith",
+    "name": "Lith H2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "lith-h3",
+    "era": "Lith",
+    "name": "Lith H3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-a1",
+    "era": "Meso",
+    "name": "Meso A1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-a2",
+    "era": "Meso",
+    "name": "Meso A2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "meso-a3",
+    "era": "Meso",
+    "name": "Meso A3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-b1",
+    "era": "Meso",
+    "name": "Meso B1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-b2",
+    "era": "Meso",
+    "name": "Meso B2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-b3",
+    "era": "Meso",
+    "name": "Meso B3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-c1",
+    "era": "Meso",
+    "name": "Meso C1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "meso-c2",
+    "era": "Meso",
+    "name": "Meso C2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-c3",
+    "era": "Meso",
+    "name": "Meso C3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-d1",
+    "era": "Meso",
+    "name": "Meso D1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "meso-d2",
+    "era": "Meso",
+    "name": "Meso D2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-d3",
+    "era": "Meso",
+    "name": "Meso D3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-e1",
+    "era": "Meso",
+    "name": "Meso E1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "meso-e2",
+    "era": "Meso",
+    "name": "Meso E2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-e3",
+    "era": "Meso",
+    "name": "Meso E3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-f1",
+    "era": "Meso",
+    "name": "Meso F1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "meso-f2",
+    "era": "Meso",
+    "name": "Meso F2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-f3",
+    "era": "Meso",
+    "name": "Meso F3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-g1",
+    "era": "Meso",
+    "name": "Meso G1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-g2",
+    "era": "Meso",
+    "name": "Meso G2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-g3",
+    "era": "Meso",
+    "name": "Meso G3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "meso-h1",
+    "era": "Meso",
+    "name": "Meso H1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "meso-h2",
+    "era": "Meso",
+    "name": "Meso H2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "meso-h3",
+    "era": "Meso",
+    "name": "Meso H3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-a1",
+    "era": "Neo",
+    "name": "Neo A1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-a2",
+    "era": "Neo",
+    "name": "Neo A2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-a3",
+    "era": "Neo",
+    "name": "Neo A3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-b1",
+    "era": "Neo",
+    "name": "Neo B1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-b2",
+    "era": "Neo",
+    "name": "Neo B2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-b3",
+    "era": "Neo",
+    "name": "Neo B3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-c1",
+    "era": "Neo",
+    "name": "Neo C1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-c2",
+    "era": "Neo",
+    "name": "Neo C2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-c3",
+    "era": "Neo",
+    "name": "Neo C3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-d1",
+    "era": "Neo",
+    "name": "Neo D1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-d2",
+    "era": "Neo",
+    "name": "Neo D2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-d3",
+    "era": "Neo",
+    "name": "Neo D3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-e1",
+    "era": "Neo",
+    "name": "Neo E1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-e2",
+    "era": "Neo",
+    "name": "Neo E2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-e3",
+    "era": "Neo",
+    "name": "Neo E3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-f1",
+    "era": "Neo",
+    "name": "Neo F1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-f2",
+    "era": "Neo",
+    "name": "Neo F2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-f3",
+    "era": "Neo",
+    "name": "Neo F3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-g1",
+    "era": "Neo",
+    "name": "Neo G1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-g2",
+    "era": "Neo",
+    "name": "Neo G2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "neo-g3",
+    "era": "Neo",
+    "name": "Neo G3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-h1",
+    "era": "Neo",
+    "name": "Neo H1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "neo-h2",
+    "era": "Neo",
+    "name": "Neo H2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "neo-h3",
+    "era": "Neo",
+    "name": "Neo H3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-a1",
+    "era": "Axi",
+    "name": "Axi A1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-a2",
+    "era": "Axi",
+    "name": "Axi A2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-a3",
+    "era": "Axi",
+    "name": "Axi A3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-b1",
+    "era": "Axi",
+    "name": "Axi B1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-b2",
+    "era": "Axi",
+    "name": "Axi B2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-b3",
+    "era": "Axi",
+    "name": "Axi B3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-c1",
+    "era": "Axi",
+    "name": "Axi C1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-c2",
+    "era": "Axi",
+    "name": "Axi C2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-c3",
+    "era": "Axi",
+    "name": "Axi C3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-d1",
+    "era": "Axi",
+    "name": "Axi D1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-d2",
+    "era": "Axi",
+    "name": "Axi D2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-d3",
+    "era": "Axi",
+    "name": "Axi D3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-e1",
+    "era": "Axi",
+    "name": "Axi E1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-e2",
+    "era": "Axi",
+    "name": "Axi E2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-e3",
+    "era": "Axi",
+    "name": "Axi E3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-f1",
+    "era": "Axi",
+    "name": "Axi F1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-f2",
+    "era": "Axi",
+    "name": "Axi F2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-f3",
+    "era": "Axi",
+    "name": "Axi F3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-g1",
+    "era": "Axi",
+    "name": "Axi G1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-g2",
+    "era": "Axi",
+    "name": "Axi G2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-g3",
+    "era": "Axi",
+    "name": "Axi G3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "axi-h1",
+    "era": "Axi",
+    "name": "Axi H1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "axi-h2",
+    "era": "Axi",
+    "name": "Axi H2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "axi-h3",
+    "era": "Axi",
+    "name": "Axi H3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-a1",
+    "era": "Requiem",
+    "name": "Requiem A1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-a2",
+    "era": "Requiem",
+    "name": "Requiem A2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-a3",
+    "era": "Requiem",
+    "name": "Requiem A3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-b1",
+    "era": "Requiem",
+    "name": "Requiem B1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-b2",
+    "era": "Requiem",
+    "name": "Requiem B2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-b3",
+    "era": "Requiem",
+    "name": "Requiem B3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-c1",
+    "era": "Requiem",
+    "name": "Requiem C1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-c2",
+    "era": "Requiem",
+    "name": "Requiem C2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-c3",
+    "era": "Requiem",
+    "name": "Requiem C3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-d1",
+    "era": "Requiem",
+    "name": "Requiem D1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-d2",
+    "era": "Requiem",
+    "name": "Requiem D2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-d3",
+    "era": "Requiem",
+    "name": "Requiem D3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-e1",
+    "era": "Requiem",
+    "name": "Requiem E1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-e2",
+    "era": "Requiem",
+    "name": "Requiem E2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-e3",
+    "era": "Requiem",
+    "name": "Requiem E3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Barrel",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-f1",
+    "era": "Requiem",
+    "name": "Requiem F1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Braton Prime Stock",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-f2",
+    "era": "Requiem",
+    "name": "Requiem F2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-f3",
+    "era": "Requiem",
+    "name": "Requiem F3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-g1",
+    "era": "Requiem",
+    "name": "Requiem G1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Ash Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-g2",
+    "era": "Requiem",
+    "name": "Requiem G2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-g3",
+    "era": "Requiem",
+    "name": "Requiem G3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Saryn Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  },
+  {
+    "id": "requiem-h1",
+    "era": "Requiem",
+    "name": "Requiem H1",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Neuroptics",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      }
+    ]
+  },
+  {
+    "id": "requiem-h2",
+    "era": "Requiem",
+    "name": "Requiem H2",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      }
+    ]
+  },
+  {
+    "id": "requiem-h3",
+    "era": "Requiem",
+    "name": "Requiem H3",
+    "state": "Radiant",
+    "rewards": [
+      {
+        "itemName": "Volt Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Rhino Prime Chassis",
+        "rarity": "Common",
+        "chance": 23.33
+      },
+      {
+        "itemName": "Rhino Prime Systems",
+        "rarity": "Uncommon",
+        "chance": 20
+      },
+      {
+        "itemName": "Rhino Prime Blueprint",
+        "rarity": "Rare",
+        "chance": 10
+      },
+      {
+        "itemName": "Braton Prime Receiver",
+        "rarity": "Common",
+        "chance": 23.33
+      }
+    ]
+  }
+]

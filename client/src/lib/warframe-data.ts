@@ -258,60 +258,8 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
 }
 
 
-export const PRIME_RELICS: PrimeRelic[] = [
-  {
-    id: "lith-a1-rad",
-    era: "Lith",
-    name: "Lith A1",
-    state: "Radiant",
-    rewards: [
-      { itemName: "Ash Prime Neuroptics", rarity: "Common", chance: 23.33 },
-      { itemName: "Braton Prime Receiver", rarity: "Common", chance: 23.33 },
-      { itemName: "Saryn Prime Blueprint", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Lex Prime Barrel", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Glaive Prime Blueprint", rarity: "Rare", chance: 10.0 },
-    ]
-  },
-  {
-    id: "meso-s10-rad",
-    era: "Meso",
-    name: "Meso S10",
-    state: "Radiant",
-    rewards: [
-      { itemName: "Saryn Prime Systems", rarity: "Common", chance: 23.33 },
-      { itemName: "Galatine Prime Blade", rarity: "Common", chance: 23.33 },
-      { itemName: "Volt Prime Chassis", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Rhino Prime Systems", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Saryn Prime Blueprint", rarity: "Rare", chance: 10.0 },
-    ]
-  },
-  {
-    id: "neo-v8-rad",
-    era: "Neo",
-    name: "Neo V8",
-    state: "Radiant",
-    rewards: [
-      { itemName: "Volt Prime Neuroptics", rarity: "Common", chance: 23.33 },
-      { itemName: "Braton Prime Stock", rarity: "Common", chance: 23.33 },
-      { itemName: "Loki Prime Blueprint", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Ash Prime Systems", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Volt Prime Blueprint", rarity: "Rare", chance: 10.0 },
-    ]
-  },
-  {
-    id: "axi-g2-rad",
-    era: "Axi",
-    name: "Axi G2",
-    state: "Radiant",
-    rewards: [
-      { itemName: "Nova Prime Chassis", rarity: "Common", chance: 23.33 },
-      { itemName: "Soma Prime Barrel", rarity: "Common", chance: 23.33 },
-      { itemName: "Rhino Prime Blueprint", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Oberon Prime Systems", rarity: "Uncommon", chance: 20.0 },
-      { itemName: "Glaive Prime Disc", rarity: "Rare", chance: 10.0 },
-    ]
-  }
-];
+import relicsJson from "./relics-data.json";
+export const PRIME_RELICS: PrimeRelic[] = relicsJson as PrimeRelic[];
 
 export const WORLD_STATE_MOCK: WorldStateData = {
   fissures: [
