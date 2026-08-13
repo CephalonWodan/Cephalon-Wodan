@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Calculator, Gem, Search, ShieldCheck, Sparkles, Users } from "lucide-react";
+import { Calculator, Gem, Plus, Search, ShieldCheck, Sparkles, Users } from "lucide-react";
 import { PRIME_RELICS, PrimeRelic } from "@/lib/warframe-data";
 
 // ============================================================
@@ -45,6 +45,7 @@ export default function Relics() {
   const [targetFilterEnabled, setTargetFilterEnabled] = useState(true);
   const [playerRelics, setPlayerRelics] = useState<string[]>(Array(4).fill(PRIME_RELICS[0]?.id ?? ""));
   const [playerRefinements, setPlayerRefinements] = useState<Refinement[]>(Array(4).fill("Radiant"));
+  const [destinationSlot, setDestinationSlot] = useState(0);
 
   const allPrimeParts = useMemo(() => Array.from(new Set(
     PRIME_RELICS.flatMap(relic => relic.rewards.map(reward => reward.itemName))
@@ -85,6 +86,10 @@ export default function Relics() {
 
   const updateRefinement = (index: number, refinement: Refinement) => {
     setPlayerRefinements(current => current.map((value, itemIndex) => itemIndex === index ? refinement : value));
+  };
+
+  const assignRelicToSlot = (relicId: string) => {
+    updatePlayer(destinationSlot, relicId);
   };
 
   return (
@@ -237,6 +242,18 @@ export default function Relics() {
           </div>
         </section>
 
+        <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-3 py-2 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.28)", border: "1px solid var(--wf-border)" }}>
+          <div className="text-[10px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+            Affectation rapide : choisissez une cible puis cliquez sur une relique.
+          </div>
+          <label className="flex items-center gap-2 text-[10px] uppercase tracking-wider shrink-0" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+            Slot cible
+            <select value={destinationSlot} onChange={event => setDestinationSlot(Number(event.target.value))} className="px-2 py-1.5 text-xs rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+              {[0, 1, 2, 3].map(slot => <option key={slot} value={slot}>Joueur {slot + 1}</option>)}
+            </select>
+          </label>
+        </section>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filtered.map(relic => (
             <article key={relic.id} className="relative rounded-sm p-4 hud-frame transition-all duration-200" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
@@ -248,7 +265,18 @@ export default function Relics() {
                 <span className="px-2 py-0.5 rounded-sm text-[10px] font-bold" style={{ backgroundColor: "rgba(79,195,247,0.15)", color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.4)" }}>{REFinementLabel(relic.state)}</span>
               </div>
               <div className="space-y-2">
-                <div className="text-[10px] uppercase tracking-wider mb-1" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>Récompenses et probabilités</div>
+                  <div className="flex items-center justify-between gap-2 text-[10px] uppercase tracking-wider mb-1" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+                    <span>Récompenses et probabilités</span>
+                    <button
+                      type="button"
+                      onClick={() => assignRelicToSlot(relic.id)}
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-sm transition-all hover:brightness-125"
+                      style={{ backgroundColor: "rgba(79,195,247,0.14)", border: "1px solid rgba(79,195,247,0.4)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}
+                      title={`Affecter ${relic.name} au Joueur ${destinationSlot + 1}`}
+                    >
+                      <Plus size={11} /> J{destinationSlot + 1}
+                    </button>
+                  </div>
                 {relic.rewards.map((reward, index) => {
                   const color = rarityColor(reward.rarity);
                   return <div key={`${relic.id}-${index}`} className="flex items-center justify-between p-2 rounded-sm text-xs" style={{ backgroundColor: "rgba(0,0,0,0.35)", borderLeft: `3px solid ${color}` }}>

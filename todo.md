@@ -88,3 +88,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Affectation rapide des reliques
+
+- [x] Ajouter une action sur chaque carte de relique du catalogue.
+- [x] Permettre de choisir le slot Joueur 1 à 4 avant l’affectation.
+- [x] Recalculer la probabilité Radshare après affectation.
+- [x] Tester TypeScript, build, filtres et responsive avant publication.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
