@@ -136,3 +136,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Extracteur Public Export et Sélecteur de langue
+
+- [x] Créer le script d’extraction et de normalisation des tables françaises.
+- [x] Automatiser la synchronisation dans le workflow GitHub Actions.
+- [x] Ajouter le contexte et le sélecteur de langue (Français / Anglais) dans l’application.
+- [x] Valider avec TypeScript, le build de production et les captures responsive.
+
+## État
+
+Phase en cours : checkpoint final et livraison.

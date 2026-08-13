@@ -6,9 +6,10 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Shield, Sword, Users, BookOpen, Settings, ChevronRight,
-  Menu, X, Search, Zap, Star, Package, Home, Sparkles, Gem
+  Menu, X, Search, Zap, Star, Package, Home, Sparkles, Gem, Globe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const NAV_ITEMS = [
   {
@@ -48,6 +49,7 @@ export default function Layout({ children, title }: LayoutProps) {
   const [location] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--wf-bg-deep)", color: "var(--wf-text)" }}>
@@ -138,13 +140,27 @@ export default function Layout({ children, title }: LayoutProps) {
           />
         </div>
 
+        {/* Language selector */}
+        <div className="flex items-center gap-1 bg-black/40 px-2 py-1 rounded-sm border" style={{ borderColor: "var(--wf-border)" }}>
+          <Globe size={13} style={{ color: "var(--wf-cyan)" }} />
+          <button
+            type="button"
+            onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+            className="text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-cyan-300"
+            style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
+            title="Changer de langue (FR / EN)"
+          >
+            {language.toUpperCase()}
+          </button>
+        </div>
+
         {/* Actions */}
         <Link
           href="/builder"
           className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-sm transition-all duration-150 wf-btn-primary"
         >
           <Zap size={12} />
-          <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>CRÉER UN SET</span>
+          <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>{t("CRÉER UN SET", "CREATE SET")}</span>
         </Link>
       </header>
 
