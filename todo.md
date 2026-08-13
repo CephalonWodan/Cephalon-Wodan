@@ -112,3 +112,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : audit de l’état local et du remote.
+
+
+## TODO — Retour à l’accueil
+
+- [x] Vérifier le layout global et les routes de l’application.
+- [x] Ajouter un accès Accueil persistant sur toutes les pages.
+- [x] Tester la navigation depuis les pages principales et le responsive.
+- [x] Créer le checkpoint final et publier la modification.
+
+## État
+
+Phase en cours : checkpoint final et livraison.

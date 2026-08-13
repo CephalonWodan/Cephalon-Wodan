@@ -244,12 +244,25 @@ export default function Layout({ children, title }: LayoutProps) {
             >
               {/* Scan line below title */}
               <div className="absolute bottom-0 left-0 right-0 scan-divider" />
-              <h1
-                className="text-2xl font-bold tracking-widest uppercase"
-                style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
-              >
-                {title}
-              </h1>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <h1
+                  className="text-2xl font-bold tracking-widest uppercase"
+                  style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
+                >
+                  {title}
+                </h1>
+                {location !== "/" && (
+                  <Link
+                    href="/"
+                    className="inline-flex items-center gap-1.5 self-start sm:self-auto px-2.5 py-1.5 rounded-sm text-[10px] uppercase tracking-wider transition-all hover:bg-cyan-400/10"
+                    style={{ color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.45)", fontFamily: "var(--font-display)" }}
+                    aria-label="Revenir à la page d’accueil"
+                  >
+                    <Home size={12} />
+                    Accueil
+                  </Link>
+                )}
+              </div>
               <div className="flex items-center gap-1 mt-0.5">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "var(--wf-cyan)" }} />
                 <span className="text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
