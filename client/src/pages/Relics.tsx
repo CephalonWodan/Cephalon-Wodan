@@ -42,6 +42,7 @@ export default function Relics() {
   const [eraFilter, setEraFilter] = useState("Toutes");
   const [targetItem, setTargetItem] = useState("");
   const [targetQuery, setTargetQuery] = useState("");
+  const [targetFilterEnabled, setTargetFilterEnabled] = useState(true);
   const [playerRelics, setPlayerRelics] = useState<string[]>(Array(4).fill(PRIME_RELICS[0]?.id ?? ""));
   const [playerRefinements, setPlayerRefinements] = useState<Refinement[]>(Array(4).fill("Radiant"));
 
@@ -57,16 +58,18 @@ export default function Relics() {
     return matches.slice(0, 8);
   }, [allPrimeParts, targetQuery]);
 
+  const selectedTarget = targetItem;
+
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return PRIME_RELICS.filter(relic => {
       const matchesEra = eraFilter === "Toutes" || relic.era === eraFilter;
       const matchesSearch = !query || relic.name.toLowerCase().includes(query) || relic.rewards.some(reward => reward.itemName.toLowerCase().includes(query));
-      return matchesEra && matchesSearch;
+      const matchesTarget = !targetFilterEnabled || !selectedTarget || relic.rewards.some(reward => reward.itemName === selectedTarget);
+      return matchesEra && matchesSearch && matchesTarget;
     });
-  }, [search, eraFilter]);
+  }, [search, eraFilter, selectedTarget, targetFilterEnabled]);
 
-  const selectedTarget = targetItem;
   const radshareProbability = useMemo(() => {
     const failureProbability = playerRelics.reduce((failure, relicId, index) => {
       const relic = PRIME_RELICS.find(item => item.id === relicId);
@@ -134,8 +137,18 @@ export default function Relics() {
               ))}
             </div>
           </div>
-          <div className="mt-3 text-[10px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-            {filtered.length} relique(s) correspondent à votre recherche
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[10px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+            <span>{filtered.length} relique(s) correspondent à votre recherche{selectedTarget && targetFilterEnabled ? ` et contiennent ${selectedTarget}` : ""}</span>
+            {selectedTarget && (
+              <button
+                type="button"
+                onClick={() => setTargetFilterEnabled(current => !current)}
+                className="px-2 py-1 rounded-sm transition-colors"
+                style={{ backgroundColor: targetFilterEnabled ? "rgba(171,124,255,0.18)" : "rgba(255,255,255,0.06)", color: targetFilterEnabled ? "#c5a8ff" : "var(--wf-text-dim)", border: "1px solid rgba(171,124,255,0.35)", fontFamily: "var(--font-display)" }}
+              >
+                {targetFilterEnabled ? "AFFICHER TOUTES" : "FILTRER SUR LA CIBLE"}
+              </button>
+            )}
           </div>
         </section>
 
@@ -168,6 +181,7 @@ export default function Relics() {
                       setTargetQuery(value);
                       const exactMatch = allPrimeParts.find(item => item.toLowerCase() === value.trim().toLowerCase());
                       setTargetItem(exactMatch ?? "");
+                      if (!exactMatch) setTargetFilterEnabled(true);
                     }}
                     placeholder="Rechercher une pièce Prime..."
                     aria-label="Rechercher un composant Prime"
@@ -180,7 +194,7 @@ export default function Relics() {
                         <button
                           key={item}
                           type="button"
-                          onClick={() => { setTargetItem(item); setTargetQuery(item); }}
+                          onClick={() => { setTargetItem(item); setTargetQuery(item); setTargetFilterEnabled(true); }}
                           className="block w-full text-left px-2 py-1.5 text-[11px] rounded-sm hover:bg-white/10 transition-colors"
                           style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
                         >

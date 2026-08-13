@@ -76,3 +76,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Filtre de reliques par composant ciblé
+
+- [x] Relier le composant sélectionné du simulateur au catalogue des reliques.
+- [x] Ajouter un bouton pour désactiver le filtre et revenir aux 773 reliques.
+- [x] Vérifier la combinaison avec la recherche texte et le filtre par ère.
+- [x] Tester TypeScript, build, responsive et publier la modification.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
