@@ -52,3 +52,15 @@ Phase en cours : checkpoint final et livraison.
 - [x] Créer le fichier `.github/workflows/data-audit.yml` (exécution chaque lundi à 8h00 UTC).
 - [x] Valider localement l’exécution du script d’audit et le build de production.
 - [ ] Publier le workflow et le script sur GitHub.
+
+
+## TODO — Recherche Prime et Radshare
+
+- [x] Ajouter la recherche de reliques par composant Prime.
+- [x] Ajouter un simulateur Radshare à quatre joueurs avec choix de relique et de raffinage.
+- [x] Vérifier la formule de probabilité, TypeScript, build et responsive.
+- [ ] Créer le checkpoint final et publier les fonctionnalités.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
