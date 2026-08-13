@@ -100,3 +100,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Synchronisation GitHub finale
+
+- [ ] Vérifier le remote et le statut git local.
+- [ ] Ajouter tous les fichiers modifiés et les nouveaux modules WFCD/Reliques.
+- [ ] Faire un commit avec message explicite.
+- [ ] Pousser sur main et rédiger le rapport final.
+
+## État
+
+Phase en cours : audit de l’état local et du remote.
