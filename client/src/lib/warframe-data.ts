@@ -199,7 +199,15 @@ export interface BuildSet {
 }
 
 export const WARFRAMES: Warframe[] = fullData.warframes as Warframe[];
-export const WEAPONS: Weapon[] = fullData.weapons as Weapon[];
+
+// Retain only weapons with at least one usable combat metric. The raw source remains
+// untouched, while every catalogue consumer (catalogue, counters and builder) receives
+// the cleaned list automatically.
+const hasCombatProfile = (weapon: Record<string, any>) =>
+  [weapon.damage, weapon.critChance, weapon.critMultiplier, weapon.statusChance]
+    .some(value => Number(value ?? 0) !== 0);
+
+export const WEAPONS: Weapon[] = fullData.weapons.filter(hasCombatProfile) as Weapon[];
 export const MODS: Mod[] = fullData.mods as Mod[];
 export const COMPANIONS: Companion[] = fullData.companions as Companion[];
 export const ARCANES: Arcane[] = (fullData as any).arcanes as Arcane[];

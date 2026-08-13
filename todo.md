@@ -124,3 +124,15 @@ Phase en cours : audit de l’état local et du remote.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Nettoyage des armes nulles
+
+- [x] Identifier dans le code de chargement ou le dataset les armes dont total damage, crit, crit multiplier et status sont à 0.
+- [x] Filtrer ces entrées pour qu’elles n’apparaissent plus dans le catalogue d’armes ni dans le builder.
+- [x] Vérifier les compteurs de la page d’accueil et le build de production.
+- [x] Créer le checkpoint final et livrer le catalogue épuré.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
