@@ -148,3 +148,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Synchronisation GitHub finale v2
+
+- [ ] Vérifier le remote et la configuration GitHub.
+- [ ] Confirmer l’inclusion de tous les scripts d’extraction, workflows et composants multilingues.
+- [ ] Enregistrer et valider le checkpoint final lié au dépôt.
+- [ ] Présenter le rapport de synchronisation à l’utilisateur.
+
+## État
+
+Phase en cours : audit de l’état local.
