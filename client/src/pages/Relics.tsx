@@ -41,12 +41,21 @@ export default function Relics() {
   const [search, setSearch] = useState("");
   const [eraFilter, setEraFilter] = useState("Toutes");
   const [targetItem, setTargetItem] = useState("");
+  const [targetQuery, setTargetQuery] = useState("");
   const [playerRelics, setPlayerRelics] = useState<string[]>(Array(4).fill(PRIME_RELICS[0]?.id ?? ""));
   const [playerRefinements, setPlayerRefinements] = useState<Refinement[]>(Array(4).fill("Radiant"));
 
   const allPrimeParts = useMemo(() => Array.from(new Set(
     PRIME_RELICS.flatMap(relic => relic.rewards.map(reward => reward.itemName))
   )).sort((a, b) => a.localeCompare(b)), []);
+
+  const targetSuggestions = useMemo(() => {
+    const query = targetQuery.trim().toLowerCase();
+    const matches = query
+      ? allPrimeParts.filter(item => item.toLowerCase().includes(query))
+      : allPrimeParts;
+    return matches.slice(0, 8);
+  }, [allPrimeParts, targetQuery]);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -57,7 +66,7 @@ export default function Relics() {
     });
   }, [search, eraFilter]);
 
-  const selectedTarget = targetItem || allPrimeParts[0] || "";
+  const selectedTarget = targetItem;
   const radshareProbability = useMemo(() => {
     const failureProbability = playerRelics.reduce((failure, relicId, index) => {
       const relic = PRIME_RELICS.find(item => item.id === relicId);
@@ -149,9 +158,41 @@ export default function Relics() {
             <div className="space-y-3">
               <label className="block text-[10px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
                 Composant ciblé
-                <select value={selectedTarget} onChange={event => setTargetItem(event.target.value)} className="mt-1 w-full px-3 py-2 text-xs rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
-                  {allPrimeParts.map(item => <option key={item} value={item}>{item}</option>)}
-                </select>
+                <div className="relative mt-1">
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: "var(--wf-text-dim)" }} />
+                  <input
+                    type="search"
+                    value={targetQuery || targetItem}
+                    onChange={event => {
+                      const value = event.target.value;
+                      setTargetQuery(value);
+                      const exactMatch = allPrimeParts.find(item => item.toLowerCase() === value.trim().toLowerCase());
+                      setTargetItem(exactMatch ?? "");
+                    }}
+                    placeholder="Rechercher une pièce Prime..."
+                    aria-label="Rechercher un composant Prime"
+                    className="w-full pl-9 pr-3 py-2 text-xs rounded-sm outline-none"
+                    style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
+                  />
+                  {targetQuery.trim() && targetSuggestions.length > 0 && !targetItem && (
+                    <div className="absolute left-0 right-0 top-full z-20 mt-1 p-1 rounded-sm shadow-xl" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid rgba(171,124,255,0.45)" }}>
+                      {targetSuggestions.map(item => (
+                        <button
+                          key={item}
+                          type="button"
+                          onClick={() => { setTargetItem(item); setTargetQuery(item); }}
+                          className="block w-full text-left px-2 py-1.5 text-[11px] rounded-sm hover:bg-white/10 transition-colors"
+                          style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
+                        >
+                          {item}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <span className="block mt-1 text-[9px] normal-case" style={{ color: targetItem ? "#66bb6a" : "var(--wf-text-dim)" }}>
+                  {targetItem ? `Cible sélectionnée : ${targetItem}` : targetQuery ? "Sélectionnez une suggestion pour calculer les chances." : "Saisissez un composant Prime pour commencer."}
+                </span>
               </label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {playerRelics.map((relicId, index) => (
@@ -173,7 +214,7 @@ export default function Relics() {
             <div className="lg:w-64 p-3 rounded-sm" style={{ backgroundColor: "rgba(171,124,255,0.08)", border: "1px solid rgba(171,124,255,0.3)" }}>
               <div className="flex items-center gap-2 text-xs font-bold mb-2" style={{ color: "#ab7cff", fontFamily: "var(--font-display)" }}><ShieldCheck size={14} /> RÉSULTAT DU CALCUL</div>
               <p className="text-[11px] leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>
-                Avec <strong style={{ color: "var(--wf-text)" }}>{selectedTarget}</strong>, la probabilité d’obtenir au moins une récompense après les quatre ouvertures est de <strong style={{ color: "#ab7cff" }}>{radshareProbability.toFixed(2)}%</strong>.
+                {selectedTarget ? <>Avec <strong style={{ color: "var(--wf-text)" }}>{selectedTarget}</strong>, la probabilité d’obtenir au moins une récompense après les quatre ouvertures est de <strong style={{ color: "#ab7cff" }}>{radshareProbability.toFixed(2)}%</strong>.</> : <>Saisissez puis sélectionnez un composant Prime pour calculer la probabilité d’obtenir cette récompense après quatre ouvertures.</>}
               </p>
               <p className="mt-3 text-[10px] leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>
                 Calcul : 1 − produit des probabilités d’échec de chaque joueur. Les récompenses rares utilisent les taux de raffinage standards du Néant.

@@ -64,3 +64,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Recherche du composant Radshare
+
+- [x] Remplacer la liste du composant ciblé par une barre de recherche.
+- [x] Ajouter des suggestions filtrées de composants Prime.
+- [x] Vérifier le calcul Radshare, TypeScript et le rendu responsive.
+- [ ] Créer le checkpoint final et publier la modification.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
