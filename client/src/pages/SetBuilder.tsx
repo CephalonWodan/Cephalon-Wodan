@@ -713,27 +713,38 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
 
     activeMods.push({ name: mod.name, effect: mod.effect || mod.description || "", cost });
 
-    // Robust matching for health, shield, armor, energy in English & French
+    // Precise matching for specific Warframe mods and Archon mods
     const modNameLower = mod.name.toLowerCase();
     
-    // Check percentage health / vitality / fiber / redirection / flow
-    if (mod.id === "vitality" || modNameLower.includes("vitality") || effect.includes("health") || effect.includes("santé") || effect.includes("vie")) {
-      const baseBonus = mod.maxRank >= 10 ? 440 : (mod.maxRank >= 5 ? 100 : 40);
-      healthModPct += (baseBonus * (rankRatio)) / 100;
-    } else if (mod.id === "redirection" || modNameLower.includes("redirection") || effect.includes("shield") || effect.includes("bouclier")) {
-      const baseBonus = mod.maxRank >= 10 ? 440 : (mod.maxRank >= 5 ? 100 : 40);
-      shieldModPct += (baseBonus * (rankRatio)) / 100;
-    } else if (mod.id === "steel-fiber" || modNameLower.includes("steel fiber") || modNameLower.includes("fibre d'acier") || effect.includes("armor") || effect.includes("armure")) {
-      const baseBonus = mod.maxRank >= 10 ? 110 : 50;
-      armorModPct += (baseBonus * rankRatio) / 100;
-    } else if (mod.id === "flow" || modNameLower.includes("flow") || modNameLower.includes("flux") || effect.includes("energy") || effect.includes("énergie") || effect.includes("max energy")) {
-      const baseBonus = mod.maxRank >= 5 ? 150 : 100;
-      energyModPct += (baseBonus * rankRatio) / 100;
+    if (modNameLower.includes("archon vitality") || modNameLower.includes("vitalité archonte")) {
+      healthModPct += 1.0; // +100%
+    } else if (modNameLower.includes("archon intensify") || modNameLower.includes("intensité archonte")) {
+      strengthBonus += 30; // +30%
+    } else if (modNameLower.includes("archon redirection") || modNameLower.includes("redirection archonte")) {
+      shieldModPct += 4.4; // +440%
+    } else if (modNameLower.includes("archon stretch") || modNameLower.includes("allonge archonte")) {
+      rangeBonus += 45; // +45%
+    } else if (modNameLower.includes("archon continuity") || modNameLower.includes("continuité archonte")) {
+      durationBonus += 30; // +30%
+    } else if (modNameLower.includes("archon flow") || modNameLower.includes("flux archonte")) {
+      energyModPct += 1.5; // +150%
+    } else if (mod.id === "vitality" || modNameLower.endsWith(" vitality") || modNameLower === "vitality" || modNameLower === "vitalité") {
+      const baseBonus = mod.maxRank >= 10 ? 4.4 : (mod.maxRank >= 5 ? 1.0 : 0.4);
+      healthModPct += baseBonus * rankRatio;
+    } else if (mod.id === "redirection" || modNameLower.endsWith(" redirection") || modNameLower === "redirection") {
+      const baseBonus = mod.maxRank >= 10 ? 4.4 : 1.0;
+      shieldModPct += baseBonus * rankRatio;
+    } else if (mod.id === "steel-fiber" || modNameLower.includes("steel fiber") || modNameLower.includes("fibre d'acier")) {
+      const baseBonus = mod.maxRank >= 10 ? 1.1 : 0.5;
+      armorModPct += baseBonus * rankRatio;
+    } else if (mod.id === "flow" || modNameLower.endsWith(" flow") || modNameLower === "flow" || modNameLower === "flux") {
+      const baseBonus = mod.maxRank >= 5 ? 1.5 : 1.0;
+      energyModPct += baseBonus * rankRatio;
     } else if (modNameLower.includes("umbra vitality")) {
       healthModPct += (55 * (rank + 1)) / 100;
     } else if (modNameLower.includes("umbra fiber")) {
       armorModPct += (33 * (rank + 1)) / 100;
-    } else if (effect.includes("strength") || effect.includes("puissance") || mod.id === "blind-rage" || mod.id === "intensify") {
+    } else if (effect.includes("strength") || effect.includes("puissance") || mod.id === "blind-rage" || mod.id === "intensify" || modNameLower.includes("intensify")) {
       const val = mod.id === "blind-rage" ? 99 * (rank + 1) / 10 : (mod.id === "intensify" ? 30 * (rank + 1) / 5 : 15 * (rank + 1) / 5);
       strengthBonus += val;
     } else if (effect.includes("duration") || effect.includes("durée") || mod.id === "continuity" || mod.id === "narrow-minded") {
