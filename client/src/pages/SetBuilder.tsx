@@ -590,6 +590,133 @@ interface EnhancementBonusSummary {
   activeEffects: Array<{ source: string; effect: string; recognized: boolean }>;
 }
 
+interface WarframeStatSummary {
+  health: number;
+  baseHealth: number;
+  healthModPct: number;
+  shield: number;
+  baseShield: number;
+  shieldModPct: number;
+  armor: number;
+  baseArmor: number;
+  armorModPct: number;
+  energy: number;
+  baseEnergy: number;
+  energyModPct: number;
+  strengthPct: number;
+  durationPct: number;
+  rangePct: number;
+  efficiencyPct: number;
+  sprintSpeed: number;
+  ehp: number;
+  activeMods: Array<{ name: string; effect: string; cost: number }>;
+}
+
+function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
+  const wf = build.warframe;
+  const baseHealth = wf?.health || 300;
+  const baseShield = wf?.shield || 300;
+  const baseArmor = wf?.armor || 150;
+  const baseEnergy = wf?.energy || 150;
+  const baseSprint = 1.15;
+
+  let healthModPct = 0;
+  let shieldModPct = 0;
+  let armorModPct = 0;
+  let energyModPct = 0;
+  
+  let flatHealth = 0;
+  let flatShield = 0;
+  let flatArmor = 0;
+  let flatEnergy = 0;
+
+  let strengthBonus = 0;
+  let durationBonus = 0;
+  let rangeBonus = 0;
+  let efficiencyBonus = 0;
+
+  const activeMods: Array<{ name: string; effect: string; cost: number }> = [];
+
+  // Parse Arcanes & Shards
+  const enhancements = calculateEnhancementBonuses(build);
+  flatHealth += enhancements.flatHealth;
+  flatShield += enhancements.flatShield;
+  flatArmor += enhancements.flatArmor;
+  flatEnergy += enhancements.flatEnergy;
+  strengthBonus += enhancements.abilityStrengthPct;
+  durationBonus += enhancements.abilityDurationPct;
+
+  build.warframeMods.forEach((mod, index) => {
+    if (!mod) return;
+    const rank = mod.selectedRank ?? mod.maxRank;
+    const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
+    const effect = (mod.effect || mod.description || "").toLowerCase();
+    const slotPolarity = wf?.polarities?.[index];
+    const cost = modCost(mod, slotPolarity);
+
+    activeMods.push({ name: mod.name, effect: mod.effect || mod.description || "", cost });
+
+    // Match common Warframe mod patterns
+    if (mod.id === "vitality" || effect.includes("health") && effect.includes("max health")) {
+      const baseVal = 440 * (mod.maxRank === 10 ? 1 : (mod.maxRank === 5 ? 0.22 : 0.44));
+      healthModPct += (40 + baseVal * rankRatio) / 100;
+    } else if (mod.id === "redirection" || effect.includes("shield")) {
+      const baseVal = 440 * (mod.maxRank === 10 ? 1 : 0.44);
+      shieldModPct += (40 + baseVal * rankRatio) / 100;
+    } else if (mod.id === "steel-fiber" || (effect.includes("armor") && !effect.includes("umbra"))) {
+      const baseVal = 110 * rankRatio;
+      armorModPct += baseVal / 100;
+    } else if (effect.includes("umbra vitality")) {
+      healthModPct += (55 * (rank + 1)) / 100;
+    } else if (effect.includes("umbra fiber")) {
+      armorModPct += (33 * (rank + 1)) / 100;
+    } else if (effect.includes("flow") || effect.includes("max energy")) {
+      const baseVal = 150 * (mod.maxRank === 5 ? 0.3 : 0.25);
+      energyModPct += (baseVal * (rank + 1)) / 100;
+    } else if (effect.includes("strength") || mod.id === "blind-rage" || mod.id === "intensify") {
+      const val = mod.id === "blind-rage" ? 99 * (rank + 1) / 10 : (mod.id === "intensify" ? 30 * (rank + 1) / 5 : 15 * (rank + 1) / 5);
+      strengthBonus += val;
+    } else if (effect.includes("duration") || mod.id === "continuity" || mod.id === "narrow-minded") {
+      const val = mod.id === "narrow-minded" ? 99 * (rank + 1) / 10 : 30 * (rank + 1) / 5;
+      durationBonus += val;
+    } else if (effect.includes("range") || mod.id === "stretch" || mod.id === "overextended") {
+      const val = mod.id === "overextended" ? 90 : 45 * (rank + 1) / 5;
+      rangeBonus += val;
+    } else if (effect.includes("efficiency") || mod.id === "streamline" || mod.id === "fleeting-expertise") {
+      const val = mod.id === "fleeting-expertise" ? 60 : 30 * (rank + 1) / 5;
+      efficiencyBonus += val;
+    }
+  });
+
+  const health = Math.round((baseHealth * (1 + healthModPct)) + flatHealth);
+  const shield = Math.round((baseShield * (1 + shieldModPct)) + flatShield);
+  const armor = Math.round((baseArmor * (1 + armorModPct)) + flatArmor);
+  const energy = Math.round((baseEnergy * (1 + energyModPct)) + flatEnergy);
+  const ehp = Math.round(health * (1 + armor / 300));
+
+  return {
+    health,
+    baseHealth,
+    healthModPct: Math.round(healthModPct * 100),
+    shield,
+    baseShield,
+    shieldModPct: Math.round(shieldModPct * 100),
+    armor,
+    baseArmor,
+    armorModPct: Math.round(armorModPct * 100),
+    energy,
+    baseEnergy,
+    energyModPct: Math.round(energyModPct * 100),
+    strengthPct: Math.max(10, 100 + strengthBonus),
+    durationPct: Math.max(10, 100 + durationBonus),
+    rangePct: Math.max(10, 100 + rangeBonus),
+    efficiencyPct: Math.min(175, Math.max(34, 100 + efficiencyBonus)),
+    sprintSpeed: baseSprint,
+    ehp,
+    activeMods,
+  };
+}
+
 function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
   const summary: EnhancementBonusSummary = { flatHealth: 0, flatShield: 0, flatArmor: 0, flatEnergy: 0, abilityStrengthPct: 0, abilityDurationPct: 0, castingSpeedPct: 0, parkourVelocityPct: 0, primaryStatusPct: 0, secondaryCritPct: 0, meleeCritDamagePct: 0, activeEffects: [] };
   const effects: Array<{ source: string; effect: string }> = [];
@@ -737,47 +864,80 @@ function buildSummaryMarkdown(build: BuildSet): string {
 // ---- Stats Panel ----
 function StatsPanel({ build }: { build: BuildSet }) {
   const wf = build.warframe;
-  const vitality = build.warframeMods.find(m => m?.id === "vitality");
-  const redirection = build.warframeMods.find(m => m?.id === "redirection");
-  const steelFiber = build.warframeMods.find(m => m?.id === "steel-fiber");
-  const enhancements = calculateEnhancementBonuses(build);
+  const stats = calculateWarframeStats(build);
   const companionStats = calculateCompanionStats(build);
-
-  const health = wf ? Math.round((wf.health + enhancements.flatHealth) * (1 + (vitality ? 4.4 : 0))) : 0;
-  const shield = wf ? Math.round((wf.shield + enhancements.flatShield) * (1 + (redirection ? 4.4 : 0))) : 0;
-  const armor = wf ? Math.round((wf.armor + enhancements.flatArmor) * (1 + (steelFiber ? 1.1 : 0))) : 0;
-  const energy = wf ? wf.energy + enhancements.flatEnergy : 0;
-  const ehp = wf ? Math.round(health * (1 + armor / 300)) : 0;
-
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
   return (
     <div className="wf-panel wf-hud-panel rounded-sm p-4 hud-frame">
-      <div className="wf-section-label mb-4">STATISTIQUES DU SET</div>
+      <div className="wf-section-label mb-4 flex items-center justify-between">
+        <span>STATISTIQUES DU SET</span>
+        <span className="text-[9px] uppercase font-mono px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: "rgba(79,195,247,0.15)", color: "var(--wf-cyan)" }}>
+          EN DIRECT
+        </span>
+      </div>
 
       {wf ? (
-        <div className="space-y-2">
-          {/* Warframe stats */}
-          <div className="text-xs font-bold mb-3 px-2 py-1 rounded-sm" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.08em", backgroundColor: "rgba(79,195,247,0.08)", borderLeft: "2px solid var(--wf-cyan)" }}>
-            {wf.name.toUpperCase()}
+        <div className="space-y-3">
+          {/* Warframe Header */}
+          <div className="text-xs font-bold px-2.5 py-1.5 rounded-sm flex items-center justify-between" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.08em", backgroundColor: "rgba(79,195,247,0.08)", borderLeft: "2px solid var(--wf-cyan)" }}>
+            <span>{wf.name.toUpperCase()}</span>
+            <span className="text-[10px]" style={{ fontFamily: "var(--font-mono)", color: "#66bb6a" }}>RANG 30</span>
           </div>
-          {[
-            { label: "Points de Vie", value: health, max: 1500, color: "#ef5350" },
-            { label: "Boucliers", value: shield, max: 1500, color: "#42a5f5" },
-            { label: "Armure", value: armor, max: 1000, color: "#ffa726" },
-            { label: "Énergie", value: energy, max: 400, color: "#ab47bc" },
-            { label: "PV Effectifs", value: ehp, max: 5000, color: "#26c6da" },
-          ].map(({ label, value, max, color }) => (
-            <div key={label}>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span style={{ color: "var(--wf-text-dim)" }}>{label}</span>
-                <span className="font-bold" style={{ color, fontFamily: "var(--font-mono)" }}>{value}</span>
-              </div>
-              <div className="stat-bar-track">
-                <div className="stat-bar-fill" style={{ width: `${Math.min(100, (value / max) * 100)}%`, backgroundColor: color }} />
-              </div>
+
+          {/* Survivability & Energy (Warframe In-Game HUD Style) */}
+          <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+            <div className="text-[10px] uppercase font-bold tracking-wider mb-2" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              SURVIE & ÉNERGIE
             </div>
-          ))}
+            {[
+              { label: "Health", base: stats.baseHealth, val: stats.health, modPct: stats.healthModPct, color: "#ef5350", max: 1500 },
+              { label: "Shield", base: stats.baseShield, val: stats.shield, modPct: stats.shieldModPct, color: "#42a5f5", max: 1500 },
+              { label: "Armor", base: stats.baseArmor, val: stats.armor, modPct: stats.armorModPct, color: "#ffa726", max: 1000 },
+              { label: "Energy", base: stats.baseEnergy, val: stats.energy, modPct: stats.energyModPct, color: "#ab47bc", max: 500 },
+            ].map(({ label, base, val, modPct, color, max }) => (
+              <div key={label} className="text-xs">
+                <div className="flex justify-between items-center mb-0.5">
+                  <span style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{label}</span>
+                  <div className="flex items-center gap-1.5 font-mono">
+                    {modPct !== 0 && (
+                      <span className="text-[10px]" style={{ color: modPct > 0 ? "#66bb6a" : "#ef5350" }}>
+                        {modPct > 0 ? `+${modPct}%` : `${modPct}%`}
+                      </span>
+                    )}
+                    <span className="font-bold text-white">{base}</span>
+                    <span style={{ color: "var(--wf-text-dim)" }}>→</span>
+                    <span className="font-bold" style={{ color }}>{val}</span>
+                  </div>
+                </div>
+                <div className="stat-bar-track">
+                  <div className="stat-bar-fill" style={{ width: `${Math.min(100, (val / max) * 100)}%`, backgroundColor: color }} />
+                </div>
+              </div>
+            ))}
+            <div className="flex justify-between items-center pt-1 text-xs border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              <span style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>Sprint Speed</span>
+              <span className="font-mono font-bold" style={{ color: "#26c6da" }}>{stats.sprintSpeed}</span>
+            </div>
+          </div>
+
+          {/* Ability Stats (Warframe In-Game HUD Style) */}
+          <div className="space-y-1.5 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+            <div className="text-[10px] uppercase font-bold tracking-wider mb-1.5" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              STATISTIQUES DE POUVOIR
+            </div>
+            {[
+              { label: "Duration", val: stats.durationPct, color: "#4fc3f7" },
+              { label: "Efficiency", val: stats.efficiencyPct, color: "#66bb6a" },
+              { label: "Range", val: stats.rangePct, color: "#ffd700" },
+              { label: "Strength", val: stats.strengthPct, color: "#ff6b35" },
+            ].map(({ label, val, color }) => (
+              <div key={label} className="flex justify-between items-center text-xs py-0.5">
+                <span style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{label}</span>
+                <span className="font-mono font-bold" style={{ color }}>{val}%</span>
+              </div>
+            ))}
+          </div>
 
           {build.primaryWeapon && (
             <>
