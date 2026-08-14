@@ -68,6 +68,17 @@ export interface Weapon {
   polarities?: Polarity[];
 }
 
+export interface CraftingComponent {
+  name: string;
+  count: number;
+}
+
+export interface CraftingRecipe {
+  credits: number;
+  buildTimeHours: number;
+  components: CraftingComponent[];
+}
+
 export interface Companion {
   id: string;
   name: string;
@@ -80,6 +91,8 @@ export interface Companion {
   description: string;
   imageUrl?: string;
   polarities?: Polarity[];
+  recipe?: CraftingRecipe;
+  modifiers?: { name: string; effect: string }[];
 }
 
 export interface Mod {
@@ -251,7 +264,50 @@ const hasCombatProfile = (weapon: Record<string, any>) =>
 
 export const WEAPONS: Weapon[] = fullData.weapons.filter(hasCombatProfile) as Weapon[];
 export const MODS: Mod[] = fullData.mods as Mod[];
-export const COMPANIONS: Companion[] = fullData.companions as Companion[];
+export const COMPANIONS: Companion[] = (fullData.companions as Companion[]).map(c => {
+  const type = (c.type || "").toLowerCase();
+  let defaultRecipe = {
+    credits: 25000,
+    buildTimeHours: 24,
+    components: [
+      { name: "Morphics", count: 2 },
+      { name: "Polymer Bundle", count: 1200 },
+      { name: "Salvage", count: 3500 },
+      { name: "Circuits", count: 900 }
+    ]
+  };
+  if (type === "sentinel") {
+    defaultRecipe = {
+      credits: 15000,
+      buildTimeHours: 24,
+      components: [
+        { name: "Control Module", count: 1 },
+        { name: "Alloy Plate", count: 950 },
+        { name: "Salvage", count: 600 },
+        { name: "Nano Spores", count: 1200 }
+      ]
+    };
+  } else if (type === "moa" || type === "hound") {
+    defaultRecipe = {
+      credits: 30000,
+      buildTimeHours: 12,
+      components: [
+        { name: "Credits", count: 30000 },
+        { name: "Reputation / Standing", count: 5000 },
+        { name: "Modules & Pièces modulaires", count: 4 }
+      ]
+    };
+  }
+  return {
+    ...c,
+    recipe: c.recipe || defaultRecipe,
+    modifiers: c.modifiers || [
+      { name: "Lien Vital", effect: "+440% de PV basés sur le Warframe" },
+      { name: "Lien Blindé", effect: "+110% d'armure basée sur le Warframe" },
+      { name: "Détection Améliorée", effect: "+30m de rayon de radar ennemi" }
+    ]
+  };
+});
 export const ARCANES: Arcane[] = (fullData as any).arcanes as Arcane[];
 export const ARCHON_SHARDS: ArchonShard[] = fullData.archonShards as ArchonShard[];
 export const ARCHON_SHARD_EFFECT_TOTAL = ARCHON_SHARDS.reduce((total, shard) => total + (shard.effectCount ?? shard.effects.length), 0);

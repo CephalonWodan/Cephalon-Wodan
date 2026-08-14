@@ -36,13 +36,138 @@ const typeLabel = (type: string) =>
     vulpaphyla: "Vulpaphyla",
   } as Record<string, string>)[type] || type;
 
-function CompanionCard({ companion }: { companion: Companion }) {
+function CompanionDetailModal({ companion, onClose }: { companion: Companion; onClose: () => void }) {
+  const rarityColor = getRarityColor(companion.rarity);
+  const isModular = ["moa", "hound"].includes(companion.type.toLowerCase());
+  const parts = isModular ? (companion.type.toLowerCase() === "moa" ? MOA_PARTS : HOUND_PARTS) : null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,0.8)" }} onClick={onClose}>
+      <div
+        className="w-full max-w-2xl max-h-[85vh] rounded-sm overflow-y-auto flex flex-col p-5 space-y-4"
+        style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${rarityColor}`, boxShadow: `0 0 35px ${rarityColor}30` }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b pb-3" style={{ borderColor: "var(--wf-border)" }}>
+          <div>
+            <div className="text-[10px] uppercase font-bold" style={{ color: rarityColor, fontFamily: "var(--font-mono)" }}>
+              {typeLabel(companion.type)} // FICHE DÉTAILLÉE
+            </div>
+            <h2 className="text-lg font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+              {companion.name}
+            </h2>
+          </div>
+          <button onClick={onClose} className="p-1 rounded-sm hover:bg-white/10 text-white">
+            ✕
+          </button>
+        </div>
+
+        <p className="text-xs leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>
+          {companion.description || "Compagnon d'élite de l'arsenal Tenno."}
+        </p>
+
+        {/* Base Stats */}
+        <div>
+          <div className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+            Statistiques de base (Rang 30)
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: "Points de Vie", value: companion.health, color: "#ef5350" },
+              { label: "Boucliers", value: companion.shield, color: "#42a5f5" },
+              { label: "Armure", value: companion.armor, color: "#ffa726" },
+              { label: "Maîtrise", value: companion.mastery, color: "#ffca28" },
+            ].map(stat => (
+              <div key={stat.label} className="rounded-sm p-2 text-center" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: `1px solid ${stat.color}40` }}>
+                <div className="text-xs font-bold" style={{ color: stat.color, fontFamily: "var(--font-mono)" }}>{stat.value}</div>
+                <div className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Modifiers */}
+        {companion.modifiers && companion.modifiers.length > 0 && (
+          <div>
+            <div className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              Modificateurs & Capacités associées
+            </div>
+            <div className="space-y-1.5">
+              {companion.modifiers.map(mod => (
+                <div key={mod.name} className="rounded-sm p-2 text-xs" style={{ backgroundColor: "rgba(167,139,250,0.06)", borderLeft: "2px solid #a78bfa" }}>
+                  <span className="font-bold text-white mr-2">{mod.name}:</span>
+                  <span style={{ color: "var(--wf-text-dim)" }}>{mod.effect}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Modular Parts if MOA / Hound */}
+        {isModular && parts && (
+          <div>
+            <div className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              Composants modulaires constructibles
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="font-bold text-white mb-1">Têtes</div>
+                <div className="text-[10px]" style={{ color: "var(--wf-text-dim)" }}>{parts.heads.join(", ")}</div>
+              </div>
+              <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="font-bold text-white mb-1">Supports</div>
+                <div className="text-[10px]" style={{ color: "var(--wf-text-dim)" }}>{parts.brackets.join(", ")}</div>
+              </div>
+              <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="font-bold text-white mb-1">Cœurs</div>
+                <div className="text-[10px]" style={{ color: "var(--wf-text-dim)" }}>{MOA_PARTS.cores.join(", ")}</div>
+              </div>
+              <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="font-bold text-white mb-1">Gyroscopes</div>
+                <div className="text-[10px]" style={{ color: "var(--wf-text-dim)" }}>{MOA_PARTS.gyros.join(", ")}</div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Crafting Recipe */}
+        {companion.recipe && (
+          <div>
+            <div className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "#66bb6a", fontFamily: "var(--font-display)" }}>
+              Schéma de fabrication (Fonderie) — {companion.recipe.buildTimeHours}h · {companion.recipe.credits.toLocaleString()} CR
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {companion.recipe.components.map(comp => (
+                <div key={comp.name} className="rounded-sm p-2 text-center" style={{ backgroundColor: "rgba(102,187,106,0.06)", border: "1px solid rgba(102,187,106,0.3)" }}>
+                  <div className="text-xs font-bold" style={{ color: "#66bb6a", fontFamily: "var(--font-mono)" }}>{comp.count}x</div>
+                  <div className="text-[10px] truncate" style={{ color: "var(--wf-text)" }}>{comp.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="pt-2 flex justify-end">
+          <Link
+            href="/builder"
+            className="px-4 py-2 text-xs rounded-sm transition-all wf-btn-primary font-bold text-center"
+            style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}
+          >
+            ÉQUIPER DANS LE BUILDER
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CompanionCard({ companion, onSelect }: { companion: Companion; onSelect: (c: Companion) => void }) {
   const rarityColor = getRarityColor(companion.rarity);
   const isModular = ["moa", "hound"].includes(companion.type.toLowerCase());
   const parts = isModular ? (companion.type.toLowerCase() === "moa" ? MOA_PARTS : HOUND_PARTS) : null;
   return (
     <div
-      className="rounded-sm overflow-hidden transition-all duration-200 animate-fade-slide-up flex flex-col justify-between"
+      onClick={() => onSelect(companion)}
+      className="rounded-sm overflow-hidden transition-all duration-200 animate-fade-slide-up flex flex-col justify-between cursor-pointer"
       style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid var(--wf-border)` }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLElement).style.borderColor = rarityColor;
@@ -129,13 +254,12 @@ function CompanionCard({ companion }: { companion: Companion }) {
         </div>
       </div>
       <div className="p-3 pt-0">
-        <Link
-          href="/builder"
+        <div
           className="block text-center text-xs px-2 py-1.5 rounded-sm transition-all wf-btn-primary font-bold"
           style={{ fontSize: "10px", fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}
         >
-          ÉQUIPER
-        </Link>
+          VOIR LES DÉTAILS & SCHÉMA
+        </div>
       </div>
     </div>
   );
@@ -147,6 +271,7 @@ export default function Companions() {
   const [preceptFilter, setPreceptFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [descending, setDescending] = useState(false);
+  const [selectedCompanion, setSelectedCompanion] = useState<Companion | null>(null);
 
   const counts = useMemo(() => {
     const map: Record<string, number> = { all: COMPANIONS.length };
@@ -278,9 +403,13 @@ export default function Companions() {
       {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filtered.map(companion => (
-          <CompanionCard key={companion.id} companion={companion} />
+          <CompanionCard key={companion.id} companion={companion} onSelect={c => setSelectedCompanion(c)} />
         ))}
       </div>
+
+      {selectedCompanion && (
+        <CompanionDetailModal companion={selectedCompanion} onClose={() => setSelectedCompanion(null)} />
+      )}
 
       {filtered.length === 0 && (
         <div className="text-center py-16" style={{ color: "var(--wf-text-dim)" }}>
