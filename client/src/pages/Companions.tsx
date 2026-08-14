@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Search, Users, Shield, Cpu, Dog } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
-import { COMPANIONS, Companion, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
+import { COMPANIONS, MOA_PARTS, HOUND_PARTS, COMPANION_PRECEPTS, Companion, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const TABS = [
   { id: "all", label: "Tous", icon: Users },
@@ -38,6 +38,8 @@ const typeLabel = (type: string) =>
 
 function CompanionCard({ companion }: { companion: Companion }) {
   const rarityColor = getRarityColor(companion.rarity);
+  const isModular = ["moa", "hound"].includes(companion.type.toLowerCase());
+  const parts = isModular ? (companion.type.toLowerCase() === "moa" ? MOA_PARTS : HOUND_PARTS) : null;
   return (
     <div
       className="rounded-sm overflow-hidden transition-all duration-200 animate-fade-slide-up flex flex-col justify-between"
@@ -112,6 +114,18 @@ function CompanionCard({ companion }: { companion: Companion }) {
               </div>
             ))}
           </div>
+
+          {isModular && parts && (
+            <div className="mb-3 rounded-sm p-2 text-[9px] space-y-1" style={{ backgroundColor: "rgba(167,139,250,0.06)", border: "1px solid rgba(167,139,250,0.25)" }}>
+              <div className="font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+                PIÈCES MODULAIRES DISPONIBLES
+              </div>
+              <div style={{ color: "var(--wf-text-dim)" }}>
+                <div>Têtes : {parts.heads.join(", ")}</div>
+                <div>Supports : {parts.brackets.join(", ")}</div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className="p-3 pt-0">
@@ -130,6 +144,7 @@ function CompanionCard({ companion }: { companion: Companion }) {
 export default function Companions() {
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [preceptFilter, setPreceptFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [descending, setDescending] = useState(false);
 
@@ -149,7 +164,8 @@ export default function Companions() {
         const query = search.trim().toLowerCase();
         const matchesQuery = !query || [companion.name, companion.type, companion.description].join(" ").toLowerCase().includes(query);
         const matchesTab = activeTab === "all" || companion.type === activeTab;
-        return matchesQuery && matchesTab;
+        const matchesPrecept = preceptFilter === "all" || (preceptFilter === "modular" && ["moa", "hound"].includes(companion.type.toLowerCase())) || (preceptFilter === "organic" && ["beast", "predasite", "vulpaphyla"].includes(companion.type.toLowerCase())) || (preceptFilter === "sentinel" && companion.type.toLowerCase() === "sentinel");
+        return matchesQuery && matchesTab && matchesPrecept;
       })
       .sort((a, b) => {
         const av = sortBy === "name" ? a.name.toLowerCase() : (a[sortBy] ?? 0);
@@ -157,7 +173,7 @@ export default function Companions() {
         const result = typeof av === "string" ? av.localeCompare(bv as string) : Number(av) - Number(bv);
         return descending ? -result : result;
       });
-  }, [search, activeTab, sortBy, descending]);
+  }, [search, activeTab, preceptFilter, sortBy, descending]);
 
   return (
     <Layout title="COMPAGNONS">
@@ -210,6 +226,17 @@ export default function Companions() {
           />
         </div>
         <select
+          value={preceptFilter}
+          onChange={e => setPreceptFilter(e.target.value)}
+          className="text-xs py-1.5 px-2 rounded-sm outline-none"
+          style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
+        >
+          <option value="all">Filtre : Tous les types</option>
+          <option value="modular">Modulaires (MOA / Hound)</option>
+          <option value="organic">Organiques & Bêtes</option>
+          <option value="sentinel">Sentinelles</option>
+        </select>
+        <select
           value={sortBy}
           onChange={e => setSortBy(e.target.value as SortKey)}
           className="text-xs py-1.5 px-2 rounded-sm outline-none"
@@ -231,6 +258,21 @@ export default function Companions() {
         <span className="text-xs ml-auto" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
           {filtered.length} affichés / {COMPANIONS.length} total
         </span>
+      </div>
+
+      {/* PRECEPTS CATALOG SECTION */}
+      <div className="mb-6 rounded-sm p-4 border" style={{ backgroundColor: "var(--wf-bg-panel)", borderColor: "var(--wf-border)" }}>
+        <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+          PRÉCEPTES ET APTITUDES UNIQUES DE COMPAGNONS
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+          {COMPANION_PRECEPTS.slice(0, 4).map(precept => (
+            <div key={precept.id} className="rounded-sm p-2 text-[10px]" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+              <div className="font-bold mb-0.5" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>{precept.name}</div>
+              <div style={{ color: "var(--wf-text-dim)" }} className="line-clamp-2">{precept.description}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* GRID */}
