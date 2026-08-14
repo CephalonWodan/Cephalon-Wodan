@@ -622,7 +622,7 @@ interface WarframeStatSummary {
   activeMods: Array<{ name: string; effect: string; cost: number }>;
 }
 
-function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = [], faction: string = "Tous"): WeaponDamageBreakdown {
+function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = [], faction: string = "Tous", comboLevel: number = 1, stanceBonus: number = 0): WeaponDamageBreakdown {
   if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [], critChance: 0, critMultiplier: 0, averageDamage: 0, headshotDamage: 0 };
   let baseDamage = weapon.damage || 100;
   let damageMultiplier = 1;
@@ -701,14 +701,16 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
     factionMultiplier = 1.25;
   }
 
-  const effectiveHit = Math.round(combinedHit * factionMultiplier);
+  // Melee Combo Multiplier: Each tier (x1 to x12) adds base damage multiplier (e.g. +50% per combo multiplier tier)
+  const comboMultiplier = 1 + (Math.max(1, comboLevel) - 1) * 0.5 + (stanceBonus / 100);
+  const effectiveHit = Math.round(combinedHit * factionMultiplier * comboMultiplier);
   const averageDamage = Math.round(effectiveHit * (1 + finalCritChance * (finalCritMult - 1)));
-  const headshotDamage = Math.round(averageDamage * 2.0); // Standard headshot multiplier x2
+  const headshotDamage = Math.round(averageDamage * 2.0);
 
   return {
     baseDamage,
     totalDamage: effectiveHit,
-    elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier) })),
+    elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier * comboMultiplier) })),
     critChance: Math.round(finalCritChance * 100),
     critMultiplier: Number(finalCritMult.toFixed(1)),
     averageDamage,
@@ -996,6 +998,9 @@ function buildSummaryMarkdown(build: BuildSet): string {
 
 // ---- Stats Panel ----
 function StatsPanel({ build }: { build: BuildSet }) {
+  const [selectedFaction, setSelectedFaction] = useState("Tous");
+  const [selectedCombo, setSelectedCombo] = useState(1);
+  const [selectedStanceBonus, setSelectedStanceBonus] = useState(0);
   const wf = build.warframe;
   const stats = calculateWarframeStats(build);
   const enhancements = calculateEnhancementBonuses(build);
@@ -1018,14 +1023,11 @@ function StatsPanel({ build }: { build: BuildSet }) {
             <span className="text-[10px] font-bold uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>FACTION CIBLE</span>
             <div className="flex gap-1">
               {["Tous", "Grineer", "Corpus", "Infestés"].map(f => {
-                const active = (build as any).selectedFaction === f || (!(build as any).selectedFaction && f === "Tous");
+                const active = selectedFaction === f;
                 return (
                   <button
                     key={f}
-                    onClick={() => {
-                      const updated = { ...build, selectedFaction: f };
-                      // Save or update build state if handler exists
-                    }}
+                    onClick={() => setSelectedFaction(f)}
                     className="px-2 py-0.5 text-[9px] uppercase font-mono rounded transition-colors"
                     style={{
                       backgroundColor: active ? "var(--wf-cyan)" : "rgba(255,255,255,0.05)",
@@ -1101,7 +1103,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
           </div>
 
           {build.primaryWeapon && (() => {
-            const primaryDmgData = calculateWeaponDamage(build.primaryWeapon, build.primaryMods);
+            const primaryDmgData = calculateWeaponDamage(build.primaryWeapon, build.primaryMods, selectedFaction);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
@@ -1141,7 +1143,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
 
           {build.secondaryWeapon && (() => {
             const currentFaction = (build as any).selectedFaction || "Tous";
-            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, currentFaction);
+            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, selectedFaction);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
@@ -1180,8 +1182,10 @@ function StatsPanel({ build }: { build: BuildSet }) {
           })()}
 
           {build.meleeWeapon && (() => {
-            const currentFaction = (build as any).selectedFaction || "Tous";
-            const meleeDmgData = calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction);
+            const currentFaction = selectedFaction;
+            const currentCombo = selectedCombo;
+            const currentStance = selectedStanceBonus;
+            const meleeDmgData = calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
@@ -1189,15 +1193,51 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     ARME DE MÊLÉE : {build.meleeWeapon.name.toUpperCase()}
                   </div>
                   <span className="text-[10px] font-mono font-bold" style={{ color: "#66bb6a" }}>
-                    {meleeDmgData.totalDamage} DÉGÂTS
+                    {meleeDmgData.totalDamage} DÉGÂTS (x{currentCombo})
                   </span>
                 </div>
+                {/* Melee Controls: Combo Tier & Stance Bonus */}
+                <div className="grid grid-cols-2 gap-2 pt-1 pb-1 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                  <div>
+                    <div className="text-[9px] uppercase mb-1" style={{ color: "var(--wf-text-dim)" }}>MULTIPLICATEUR COMBO</div>
+                    <div className="flex gap-1">
+                      {[1, 3, 6, 9, 12].map(tier => (
+                        <button
+                          key={tier}
+                          onClick={() => setSelectedCombo(tier)}
+                          className="flex-1 py-0.5 text-[9px] font-mono rounded"
+                          style={{
+                            backgroundColor: currentCombo === tier ? "#66bb6a" : "rgba(255,255,255,0.05)",
+                            color: currentCombo === tier ? "#0b0e14" : "var(--wf-text-dim)",
+                            border: "1px solid var(--wf-border)"
+                          }}
+                        >
+                          x{tier}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[9px] uppercase mb-1" style={{ color: "var(--wf-text-dim)" }}>POSTURE (STANCE)</div>
+                    <select
+                      value={currentStance}
+                      onChange={e => setSelectedStanceBonus(Number(e.target.value))}
+                      className="w-full text-[10px] bg-black/50 text-white rounded px-1.5 py-0.5 font-mono"
+                      style={{ border: "1px solid var(--wf-border)" }}
+                    >
+                      <option value={0}>Standard (+0%)</option>
+                      <option value={20}>Posture Spéciale (+20%)</option>
+                      <option value={40}>Maîtrise Posture (+40%)</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-2 text-xs">
                   <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Mêlée: Chance ${meleeDmgData.critChance}% | Multiplicateur x${meleeDmgData.critMultiplier}`}>
                     <span style={{ color: "var(--wf-text-dim)" }}>Crit Mêlée</span>
                     <span className="font-mono font-bold text-amber-300">{meleeDmgData.critChance}% (x{meleeDmgData.critMultiplier})</span>
                   </div>
-                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup de mêlée">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup de mêlée avec combo">
                     <span style={{ color: "var(--wf-text-dim)" }}>Dégâts Moy.</span>
                     <span className="font-mono font-bold text-green-400">{meleeDmgData.averageDamage}</span>
                   </div>
@@ -1215,6 +1255,45 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     </div>
                   </div>
                 )}
+              </div>
+            );
+          })()}
+
+          {/* Comparative DPS Chart Widget across Equipped Weapons */}
+          {(build.primaryWeapon || build.secondaryWeapon || build.meleeWeapon) && (() => {
+            const currentFaction = selectedFaction;
+            const currentCombo = selectedCombo;
+            const currentStance = selectedStanceBonus;
+            const primaryDmg = build.primaryWeapon ? calculateWeaponDamage(build.primaryWeapon, build.primaryMods, currentFaction) : null;
+            const secondaryDmg = build.secondaryWeapon ? calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, currentFaction) : null;
+            const meleeDmg = build.meleeWeapon ? calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance) : null;
+
+            const weaponsList = [
+              primaryDmg && { name: "Primaire", dps: primaryDmg.averageDamage * 2.5, color: "#ff6b35" },
+              secondaryDmg && { name: "Secondaire", dps: secondaryDmg.averageDamage * 3.0, color: "#42a5f5" },
+              meleeDmg && { name: "Mêlée", dps: meleeDmg.averageDamage * 1.8, color: "#66bb6a" },
+            ].filter(Boolean) as Array<{ name: string; dps: number; color: string }>;
+
+            const maxDps = Math.max(...weaponsList.map(w => w.dps), 100);
+
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+                  COMPARATIF DE DPS ESTIMÉ (PAR SECONDE)
+                </div>
+                <div className="space-y-1.5 pt-1">
+                  {weaponsList.map(w => (
+                    <div key={w.name} className="text-xs">
+                      <div className="flex justify-between items-center mb-0.5">
+                        <span style={{ color: "var(--wf-text-dim)" }}>{w.name}</span>
+                        <span className="font-mono font-bold" style={{ color: w.color }}>{Math.round(w.dps)} DPS</span>
+                      </div>
+                      <div className="stat-bar-track">
+                        <div className="stat-bar-fill" style={{ width: `${Math.min(100, (w.dps / maxDps) * 100)}%`, backgroundColor: w.color }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             );
           })()}
