@@ -39,6 +39,10 @@ export interface Warframe {
   abilities: string[];
   description: string;
   imageUrl?: string;
+  imageName?: string;
+  wikiLink?: string;
+  wikiaUrl?: string;
+  wikiUrl?: string;
   rarity: Rarity;
   polarities?: Polarity[];
   aura?: Polarity;
@@ -58,6 +62,10 @@ export interface Weapon {
   rarity: Rarity;
   description: string;
   imageUrl?: string;
+  imageName?: string;
+  wikiLink?: string;
+  wikiaUrl?: string;
+  wikiUrl?: string;
   weaponClass?: string;
   trigger?: string;
   accuracy?: number;
@@ -108,6 +116,10 @@ export interface Mod {
   compatName?: string;
   isAugment?: boolean;
   imageUrl?: string;
+  imageName?: string;
+  wikiLink?: string;
+  wikiaUrl?: string;
+  wikiUrl?: string;
   dropCount?: number;
 }
 
@@ -125,6 +137,11 @@ export interface Arcane {
   upgradeTypes?: string[];
   imageUrl?: string;
   iconUrl?: string;
+  imageName?: string;
+  iconName?: string;
+  wikiLink?: string;
+  wikiaUrl?: string;
+  wikiUrl?: string;
 }
 
 export interface ArchonShard {

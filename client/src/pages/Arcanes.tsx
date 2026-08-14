@@ -6,6 +6,7 @@
 import { useMemo, useState } from "react";
 import { Filter, Search, Sparkles } from "lucide-react";
 import Layout from "@/components/Layout";
+import AssetImage from "@/components/AssetImage";
 import { ARCANES, Arcane, ArcaneType, Rarity, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const TYPES: Array<{ value: ArcaneType | "all"; label: string }> = [
@@ -41,8 +42,7 @@ function ArcaneCard({ arcane, onPreview }: { arcane: Arcane; onPreview: (arcane:
     <article onClick={() => onPreview(arcane)} className="relative overflow-hidden rounded-sm p-3 transition-all duration-200 hud-frame cursor-pointer" style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${color}35` }} onMouseEnter={event => { event.currentTarget.style.borderColor = color; event.currentTarget.style.boxShadow = `0 0 14px ${color}20`; }} onMouseLeave={event => { event.currentTarget.style.borderColor = `${color}35`; event.currentTarget.style.boxShadow = "none"; }}>
       <div className="flex items-start gap-3">
         <div className="relative w-12 h-12 shrink-0 rounded-sm flex items-center justify-center overflow-hidden" style={{ background: `linear-gradient(135deg, ${color}22, rgba(0,0,0,.35))`, border: `1px solid ${color}55` }}>
-          {arcane.imageUrl && <img src={arcane.imageUrl} alt="" className="absolute inset-0 h-full w-full object-contain" loading="lazy" onError={event => { event.currentTarget.style.display = "none"; }} />}
-          <Sparkles size={20} style={{ color, opacity: 0.75 }} />
+          <AssetImage item={arcane} type="arcane" alt={arcane.name} className="absolute inset-0 h-full w-full object-contain" loading="lazy" fallback={<Sparkles size={20} style={{ color, opacity: 0.75 }} />} />
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-2"><h3 className="truncate text-sm font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</h3><span className="shrink-0 rounded-sm px-1.5 py-0.5 text-[9px]" style={{ color, backgroundColor: `${color}18`, fontFamily: "var(--font-display)" }}>{getRarityLabel(arcane.rarity).toUpperCase()}</span></div>
@@ -95,20 +95,16 @@ export default function Arcanes() {
             </button>
             <div className="flex items-center gap-3 mb-4">
               <div className="w-14 h-14 rounded-sm overflow-hidden bg-black/40 flex items-center justify-center" style={{ border: `1px solid ${getRarityColor(previewArcane.rarity)}50` }}>
-                {previewArcane.imageUrl ? <img src={previewArcane.imageUrl} alt={previewArcane.name} className="w-full h-full object-contain" /> : <Sparkles size={28} style={{ color: getRarityColor(previewArcane.rarity) }} />}
+                <AssetImage item={previewArcane} type="arcane" alt={previewArcane.name} className="w-full h-full object-contain" fallback={<Sparkles size={28} style={{ color: getRarityColor(previewArcane.rarity) }} />} />
               </div>
               <div>
                 <h2 className="text-base font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{previewArcane.name}</h2>
                 <span className="text-xs uppercase" style={{ color: getRarityColor(previewArcane.rarity), fontFamily: "var(--font-mono)" }}>{getRarityLabel(previewArcane.rarity)} · Rang Max : R{previewArcane.maxRank}</span>
               </div>
             </div>
-            {previewArcane.imageUrl ? (
-              <div className="my-4 rounded-sm overflow-hidden bg-black/60 p-4 flex items-center justify-center border border-white/10 max-h-64">
-                <img src={previewArcane.imageUrl} alt={previewArcane.name} className="max-h-52 object-contain drop-shadow-lg" />
-              </div>
-            ) : (
-              <div className="my-4 p-6 text-center text-xs text-slate-400">Aucune image directe pour cet arcane.</div>
-            )}
+            <div className="my-4 rounded-sm overflow-hidden bg-black/60 p-4 flex items-center justify-center border border-white/10 max-h-64">
+              <AssetImage item={previewArcane} type="arcane" alt={previewArcane.name} className="max-h-52 object-contain drop-shadow-lg" fallback={<Sparkles size={48} style={{ color: getRarityColor(previewArcane.rarity) }} />} />
+            </div>
             <div className="p-3 rounded-sm mb-3" style={{ backgroundColor: `${getRarityColor(previewArcane.rarity)}15`, borderLeft: `3px solid ${getRarityColor(previewArcane.rarity)}` }}>
               <div className="text-xs font-semibold text-white font-display mb-1">{previewArcane.criteria || "Condition d'activation"}</div>
               <p className="text-xs leading-relaxed text-slate-300">{previewArcane.description || "Description de l'effet d'arcane."}</p>

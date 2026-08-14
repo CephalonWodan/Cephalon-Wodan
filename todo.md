@@ -215,3 +215,24 @@ Phase en cours : audit du modèle des compagnons et des composants disponibles.
 ## État
 
 Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
+
+
+## TODO — Fallback images Wiki/API
+
+- [ ] Auditer les champs imageUrl, iconUrl, wikiLink et les règles actuelles du résolveur d’assets.
+- [ ] Définir une résolution prioritaire : asset local, image API/Wiki, puis visuel générique.
+- [ ] Ajouter un fallback robuste avec gestion des erreurs de chargement et anti-boucle.
+- [ ] Brancher le fallback dans les cartes, modales et sélecteurs de Warframes, armes et mods.
+- [ ] Vérifier la couverture sur les éléments sans image et la compatibilité mobile.
+- [ ] Exécuter TypeScript, build, validation visuelle et publier un checkpoint.
+
+
+## État — Fallback images Wiki/API
+
+- [x] Auditer les champs `imageUrl`, `imageName`, `iconUrl`, `wikiaUrl` et les conventions existantes.
+- [x] Ajouter la résolution multi-candidats avec image locale/API, CDN officiel `cdn.warframestat.us`, vignette OpenGraph Wiki et conventions Wiki.
+- [x] Ajouter la gestion des erreurs de chargement, le cache des requêtes et la prévention des correspondances API approximatives erronées.
+- [x] Brancher le composant sur les cartes et modales des Warframes, armes, mods et arcanes.
+- [x] Vérifier desktop et mobile sur les catalogues concernés.
+- [x] Valider le chemin API → CDN avec `Munit Gyro` et exécuter `pnpm check` ainsi que `pnpm build`.
+- [x] Créer le checkpoint final et publier la version.

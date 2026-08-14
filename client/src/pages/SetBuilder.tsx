@@ -12,6 +12,8 @@ import {
   getRarityColor, getRarityLabel, createEmptyBuild
 } from "@/lib/warframe-data";
 import { toast } from "sonner";
+import AssetImage from "@/components/AssetImage";
+import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
 type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
@@ -301,6 +303,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
               const isArcane = type.startsWith("arcane-");
               const arcane = isArcane ? item as Arcane : null;
               const isUnavailable = unavailableIds.includes(itemIdentity(item));
+              const assetType: AssetType | null = type === "warframe" ? "warframe" : type === "primary" || type === "secondary" || type === "melee" ? "weapon" : type.startsWith("mod-") ? "mod" : type.startsWith("arcane-") ? "arcane" : null;
+              const iconFallback = type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />;
               return (
                 <button
                   key={item.id}
@@ -311,9 +315,9 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
                   onMouseEnter={e => { if (!isUnavailable) e.currentTarget.style.borderColor = rarityColor; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = isUnavailable ? "rgba(148,163,184,.18)" : "var(--wf-border)"; }}
                 >
-                  <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0"
+                  <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0 overflow-hidden"
                     style={{ backgroundColor: `${rarityColor}20`, border: `1px solid ${rarityColor}40` }}>
-                    {type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />}
+                    {assetType ? <AssetImage item={item as any} type={assetType} alt={item.name} className="h-full w-full object-contain" fallback={iconFallback} /> : iconFallback}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
