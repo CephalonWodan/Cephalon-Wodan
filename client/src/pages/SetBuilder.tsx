@@ -776,18 +776,32 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
 
 function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
   const summary: EnhancementBonusSummary = { flatHealth: 0, flatShield: 0, flatArmor: 0, flatEnergy: 0, abilityStrengthPct: 0, abilityDurationPct: 0, castingSpeedPct: 0, parkourVelocityPct: 0, primaryStatusPct: 0, secondaryCritPct: 0, meleeCritDamagePct: 0, activeEffects: [] };
-  const effects: Array<{ source: string; effect: string }> = [];
-  [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].forEach(arcane => { if (arcane) effects.push({ source: `Arcane · ${arcane.name}`, effect: arcane.description }); });
-  build.archonShards.forEach(selected => { if (selected) effects.push({ source: `Éclat · ${selected.shard.name}`, effect: selected.shard.effects[selected.effectIndex] || selected.shard.effects[0] || selected.shard.description }); });
+  const effects: Array<{ source: string; effect: string; isTauforged: boolean }> = [];
+  
+  [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].forEach(arcane => { 
+    if (arcane) effects.push({ source: `Arcane · ${arcane.name}`, effect: arcane.description, isTauforged: false }); 
+  });
+  
+  build.archonShards.forEach(selected => { 
+    if (selected) {
+      const isTauforged = selected.shard.variant === "tauforged";
+      const effectText = selected.shard.effects[selected.effectIndex] || selected.shard.effects[0] || selected.shard.description;
+      effects.push({ source: `Éclat ${isTauforged ? "Tauforgé" : "Standard"} · ${selected.shard.name}`, effect: effectText, isTauforged }); 
+    }
+  });
 
-  effects.forEach(({ source, effect }) => {
+  effects.forEach(({ source, effect, isTauforged }) => {
     let recognized = false;
+    const multiplier = isTauforged ? 1.5 : 1.0;
+    
     const add = (pattern: RegExp, key: keyof EnhancementBonusSummary) => {
       const match = effect.match(pattern);
       if (!match) return;
-      (summary[key] as number) += Number(match[1]);
+      const val = Number(match[1]) * multiplier;
+      (summary[key] as number) += val;
       recognized = true;
     };
+    
     add(/\+(\d+(?:\.\d+)?)\s+(?:Maximum\s+)?Health\b(?!\s*\/s|\s*Orbs)/i, "flatHealth");
     add(/\+(\d+(?:\.\d+)?)\s+Shield(?:\s+Capacity)?\b(?!\s*Recharge)/i, "flatShield");
     add(/\+(\d+(?:\.\d+)?)\s+Armor\b/i, "flatArmor");
@@ -799,7 +813,8 @@ function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
     add(/\+?(\d+(?:\.\d+)?)%\s+Primary\s+Status\s+Chance\b/i, "primaryStatusPct");
     add(/\+?(\d+(?:\.\d+)?)%\s+Secondary\s+Critical\s+Chance\b/i, "secondaryCritPct");
     add(/\+?(\d+(?:\.\d+)?)%\s+Melee\s+Critical\s+Damage\b/i, "meleeCritDamagePct");
-    summary.activeEffects.push({ source, effect, recognized });
+    
+    summary.activeEffects.push({ source, effect: isTauforged ? `${effect} (Tauforgé x1.5)` : effect, recognized });
   });
   return summary;
 }
