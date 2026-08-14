@@ -236,3 +236,23 @@ Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
 - [x] Vérifier desktop et mobile sur les catalogues concernés.
 - [x] Valider le chemin API → CDN avec `Munit Gyro` et exécuter `pnpm check` ainsi que `pnpm build`.
 - [x] Créer le checkpoint final et publier la version.
+
+
+## TODO — Images Wiki explicites
+
+- [ ] Vérifier les quatre URLs Wiki et les fichiers média associés.
+- [ ] Ajouter les mappings explicites Uriel, Cyte-09, Sirius et Orion au résolveur d’assets.
+- [ ] Vérifier que les entrées correspondantes du dataset utilisent ces visuels sans casser le fallback CDN/Wiki.
+- [ ] Tester le rendu dans les catalogues et la sélection du builder.
+- [ ] Exécuter TypeScript, build et publier le checkpoint de correction.
+
+
+## État — Images Wiki explicites Uriel / Cyte-09 / Sirius / Orion
+
+- [x] Vérifier les quatre URLs Wiki et confirmer les réponses PNG 200.
+- [x] Ajouter les mappings explicites au résolveur et au dataset.
+- [x] Ajouter `imageUrls` et afficher côte à côte Sirius et Orion dans le catalogue.
+- [x] Vérifier Uriel, Cyte-09 et Sirius & Orion dans le catalogue filtré.
+- [x] Vérifier la réutilisation du composant dans le builder.
+- [x] Exécuter `pnpm check` et `pnpm build` avec succès.
+- [x] Créer le checkpoint final et publier la version.

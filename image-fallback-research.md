@@ -16,3 +16,21 @@ Source vérifiée : [WFCD/warframe-items — README](https://github.com/WFCD/war
 ## Validation visuelle
 
 Les captures desktop et mobile des pages `/warframes`, `/weapons` et `/mods` montrent que les cartes conservent une image lisible et leurs badges HUD. Les images de Warframes et d’armes utilisent les silhouettes officielles visibles dans le catalogue ; les cartes de mods affichent bien leurs cartes haute résolution. Les grilles restent en une colonne sur 375 px sans débordement horizontal.
+
+## Références Wiki explicites vérifiées
+
+La page Uriel expose le fichier `Uriel.png` via la miniature `/images/thumb/Uriel.png/300px-Uriel.png?1982c`. La page Cyte-09 expose `Cyte09.png` et son image originale `https://wiki.warframe.com/images/Cyte09.png?f7d72`. Ces références seront ajoutées comme mappings directs afin de ne pas dépendre d’une recherche par nom ou d’un ancien `imageUrl`.
+
+Sources vérifiées : [Uriel](https://wiki.warframe.com/w/Uriel#/media/File:Uriel.png) et [Cyte-09](https://wiki.warframe.com/w/Cyte-09#/media/File:Cyte09.png).
+
+Les pages Sirius & Orion exposent les originaux `S&O-Sirius.png` et `S&O-Orion.png` sous le chemin Wiki `/images/S%26O-Sirius.png?b2f2a` et `/images/S%26O-Orion.png?b2f2a`. Les deux noms contiennent une esperluette : les URLs doivent être encodées et conservées telles quelles dans les mappings.
+
+Sources vérifiées : [Sirius](https://wiki.warframe.com/w/Sirius_%26_Orion#/media/File:S&O-Sirius.png) et [Orion](https://wiki.warframe.com/w/Sirius_%26_Orion#/media/File:S&O-Orion.png).
+
+## Vérification dans l’application
+
+Le catalogue `/warframes` filtré sur `Uriel` affiche bien une seule entrée et son HTML référence directement `https://wiki.warframe.com/images/Uriel.png?1982c`. Le mapping explicite est donc pris en compte par l’interface, et le visuel ne dépend plus de l’ancien fichier `UrielLargePortrait.png`.
+
+Le catalogue filtré confirme également les deux autres entrées : `Cyte-09` référence `https://wiki.warframe.com/images/Cyte09.png?f7d72`, et `Sirius & Orion` référence `https://wiki.warframe.com/images/S%26O-Sirius.png?b2f2a`. Le rendu visuel des deux cartes est présent dans l’interface.
+
+La page `/warframes` filtrée sur `Sirius & Orion` rend maintenant deux images dans la même carte, avec les libellés accessibles `Sirius` et `Orion`, en utilisant respectivement les deux fichiers Wiki. La page `/builder` est également accessible après cette modification ; la sélection réutilise le composant AssetImage et les mappings explicites.

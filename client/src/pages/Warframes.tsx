@@ -39,7 +39,17 @@ function WarframeCard({ wf }: { wf: Warframe }) {
     >
       <div className="relative h-36 flex items-center justify-center overflow-hidden" style={{ backgroundImage: "url(/manus-storage/warframe-card-bg_e4519a70.jpg)", backgroundSize: "cover" }}>
         <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${rarityColor}18, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0.8))` }} />
-        <AssetImage item={wf} type="warframe" alt={wf.name} className="absolute inset-0 z-[1] h-full w-full object-contain opacity-75 mix-blend-screen" loading="lazy" fallback={<Shield size={40} className="relative z-10" style={{ color: rarityColor, opacity: 0.8 }} />} />
+        {wf.imageUrls && wf.imageUrls.length > 1 ? (
+          <div className="absolute inset-0 z-[1] flex items-center justify-center gap-1 px-3">
+            {wf.imageUrls.slice(0, 2).map((source, index) => (
+              <div key={source} className="relative h-full min-w-0 flex-1">
+                <AssetImage item={wf} type="warframe" preferredSource={source} alt={`${wf.name} — ${index === 0 ? "Sirius" : "Orion"}`} className="h-full w-full object-contain opacity-75 mix-blend-screen" loading="lazy" fallback={<Shield size={32} className="absolute inset-0 m-auto" style={{ color: rarityColor, opacity: 0.8 }} />} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <AssetImage item={wf} type="warframe" alt={wf.name} className="absolute inset-0 z-[1] h-full w-full object-contain opacity-75 mix-blend-screen" loading="lazy" fallback={<Shield size={40} className="relative z-10" style={{ color: rarityColor, opacity: 0.8 }} />} />
+        )}
         <div className="absolute top-1.5 left-1.5 w-3 h-3" style={{ borderTop: `1.5px solid ${rarityColor}`, borderLeft: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
         <div className="absolute top-1.5 right-1.5 w-3 h-3" style={{ borderTop: `1.5px solid ${rarityColor}`, borderRight: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
         <div className="absolute bottom-1.5 left-1.5 w-3 h-3" style={{ borderBottom: `1.5px solid ${rarityColor}`, borderLeft: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />

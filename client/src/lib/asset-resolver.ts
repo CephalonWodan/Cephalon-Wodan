@@ -12,6 +12,7 @@ export interface AssetLike {
   id?: string;
   name?: string;
   imageUrl?: string;
+  imageUrls?: string[];
   iconUrl?: string;
   imageName?: string;
   iconName?: string;
@@ -24,6 +25,13 @@ const WIKI_IMAGE_BASE = "https://wiki.warframe.com/images/";
 const WARFRAMESTAT_IMAGE_BASE = "https://cdn.warframestat.us/img/";
 const WIKI_ITEMS_API = "https://api.warframestat.us/items/search/";
 const DEFAULT_ASSET = `${WIKI_IMAGE_BASE}Lotus_Logo.png`;
+const EXPLICIT_WIKI_ASSETS: Record<string, string[]> = {
+  uriel: [`${WIKI_IMAGE_BASE}Uriel.png?1982c`],
+  cyte09: [`${WIKI_IMAGE_BASE}Cyte09.png?f7d72`],
+  sirius: [`${WIKI_IMAGE_BASE}S%26O-Sirius.png?b2f2a`],
+  orion: [`${WIKI_IMAGE_BASE}S%26O-Orion.png?b2f2a`],
+  siriusorion: [`${WIKI_IMAGE_BASE}S%26O-Sirius.png?b2f2a`, `${WIKI_IMAGE_BASE}S%26O-Orion.png?b2f2a`],
+};
 const CATEGORY_FALLBACKS: Record<AssetType, string> = {
   warframe: `${WIKI_IMAGE_BASE}Warframe.png`,
   weapon: `${WIKI_IMAGE_BASE}Weapon.png`,
@@ -66,6 +74,11 @@ function wikiImageFromFileName(fileName: unknown): string | null {
   return normalized ? `${WIKI_IMAGE_BASE}${encodeURIComponent(normalized)}` : null;
 }
 
+function explicitWikiCandidates(asset: AssetLike): string[] {
+  const keys = [asset.id, asset.name].filter((value): value is string => Boolean(value)).map(normalizeName);
+  return keys.flatMap(key => EXPLICIT_WIKI_ASSETS[key] || []);
+}
+
 function nameCandidates(name: string, type: AssetType): string[] {
   const normalizedName = name.trim().replace(/\s+/g, "_");
   const encodedName = encodeURIComponent(normalizedName);
@@ -99,6 +112,8 @@ export function resolveAssetCandidates(item: AssetLike | string, type: AssetType
   const asset = typeof item === "string" ? { name: item } : item;
   const name = asset.name?.trim() || "";
   const candidates = [
+    ...explicitWikiCandidates(asset),
+    ...(Array.isArray(asset.imageUrls) ? asset.imageUrls.map(cleanUrl) : []),
     cleanUrl(asset.imageUrl),
     cleanUrl(asset.iconUrl),
     cdnImageFromFileName(asset.imageName),

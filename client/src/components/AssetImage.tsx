@@ -10,10 +10,14 @@ type AssetImageProps = Omit<ImgHTMLAttributes<HTMLImageElement>, "src" | "alt"> 
   type: AssetType;
   alt?: string;
   fallback?: ReactNode;
+  preferredSource?: string;
 };
 
-export default function AssetImage({ item, type, alt, fallback, onError, ...imageProps }: AssetImageProps) {
-  const candidates = useMemo(() => resolveAssetCandidates(item, type), [item, type]);
+export default function AssetImage({ item, type, alt, fallback, preferredSource, onError, ...imageProps }: AssetImageProps) {
+  const candidates = useMemo(() => {
+    const resolved = resolveAssetCandidates(item, type);
+    return preferredSource ? [preferredSource, ...resolved.filter(source => source !== preferredSource)] : resolved;
+  }, [item, type, preferredSource]);
   const [sources, setSources] = useState(candidates);
   const [sourceIndex, setSourceIndex] = useState(0);
   const [wikiRequested, setWikiRequested] = useState(false);

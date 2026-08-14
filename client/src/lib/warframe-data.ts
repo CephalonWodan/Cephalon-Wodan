@@ -39,8 +39,10 @@ export interface Warframe {
   abilities: string[];
   description: string;
   imageUrl?: string;
+  imageUrls?: string[];
   imageName?: string;
   wikiLink?: string;
+  wikiLinks?: string[];
   wikiaUrl?: string;
   wikiUrl?: string;
   rarity: Rarity;
@@ -62,8 +64,10 @@ export interface Weapon {
   rarity: Rarity;
   description: string;
   imageUrl?: string;
+  imageUrls?: string[];
   imageName?: string;
   wikiLink?: string;
+  wikiLinks?: string[];
   wikiaUrl?: string;
   wikiUrl?: string;
   weaponClass?: string;
@@ -116,8 +120,10 @@ export interface Mod {
   compatName?: string;
   isAugment?: boolean;
   imageUrl?: string;
+  imageUrls?: string[];
   imageName?: string;
   wikiLink?: string;
+  wikiLinks?: string[];
   wikiaUrl?: string;
   wikiUrl?: string;
   dropCount?: number;
