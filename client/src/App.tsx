@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Arcanes from "@/pages/Arcanes";
 import ArchonShards from "@/pages/ArchonShards";
 import Relics from "@/pages/Relics";
+import WorldState from "@/pages/WorldState";
 
 function Router() {
   return (
@@ -30,6 +31,7 @@ function Router() {
       <Route path={"/arcanes"} component={Arcanes} />
       <Route path="/archon-shards" component={ArchonShards} />
       <Route path="/relics" component={Relics} />
+      <Route path="/worldstate" component={WorldState} />
       <Route path={"/guides"} component={Guides} />
       <Route path={"/resources"} component={Resources} />
       <Route path={"/settings"} component={Settings} />

@@ -1197,10 +1197,10 @@ function StatsPanel({ build }: { build: BuildSet }) {
                   </span>
                 </div>
                 {/* Melee Controls: Combo Tier & Stance Bonus */}
-                <div className="grid grid-cols-2 gap-2 pt-1 pb-1 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                <div className="grid grid-cols-1 gap-2 pt-1 pb-1 border-b sm:grid-cols-2" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
                   <div>
                     <div className="text-[9px] uppercase mb-1" style={{ color: "var(--wf-text-dim)" }}>MULTIPLICATEUR COMBO</div>
-                    <div className="flex gap-1">
+                    <div className="flex min-w-max gap-1 overflow-x-auto pb-1">
                       {[1, 3, 6, 9, 12].map(tier => (
                         <button
                           key={tier}
@@ -1566,12 +1566,12 @@ export default function SetBuilder() {
   return (
     <Layout title="CRÉER UN SET">
       {/* Build tabs */}
-      <div className="flex items-center gap-2 mb-4 flex-wrap">
+      <div className="flex max-w-full items-center gap-2 mb-4 flex-wrap overflow-x-auto pb-1">
         {builds.map((b, i) => (
           <div key={b.id} className="flex items-center">
             <button
               onClick={() => { setActiveBuildIndex(i); setBuildName(b.name); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-sm transition-all"
+              className="flex shrink-0 items-center gap-1.5 px-3 py-2 text-xs rounded-sm transition-all"
               style={{
                 backgroundColor: i === activeBuildIndex ? "rgba(79,195,247,0.15)" : "rgba(0,0,0,0.3)",
                 border: `1px solid ${i === activeBuildIndex ? "var(--wf-cyan)" : "var(--wf-border)"}`,
@@ -1591,7 +1591,7 @@ export default function SetBuilder() {
         ))}
         <button
           onClick={addNewBuild}
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-sm transition-all"
+          className="flex shrink-0 items-center gap-1 px-2.5 py-2 text-xs rounded-sm transition-all"
           style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px dashed var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}
         >
           <Plus size={11} />
@@ -1599,8 +1599,19 @@ export default function SetBuilder() {
         </button>
       </div>
 
+      {/* Tactical loadout command focal */}
+      <div className="wf-command-console hud-frame mb-4 rounded-sm border border-cyan-400/30 p-3 sm:p-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300" style={{ fontFamily: "var(--font-mono)" }}>TACTICAL LOADOUT // CONFIGURATION COCKPIT</div>
+            <div className="mt-1 text-xs uppercase tracking-wider text-slate-300 sm:text-sm" style={{ fontFamily: "var(--font-display)" }}>Warframe · armement · compagnon · mods</div>
+          </div>
+          <div className="flex items-center gap-2 text-[9px] font-mono uppercase text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-cyan-300" /> Calculs en direct</div>
+        </div>
+      </div>
+
       {/* Main builder layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-4">
         {/* Tab switcher for mobile */}
         <div className="xl:hidden col-span-full flex items-center gap-1 mb-2">
           {[{ id: "equipment" as const, label: "ÉQUIPEMENT" }, { id: "mods" as const, label: "MODS" }].map(tab => (
@@ -1661,7 +1672,7 @@ export default function SetBuilder() {
           </div>
 
           {/* Equipment slots */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`}>
             <EquipSlot
               label="WARFRAME"
               icon={<Shield size={13} />}
@@ -1706,7 +1717,7 @@ export default function SetBuilder() {
 
           {/* Modular parts configuration for MOA and Hound companions */}
           {activeBuild.companion && ["moa", "hound"].includes(activeBuild.companion.type.toLowerCase()) && (
-            <div className="wf-hud-panel hud-frame rounded-sm p-4 space-y-3" style={{ border: "1px solid rgba(167,139,250,0.4)", backgroundColor: "rgba(167,139,250,0.03)" }}>
+            <div className={`wf-hud-panel hud-frame rounded-sm p-4 space-y-3 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`} style={{ border: "1px solid rgba(167,139,250,0.4)", backgroundColor: "rgba(167,139,250,0.03)" }}>
               <div className="flex items-center justify-between">
                 <div className="text-xs font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
                   CONFIGURATION MODULAIRE // {activeBuild.companion.type.toUpperCase()} ({activeBuild.companion.name})
@@ -1743,7 +1754,7 @@ export default function SetBuilder() {
           )}
 
           {/* Arcanes and Archon Shards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`}>
             <ArcaneGrid label="WARFRAME" arcanes={activeBuild.warframeArcanes} arcaneType="arcane-warframe" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#a78bfa" />
             <ArchonShardGrid shards={activeBuild.archonShards} onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} onEffectChange={setShardEffect} />
             <ArcaneGrid label="PRIMAIRE" arcanes={activeBuild.primaryArcanes} arcaneType="arcane-primary" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#ff6b35" />
@@ -1752,7 +1763,7 @@ export default function SetBuilder() {
           </div>
 
           {/* Mod grids */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "mods" ? "" : "max-xl:hidden"}`}>
             <ModGrid
               label="WARFRAME"
               mods={activeBuild.warframeMods}

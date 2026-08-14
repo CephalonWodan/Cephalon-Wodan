@@ -31,23 +31,24 @@ export default function Home() {
     <Layout>
       <div className="space-y-6">
         {/* HERO BANNER */}
-        <div className="relative rounded-sm p-6 md:p-8 overflow-hidden hud-frame" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
-          <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "url(/manus-storage/warframe-card-bg_e4519a70.jpg)", backgroundSize: "cover" }} />
+        <div className="relative rounded-sm p-4 sm:p-6 md:p-8 overflow-hidden hud-frame wf-command-console" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+          <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url(/manus-storage/warframe-card-bg_e4519a70.jpg)", backgroundSize: "cover" }} />
           <div className="relative z-10 max-w-2xl space-y-3">
+            <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}><Crosshair size={12} /> ARSENAL FORGE // COMMAND CONSOLE</div>
             <div className="inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider" style={{ backgroundColor: "rgba(79,195,247,0.15)", color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.4)", fontFamily: "var(--font-mono)" }}>
               HOTFIX 43.0.8 — JADE SHADOWS: CONSTELLATIONS
             </div>
-            <h1 className="text-2xl md:text-4xl font-extrabold tracking-wider" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+            <h1 className="text-xl sm:text-2xl md:text-4xl font-extrabold tracking-wider" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
               FORGE TON ARSENAL
             </h1>
             <p className="text-xs md:text-sm leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>
               Construis et optimise tes sets complets de Warframe. Sélectionne ton Warframe, tes armes, ton compagnon et configure tes mods pour créer le build parfait.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link href="/builder" className="px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all wf-btn-primary flex items-center gap-2">
+              <Link href="/builder" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-2">
                 <Crosshair size={14} /> CRÉER UN SET
               </Link>
-              <Link href="/warframes" className="px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+              <Link href="/warframes" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all text-center" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
                 EXPLORER
               </Link>
             </div>

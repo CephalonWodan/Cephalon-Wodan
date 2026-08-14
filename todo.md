@@ -185,3 +185,33 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : audit du modèle des compagnons et des composants disponibles.
+
+
+## TODO — Suivi Worldstate et compatibilité mobile/tablette
+
+- [ ] Vérifier les endpoints utiles de l’API WarframeStat et définir le modèle local des alertes et incursions.
+- [ ] Centraliser la récupération, le rafraîchissement périodique et la gestion d’erreur du Worldstate.
+- [ ] Ajouter le panneau de suivi temps réel des alertes et des incursions dans l’interface HUD.
+- [ ] Ajouter les états de chargement, absence de données, API indisponible et dernière synchronisation.
+- [ ] Auditer la structure Layout, la navigation et les pages principales aux breakpoints mobile et tablette.
+- [ ] Corriger les débordements horizontaux, la navigation compacte et les grilles de catalogue.
+- [ ] Vérifier les modales, filtres, panneaux de statistiques et builder sur 375 px, 768 px et desktop.
+- [ ] Exécuter le contrôle TypeScript, le build de production et la validation visuelle finale.
+- [ ] Mettre à jour la checklist et sauvegarder une version publiée.
+
+
+## État — Suivi Worldstate et compatibilité mobile/tablette
+
+- [x] Vérifier les endpoints publics et normaliser alertes, invasions, incursions, fissures et cycles.
+- [x] Ajouter le rafraîchissement automatique toutes les deux minutes, le bouton manuel, l’horodatage et le repli local.
+- [x] Ajouter le panneau Worldstate sur l’accueil et la page dédiée `/worldstate`.
+- [x] Ajouter les états API live, synchronisation, erreur et absence de données.
+- [x] Ajouter l’accès Worldstate dans la navigation latérale.
+- [x] Corriger le header, le contenu principal, les grilles du builder, les onglets mobiles et la modale de sélection pour les petits écrans.
+- [x] Vérifier 375 px, 768 px et 1280 px avec captures visuelles.
+- [x] Exécuter `pnpm check` et `pnpm build` avec succès.
+- [x] Créer le checkpoint final et livrer la version publiée.
+
+## État
+
+Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
