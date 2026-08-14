@@ -713,33 +713,36 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
 
     activeMods.push({ name: mod.name, effect: mod.effect || mod.description || "", cost });
 
-    // Match common Warframe mod patterns
-    if (mod.id === "vitality" || effect.includes("health") && effect.includes("max health")) {
-      const baseVal = 440 * (mod.maxRank === 10 ? 1 : (mod.maxRank === 5 ? 0.22 : 0.44));
-      healthModPct += (40 + baseVal * rankRatio) / 100;
-    } else if (mod.id === "redirection" || effect.includes("shield")) {
-      const baseVal = 440 * (mod.maxRank === 10 ? 1 : 0.44);
-      shieldModPct += (40 + baseVal * rankRatio) / 100;
-    } else if (mod.id === "steel-fiber" || (effect.includes("armor") && !effect.includes("umbra"))) {
-      const baseVal = 110 * rankRatio;
-      armorModPct += baseVal / 100;
-    } else if (effect.includes("umbra vitality")) {
+    // Robust matching for health, shield, armor, energy in English & French
+    const modNameLower = mod.name.toLowerCase();
+    
+    // Check percentage health / vitality / fiber / redirection / flow
+    if (mod.id === "vitality" || modNameLower.includes("vitality") || effect.includes("health") || effect.includes("santé") || effect.includes("vie")) {
+      const baseBonus = mod.maxRank >= 10 ? 440 : (mod.maxRank >= 5 ? 100 : 40);
+      healthModPct += (baseBonus * (rankRatio)) / 100;
+    } else if (mod.id === "redirection" || modNameLower.includes("redirection") || effect.includes("shield") || effect.includes("bouclier")) {
+      const baseBonus = mod.maxRank >= 10 ? 440 : (mod.maxRank >= 5 ? 100 : 40);
+      shieldModPct += (baseBonus * (rankRatio)) / 100;
+    } else if (mod.id === "steel-fiber" || modNameLower.includes("steel fiber") || modNameLower.includes("fibre d'acier") || effect.includes("armor") || effect.includes("armure")) {
+      const baseBonus = mod.maxRank >= 10 ? 110 : 50;
+      armorModPct += (baseBonus * rankRatio) / 100;
+    } else if (mod.id === "flow" || modNameLower.includes("flow") || modNameLower.includes("flux") || effect.includes("energy") || effect.includes("énergie") || effect.includes("max energy")) {
+      const baseBonus = mod.maxRank >= 5 ? 150 : 100;
+      energyModPct += (baseBonus * rankRatio) / 100;
+    } else if (modNameLower.includes("umbra vitality")) {
       healthModPct += (55 * (rank + 1)) / 100;
-    } else if (effect.includes("umbra fiber")) {
+    } else if (modNameLower.includes("umbra fiber")) {
       armorModPct += (33 * (rank + 1)) / 100;
-    } else if (effect.includes("flow") || effect.includes("max energy")) {
-      const baseVal = 150 * (mod.maxRank === 5 ? 0.3 : 0.25);
-      energyModPct += (baseVal * (rank + 1)) / 100;
-    } else if (effect.includes("strength") || mod.id === "blind-rage" || mod.id === "intensify") {
+    } else if (effect.includes("strength") || effect.includes("puissance") || mod.id === "blind-rage" || mod.id === "intensify") {
       const val = mod.id === "blind-rage" ? 99 * (rank + 1) / 10 : (mod.id === "intensify" ? 30 * (rank + 1) / 5 : 15 * (rank + 1) / 5);
       strengthBonus += val;
-    } else if (effect.includes("duration") || mod.id === "continuity" || mod.id === "narrow-minded") {
+    } else if (effect.includes("duration") || effect.includes("durée") || mod.id === "continuity" || mod.id === "narrow-minded") {
       const val = mod.id === "narrow-minded" ? 99 * (rank + 1) / 10 : 30 * (rank + 1) / 5;
       durationBonus += val;
-    } else if (effect.includes("range") || mod.id === "stretch" || mod.id === "overextended") {
+    } else if (effect.includes("range") || effect.includes("portée") || mod.id === "stretch" || mod.id === "overextended") {
       const val = mod.id === "overextended" ? 90 : 45 * (rank + 1) / 5;
       rangeBonus += val;
-    } else if (effect.includes("efficiency") || mod.id === "streamline" || mod.id === "fleeting-expertise") {
+    } else if (effect.includes("efficiency") || effect.includes("efficacité") || mod.id === "streamline" || mod.id === "fleeting-expertise") {
       const val = mod.id === "fleeting-expertise" ? 60 : 30 * (rank + 1) / 5;
       efficiencyBonus += val;
     }
