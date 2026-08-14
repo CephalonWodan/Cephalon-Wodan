@@ -594,6 +594,10 @@ interface WeaponDamageBreakdown {
   baseDamage: number;
   totalDamage: number;
   elements: Array<{ name: string; damage: number; color: string }>;
+  critChance: number;
+  critMultiplier: number;
+  averageDamage: number;
+  headshotDamage: number;
 }
 
 interface WarframeStatSummary {
@@ -619,7 +623,7 @@ interface WarframeStatSummary {
 }
 
 function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []): WeaponDamageBreakdown {
-  if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [] };
+  if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [], critChance: 0, critMultiplier: 0, averageDamage: 0, headshotDamage: 0 };
   let baseDamage = weapon.damage || 100;
   let damageMultiplier = 1;
   let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
@@ -662,10 +666,38 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   }));
   const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
 
+  const baseCritChance = weapon.critChance ?? 0.20;
+  const baseCritMult = weapon.critMultiplier ?? 2.0;
+  let critChanceBonus = 0;
+  let critMultBonus = 0;
+
+  mods.forEach(mod => {
+    if (!mod) return;
+    const effect = (mod.effect || mod.description || "").toLowerCase();
+    const rank = mod.selectedRank ?? mod.maxRank;
+    const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
+    if (effect.includes("critical chance") || effect.includes("chance de critique")) {
+      critChanceBonus += 1.5 * rankRatio;
+    }
+    if (effect.includes("critical damage") || effect.includes("dégâts critiques")) {
+      critMultBonus += 1.2 * rankRatio;
+    }
+  });
+
+  const finalCritChance = Math.min(1.0, baseCritChance * (1 + critChanceBonus));
+  const finalCritMult = baseCritMult * (1 + critMultBonus);
+  const combinedHit = totalPhysical + totalElemental;
+  const averageDamage = Math.round(combinedHit * (1 + finalCritChance * (finalCritMult - 1)));
+  const headshotDamage = Math.round(averageDamage * 2.0); // Standard headshot multiplier x2
+
   return {
     baseDamage,
-    totalDamage: totalPhysical + totalElemental,
+    totalDamage: combinedHit,
     elements,
+    critChance: Math.round(finalCritChance * 100),
+    critMultiplier: Number(finalCritMult.toFixed(1)),
+    averageDamage,
+    headshotDamage,
   };
 }
 
@@ -1039,13 +1071,13 @@ function StatsPanel({ build }: { build: BuildSet }) {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                    <span style={{ color: "var(--wf-text-dim)" }}>Critique</span>
-                    <span className="font-mono font-bold text-yellow-400">{(build.primaryWeapon.critChance * 100).toFixed(0)}%</span>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Wiki: Chance ${primaryDmgData.critChance}% | Multiplicateur x${primaryDmgData.critMultiplier}`}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Crit / Tête</span>
+                    <span className="font-mono font-bold text-amber-300">{primaryDmgData.critChance}% (x{primaryDmgData.critMultiplier})</span>
                   </div>
-                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                    <span style={{ color: "var(--wf-text-dim)" }}>Statut</span>
-                    <span className="font-mono font-bold text-green-400">{(build.primaryWeapon.statusChance * 100 + enhancements.primaryStatusPct).toFixed(0)}%</span>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup et avec tir à la tête (x2.0 standard)">
+                    <span style={{ color: "var(--wf-text-dim)" }}>Moy / Tête</span>
+                    <span className="font-mono font-bold text-orange-400">{primaryDmgData.averageDamage} / {primaryDmgData.headshotDamage}</span>
                   </div>
                 </div>
                 {primaryDmgData.elements.length > 0 && (
@@ -1078,13 +1110,13 @@ function StatsPanel({ build }: { build: BuildSet }) {
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
-                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                    <span style={{ color: "var(--wf-text-dim)" }}>Critique</span>
-                    <span className="font-mono font-bold text-yellow-400">{(build.secondaryWeapon.critChance * 100).toFixed(0)}%</span>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Wiki: Chance ${secondaryDmgData.critChance}% | Multiplicateur x${secondaryDmgData.critMultiplier}`}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Crit / Tête</span>
+                    <span className="font-mono font-bold text-amber-300">{secondaryDmgData.critChance}% (x{secondaryDmgData.critMultiplier})</span>
                   </div>
-                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
-                    <span style={{ color: "var(--wf-text-dim)" }}>Statut</span>
-                    <span className="font-mono font-bold text-green-400">{(build.secondaryWeapon.statusChance * 100).toFixed(0)}%</span>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup et avec tir à la tête (x2.0 standard)">
+                    <span style={{ color: "var(--wf-text-dim)" }}>Moy / Tête</span>
+                    <span className="font-mono font-bold text-orange-400">{secondaryDmgData.averageDamage} / {secondaryDmgData.headshotDamage}</span>
                   </div>
                 </div>
                 {secondaryDmgData.elements.length > 0 && (
