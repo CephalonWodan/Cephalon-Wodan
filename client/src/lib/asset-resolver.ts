@@ -31,6 +31,10 @@ const EXPLICIT_WIKI_ASSETS: Record<string, string[]> = {
   sirius: [`${WIKI_IMAGE_BASE}S%26O-Sirius.png?b2f2a`],
   orion: [`${WIKI_IMAGE_BASE}S%26O-Orion.png?b2f2a`],
   siriusorion: [`${WIKI_IMAGE_BASE}S%26O-Sirius.png?b2f2a`, `${WIKI_IMAGE_BASE}S%26O-Orion.png?b2f2a`],
+  baneofgrineer: [`${WIKI_IMAGE_BASE}BaneofGrineerMod.png?e027b`],
+  baneofcorpus: [`${WIKI_IMAGE_BASE}BaneofCorpusMod.png`],
+  baneoforokin: [`${WIKI_IMAGE_BASE}BaneofOrokinMod.png`],
+  baneofinfested: [`${WIKI_IMAGE_BASE}BaneofInfestedMod.png?e443f`],
 };
 const CATEGORY_FALLBACKS: Record<AssetType, string> = {
   warframe: `${WIKI_IMAGE_BASE}Warframe.png`,

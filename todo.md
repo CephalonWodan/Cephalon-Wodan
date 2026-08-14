@@ -256,3 +256,21 @@ Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
 - [x] Vérifier la réutilisation du composant dans le builder.
 - [x] Exécuter `pnpm check` et `pnpm build` avec succès.
 - [x] Créer le checkpoint final et publier la version.
+
+
+## TODO — Images Wiki explicites des mods Bane
+
+- [ ] Vérifier les quatre URLs Wiki et les fichiers média Bane correspondants.
+- [ ] Ajouter les mappings Bane of Grineer, Corpus, Orokin et Infested au résolveur et au dataset.
+- [ ] Vérifier les cartes, modales et la sélection des mods dans le builder.
+- [ ] Exécuter TypeScript, build et publier le checkpoint final.
+
+
+## État — Images Wiki explicites des mods Bane
+
+- [x] Vérifier les quatre pages Wiki et les fichiers média associés.
+- [x] Ajouter les mappings explicites Bane of Grineer, Corpus, Orokin et Infested au résolveur et au dataset.
+- [x] Vérifier les quatre cartes dans le catalogue Mods filtré sur `Bane`.
+- [x] Conserver les fallbacks CDN/Wiki existants et les variantes Primed intactes.
+- [x] Exécuter `pnpm check`, le test HTTP des quatre PNG et `pnpm build`.
+- [x] Créer le checkpoint final et publier la version.

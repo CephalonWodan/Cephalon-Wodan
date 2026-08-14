@@ -34,3 +34,19 @@ Le catalogue `/warframes` filtré sur `Uriel` affiche bien une seule entrée et 
 Le catalogue filtré confirme également les deux autres entrées : `Cyte-09` référence `https://wiki.warframe.com/images/Cyte09.png?f7d72`, et `Sirius & Orion` référence `https://wiki.warframe.com/images/S%26O-Sirius.png?b2f2a`. Le rendu visuel des deux cartes est présent dans l’interface.
 
 La page `/warframes` filtrée sur `Sirius & Orion` rend maintenant deux images dans la même carte, avec les libellés accessibles `Sirius` et `Orion`, en utilisant respectivement les deux fichiers Wiki. La page `/builder` est également accessible après cette modification ; la sélection réutilise le composant AssetImage et les mappings explicites.
+
+## Références Wiki Bane vérifiées
+
+La page Bane of Grineer expose le fichier original `BaneofGrineerMod.png` sous `https://wiki.warframe.com/images/BaneofGrineerMod.png?e027b`. La page Bane of Corpus confirme le fichier `BaneofCorpusMod.png` et la page média correspondante ; les deux fichiers suivent la même convention d’image originale Wiki.
+
+Sources : [Bane of Grineer](https://wiki.warframe.com/w/Bane_of_Grineer#/media/File:BaneofGrineerMod.png) et [Bane of Corpus](https://wiki.warframe.com/w/Bane_of_Corpus#/media/File:BaneofCorpusMod.png).
+
+Les pages Bane of Orokin et Bane of Infested confirment les fichiers `BaneofOrokinMod.png` et `BaneofInfestedMod.png`. L’original Infested est exposé sous `https://wiki.warframe.com/images/BaneofInfestedMod.png?e443f`; Orokin suit la même convention de fichier original Wiki.
+
+Sources : [Bane of Orokin](https://wiki.warframe.com/w/Bane_of_Orokin#/media/File:BaneofOrokinMod.png) et [Bane of Infested](https://wiki.warframe.com/w/Bane_of_Infested#/media/File:BaneofInfestedMod.png).
+
+Le test réseau local confirme les quatre fichiers Bane en HTTP 200 avec `content-type: image/png`. La première ouverture du catalogue Mods n’a pas fourni de snapshot interactif stable et le navigateur a ensuite basculé sur une page vide ; la validation visuelle sera reprise après réouverture du catalogue.
+
+## Vérification dans le catalogue Mods
+
+Le catalogue filtré sur `Bane` affiche les quatre mods demandés avec leurs URLs Wiki originales : `BaneofCorpusMod.png`, `BaneofGrineerMod.png`, `BaneofInfestedMod.png` et `BaneofOrokinMod.png`. Les quatre entrées sont visibles dans la grille et leurs cartes de mod sont chargées correctement. Les variantes Primed restent inchangées et conservent leurs propres images.
