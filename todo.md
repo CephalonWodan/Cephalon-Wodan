@@ -307,3 +307,24 @@ Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
 - [ ] Ajouter les miniatures des éclats d’Archonte dans les sélecteurs `archon-shard`.
 - [ ] Conserver les couleurs de rareté, variantes d’éclat et icônes de repli.
 - [ ] Vérifier le rendu compact sur mobile et tablette.
+
+
+## TODO — Remplacement des fallbacks génériques de mods
+
+- [ ] Auditer les cartes qui affichent encore l’icône générique dans le catalogue.
+- [ ] Tester les noms de fichiers Wiki/CDN officiels pour les mods concernés.
+- [ ] Ajouter les mappings exacts et éviter de considérer une icône par défaut comme une image valide.
+- [ ] Revalider le catalogue et produire la liste des exceptions restantes.
+- [ ] Exécuter TypeScript, build, publier et synchroniser GitHub.
+
+
+## État — Vrais visuels officiels des mods
+
+- [x] Distinguer les cartes officielles des icônes de fallback génériques.
+- [x] Identifier neuf mods visibles dans la capture avec des URLs Wiki en 404.
+- [x] Auditer les 27 autres URLs Wiki qui répondaient réellement en 404.
+- [x] Récupérer les noms de fichiers officiels via l’API WarframeStat et la page Wiki.
+- [x] Corriger 36 mods dans le dataset, dont Scan Aquatic Lifeforms avec son image Wiki réelle.
+- [x] Vérifier les 36 URLs corrigées en HTTP 200 avec un type image.
+- [x] Exécuter `pnpm check` et `pnpm build`.
+- [x] Créer le checkpoint final et publier la correction.
