@@ -590,6 +590,12 @@ interface EnhancementBonusSummary {
   activeEffects: Array<{ source: string; effect: string; recognized: boolean }>;
 }
 
+interface WeaponDamageBreakdown {
+  baseDamage: number;
+  totalDamage: number;
+  elements: Array<{ name: string; damage: number; color: string }>;
+}
+
 interface WarframeStatSummary {
   health: number;
   baseHealth: number;
@@ -610,6 +616,57 @@ interface WarframeStatSummary {
   sprintSpeed: number;
   ehp: number;
   activeMods: Array<{ name: string; effect: string; cost: number }>;
+}
+
+function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []): WeaponDamageBreakdown {
+  if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [] };
+  let baseDamage = weapon.damage || 100;
+  let damageMultiplier = 1;
+  let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
+
+  mods.forEach(mod => {
+    if (!mod) return;
+    const effect = (mod.effect || mod.description || "").toLowerCase();
+    const rank = mod.selectedRank ?? mod.maxRank;
+    const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
+
+    // Corrupted & standard damage mods
+    if (effect.includes("damage") && !effect.includes("status") && !effect.includes("critical")) {
+      const match = effect.match(/\+(\d+(?:\.\d+)?)%/);
+      if (match) damageMultiplier += (Number(match[1]) * rankRatio) / 100;
+    }
+    // Corrupted mods like Transient Fortitude / Blind Rage / Overextended / Narrow Minded
+    if (effect.includes("strength") && effect.includes("duration")) {
+      // e.g. Transient Fortitude
+      damageMultiplier += 0.25 * rankRatio;
+    }
+    // Elemental mods
+    if (effect.includes("heat") || effect.includes("feu")) elementalBonuses.push({ name: "Feu", pct: 15 * (rank + 1), color: "#ff6b35" });
+    if (effect.includes("cold") || effect.includes("glace")) elementalBonuses.push({ name: "Glace", pct: 15 * (rank + 1), color: "#42a5f5" });
+    if (effect.includes("electric") || effect.includes("électricité")) elementalBonuses.push({ name: "Électricité", pct: 15 * (rank + 1), color: "#ab47bc" });
+    if (effect.includes("toxin") || effect.includes("poison")) elementalBonuses.push({ name: "Toxine", pct: 15 * (rank + 1), color: "#66bb6a" });
+    if (effect.includes("corrosive")) elementalBonuses.push({ name: "Corrosif", pct: 30 * (rank + 1), color: "#ffa726" });
+    if (effect.includes("viral")) elementalBonuses.push({ name: "Viral", pct: 30 * (rank + 1), color: "#26c6da" });
+    if (effect.includes("radiation")) elementalBonuses.push({ name: "Radiation", pct: 30 * (rank + 1), color: "#ffd700" });
+    // Augment mods bonus handling
+    if (effect.includes("augment") || mod.name.toLowerCase().includes("augment")) {
+      damageMultiplier += 0.20;
+    }
+  });
+
+  const totalPhysical = Math.round(baseDamage * damageMultiplier);
+  const elements = elementalBonuses.map(el => ({
+    name: el.name,
+    damage: Math.round(baseDamage * (el.pct / 100)),
+    color: el.color,
+  }));
+  const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
+
+  return {
+    baseDamage,
+    totalDamage: totalPhysical + totalElemental,
+    elements,
+  };
 }
 
 function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
@@ -940,24 +997,83 @@ function StatsPanel({ build }: { build: BuildSet }) {
             ))}
           </div>
 
-          {build.primaryWeapon && (
-            <>
-              <div className="h-px my-3" style={{ backgroundColor: "var(--wf-border)" }} />
-              <div className="text-xs font-semibold mb-2" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
-                {build.primaryWeapon.name.toUpperCase()}
-              </div>
-              {[
-                { label: "Dégâts", value: Math.round(primaryDmg), color: "#ff6b35" },
-                { label: "Critique", value: `${(build.primaryWeapon.critChance * 100).toFixed(0)}%`, color: "#ffd700" },
-                { label: "Statut", value: `${(build.primaryWeapon.statusChance * 100 + enhancements.primaryStatusPct).toFixed(0)}%`, color: "#66bb6a" },
-              ].map(({ label, value, color }) => (
-                <div key={label} className="flex justify-between text-xs py-1 border-b last:border-0" style={{ borderColor: "var(--wf-border)" }}>
-                  <span style={{ color: "var(--wf-text-dim)" }}>{label}</span>
-                  <span style={{ color, fontFamily: "var(--font-mono)" }}>{value}</span>
+          {build.primaryWeapon && (() => {
+            const primaryDmgData = calculateWeaponDamage(build.primaryWeapon, build.primaryMods);
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#ff6b35", fontFamily: "var(--font-display)" }}>
+                    ARME PRIMAIRE : {build.primaryWeapon.name.toUpperCase()}
+                  </div>
+                  <span className="text-[10px] font-mono font-bold" style={{ color: "#ff6b35" }}>
+                    {primaryDmgData.totalDamage} DÉGÂTS TOTAUX
+                  </span>
                 </div>
-              ))}
-            </>
-          )}
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Critique</span>
+                    <span className="font-mono font-bold text-yellow-400">{(build.primaryWeapon.critChance * 100).toFixed(0)}%</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Statut</span>
+                    <span className="font-mono font-bold text-green-400">{(build.primaryWeapon.statusChance * 100 + enhancements.primaryStatusPct).toFixed(0)}%</span>
+                  </div>
+                </div>
+                {primaryDmgData.elements.length > 0 && (
+                  <div className="mt-1.5 space-y-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {primaryDmgData.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {build.secondaryWeapon && (() => {
+            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods);
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#42a5f5", fontFamily: "var(--font-display)" }}>
+                    ARME SECONDAIRE : {build.secondaryWeapon.name.toUpperCase()}
+                  </div>
+                  <span className="text-[10px] font-mono font-bold" style={{ color: "#42a5f5" }}>
+                    {secondaryDmgData.totalDamage} DÉGÂTS TOTAUX
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Critique</span>
+                    <span className="font-mono font-bold text-yellow-400">{(build.secondaryWeapon.critChance * 100).toFixed(0)}%</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Statut</span>
+                    <span className="font-mono font-bold text-green-400">{(build.secondaryWeapon.statusChance * 100).toFixed(0)}%</span>
+                  </div>
+                </div>
+                {secondaryDmgData.elements.length > 0 && (
+                  <div className="mt-1.5 space-y-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {secondaryDmgData.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {companionStats && (
             <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
