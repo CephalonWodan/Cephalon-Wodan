@@ -274,3 +274,19 @@ Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
 - [x] Conserver les fallbacks CDN/Wiki existants et les variantes Primed intactes.
 - [x] Exécuter `pnpm check`, le test HTTP des quatre PNG et `pnpm build`.
 - [x] Créer le checkpoint final et publier la version.
+
+
+## TODO — Synchronisation GitHub CephalonWodan/Cephalon-Wodan
+
+- [ ] Cloner ou lier le dépôt GitHub `CephalonWodan/Cephalon-Wodan`.
+- [ ] Fusionner ou synchroniser la branche active avec les fichiers mis à jour (sources, résolveur d’assets, dataset complet).
+- [ ] Pousser les modifications via `gh` et `git push` sur le dépôt distant.
+- [ ] Valider le succès de la synchronisation et rendre compte à l’utilisateur.
+
+
+## État — Synchronisation GitHub CephalonWodan/Cephalon-Wodan
+
+- [x] Cloner le dépôt GitHub `CephalonWodan/Cephalon-Wodan`.
+- [x] Fusionner et synchroniser l’ensemble des fichiers source, composants, datasets et scripts de recherche.
+- [x] Effectuer le commit et pousser les modifications sur la branche distante `main` avec succès.
+- [x] Valider la synchronisation globale.
