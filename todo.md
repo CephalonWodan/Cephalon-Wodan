@@ -160,3 +160,15 @@ Phase en cours : checkpoint final et livraison.
 ## État
 
 Phase en cours : audit de l’état local.
+
+
+## TODO — Onglets MOA et Hound pour les Compagnons
+
+- [x] Vérifier la classification des MOA et Hound dans COMPANIONS.
+- [x] Créer les onglets dédiés dans la page Compagnons (Tous, Sentinelles, Kubrow/Kavat, MOA, Hound).
+- [x] Vérifier le modding et le filtrage des mods de compagnon.
+- [x] Valider avec TypeScript, build de production et captures responsive.
+
+## État
+
+Phase en cours : checkpoint final et livraison.
