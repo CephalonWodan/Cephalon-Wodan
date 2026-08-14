@@ -865,6 +865,7 @@ function buildSummaryMarkdown(build: BuildSet): string {
 function StatsPanel({ build }: { build: BuildSet }) {
   const wf = build.warframe;
   const stats = calculateWarframeStats(build);
+  const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
