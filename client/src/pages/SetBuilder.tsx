@@ -303,7 +303,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
               const isArcane = type.startsWith("arcane-");
               const arcane = isArcane ? item as Arcane : null;
               const isUnavailable = unavailableIds.includes(itemIdentity(item));
-              const assetType: AssetType | null = type === "warframe" ? "warframe" : type === "primary" || type === "secondary" || type === "melee" ? "weapon" : type.startsWith("mod-") ? "mod" : type.startsWith("arcane-") ? "arcane" : null;
+              const assetType: AssetType | null = type === "warframe" ? "warframe" : type === "primary" || type === "secondary" || type === "melee" ? "weapon" : type === "companion" ? "companion" : type === "archon-shard" ? "shard" : type.startsWith("mod-") ? "mod" : type.startsWith("arcane-") ? "arcane" : null;
               const iconFallback = type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />;
               return (
                 <button
@@ -372,6 +372,7 @@ interface EquipSlotProps {
 
 function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f7" }: EquipSlotProps) {
   const rarityColor = item ? getRarityColor((item as any).rarity || "common") : accentColor;
+  const assetType: AssetType = label === "WARFRAME" ? "warframe" : label.includes("COMPAGNON") ? "companion" : "weapon";
   return (
     <div
       className="wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200"
@@ -408,7 +409,7 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-sm flex items-center justify-center shrink-0"
               style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
-              <span className="text-lg">{label === "WARFRAME" ? "⚡" : label.includes("COMPAGNON") ? "🐾" : "⚔️"}</span>
+              <AssetImage item={item} type={assetType} alt={item.name} className="h-full w-full object-contain" fallback={<span className="text-lg">{label === "WARFRAME" ? "⚡" : label.includes("COMPAGNON") ? "🐾" : "⚔️"}</span>} />
             </div>
             <div>
               <div className="text-sm font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
@@ -461,19 +462,26 @@ function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChan
     >
       {mod ? (
         <div className="p-2">
-          <div className="flex items-start justify-between">
-            <span className="text-xs font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)", fontSize: "10px" }}>
-              {mod.name}
-            </span>
-            <button
-              onClick={e => { e.stopPropagation(); onClear(index); }}
-              className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
-            >
-              <X size={10} style={{ color: "var(--wf-text-dim)" }} />
-            </button>
-          </div>
-          <div className="text-xs mt-0.5" style={{ color: rarityColor, fontSize: "9px", fontFamily: "var(--font-display)" }}>
-            {mod.effect}
+          <div className="flex items-start gap-2">
+            <div className="w-8 h-10 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
+              <AssetImage item={mod} type="mod" alt={mod.name} className="h-full w-full object-contain" fallback={<Star size={15} style={{ color: rarityColor }} />} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-start justify-between">
+                <span className="text-xs font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)", fontSize: "10px" }}>
+                  {mod.name}
+                </span>
+                <button
+                  onClick={e => { e.stopPropagation(); onClear(index); }}
+                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                >
+                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                </button>
+              </div>
+              <div className="text-xs mt-0.5" style={{ color: rarityColor, fontSize: "9px", fontFamily: "var(--font-display)" }}>
+                {mod.effect}
+              </div>
+            </div>
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
             <span style={{ color: slotPolarity && mod.polarity === slotPolarity ? "#66bb6a" : rarityColor }}>COÛT {cost ?? modBaseCost(mod)}</span>
@@ -572,11 +580,11 @@ interface ArcaneGridProps {
 }
 
 function ArcaneGrid({ label, arcanes, arcaneType, onSelect, onClear, accentColor }: ArcaneGridProps) {
-  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
+  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><AssetImage item={arcane} type="arcane" alt={arcane.name} className="h-8 w-8 shrink-0 object-contain" fallback={<Sparkles size={14} style={{ color }} />} /><span className="min-w-0 flex-1 truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
 }
 
 function ArchonShardGrid({ shards, onSelect, onClear, onEffectChange }: { shards: (SelectedArchonShard | null)[]; onSelect: (index: number, type: SlotType) => void; onClear: (index: number, type: SlotType) => void; onEffectChange: (index: number, effectIndex: number) => void }) {
-  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-right text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length} · {ARCHON_SHARD_EFFECT_TOTAL} effets</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
+  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-right text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length} · {ARCHON_SHARD_EFFECT_TOTAL} effets</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><AssetImage item={shard.shard} type="shard" alt={shard.shard.name} className="h-8 w-8 shrink-0 object-contain" fallback={<Gem size={14} style={{ color }} />} /><span className="min-w-0 flex-1 truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
 }
 
 interface EnhancementBonusSummary {

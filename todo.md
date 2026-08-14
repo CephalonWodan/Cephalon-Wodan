@@ -290,3 +290,20 @@ Phase terminée : suivi Worldstate et compatibilité mobile/tablette validés.
 - [x] Fusionner et synchroniser l’ensemble des fichiers source, composants, datasets et scripts de recherche.
 - [x] Effectuer le commit et pousser les modifications sur la branche distante `main` avec succès.
 - [x] Valider la synchronisation globale.
+
+
+## TODO — Miniatures dans les sélecteurs du builder
+
+- [ ] Auditer le sélecteur des équipements et les sources image disponibles par type.
+- [ ] Afficher les miniatures des Warframes, armes, compagnons et mods.
+- [ ] Conserver les icônes de fallback et les états de chargement/erreur.
+- [ ] Vérifier desktop, tablette et mobile dans les modales de sélection.
+- [x] Exécuter TypeScript, build, publier et synchroniser GitHub.
+
+
+## Extension — Arcanes et éclats d’Archonte
+
+- [ ] Ajouter les miniatures des arcanes dans les sélecteurs `arcane-*`.
+- [ ] Ajouter les miniatures des éclats d’Archonte dans les sélecteurs `archon-shard`.
+- [ ] Conserver les couleurs de rareté, variantes d’éclat et icônes de repli.
+- [ ] Vérifier le rendu compact sur mobile et tablette.
