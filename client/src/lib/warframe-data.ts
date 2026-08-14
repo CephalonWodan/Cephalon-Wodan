@@ -196,18 +196,72 @@ export interface CompanionParts {
   gyro?: string;
 }
 
+export interface ModularPartStat {
+  name: string;
+  healthBonus: number;
+  shieldBonus: number;
+  armorBonus: number;
+}
+
+export const MOA_PARTS_STATS: Record<string, ModularPartStat[]> = {
+  heads: [
+    { name: "Lambeo MOA", healthBonus: 100, shieldBonus: 50, armorBonus: 30 },
+    { name: "Nychus MOA", healthBonus: 120, shieldBonus: 30, armorBonus: 40 },
+    { name: "Oloro MOA", healthBonus: 80, shieldBonus: 90, armorBonus: 20 },
+    { name: "Para MOA", healthBonus: 150, shieldBonus: 20, armorBonus: 50 },
+  ],
+  brackets: [
+    { name: "Model 1 (Standard)", healthBonus: 50, shieldBonus: 50, armorBonus: 25 },
+    { name: "Model 2 (Reinforced)", healthBonus: 100, shieldBonus: 0, armorBonus: 50 },
+    { name: "Model 3 (Agile)", healthBonus: 25, shieldBonus: 100, armorBonus: 10 },
+  ],
+  cores: [
+    { name: "Cold-Fusion Core", healthBonus: 200, shieldBonus: 100, armorBonus: 60 },
+    { name: "Plasma Core", healthBonus: 100, shieldBonus: 200, armorBonus: 40 },
+    { name: "Ion Core", healthBonus: 150, shieldBonus: 150, armorBonus: 50 },
+  ],
+  gyros: [
+    { name: "Stabilizer Gyro", healthBonus: 40, shieldBonus: 40, armorBonus: 30 },
+    { name: "Precision Gyro", healthBonus: 20, shieldBonus: 80, armorBonus: 20 },
+    { name: "Aero Gyro", healthBonus: 60, shieldBonus: 20, armorBonus: 40 },
+  ],
+};
+
+export const HOUND_PARTS_STATS: Record<string, ModularPartStat[]> = {
+  heads: [
+    { name: "Bhaira Hound", healthBonus: 130, shieldBonus: 60, armorBonus: 45 },
+    { name: "Dorma Hound", healthBonus: 90, shieldBonus: 110, armorBonus: 30 },
+    { name: "Hec Hound", healthBonus: 160, shieldBonus: 40, armorBonus: 60 },
+  ],
+  brackets: [
+    { name: "Stabilizer Bracket", healthBonus: 60, shieldBonus: 60, armorBonus: 30 },
+    { name: "Reinforced Bracket", healthBonus: 120, shieldBonus: 0, armorBonus: 70 },
+    { name: "Agile Bracket", healthBonus: 30, shieldBonus: 120, armorBonus: 20 },
+  ],
+  cores: [
+    { name: "Shattering Core", healthBonus: 180, shieldBonus: 80, armorBonus: 70 },
+    { name: "Vampiric Core", healthBonus: 120, shieldBonus: 140, armorBonus: 50 },
+    { name: "Overcharged Core", healthBonus: 150, shieldBonus: 150, armorBonus: 60 },
+  ],
+  gyros: [
+    { name: "Surging Gyro", healthBonus: 50, shieldBonus: 50, armorBonus: 35 },
+    { name: "Rebounding Gyro", healthBonus: 30, shieldBonus: 90, armorBonus: 25 },
+    { name: "Nullifying Gyro", healthBonus: 70, shieldBonus: 30, armorBonus: 45 },
+  ],
+};
+
 export const MOA_PARTS = {
-  heads: ["Lambeo MOA", "Nychus MOA", "Oloro MOA", "Para MOA"],
-  brackets: ["Model 1", "Model 2", "Model 3"],
-  cores: ["Cold-Fusion Core", "Plasma Core", "Ion Core"],
-  gyros: ["Stabilizer Gyro", "Precision Gyro", "Aero Gyro"],
+  heads: MOA_PARTS_STATS.heads.map((p: ModularPartStat) => p.name),
+  brackets: MOA_PARTS_STATS.brackets.map((p: ModularPartStat) => p.name),
+  cores: MOA_PARTS_STATS.cores.map((p: ModularPartStat) => p.name),
+  gyros: MOA_PARTS_STATS.gyros.map((p: ModularPartStat) => p.name),
 };
 
 export const HOUND_PARTS = {
-  heads: ["Bhaira Hound", "Dorma Hound", "Hec Hound"],
-  brackets: ["Stabilizer Bracket", "Reinforced Bracket", "Agile Bracket"],
-  cores: ["Shattering Core", "Vampiric Core", "Overcharged Core"],
-  gyros: ["Surging Gyro", "Rebounding Gyro", "Nullifying Gyro"],
+  heads: HOUND_PARTS_STATS.heads.map((p: ModularPartStat) => p.name),
+  brackets: HOUND_PARTS_STATS.brackets.map((p: ModularPartStat) => p.name),
+  cores: HOUND_PARTS_STATS.cores.map((p: ModularPartStat) => p.name),
+  gyros: HOUND_PARTS_STATS.gyros.map((p: ModularPartStat) => p.name),
 };
 
 export const COMPANION_PRECEPTS = [

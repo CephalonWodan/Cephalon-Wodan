@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { Search, Users, Shield, Cpu, Dog } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
-import { COMPANIONS, MOA_PARTS, HOUND_PARTS, COMPANION_PRECEPTS, Companion, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
+import { COMPANIONS, MOA_PARTS, HOUND_PARTS, MOA_PARTS_STATS, HOUND_PARTS_STATS, COMPANION_PRECEPTS, Companion, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const TABS = [
   { id: "all", label: "Tous", icon: Users },
@@ -39,7 +39,23 @@ const typeLabel = (type: string) =>
 function CompanionDetailModal({ companion, onClose }: { companion: Companion; onClose: () => void }) {
   const rarityColor = getRarityColor(companion.rarity);
   const isModular = ["moa", "hound"].includes(companion.type.toLowerCase());
-  const parts = isModular ? (companion.type.toLowerCase() === "moa" ? MOA_PARTS : HOUND_PARTS) : null;
+  const companionType = companion.type.toLowerCase();
+  const parts = isModular ? (companionType === "moa" ? MOA_PARTS : HOUND_PARTS) : null;
+  
+  const headsList = companionType === "moa" ? MOA_PARTS_STATS.heads : HOUND_PARTS_STATS.heads;
+  const bracketsList = companionType === "moa" ? MOA_PARTS_STATS.brackets : HOUND_PARTS_STATS.brackets;
+  const coresList = companionType === "moa" ? MOA_PARTS_STATS.cores : HOUND_PARTS_STATS.cores;
+  const gyrosList = companionType === "moa" ? MOA_PARTS_STATS.gyros : HOUND_PARTS_STATS.gyros;
+
+  const [selectedHead, setSelectedHead] = useState(headsList[0]);
+  const [selectedBracket, setSelectedBracket] = useState(bracketsList[0]);
+  const [selectedCore, setSelectedCore] = useState(coresList[0]);
+  const [selectedGyro, setSelectedGyro] = useState(gyrosList[0]);
+
+  const finalHealth = companion.health + (selectedHead.healthBonus + selectedBracket.healthBonus + selectedCore.healthBonus + selectedGyro.healthBonus);
+  const finalShield = companion.shield + (selectedHead.shieldBonus + selectedBracket.shieldBonus + selectedCore.shieldBonus + selectedGyro.shieldBonus);
+  const finalArmor = companion.armor + (selectedHead.armorBonus + selectedBracket.armorBonus + selectedCore.armorBonus + selectedGyro.armorBonus);
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,0.8)" }} onClick={onClose}>
       <div
@@ -65,25 +81,97 @@ function CompanionDetailModal({ companion, onClose }: { companion: Companion; on
           {companion.description || "Compagnon d'élite de l'arsenal Tenno."}
         </p>
 
-        {/* Base Stats */}
-        <div>
-          <div className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
-            Statistiques de base (Rang 30)
-          </div>
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { label: "Points de Vie", value: companion.health, color: "#ef5350" },
-              { label: "Boucliers", value: companion.shield, color: "#42a5f5" },
-              { label: "Armure", value: companion.armor, color: "#ffa726" },
-              { label: "Maîtrise", value: companion.mastery, color: "#ffca28" },
-            ].map(stat => (
-              <div key={stat.label} className="rounded-sm p-2 text-center" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: `1px solid ${stat.color}40` }}>
-                <div className="text-xs font-bold" style={{ color: stat.color, fontFamily: "var(--font-mono)" }}>{stat.value}</div>
-                <div className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{stat.label}</div>
+        {/* Modular Configuration for MOA / Hound */}
+        {isModular ? (
+          <div className="rounded-sm p-3 border space-y-3" style={{ backgroundColor: "rgba(167,139,250,0.05)", borderColor: "rgba(167,139,250,0.3)" }}>
+            <div className="text-xs font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              CONFIGURATION DES PIÈCES MODULAIRES & STATS FINALES
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <label className="block text-[10px] uppercase font-bold mb-1" style={{ color: "var(--wf-text-dim)" }}>Tête</label>
+                <select
+                  value={selectedHead.name}
+                  onChange={e => setSelectedHead(headsList.find(p => p.name === e.target.value) || headsList[0])}
+                  className="w-full rounded-sm px-2 py-1.5 outline-none"
+                  style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
+                >
+                  {headsList.map(p => <option key={p.name} value={p.name}>{p.name} (+{p.healthBonus} PV, +{p.armorBonus} Armure)</option>)}
+                </select>
               </div>
-            ))}
+              <div>
+                <label className="block text-[10px] uppercase font-bold mb-1" style={{ color: "var(--wf-text-dim)" }}>Support / Bracket</label>
+                <select
+                  value={selectedBracket.name}
+                  onChange={e => setSelectedBracket(bracketsList.find(p => p.name === e.target.value) || bracketsList[0])}
+                  className="w-full rounded-sm px-2 py-1.5 outline-none"
+                  style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
+                >
+                  {bracketsList.map(p => <option key={p.name} value={p.name}>{p.name} (+{p.healthBonus} PV, +{p.armorBonus} Armure)</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold mb-1" style={{ color: "var(--wf-text-dim)" }}>Cœur / Core</label>
+                <select
+                  value={selectedCore.name}
+                  onChange={e => setSelectedCore(coresList.find(p => p.name === e.target.value) || coresList[0])}
+                  className="w-full rounded-sm px-2 py-1.5 outline-none"
+                  style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
+                >
+                  {coresList.map(p => <option key={p.name} value={p.name}>{p.name} (+{p.healthBonus} PV, +{p.shieldBonus} Bouclier)</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-[10px] uppercase font-bold mb-1" style={{ color: "var(--wf-text-dim)" }}>Gyroscope / Gyro</label>
+                <select
+                  value={selectedGyro.name}
+                  onChange={e => setSelectedGyro(gyrosList.find(p => p.name === e.target.value) || gyrosList[0])}
+                  className="w-full rounded-sm px-2 py-1.5 outline-none"
+                  style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
+                >
+                  {gyrosList.map(p => <option key={p.name} value={p.name}>{p.name} (+{p.healthBonus} PV, +{p.armorBonus} Armure)</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Final Stats Calculation */}
+            <div className="pt-2 border-t" style={{ borderColor: "rgba(167,139,250,0.2)" }}>
+              <div className="text-[10px] uppercase font-bold mb-2" style={{ color: "#a78bfa" }}>Statistiques Finales Combinées</div>
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { label: "Points de Vie", value: finalHealth, color: "#ef5350" },
+                  { label: "Boucliers", value: finalShield, color: "#42a5f5" },
+                  { label: "Armure", value: finalArmor, color: "#ffa726" },
+                  { label: "Maîtrise", value: companion.mastery, color: "#ffca28" },
+                ].map(stat => (
+                  <div key={stat.label} className="rounded-sm p-2 text-center" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: `1px solid ${stat.color}40` }}>
+                    <div className="text-xs font-bold" style={{ color: stat.color, fontFamily: "var(--font-mono)" }}>{stat.value}</div>
+                    <div className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div>
+            <div className="text-xs font-bold mb-2 uppercase tracking-wider" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+              Statistiques de base (Rang 30)
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { label: "Points de Vie", value: companion.health, color: "#ef5350" },
+                { label: "Boucliers", value: companion.shield, color: "#42a5f5" },
+                { label: "Armure", value: companion.armor, color: "#ffa726" },
+                { label: "Maîtrise", value: companion.mastery, color: "#ffca28" },
+              ].map(stat => (
+                <div key={stat.label} className="rounded-sm p-2 text-center" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: `1px solid ${stat.color}40` }}>
+                  <div className="text-xs font-bold" style={{ color: stat.color, fontFamily: "var(--font-mono)" }}>{stat.value}</div>
+                  <div className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Modifiers */}
         {companion.modifiers && companion.modifiers.length > 0 && (
