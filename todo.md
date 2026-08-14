@@ -172,3 +172,16 @@ Phase en cours : audit de l’état local.
 ## État
 
 Phase en cours : checkpoint final et livraison.
+
+
+## TODO — Composants modulaires MOA/Hound, Préceptes et Export Markdown Compagnon
+
+- [ ] Définir les interfaces et données pour les têtes, cœurs, gyroscopes et griffes MOA/Hound.
+- [ ] Intégrer les sélecteurs de composants modulaires dans le SetBuilder pour les compagnons MOA et Hound.
+- [ ] Ajouter un filtre par préceptes et aptitudes uniques dans le sélecteur de mods de compagnon.
+- [ ] Mettre à jour le calcul des statistiques de compagnon et l’export Markdown du set complet.
+- [ ] Valider avec TypeScript, build de production et captures responsive.
+
+## État
+
+Phase en cours : audit du modèle des compagnons et des composants disponibles.

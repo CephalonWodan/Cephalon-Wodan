@@ -7,6 +7,7 @@ import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, 
 import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
+  MOA_PARTS, HOUND_PARTS,
   Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity,
   getRarityColor, getRarityLabel, createEmptyBuild
 } from "@/lib/warframe-data";
@@ -181,6 +182,8 @@ interface SelectorModalProps {
 function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onSelect, onClose }: SelectorModalProps) {
   const [search, setSearch] = useState("");
 
+  const [preceptFilter, setPreceptFilter] = useState<string>("all");
+
   const getItems = () => {
     switch (type) {
       case "warframe": return WARFRAMES;
@@ -197,7 +200,14 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
-      case "mod-companion": return MODS.filter(mod => isCompanionModCompatible(mod, companion));
+      case "mod-companion": {
+        let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
+        if (preceptFilter === "precept") list = list.filter(m => (m.effect || "").toLowerCase().includes("précepte") || (m.name || "").toLowerCase().includes("precept") || m.type === "companion");
+        if (preceptFilter === "universal") list = list.filter(m => m.type === "universal" || (m.compatName || "").toLowerCase().includes("universal"));
+        if (preceptFilter === "moa") list = list.filter(m => (m.compatName || "").toLowerCase().includes("moa") || (m.name || "").toLowerCase().includes("moa"));
+        if (preceptFilter === "hound") list = list.filter(m => (m.compatName || "").toLowerCase().includes("hound") || (m.name || "").toLowerCase().includes("hound"));
+        return list;
+      }
       default: return [];
     }
   };
@@ -244,8 +254,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
           </button>
         </div>
 
-        {/* Search */}
-        <div className="px-4 py-2 border-b" style={{ borderColor: "var(--wf-border)" }}>
+        {/* Search & filters */}
+        <div className="px-4 py-2 border-b space-y-2" style={{ borderColor: "var(--wf-border)" }}>
           <input
             type="text"
             placeholder="Rechercher..."
@@ -255,6 +265,31 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
             className="w-full px-3 py-1.5 text-xs rounded-sm outline-none"
             style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
           />
+          {type === "mod-companion" && (
+            <div className="flex gap-1 overflow-x-auto pb-1">
+              {[
+                { id: "all", label: "TOUS" },
+                { id: "precept", label: "PRÉCEPTES & APTITUDES" },
+                { id: "universal", label: "UNIVERSELS" },
+                { id: "moa", label: "MOA" },
+                { id: "hound", label: "HOUND" },
+              ].map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => setPreceptFilter(f.id)}
+                  className="px-2.5 py-1 text-[9px] rounded-sm whitespace-nowrap transition-all"
+                  style={{
+                    backgroundColor: preceptFilter === f.id ? "rgba(167,139,250,0.2)" : "rgba(0,0,0,0.3)",
+                    border: `1px solid ${preceptFilter === f.id ? "#a78bfa" : "var(--wf-border)"}`,
+                    color: preceptFilter === f.id ? "#a78bfa" : "var(--wf-text-dim)",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Items list */}
@@ -660,7 +695,9 @@ function buildSummaryMarkdown(build: BuildSet): string {
   const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
-  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} — PV ${companionStats.health}, boucliers ${companionStats.shield}, armure ${companionStats.armor}\n- Bonus dégâts : +${companionStats.damagePct}% · critique : +${companionStats.criticalChancePct}% · statut : +${companionStats.statusChancePct}% · dégâts de statut : +${companionStats.statusDamagePct}% · régénération : +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
+  const parts = build.companionParts;
+  const partsSummary = parts && build.companion && ["moa", "hound"].includes(build.companion.type.toLowerCase()) ? `\n- Configuration modulaire : Tête [${parts.head || "—"}], Support [${parts.bracket || "—"}], Cœur [${parts.core || "—"}], Gyroscope [${parts.gyro || "—"}]` : "";
+  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
   return [
     `# ${build.name}`,
     "",
@@ -1166,6 +1203,44 @@ export default function SetBuilder() {
               accentColor="#a78bfa"
             />
           </div>
+
+          {/* Modular parts configuration for MOA and Hound companions */}
+          {activeBuild.companion && ["moa", "hound"].includes(activeBuild.companion.type.toLowerCase()) && (
+            <div className="wf-hud-panel hud-frame rounded-sm p-4 space-y-3" style={{ border: "1px solid rgba(167,139,250,0.4)", backgroundColor: "rgba(167,139,250,0.03)" }}>
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+                  CONFIGURATION MODULAIRE // {activeBuild.companion.type.toUpperCase()} ({activeBuild.companion.name})
+                </div>
+                <span className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>TÊTE • SUPPORT • CŒUR • GYROSCOPE</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                {[
+                  { key: "head" as const, label: "TÊTE", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.heads : HOUND_PARTS.heads },
+                  { key: "bracket" as const, label: "SUPPORT", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.brackets : HOUND_PARTS.brackets },
+                  { key: "core" as const, label: "CŒUR", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.cores : HOUND_PARTS.cores },
+                  { key: "gyro" as const, label: "GYROSCOPE", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.gyros : HOUND_PARTS.gyros },
+                ].map(part => (
+                  <div key={part.key} className="space-y-1">
+                    <label className="text-[9px] uppercase font-bold" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{part.label}</label>
+                    <select
+                      value={activeBuild.companionParts?.[part.key] || part.options[0]}
+                      onChange={e => {
+                        const val = e.target.value;
+                        updateBuild(b => ({
+                          ...b,
+                          companionParts: { ...(b.companionParts || {}), [part.key]: val }
+                        }));
+                      }}
+                      className="w-full rounded-sm px-2 py-1.5 text-xs outline-none"
+                      style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
+                    >
+                      {part.options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+                    </select>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Arcanes and Archon Shards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

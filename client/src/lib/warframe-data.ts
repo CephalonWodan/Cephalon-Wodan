@@ -169,6 +169,47 @@ export interface WorldStateData {
   cycles: { name: string; state: string; timeRemaining: string }[];
 }
 
+export interface CompanionParts {
+  head?: string;
+  bracket?: string;
+  core?: string;
+  gyro?: string;
+}
+
+export interface CompanionParts {
+  head?: string;
+  bracket?: string;
+  core?: string;
+  gyro?: string;
+}
+
+export const MOA_PARTS = {
+  heads: ["Lambeo MOA", "Nychus MOA", "Oloro MOA", "Para MOA"],
+  brackets: ["Model 1", "Model 2", "Model 3"],
+  cores: ["Cold-Fusion Core", "Plasma Core", "Ion Core"],
+  gyros: ["Stabilizer Gyro", "Precision Gyro", "Aero Gyro"],
+};
+
+export const HOUND_PARTS = {
+  heads: ["Bhaira Hound", "Dorma Hound", "Hec Hound"],
+  brackets: ["Stabilizer Bracket", "Reinforced Bracket", "Agile Bracket"],
+  cores: ["Shattering Core", "Vampiric Core", "Overcharged Core"],
+  gyros: ["Surging Gyro", "Rebounding Gyro", "Nullifying Gyro"],
+};
+
+export const COMPANION_PRECEPTS = [
+  { id: "hound-retribution", name: "Retribution (Hound)", type: "hound", description: "Envoie un rayon de choc sur l’ennemi ciblé et étourdit." },
+  { id: "hound-synergized-nodes", name: "Synergized Nodes (Hound)", type: "hound", description: "Laisse tomber des zones d’énergie pour recharger les boucliers et les capacités." },
+  { id: "hound-reflex-denial", name: "Reflex Denial (Hound)", type: "hound", description: "Désarme les ennemis proches en cas de dégâts subis." },
+  { id: "moa-tractor-beam", name: "Tractor Beam (MOA)", type: "moa", description: "Augmente la durée de visée planée du Warframe de 120%." },
+  { id: "moa-security-override", name: "Security Override (MOA)", type: "moa", description: "Piratage automatique des consoles de décryptage proches." },
+  { id: "moa-shock-wave", name: "Shock Wave (MOA)", type: "moa", description: "Émet une onde de choc au sol renversant les adversaires proches." },
+  { id: "fetch", name: "Fetch (Universel)", type: "universal", description: "Aspire les butins et ressources à proximité du compagnon." },
+  { id: "vacuum", name: "Vacuum (Sentinelle/Robotic)", type: "universal", description: "Aspire les objets et munitions à grande distance." },
+  { id: "shield-charger", name: "Shield Charger (Robotic)", type: "universal", description: "Augmente les boucliers du Warframe et de l’arme de soutien." },
+  { id: "calculated-shot", name: "Calculated Shot (Robotic)", type: "universal", description: "Tire avec précision sur les points faibles ennemis désignés." }
+];
+
 export interface BuildSet {
   id: string;
   name: string;
@@ -185,6 +226,7 @@ export interface BuildSet {
   secondaryWeapon?: Weapon;
   meleeWeapon?: Weapon;
   companion?: Companion;
+  companionParts?: CompanionParts;
   warframeMods: (Mod | null)[];
   primaryMods: (Mod | null)[];
   secondaryMods: (Mod | null)[];
