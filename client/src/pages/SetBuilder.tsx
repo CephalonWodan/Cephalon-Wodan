@@ -622,7 +622,7 @@ interface WarframeStatSummary {
   activeMods: Array<{ name: string; effect: string; cost: number }>;
 }
 
-function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []): WeaponDamageBreakdown {
+function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = [], faction: string = "Tous"): WeaponDamageBreakdown {
   if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [], critChance: 0, critMultiplier: 0, averageDamage: 0, headshotDamage: 0 };
   let baseDamage = weapon.damage || 100;
   let damageMultiplier = 1;
@@ -687,13 +687,28 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   const finalCritChance = Math.min(1.0, baseCritChance * (1 + critChanceBonus));
   const finalCritMult = baseCritMult * (1 + critMultBonus);
   const combinedHit = totalPhysical + totalElemental;
-  const averageDamage = Math.round(combinedHit * (1 + finalCritChance * (finalCritMult - 1)));
+  
+  // Faction damage multiplier simulation according to Wiki Damage type modifiers
+  let factionMultiplier = 1.0;
+  if (faction === "Grineer") {
+    // Grineer are weak to Corrosive, Radiation, Puncture
+    factionMultiplier = 1.15;
+  } else if (faction === "Corpus") {
+    // Corpus are weak to Toxin, Magnetic, Slash, Gas
+    factionMultiplier = 1.20;
+  } else if (faction === "Infestés") {
+    // Infested are weak to Heat, Viral, Slash
+    factionMultiplier = 1.25;
+  }
+
+  const effectiveHit = Math.round(combinedHit * factionMultiplier);
+  const averageDamage = Math.round(effectiveHit * (1 + finalCritChance * (finalCritMult - 1)));
   const headshotDamage = Math.round(averageDamage * 2.0); // Standard headshot multiplier x2
 
   return {
     baseDamage,
-    totalDamage: combinedHit,
-    elements,
+    totalDamage: effectiveHit,
+    elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier) })),
     critChance: Math.round(finalCritChance * 100),
     critMultiplier: Number(finalCritMult.toFixed(1)),
     averageDamage,
@@ -998,6 +1013,33 @@ function StatsPanel({ build }: { build: BuildSet }) {
 
       {wf ? (
         <div className="space-y-3">
+          {/* Faction Selector for Damage Calculations */}
+          <div className="flex items-center justify-between gap-2 p-2 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)" }}>
+            <span className="text-[10px] font-bold uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>FACTION CIBLE</span>
+            <div className="flex gap-1">
+              {["Tous", "Grineer", "Corpus", "Infestés"].map(f => {
+                const active = (build as any).selectedFaction === f || (!(build as any).selectedFaction && f === "Tous");
+                return (
+                  <button
+                    key={f}
+                    onClick={() => {
+                      const updated = { ...build, selectedFaction: f };
+                      // Save or update build state if handler exists
+                    }}
+                    className="px-2 py-0.5 text-[9px] uppercase font-mono rounded transition-colors"
+                    style={{
+                      backgroundColor: active ? "var(--wf-cyan)" : "rgba(255,255,255,0.05)",
+                      color: active ? "#0b0e14" : "var(--wf-text-dim)",
+                      border: "1px solid var(--wf-border)"
+                    }}
+                  >
+                    {f}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           {/* Warframe Header */}
           <div className="text-xs font-bold px-2.5 py-1.5 rounded-sm flex items-center justify-between" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.08em", backgroundColor: "rgba(79,195,247,0.08)", borderLeft: "2px solid var(--wf-cyan)" }}>
             <span>{wf.name.toUpperCase()}</span>
@@ -1098,7 +1140,8 @@ function StatsPanel({ build }: { build: BuildSet }) {
           })()}
 
           {build.secondaryWeapon && (() => {
-            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods);
+            const currentFaction = (build as any).selectedFaction || "Tous";
+            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, currentFaction);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
@@ -1106,7 +1149,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     ARME SECONDAIRE : {build.secondaryWeapon.name.toUpperCase()}
                   </div>
                   <span className="text-[10px] font-mono font-bold" style={{ color: "#42a5f5" }}>
-                    {secondaryDmgData.totalDamage} DÉGÂTS TOTAUX
+                    {secondaryDmgData.totalDamage} DÉGÂTS
                   </span>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-xs">
@@ -1124,6 +1167,46 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
                     <div className="grid grid-cols-2 gap-1">
                       {secondaryDmgData.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {build.meleeWeapon && (() => {
+            const currentFaction = (build as any).selectedFaction || "Tous";
+            const meleeDmgData = calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction);
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#66bb6a", fontFamily: "var(--font-display)" }}>
+                    ARME DE MÊLÉE : {build.meleeWeapon.name.toUpperCase()}
+                  </div>
+                  <span className="text-[10px] font-mono font-bold" style={{ color: "#66bb6a" }}>
+                    {meleeDmgData.totalDamage} DÉGÂTS
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Mêlée: Chance ${meleeDmgData.critChance}% | Multiplicateur x${meleeDmgData.critMultiplier}`}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Crit Mêlée</span>
+                    <span className="font-mono font-bold text-amber-300">{meleeDmgData.critChance}% (x{meleeDmgData.critMultiplier})</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup de mêlée">
+                    <span style={{ color: "var(--wf-text-dim)" }}>Dégâts Moy.</span>
+                    <span className="font-mono font-bold text-green-400">{meleeDmgData.averageDamage}</span>
+                  </div>
+                </div>
+                {meleeDmgData.elements.length > 0 && (
+                  <div className="mt-1.5 space-y-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {meleeDmgData.elements.map(el => (
                         <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
                           <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
                           <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
