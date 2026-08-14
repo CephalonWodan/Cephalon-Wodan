@@ -1,0 +1,34 @@
+name: Warframe Data Weekly Audit
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Chaque lundi à 8h00 UTC
+  workflow_dispatch:
+
+jobs:
+  audit-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/actions-setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Run data audit script
+        run: |
+          node scripts/check-updates.mjs
+
+      - name: Upload audit report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: warframe-data-audit-report
+          path: update-report.json

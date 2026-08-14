@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 import Home from "./pages/Home";
 import SetBuilder from "./pages/SetBuilder";
 import Warframes from "./pages/Warframes";
@@ -13,8 +14,10 @@ import Companions from "./pages/Companions";
 import Guides from "./pages/Guides";
 import Resources from "./pages/Resources";
 import Settings from "./pages/Settings";
-import Arcanes from "./pages/Arcanes";
-import ArchonShards from "./pages/ArchonShards";
+import Arcanes from "@/pages/Arcanes";
+import ArchonShards from "@/pages/ArchonShards";
+import Relics from "@/pages/Relics";
+import WorldState from "@/pages/WorldState";
 
 function Router() {
   return (
@@ -26,7 +29,9 @@ function Router() {
       <Route path={"/mods"} component={Mods} />
       <Route path={"/companions"} component={Companions} />
       <Route path={"/arcanes"} component={Arcanes} />
-      <Route path={"/archon-shards"} component={ArchonShards} />
+      <Route path="/archon-shards" component={ArchonShards} />
+      <Route path="/relics" component={Relics} />
+      <Route path="/worldstate" component={WorldState} />
       <Route path={"/guides"} component={Guides} />
       <Route path={"/resources"} component={Resources} />
       <Route path={"/settings"} component={Settings} />
@@ -40,10 +45,12 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <LanguageProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </LanguageProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

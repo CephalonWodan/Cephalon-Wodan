@@ -1,0 +1,60 @@
+{
+  "name": "@wfcd/arsenal-parser",
+  "version": "0.0.1",
+  "description": "Parser for Digital Extreme's Twitch Arsenal Extension data",
+  "keywords": ["warframe", "parser", "twitch", "arsenal"],
+  "repository": "https://github.com/WFCD/arsenal-parser",
+  "license": "MIT",
+  "author": "NicksWorld",
+  "contributors": ["TobiTenno <tobiah@pm.me>"],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/ArsenalParser.mjs",
+      "types": "./dist/ArsenalParser.d.mts"
+    }
+  },
+  "main": "./dist/ArsenalParser.mjs",
+  "types": "./dist/ArsenalParser.d.mts",
+  "files": ["LICENSE", "README.md", "dist"],
+  "scripts": {
+    "build": "tsdown",
+    "build:docs": "typedoc",
+    "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build",
+    "test": "c8 mocha"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.6",
+    "@commitlint/cli": "^21.0.0",
+    "@commitlint/config-conventional": "^21.0.0",
+    "@types/chai": "^5.0.0",
+    "@types/mocha": "^10.0.10",
+    "c8": "^11.0.0",
+    "chai": "^6.0.1",
+    "chai-json-equal": "^0.0.1",
+    "coveralls": "^3.1.0",
+    "husky": "^9.0.11",
+    "install-peerdeps": "^3.0.3",
+    "lint-staged": "^17.0.3",
+    "mocha": "^11.0.1",
+    "mocha-minimalist-reporter": "1.1.0",
+    "tsdown": "^0.22.0",
+    "tsx": "4.23.1",
+    "typedoc": "0.28.20",
+    "typescript": "^6.0.2"
+  },
+  "peerDependencies": {
+    "@wfcd/items": ">=1.1273.11",
+    "warframe-worldstate-data": "^3.12.0"
+  },
+  "engines": {
+    "node": ">=18.19.0"
+  },
+  "publishConfig": {
+    "provenance": true
+  }
+}

@@ -7,6 +7,7 @@ import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { Filter, Search, Shield } from "lucide-react";
 import Layout from "@/components/Layout";
+import AssetImage from "@/components/AssetImage";
 import { WARFRAMES, Warframe, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const VERSION_FILTERS = ["Toutes", "Standard", "Prime"];
@@ -38,12 +39,21 @@ function WarframeCard({ wf }: { wf: Warframe }) {
     >
       <div className="relative h-36 flex items-center justify-center overflow-hidden" style={{ backgroundImage: "url(/manus-storage/warframe-card-bg_e4519a70.jpg)", backgroundSize: "cover" }}>
         <div className="absolute inset-0" style={{ background: `linear-gradient(135deg, ${rarityColor}18, rgba(0,0,0,0.1) 55%, rgba(0,0,0,0.8))` }} />
-        {wf.imageUrl && <img src={wf.imageUrl} alt="" className="absolute inset-0 z-[1] h-full w-full object-contain opacity-75 mix-blend-screen" loading="lazy" onError={e => { e.currentTarget.style.display = "none"; }} />}
+        {wf.imageUrls && wf.imageUrls.length > 1 ? (
+          <div className="absolute inset-0 z-[1] flex items-center justify-center gap-1 px-3">
+            {wf.imageUrls.slice(0, 2).map((source, index) => (
+              <div key={source} className="relative h-full min-w-0 flex-1">
+                <AssetImage item={wf} type="warframe" preferredSource={source} alt={`${wf.name} — ${index === 0 ? "Sirius" : "Orion"}`} className="h-full w-full object-contain opacity-75 mix-blend-screen" loading="lazy" fallback={<Shield size={32} className="absolute inset-0 m-auto" style={{ color: rarityColor, opacity: 0.8 }} />} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <AssetImage item={wf} type="warframe" alt={wf.name} className="absolute inset-0 z-[1] h-full w-full object-contain opacity-75 mix-blend-screen" loading="lazy" fallback={<Shield size={40} className="relative z-10" style={{ color: rarityColor, opacity: 0.8 }} />} />
+        )}
         <div className="absolute top-1.5 left-1.5 w-3 h-3" style={{ borderTop: `1.5px solid ${rarityColor}`, borderLeft: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
         <div className="absolute top-1.5 right-1.5 w-3 h-3" style={{ borderTop: `1.5px solid ${rarityColor}`, borderRight: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
         <div className="absolute bottom-1.5 left-1.5 w-3 h-3" style={{ borderBottom: `1.5px solid ${rarityColor}`, borderLeft: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
         <div className="absolute bottom-1.5 right-1.5 w-3 h-3" style={{ borderBottom: `1.5px solid ${rarityColor}`, borderRight: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
-        {!wf.imageUrl && <Shield size={40} className="relative z-10" style={{ color: rarityColor, opacity: 0.8 }} />}
         {wf.isPrime && <div className="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded-sm text-xs font-bold" style={{ backgroundColor: "rgba(255,107,53,0.2)", border: "1px solid #ff6b35", color: "#ff6b35", fontFamily: "var(--font-display)", fontSize: "9px" }}>PRIME</div>}
         <div className="absolute bottom-0 left-0 right-0 h-0.5 z-10" style={{ backgroundColor: rarityColor }} />
       </div>

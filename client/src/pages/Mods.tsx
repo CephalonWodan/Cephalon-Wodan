@@ -6,6 +6,7 @@
 import { useMemo, useState } from "react";
 import { Search, Star } from "lucide-react";
 import Layout from "@/components/Layout";
+import AssetImage from "@/components/AssetImage";
 import { MODS, Mod, ModType, Rarity, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const MOD_TYPES: Array<{ value: ModType | "all"; label: string }> = [
@@ -20,12 +21,14 @@ type SortKey = (typeof SORT_OPTIONS)[number]["value"];
 
 const typeLabel = (value: string) => MOD_TYPES.find(type => type.value === value)?.label || value;
 
-function ModCard({ mod }: { mod: Mod }) {
+function ModCard({ mod, onPreview }: { mod: Mod; onPreview: (mod: Mod) => void }) {
   const rarityColor = getRarityColor(mod.rarity);
   const rank = Math.max(0, mod.maxRank || 0);
   return (
-    <div className="rounded-sm p-3 transition-all duration-200 cursor-pointer hud-frame" style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${rarityColor}30` }} onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = rarityColor; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 12px ${rarityColor}20`; }} onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = `${rarityColor}30`; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}>
-      {mod.imageUrl && <img src={mod.imageUrl} alt="" className="absolute hidden" aria-hidden="true" />}
+    <div onClick={() => onPreview(mod)} className="rounded-sm p-3 transition-all duration-200 cursor-pointer hud-frame" style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${rarityColor}30` }} onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = rarityColor; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 12px ${rarityColor}20`; }} onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = `${rarityColor}30`; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}>
+      <div className="mb-2 h-20 w-full overflow-hidden rounded-sm bg-black/40 flex items-center justify-center border border-white/10">
+        <AssetImage item={mod} type="mod" alt={mod.name} className="h-full w-full object-contain" fallback={<Star size={24} style={{ color: rarityColor, opacity: 0.8 }} />} />
+      </div>
       <div className="flex items-start justify-between mb-2"><div className="flex-1 min-w-0"><h3 className="text-sm font-bold truncate" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{mod.name}</h3><div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5"><span className="text-xs" style={{ color: rarityColor, fontFamily: "var(--font-display)", fontSize: "9px", letterSpacing: "0.05em" }}>{getRarityLabel(mod.rarity).toUpperCase()}</span><span className="text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)", fontSize: "9px" }}>{typeLabel(mod.type)}</span>{mod.isAugment && <span className="text-[9px] uppercase" style={{ color: "#ff6b35" }}>Augment</span>}</div></div><div className="w-7 h-7 rounded-sm flex items-center justify-center text-xs font-bold shrink-0 ml-2" style={{ backgroundColor: `${rarityColor}20`, border: `1px solid ${rarityColor}50`, color: rarityColor, fontFamily: "var(--font-mono)" }}>{POLARITY_SYMBOLS[mod.polarity] || "—"}</div></div>
       <div className="flex items-center gap-0.5 mb-2">{Array.from({ length: Math.min(rank, 10) }).map((_, i) => <div key={i} className="w-2 h-2 rounded-full" style={{ backgroundColor: rarityColor }} />)}<span className="text-xs ml-1" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{rank > 0 ? `R${rank}` : "R—"}</span></div>
       <div className="px-2 py-1.5 rounded-sm mb-2 text-xs font-semibold line-clamp-2" style={{ backgroundColor: `${rarityColor}10`, borderLeft: `2px solid ${rarityColor}`, color: rarityColor, fontFamily: "var(--font-display)", letterSpacing: "0.03em" }}>{mod.effect}</div>
@@ -56,6 +59,8 @@ export default function Mods() {
     });
   }, [search, typeFilter, rarityFilter, augmentOnly, sortBy, descending]);
 
+  const [previewMod, setPreviewMod] = useState<Mod | null>(null);
+
   return (
     <Layout title="MODS">
       <div className="flex flex-wrap items-center gap-3 mb-6 p-4 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
@@ -68,7 +73,38 @@ export default function Mods() {
         <span className="text-xs ml-auto" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{filtered.length} / {MODS.length} mods</span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">{filtered.map((mod, i) => <div key={mod.id} className="animate-fade-slide-up" style={{ animationDelay: `${Math.min(i, 12) * 15}ms` }}><ModCard mod={mod} /></div>)}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">{filtered.map((mod, i) => <div key={mod.id} className="animate-fade-slide-up" style={{ animationDelay: `${Math.min(i, 12) * 15}ms` }}><ModCard mod={mod} onPreview={setPreviewMod} /></div>)}</div>
+
+      {previewMod && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-slide-up" onClick={() => setPreviewMod(null)}>
+          <div className="relative max-w-lg w-full rounded-sm p-6 hud-frame shadow-2xl" style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${getRarityColor(previewMod.rarity)}` }} onClick={e => e.stopPropagation()}>
+            <button onClick={() => setPreviewMod(null)} className="absolute top-4 right-4 p-1 rounded-sm hover:bg-white/10" style={{ color: "var(--wf-text)" }}>
+              ✕
+            </button>
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-12 h-12 rounded-sm overflow-hidden bg-black/40 flex items-center justify-center" style={{ border: `1px solid ${getRarityColor(previewMod.rarity)}50` }}>
+                <AssetImage item={previewMod} type="mod" alt={previewMod.name} className="w-full h-full object-contain" fallback={<Star size={24} style={{ color: getRarityColor(previewMod.rarity) }} />} />
+              </div>
+              <div>
+                <h2 className="text-base font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{previewMod.name}</h2>
+                <span className="text-xs uppercase" style={{ color: getRarityColor(previewMod.rarity), fontFamily: "var(--font-mono)" }}>{getRarityLabel(previewMod.rarity)} · Rang Max : {previewMod.maxRank}</span>
+              </div>
+            </div>
+            <div className="my-4 rounded-sm overflow-hidden bg-black/60 p-4 flex items-center justify-center border border-white/10 max-h-96">
+              <AssetImage item={previewMod} type="mod" alt={previewMod.name} className="max-h-80 object-contain drop-shadow-lg" fallback={<Star size={48} style={{ color: getRarityColor(previewMod.rarity) }} />} />
+            </div>
+            <div className="p-3 rounded-sm mb-4" style={{ backgroundColor: `${getRarityColor(previewMod.rarity)}15`, borderLeft: `3px solid ${getRarityColor(previewMod.rarity)}` }}>
+              <div className="text-xs font-semibold" style={{ color: getRarityColor(previewMod.rarity), fontFamily: "var(--font-display)" }}>{previewMod.effect}</div>
+              <p className="text-xs mt-1 text-slate-300">{previewMod.description}</p>
+            </div>
+            <div className="flex justify-end">
+              <button onClick={() => setPreviewMod(null)} className="px-4 py-2 text-xs font-bold rounded-sm text-black" style={{ backgroundColor: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+                FERMER
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {filtered.length === 0 && <div className="text-center py-16" style={{ color: "var(--wf-text-dim)" }}><Star size={48} className="mx-auto mb-4 opacity-30" /><p className="text-sm">Aucun mod trouvé</p></div>}
     </Layout>
   );

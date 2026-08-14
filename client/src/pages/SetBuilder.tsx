@@ -7,10 +7,13 @@ import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, 
 import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
+  MOA_PARTS, HOUND_PARTS,
   Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity,
   getRarityColor, getRarityLabel, createEmptyBuild
 } from "@/lib/warframe-data";
 import { toast } from "sonner";
+import AssetImage from "@/components/AssetImage";
+import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
 type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
@@ -181,6 +184,8 @@ interface SelectorModalProps {
 function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onSelect, onClose }: SelectorModalProps) {
   const [search, setSearch] = useState("");
 
+  const [preceptFilter, setPreceptFilter] = useState<string>("all");
+
   const getItems = () => {
     switch (type) {
       case "warframe": return WARFRAMES;
@@ -197,7 +202,14 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
-      case "mod-companion": return MODS.filter(mod => isCompanionModCompatible(mod, companion));
+      case "mod-companion": {
+        let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
+        if (preceptFilter === "precept") list = list.filter(m => (m.effect || "").toLowerCase().includes("précepte") || (m.name || "").toLowerCase().includes("precept") || m.type === "companion");
+        if (preceptFilter === "universal") list = list.filter(m => m.type === "universal" || (m.compatName || "").toLowerCase().includes("universal"));
+        if (preceptFilter === "moa") list = list.filter(m => (m.compatName || "").toLowerCase().includes("moa") || (m.name || "").toLowerCase().includes("moa"));
+        if (preceptFilter === "hound") list = list.filter(m => (m.compatName || "").toLowerCase().includes("hound") || (m.name || "").toLowerCase().includes("hound"));
+        return list;
+      }
       default: return [];
     }
   };
@@ -244,8 +256,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
           </button>
         </div>
 
-        {/* Search */}
-        <div className="px-4 py-2 border-b" style={{ borderColor: "var(--wf-border)" }}>
+        {/* Search & filters */}
+        <div className="px-4 py-2 border-b space-y-2" style={{ borderColor: "var(--wf-border)" }}>
           <input
             type="text"
             placeholder="Rechercher..."
@@ -255,6 +267,31 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
             className="w-full px-3 py-1.5 text-xs rounded-sm outline-none"
             style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
           />
+          {type === "mod-companion" && (
+            <div className="flex gap-1 overflow-x-auto pb-1">
+              {[
+                { id: "all", label: "TOUS" },
+                { id: "precept", label: "PRÉCEPTES & APTITUDES" },
+                { id: "universal", label: "UNIVERSELS" },
+                { id: "moa", label: "MOA" },
+                { id: "hound", label: "HOUND" },
+              ].map(f => (
+                <button
+                  key={f.id}
+                  onClick={() => setPreceptFilter(f.id)}
+                  className="px-2.5 py-1 text-[9px] rounded-sm whitespace-nowrap transition-all"
+                  style={{
+                    backgroundColor: preceptFilter === f.id ? "rgba(167,139,250,0.2)" : "rgba(0,0,0,0.3)",
+                    border: `1px solid ${preceptFilter === f.id ? "#a78bfa" : "var(--wf-border)"}`,
+                    color: preceptFilter === f.id ? "#a78bfa" : "var(--wf-text-dim)",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Items list */}
@@ -266,6 +303,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
               const isArcane = type.startsWith("arcane-");
               const arcane = isArcane ? item as Arcane : null;
               const isUnavailable = unavailableIds.includes(itemIdentity(item));
+              const assetType: AssetType | null = type === "warframe" ? "warframe" : type === "primary" || type === "secondary" || type === "melee" ? "weapon" : type.startsWith("mod-") ? "mod" : type.startsWith("arcane-") ? "arcane" : null;
+              const iconFallback = type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />;
               return (
                 <button
                   key={item.id}
@@ -276,9 +315,9 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
                   onMouseEnter={e => { if (!isUnavailable) e.currentTarget.style.borderColor = rarityColor; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = isUnavailable ? "rgba(148,163,184,.18)" : "var(--wf-border)"; }}
                 >
-                  <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0"
+                  <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0 overflow-hidden"
                     style={{ backgroundColor: `${rarityColor}20`, border: `1px solid ${rarityColor}40` }}>
-                    {type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />}
+                    {assetType ? <AssetImage item={item as any} type={assetType} alt={item.name} className="h-full w-full object-contain" fallback={iconFallback} /> : iconFallback}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
@@ -555,20 +594,281 @@ interface EnhancementBonusSummary {
   activeEffects: Array<{ source: string; effect: string; recognized: boolean }>;
 }
 
+interface WeaponDamageBreakdown {
+  baseDamage: number;
+  totalDamage: number;
+  elements: Array<{ name: string; damage: number; color: string }>;
+  critChance: number;
+  critMultiplier: number;
+  averageDamage: number;
+  headshotDamage: number;
+}
+
+interface WarframeStatSummary {
+  health: number;
+  baseHealth: number;
+  healthModPct: number;
+  shield: number;
+  baseShield: number;
+  shieldModPct: number;
+  armor: number;
+  baseArmor: number;
+  armorModPct: number;
+  energy: number;
+  baseEnergy: number;
+  energyModPct: number;
+  strengthPct: number;
+  durationPct: number;
+  rangePct: number;
+  efficiencyPct: number;
+  sprintSpeed: number;
+  ehp: number;
+  activeMods: Array<{ name: string; effect: string; cost: number }>;
+}
+
+function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = [], faction: string = "Tous", comboLevel: number = 1, stanceBonus: number = 0): WeaponDamageBreakdown {
+  if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [], critChance: 0, critMultiplier: 0, averageDamage: 0, headshotDamage: 0 };
+  let baseDamage = weapon.damage || 100;
+  let damageMultiplier = 1;
+  let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
+
+  mods.forEach(mod => {
+    if (!mod) return;
+    const effect = (mod.effect || mod.description || "").toLowerCase();
+    const rank = mod.selectedRank ?? mod.maxRank;
+    const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
+
+    // Corrupted & standard damage mods
+    if (effect.includes("damage") && !effect.includes("status") && !effect.includes("critical")) {
+      const match = effect.match(/\+(\d+(?:\.\d+)?)%/);
+      if (match) damageMultiplier += (Number(match[1]) * rankRatio) / 100;
+    }
+    // Corrupted mods like Transient Fortitude / Blind Rage / Overextended / Narrow Minded
+    if (effect.includes("strength") && effect.includes("duration")) {
+      // e.g. Transient Fortitude
+      damageMultiplier += 0.25 * rankRatio;
+    }
+    // Elemental mods
+    if (effect.includes("heat") || effect.includes("feu")) elementalBonuses.push({ name: "Feu", pct: 15 * (rank + 1), color: "#ff6b35" });
+    if (effect.includes("cold") || effect.includes("glace")) elementalBonuses.push({ name: "Glace", pct: 15 * (rank + 1), color: "#42a5f5" });
+    if (effect.includes("electric") || effect.includes("électricité")) elementalBonuses.push({ name: "Électricité", pct: 15 * (rank + 1), color: "#ab47bc" });
+    if (effect.includes("toxin") || effect.includes("poison")) elementalBonuses.push({ name: "Toxine", pct: 15 * (rank + 1), color: "#66bb6a" });
+    if (effect.includes("corrosive")) elementalBonuses.push({ name: "Corrosif", pct: 30 * (rank + 1), color: "#ffa726" });
+    if (effect.includes("viral")) elementalBonuses.push({ name: "Viral", pct: 30 * (rank + 1), color: "#26c6da" });
+    if (effect.includes("radiation")) elementalBonuses.push({ name: "Radiation", pct: 30 * (rank + 1), color: "#ffd700" });
+    // Augment mods bonus handling
+    if (effect.includes("augment") || mod.name.toLowerCase().includes("augment")) {
+      damageMultiplier += 0.20;
+    }
+  });
+
+  const totalPhysical = Math.round(baseDamage * damageMultiplier);
+  const elements = elementalBonuses.map(el => ({
+    name: el.name,
+    damage: Math.round(baseDamage * (el.pct / 100)),
+    color: el.color,
+  }));
+  const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
+
+  const baseCritChance = weapon.critChance ?? 0.20;
+  const baseCritMult = weapon.critMultiplier ?? 2.0;
+  let critChanceBonus = 0;
+  let critMultBonus = 0;
+
+  mods.forEach(mod => {
+    if (!mod) return;
+    const effect = (mod.effect || mod.description || "").toLowerCase();
+    const rank = mod.selectedRank ?? mod.maxRank;
+    const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
+    if (effect.includes("critical chance") || effect.includes("chance de critique")) {
+      critChanceBonus += 1.5 * rankRatio;
+    }
+    if (effect.includes("critical damage") || effect.includes("dégâts critiques")) {
+      critMultBonus += 1.2 * rankRatio;
+    }
+  });
+
+  const finalCritChance = Math.min(1.0, baseCritChance * (1 + critChanceBonus));
+  const finalCritMult = baseCritMult * (1 + critMultBonus);
+  const combinedHit = totalPhysical + totalElemental;
+  
+  // Faction damage multiplier simulation according to Wiki Damage type modifiers
+  let factionMultiplier = 1.0;
+  if (faction === "Grineer") {
+    // Grineer are weak to Corrosive, Radiation, Puncture
+    factionMultiplier = 1.15;
+  } else if (faction === "Corpus") {
+    // Corpus are weak to Toxin, Magnetic, Slash, Gas
+    factionMultiplier = 1.20;
+  } else if (faction === "Infestés") {
+    // Infested are weak to Heat, Viral, Slash
+    factionMultiplier = 1.25;
+  }
+
+  // Melee Combo Multiplier: Each tier (x1 to x12) adds base damage multiplier (e.g. +50% per combo multiplier tier)
+  const comboMultiplier = 1 + (Math.max(1, comboLevel) - 1) * 0.5 + (stanceBonus / 100);
+  const effectiveHit = Math.round(combinedHit * factionMultiplier * comboMultiplier);
+  const averageDamage = Math.round(effectiveHit * (1 + finalCritChance * (finalCritMult - 1)));
+  const headshotDamage = Math.round(averageDamage * 2.0);
+
+  return {
+    baseDamage,
+    totalDamage: effectiveHit,
+    elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier * comboMultiplier) })),
+    critChance: Math.round(finalCritChance * 100),
+    critMultiplier: Number(finalCritMult.toFixed(1)),
+    averageDamage,
+    headshotDamage,
+  };
+}
+
+function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
+  const wf = build.warframe;
+  const baseHealth = wf?.health || 300;
+  const baseShield = wf?.shield || 300;
+  const baseArmor = wf?.armor || 150;
+  const baseEnergy = wf?.energy || 150;
+  const baseSprint = 1.15;
+
+  let healthModPct = 0;
+  let shieldModPct = 0;
+  let armorModPct = 0;
+  let energyModPct = 0;
+  
+  let flatHealth = 0;
+  let flatShield = 0;
+  let flatArmor = 0;
+  let flatEnergy = 0;
+
+  let strengthBonus = 0;
+  let durationBonus = 0;
+  let rangeBonus = 0;
+  let efficiencyBonus = 0;
+
+  const activeMods: Array<{ name: string; effect: string; cost: number }> = [];
+
+  // Parse Arcanes & Shards
+  const enhancements = calculateEnhancementBonuses(build);
+  flatHealth += enhancements.flatHealth;
+  flatShield += enhancements.flatShield;
+  flatArmor += enhancements.flatArmor;
+  flatEnergy += enhancements.flatEnergy;
+  strengthBonus += enhancements.abilityStrengthPct;
+  durationBonus += enhancements.abilityDurationPct;
+
+  build.warframeMods.forEach((mod, index) => {
+    if (!mod) return;
+    const rank = mod.selectedRank ?? mod.maxRank;
+    const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
+    const effect = (mod.effect || mod.description || "").toLowerCase();
+    const slotPolarity = wf?.polarities?.[index];
+    const cost = modCost(mod, slotPolarity);
+
+    activeMods.push({ name: mod.name, effect: mod.effect || mod.description || "", cost });
+
+    // Precise matching for specific Warframe mods and Archon mods
+    const modNameLower = mod.name.toLowerCase();
+    
+    if (modNameLower.includes("archon vitality") || modNameLower.includes("vitalité archonte")) {
+      healthModPct += 1.0; // +100%
+    } else if (modNameLower.includes("archon intensify") || modNameLower.includes("intensité archonte")) {
+      strengthBonus += 30; // +30%
+    } else if (modNameLower.includes("archon redirection") || modNameLower.includes("redirection archonte")) {
+      shieldModPct += 4.4; // +440%
+    } else if (modNameLower.includes("archon stretch") || modNameLower.includes("allonge archonte")) {
+      rangeBonus += 45; // +45%
+    } else if (modNameLower.includes("archon continuity") || modNameLower.includes("continuité archonte")) {
+      durationBonus += 30; // +30%
+    } else if (modNameLower.includes("archon flow") || modNameLower.includes("flux archonte")) {
+      energyModPct += 1.5; // +150%
+    } else if (mod.id === "vitality" || modNameLower.endsWith(" vitality") || modNameLower === "vitality" || modNameLower === "vitalité") {
+      const baseBonus = mod.maxRank >= 10 ? 4.4 : (mod.maxRank >= 5 ? 1.0 : 0.4);
+      healthModPct += baseBonus * rankRatio;
+    } else if (mod.id === "redirection" || modNameLower.endsWith(" redirection") || modNameLower === "redirection") {
+      const baseBonus = mod.maxRank >= 10 ? 4.4 : 1.0;
+      shieldModPct += baseBonus * rankRatio;
+    } else if (mod.id === "steel-fiber" || modNameLower.includes("steel fiber") || modNameLower.includes("fibre d'acier")) {
+      const baseBonus = mod.maxRank >= 10 ? 1.1 : 0.5;
+      armorModPct += baseBonus * rankRatio;
+    } else if (mod.id === "flow" || modNameLower.endsWith(" flow") || modNameLower === "flow" || modNameLower === "flux") {
+      const baseBonus = mod.maxRank >= 5 ? 1.5 : 1.0;
+      energyModPct += baseBonus * rankRatio;
+    } else if (modNameLower.includes("umbra vitality")) {
+      healthModPct += (55 * (rank + 1)) / 100;
+    } else if (modNameLower.includes("umbra fiber")) {
+      armorModPct += (33 * (rank + 1)) / 100;
+    } else if (effect.includes("strength") || effect.includes("puissance") || mod.id === "blind-rage" || mod.id === "intensify" || modNameLower.includes("intensify")) {
+      const val = mod.id === "blind-rage" ? 99 * (rank + 1) / 10 : (mod.id === "intensify" ? 30 * (rank + 1) / 5 : 15 * (rank + 1) / 5);
+      strengthBonus += val;
+    } else if (effect.includes("duration") || effect.includes("durée") || mod.id === "continuity" || mod.id === "narrow-minded") {
+      const val = mod.id === "narrow-minded" ? 99 * (rank + 1) / 10 : 30 * (rank + 1) / 5;
+      durationBonus += val;
+    } else if (effect.includes("range") || effect.includes("portée") || mod.id === "stretch" || mod.id === "overextended") {
+      const val = mod.id === "overextended" ? 90 : 45 * (rank + 1) / 5;
+      rangeBonus += val;
+    } else if (effect.includes("efficiency") || effect.includes("efficacité") || mod.id === "streamline" || mod.id === "fleeting-expertise") {
+      const val = mod.id === "fleeting-expertise" ? 60 : 30 * (rank + 1) / 5;
+      efficiencyBonus += val;
+    }
+  });
+
+  const health = Math.round((baseHealth * (1 + healthModPct)) + flatHealth);
+  const shield = Math.round((baseShield * (1 + shieldModPct)) + flatShield);
+  const armor = Math.round((baseArmor * (1 + armorModPct)) + flatArmor);
+  const energy = Math.round((baseEnergy * (1 + energyModPct)) + flatEnergy);
+  const ehp = Math.round(health * (1 + armor / 300));
+
+  return {
+    health,
+    baseHealth,
+    healthModPct: Math.round(healthModPct * 100),
+    shield,
+    baseShield,
+    shieldModPct: Math.round(shieldModPct * 100),
+    armor,
+    baseArmor,
+    armorModPct: Math.round(armorModPct * 100),
+    energy,
+    baseEnergy,
+    energyModPct: Math.round(energyModPct * 100),
+    strengthPct: Math.max(10, 100 + strengthBonus),
+    durationPct: Math.max(10, 100 + durationBonus),
+    rangePct: Math.max(10, 100 + rangeBonus),
+    efficiencyPct: Math.min(175, Math.max(34, 100 + efficiencyBonus)),
+    sprintSpeed: baseSprint,
+    ehp,
+    activeMods,
+  };
+}
+
 function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
   const summary: EnhancementBonusSummary = { flatHealth: 0, flatShield: 0, flatArmor: 0, flatEnergy: 0, abilityStrengthPct: 0, abilityDurationPct: 0, castingSpeedPct: 0, parkourVelocityPct: 0, primaryStatusPct: 0, secondaryCritPct: 0, meleeCritDamagePct: 0, activeEffects: [] };
-  const effects: Array<{ source: string; effect: string }> = [];
-  [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].forEach(arcane => { if (arcane) effects.push({ source: `Arcane · ${arcane.name}`, effect: arcane.description }); });
-  build.archonShards.forEach(selected => { if (selected) effects.push({ source: `Éclat · ${selected.shard.name}`, effect: selected.shard.effects[selected.effectIndex] || selected.shard.effects[0] || selected.shard.description }); });
+  const effects: Array<{ source: string; effect: string; isTauforged: boolean }> = [];
+  
+  [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].forEach(arcane => { 
+    if (arcane) effects.push({ source: `Arcane · ${arcane.name}`, effect: arcane.description, isTauforged: false }); 
+  });
+  
+  build.archonShards.forEach(selected => { 
+    if (selected) {
+      const isTauforged = selected.shard.variant === "tauforged";
+      const effectText = selected.shard.effects[selected.effectIndex] || selected.shard.effects[0] || selected.shard.description;
+      effects.push({ source: `Éclat ${isTauforged ? "Tauforgé" : "Standard"} · ${selected.shard.name}`, effect: effectText, isTauforged }); 
+    }
+  });
 
-  effects.forEach(({ source, effect }) => {
+  effects.forEach(({ source, effect, isTauforged }) => {
     let recognized = false;
+    const multiplier = isTauforged ? 1.5 : 1.0;
+    
     const add = (pattern: RegExp, key: keyof EnhancementBonusSummary) => {
       const match = effect.match(pattern);
       if (!match) return;
-      (summary[key] as number) += Number(match[1]);
+      const val = Number(match[1]) * multiplier;
+      (summary[key] as number) += val;
       recognized = true;
     };
+    
     add(/\+(\d+(?:\.\d+)?)\s+(?:Maximum\s+)?Health\b(?!\s*\/s|\s*Orbs)/i, "flatHealth");
     add(/\+(\d+(?:\.\d+)?)\s+Shield(?:\s+Capacity)?\b(?!\s*Recharge)/i, "flatShield");
     add(/\+(\d+(?:\.\d+)?)\s+Armor\b/i, "flatArmor");
@@ -580,7 +880,8 @@ function calculateEnhancementBonuses(build: BuildSet): EnhancementBonusSummary {
     add(/\+?(\d+(?:\.\d+)?)%\s+Primary\s+Status\s+Chance\b/i, "primaryStatusPct");
     add(/\+?(\d+(?:\.\d+)?)%\s+Secondary\s+Critical\s+Chance\b/i, "secondaryCritPct");
     add(/\+?(\d+(?:\.\d+)?)%\s+Melee\s+Critical\s+Damage\b/i, "meleeCritDamagePct");
-    summary.activeEffects.push({ source, effect, recognized });
+    
+    summary.activeEffects.push({ source, effect: isTauforged ? `${effect} (Tauforgé x1.5)` : effect, recognized });
   });
   return summary;
 }
@@ -660,7 +961,9 @@ function buildSummaryMarkdown(build: BuildSet): string {
   const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
-  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} — PV ${companionStats.health}, boucliers ${companionStats.shield}, armure ${companionStats.armor}\n- Bonus dégâts : +${companionStats.damagePct}% · critique : +${companionStats.criticalChancePct}% · statut : +${companionStats.statusChancePct}% · dégâts de statut : +${companionStats.statusDamagePct}% · régénération : +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
+  const parts = build.companionParts;
+  const partsSummary = parts && build.companion && ["moa", "hound"].includes(build.companion.type.toLowerCase()) ? `\n- Configuration modulaire : Tête [${parts.head || "—"}], Support [${parts.bracket || "—"}], Cœur [${parts.core || "—"}], Gyroscope [${parts.gyro || "—"}]` : "";
+  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
   return [
     `# ${build.name}`,
     "",
@@ -699,67 +1002,305 @@ function buildSummaryMarkdown(build: BuildSet): string {
 
 // ---- Stats Panel ----
 function StatsPanel({ build }: { build: BuildSet }) {
+  const [selectedFaction, setSelectedFaction] = useState("Tous");
+  const [selectedCombo, setSelectedCombo] = useState(1);
+  const [selectedStanceBonus, setSelectedStanceBonus] = useState(0);
   const wf = build.warframe;
-  const vitality = build.warframeMods.find(m => m?.id === "vitality");
-  const redirection = build.warframeMods.find(m => m?.id === "redirection");
-  const steelFiber = build.warframeMods.find(m => m?.id === "steel-fiber");
+  const stats = calculateWarframeStats(build);
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
-
-  const health = wf ? Math.round((wf.health + enhancements.flatHealth) * (1 + (vitality ? 4.4 : 0))) : 0;
-  const shield = wf ? Math.round((wf.shield + enhancements.flatShield) * (1 + (redirection ? 4.4 : 0))) : 0;
-  const armor = wf ? Math.round((wf.armor + enhancements.flatArmor) * (1 + (steelFiber ? 1.1 : 0))) : 0;
-  const energy = wf ? wf.energy + enhancements.flatEnergy : 0;
-  const ehp = wf ? Math.round(health * (1 + armor / 300)) : 0;
-
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
   return (
     <div className="wf-panel wf-hud-panel rounded-sm p-4 hud-frame">
-      <div className="wf-section-label mb-4">STATISTIQUES DU SET</div>
+      <div className="wf-section-label mb-4 flex items-center justify-between">
+        <span>STATISTIQUES DU SET</span>
+        <span className="text-[9px] uppercase font-mono px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: "rgba(79,195,247,0.15)", color: "var(--wf-cyan)" }}>
+          EN DIRECT
+        </span>
+      </div>
 
       {wf ? (
-        <div className="space-y-2">
-          {/* Warframe stats */}
-          <div className="text-xs font-bold mb-3 px-2 py-1 rounded-sm" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.08em", backgroundColor: "rgba(79,195,247,0.08)", borderLeft: "2px solid var(--wf-cyan)" }}>
-            {wf.name.toUpperCase()}
-          </div>
-          {[
-            { label: "Points de Vie", value: health, max: 1500, color: "#ef5350" },
-            { label: "Boucliers", value: shield, max: 1500, color: "#42a5f5" },
-            { label: "Armure", value: armor, max: 1000, color: "#ffa726" },
-            { label: "Énergie", value: energy, max: 400, color: "#ab47bc" },
-            { label: "PV Effectifs", value: ehp, max: 5000, color: "#26c6da" },
-          ].map(({ label, value, max, color }) => (
-            <div key={label}>
-              <div className="flex justify-between text-xs mb-0.5">
-                <span style={{ color: "var(--wf-text-dim)" }}>{label}</span>
-                <span className="font-bold" style={{ color, fontFamily: "var(--font-mono)" }}>{value}</span>
-              </div>
-              <div className="stat-bar-track">
-                <div className="stat-bar-fill" style={{ width: `${Math.min(100, (value / max) * 100)}%`, backgroundColor: color }} />
-              </div>
+        <div className="space-y-3">
+          {/* Faction Selector for Damage Calculations */}
+          <div className="flex items-center justify-between gap-2 p-2 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)" }}>
+            <span className="text-[10px] font-bold uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>FACTION CIBLE</span>
+            <div className="flex gap-1">
+              {["Tous", "Grineer", "Corpus", "Infestés"].map(f => {
+                const active = selectedFaction === f;
+                return (
+                  <button
+                    key={f}
+                    onClick={() => setSelectedFaction(f)}
+                    className="px-2 py-0.5 text-[9px] uppercase font-mono rounded transition-colors"
+                    style={{
+                      backgroundColor: active ? "var(--wf-cyan)" : "rgba(255,255,255,0.05)",
+                      color: active ? "#0b0e14" : "var(--wf-text-dim)",
+                      border: "1px solid var(--wf-border)"
+                    }}
+                  >
+                    {f}
+                  </button>
+                );
+              })}
             </div>
-          ))}
+          </div>
 
-          {build.primaryWeapon && (
-            <>
-              <div className="h-px my-3" style={{ backgroundColor: "var(--wf-border)" }} />
-              <div className="text-xs font-semibold mb-2" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
-                {build.primaryWeapon.name.toUpperCase()}
-              </div>
-              {[
-                { label: "Dégâts", value: Math.round(primaryDmg), color: "#ff6b35" },
-                { label: "Critique", value: `${(build.primaryWeapon.critChance * 100).toFixed(0)}%`, color: "#ffd700" },
-                { label: "Statut", value: `${(build.primaryWeapon.statusChance * 100 + enhancements.primaryStatusPct).toFixed(0)}%`, color: "#66bb6a" },
-              ].map(({ label, value, color }) => (
-                <div key={label} className="flex justify-between text-xs py-1 border-b last:border-0" style={{ borderColor: "var(--wf-border)" }}>
-                  <span style={{ color: "var(--wf-text-dim)" }}>{label}</span>
-                  <span style={{ color, fontFamily: "var(--font-mono)" }}>{value}</span>
+          {/* Warframe Header */}
+          <div className="text-xs font-bold px-2.5 py-1.5 rounded-sm flex items-center justify-between" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.08em", backgroundColor: "rgba(79,195,247,0.08)", borderLeft: "2px solid var(--wf-cyan)" }}>
+            <span>{wf.name.toUpperCase()}</span>
+            <span className="text-[10px]" style={{ fontFamily: "var(--font-mono)", color: "#66bb6a" }}>RANG 30</span>
+          </div>
+
+          {/* Survivability & Energy (Warframe In-Game HUD Style) */}
+          <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+            <div className="text-[10px] uppercase font-bold tracking-wider mb-2" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              SURVIE & ÉNERGIE
+            </div>
+            {[
+              { label: "Health", base: stats.baseHealth, val: stats.health, modPct: stats.healthModPct, color: "#ef5350", max: 1500 },
+              { label: "Shield", base: stats.baseShield, val: stats.shield, modPct: stats.shieldModPct, color: "#42a5f5", max: 1500 },
+              { label: "Armor", base: stats.baseArmor, val: stats.armor, modPct: stats.armorModPct, color: "#ffa726", max: 1000 },
+              { label: "Energy", base: stats.baseEnergy, val: stats.energy, modPct: stats.energyModPct, color: "#ab47bc", max: 500 },
+            ].map(({ label, base, val, modPct, color, max }) => (
+              <div key={label} className="text-xs">
+                <div className="flex justify-between items-center mb-0.5">
+                  <span style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{label}</span>
+                  <div className="flex items-center gap-1.5 font-mono">
+                    {modPct !== 0 && (
+                      <span className="text-[10px]" style={{ color: modPct > 0 ? "#66bb6a" : "#ef5350" }}>
+                        {modPct > 0 ? `+${modPct}%` : `${modPct}%`}
+                      </span>
+                    )}
+                    <span className="font-bold text-white">{base}</span>
+                    <span style={{ color: "var(--wf-text-dim)" }}>→</span>
+                    <span className="font-bold" style={{ color }}>{val}</span>
+                  </div>
                 </div>
-              ))}
-            </>
-          )}
+                <div className="stat-bar-track">
+                  <div className="stat-bar-fill" style={{ width: `${Math.min(100, (val / max) * 100)}%`, backgroundColor: color }} />
+                </div>
+              </div>
+            ))}
+            <div className="flex justify-between items-center pt-1 text-xs border-t" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+              <span style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>Sprint Speed</span>
+              <span className="font-mono font-bold" style={{ color: "#26c6da" }}>{stats.sprintSpeed}</span>
+            </div>
+          </div>
+
+          {/* Ability Stats (Warframe In-Game HUD Style) */}
+          <div className="space-y-1.5 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+            <div className="text-[10px] uppercase font-bold tracking-wider mb-1.5" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+              STATISTIQUES DE POUVOIR
+            </div>
+            {[
+              { label: "Duration", val: stats.durationPct, color: "#4fc3f7" },
+              { label: "Efficiency", val: stats.efficiencyPct, color: "#66bb6a" },
+              { label: "Range", val: stats.rangePct, color: "#ffd700" },
+              { label: "Strength", val: stats.strengthPct, color: "#ff6b35" },
+            ].map(({ label, val, color }) => (
+              <div key={label} className="flex justify-between items-center text-xs py-0.5">
+                <span style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{label}</span>
+                <span className="font-mono font-bold" style={{ color }}>{val}%</span>
+              </div>
+            ))}
+          </div>
+
+          {build.primaryWeapon && (() => {
+            const primaryDmgData = calculateWeaponDamage(build.primaryWeapon, build.primaryMods, selectedFaction);
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#ff6b35", fontFamily: "var(--font-display)" }}>
+                    ARME PRIMAIRE : {build.primaryWeapon.name.toUpperCase()}
+                  </div>
+                  <span className="text-[10px] font-mono font-bold" style={{ color: "#ff6b35" }}>
+                    {primaryDmgData.totalDamage} DÉGÂTS TOTAUX
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Wiki: Chance ${primaryDmgData.critChance}% | Multiplicateur x${primaryDmgData.critMultiplier}`}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Crit / Tête</span>
+                    <span className="font-mono font-bold text-amber-300">{primaryDmgData.critChance}% (x{primaryDmgData.critMultiplier})</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup et avec tir à la tête (x2.0 standard)">
+                    <span style={{ color: "var(--wf-text-dim)" }}>Moy / Tête</span>
+                    <span className="font-mono font-bold text-orange-400">{primaryDmgData.averageDamage} / {primaryDmgData.headshotDamage}</span>
+                  </div>
+                </div>
+                {primaryDmgData.elements.length > 0 && (
+                  <div className="mt-1.5 space-y-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {primaryDmgData.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {build.secondaryWeapon && (() => {
+            const currentFaction = (build as any).selectedFaction || "Tous";
+            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, selectedFaction);
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#42a5f5", fontFamily: "var(--font-display)" }}>
+                    ARME SECONDAIRE : {build.secondaryWeapon.name.toUpperCase()}
+                  </div>
+                  <span className="text-[10px] font-mono font-bold" style={{ color: "#42a5f5" }}>
+                    {secondaryDmgData.totalDamage} DÉGÂTS
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Wiki: Chance ${secondaryDmgData.critChance}% | Multiplicateur x${secondaryDmgData.critMultiplier}`}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Crit / Tête</span>
+                    <span className="font-mono font-bold text-amber-300">{secondaryDmgData.critChance}% (x{secondaryDmgData.critMultiplier})</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup et avec tir à la tête (x2.0 standard)">
+                    <span style={{ color: "var(--wf-text-dim)" }}>Moy / Tête</span>
+                    <span className="font-mono font-bold text-orange-400">{secondaryDmgData.averageDamage} / {secondaryDmgData.headshotDamage}</span>
+                  </div>
+                </div>
+                {secondaryDmgData.elements.length > 0 && (
+                  <div className="mt-1.5 space-y-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {secondaryDmgData.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {build.meleeWeapon && (() => {
+            const currentFaction = selectedFaction;
+            const currentCombo = selectedCombo;
+            const currentStance = selectedStanceBonus;
+            const meleeDmgData = calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance);
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#66bb6a", fontFamily: "var(--font-display)" }}>
+                    ARME DE MÊLÉE : {build.meleeWeapon.name.toUpperCase()}
+                  </div>
+                  <span className="text-[10px] font-mono font-bold" style={{ color: "#66bb6a" }}>
+                    {meleeDmgData.totalDamage} DÉGÂTS (x{currentCombo})
+                  </span>
+                </div>
+                {/* Melee Controls: Combo Tier & Stance Bonus */}
+                <div className="grid grid-cols-1 gap-2 pt-1 pb-1 border-b sm:grid-cols-2" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                  <div>
+                    <div className="text-[9px] uppercase mb-1" style={{ color: "var(--wf-text-dim)" }}>MULTIPLICATEUR COMBO</div>
+                    <div className="flex min-w-max gap-1 overflow-x-auto pb-1">
+                      {[1, 3, 6, 9, 12].map(tier => (
+                        <button
+                          key={tier}
+                          onClick={() => setSelectedCombo(tier)}
+                          className="flex-1 py-0.5 text-[9px] font-mono rounded"
+                          style={{
+                            backgroundColor: currentCombo === tier ? "#66bb6a" : "rgba(255,255,255,0.05)",
+                            color: currentCombo === tier ? "#0b0e14" : "var(--wf-text-dim)",
+                            border: "1px solid var(--wf-border)"
+                          }}
+                        >
+                          x{tier}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[9px] uppercase mb-1" style={{ color: "var(--wf-text-dim)" }}>POSTURE (STANCE)</div>
+                    <select
+                      value={currentStance}
+                      onChange={e => setSelectedStanceBonus(Number(e.target.value))}
+                      className="w-full text-[10px] bg-black/50 text-white rounded px-1.5 py-0.5 font-mono"
+                      style={{ border: "1px solid var(--wf-border)" }}
+                    >
+                      <option value={0}>Standard (+0%)</option>
+                      <option value={20}>Posture Spéciale (+20%)</option>
+                      <option value={40}>Maîtrise Posture (+40%)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title={`Simulation Critique Mêlée: Chance ${meleeDmgData.critChance}% | Multiplicateur x${meleeDmgData.critMultiplier}`}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Crit Mêlée</span>
+                    <span className="font-mono font-bold text-amber-300">{meleeDmgData.critChance}% (x{meleeDmgData.critMultiplier})</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }} title="Dégâts moyens par coup de mêlée avec combo">
+                    <span style={{ color: "var(--wf-text-dim)" }}>Dégâts Moy.</span>
+                    <span className="font-mono font-bold text-green-400">{meleeDmgData.averageDamage}</span>
+                  </div>
+                </div>
+                {meleeDmgData.elements.length > 0 && (
+                  <div className="mt-1.5 space-y-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {meleeDmgData.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
+          {/* Comparative DPS Chart Widget across Equipped Weapons */}
+          {(build.primaryWeapon || build.secondaryWeapon || build.meleeWeapon) && (() => {
+            const currentFaction = selectedFaction;
+            const currentCombo = selectedCombo;
+            const currentStance = selectedStanceBonus;
+            const primaryDmg = build.primaryWeapon ? calculateWeaponDamage(build.primaryWeapon, build.primaryMods, currentFaction) : null;
+            const secondaryDmg = build.secondaryWeapon ? calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, currentFaction) : null;
+            const meleeDmg = build.meleeWeapon ? calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance) : null;
+
+            const weaponsList = [
+              primaryDmg && { name: "Primaire", dps: primaryDmg.averageDamage * 2.5, color: "#ff6b35" },
+              secondaryDmg && { name: "Secondaire", dps: secondaryDmg.averageDamage * 3.0, color: "#42a5f5" },
+              meleeDmg && { name: "Mêlée", dps: meleeDmg.averageDamage * 1.8, color: "#66bb6a" },
+            ].filter(Boolean) as Array<{ name: string; dps: number; color: string }>;
+
+            const maxDps = Math.max(...weaponsList.map(w => w.dps), 100);
+
+            return (
+              <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+                  COMPARATIF DE DPS ESTIMÉ (PAR SECONDE)
+                </div>
+                <div className="space-y-1.5 pt-1">
+                  {weaponsList.map(w => (
+                    <div key={w.name} className="text-xs">
+                      <div className="flex justify-between items-center mb-0.5">
+                        <span style={{ color: "var(--wf-text-dim)" }}>{w.name}</span>
+                        <span className="font-mono font-bold" style={{ color: w.color }}>{Math.round(w.dps)} DPS</span>
+                      </div>
+                      <div className="stat-bar-track">
+                        <div className="stat-bar-fill" style={{ width: `${Math.min(100, (w.dps / maxDps) * 100)}%`, backgroundColor: w.color }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
 
           {companionStats && (
             <div className="mt-3 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
@@ -1029,12 +1570,12 @@ export default function SetBuilder() {
   return (
     <Layout title="CRÉER UN SET">
       {/* Build tabs */}
-      <div className="flex items-center gap-2 mb-4 flex-wrap">
+      <div className="flex max-w-full items-center gap-2 mb-4 flex-wrap overflow-x-auto pb-1">
         {builds.map((b, i) => (
           <div key={b.id} className="flex items-center">
             <button
               onClick={() => { setActiveBuildIndex(i); setBuildName(b.name); }}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-sm transition-all"
+              className="flex shrink-0 items-center gap-1.5 px-3 py-2 text-xs rounded-sm transition-all"
               style={{
                 backgroundColor: i === activeBuildIndex ? "rgba(79,195,247,0.15)" : "rgba(0,0,0,0.3)",
                 border: `1px solid ${i === activeBuildIndex ? "var(--wf-cyan)" : "var(--wf-border)"}`,
@@ -1054,7 +1595,7 @@ export default function SetBuilder() {
         ))}
         <button
           onClick={addNewBuild}
-          className="flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-sm transition-all"
+          className="flex shrink-0 items-center gap-1 px-2.5 py-2 text-xs rounded-sm transition-all"
           style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px dashed var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}
         >
           <Plus size={11} />
@@ -1062,8 +1603,19 @@ export default function SetBuilder() {
         </button>
       </div>
 
+      {/* Tactical loadout command focal */}
+      <div className="wf-command-console hud-frame mb-4 rounded-sm border border-cyan-400/30 p-3 sm:p-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300" style={{ fontFamily: "var(--font-mono)" }}>TACTICAL LOADOUT // CONFIGURATION COCKPIT</div>
+            <div className="mt-1 text-xs uppercase tracking-wider text-slate-300 sm:text-sm" style={{ fontFamily: "var(--font-display)" }}>Warframe · armement · compagnon · mods</div>
+          </div>
+          <div className="flex items-center gap-2 text-[9px] font-mono uppercase text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-cyan-300" /> Calculs en direct</div>
+        </div>
+      </div>
+
       {/* Main builder layout */}
-      <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-4">
         {/* Tab switcher for mobile */}
         <div className="xl:hidden col-span-full flex items-center gap-1 mb-2">
           {[{ id: "equipment" as const, label: "ÉQUIPEMENT" }, { id: "mods" as const, label: "MODS" }].map(tab => (
@@ -1124,7 +1676,7 @@ export default function SetBuilder() {
           </div>
 
           {/* Equipment slots */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`}>
             <EquipSlot
               label="WARFRAME"
               icon={<Shield size={13} />}
@@ -1167,8 +1719,46 @@ export default function SetBuilder() {
             />
           </div>
 
+          {/* Modular parts configuration for MOA and Hound companions */}
+          {activeBuild.companion && ["moa", "hound"].includes(activeBuild.companion.type.toLowerCase()) && (
+            <div className={`wf-hud-panel hud-frame rounded-sm p-4 space-y-3 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`} style={{ border: "1px solid rgba(167,139,250,0.4)", backgroundColor: "rgba(167,139,250,0.03)" }}>
+              <div className="flex items-center justify-between">
+                <div className="text-xs font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+                  CONFIGURATION MODULAIRE // {activeBuild.companion.type.toUpperCase()} ({activeBuild.companion.name})
+                </div>
+                <span className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>TÊTE • SUPPORT • CŒUR • GYROSCOPE</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                {[
+                  { key: "head" as const, label: "TÊTE", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.heads : HOUND_PARTS.heads },
+                  { key: "bracket" as const, label: "SUPPORT", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.brackets : HOUND_PARTS.brackets },
+                  { key: "core" as const, label: "CŒUR", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.cores : HOUND_PARTS.cores },
+                  { key: "gyro" as const, label: "GYROSCOPE", options: activeBuild.companion.type.toLowerCase() === "moa" ? MOA_PARTS.gyros : HOUND_PARTS.gyros },
+                ].map(part => (
+                  <div key={part.key} className="space-y-1">
+                    <label className="text-[9px] uppercase font-bold" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{part.label}</label>
+                    <select
+                      value={activeBuild.companionParts?.[part.key] || part.options[0]}
+                      onChange={e => {
+                        const val = e.target.value;
+                        updateBuild(b => ({
+                          ...b,
+                          companionParts: { ...(b.companionParts || {}), [part.key]: val }
+                        }));
+                      }}
+                      className="w-full rounded-sm px-2 py-1.5 text-xs outline-none"
+                      style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
+                    >
+                      {part.options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+                    </select>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Arcanes and Archon Shards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`}>
             <ArcaneGrid label="WARFRAME" arcanes={activeBuild.warframeArcanes} arcaneType="arcane-warframe" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#a78bfa" />
             <ArchonShardGrid shards={activeBuild.archonShards} onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} onEffectChange={setShardEffect} />
             <ArcaneGrid label="PRIMAIRE" arcanes={activeBuild.primaryArcanes} arcaneType="arcane-primary" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#ff6b35" />
@@ -1177,7 +1767,7 @@ export default function SetBuilder() {
           </div>
 
           {/* Mod grids */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "mods" ? "" : "max-xl:hidden"}`}>
             <ModGrid
               label="WARFRAME"
               mods={activeBuild.warframeMods}

@@ -1,0 +1,48 @@
+name: Warframe Data Auto-Sync & PR
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Chaque lundi à 8h00 UTC
+  workflow_dispatch:
+
+jobs:
+  sync-and-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Run audit and check for updates
+        run: |
+          node scripts/check-updates.mjs
+
+      - name: Create Pull Request if updates detected
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(data): weekly warframe dataset sync and audit report"
+          branch: chore/warframe-data-sync
+          delete-branch: true
+          title: "🔄 [Auto-Sync] Rapport hebdomadaire de mise à jour des données Warframe"
+          body: |
+                Ce rapport automatisé a été généré par le workflow GitHub Actions hebdomadaire.
+                Il vérifie l'intégrité du dataset et répertorie les compteurs ainsi que les dernières entrées.
+                
+                Veuillez examiner les modifications avant de fusionner cette Pull Request.
+          add-paths: |
+            update-report.json

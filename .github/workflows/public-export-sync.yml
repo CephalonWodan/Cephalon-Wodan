@@ -1,0 +1,52 @@
+name: Public Export French Sync
+
+on:
+  schedule:
+    - cron: '30 8 * * 1' # Every Monday at 08:30 UTC
+  workflow_dispatch:
+
+jobs:
+  sync-public-export:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Public Export parser and normalizer
+        run: node scripts/extract-public-export.mjs
+
+      - name: Run type check and production build
+        run: |
+          pnpm run check
+          pnpm run build
+
+      - name: Create Pull Request with official French exports
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore(i18n): sync official French Public Export data'
+          branch: 'chore/public-export-french-sync'
+          title: 'Official French Public Export Data Synchronization'
+          body: |
+            Automated weekly synchronization of official French Warframe Public Export tables (`ExportWarframes_fr`, `ExportWeapons_fr`, `ExportUpgrades_fr`, etc.).
+            Validated with TypeScript checks and production build.
+          signoff: false
+          delete-branch: true

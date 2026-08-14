@@ -6,9 +6,10 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Shield, Sword, Users, BookOpen, Settings, ChevronRight,
-  Menu, X, Search, Zap, Star, Package, Home, Sparkles, Gem
+  Menu, X, Search, Zap, Star, Package, Home, Sparkles, Gem, Globe
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const NAV_ITEMS = [
   {
@@ -16,6 +17,7 @@ const NAV_ITEMS = [
     items: [
       { label: "Accueil", href: "/", icon: Home },
       { label: "Créer un Set", href: "/builder", icon: Zap },
+      { label: "Worldstate", href: "/worldstate", icon: Globe },
     ]
   },
   {
@@ -48,12 +50,13 @@ export default function Layout({ children, title }: LayoutProps) {
   const [location] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--wf-bg-deep)", color: "var(--wf-text)" }}>
       {/* TOP HEADER */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 flex items-center h-12 px-3 gap-3"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center h-12 px-2 gap-2 sm:px-3 sm:gap-3"
         style={{
           backgroundColor: "#070b10",
           borderBottom: "1px solid var(--wf-border)",
@@ -128,7 +131,7 @@ export default function Layout({ children, title }: LayoutProps) {
             placeholder="Rechercher..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="pl-8 pr-3 py-1 text-xs rounded-sm outline-none w-40 sm:w-52 transition-all focus:w-60"
+            className="pl-8 pr-2 py-1 text-xs rounded-sm outline-none w-24 sm:w-52 transition-all focus:w-32 sm:focus:w-60"
             style={{
               backgroundColor: "rgba(255,255,255,0.06)",
               border: "1px solid var(--wf-border)",
@@ -138,13 +141,27 @@ export default function Layout({ children, title }: LayoutProps) {
           />
         </div>
 
+        {/* Language selector */}
+        <div className="flex items-center gap-1 bg-black/40 px-1.5 py-1 rounded-sm border sm:px-2" style={{ borderColor: "var(--wf-border)" }}>
+          <Globe size={13} style={{ color: "var(--wf-cyan)" }} />
+          <button
+            type="button"
+            onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+            className="text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-cyan-300"
+            style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
+            title="Changer de langue (FR / EN)"
+          >
+            {language.toUpperCase()}
+          </button>
+        </div>
+
         {/* Actions */}
         <Link
           href="/builder"
           className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-sm transition-all duration-150 wf-btn-primary"
         >
           <Zap size={12} />
-          <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>CRÉER UN SET</span>
+          <span style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}>{t("CRÉER UN SET", "CREATE SET")}</span>
         </Link>
       </header>
 
@@ -236,20 +253,33 @@ export default function Layout({ children, title }: LayoutProps) {
         )}
 
         {/* MAIN CONTENT */}
-        <main className="flex-1 min-w-0">
+        <main className="flex-1 min-w-0 overflow-x-hidden">
           {title && (
             <div
-              className="px-6 py-4 border-b relative"
+              className="px-3 py-3 border-b relative sm:px-4 sm:py-4 lg:px-6"
               style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}
             >
               {/* Scan line below title */}
               <div className="absolute bottom-0 left-0 right-0 scan-divider" />
-              <h1
-                className="text-2xl font-bold tracking-widest uppercase"
-                style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
-              >
-                {title}
-              </h1>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <h1
+                  className="text-xl font-bold tracking-widest uppercase sm:text-2xl"
+                  style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
+                >
+                  {title}
+                </h1>
+                {location !== "/" && (
+                  <Link
+                    href="/"
+                    className="inline-flex items-center gap-1.5 self-start sm:self-auto px-2.5 py-1.5 rounded-sm text-[10px] uppercase tracking-wider transition-all hover:bg-cyan-400/10"
+                    style={{ color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.45)", fontFamily: "var(--font-display)" }}
+                    aria-label="Revenir à la page d’accueil"
+                  >
+                    <Home size={12} />
+                    Accueil
+                  </Link>
+                )}
+              </div>
               <div className="flex items-center gap-1 mt-0.5">
                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "var(--wf-cyan)" }} />
                 <span className="text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
@@ -258,7 +288,7 @@ export default function Layout({ children, title }: LayoutProps) {
               </div>
             </div>
           )}
-          <div className="p-4 lg:p-6">
+          <div className="p-3 sm:p-4 lg:p-6">
             {children}
           </div>
         </main>
