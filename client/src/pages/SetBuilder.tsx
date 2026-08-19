@@ -901,7 +901,7 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
     const rank = mod.selectedRank ?? mod.maxRank;
     const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
     const effect = (mod.effect || mod.description || "").toLowerCase();
-    const slotPolarity = wf?.polarities?.[index];
+    const slotPolarity = resolveSlotPolarity(wf, build.slotPolarities.warframe[index], index);
     const cost = modCost(mod, slotPolarity);
 
     activeMods.push({ name: mod.name, effect: mod.effect || mod.description || "", cost });
@@ -978,6 +978,34 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
     sprintSpeed: baseSprint,
     ehp,
     activeMods,
+  };
+}
+
+interface HelminthCalculatedScaling {
+  strengthPct: number;
+  durationPct: number;
+  rangePct: number;
+  efficiencyPct: number;
+  strengthFactor: number;
+  durationFactor: number;
+  rangeFactor: number;
+  energyCost: number;
+}
+
+function calculateHelminthAbilityScaling(ability: HelminthAbility, stats: WarframeStatSummary): HelminthCalculatedScaling {
+  const strengthFactor = stats.strengthPct / 100;
+  const durationFactor = stats.durationPct / 100;
+  const rangeFactor = stats.rangePct / 100;
+  const efficiencyFactor = Math.max(0.34, stats.efficiencyPct / 100);
+  return {
+    strengthPct: stats.strengthPct,
+    durationPct: stats.durationPct,
+    rangePct: stats.rangePct,
+    efficiencyPct: stats.efficiencyPct,
+    strengthFactor,
+    durationFactor,
+    rangeFactor,
+    energyCost: Math.round((ability.energyCost / efficiencyFactor) * 10) / 10,
   };
 }
 
@@ -1099,6 +1127,11 @@ function buildSummaryMarkdown(build: BuildSet): string {
   };
   const arcanes = [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).map(arcane => `- ${arcane?.name}: ${arcane?.description}`).join("\n") || "- Aucun Arcane équipé";
   const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
+  const activeHelminth = build.helminthSubstitution ? HELMINTH_ABILITIES.find(ability => ability.id === build.helminthSubstitution?.abilityId) : null;
+  const helminthStats = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, calculateWarframeStats(build)) : null;
+  const helminthSummary = build.helminthSubstitution && helminthStats
+    ? `- Slot ${build.helminthSubstitution.abilityIndex + 1}: ${build.helminthSubstitution.abilityName} (${build.helminthSubstitution.sourceWarframe})\n- Force : ${helminthStats.strengthPct}% · Durée : ${helminthStats.durationPct}% · Portée : ${helminthStats.rangePct}% · Coût : ${helminthStats.energyCost}`
+    : "- Aucune capacité Helminth sélectionnée";
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
   const parts = build.companionParts;
@@ -1127,6 +1160,9 @@ function buildSummaryMarkdown(build: BuildSet): string {
     "",
     "## Incarnon",
     incarnonSummary,
+    "",
+    "## Helminth",
+    helminthSummary,
     "",
     "## Mods",
     capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe, build.slotPolarities.warframe),
@@ -1161,6 +1197,8 @@ function StatsPanel({ build }: { build: BuildSet }) {
   const stats = calculateWarframeStats(build);
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
+  const activeHelminth = build.helminthSubstitution ? HELMINTH_ABILITIES.find(ability => ability.id === build.helminthSubstitution?.abilityId) : null;
+  const helminthScaling = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, stats) : null;
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
   return (
@@ -1203,6 +1241,21 @@ function StatsPanel({ build }: { build: BuildSet }) {
             <span>{wf.name.toUpperCase()}</span>
             <span className="text-[10px]" style={{ fontFamily: "var(--font-mono)", color: "#66bb6a" }}>RANG 30</span>
           </div>
+
+          {build.helminthSubstitution && helminthScaling && (
+            <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(167,139,250,0.08)", border: "1px solid rgba(167,139,250,0.45)" }}>
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#c4b5fd", fontFamily: "var(--font-display)" }}>HELMINTH // {build.helminthSubstitution.abilityName}</div>
+                <span className="text-[9px]" style={{ color: "#a78bfa", fontFamily: "var(--font-mono)" }}>SLOT {build.helminthSubstitution.abilityIndex + 1}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5 text-[9px]" style={{ fontFamily: "var(--font-mono)" }}>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>FORCE <strong>{helminthScaling.strengthPct}%</strong></div>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>DURÉE <strong>{helminthScaling.durationPct}%</strong></div>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>PORTÉE <strong>{helminthScaling.rangePct}%</strong></div>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>COÛT <strong>{helminthScaling.energyCost}</strong></div>
+              </div>
+            </div>
+          )}
 
           {/* Survivability & Energy (Warframe In-Game HUD Style) */}
           <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
@@ -1509,6 +1562,8 @@ export default function SetBuilder() {
   const [savedBuilds, setSavedBuilds] = useState<BuildSet[]>(initialState.savedBuilds);
   const [buildName, setBuildName] = useState(initialState.builds[0]?.name || "Mon Premier Set");
   const [activeTab, setActiveTab] = useState<"equipment" | "mods">("equipment");
+  const [helminthSearch, setHelminthSearch] = useState("");
+  const [helminthCategory, setHelminthCategory] = useState<HelminthAbility["category"] | "all">("all");
   const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -1716,6 +1771,18 @@ export default function SetBuilder() {
 
   const renderHelminthSection = () => {
     if (!activeBuild.warframe) return null;
+    const warframeStats = calculateWarframeStats(activeBuild);
+    const activeHelminth = activeBuild.helminthSubstitution ? HELMINTH_ABILITIES.find(ability => ability.id === activeBuild.helminthSubstitution?.abilityId) : null;
+    const activeHelminthScaling = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, warframeStats) : null;
+    const normalizedSearch = helminthSearch.trim().toLowerCase();
+    const filteredHelminthAbilities = HELMINTH_ABILITIES.filter(ability => {
+      const matchesCategory = helminthCategory === "all" || ability.category === helminthCategory;
+      const haystack = `${ability.name} ${ability.sourceWarframe} ${ability.description}`.toLowerCase();
+      return matchesCategory && (!normalizedSearch || haystack.includes(normalizedSearch));
+    });
+    const visibleHelminthAbilities = activeHelminth && !filteredHelminthAbilities.some(ability => ability.id === activeHelminth.id)
+      ? [activeHelminth, ...filteredHelminthAbilities]
+      : filteredHelminthAbilities;
     const wfAbilities = activeBuild.warframe.abilities || [
       { name: "Compétence 1", description: "Capacité native 1" },
       { name: "Compétence 2", description: "Capacité native 2" },
@@ -1742,6 +1809,41 @@ export default function SetBuilder() {
               Réinitialiser Helminth
             </button>
           )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 rounded-sm p-2" style={{ backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--wf-border)" }}>
+          <div className="flex flex-col gap-2 md:flex-row md:items-center">
+            <input
+              value={helminthSearch}
+              onChange={event => setHelminthSearch(event.target.value)}
+              placeholder="Rechercher une aptitude, une Warframe ou un effet…"
+              className="min-w-0 flex-1 rounded-sm px-2.5 py-1.5 text-[10px] outline-none"
+              style={{ backgroundColor: "rgba(0,0,0,0.45)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--wf-font-mono, var(--font-mono))" }}
+              aria-label="Rechercher une aptitude Helminth"
+            />
+            <div className="flex flex-wrap gap-1" role="group" aria-label="Filtrer les catégories Helminth">
+              {([
+                ["all", "Tout"],
+                ["offensive", "Dégâts"],
+                ["crowd-control", "Contrôle"],
+                ["buff", "Buff"],
+                ["utility", "Utilitaire"],
+                ["defensive", "Défensif"],
+              ] as const).map(([value, label]) => (
+                <button
+                  key={value}
+                  onClick={() => setHelminthCategory(value)}
+                  className="rounded-sm px-2 py-1 text-[9px] uppercase transition-colors"
+                  style={{ backgroundColor: helminthCategory === value ? "rgba(79,195,247,0.18)" : "rgba(255,255,255,0.03)", border: `1px solid ${helminthCategory === value ? "var(--wf-cyan)" : "var(--wf-border)"}`, color: helminthCategory === value ? "var(--wf-cyan)" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="text-[9px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+            {visibleHelminthAbilities.length} aptitude(s) affichée(s) · {HELMINTH_ABILITIES.length} disponible(s)
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
@@ -1773,9 +1875,19 @@ export default function SetBuilder() {
                 </div>
 
                 <div className="mt-3 pt-2 border-t flex items-center justify-between gap-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                  <span className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-                    {sub ? `Source: ${sub.sourceWarframe}` : "Native"}
-                  </span>
+                  <div className="min-w-0 flex-1">
+                    <span className="block truncate text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                      {sub ? `Source: ${sub.sourceWarframe}` : "Native"}
+                    </span>
+                    {sub && activeHelminthScaling && (
+                      <div className="mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 text-[8px] uppercase" style={{ color: "#c4b5fd", fontFamily: "var(--font-mono)" }}>
+                        <span>Force {activeHelminthScaling.strengthPct}%</span>
+                        <span>Durée {activeHelminthScaling.durationPct}%</span>
+                        <span>Portée {activeHelminthScaling.rangePct}%</span>
+                        <span>Énergie {activeHelminthScaling.energyCost}</span>
+                      </div>
+                    )}
+                  </div>
                   <select
                     value={isSubstituted && sub ? sub.abilityId : "native"}
                     onChange={e => {
@@ -1791,7 +1903,7 @@ export default function SetBuilder() {
                     style={{ backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
                   >
                     <option value="native">Garder native</option>
-                    {HELMINTH_ABILITIES.map(ha => (
+                    {visibleHelminthAbilities.map(ha => (
                       <option key={ha.id} value={ha.id}>
                         {ha.name} ({ha.sourceWarframe})
                       </option>

@@ -1,5 +1,13 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Helminth dynamique et sélecteur avancé
+
+- [x] Auditer les statistiques d’aptitudes et les contributions de mods de la Warframe.
+- [x] Ajouter une barre de recherche et des filtres par catégorie au sélecteur Helminth : dégâts, contrôle, buff, utilitaire et défensif.
+- [x] Calculer dynamiquement Force, Durée, Portée, Efficacité et coût énergétique des aptitudes sélectionnées à partir des mods, arcanes et éclats actifs.
+- [x] Afficher les valeurs calculées dans le Builder et le résumé Markdown ; TypeScript, build production et responsive desktop/mobile validés.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
 ## Nouvelle demande — Intégration Helminth dans le Builder
 
 - [x] Auditer les capacités subsumables Helminth de référence et concevoir le module de remplacement par slot.
