@@ -1,5 +1,13 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Polarités Umbra et mods sacrificiels
+
+- [x] Auditer les types de polarités, les slots et le calcul de capacité existants.
+- [x] Ajouter la sélection de polarité Umbra pour les slots de Warframes, armes et compagnons.
+- [x] Rendre Sacrificial Steel et Sacrificial Pressure compatibles avec la polarité Umbra via leur polarité `umbra` déjà présente dans le dataset ; le coût et la capacité se recalculent immédiatement.
+- [x] Valider TypeScript, le build de production et le rendu responsive desktop/mobile.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
 ## Nouvelle demande — Excalibur Umbra Prime
 
 - [ ] Inspecter la fiche actuelle d’Excalibur Umbra Prime dans le dataset.

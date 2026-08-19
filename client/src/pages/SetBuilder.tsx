@@ -8,7 +8,7 @@ import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
   MOA_PARTS, HOUND_PARTS,
-  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity,
+  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
@@ -85,7 +85,38 @@ const POLARITY_GLYPHS: Record<string, string> = {
   penjaga: "◇",
   umbra: "U",
   any: "✦",
+  default: "·",
+  none: "∅",
 };
+
+const POLARITY_OPTIONS: Array<{ value: SlotPolarity; label: string; description: string }> = [
+  { value: "default", label: "Équipement", description: "Polarité native de l’équipement" },
+  { value: "none", label: "Aucune", description: "Aucune polarité sur cet emplacement" },
+  { value: "umbra", label: "Umbra U", description: "Compatible avec Umbral et Sacrificial" },
+  { value: "madurai", label: "Madurai V", description: "Polarité Madurai" },
+  { value: "vazarin", label: "Vazarin D", description: "Polarité Vazarin" },
+  { value: "naramon", label: "Naramon —", description: "Polarité Naramon" },
+  { value: "zenurik", label: "Zenurik ∩", description: "Polarité Zenurik" },
+  { value: "unairu", label: "Unairu W", description: "Polarité Unairu" },
+  { value: "penjaga", label: "Penjaga ◇", description: "Polarité Penjaga" },
+];
+
+function resolveSlotPolarity(equipment: Warframe | Weapon | Companion | undefined, override: SlotPolarity | undefined, index: number): Polarity | undefined {
+  if (override === "none") return undefined;
+  if (override && override !== "default") return override as Polarity;
+  return equipment?.polarities?.[index];
+}
+
+function formatSlotPolarity(equipment: Warframe | Weapon | Companion | undefined, override: SlotPolarity | undefined, index: number): string {
+  const polarity = resolveSlotPolarity(equipment, override, index);
+  if (override === "none") return "∅";
+  if (override === "default" || !override) return polarity ? (POLARITY_GLYPHS[polarity] || polarity) : "·";
+  return POLARITY_GLYPHS[override] || override;
+}
+
+function resetSlotPolarities(): SlotPolarity[] {
+  return Array<SlotPolarity>(8).fill("default");
+}
 
 function modBaseCost(mod: Mod, rank = mod.selectedRank ?? mod.maxRank): number {
   return Math.max(2, 2 + Math.min(10, Math.max(0, Number(rank) || 0)));
@@ -152,6 +183,18 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       selectedPerkByTier,
     };
   };
+  const normalizeSlotPolarityArray = (value: unknown): SlotPolarity[] => Array.from({ length: 8 }, (_, index) => {
+    const raw = Array.isArray(value) ? value[index] : "default";
+    return POLARITY_OPTIONS.some(option => option.value === raw) ? raw as SlotPolarity : "default";
+  });
+  const rawSlotPolarities = candidate.slotPolarities && typeof candidate.slotPolarities === "object" ? candidate.slotPolarities as unknown as Record<string, unknown> : {};
+  const slotPolarities = {
+    warframe: normalizeSlotPolarityArray(rawSlotPolarities.warframe),
+    primary: normalizeSlotPolarityArray(rawSlotPolarities.primary),
+    secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary),
+    melee: normalizeSlotPolarityArray(rawSlotPolarities.melee),
+    companion: normalizeSlotPolarityArray(rawSlotPolarities.companion),
+  };
   const rawIncarnonSelections = candidate.incarnonSelections && typeof candidate.incarnonSelections === "object" ? candidate.incarnonSelections as unknown as Record<string, unknown> : {};
   const incarnonSelections: BuildIncarnonSelections = {
     primary: normalizeIncarnonSelection(rawIncarnonSelections.primary),
@@ -168,6 +211,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       ...fallback.capacityBoosts,
       ...(candidate.capacityBoosts && typeof candidate.capacityBoosts === "object" ? candidate.capacityBoosts : {}),
     },
+    slotPolarities,
     warframeMods: normalizeModArray(candidate.warframeMods, 8),
     primaryMods: normalizeModArray(candidate.primaryMods, 8),
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
@@ -462,14 +506,17 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
 interface ModSlotProps {
   mod: Mod | null;
   index: number;
+  equipment?: Warframe | Weapon | Companion;
+  polarityOverride?: SlotPolarity;
   slotPolarity?: Polarity;
   cost?: number;
   onSelect: (index: number) => void;
   onClear: (index: number) => void;
   onRankChange?: (index: number, rank: number) => void;
+  onPolarityChange?: (index: number, polarity: SlotPolarity) => void;
 }
 
-function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChange }: ModSlotProps) {
+function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, onSelect, onClear, onRankChange, onPolarityChange }: ModSlotProps) {
   const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
   return (
     <div
@@ -508,8 +555,18 @@ function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChan
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
             <span style={{ color: slotPolarity && mod.polarity === slotPolarity ? "#66bb6a" : rarityColor }}>COÛT {cost ?? modBaseCost(mod)}</span>
-            {slotPolarity && <span style={{ color: "#a78bfa" }}>SLOT {POLARITY_GLYPHS[slotPolarity] || slotPolarity}</span>}
+            <span style={{ color: polarityOverride === "umbra" ? "#c4b5fd" : "#a78bfa" }}>SLOT {formatSlotPolarity(equipment, polarityOverride, index)}</span>
           </div>
+          <select
+            value={polarityOverride || "default"}
+            onClick={event => event.stopPropagation()}
+            onChange={event => { event.stopPropagation(); onPolarityChange?.(index, event.target.value as SlotPolarity); }}
+            className="mt-1 w-full rounded-sm px-1 py-0.5 text-[9px] outline-none"
+            style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${polarityOverride === "umbra" ? "#a78bfa80" : "var(--wf-border)"}`, color: polarityOverride === "umbra" ? "#c4b5fd" : "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+            aria-label={`Polarité du slot ${index + 1}`}
+          >
+            {POLARITY_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+          </select>
           <select
             value={mod.selectedRank ?? mod.maxRank}
             onClick={event => event.stopPropagation()}
@@ -543,16 +600,18 @@ interface ModGridProps {
   mods: (Mod | null)[];
   modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
   equipment?: Warframe | Weapon | Companion;
+  slotPolarityOverrides: SlotPolarity[];
   capacityBoosted: boolean;
   onToggleCapacity: () => void;
   onSelectMod: (index: number, type: SlotType) => void;
   onClearMod: (index: number, type: SlotType) => void;
   onRankChange: (index: number, rank: number, type: SlotType) => void;
+  onPolarityChange: (index: number, polarity: SlotPolarity, type: SlotType) => void;
   accentColor?: string;
 }
 
-function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, accentColor = "#4fc3f7" }: ModGridProps) {
-  const slotPolarities = equipment?.polarities || [];
+function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, onPolarityChange, accentColor = "#4fc3f7" }: ModGridProps) {
+  const slotPolarities = slotPolarityOverrides.map((override, index) => resolveSlotPolarity(equipment, override, index));
   const capacityMax = capacityBoosted ? 60 : 30;
   const usedCapacity = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, slotPolarities[index]) : 0), 0);
   const isOverCapacity = usedCapacity > capacityMax;
@@ -571,7 +630,7 @@ function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCap
         </button>
       </div>
       <div className="px-3 py-1 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-        {equipment ? `POLARITÉS : ${(equipment.polarities || []).map(polarity => POLARITY_GLYPHS[polarity] || polarity).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
+        {equipment ? `POLARITÉS : ${slotPolarityOverrides.map((override, index) => formatSlotPolarity(equipment, override, index)).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
         {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
       <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
@@ -580,11 +639,14 @@ function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCap
             key={i}
             mod={mod}
             index={i}
+            equipment={equipment}
+            polarityOverride={slotPolarityOverrides[i] || "default"}
             slotPolarity={slotPolarities[i]}
             cost={mod ? modCost(mod, slotPolarities[i]) : undefined}
             onSelect={(idx) => onSelectMod(idx, modType)}
             onClear={(idx) => onClearMod(idx, modType)}
             onRankChange={(idx, rank) => onRankChange(idx, rank, modType)}
+            onPolarityChange={(idx, polarity) => onPolarityChange(idx, polarity, modType)}
           />
         ))}
       </div>
@@ -986,11 +1048,11 @@ function calculateCompanionStats(build: BuildSet): CompanionStatSummary | null {
 }
 
 function buildSummaryMarkdown(build: BuildSet): string {
-  const capacityLine = (label: string, mods: (Mod | null)[], equipment: Warframe | Weapon | Companion | undefined, boosted: boolean) => {
-    const polarities = equipment?.polarities || [];
+  const capacityLine = (label: string, mods: (Mod | null)[], equipment: Warframe | Weapon | Companion | undefined, boosted: boolean, overrides: SlotPolarity[]) => {
+    const polarities = overrides.map((override, index) => resolveSlotPolarity(equipment, override, index));
     const used = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, polarities[index]) : 0), 0);
     const max = boosted ? 60 : 30;
-    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — rang ${mod.selectedRank ?? mod.maxRank}/${mod.maxRank} — coût ${modCost(mod, polarities[index])}${polarities[index] ? ` — polarité ${POLARITY_GLYPHS[polarities[index]] || polarities[index]}` : ""}` : null).filter(Boolean).join("\n");
+    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — rang ${mod.selectedRank ?? mod.maxRank}/${mod.maxRank} — coût ${modCost(mod, polarities[index])} — polarité ${formatSlotPolarity(equipment, overrides[index], index)}` : null).filter(Boolean).join("\n");
     return `### ${label} — capacité ${used}/${max}${used > max ? " (DÉPASSÉE)" : ""}\n${entries || "- Aucun mod équipé"}`;
   };
   const arcanes = [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).map(arcane => `- ${arcane?.name}: ${arcane?.description}`).join("\n") || "- Aucun Arcane équipé";
@@ -1025,15 +1087,15 @@ function buildSummaryMarkdown(build: BuildSet): string {
     incarnonSummary,
     "",
     "## Mods",
-    capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe),
+    capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe, build.slotPolarities.warframe),
     "",
-    capacityLine("Arme primaire", build.primaryMods, build.primaryWeapon, build.capacityBoosts.primary),
+    capacityLine("Arme primaire", build.primaryMods, build.primaryWeapon, build.capacityBoosts.primary, build.slotPolarities.primary),
     "",
-    capacityLine("Arme secondaire", build.secondaryMods, build.secondaryWeapon, build.capacityBoosts.secondary),
+    capacityLine("Arme secondaire", build.secondaryMods, build.secondaryWeapon, build.capacityBoosts.secondary, build.slotPolarities.secondary),
     "",
-    capacityLine("Arme de mêlée", build.meleeMods, build.meleeWeapon, build.capacityBoosts.melee),
+    capacityLine("Arme de mêlée", build.meleeMods, build.meleeWeapon, build.capacityBoosts.melee, build.slotPolarities.melee),
     "",
-    capacityLine("Compagnon", build.companionMods, build.companion, build.capacityBoosts.companion),
+    capacityLine("Compagnon", build.companionMods, build.companion, build.capacityBoosts.companion, build.slotPolarities.companion),
     "",
     "## Arcanes",
     arcanes,
@@ -1430,14 +1492,15 @@ export default function SetBuilder() {
 
     updateBuild(b => {
       const nb = { ...b };
-      if (type === "warframe") nb.warframe = item as Warframe;
-      else if (type === "primary") { nb.primaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; }
-      else if (type === "secondary") { nb.secondaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; }
-      else if (type === "melee") { nb.meleeWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; }
+      if (type === "warframe") { nb.warframe = item as Warframe; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
+      else if (type === "primary") { nb.primaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; nb.slotPolarities = { ...b.slotPolarities, primary: resetSlotPolarities() }; }
+      else if (type === "secondary") { nb.secondaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; nb.slotPolarities = { ...b.slotPolarities, secondary: resetSlotPolarities() }; }
+      else if (type === "melee") { nb.meleeWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; nb.slotPolarities = { ...b.slotPolarities, melee: resetSlotPolarities() }; }
       else if (type === "companion") {
         const nextCompanion = item as Companion;
         nb.companion = nextCompanion;
         nb.companionMods = b.companionMods.map(mod => mod && isCompanionModCompatible(mod, nextCompanion) ? mod : null);
+        nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
       }
       else if (type === "arcane-warframe" && modIndex !== undefined) {
         nb.warframeArcanes = [...b.warframeArcanes];
@@ -1477,13 +1540,14 @@ export default function SetBuilder() {
   const clearSlot = (type: "warframe" | "primary" | "secondary" | "melee" | "companion") => {
     updateBuild(b => {
       const nb = { ...b };
-      if (type === "warframe") nb.warframe = undefined;
-      else if (type === "primary") { nb.primaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; }
-      else if (type === "secondary") { nb.secondaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; }
-      else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; }
+      if (type === "warframe") { nb.warframe = undefined; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
+      else if (type === "primary") { nb.primaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; nb.slotPolarities = { ...b.slotPolarities, primary: resetSlotPolarities() }; }
+      else if (type === "secondary") { nb.secondaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; nb.slotPolarities = { ...b.slotPolarities, secondary: resetSlotPolarities() }; }
+      else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; nb.slotPolarities = { ...b.slotPolarities, melee: resetSlotPolarities() }; }
       else if (type === "companion") {
         nb.companion = undefined;
         nb.companionMods = Array(8).fill(null);
+        nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
       }
       return nb;
     });
@@ -1520,6 +1584,16 @@ export default function SetBuilder() {
     updateBuild(build => ({
       ...build,
       capacityBoosts: { ...build.capacityBoosts, [key]: !build.capacityBoosts[key] },
+    }));
+  };
+
+  const setSlotPolarity = (key: BuildSlotKey, index: number, polarity: SlotPolarity) => {
+    updateBuild(build => ({
+      ...build,
+      slotPolarities: {
+        ...build.slotPolarities,
+        [key]: build.slotPolarities[key].map((current, slotIndex) => slotIndex === index ? polarity : current),
+      },
     }));
   };
 
@@ -1860,11 +1934,13 @@ export default function SetBuilder() {
               mods={activeBuild.warframeMods}
               modType="mod-warframe"
               equipment={activeBuild.warframe}
+              slotPolarityOverrides={activeBuild.slotPolarities.warframe}
               capacityBoosted={activeBuild.capacityBoosts.warframe}
               onToggleCapacity={() => toggleCapacity("warframe")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("warframe", idx, polarity)}
               accentColor="#4fc3f7"
             />
             <ModGrid
@@ -1872,11 +1948,13 @@ export default function SetBuilder() {
               mods={activeBuild.primaryMods}
               modType="mod-primary"
               equipment={activeBuild.primaryWeapon}
+              slotPolarityOverrides={activeBuild.slotPolarities.primary}
               capacityBoosted={activeBuild.capacityBoosts.primary}
               onToggleCapacity={() => toggleCapacity("primary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("primary", idx, polarity)}
               accentColor="#ff6b35"
             />
             <ModGrid
@@ -1884,11 +1962,13 @@ export default function SetBuilder() {
               mods={activeBuild.secondaryMods}
               modType="mod-secondary"
               equipment={activeBuild.secondaryWeapon}
+              slotPolarityOverrides={activeBuild.slotPolarities.secondary}
               capacityBoosted={activeBuild.capacityBoosts.secondary}
               onToggleCapacity={() => toggleCapacity("secondary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("secondary", idx, polarity)}
               accentColor="#ffd700"
             />
             <ModGrid
@@ -1896,11 +1976,13 @@ export default function SetBuilder() {
               mods={activeBuild.meleeMods}
               modType="mod-melee"
               equipment={activeBuild.meleeWeapon}
+              slotPolarityOverrides={activeBuild.slotPolarities.melee}
               capacityBoosted={activeBuild.capacityBoosts.melee}
               onToggleCapacity={() => toggleCapacity("melee")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("melee", idx, polarity)}
               accentColor="#66bb6a"
             />
             <ModGrid
@@ -1908,6 +1990,7 @@ export default function SetBuilder() {
               mods={activeBuild.companionMods}
               modType="mod-companion"
               equipment={activeBuild.companion}
+              slotPolarityOverrides={activeBuild.slotPolarities.companion}
               capacityBoosted={activeBuild.capacityBoosts.companion}
               onToggleCapacity={() => toggleCapacity("companion")}
               onSelectMod={(idx, type) => {
@@ -1919,6 +2002,7 @@ export default function SetBuilder() {
               }}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
               accentColor="#a78bfa"
             />
           </div>
