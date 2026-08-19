@@ -127,12 +127,42 @@ function modCost(mod: Mod, slotPolarity?: Polarity): number {
   return slotPolarity && slotPolarity !== "any" && mod.polarity === slotPolarity ? Math.ceil(base / 2) : base;
 }
 
-function capacityKeyForModType(type: ModGridProps["modType"]): keyof BuildSet["capacityBoosts"] {
+function capacityKeyForModType(type: ModGridProps["modType"]): BuildSlotKey {
   if (type === "mod-warframe") return "warframe";
   if (type === "mod-primary") return "primary";
   if (type === "mod-secondary") return "secondary";
   if (type === "mod-melee") return "melee";
   return "companion";
+}
+
+function getModsForBuildSlot(build: BuildSet, key: BuildSlotKey): (Mod | null)[] {
+  if (key === "warframe") return build.warframeMods;
+  if (key === "primary") return build.primaryMods;
+  if (key === "secondary") return build.secondaryMods;
+  if (key === "melee") return build.meleeMods;
+  return build.companionMods;
+}
+
+function getEquipmentForBuildSlot(build: BuildSet, key: BuildSlotKey): Warframe | Weapon | Companion | undefined {
+  if (key === "warframe") return build.warframe;
+  if (key === "primary") return build.primaryWeapon;
+  if (key === "secondary") return build.secondaryWeapon;
+  if (key === "melee") return build.meleeWeapon;
+  return build.companion;
+}
+
+function getUsedCapacity(build: BuildSet, key: BuildSlotKey, excludeIndex?: number): number {
+  const mods = getModsForBuildSlot(build, key);
+  const equipment = getEquipmentForBuildSlot(build, key);
+  const overrides = build.slotPolarities[key];
+  return mods.reduce((total, mod, index) => {
+    if (!mod || index === excludeIndex) return total;
+    return total + modCost(mod, resolveSlotPolarity(equipment, overrides[index], index));
+  }, 0);
+}
+
+function getCapacityLimit(build: BuildSet, key: BuildSlotKey): number {
+  return build.capacityBoosts[key] ? 60 : 30;
 }
 
 function isCompanionModCompatible(mod: Mod, companion?: Companion): boolean {
@@ -630,7 +660,7 @@ function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capac
         </button>
       </div>
       <div className="px-3 py-1 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-        {equipment ? `POLARITÉS : ${slotPolarityOverrides.map((override, index) => formatSlotPolarity(equipment, override, index)).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
+        {equipment ? `POLARITÉS : ${slotPolarityOverrides.map((override, index) => formatSlotPolarity(equipment, override, index)).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG · AJOUTS AU-DELÀ DE LA CAPACITÉ BLOQUÉS` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
         {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
       <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
@@ -1490,6 +1520,20 @@ export default function SetBuilder() {
       return;
     }
 
+    if (type.startsWith("mod-") && modIndex !== undefined) {
+      const key = capacityKeyForModType(type as ModGridProps["modType"]);
+      const mod = selectModAtMaxRank(item as Mod);
+      const equipment = getEquipmentForBuildSlot(activeBuild, key);
+      const slotPolarity = resolveSlotPolarity(equipment, activeBuild.slotPolarities[key][modIndex], modIndex);
+      const usedWithoutSlot = getUsedCapacity(activeBuild, key, modIndex);
+      const nextCost = modCost(mod, slotPolarity);
+      const capacity = getCapacityLimit(activeBuild, key);
+      if (usedWithoutSlot + nextCost > capacity) {
+        toast.error(`Capacité insuffisante : ${usedWithoutSlot + nextCost}/${capacity}. Réduisez un rang, changez une polarité ou ajoutez +30 de capacité.`);
+        return;
+      }
+    }
+
     updateBuild(b => {
       const nb = { ...b };
       if (type === "warframe") { nb.warframe = item as Warframe; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
@@ -1588,13 +1632,25 @@ export default function SetBuilder() {
   };
 
   const setSlotPolarity = (key: BuildSlotKey, index: number, polarity: SlotPolarity) => {
-    updateBuild(build => ({
-      ...build,
-      slotPolarities: {
-        ...build.slotPolarities,
-        [key]: build.slotPolarities[key].map((current, slotIndex) => slotIndex === index ? polarity : current),
-      },
-    }));
+    updateBuild(build => {
+      const mods = getModsForBuildSlot(build, key);
+      const equipment = getEquipmentForBuildSlot(build, key);
+      const nextSlotPolarity = resolveSlotPolarity(equipment, polarity, index);
+      const usedWithoutSlot = getUsedCapacity(build, key, index);
+      const nextCost = mods[index] ? modCost(mods[index] as Mod, nextSlotPolarity) : 0;
+      const capacity = getCapacityLimit(build, key);
+      if (usedWithoutSlot + nextCost > capacity) {
+        toast.error(`Polarité refusée : ${usedWithoutSlot + nextCost}/${capacity}. La combinaison dépasserait la capacité.`);
+        return build;
+      }
+      return {
+        ...build,
+        slotPolarities: {
+          ...build.slotPolarities,
+          [key]: build.slotPolarities[key].map((current, slotIndex) => slotIndex === index ? polarity : current),
+        },
+      };
+    });
   };
 
   const setModRank = (index: number, rank: number, type: SlotType) => {
@@ -1604,6 +1660,18 @@ export default function SetBuilder() {
       if (!current) return build;
       const maxRank = Math.max(0, Number(current.maxRank) || 0);
       const selectedRank = Math.max(0, Math.min(Math.round(rank), maxRank));
+      const key = type.startsWith("mod-") ? capacityKeyForModType(type as ModGridProps["modType"]) : null;
+      if (!key) return build;
+      const equipment = getEquipmentForBuildSlot(build, key);
+      const slotPolarity = resolveSlotPolarity(equipment, build.slotPolarities[key][index], index);
+      const nextMod = { ...current, selectedRank };
+      const usedWithoutSlot = getUsedCapacity(build, key, index);
+      const nextCost = modCost(nextMod, slotPolarity);
+      const capacity = getCapacityLimit(build, key);
+      if (usedWithoutSlot + nextCost > capacity) {
+        toast.error(`Rang refusé : ${usedWithoutSlot + nextCost}/${capacity}. Réduisez le rang ou ajoutez +30 de capacité.`);
+        return build;
+      }
       const nextSlots = [...slots] as (Mod | null)[];
       nextSlots[index] = { ...current, selectedRank };
       if (type === "mod-warframe") return { ...build, warframeMods: nextSlots };

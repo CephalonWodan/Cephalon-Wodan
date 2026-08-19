@@ -1,5 +1,13 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Validation stricte de capacité des mods
+
+- [x] Auditer les flux d’ajout, de rang et de polarité des mods.
+- [x] Bloquer l’ajout d’un mod si la capacité disponible est dépassée.
+- [x] Bloquer les changements de rang ou de polarité qui dépassent la capacité.
+- [x] Ajouter un retour visuel explicite, compiler et valider le build.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
 ## Nouvelle demande — Polarités Umbra et mods sacrificiels
 
 - [x] Auditer les types de polarités, les slots et le calcul de capacité existants.
