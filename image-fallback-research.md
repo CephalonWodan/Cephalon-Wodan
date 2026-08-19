@@ -50,3 +50,7 @@ Le test réseau local confirme les quatre fichiers Bane en HTTP 200 avec `conten
 ## Vérification dans le catalogue Mods
 
 Le catalogue filtré sur `Bane` affiche les quatre mods demandés avec leurs URLs Wiki originales : `BaneofCorpusMod.png`, `BaneofGrineerMod.png`, `BaneofInfestedMod.png` et `BaneofOrokinMod.png`. Les quatre entrées sont visibles dans la grille et leurs cartes de mod sont chargées correctement. Les variantes Primed restent inchangées et conservent leurs propres images.
+
+## Vérification du cas Scan Aquatic Lifeforms
+
+La page officielle Wiki de [Scan Aquatic Lifeforms](https://wiki.warframe.com/w/Scan_Aquatic_Lifeforms) affiche une vraie carte de mod dans l’infobox visuelle : le mod n’est donc pas dépourvu d’image. L’absence dans l’API de l’identifiant exact vient d’une métadonnée incomplète ou d’un nom d’asset non indexé, pas de l’absence du média Wiki.

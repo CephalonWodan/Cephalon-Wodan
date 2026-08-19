@@ -1,0 +1,331 @@
+{
+  "total": 36,
+  "valid": 36,
+  "failures": [],
+  "results": [
+    {
+      "id": "calm-frenzy",
+      "name": "Calm & Frenzy",
+      "imageName": "YinYangTargetAugmentCard.jpg",
+      "url": "https://cdn.warframestat.us/img/YinYangTargetAugmentCard.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/YinYangTargetAugmentCard.jpg"
+    },
+    {
+      "id": "carnis-carapace",
+      "name": "Carnis Carapace",
+      "imageName": "AshenCarapace.jpg",
+      "url": "https://cdn.warframestat.us/img/AshenCarapace.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AshenCarapace.jpg"
+    },
+    {
+      "id": "cataclysmic-continuum",
+      "name": "Cataclysmic Continuum",
+      "imageName": "LimboCataclysmAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/LimboCataclysmAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/LimboCataclysmAugment.jpg"
+    },
+    {
+      "id": "cataclysmic-gate",
+      "name": "Cataclysmic Gate",
+      "imageName": "WispSunAugmentCard.jpg",
+      "url": "https://cdn.warframestat.us/img/WispSunAugmentCard.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/WispSunAugmentCard.jpg"
+    },
+    {
+      "id": "catalyzing-shields",
+      "name": "Catalyzing Shields",
+      "imageName": "FixedShieldAndShieldGatingDuration.jpg",
+      "url": "https://cdn.warframestat.us/img/FixedShieldAndShieldGatingDuration.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/FixedShieldAndShieldGatingDuration.jpg"
+    },
+    {
+      "id": "cathode-current",
+      "name": "Cathode Current",
+      "imageName": "GyreEnergizedAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/GyreEnergizedAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/GyreEnergizedAugment.jpg"
+    },
+    {
+      "id": "champion-s-blessing",
+      "name": "Champion’s Blessing",
+      "imageName": "TrinityBlessingAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/TrinityBlessingAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/TrinityBlessingAugment.jpg"
+    },
+    {
+      "id": "chaos-sphere",
+      "name": "Chaos Sphere",
+      "imageName": "NyxChaosAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/NyxChaosAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/NyxChaosAugment.jpg"
+    },
+    {
+      "id": "diamond-skin",
+      "name": "Diamond Skin",
+      "imageName": "AvatarDamageResistanceLaser.jpg",
+      "url": "https://cdn.warframestat.us/img/AvatarDamageResistanceLaser.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AvatarDamageResistanceLaser.jpg"
+    },
+    {
+      "id": "lightning-rod",
+      "name": "Lightning Rod",
+      "imageName": "AvatarDamageResistanceElectricity.jpg",
+      "url": "https://cdn.warframestat.us/img/AvatarDamageResistanceElectricity.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AvatarDamageResistanceElectricity.jpg"
+    },
+    {
+      "id": "master-thief",
+      "name": "Master Thief",
+      "imageName": "AvatarChanceToLootMod.jpg",
+      "url": "https://cdn.warframestat.us/img/AvatarChanceToLootMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AvatarChanceToLootMod.jpg"
+    },
+    {
+      "id": "primed-fast-deflection",
+      "name": "Primed Fast Deflection",
+      "imageName": "ShieldRechargeRate.jpg",
+      "url": "https://cdn.warframestat.us/img/ShieldRechargeRate.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/ShieldRechargeRate.jpg"
+    },
+    {
+      "id": "primed-redirection",
+      "name": "Primed Redirection",
+      "imageName": "ShieldMaxMod.jpg",
+      "url": "https://cdn.warframestat.us/img/ShieldMaxMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/ShieldMaxMod.jpg"
+    },
+    {
+      "id": "push-pull",
+      "name": "Push & Pull",
+      "imageName": "EquinoxSwitchAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/EquinoxSwitchAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/EquinoxSwitchAugment.jpg"
+    },
+    {
+      "id": "pyroclastic-flow",
+      "name": "Pyroclastic Flow",
+      "imageName": "NezhaFirewalkerAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/NezhaFirewalkerAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/NezhaFirewalkerAugment.jpg"
+    },
+    {
+      "id": "quick-charge",
+      "name": "Quick Charge",
+      "imageName": "PowerShields.jpg",
+      "url": "https://cdn.warframestat.us/img/PowerShields.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/PowerShields.jpg"
+    },
+    {
+      "id": "quick-thinking",
+      "name": "Quick Thinking",
+      "imageName": "AvatarQuickThinkingMod.jpg",
+      "url": "https://cdn.warframestat.us/img/AvatarQuickThinkingMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AvatarQuickThinkingMod.jpg"
+    },
+    {
+      "id": "radiant-finish",
+      "name": "Radiant Finish",
+      "imageName": "ExcaliburRadialBlindAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/ExcaliburRadialBlindAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/ExcaliburRadialBlindAugment.jpg"
+    },
+    {
+      "id": "razor-mortar",
+      "name": "Razor Mortar",
+      "imageName": "SentientWhirlwindAugmentCard.jpg",
+      "url": "https://cdn.warframestat.us/img/SentientWhirlwindAugmentCard.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/SentientWhirlwindAugmentCard.jpg"
+    },
+    {
+      "id": "razorwing-blitz",
+      "name": "Razorwing Blitz",
+      "imageName": "TitaniaFlightAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/TitaniaFlightAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/TitaniaFlightAugment.jpg"
+    },
+    {
+      "id": "recharge-barrier",
+      "name": "Recharge Barrier",
+      "imageName": "VoltShieldPvPAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/VoltShieldPvPAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/VoltShieldPvPAugment.jpg"
+    },
+    {
+      "id": "resilient-focus",
+      "name": "Resilient Focus",
+      "imageName": "ArmourMod.jpg",
+      "url": "https://cdn.warframestat.us/img/ArmourMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/ArmourMod.jpg"
+    },
+    {
+      "id": "scan-aquatic-lifeforms",
+      "name": "Scan Aquatic Lifeforms",
+      "imageName": "ScanAquaticLifeformsMod.png",
+      "url": "https://wiki.warframe.com/images/ScanAquaticLifeformsMod.png?f59e7",
+      "status": 200,
+      "contentType": "image/png",
+      "finalUrl": "https://wiki.warframe.com/images/ScanAquaticLifeformsMod.png?f59e7"
+    },
+    {
+      "id": "shock-absorbers",
+      "name": "Shock Absorbers",
+      "imageName": "ShockAbsorbersMod.jpg",
+      "url": "https://cdn.warframestat.us/img/ShockAbsorbersMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/ShockAbsorbersMod.jpg"
+    },
+    {
+      "id": "vampiric-grasp",
+      "name": "Vampiric Grasp",
+      "imageName": "XakuGraspAugment.jpg",
+      "url": "https://cdn.warframestat.us/img/XakuGraspAugment.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/XakuGraspAugment.jpg"
+    },
+    {
+      "id": "warm-coat",
+      "name": "Warm Coat",
+      "imageName": "AvatarMissionSpecificResistanceIce.jpg",
+      "url": "https://cdn.warframestat.us/img/AvatarMissionSpecificResistanceIce.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AvatarMissionSpecificResistanceIce.jpg"
+    },
+    {
+      "id": "catalyzer-link",
+      "name": "Catalyzer Link",
+      "imageName": "StatusChanceWhileAimingMods.jpg",
+      "url": "https://cdn.warframestat.us/img/StatusChanceWhileAimingMods.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/StatusChanceWhileAimingMods.jpg"
+    },
+    {
+      "id": "cautious-shot",
+      "name": "Cautious Shot",
+      "imageName": "WeaponResistSelfDamageMod.jpg",
+      "url": "https://cdn.warframestat.us/img/WeaponResistSelfDamageMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/WeaponResistSelfDamageMod.jpg"
+    },
+    {
+      "id": "charged-chamber",
+      "name": "Charged Chamber",
+      "imageName": "RifleChargedChamberMod.jpg",
+      "url": "https://cdn.warframestat.us/img/RifleChargedChamberMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/RifleChargedChamberMod.jpg"
+    },
+    {
+      "id": "sniper-ammo-mutation",
+      "name": "Sniper Ammo Mutation",
+      "imageName": "SniperAmmoMutatorMod.jpg",
+      "url": "https://cdn.warframestat.us/img/SniperAmmoMutatorMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/SniperAmmoMutatorMod.jpg"
+    },
+    {
+      "id": "calculated-victory",
+      "name": "Calculated Victory",
+      "imageName": "RestoreShieldOnKillPistolMod.jpg",
+      "url": "https://cdn.warframestat.us/img/RestoreShieldOnKillPistolMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/RestoreShieldOnKillPistolMod.jpg"
+    },
+    {
+      "id": "carnis-stinger",
+      "name": "Carnis Stinger",
+      "imageName": "AshenStinger.jpg",
+      "url": "https://cdn.warframestat.us/img/AshenStinger.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AshenStinger.jpg"
+    },
+    {
+      "id": "carnis-mandible",
+      "name": "Carnis Mandible",
+      "imageName": "AshenMandible.jpg",
+      "url": "https://cdn.warframestat.us/img/AshenMandible.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/AshenMandible.jpg"
+    },
+    {
+      "id": "carving-mantis",
+      "name": "Carving Mantis",
+      "imageName": "DualSwordCmbThree.jpg",
+      "url": "https://cdn.warframestat.us/img/DualSwordCmbThree.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/DualSwordCmbThree.jpg"
+    },
+    {
+      "id": "reflex-coil",
+      "name": "Reflex Coil",
+      "imageName": "MeleeChargeRateMod.jpg",
+      "url": "https://cdn.warframestat.us/img/MeleeChargeRateMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/MeleeChargeRateMod.jpg"
+    },
+    {
+      "id": "radon-claws",
+      "name": "Radon Claws",
+      "imageName": "KubrowRadiationEventMeleeMod.jpg",
+      "url": "https://cdn.warframestat.us/img/KubrowRadiationEventMeleeMod.jpg",
+      "status": 200,
+      "contentType": "image/jpeg",
+      "finalUrl": "https://raw.githubusercontent.com/wfcd/warframe-items/master/data/img/KubrowRadiationEventMeleeMod.jpg"
+    }
+  ]
+}

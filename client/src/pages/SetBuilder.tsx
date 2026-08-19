@@ -9,10 +9,12 @@ import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
   MOA_PARTS, HOUND_PARTS,
   Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity,
-  getRarityColor, getRarityLabel, createEmptyBuild
+  getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
+import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
+import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
@@ -136,6 +138,26 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     if ("effects" in entry && Array.isArray((entry as any).effects)) return { shard: entry as ArchonShard, effectIndex: 0 };
     return null;
   });
+  const normalizeIncarnonSelection = (value: unknown): BuildIncarnonSelection | null => {
+    if (!value || typeof value !== "object") return null;
+    const entry = value as Record<string, any>;
+    if (typeof entry.profileWeapon !== "string" || !entry.profileWeapon.trim()) return null;
+    const selectedPerkByTier = entry.selectedPerkByTier && typeof entry.selectedPerkByTier === "object"
+      ? Object.fromEntries(Object.entries(entry.selectedPerkByTier).map(([tier, perk]) => [tier, perk === null || perk === undefined ? null : Math.max(0, Number(perk) || 0)]))
+      : {};
+    return {
+      profileWeapon: entry.profileWeapon,
+      active: Boolean(entry.active),
+      selectedEvolution: Math.max(1, Math.min(4, Number(entry.selectedEvolution) || 1)),
+      selectedPerkByTier,
+    };
+  };
+  const rawIncarnonSelections = candidate.incarnonSelections && typeof candidate.incarnonSelections === "object" ? candidate.incarnonSelections as unknown as Record<string, unknown> : {};
+  const incarnonSelections: BuildIncarnonSelections = {
+    primary: normalizeIncarnonSelection(rawIncarnonSelections.primary),
+    secondary: normalizeIncarnonSelection(rawIncarnonSelections.secondary),
+    melee: normalizeIncarnonSelection(rawIncarnonSelections.melee),
+  };
   return {
     ...fallback,
     ...candidate,
@@ -156,6 +178,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
     meleeArcanes: normalizeUniqueArray(candidate.meleeArcanes, 1),
     archonShards: normalizeShards(candidate.archonShards),
+    incarnonSelections,
     createdAt: typeof candidate.createdAt === "string" ? candidate.createdAt : fallback.createdAt,
   };
 }
@@ -303,7 +326,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
               const isArcane = type.startsWith("arcane-");
               const arcane = isArcane ? item as Arcane : null;
               const isUnavailable = unavailableIds.includes(itemIdentity(item));
-              const assetType: AssetType | null = type === "warframe" ? "warframe" : type === "primary" || type === "secondary" || type === "melee" ? "weapon" : type.startsWith("mod-") ? "mod" : type.startsWith("arcane-") ? "arcane" : null;
+              const assetType: AssetType | null = type === "warframe" ? "warframe" : type === "primary" || type === "secondary" || type === "melee" ? "weapon" : type === "companion" ? "companion" : type === "archon-shard" ? "shard" : type.startsWith("mod-") ? "mod" : type.startsWith("arcane-") ? "arcane" : null;
               const iconFallback = type === "warframe" ? <Shield size={15} style={{ color: rarityColor }} /> : type.includes("mod") ? <Star size={15} style={{ color: rarityColor }} /> : type.includes("arcane") ? <Sparkles size={15} style={{ color: rarityColor }} /> : type === "archon-shard" ? <Gem size={15} style={{ color: rarityColor }} /> : type === "companion" ? <Users size={15} style={{ color: rarityColor }} /> : <Sword size={15} style={{ color: rarityColor }} />;
               return (
                 <button
@@ -372,6 +395,7 @@ interface EquipSlotProps {
 
 function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f7" }: EquipSlotProps) {
   const rarityColor = item ? getRarityColor((item as any).rarity || "common") : accentColor;
+  const assetType: AssetType = label === "WARFRAME" ? "warframe" : label.includes("COMPAGNON") ? "companion" : "weapon";
   return (
     <div
       className="wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200"
@@ -408,7 +432,7 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-sm flex items-center justify-center shrink-0"
               style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
-              <span className="text-lg">{label === "WARFRAME" ? "⚡" : label.includes("COMPAGNON") ? "🐾" : "⚔️"}</span>
+              <AssetImage item={item} type={assetType} alt={item.name} className="h-full w-full object-contain" fallback={<span className="text-lg">{label === "WARFRAME" ? "⚡" : label.includes("COMPAGNON") ? "🐾" : "⚔️"}</span>} />
             </div>
             <div>
               <div className="text-sm font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
@@ -461,19 +485,26 @@ function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChan
     >
       {mod ? (
         <div className="p-2">
-          <div className="flex items-start justify-between">
-            <span className="text-xs font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)", fontSize: "10px" }}>
-              {mod.name}
-            </span>
-            <button
-              onClick={e => { e.stopPropagation(); onClear(index); }}
-              className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
-            >
-              <X size={10} style={{ color: "var(--wf-text-dim)" }} />
-            </button>
-          </div>
-          <div className="text-xs mt-0.5" style={{ color: rarityColor, fontSize: "9px", fontFamily: "var(--font-display)" }}>
-            {mod.effect}
+          <div className="flex items-start gap-2">
+            <div className="w-8 h-10 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
+              <AssetImage item={mod} type="mod" alt={mod.name} className="h-full w-full object-contain" fallback={<Star size={15} style={{ color: rarityColor }} />} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-start justify-between">
+                <span className="text-xs font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)", fontSize: "10px" }}>
+                  {mod.name}
+                </span>
+                <button
+                  onClick={e => { e.stopPropagation(); onClear(index); }}
+                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                >
+                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                </button>
+              </div>
+              <div className="text-xs mt-0.5" style={{ color: rarityColor, fontSize: "9px", fontFamily: "var(--font-display)" }}>
+                {mod.effect}
+              </div>
+            </div>
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
             <span style={{ color: slotPolarity && mod.polarity === slotPolarity ? "#66bb6a" : rarityColor }}>COÛT {cost ?? modBaseCost(mod)}</span>
@@ -572,11 +603,11 @@ interface ArcaneGridProps {
 }
 
 function ArcaneGrid({ label, arcanes, arcaneType, onSelect, onClear, accentColor }: ArcaneGridProps) {
-  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
+  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid var(--wf-border)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}><Sparkles size={12} style={{ color: accentColor }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)", fontSize: "10px" }}>ARCANES — {label}</span><span className="ml-auto text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{arcanes.filter(Boolean).length}/{arcanes.length}</span></div><div className="p-2 grid grid-cols-1 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{arcanes.map((arcane, index) => { const color = arcane ? getRarityColor(arcane.rarity) : "#1e3a4a"; return <div key={index} onClick={() => onSelect(index, arcaneType)} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: arcane ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${arcane ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-cyan)"; }} onMouseLeave={event => { if (!arcane) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{arcane ? <><div className="flex items-start justify-between gap-2"><AssetImage item={arcane} type="arcane" alt={arcane.name} className="h-8 w-8 shrink-0 object-contain" fallback={<Sparkles size={14} style={{ color }} />} /><span className="min-w-0 flex-1 truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{arcane.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, arcaneType); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{arcane.description}</div></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Arcane</div>}</div>; })}</div></div>;
 }
 
 function ArchonShardGrid({ shards, onSelect, onClear, onEffectChange }: { shards: (SelectedArchonShard | null)[]; onSelect: (index: number, type: SlotType) => void; onClear: (index: number, type: SlotType) => void; onEffectChange: (index: number, effectIndex: number) => void }) {
-  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-right text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length} · {ARCHON_SHARD_EFFECT_TOTAL} effets</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><span className="truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
+  return <div className="wf-hud-panel hud-frame rounded-sm overflow-hidden" style={{ border: "1px solid rgba(255,202,40,.4)" }}><div className="px-3 py-2 border-b flex items-center gap-2" style={{ borderColor: "rgba(255,202,40,.25)", backgroundColor: "rgba(255,202,40,.05)" }}><Gem size={12} style={{ color: "#ffca28" }} /><span className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "#ffca28", fontSize: "10px" }}>ÉCLATS D’ARCHONTE</span><span className="ml-auto text-right text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>{shards.filter(Boolean).length}/{shards.length} · {ARCHON_SHARD_EFFECT_TOTAL} effets</span></div><div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>{shards.map((shard, index) => { const color = shard?.shard.variant === "tauforged" ? "#ff6b35" : "#ffca28"; return <div key={index} onClick={() => onSelect(index, "archon-shard")} className="relative min-h-14 cursor-pointer rounded-sm p-2 transition-all duration-150" style={{ backgroundColor: shard ? `${color}10` : "rgba(0,0,0,.2)", border: `1px solid ${shard ? color : "var(--wf-border)"}` }} onMouseEnter={event => { if (!shard) event.currentTarget.style.borderColor = "#ffca28"; }} onMouseLeave={event => { if (!shard) event.currentTarget.style.borderColor = "var(--wf-border)"; }}>{shard ? <><div className="flex items-start justify-between gap-2"><AssetImage item={shard.shard} type="shard" alt={shard.shard.name} className="h-8 w-8 shrink-0 object-contain" fallback={<Gem size={14} style={{ color }} />} /><span className="min-w-0 flex-1 truncate text-[10px] font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{shard.shard.name}</span><button onClick={event => { event.stopPropagation(); onClear(index, "archon-shard"); }} className="shrink-0"><X size={10} style={{ color: "var(--wf-text-dim)" }} /></button></div><div className="mt-1 line-clamp-1 text-[9px]" style={{ color, fontFamily: "var(--font-display)" }}>{shard.shard.effects[shard.effectIndex]}</div><select value={shard.effectIndex} onClick={event => event.stopPropagation()} onChange={event => { event.stopPropagation(); onEffectChange(index, Number(event.target.value)); }} className="mt-1 w-full rounded-sm px-1.5 py-1 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${color}50`, color: "var(--wf-text)" }}>{shard.shard.effects.map((effect, effectIndex) => <option key={effectIndex} value={effectIndex}>Effet {effectIndex + 1} — {effect}</option>)}</select></> : <div className="wf-empty-slot relative flex items-center gap-2 py-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}><Plus size={13} /> Ajouter un Éclat</div>}</div>; })}</div></div>;
 }
 
 interface EnhancementBonusSummary {
@@ -600,8 +631,10 @@ interface WeaponDamageBreakdown {
   elements: Array<{ name: string; damage: number; color: string }>;
   critChance: number;
   critMultiplier: number;
+  statusChance: number;
   averageDamage: number;
   headshotDamage: number;
+  incarnonSources: string[];
 }
 
 interface WarframeStatSummary {
@@ -626,10 +659,11 @@ interface WarframeStatSummary {
   activeMods: Array<{ name: string; effect: string; cost: number }>;
 }
 
-function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = [], faction: string = "Tous", comboLevel: number = 1, stanceBonus: number = 0): WeaponDamageBreakdown {
-  if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [], critChance: 0, critMultiplier: 0, averageDamage: 0, headshotDamage: 0 };
+function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = [], faction: string = "Tous", comboLevel: number = 1, stanceBonus: number = 0, incarnonSelection: BuildIncarnonSelection | null = null): WeaponDamageBreakdown {
+  if (!weapon) return { baseDamage: 0, totalDamage: 0, elements: [], critChance: 0, critMultiplier: 0, statusChance: 0, averageDamage: 0, headshotDamage: 0, incarnonSources: [] };
+  const incarnonBonus = getIncarnonBonus(getIncarnonProfile(weapon), incarnonSelection);
   let baseDamage = weapon.damage || 100;
-  let damageMultiplier = 1;
+  let damageMultiplier = 1 + incarnonBonus.damagePercent;
   let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
 
   mods.forEach(mod => {
@@ -670,8 +704,8 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   }));
   const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
 
-  const baseCritChance = weapon.critChance ?? 0.20;
-  const baseCritMult = weapon.critMultiplier ?? 2.0;
+  const baseCritChance = (weapon.critChance ?? 0.20) + incarnonBonus.criticalChanceFlat;
+  const baseCritMult = (weapon.critMultiplier ?? 2.0) + incarnonBonus.criticalMultiplierFlat;
   let critChanceBonus = 0;
   let critMultBonus = 0;
 
@@ -717,8 +751,10 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
     elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier * comboMultiplier) })),
     critChance: Math.round(finalCritChance * 100),
     critMultiplier: Number(finalCritMult.toFixed(1)),
+    statusChance: Math.round(((weapon.statusChance ?? 0) + incarnonBonus.statusChanceFlat) * 100),
     averageDamage,
     headshotDamage,
+    incarnonSources: incarnonBonus.sources,
   };
 }
 
@@ -964,6 +1000,15 @@ function buildSummaryMarkdown(build: BuildSet): string {
   const parts = build.companionParts;
   const partsSummary = parts && build.companion && ["moa", "hound"].includes(build.companion.type.toLowerCase()) ? `\n- Configuration modulaire : Tête [${parts.head || "—"}], Support [${parts.bracket || "—"}], Cœur [${parts.core || "—"}], Gyroscope [${parts.gyro || "—"}]` : "";
   const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
+  const incarnonSummary = [
+    { label: "Primaire", weapon: build.primaryWeapon, selection: build.incarnonSelections.primary },
+    { label: "Secondaire", weapon: build.secondaryWeapon, selection: build.incarnonSelections.secondary },
+    { label: "Mêlée", weapon: build.meleeWeapon, selection: build.incarnonSelections.melee },
+  ].map(entry => {
+    const tree = getIncarnonExportTree(entry.weapon, entry.selection);
+    if (!tree) return `- ${entry.label} : aucun arbre Incarnon sélectionné`;
+    return `- ${entry.label} — ${tree.weapon} : ${tree.active ? "forme active" : "forme inactive"}, évolution ${tree.selectedEvolution}`;
+  }).join("\n");
   return [
     `# ${build.name}`,
     "",
@@ -975,6 +1020,9 @@ function buildSummaryMarkdown(build: BuildSet): string {
     `- Arme secondaire : ${build.secondaryWeapon?.name || "—"}`,
     `- Arme de mêlée : ${build.meleeWeapon?.name || "—"}`,
     `- Compagnon : ${build.companion?.name || "—"}`,
+    "",
+    "## Incarnon",
+    incarnonSummary,
     "",
     "## Mods",
     capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe),
@@ -1107,12 +1155,13 @@ function StatsPanel({ build }: { build: BuildSet }) {
           </div>
 
           {build.primaryWeapon && (() => {
-            const primaryDmgData = calculateWeaponDamage(build.primaryWeapon, build.primaryMods, selectedFaction);
+            const primaryDmgData = calculateWeaponDamage(build.primaryWeapon, build.primaryMods, selectedFaction, 1, 0, build.incarnonSelections.primary);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#ff6b35", fontFamily: "var(--font-display)" }}>
-                    ARME PRIMAIRE : {build.primaryWeapon.name.toUpperCase()}
+                    <span>ARME PRIMAIRE : {build.primaryWeapon.name.toUpperCase()}</span>
+                    {build.incarnonSelections.primary?.active && <span className="ml-2 rounded-sm px-1.5 py-0.5 text-[8px]" style={{ backgroundColor: "rgba(245,158,11,.16)", color: "#f59e0b", border: "1px solid rgba(245,158,11,.45)" }}>INCARNON E{build.incarnonSelections.primary.selectedEvolution}</span>}
                   </div>
                   <span className="text-[10px] font-mono font-bold" style={{ color: "#ff6b35" }}>
                     {primaryDmgData.totalDamage} DÉGÂTS TOTAUX
@@ -1147,12 +1196,13 @@ function StatsPanel({ build }: { build: BuildSet }) {
 
           {build.secondaryWeapon && (() => {
             const currentFaction = (build as any).selectedFaction || "Tous";
-            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, selectedFaction);
+            const secondaryDmgData = calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, selectedFaction, 1, 0, build.incarnonSelections.secondary);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#42a5f5", fontFamily: "var(--font-display)" }}>
-                    ARME SECONDAIRE : {build.secondaryWeapon.name.toUpperCase()}
+                    <span>ARME SECONDAIRE : {build.secondaryWeapon.name.toUpperCase()}</span>
+                    {build.incarnonSelections.secondary?.active && <span className="ml-2 rounded-sm px-1.5 py-0.5 text-[8px]" style={{ backgroundColor: "rgba(245,158,11,.16)", color: "#f59e0b", border: "1px solid rgba(245,158,11,.45)" }}>INCARNON E{build.incarnonSelections.secondary.selectedEvolution}</span>}
                   </div>
                   <span className="text-[10px] font-mono font-bold" style={{ color: "#42a5f5" }}>
                     {secondaryDmgData.totalDamage} DÉGÂTS
@@ -1189,12 +1239,13 @@ function StatsPanel({ build }: { build: BuildSet }) {
             const currentFaction = selectedFaction;
             const currentCombo = selectedCombo;
             const currentStance = selectedStanceBonus;
-            const meleeDmgData = calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance);
+            const meleeDmgData = calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance, build.incarnonSelections.melee);
             return (
               <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
                 <div className="flex items-center justify-between">
                   <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#66bb6a", fontFamily: "var(--font-display)" }}>
-                    ARME DE MÊLÉE : {build.meleeWeapon.name.toUpperCase()}
+                    <span>ARME DE MÊLÉE : {build.meleeWeapon.name.toUpperCase()}</span>
+                    {build.incarnonSelections.melee?.active && <span className="ml-2 rounded-sm px-1.5 py-0.5 text-[8px]" style={{ backgroundColor: "rgba(245,158,11,.16)", color: "#f59e0b", border: "1px solid rgba(245,158,11,.45)" }}>INCARNON E{build.incarnonSelections.melee.selectedEvolution}</span>}
                   </div>
                   <span className="text-[10px] font-mono font-bold" style={{ color: "#66bb6a" }}>
                     {meleeDmgData.totalDamage} DÉGÂTS (x{currentCombo})
@@ -1268,9 +1319,9 @@ function StatsPanel({ build }: { build: BuildSet }) {
             const currentFaction = selectedFaction;
             const currentCombo = selectedCombo;
             const currentStance = selectedStanceBonus;
-            const primaryDmg = build.primaryWeapon ? calculateWeaponDamage(build.primaryWeapon, build.primaryMods, currentFaction) : null;
-            const secondaryDmg = build.secondaryWeapon ? calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, currentFaction) : null;
-            const meleeDmg = build.meleeWeapon ? calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance) : null;
+            const primaryDmg = build.primaryWeapon ? calculateWeaponDamage(build.primaryWeapon, build.primaryMods, currentFaction, 1, 0, build.incarnonSelections.primary) : null;
+            const secondaryDmg = build.secondaryWeapon ? calculateWeaponDamage(build.secondaryWeapon, build.secondaryMods, currentFaction, 1, 0, build.incarnonSelections.secondary) : null;
+            const meleeDmg = build.meleeWeapon ? calculateWeaponDamage(build.meleeWeapon, build.meleeMods, currentFaction, currentCombo, currentStance, build.incarnonSelections.melee) : null;
 
             const weaponsList = [
               primaryDmg && { name: "Primaire", dps: primaryDmg.averageDamage * 2.5, color: "#ff6b35" },
@@ -1380,9 +1431,9 @@ export default function SetBuilder() {
     updateBuild(b => {
       const nb = { ...b };
       if (type === "warframe") nb.warframe = item as Warframe;
-      else if (type === "primary") nb.primaryWeapon = item as Weapon;
-      else if (type === "secondary") nb.secondaryWeapon = item as Weapon;
-      else if (type === "melee") nb.meleeWeapon = item as Weapon;
+      else if (type === "primary") { nb.primaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; }
+      else if (type === "secondary") { nb.secondaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; }
+      else if (type === "melee") { nb.meleeWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; }
       else if (type === "companion") {
         const nextCompanion = item as Companion;
         nb.companion = nextCompanion;
@@ -1427,9 +1478,9 @@ export default function SetBuilder() {
     updateBuild(b => {
       const nb = { ...b };
       if (type === "warframe") nb.warframe = undefined;
-      else if (type === "primary") nb.primaryWeapon = undefined;
-      else if (type === "secondary") nb.secondaryWeapon = undefined;
-      else if (type === "melee") nb.meleeWeapon = undefined;
+      else if (type === "primary") { nb.primaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; }
+      else if (type === "secondary") { nb.secondaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; }
+      else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; }
       else if (type === "companion") {
         nb.companion = undefined;
         nb.companionMods = Array(8).fill(null);
@@ -1499,7 +1550,18 @@ export default function SetBuilder() {
   };
 
   const exportBuild = () => {
-    const payload = { format: "warframe-set-builder", version: 2, exportedAt: new Date().toISOString(), build: { ...activeBuild, name: buildName } };
+    const build = { ...activeBuild, name: buildName };
+    const payload = {
+      format: "warframe-set-builder",
+      version: 3,
+      exportedAt: new Date().toISOString(),
+      build,
+      incarnonTrees: {
+        primary: getIncarnonExportTree(build.primaryWeapon, build.incarnonSelections.primary),
+        secondary: getIncarnonExportTree(build.secondaryWeapon, build.incarnonSelections.secondary),
+        melee: getIncarnonExportTree(build.meleeWeapon, build.incarnonSelections.melee),
+      },
+    };
     const blobUrl = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }));
     const anchor = document.createElement("a");
     anchor.href = blobUrl;
@@ -1716,6 +1778,31 @@ export default function SetBuilder() {
               onSelect={() => setSelectorOpen({ type: "companion" })}
               onClear={() => clearSlot("companion")}
               accentColor="#a78bfa"
+            />
+          </div>
+
+          {/* Incarnon controls are persisted per weapon slot and feed the live damage panels. */}
+          <div className={`grid grid-cols-1 gap-3 lg:grid-cols-3 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`}>
+            <IncarnonSelector
+              weapon={activeBuild.primaryWeapon}
+              slot="primary"
+              selection={activeBuild.incarnonSelections.primary}
+              onChange={selection => updateBuild(build => ({ ...build, incarnonSelections: { ...build.incarnonSelections, primary: selection } }))}
+              accentColor="#ff6b35"
+            />
+            <IncarnonSelector
+              weapon={activeBuild.secondaryWeapon}
+              slot="secondary"
+              selection={activeBuild.incarnonSelections.secondary}
+              onChange={selection => updateBuild(build => ({ ...build, incarnonSelections: { ...build.incarnonSelections, secondary: selection } }))}
+              accentColor="#ffd700"
+            />
+            <IncarnonSelector
+              weapon={activeBuild.meleeWeapon}
+              slot="melee"
+              selection={activeBuild.incarnonSelections.melee}
+              onChange={selection => updateBuild(build => ({ ...build, incarnonSelections: { ...build.incarnonSelections, melee: selection } }))}
+              accentColor="#66bb6a"
             />
           </div>
 

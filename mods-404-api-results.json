@@ -1,0 +1,319 @@
+[
+  {
+    "id": "catalyzing-shields",
+    "name": "Catalyzing Shields",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Catalyzing%20ShieldsMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "FixedShieldAndShieldGatingDuration.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Catalyzing_Shields"
+    }
+  },
+  {
+    "id": "cathode-current",
+    "name": "Cathode Current",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Cathode%20CurrentMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "GyreEnergizedAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Cathode_Current"
+    }
+  },
+  {
+    "id": "champion-s-blessing",
+    "name": "Champion’s Blessing",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Champion%E2%80%99s%20BlessingMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": null
+  },
+  {
+    "id": "chaos-sphere",
+    "name": "Chaos Sphere",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Chaos%20SphereMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "NyxChaosAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Chaos_Sphere"
+    }
+  },
+  {
+    "id": "diamond-skin",
+    "name": "Diamond Skin",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Diamond%20SkinMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "AvatarDamageResistanceLaser.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Diamond_Skin"
+    }
+  },
+  {
+    "id": "lightning-rod",
+    "name": "Lightning Rod",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Lightning%20RodMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "AvatarDamageResistanceElectricity.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Lightning_Rod"
+    }
+  },
+  {
+    "id": "master-thief",
+    "name": "Master Thief",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Master%20ThiefMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "AvatarChanceToLootMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Master_Thief"
+    }
+  },
+  {
+    "id": "primed-fast-deflection",
+    "name": "Primed Fast Deflection",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Primed%20Fast%20DeflectionMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "ShieldRechargeRate.jpg"
+    }
+  },
+  {
+    "id": "primed-redirection",
+    "name": "Primed Redirection",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Primed%20RedirectionMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "ShieldMaxMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Primed_Redirection"
+    }
+  },
+  {
+    "id": "push-pull",
+    "name": "Push & Pull",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Push%20%26%20PullMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "EquinoxSwitchAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Push_%26_Pull"
+    }
+  },
+  {
+    "id": "pyroclastic-flow",
+    "name": "Pyroclastic Flow",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Pyroclastic%20FlowMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "NezhaFirewalkerAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Pyroclastic_Flow"
+    }
+  },
+  {
+    "id": "quick-charge",
+    "name": "Quick Charge",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Quick%20ChargeMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "PowerShields.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Quick_Charge"
+    }
+  },
+  {
+    "id": "quick-thinking",
+    "name": "Quick Thinking",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Quick%20ThinkingMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "AvatarQuickThinkingMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Flawed_Quick_Thinking"
+    }
+  },
+  {
+    "id": "radiant-finish",
+    "name": "Radiant Finish",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Radiant%20FinishMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "ExcaliburRadialBlindAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Radiant_Finish"
+    }
+  },
+  {
+    "id": "razor-mortar",
+    "name": "Razor Mortar",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Razor%20MortarMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "SentientWhirlwindAugmentCard.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Razor_Mortar"
+    }
+  },
+  {
+    "id": "razorwing-blitz",
+    "name": "Razorwing Blitz",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Razorwing%20BlitzMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "TitaniaFlightAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Razorwing_Blitz"
+    }
+  },
+  {
+    "id": "recharge-barrier",
+    "name": "Recharge Barrier",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Recharge%20BarrierMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "VoltShieldPvPAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Recharge_Barrier"
+    }
+  },
+  {
+    "id": "resilient-focus",
+    "name": "Resilient Focus",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Resilient%20FocusMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "ArmourMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Resilient_Focus"
+    }
+  },
+  {
+    "id": "scan-aquatic-lifeforms",
+    "name": "Scan Aquatic Lifeforms",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Scan%20Aquatic%20LifeformsMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": null
+  },
+  {
+    "id": "shock-absorbers",
+    "name": "Shock Absorbers",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Shock%20AbsorbersMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "ShockAbsorbersMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Shock_Absorbers"
+    }
+  },
+  {
+    "id": "vampiric-grasp",
+    "name": "Vampiric Grasp",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Vampiric%20GraspMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "XakuGraspAugment.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Vampiric_Grasp"
+    }
+  },
+  {
+    "id": "warm-coat",
+    "name": "Warm Coat",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Warm%20CoatMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "AvatarMissionSpecificResistanceIce.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Warm_Coat"
+    }
+  },
+  {
+    "id": "cautious-shot",
+    "name": "Cautious Shot",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Cautious%20ShotMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "WeaponResistSelfDamageMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Cautious_Shot"
+    }
+  },
+  {
+    "id": "charged-chamber",
+    "name": "Charged Chamber",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Charged%20ChamberMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "RifleChargedChamberMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Charged_Chamber"
+    }
+  },
+  {
+    "id": "sniper-ammo-mutation",
+    "name": "Sniper Ammo Mutation",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Sniper%20Ammo%20MutationMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "SniperAmmoMutatorMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Sniper_Ammo_Mutation"
+    }
+  },
+  {
+    "id": "reflex-coil",
+    "name": "Reflex Coil",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Reflex%20CoilMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "MeleeChargeRateMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Reflex_Coil"
+    }
+  },
+  {
+    "id": "radon-claws",
+    "name": "Radon Claws",
+    "status": "http-404",
+    "url": "https://wiki.warframe.com/images/Radon%20ClawsMod.png",
+    "type": "text/plain; charset=utf-8",
+    "apiStatus": 200,
+    "api": {
+      "imageName": "KubrowRadiationEventMeleeMod.jpg",
+      "wikiaUrl": "https://wiki.warframe.com/w/Radon_Claws"
+    }
+  }
+]
