@@ -8,9 +8,10 @@ import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
   MOA_PARTS, HOUND_PARTS,
-  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey,
+  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
+import { HELMINTH_ABILITIES, HelminthAbility } from "@/lib/helminth-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
@@ -225,6 +226,16 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     melee: normalizeSlotPolarityArray(rawSlotPolarities.melee),
     companion: normalizeSlotPolarityArray(rawSlotPolarities.companion),
   };
+  const rawHelminth = candidate.helminthSubstitution && typeof candidate.helminthSubstitution === "object" ? candidate.helminthSubstitution as unknown as Record<string, unknown> : null;
+  const helminthSubstitution: HelminthSubstitution | null = rawHelminth && typeof rawHelminth.abilityId === "string" ? {
+    abilityIndex: Math.max(0, Math.min(3, Number(rawHelminth.abilityIndex) || 0)),
+    abilityId: String(rawHelminth.abilityId),
+    abilityName: String(rawHelminth.abilityName || "Helminth Skill"),
+    sourceWarframe: String(rawHelminth.sourceWarframe || "Helminth"),
+    description: String(rawHelminth.description || ""),
+    energyCost: Number(rawHelminth.energyCost) || 25,
+  } : null;
+
   const rawIncarnonSelections = candidate.incarnonSelections && typeof candidate.incarnonSelections === "object" ? candidate.incarnonSelections as unknown as Record<string, unknown> : {};
   const incarnonSelections: BuildIncarnonSelections = {
     primary: normalizeIncarnonSelection(rawIncarnonSelections.primary),
@@ -242,6 +253,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       ...(candidate.capacityBoosts && typeof candidate.capacityBoosts === "object" ? candidate.capacityBoosts : {}),
     },
     slotPolarities,
+    helminthSubstitution,
     warframeMods: normalizeModArray(candidate.warframeMods, 8),
     primaryMods: normalizeModArray(candidate.primaryMods, 8),
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
@@ -1683,6 +1695,117 @@ export default function SetBuilder() {
     });
   };
 
+  const setHelminthAbility = (abilityIndex: number, ability: HelminthAbility | null) => {
+    updateBuild(build => {
+      if (!ability) {
+        return { ...build, helminthSubstitution: null };
+      }
+      return {
+        ...build,
+        helminthSubstitution: {
+          abilityIndex,
+          abilityId: ability.id,
+          abilityName: ability.name,
+          sourceWarframe: ability.sourceWarframe,
+          description: ability.description,
+          energyCost: ability.energyCost,
+        },
+      };
+    });
+  };
+
+  const renderHelminthSection = () => {
+    if (!activeBuild.warframe) return null;
+    const wfAbilities = activeBuild.warframe.abilities || [
+      { name: "Compétence 1", description: "Capacité native 1" },
+      { name: "Compétence 2", description: "Capacité native 2" },
+      { name: "Compétence 3", description: "Capacité native 3" },
+      { name: "Compétence 4", description: "Capacité ultime" },
+    ];
+    return (
+      <div className="wf-hud-panel hud-frame rounded-sm p-4 space-y-3" style={{ border: "1px solid var(--wf-border)" }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-xs uppercase font-bold tracking-widest text-cyan-400" style={{ fontFamily: "var(--font-display)" }}>
+              HELMINTH // SUBORDINATION DE CAPACITÉ
+            </div>
+            <div className="text-[10px] mt-0.5" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+              Remplacez une compétence native de {activeBuild.warframe.name} par une aptitude subsumée du Helminth
+            </div>
+          </div>
+          {activeBuild.helminthSubstitution && (
+            <button
+              onClick={() => setHelminthAbility(0, null)}
+              className="px-2 py-1 rounded-sm text-[9px] uppercase transition-colors"
+              style={{ backgroundColor: "rgba(239,83,80,0.15)", border: "1px solid #ef5350", color: "#ef5350", fontFamily: "var(--font-mono)" }}
+            >
+              Réinitialiser Helminth
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          {wfAbilities.map((rawAbility, index) => {
+            const abilityName = typeof rawAbility === "string" ? rawAbility : (rawAbility && typeof rawAbility === "object" && "name" in rawAbility ? String(rawAbility.name) : `Compétence ${index + 1}`);
+            const abilityDesc = typeof rawAbility === "string" ? "Capacité native de la Warframe." : (rawAbility && typeof rawAbility === "object" && "description" in rawAbility ? String(rawAbility.description) : "Capacité native de la Warframe.");
+            const isSubstituted = activeBuild.helminthSubstitution?.abilityIndex === index;
+            const sub = isSubstituted ? activeBuild.helminthSubstitution : null;
+            return (
+              <div
+                key={index}
+                className="rounded-sm p-2.5 flex flex-col justify-between transition-all"
+                style={{
+                  backgroundColor: isSubstituted ? "rgba(167, 139, 250, 0.12)" : "rgba(0,0,0,0.25)",
+                  border: `1px solid ${isSubstituted ? "#a78bfa" : "var(--wf-border)"}`,
+                }}
+              >
+                <div>
+                  <div className="flex items-center justify-between text-[9px] uppercase font-bold mb-1" style={{ color: isSubstituted ? "#c4b5fd" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                    <span>Capacité {index + 1}</span>
+                    {isSubstituted && <span className="text-[8px] px-1 rounded bg-purple-900/60 text-purple-200">Helminth</span>}
+                  </div>
+                  <div className="text-xs font-bold mb-1 truncate" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+                    {sub ? sub.abilityName : abilityName}
+                  </div>
+                  <div className="text-[10px] line-clamp-2 leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
+                    {sub ? sub.description : abilityDesc}
+                  </div>
+                </div>
+
+                <div className="mt-3 pt-2 border-t flex items-center justify-between gap-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                  <span className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                    {sub ? `Source: ${sub.sourceWarframe}` : "Native"}
+                  </span>
+                  <select
+                    value={isSubstituted && sub ? sub.abilityId : "native"}
+                    onChange={e => {
+                      const val = e.target.value;
+                      if (val === "native") {
+                        if (isSubstituted) setHelminthAbility(0, null);
+                      } else {
+                        const found = HELMINTH_ABILITIES.find(a => a.id === val);
+                        if (found) setHelminthAbility(index, found);
+                      }
+                    }}
+                    className="rounded-sm px-1.5 py-0.5 text-[9px] outline-none"
+                    style={{ backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+                  >
+                    <option value="native">Garder native</option>
+                    {HELMINTH_ABILITIES.map(ha => (
+                      <option key={ha.id} value={ha.id}>
+                        {ha.name} ({ha.sourceWarframe})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   const saveBuild = () => {
     const buildToSave = { ...activeBuild, name: buildName, id: Date.now().toString() };
     setSavedBuilds(prev => [...prev, buildToSave]);
@@ -1983,6 +2106,13 @@ export default function SetBuilder() {
                   </div>
                 ))}
               </div>
+            </div>
+          )}
+
+          {/* Helminth Sublimation Section */}
+          {activeTab === "equipment" && activeBuild.warframe && (
+            <div className="mb-4">
+              {renderHelminthSection()}
             </div>
           )}
 

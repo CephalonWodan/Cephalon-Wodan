@@ -1,5 +1,13 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Intégration Helminth dans le Builder
+
+- [x] Auditer les capacités subsumables Helminth de référence et concevoir le module de remplacement par slot.
+- [x] Créer le fichier `helminth-data.ts` regroupant les capacités subsumées officielles (Roar, Eclipse, Nourish, Pillage, Gloom, Ensnare, Dispenser, etc.).
+- [x] Ajouter les sélections Helminth aux types de builds et à la normalisation import/export.
+- [x] Intégrer le panneau de substitution Helminth dans le cockpit du Builder, compiler et valider le build de production.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
 ## Nouvelle demande — Validation stricte de capacité des mods
 
 - [x] Auditer les flux d’ajout, de rang et de polarité des mods.

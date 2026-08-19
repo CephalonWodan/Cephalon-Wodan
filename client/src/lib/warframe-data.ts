@@ -341,6 +341,15 @@ export interface BuildSlotPolarities {
   companion: SlotPolarity[];
 }
 
+export interface HelminthSubstitution {
+  abilityIndex: number;
+  abilityId: string;
+  abilityName: string;
+  sourceWarframe: string;
+  description: string;
+  energyCost: number;
+}
+
 export interface BuildSet {
   id: string;
   name: string;
@@ -364,6 +373,7 @@ export interface BuildSet {
   meleeMods: (Mod | null)[];
   companionMods: (Mod | null)[];
   slotPolarities: BuildSlotPolarities;
+  helminthSubstitution: HelminthSubstitution | null;
   warframeArcanes: (Arcane | null)[];
   primaryArcanes: (Arcane | null)[];
   secondaryArcanes: (Arcane | null)[];
@@ -476,6 +486,7 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
       melee: Array<SlotPolarity>(8).fill("default"),
       companion: Array<SlotPolarity>(8).fill("default"),
     },
+    helminthSubstitution: null,
     warframeMods: Array(8).fill(null),
     primaryMods: Array(8).fill(null),
     secondaryMods: Array(8).fill(null),
