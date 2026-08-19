@@ -1,5 +1,13 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Helminth complet (checklist officielle, compétences natives et restrictions)
+
+- [x] Enrichir `helminth-data.ts` pour couvrir l’intégralité des aptitudes subsumables officielles (plus de 40 capacités).
+- [x] Afficher clairement les quatre compétences originales de la Warframe active et permettre de cibler précisément celle à remplacer.
+- [x] Implémenter les restrictions officielles de buffs de dégâts (Eclipse, Roar, Xata’s Whisper) selon les règles du Wiki.
+- [x] Valider TypeScript, le build de production et le rendu responsive.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
 ## Nouvelle demande — Helminth dynamique et sélecteur avancé
 
 - [x] Auditer les statistiques d’aptitudes et les contributions de mods de la Warframe.

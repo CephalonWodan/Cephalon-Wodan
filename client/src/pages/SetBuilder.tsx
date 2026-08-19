@@ -11,7 +11,7 @@ import {
   Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
-import { HELMINTH_ABILITIES, HelminthAbility } from "@/lib/helminth-data";
+import { HELMINTH_ABILITIES, HelminthAbility, validateHelminthRestriction } from "@/lib/helminth-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
@@ -1755,6 +1755,12 @@ export default function SetBuilder() {
       if (!ability) {
         return { ...build, helminthSubstitution: null };
       }
+      const wfName = build.warframe?.name || "";
+      const restriction = validateHelminthRestriction(ability.id, wfName);
+      if (!restriction.allowed) {
+        toast.error(restriction.reason || "Restriction Helminth officielle non respectée.");
+        return build;
+      }
       return {
         ...build,
         helminthSubstitution: {
@@ -1866,6 +1872,9 @@ export default function SetBuilder() {
                     <span>Capacité {index + 1}</span>
                     {isSubstituted && <span className="text-[8px] px-1 rounded bg-purple-900/60 text-purple-200">Helminth</span>}
                   </div>
+                  <div className="text-[10px] uppercase font-semibold text-slate-400 mb-0.5" style={{ fontFamily: "var(--font-mono)" }}>
+                    Original : <span className="text-slate-200">{abilityName}</span>
+                  </div>
                   <div className="text-xs font-bold mb-1 truncate" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
                     {sub ? sub.abilityName : abilityName}
                   </div>
@@ -1874,13 +1883,13 @@ export default function SetBuilder() {
                   </div>
                 </div>
 
-                <div className="mt-3 pt-2 border-t flex items-center justify-between gap-1" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                  <div className="min-w-0 flex-1">
-                    <span className="block truncate text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-                      {sub ? `Source: ${sub.sourceWarframe}` : "Native"}
+                <div className="mt-3 pt-2 border-t flex flex-col gap-2" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                      {sub ? `Source: ${sub.sourceWarframe}` : "Compétence native"}
                     </span>
                     {sub && activeHelminthScaling && (
-                      <div className="mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 text-[8px] uppercase" style={{ color: "#c4b5fd", fontFamily: "var(--font-mono)" }}>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[8px] uppercase text-right" style={{ color: "#c4b5fd", fontFamily: "var(--font-mono)" }}>
                         <span>Force {activeHelminthScaling.strengthPct}%</span>
                         <span>Durée {activeHelminthScaling.durationPct}%</span>
                         <span>Portée {activeHelminthScaling.rangePct}%</span>
@@ -1899,13 +1908,13 @@ export default function SetBuilder() {
                         if (found) setHelminthAbility(index, found);
                       }
                     }}
-                    className="rounded-sm px-1.5 py-0.5 text-[9px] outline-none"
-                    style={{ backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+                    className="w-full rounded-sm px-2 py-1 text-[10px] outline-none font-bold"
+                    style={{ backgroundColor: "rgba(0,0,0,0.6)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}
                   >
-                    <option value="native">Garder native</option>
+                    <option value="native">🛠️ Remplacer cette compétence ({abilityName})</option>
                     {visibleHelminthAbilities.map(ha => (
                       <option key={ha.id} value={ha.id}>
-                        {ha.name} ({ha.sourceWarframe})
+                        {ha.name} ({ha.sourceWarframe}) {ha.isDamageBuff ? "★ (Buff de dégâts)" : ""}
                       </option>
                     ))}
                   </select>
