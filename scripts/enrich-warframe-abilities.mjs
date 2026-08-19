@@ -105,6 +105,7 @@ const specialFallbacks = {
   "sevagoth's shadow": ["Embrace", "Consume", "Death's Harvest", "Reunite"],
   stalker: ["Slash Dash", "Teleport", "Absorb", "Pull"],
 };
+const placeholderDescription = "Capacité native officielle — détails structurés à compléter.";
 
 const data = readJson(datasetPath);
 const sourceItems = (await loadJson(wfcdPath, wfcdUrl)).filter(item => item?.type === "Warframe" && Array.isArray(item.abilities) && item.abilities.length >= 4);
@@ -145,12 +146,16 @@ for (const frame of data.warframes || []) {
     continue;
   }
   if (existing.length >= 4) {
-    frame.abilities = existing.map(ability => ({ ...ability, officialStats: ability.officialStats || [] }));
+    frame.abilities = existing.map(ability => ({
+      ...ability,
+      ...(ability && typeof ability === "object" && ability.description === placeholderDescription ? { description: "" } : {}),
+      officialStats: ability && typeof ability === "object" && Array.isArray(ability.officialStats) ? ability.officialStats : [],
+    }));
     continue;
   }
   const fallback = specialFallbacks[String(frame.name).toLowerCase()];
   if (fallback) {
-    frame.abilities = fallback.map(name => ({ name, description: "Capacité native officielle — détails structurés à compléter.", officialStats: [] }));
+    frame.abilities = fallback.map(name => ({ name, description: "", officialStats: [] }));
     enrichedFromFallback += 1;
   } else {
     unresolved.push(frame.name);

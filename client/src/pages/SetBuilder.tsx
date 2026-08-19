@@ -236,6 +236,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     ? HELMINTH_ABILITIES.find(ability => ability.id === rawHelminthKey)
       || HELMINTH_ABILITIES.find(ability => ability.name.toLowerCase() === rawHelminthKey.toLowerCase())
     : null;
+  const normalizedWarframe = resolveCatalogWarframe(candidate.warframe ?? candidate.warframeName ?? candidate.warframeId);
   const helminthSubstitution: HelminthSubstitution | null = rawHelminth && typeof rawHelminthKey === "string" ? {
     abilityIndex: Math.max(0, Math.min(3, Number(rawHelminth.abilityIndex) || 0)),
     abilityId: resolvedHelminth?.id || rawHelminthKey,
@@ -254,6 +255,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
   return {
     ...fallback,
     ...candidate,
+    warframe: normalizedWarframe || undefined,
     id: typeof candidate.id === "string" ? candidate.id : fallback.id,
     name: typeof candidate.name === "string" ? candidate.name : fallback.name,
     description: typeof candidate.description === "string" ? candidate.description : "",
@@ -1004,10 +1006,34 @@ const FALLBACK_NATIVE_ABILITIES: Record<string, string[]> = {
   uriel: ["Infernalis", "Remedium", "Demonium", "Brimstone"],
 };
 
-function getNativeAbilityEntries(warframe: Warframe): WarframeAbilityEntry[] {
-  const existing = Array.isArray(warframe.abilities) ? warframe.abilities.filter(Boolean).slice(0, 4) : [];
-  const normalizedName = warframe.name.toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim();
-  const fallback = FALLBACK_NATIVE_ABILITIES[normalizedName] || FALLBACK_NATIVE_ABILITIES[warframe.name.toLowerCase()] || [];
+function resolveCatalogWarframe(warframe: unknown): Warframe | null {
+  if (!warframe) return null;
+  const source = typeof warframe === "string" ? { id: warframe, name: warframe } : (typeof warframe === "object" ? warframe as Record<string, unknown> : null);
+  if (!source) return null;
+  const identity = String(source.id || "").trim().toLowerCase();
+  const name = String(source.name || "").trim().toLowerCase();
+  const baseName = name.replace(/\s+(prime|umbra)$/g, "").trim();
+  return WARFRAMES.find(candidate => identity && candidate.id.toLowerCase() === identity)
+    || WARFRAMES.find(candidate => name && candidate.name.toLowerCase() === name)
+    || WARFRAMES.find(candidate => baseName && candidate.name.toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim() === baseName)
+    || null;
+}
+
+function getNativeAbilityEntries(warframe: Warframe | null | undefined): WarframeAbilityEntry[] {
+  const currentWarframe = resolveCatalogWarframe(warframe);
+  const source = warframe && typeof warframe === "object" ? warframe as Warframe & Record<string, unknown> : null;
+  const legacyNames = [source?.abilityNames, source?.powers, source?.powerNames, source?.abilityList]
+    .find(value => Array.isArray(value)) as unknown[] | undefined;
+  const legacyEntries = (legacyNames || []).filter(Boolean).slice(0, 4).map(entry => {
+    if (typeof entry === "string") return { name: entry, description: "" };
+    if (entry && typeof entry === "object" && "name" in entry) return entry as WarframeAbility;
+    return null;
+  }).filter(Boolean) as WarframeAbilityEntry[];
+  const catalogEntries = Array.isArray(currentWarframe?.abilities) ? currentWarframe.abilities.filter(Boolean).slice(0, 4) : [];
+  const existing = catalogEntries.length >= 4 ? catalogEntries : legacyEntries;
+  const normalizedName = String(currentWarframe?.name || source?.name || "").toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim();
+  const exactName = String(currentWarframe?.name || source?.name || "").toLowerCase();
+  const fallback = FALLBACK_NATIVE_ABILITIES[normalizedName] || FALLBACK_NATIVE_ABILITIES[exactName] || [];
   return Array.from({ length: 4 }, (_, index) => existing[index] || (fallback[index] ? { name: fallback[index], description: "" } : { name: "", description: "" }));
 }
 

@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Les capacités génériques restent visibles
+
+- [x] Reproduire le cas exact dans le Builder et identifier la Warframe concernée.
+- [x] Tracer la donnée réellement reçue par `wfAbilities`, y compris les builds persistés.
+- [x] Corriger l’affichage à la source et valider le cas signalé avec un build legacy injecté.
+
+
 ## Nouvelle demande — Modules Wiki Ability officiels
 
 - [x] Auditer `Module:Ability/infobox` et `Module:Ability/data/stats` comme sources structurées.
