@@ -169,6 +169,19 @@ export interface SelectedArchonShard {
   effectIndex: number;
 }
 
+export interface BuildIncarnonSelection {
+  profileWeapon: string;
+  active: boolean;
+  selectedEvolution: number;
+  selectedPerkByTier: Record<string, number | null>;
+}
+
+export interface BuildIncarnonSelections {
+  primary: BuildIncarnonSelection | null;
+  secondary: BuildIncarnonSelection | null;
+  melee: BuildIncarnonSelection | null;
+}
+
 export interface ItemDropSource {
   location: string;
   type: string;
@@ -327,6 +340,7 @@ export interface BuildSet {
   secondaryArcanes: (Arcane | null)[];
   meleeArcanes: (Arcane | null)[];
   archonShards: (SelectedArchonShard | null)[];
+  incarnonSelections: BuildIncarnonSelections;
   createdAt: string;
 }
 
@@ -436,6 +450,7 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     secondaryArcanes: Array(1).fill(null),
     meleeArcanes: Array(1).fill(null),
     archonShards: Array(5).fill(null),
+    incarnonSelections: { primary: null, secondary: null, melee: null },
     createdAt: new Date().toISOString(),
   };
 }
