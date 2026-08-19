@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Indicateurs colorés et export des capacités modifiées
+
+- [x] Comparer les valeurs modifiées des statistiques de capacités aux valeurs de base (vert si supérieur/égal, rouge si inférieur selon le sens du paramètre).
+- [x] Intégrer les compétences et leurs statistiques modifiées dans le résumé Markdown exportable.
+- [x] Valider avec TypeScript, build de production et publication.
+
+
 ## Nouvelle demande — Mise à l’échelle dynamique des capacités (Force, Durée, Portée, Efficacité)
 
 - [x] Structurer les lignes de statistiques des capacités selon le format d’exemple (`summary` et `rows` avec modificateurs `AVATAR_ABILITY_STRENGTH`, etc.).

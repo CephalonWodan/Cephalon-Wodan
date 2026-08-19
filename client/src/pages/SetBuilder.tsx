@@ -1041,18 +1041,42 @@ function getAbilityRecord(entry: WarframeAbilityEntry): WarframeAbility | null {
   return typeof entry === "object" && entry !== null ? entry : null;
 }
 
-function formatOfficialAbilityStat(
-  stat: NonNullable<WarframeAbility["officialStats"]>[number],
-  modifiers?: { strength: number; duration: number; range: number; efficiency: number }
-): string {
-  let label = stat.label;
-  const rawValues = stat.values || {};
-  const modifier = (stat.modifier || "").toUpperCase();
-
+function computeScaledStatNumber(baseNum: number, modifier: string, label: string, modifiers?: { strength: number; duration: number; range: number; efficiency: number }): number {
   const strengthFactor = modifiers ? modifiers.strength / 100 : 1;
   const durationFactor = modifiers ? modifiers.duration / 100 : 1;
   const rangeFactor = modifiers ? modifiers.range / 100 : 1;
   const efficiencyFactor = modifiers ? modifiers.efficiency / 100 : 1;
+  const modUpper = modifier.toUpperCase();
+  const lower = label.toLowerCase();
+
+  let scaled = baseNum;
+  if (modUpper.includes("STRENGTH")) {
+    scaled = baseNum * strengthFactor;
+  } else if (modUpper.includes("DURATION")) {
+    scaled = baseNum * durationFactor;
+  } else if (modUpper.includes("RANGE")) {
+    scaled = baseNum * rangeFactor;
+  } else if (modUpper.includes("EFFICIENCY") || lower.includes("cost") || lower.includes("drain")) {
+    scaled = Math.max(5, Math.round(baseNum / Math.max(0.1, efficiencyFactor)));
+  } else if (lower.includes("damage") || lower.includes("heal") || lower.includes("armor") || lower.includes("shield") || lower.includes("strength")) {
+    scaled = baseNum * strengthFactor;
+  } else if (lower.includes("duration") || lower.includes("time")) {
+    scaled = baseNum * durationFactor;
+  } else if (lower.includes("range") || lower.includes("radius") || lower.includes("distance")) {
+    scaled = baseNum * rangeFactor;
+  }
+  return Number.isInteger(scaled) ? scaled : Number(scaled.toFixed(1));
+}
+
+function formatOfficialAbilityStat(
+  stat: NonNullable<WarframeAbility["officialStats"]>[number],
+  modifiers?: { strength: number; duration: number; range: number; efficiency: number }
+): { text: string; isImproved: boolean; isReduced: boolean } {
+  let label = stat.label;
+  const rawValues = stat.values || {};
+  const modifier = stat.modifier || "";
+  let isImproved = false;
+  let isReduced = false;
 
   const scaledValues: Record<string, string | number> = {};
   for (const [k, v] of Object.entries(rawValues)) {
@@ -1061,37 +1085,27 @@ function formatOfficialAbilityStat(
       scaledValues[k] = v;
       continue;
     }
-    let scaled = num;
-    if (modifier.includes("STRENGTH")) {
-      scaled = num * strengthFactor;
-    } else if (modifier.includes("DURATION")) {
-      scaled = num * durationFactor;
-    } else if (modifier.includes("RANGE")) {
-      scaled = num * rangeFactor;
-    } else if (modifier.includes("EFFICIENCY")) {
-      // Energy cost scales inversely with efficiency (higher efficiency -> lower cost)
-      scaled = Math.max(5, Math.round(num / Math.max(0.1, efficiencyFactor)));
-    } else {
-      // Heuristic fallback based on label keywords if modifier is absent
-      const lower = label.toLowerCase();
-      if (lower.includes("cost") || lower.includes("drain")) {
-        scaled = Math.max(5, Math.round(num / Math.max(0.1, efficiencyFactor)));
-      } else if (lower.includes("damage") || lower.includes("heal") || lower.includes("armor") || lower.includes("shield") || lower.includes("strength")) {
-        scaled = num * strengthFactor;
-      } else if (lower.includes("duration") || lower.includes("time")) {
-        scaled = num * durationFactor;
-      } else if (lower.includes("range") || lower.includes("radius") || lower.includes("distance")) {
-        scaled = num * rangeFactor;
-      }
+    const scaled = computeScaledStatNumber(num, modifier, label, modifiers);
+    scaledValues[k] = scaled;
+    const lower = label.toLowerCase();
+    const isCostOrDrain = lower.includes("cost") || lower.includes("drain") || (modifier.toUpperCase()).includes("EFFICIENCY");
+    if (scaled > num) {
+      if (isCostOrDrain) isReduced = true; // lower cost is better/improved
+      else isImproved = true;
+    } else if (scaled < num) {
+      if (isCostOrDrain) isImproved = true; // lower cost is improved
+      else isReduced = true;
     }
-    // Format nicely: integers or 1 decimal place
-    scaledValues[k] = Number.isInteger(scaled) ? scaled : Number(scaled.toFixed(1));
   }
 
   for (const [key, value] of Object.entries(scaledValues)) {
     label = label.replace(new RegExp(`\\|${key}\\|`, "gi"), String(value));
   }
-  return label.replace(/\|val\d+\|/gi, "—");
+  return {
+    text: label.replace(/\|val\d+\|/gi, "—"),
+    isImproved,
+    isReduced,
+  };
 }
 
 function findHelminthAbility(substitution: HelminthSubstitution | null): HelminthAbility | null {
@@ -1249,6 +1263,29 @@ function buildSummaryMarkdown(build: BuildSet): string {
   const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
   const activeHelminth = findHelminthAbility(build.helminthSubstitution);
   const helminthStats = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, calculateWarframeStats(build)) : null;
+  const wfAbilitiesForExport = getNativeAbilityEntries(build.warframe);
+  const warframeStatsForExport = calculateWarframeStats(build);
+  const abilitiesBlock = wfAbilitiesForExport.map((rawAbility, index) => {
+    const record = getAbilityRecord(rawAbility);
+    const abilityName = typeof rawAbility === "string" ? rawAbility : (record?.name || `Compétence ${index + 1}`);
+    const isSub = build.helminthSubstitution?.abilityIndex === index;
+    const sub = isSub ? build.helminthSubstitution : null;
+    const statsLines = record?.officialStats?.map(stat => {
+      const res = formatOfficialAbilityStat(stat, {
+        strength: warframeStatsForExport.strengthPct,
+        duration: warframeStatsForExport.durationPct,
+        range: warframeStatsForExport.rangePct,
+        efficiency: warframeStatsForExport.efficiencyPct,
+      });
+      return `  - ${res.text}${res.isImproved ? " (▲ Amélioré)" : res.isReduced ? " (▼ Réduit)" : ""}`;
+    }).join("\n") || "";
+
+    if (sub) {
+      return `- [Slot ${index + 1}] HELMINTH : ${sub.abilityName} (${sub.sourceWarframe}) — Remplaçant ${abilityName}\n  - Coût : ${sub.energyCost} Énergie\n  - ${sub.description}`;
+    }
+    return `- [Slot ${index + 1}] ${abilityName}\n${statsLines || "  - Compétence native"}`;
+  }).join("\n");
+
   const helminthSummary = build.helminthSubstitution && helminthStats
     ? `- Slot ${build.helminthSubstitution.abilityIndex + 1}: ${build.helminthSubstitution.abilityName} (${build.helminthSubstitution.sourceWarframe})\n- Force : ${helminthStats.strengthPct}% · Durée : ${helminthStats.durationPct}% · Portée : ${helminthStats.rangePct}% · Coût : ${helminthStats.energyCost}`
     : "- Aucune capacité Helminth sélectionnée";
@@ -1280,6 +1317,9 @@ function buildSummaryMarkdown(build: BuildSet): string {
     "",
     "## Incarnon",
     incarnonSummary,
+    "",
+    "## Capacités & Statistiques modifiées",
+    abilitiesBlock,
     "",
     "## Helminth",
     helminthSummary,
@@ -2004,16 +2044,22 @@ export default function SetBuilder() {
                   </div>
                                             {!sub && officialStats.length > 0 && (
                     <div className="mt-2 space-y-0.5" title="Statistiques officielles du Wiki Warframe (mises à l'échelle par Force, Durée, Portée, Efficacité)">
-                      {officialStats.slice(0, 4).map((stat, statIndex) => (
-                        <div key={`${index}-stat-${statIndex}`} className="text-[9px] truncate" style={{ color: "#7dd3fc", fontFamily: "var(--font-mono)" }}>
-                          {formatOfficialAbilityStat(stat, {
-                            strength: warframeStats.strengthPct,
-                            duration: warframeStats.durationPct,
-                            range: warframeStats.rangePct,
-                            efficiency: warframeStats.efficiencyPct,
-                          })}
-                        </div>
-                      ))}
+                      {officialStats.slice(0, 4).map((stat, statIndex) => {
+                        const res = formatOfficialAbilityStat(stat, {
+                          strength: warframeStats.strengthPct,
+                          duration: warframeStats.durationPct,
+                          range: warframeStats.rangePct,
+                          efficiency: warframeStats.efficiencyPct,
+                        });
+                        const color = res.isImproved ? "#4ade80" : res.isReduced ? "#f87171" : "#7dd3fc";
+                        return (
+                          <div key={`${index}-stat-${statIndex}`} className="text-[9px] truncate flex items-center justify-between gap-1" style={{ color, fontFamily: "var(--font-mono)" }}>
+                            <span>{res.text}</span>
+                            {res.isImproved && <span className="text-[8px] px-0.5 rounded bg-emerald-900/60 text-emerald-200">▲</span>}
+                            {res.isReduced && <span className="text-[8px] px-0.5 rounded bg-rose-900/60 text-rose-200">▼</span>}
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
 
