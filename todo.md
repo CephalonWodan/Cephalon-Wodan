@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Correctif Helminth après dysfonctionnement signalé
+
+- [ ] Reproduire le problème après sélection d’une Warframe dans le Builder.
+- [ ] Corriger l’affichage des capacités natives, le choix du slot et la sélection de l’aptitude Helminth.
+- [ ] Vérifier le blocage des buffs de dégâts incompatibles, la persistance et l’import/export.
+- [ ] Compiler, tester visuellement et publier uniquement après validation du flux réel.
+
 ## Nouvelle demande — Helminth complet (checklist officielle, compétences natives et restrictions)
 
 - [x] Enrichir `helminth-data.ts` pour couvrir l’intégralité des aptitudes subsumables officielles (plus de 40 capacités).

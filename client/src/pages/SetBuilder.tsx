@@ -8,10 +8,10 @@ import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
   MOA_PARTS, HOUND_PARTS,
-  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
+  Warframe, WarframeAbilityEntry, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
-import { HELMINTH_ABILITIES, HelminthAbility, validateHelminthRestriction } from "@/lib/helminth-data";
+import { HELMINTH_ABILITIES, HelminthAbility, isDamageBuffAbility, validateHelminthRestriction } from "@/lib/helminth-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
@@ -227,13 +227,22 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     companion: normalizeSlotPolarityArray(rawSlotPolarities.companion),
   };
   const rawHelminth = candidate.helminthSubstitution && typeof candidate.helminthSubstitution === "object" ? candidate.helminthSubstitution as unknown as Record<string, unknown> : null;
-  const helminthSubstitution: HelminthSubstitution | null = rawHelminth && typeof rawHelminth.abilityId === "string" ? {
+  const rawHelminthKey = rawHelminth && typeof rawHelminth.abilityId === "string"
+    ? rawHelminth.abilityId
+    : rawHelminth && typeof rawHelminth.abilityName === "string"
+      ? rawHelminth.abilityName
+      : null;
+  const resolvedHelminth = typeof rawHelminthKey === "string"
+    ? HELMINTH_ABILITIES.find(ability => ability.id === rawHelminthKey)
+      || HELMINTH_ABILITIES.find(ability => ability.name.toLowerCase() === rawHelminthKey.toLowerCase())
+    : null;
+  const helminthSubstitution: HelminthSubstitution | null = rawHelminth && typeof rawHelminthKey === "string" ? {
     abilityIndex: Math.max(0, Math.min(3, Number(rawHelminth.abilityIndex) || 0)),
-    abilityId: String(rawHelminth.abilityId),
-    abilityName: String(rawHelminth.abilityName || "Helminth Skill"),
-    sourceWarframe: String(rawHelminth.sourceWarframe || "Helminth"),
-    description: String(rawHelminth.description || ""),
-    energyCost: Number(rawHelminth.energyCost) || 25,
+    abilityId: resolvedHelminth?.id || rawHelminthKey,
+    abilityName: String(rawHelminth.abilityName || resolvedHelminth?.name || rawHelminthKey),
+    sourceWarframe: String(rawHelminth.sourceWarframe || resolvedHelminth?.sourceWarframe || "Helminth"),
+    description: String(rawHelminth.description || resolvedHelminth?.description || ""),
+    energyCost: Number(rawHelminth.energyCost) || resolvedHelminth?.energyCost || 25,
   } : null;
 
   const rawIncarnonSelections = candidate.incarnonSelections && typeof candidate.incarnonSelections === "object" ? candidate.incarnonSelections as unknown as Record<string, unknown> : {};
@@ -981,6 +990,34 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
   };
 }
 
+const FALLBACK_NATIVE_ABILITIES: Record<string, string[]> = {
+  excalibur: ["Slash Dash", "Radial Blind", "Radial Javelin", "Exalted Blade"],
+  "excalibur umbra": ["Slash Dash", "Radial Blind", "Radial Javelin", "Exalted Blade"],
+  chroma: ["Spectral Scream", "Elemental Ward", "Vex Armor", "Effigy"],
+  mirage: ["Hall of Mirrors", "Sleight of Hand", "Eclipse", "Prism"],
+  octavia: ["Mallet", "Resonator", "Metronome", "Amp"],
+  rhino: ["Rhino Charge", "Iron Skin", "Roar", "Rhino Stomp"],
+  xaku: ["Xata's Whisper", "Grasp of Lohk", "The Lost", "The Vast Untime"],
+  "cyte-09": ["Seek", "Resupply", "Evade", "Neutralize"],
+  oraxia: ["Mercy's Kiss", "Webbed Embrace", "Widow's Brood", "Silken Stride"],
+  temple: ["Pyrotechnics", "Overdrive", "Ripper's Wail", "Exalted Solo"],
+  uriel: ["Infernalis", "Remedium", "Demonium", "Brimstone"],
+};
+
+function getNativeAbilityEntries(warframe: Warframe): WarframeAbilityEntry[] {
+  const existing = Array.isArray(warframe.abilities) ? warframe.abilities.filter(Boolean).slice(0, 4) : [];
+  const normalizedName = warframe.name.toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim();
+  const fallback = FALLBACK_NATIVE_ABILITIES[normalizedName] || FALLBACK_NATIVE_ABILITIES[warframe.name.toLowerCase()] || [];
+  return Array.from({ length: 4 }, (_, index) => existing[index] || fallback[index] || { name: `Compétence ${index + 1}`, description: "Capacité native à renseigner." });
+}
+
+function findHelminthAbility(substitution: HelminthSubstitution | null): HelminthAbility | null {
+  if (!substitution) return null;
+  return HELMINTH_ABILITIES.find(ability => ability.id === substitution.abilityId)
+    || HELMINTH_ABILITIES.find(ability => ability.name.toLowerCase() === substitution.abilityName.toLowerCase())
+    || null;
+}
+
 interface HelminthCalculatedScaling {
   strengthPct: number;
   durationPct: number;
@@ -1127,7 +1164,7 @@ function buildSummaryMarkdown(build: BuildSet): string {
   };
   const arcanes = [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).map(arcane => `- ${arcane?.name}: ${arcane?.description}`).join("\n") || "- Aucun Arcane équipé";
   const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
-  const activeHelminth = build.helminthSubstitution ? HELMINTH_ABILITIES.find(ability => ability.id === build.helminthSubstitution?.abilityId) : null;
+  const activeHelminth = findHelminthAbility(build.helminthSubstitution);
   const helminthStats = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, calculateWarframeStats(build)) : null;
   const helminthSummary = build.helminthSubstitution && helminthStats
     ? `- Slot ${build.helminthSubstitution.abilityIndex + 1}: ${build.helminthSubstitution.abilityName} (${build.helminthSubstitution.sourceWarframe})\n- Force : ${helminthStats.strengthPct}% · Durée : ${helminthStats.durationPct}% · Portée : ${helminthStats.rangePct}% · Coût : ${helminthStats.energyCost}`
@@ -1197,7 +1234,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
   const stats = calculateWarframeStats(build);
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
-  const activeHelminth = build.helminthSubstitution ? HELMINTH_ABILITIES.find(ability => ability.id === build.helminthSubstitution?.abilityId) : null;
+  const activeHelminth = findHelminthAbility(build.helminthSubstitution);
   const helminthScaling = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, stats) : null;
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
@@ -1756,7 +1793,9 @@ export default function SetBuilder() {
         return { ...build, helminthSubstitution: null };
       }
       const wfName = build.warframe?.name || "";
-      const restriction = validateHelminthRestriction(ability.id, wfName);
+      const nativeEntry = build.warframe ? getNativeAbilityEntries(build.warframe)[abilityIndex] : null;
+      const nativeAbilityName = typeof nativeEntry === "string" ? nativeEntry : (nativeEntry?.name || `Compétence ${abilityIndex + 1}`);
+      const restriction = validateHelminthRestriction(ability.id, wfName, nativeAbilityName);
       if (!restriction.allowed) {
         toast.error(restriction.reason || "Restriction Helminth officielle non respectée.");
         return build;
@@ -1778,7 +1817,7 @@ export default function SetBuilder() {
   const renderHelminthSection = () => {
     if (!activeBuild.warframe) return null;
     const warframeStats = calculateWarframeStats(activeBuild);
-    const activeHelminth = activeBuild.helminthSubstitution ? HELMINTH_ABILITIES.find(ability => ability.id === activeBuild.helminthSubstitution?.abilityId) : null;
+    const activeHelminth = findHelminthAbility(activeBuild.helminthSubstitution);
     const activeHelminthScaling = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, warframeStats) : null;
     const normalizedSearch = helminthSearch.trim().toLowerCase();
     const filteredHelminthAbilities = HELMINTH_ABILITIES.filter(ability => {
@@ -1789,12 +1828,7 @@ export default function SetBuilder() {
     const visibleHelminthAbilities = activeHelminth && !filteredHelminthAbilities.some(ability => ability.id === activeHelminth.id)
       ? [activeHelminth, ...filteredHelminthAbilities]
       : filteredHelminthAbilities;
-    const wfAbilities = activeBuild.warframe.abilities || [
-      { name: "Compétence 1", description: "Capacité native 1" },
-      { name: "Compétence 2", description: "Capacité native 2" },
-      { name: "Compétence 3", description: "Capacité native 3" },
-      { name: "Compétence 4", description: "Capacité ultime" },
-    ];
+    const wfAbilities = getNativeAbilityEntries(activeBuild.warframe);
     return (
       <div className="wf-hud-panel hud-frame rounded-sm p-4 space-y-3" style={{ border: "1px solid var(--wf-border)" }}>
         <div className="flex items-center justify-between">
@@ -1914,7 +1948,7 @@ export default function SetBuilder() {
                     <option value="native">🛠️ Remplacer cette compétence ({abilityName})</option>
                     {visibleHelminthAbilities.map(ha => (
                       <option key={ha.id} value={ha.id}>
-                        {ha.name} ({ha.sourceWarframe}) {ha.isDamageBuff ? "★ (Buff de dégâts)" : ""}
+                        {ha.name} ({ha.sourceWarframe}) {isDamageBuffAbility(ha.id) ? "★ (Buff de dégâts)" : ""}
                       </option>
                     ))}
                   </select>
