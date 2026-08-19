@@ -8,7 +8,7 @@ import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
   MOA_PARTS, HOUND_PARTS,
-  Warframe, WarframeAbilityEntry, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
+  Warframe, WarframeAbility, WarframeAbilityEntry, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
 import { HELMINTH_ABILITIES, HelminthAbility, isDamageBuffAbility, validateHelminthRestriction } from "@/lib/helminth-data";
@@ -1008,7 +1008,19 @@ function getNativeAbilityEntries(warframe: Warframe): WarframeAbilityEntry[] {
   const existing = Array.isArray(warframe.abilities) ? warframe.abilities.filter(Boolean).slice(0, 4) : [];
   const normalizedName = warframe.name.toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim();
   const fallback = FALLBACK_NATIVE_ABILITIES[normalizedName] || FALLBACK_NATIVE_ABILITIES[warframe.name.toLowerCase()] || [];
-  return Array.from({ length: 4 }, (_, index) => existing[index] || fallback[index] || { name: `Compétence ${index + 1}`, description: "Capacité native à renseigner." });
+  return Array.from({ length: 4 }, (_, index) => existing[index] || (fallback[index] ? { name: fallback[index], description: "" } : { name: "", description: "" }));
+}
+
+function getAbilityRecord(entry: WarframeAbilityEntry): WarframeAbility | null {
+  return typeof entry === "object" && entry !== null ? entry : null;
+}
+
+function formatOfficialAbilityStat(stat: NonNullable<WarframeAbility["officialStats"]>[number]): string {
+  let label = stat.label;
+  for (const [key, value] of Object.entries(stat.values || {})) {
+    label = label.replace(new RegExp(`\\|${key}\\|`, "gi"), String(value));
+  }
+  return label.replace(/\|val\d+\|/gi, "—");
 }
 
 function findHelminthAbility(substitution: HelminthSubstitution | null): HelminthAbility | null {
@@ -1888,8 +1900,10 @@ export default function SetBuilder() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
           {wfAbilities.map((rawAbility, index) => {
-            const abilityName = typeof rawAbility === "string" ? rawAbility : (rawAbility && typeof rawAbility === "object" && "name" in rawAbility ? String(rawAbility.name) : `Compétence ${index + 1}`);
-            const abilityDesc = typeof rawAbility === "string" ? "Capacité native de la Warframe." : (rawAbility && typeof rawAbility === "object" && "description" in rawAbility ? String(rawAbility.description) : "Capacité native de la Warframe.");
+            const abilityRecord = getAbilityRecord(rawAbility);
+            const abilityName = typeof rawAbility === "string" ? rawAbility : (abilityRecord?.name || "");
+            const abilityDesc = typeof rawAbility === "string" ? "Capacité native de la Warframe." : (abilityRecord?.description || "");
+            const officialStats = abilityRecord?.officialStats || [];
             const isSubstituted = activeBuild.helminthSubstitution?.abilityIndex === index;
             const sub = isSubstituted ? activeBuild.helminthSubstitution : null;
             return (
@@ -1917,6 +1931,15 @@ export default function SetBuilder() {
                   <div className="text-[10px] line-clamp-2 leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
                     {sub ? sub.description : abilityDesc}
                   </div>
+                  {!sub && officialStats.length > 0 && (
+                    <div className="mt-2 space-y-0.5" title="Statistiques officielles du Wiki Warframe">
+                      {officialStats.slice(0, 4).map((stat, statIndex) => (
+                        <div key={`${index}-stat-${statIndex}`} className="text-[9px] truncate" style={{ color: "#7dd3fc", fontFamily: "var(--font-mono)" }}>
+                          {formatOfficialAbilityStat(stat)}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-3 pt-2 border-t flex flex-col gap-2" style={{ borderColor: "rgba(255,255,255,0.08)" }}>

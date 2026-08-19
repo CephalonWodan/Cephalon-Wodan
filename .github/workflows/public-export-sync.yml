@@ -33,6 +33,9 @@ jobs:
       - name: Run Public Export parser and normalizer
         run: node scripts/extract-public-export.mjs
 
+      - name: Enrich Warframe abilities from WFCD and Wiki stats
+        run: node scripts/enrich-warframe-abilities.mjs
+
       - name: Run type check and production build
         run: |
           pnpm run check
@@ -46,7 +49,7 @@ jobs:
           branch: 'chore/public-export-french-sync'
           title: 'Official French Public Export Data Synchronization'
           body: |
-            Automated weekly synchronization of official French Warframe Public Export tables (`ExportWarframes_fr`, `ExportWeapons_fr`, `ExportUpgrades_fr`, etc.).
+            Automated weekly synchronization of official French Public Export tables (`ExportWarframes_fr`, `ExportWeapons_fr`, `ExportUpgrades_fr`, etc.) plus structured native Warframe abilities from WFCD and the Wiki `Module:Ability/data/stats` table.
             Validated with TypeScript checks and production build.
           signoff: false
           delete-branch: true

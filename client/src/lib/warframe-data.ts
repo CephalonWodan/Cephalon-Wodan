@@ -28,9 +28,18 @@ type CatalogData = {
 
 const fullData = catalog as CatalogData;
 
+export interface WarframeAbilityStat {
+  label: string;
+  modifier?: string;
+  values?: Record<string, string | number>;
+}
+
 export interface WarframeAbility {
   name: string;
   description: string;
+  uniqueName?: string;
+  imageName?: string;
+  officialStats?: WarframeAbilityStat[];
   strength?: string;
   duration?: string;
   range?: string;

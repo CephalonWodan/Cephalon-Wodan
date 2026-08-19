@@ -1,5 +1,19 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Modules Wiki Ability officiels
+
+- [x] Auditer `Module:Ability/infobox` et `Module:Ability/data/stats` comme sources structurées.
+- [x] Adapter l’enrichisseur pour récupérer les noms, descriptions et statistiques réelles des capacités.
+- [x] Valider le rendu Helminth et supprimer les fallbacks génériques restants.
+
+
+## Nouvelle demande — Capacités natives non résolues dans le panneau Helminth
+
+- [ ] Auditer les structures de capacités Warframe réellement chargées par le Builder.
+- [ ] Résoudre les noms depuis les tableaux de chaînes, objets structurés et fallbacks officiels sans libellé générique.
+- [ ] Tester plusieurs Warframes, compiler et valider le rendu Helminth.
+
+
 ## Nouvelle demande — Noms des capacités natives dans le panneau Helminth
 
 - [x] Remplacer les libellés « Capacité 1–4 » par les noms réels des capacités de la Warframe sélectionnée.
