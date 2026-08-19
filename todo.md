@@ -1,5 +1,13 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Mise à l’échelle dynamique des capacités (Force, Durée, Portée, Efficacité)
+
+- [x] Structurer les lignes de statistiques des capacités selon le format d’exemple (`summary` et `rows` avec modificateurs `AVATAR_ABILITY_STRENGTH`, etc.).
+- [x] Calculer dynamiquement les valeurs affichées en fonction des facteurs de puissance de la Warframe active.
+- [x] Afficher les valeurs modifiées dans les cartes de capacités du panneau Helminth et de la Warframe.
+- [x] Valider avec des mods de Force, Durée, Portée et Efficacité, compiler et publier.
+
+
 ## Nouvelle demande — Les capacités génériques restent visibles
 
 - [x] Reproduire le cas exact dans le Builder et identifier la Warframe concernée.

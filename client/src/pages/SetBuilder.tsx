@@ -1041,9 +1041,54 @@ function getAbilityRecord(entry: WarframeAbilityEntry): WarframeAbility | null {
   return typeof entry === "object" && entry !== null ? entry : null;
 }
 
-function formatOfficialAbilityStat(stat: NonNullable<WarframeAbility["officialStats"]>[number]): string {
+function formatOfficialAbilityStat(
+  stat: NonNullable<WarframeAbility["officialStats"]>[number],
+  modifiers?: { strength: number; duration: number; range: number; efficiency: number }
+): string {
   let label = stat.label;
-  for (const [key, value] of Object.entries(stat.values || {})) {
+  const rawValues = stat.values || {};
+  const modifier = (stat.modifier || "").toUpperCase();
+
+  const strengthFactor = modifiers ? modifiers.strength / 100 : 1;
+  const durationFactor = modifiers ? modifiers.duration / 100 : 1;
+  const rangeFactor = modifiers ? modifiers.range / 100 : 1;
+  const efficiencyFactor = modifiers ? modifiers.efficiency / 100 : 1;
+
+  const scaledValues: Record<string, string | number> = {};
+  for (const [k, v] of Object.entries(rawValues)) {
+    const num = Number(v);
+    if (!Number.isFinite(num)) {
+      scaledValues[k] = v;
+      continue;
+    }
+    let scaled = num;
+    if (modifier.includes("STRENGTH")) {
+      scaled = num * strengthFactor;
+    } else if (modifier.includes("DURATION")) {
+      scaled = num * durationFactor;
+    } else if (modifier.includes("RANGE")) {
+      scaled = num * rangeFactor;
+    } else if (modifier.includes("EFFICIENCY")) {
+      // Energy cost scales inversely with efficiency (higher efficiency -> lower cost)
+      scaled = Math.max(5, Math.round(num / Math.max(0.1, efficiencyFactor)));
+    } else {
+      // Heuristic fallback based on label keywords if modifier is absent
+      const lower = label.toLowerCase();
+      if (lower.includes("cost") || lower.includes("drain")) {
+        scaled = Math.max(5, Math.round(num / Math.max(0.1, efficiencyFactor)));
+      } else if (lower.includes("damage") || lower.includes("heal") || lower.includes("armor") || lower.includes("shield") || lower.includes("strength")) {
+        scaled = num * strengthFactor;
+      } else if (lower.includes("duration") || lower.includes("time")) {
+        scaled = num * durationFactor;
+      } else if (lower.includes("range") || lower.includes("radius") || lower.includes("distance")) {
+        scaled = num * rangeFactor;
+      }
+    }
+    // Format nicely: integers or 1 decimal place
+    scaledValues[k] = Number.isInteger(scaled) ? scaled : Number(scaled.toFixed(1));
+  }
+
+  for (const [key, value] of Object.entries(scaledValues)) {
     label = label.replace(new RegExp(`\\|${key}\\|`, "gi"), String(value));
   }
   return label.replace(/\|val\d+\|/gi, "—");
@@ -1957,15 +2002,21 @@ export default function SetBuilder() {
                   <div className="text-[10px] line-clamp-2 leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
                     {sub ? sub.description : abilityDesc}
                   </div>
-                  {!sub && officialStats.length > 0 && (
-                    <div className="mt-2 space-y-0.5" title="Statistiques officielles du Wiki Warframe">
+                                            {!sub && officialStats.length > 0 && (
+                    <div className="mt-2 space-y-0.5" title="Statistiques officielles du Wiki Warframe (mises à l'échelle par Force, Durée, Portée, Efficacité)">
                       {officialStats.slice(0, 4).map((stat, statIndex) => (
                         <div key={`${index}-stat-${statIndex}`} className="text-[9px] truncate" style={{ color: "#7dd3fc", fontFamily: "var(--font-mono)" }}>
-                          {formatOfficialAbilityStat(stat)}
+                          {formatOfficialAbilityStat(stat, {
+                            strength: warframeStats.strengthPct,
+                            duration: warframeStats.durationPct,
+                            range: warframeStats.rangePct,
+                            efficiency: warframeStats.efficiencyPct,
+                          })}
                         </div>
                       ))}
                     </div>
                   )}
+
                 </div>
 
                 <div className="mt-3 pt-2 border-t flex flex-col gap-2" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
