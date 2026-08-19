@@ -1,0 +1,36 @@
+{
+  "updated": [
+    {
+      "warframe": "Jade",
+      "ability": "Symphony Of Mercy",
+      "source": "https://wiki.warframe.com/w/Symphony_of_Mercy?action=raw",
+      "rows": 4
+    },
+    {
+      "warframe": "Jade",
+      "ability": "Glory On High",
+      "source": "https://wiki.warframe.com/w/Glory_on_High?action=raw",
+      "rows": 3
+    },
+    {
+      "warframe": "Kullervo",
+      "ability": "Storm Of Ukko",
+      "source": "https://wiki.warframe.com/w/Storm_of_Ukko?action=raw",
+      "rows": 5
+    },
+    {
+      "warframe": "Voruna",
+      "ability": "Shroud Of Dynar",
+      "source": "https://wiki.warframe.com/w/Shroud_of_Dynar?action=raw",
+      "rows": 4
+    },
+    {
+      "warframe": "Voruna",
+      "ability": "Fangs Of Raksh",
+      "source": "https://wiki.warframe.com/w/Fangs_of_Raksh?action=raw",
+      "rows": 4
+    }
+  ],
+  "unresolved": [],
+  "skipped": []
+}

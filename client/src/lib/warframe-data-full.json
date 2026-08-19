@@ -848,25 +848,177 @@
           "name": "Razor Gyre",
           "description": "Dash forward in a spinning vortex of death. Struck enemies are inflicted with <DT_SENTIENT_COLOR>Tau Status Effect, making them more vulnerable to all other status effects. For each enemy hit, recover a portion of the energy cost, as well as health and shields. Enemies lifted by Sentient Wrath take increased damage.",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientWhirlwindAbility",
-          "imageName": "CalibanWhirlwind.png"
+          "imageName": "CalibanWhirlwind.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S ( total damage per second) 700 / 800 / 900 / 1,000 /s ( total damage per second to raised enemies) + 15 / 20 / 25 / 30 HP/SP (health/shield restore per enemy): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M/s (bonus speed) 1.25 s (dash duration) 0.1 s ( damage interval) per hit 25% ( Status Chance per damage interval) +25% EP (energy restore per enemy): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Razor_Gyre?action=raw"
         },
         {
           "name": "Sentient Wrath",
           "description": "Smash the ground sending out a radial wave of destruction. Those not killed by the initial blast are helplessly raised into the air, where they take amplified damage for a short time.",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientStompAbility",
-          "imageName": "CalibanShockwave.png"
+          "imageName": "CalibanShockwave.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": ",000 / 1,500 / 2,000 ( damage) 15 / 20 / 25 / 35 % (damage vulnerability): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 22
+              }
+            },
+            {
+              "label": "Status effect: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Sentient_Wrath?action=raw"
         },
         {
           "name": "Lethal Progeny",
           "description": "Cycle through Sentient unit types, then summon them to Caliban's side. Conculysts focus on raw melee damage. Ortholysts specialize in ranged attacks and inflict <DT_SENTIENT_COLOR>Tau Status Effect. Summulysts summon their own Choralysts and provide shield protection for the squad.",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientSummonAbility",
-          "imageName": "CalibanSummonSentients.png"
+          "imageName": "CalibanSummonSentients.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Caliban's Rank x Str (Sentient rank) +: |val1| SP/s (shield restore per second) 1 / 1.5 / 2 / 2.5 x (damage multiplier) 1 / 1.33 / 1.66 / 2 x (health multiplier)",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 45
+              }
+            },
+            {
+              "label": "M (shield regen range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S (Conculyst tornado duration) 10 s (Conculyst tornado cooldown) 0.5x (Conculyst damage multiplier) 3% (Conculyst Fusion Strike laser prism chance) 10 m (teleport radius) 60 m (teleport range) 3 (max Conculysts) 3 (max Ortholysts) 1 (max Summulyst) 6 (max Choralyst): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 6
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Lethal_Progeny?action=raw"
         },
         {
           "name": "Fusion Strike",
           "description": "Converge three streams of raw energy upon a single point, causing a massive explosion. The streams strip armor and shields, and each enemy struck detonates on stream convergence. Summoned Conculysts can wield their own mini Fusion Strikes. ",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientBlastAbility",
-          "imageName": "CalibanTriLaser.png"
+          "imageName": "CalibanTriLaser.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",000 / 13,000 / 14,000 / 15,000 /s (laser damage per second) 2,500 / 3,000 / 4,000 / 5,000 (enemy detonation damage) 600 / 650 / 700 / 750 (convergence explosion damage) 20 / 25 / 35 / 50 % (armor and shield strip): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S (fallout duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M (stream range) 5 / 6 / 8 / 10 m (explosion and fallout radius) 2 m (enemy explosion radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "(number of streams) &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            },
+            {
+              "label": "Beam Punch Through against enemy bodies on enemy explosions and final explosion: |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Fusion_Strike?action=raw"
         }
       ],
       "description": "Forged in celebration of the all-too-brief peace between the Orokin and Sentients, Caliban Prime is a true collaborative masterpiece. The heir of twin kingdoms arises in royal gold.",
@@ -1923,7 +2075,30 @@
           "energy": 25,
           "range": "10m",
           "strength": "150",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M (initial target range) 7 m (chain range) 36 m/s (initial dash velocity): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 36
+              }
+            },
+            {
+              "label": "S (non-locked on dash time) 75 m/s (locked on dash speed): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 75
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Slash_Dash?action=raw"
         },
         {
           "name": "Radial Blind",
@@ -1932,7 +2107,30 @@
           "energy": 50,
           "range": "25m",
           "strength": "N/A",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Radial_Blind?action=raw"
         },
         {
           "name": "Radial Javelin",
@@ -1941,7 +2139,30 @@
           "energy": 75,
           "range": "20m",
           "strength": "1000",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "(damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1000
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Radial_Javelin?action=raw"
         },
         {
           "name": "Exalted Blade",
@@ -1950,7 +2171,44 @@
           "energy": 2.5,
           "range": "N/A",
           "strength": "250",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "(damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "S (blind duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "M (blind radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "M/s (wave speed) 70 m (wave range): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 70
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Exalted_Blade?action=raw"
         }
       ],
       "description": "From the shadow of the long night emerges a new Excalibur. Founder exclusive Warframe for the Chinese build.",
@@ -3834,7 +4092,38 @@
           "name": "Plunder",
           "description": "Plunder Armor from nearby enemies and increase <DT_CORROSIVE_COLOR>Corrosive Damage on your Abilities and weapons. Enemies affected by <DT_CORROSIVE_COLOR>Corrosive Status offer a greater increase.",
           "uniqueName": "/Lotus/Powersuits/Pirate/Abilities/PirateArmourAbility",
-          "imageName": "PiratePlunderArmor.png"
+          "imageName": "PiratePlunderArmor.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "(armor per enemy) 20 / 25 / 30 / 40 (armor per status) 750 (armor cap) 5% / 6% / 7.5% / 10% ( bonus damage per enemy) 5% / 6% / 7.5% / 10% ( bonus damage per enemy per status) 200% ( bonus damage cap): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 200
+              }
+            },
+            {
+              "label": "S (duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M (range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Plunder?action=raw"
         },
         {
           "name": "Tentacle Swarm",
@@ -4021,7 +4310,31 @@
           "name": "Scarab Shell",
           "description": "Activate to form Armor by draining Inaros' Health. Activate again to stop the formation early. The protective layer reduces incoming Damage and absorbs Status Effects.",
           "uniqueName": "/Lotus/Powersuits/Sandman/Abilities/SandmanArmorAbility",
-          "imageName": "SandmanSwarm.png"
+          "imageName": "SandmanSwarm.png",
+          "officialStats": [
+            {
+              "label": "(armor bonus): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 350
+              }
+            },
+            {
+              "label": "% (status protection cost) ? m (charging damage radius) ? (damage per tick) on hit 2,500 HP (total health cost) 2 HP (min. health threshold) &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "(armor bonus duration): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 4.67
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Scarab_Shell?action=raw"
         },
         {
           "name": "Scarab Swarm",
@@ -8595,22 +8908,135 @@
         {
           "name": "Embrace",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "° (pull angle): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 80
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Embrace?action=raw"
         },
         {
           "name": "Consume",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",000 / 1,500 / 2,000 / 2,500 ( damage) 10 / 15 / 20 / 25 % (heal value): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 14
+              }
+            },
+            {
+              "label": "Knockdown on hit ? s (confusion duration): |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Consume?action=raw"
         },
         {
           "name": "Death's Harvest",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "% (damage vulnerability): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S (debuff duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 12
+              }
+            },
+            {
+              "label": "% (Death Well gain per enemy): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Death's_Harvest?action=raw"
         },
         {
           "name": "Reunite",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 0
+              }
+            },
+            {
+              "label": "(teleport range): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Reunite?action=raw"
         }
       ],
       "description": "When the Tempestarii became a void phantom, Sevagoth set aside his body and became a Shadow, to continue his solemn duty of saving lives.",
@@ -12019,7 +12445,38 @@
           "efficiency": "25 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientWhirlwindAbility",
-          "imageName": "CalibanWhirlwind.png"
+          "imageName": "CalibanWhirlwind.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S ( total damage per second) 700 / 800 / 900 / 1,000 /s ( total damage per second to raised enemies) + 15 / 20 / 25 / 30 HP/SP (health/shield restore per enemy): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M/s (bonus speed) 1.25 s (dash duration) 0.1 s ( damage interval) per hit 25% ( Status Chance per damage interval) +25% EP (energy restore per enemy): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Razor_Gyre?action=raw"
         },
         {
           "name": "Sentient Wrath",
@@ -12030,7 +12487,45 @@
           "efficiency": "50 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientStompAbility",
-          "imageName": "CalibanShockwave.png"
+          "imageName": "CalibanShockwave.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": ",000 / 1,500 / 2,000 ( damage) 15 / 20 / 25 / 35 % (damage vulnerability): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 22
+              }
+            },
+            {
+              "label": "Status effect: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Sentient_Wrath?action=raw"
         },
         {
           "name": "Lethal Progeny",
@@ -12041,7 +12536,45 @@
           "efficiency": "50 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientSummonAbility",
-          "imageName": "CalibanSummonSentients.png"
+          "imageName": "CalibanSummonSentients.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Caliban's Rank x Str (Sentient rank) +: |val1| SP/s (shield restore per second) 1 / 1.5 / 2 / 2.5 x (damage multiplier) 1 / 1.33 / 1.66 / 2 x (health multiplier)",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 45
+              }
+            },
+            {
+              "label": "M (shield regen range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S (Conculyst tornado duration) 10 s (Conculyst tornado cooldown) 0.5x (Conculyst damage multiplier) 3% (Conculyst Fusion Strike laser prism chance) 10 m (teleport radius) 60 m (teleport range) 3 (max Conculysts) 3 (max Ortholysts) 1 (max Summulyst) 6 (max Choralyst): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 6
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Lethal_Progeny?action=raw"
         },
         {
           "name": "Fusion Strike",
@@ -12052,7 +12585,52 @@
           "efficiency": "100 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Sentient/Abilities/SentientBlastAbility",
-          "imageName": "CalibanTriLaser.png"
+          "imageName": "CalibanTriLaser.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",000 / 13,000 / 14,000 / 15,000 /s (laser damage per second) 2,500 / 3,000 / 4,000 / 5,000 (enemy detonation damage) 600 / 650 / 700 / 750 (convergence explosion damage) 20 / 25 / 35 / 50 % (armor and shield strip): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S (fallout duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M (stream range) 5 / 6 / 8 / 10 m (explosion and fallout radius) 2 m (enemy explosion radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "(number of streams) &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            },
+            {
+              "label": "Beam Punch Through against enemy bodies on enemy explosions and final explosion: |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Fusion_Strike?action=raw"
         }
       ],
       "description": "The heir of twin kingdoms ascends. Biological and Sentient life meet in Caliban. An adept monarch, he offers crowd control and survivability. His creator had more than one world in mind.",
@@ -12416,7 +12994,31 @@
           "efficiency": "25 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Geode/Abilities/GeodeShardsAbility",
-          "imageName": "CitrineBleedingShards.png"
+          "imageName": "CitrineBleedingShards.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "And damage 50% health orb drop chance 20% energy orb drop chance: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 14
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Fractured_Blast?action=raw"
         },
         {
           "name": "Preserving Shell",
@@ -12427,7 +13029,38 @@
           "efficiency": "50 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Geode/Abilities/GeodeShellAbility",
-          "imageName": "CitrineProtectiveShell.png"
+          "imageName": "CitrineProtectiveShell.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "% initial damage reduction +3% damage reduction per kill +1% damage reduction per assist: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M Affinity Range 8 m radius 2 m distance 1 s initial decay delay 10 / 20 / 25 / 25 % minimum damage reduction -1%/s decay rate at 25%-75% -3%/s decay rate at 75%-90% 2 s kill/assist decay delay 90% max damage reduction: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 90
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Preserving_Shell?action=raw"
         },
         {
           "name": "Prismatic Gem",
@@ -12438,7 +13071,52 @@
           "efficiency": "75 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Geode/Abilities/GeodeCrystalAbility",
-          "imageName": "CitrineChromaticGeode.png"
+          "imageName": "CitrineChromaticGeode.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": ",000 , , , damage 60 / 70 / 85 / 100% status chance: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "S (gem duration) 60 / 70 / 85 / 100% status duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M placement distance 1 beam per ally 0.4 s retarget delay &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 0.4
+              }
+            },
+            {
+              "label": "Beam range: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Prismatic_Gem?action=raw"
         },
         {
           "name": "Crystallize",
@@ -12449,7 +13127,45 @@
           "efficiency": "100 Energy",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Geode/Abilities/GeodeGrowthsAbility",
-          "imageName": "CitrineCrystalGrowths.png"
+          "imageName": "CitrineCrystalGrowths.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "Damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "° sight detection cone 1 growth per enemy =300% absolute critical chance: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 300
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Crystallize?action=raw"
         }
       ],
       "description": "Gaze upon the Crystal Bastion. Citrine's crystalline might supports allies on the battlefield. Combat only enhances her fractal beauty.",
@@ -12485,7 +13201,52 @@
           "efficiency": "N/A",
           "misc": "Weak spots and silhouette highlight through terrain, 3 max antennae",
           "uniqueName": "/Lotus/Powersuits/Frumentarius/Abilities/FrumentariusScanAbility",
-          "imageName": "FrumentariusSeek.png"
+          "imageName": "FrumentariusSeek.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "% / 45% / 60% / 75% (Enemy Body Parts damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "S (antennae duration) 5 s (scan duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "M (seek range) 10 m (weapon punch through against enemy bodies): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "° (angle) 3 s (pulse interval) Weak spots and silhouette highlight through terrain &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            },
+            {
+              "label": "(weapon punch through against terrain): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Seek?action=raw"
         },
         {
           "name": "Resupply",
@@ -12496,7 +13257,38 @@
           "efficiency": "N/A",
           "misc": "6 maximum ammo packs, reload clears effect, status cleanse on cast",
           "uniqueName": "/Lotus/Powersuits/Frumentarius/Abilities/FrumentariusAmmoAbility",
-          "imageName": "FrumentariusResupply.png"
+          "imageName": "FrumentariusResupply.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "% / 15% / 20% / 25% (weapon damage bonus) 20% / 30% / 40% / 50% (sniper damage bonus): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Reload held firearm magazine: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 0.35
+              }
+            },
+            {
+              "label": "(ammo pack duration): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 6
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Resupply?action=raw"
         },
         {
           "name": "Evade",
@@ -12507,7 +13299,38 @@
           "efficiency": "N/A",
           "misc": "Status cleanse on cast, shield recharge delay bypass on cast",
           "uniqueName": "/Lotus/Powersuits/Frumentarius/Abilities/FrumentariusCloakAbility",
-          "imageName": "FrumentariusEvade.png"
+          "imageName": "FrumentariusEvade.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "(health restore): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "S (invisible duration) 2 s (duration extend) 30 s (duration cap): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "Status cleanse on cast Shield recharge delay bypass on cast: |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 60
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Evade?action=raw"
         },
         {
           "name": "Neutralize",
@@ -12518,7 +13341,38 @@
           "efficiency": "N/A",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Frumentarius/Abilities/FrumentariusSniperAbility",
-          "imageName": "FrumentariusNeutralize.png"
+          "imageName": "FrumentariusNeutralize.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "X / 1.08x / 1.16x / 1.25x (damage multiplier): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1.25
+              }
+            },
+            {
+              "label": "M (ricochet range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "(number of ricochets) 20% (damage loss per ricochet) 10m (enemy stagger range on cast): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 10
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Neutralize?action=raw"
         }
       ],
       "description": "Move like a shadow, strike with force. The Orokin created a Warframe that marries damage and stealth to eliminate sensitive problems, but he disappeared in the chaos of their demise. All that remains is a batch name: Cyte-09.",
@@ -12555,7 +13409,45 @@
           "efficiency": "N/A",
           "misc": "95% slow cap, 7 sickles, infinite punch-through",
           "uniqueName": "/Lotus/Powersuits/Dagath/Abilities/DagathVolleyAbility",
-          "imageName": "DagathImpiety.png"
+          "imageName": "DagathImpiety.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "% slow 350 / 400 / 450 / 500 damage during spin 700 / 800 / 900 / 1,000 damage on throw: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 0
+              }
+            },
+            {
+              "label": "S slow time: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "M Doom spread range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "Number of sickles 1-5 m spin radius status per sickle 95% slow cap 1 s spin time and recast cooldown 0.5 s sickle throw delay Infinite Punch Through 40 m auto-target radius: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 40
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Wyrd_Scythes?action=raw"
         },
         {
           "name": "Doom",
@@ -12566,7 +13458,45 @@
           "efficiency": "N/A",
           "misc": "100% damage redirection cap, 1 s recast cooldown",
           "uniqueName": "/Lotus/Powersuits/Dagath/Abilities/DagathCurseAbility",
-          "imageName": "DagathUnhallowed.png"
+          "imageName": "DagathUnhallowed.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage 35% Phantom Wrath damage stored per damage instance: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M cone range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "° cone angle inside cone 100% damage redirection per damage instance cap 2 s Phantom Wrath damage storage time limit 1 s recast cooldown: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Doom?action=raw"
         },
         {
           "name": "Grave Spirit",
@@ -12577,7 +13507,38 @@
           "efficiency": "N/A",
           "misc": "100% dodge, health orb drops in spectral form, 25 s cooldown",
           "uniqueName": "/Lotus/Powersuits/Dagath/Abilities/DagathApparitionAbility",
-          "imageName": "DagathApparition.png"
+          "imageName": "DagathApparition.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "% critical damage bonus 70 / 80 / 90 / 100 % Doom critical damage bonus: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "S invulnerable time: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "Duration (not deactivatable): |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Grave_Spirit?action=raw"
         },
         {
           "name": "Rakhali's Cavalry",
@@ -12588,7 +13549,38 @@
           "efficiency": "N/A",
           "misc": "5 Kaithes, 20 / 25 / 30 / 35% defense reduction per interval",
           "uniqueName": "/Lotus/Powersuits/Dagath/Abilities/DagathHorseAbility",
-          "imageName": "DagathUndyingGallop.png"
+          "imageName": "DagathUndyingGallop.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",000 / 20,000 / 25,000 / 30,000 damage per interval per Kaithe 20 / 25 / 30 / 35 % Doom defense reduction per interval per Kaithe: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              }
+            },
+            {
+              "label": "S charge duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 3
+              }
+            },
+            {
+              "label": "Number of Kaithes 5 m summon radius 1.5 s invulnerable time 15 m/s charge velocity on contact 0.15 s damage interval: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 0.15
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Rakhali's_Cavalry?action=raw"
         }
       ],
       "description": "Never underestimate the power and wrath of sullen sadness. Dagath's malice deals high damage.",
@@ -12624,7 +13616,24 @@
           "efficiency": "N/A",
           "misc": "+200 / 250 / 300 / 350 Overguard gain, Overguard cap: 7,500 / 10,000 / 12,500 / 15,000",
           "uniqueName": "/Lotus/Powersuits/Pagemaster/Abilities/PagemasterBookAbility",
-          "imageName": "DanteNoctua.png"
+          "imageName": "DanteNoctua.png",
+          "officialStats": [
+            {
+              "label": "Base damage on primary fire 2,000 / 2,250 / 2,500 / 2,750 base damage on alt-fire: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 750
+              }
+            },
+            {
+              "label": "Page fragments 60° page fragment seek angle 20 m page fragment seek distance: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 20
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Noctua?action=raw"
         },
         {
           "name": "Light Verse",
@@ -12635,7 +13644,31 @@
           "efficiency": "N/A",
           "misc": "Overguard cap: 7,500 / 10,000 / 12,500 / 15,000",
           "uniqueName": "/Lotus/Powersuits/Pagemaster/Abilities/PagemasterLifeAbility",
-          "imageName": "DanteLightVerse.png"
+          "imageName": "DanteLightVerse.png",
+          "officialStats": [
+            {
+              "label": "+: |val1| Overguard gain 7,500 / 10,000 / 12,500 / 15,000 Overguard cap + 14 / 16 / 18 / 20 % HP healed based on max health",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "M ally buff radius: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "S (Invulnerability duration on cast) +1 Final Verse Light page: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Light_Verse?action=raw"
         },
         {
           "name": "Dark Verse",
@@ -12646,7 +13679,31 @@
           "efficiency": "N/A",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Pagemaster/Abilities/PagemasterDeathAbility",
-          "imageName": "DanteDarkVerse.png"
+          "imageName": "DanteDarkVerse.png",
+          "officialStats": [
+            {
+              "label": ",000 / 1,250 damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "M enemy target range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "° cone angle 2x statuses and +1 Final Verse Dark page: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Dark_Verse?action=raw"
         },
         {
           "name": "Final Verse",
@@ -12657,7 +13714,45 @@
           "efficiency": "N/A",
           "misc": "",
           "uniqueName": "/Lotus/Powersuits/Pagemaster/Abilities/PagemasterFinalChapterAbility",
-          "imageName": "DanteResolution.png"
+          "imageName": "DanteResolution.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage per hit 35 / 40 / 45 / 50 % status chance vulnerability 35 / 40 / 45 / 50 % status damage increase: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S 15 / 20 / 25 / 30 s status vulnerability duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "S Invulnerability duration on cast Cannot cast without 1 Dark then 1 Light pages 3 Paragrimms limit 30m Paragrimm attack range status and per hit: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 30
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Final_Verse?action=raw"
         }
       ],
       "description": "Seeker of knowledge. Keeper of history. Daring researcher of Leverian lore. Dante composes arcane tales to support allies and devastate enemies.",
@@ -14921,25 +16016,163 @@
           "name": "Arcsphere",
           "description": "Launch a Gyratory Sphere that will deal high damage on impact and periodically deal electrical shocks to nearby enemies. Hit multiple enemies at once with the initial launch to enhance damage.",
           "uniqueName": "/Lotus/Powersuits/Gyre/Abilities/GyrePulseAbility",
-          "imageName": "GyrePulse.png"
+          "imageName": "GyrePulse.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",000 / 1,300 / 1,600 / 2,000 ( damage on deployment) 100 / 150 / 200 / 250 /s (field damage per second): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M (impact radius) 7 m (field radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 7
+              }
+            },
+            {
+              "label": "Status on hit: |val1|x",
+              "modifier": null,
+              "values": {
+                "Val1": 300
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Arcsphere?action=raw"
         },
         {
           "name": "Coil Horizon",
           "description": "Throw forward a Gyratory Sphere that will implode after a few seconds or can be manually triggered.",
           "uniqueName": "/Lotus/Powersuits/Gyre/Abilities/GyreSphereAbility",
-          "imageName": "GyreSphere.png"
+          "imageName": "GyreSphere.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": ",000 / 1,150 / 1,300 / 1,500 /s (contact damage per second) 500 / 750 / 1,000 / 1,250 ( damage on implosion): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 12
+              }
+            },
+            {
+              "label": "Knockdown on hit status on hit: |val1|s",
+              "modifier": null,
+              "values": {
+                "Val1": 300
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Coil_Horizon?action=raw"
         },
         {
           "name": "Cathode Grace",
           "description": "Gain a brief burst of increased Critical Chance and Energy Regen, with each kill extending duration of Cathode Grace. Casting is on a cooldown. ",
           "uniqueName": "/Lotus/Powersuits/Gyre/Abilities/GyreEnergizedAbility",
-          "imageName": "GyreEnergised.png"
+          "imageName": "GyreEnergised.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "X: |val1| % (weapon crit chance) + 25 / 30 / 40 / 50 % (ability crit chance) 1 / 1.15 / 1.3 / 1.5 EP/s (energy regen)",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1.5
+              }
+            },
+            {
+              "label": "S (initial timer) 3 s (extra time per kill): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 3
+              }
+            },
+            {
+              "label": "S (casting cooldown and max duration cap): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 60
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Cathode_Grace?action=raw"
         },
         {
           "name": "Rotorswell",
           "description": "Gyre’s mechanisms spin at incredible speeds, generating an Electric Field that shocks nearby enemies. When Gyre gets a critical hit, a large electrical discharge will chain from the enemy that was hit to nearby enemies.",
           "uniqueName": "/Lotus/Powersuits/Gyre/Abilities/GyreOverchargedAbility",
-          "imageName": "GyreOvercharged.png"
+          "imageName": "GyreOvercharged.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "S (field damage per second) 250 / 350 / 400 / 500 (discharge damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 22
+              }
+            },
+            {
+              "label": "M (electric field radius) 10 m (discharge range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "X (move speed multiplier) status on hit 5 (discharge chained targets) 2 (simultaneous discharges limit) 1 s (discharge cooldown) 0% to 300% (ability critical chance): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 300
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Rotorswell?action=raw"
         }
       ],
       "description": "Annihilate enemies with the conductivity of coils and transmitters. Gyre's electric attacks provide crowd control. She is the embodiment of elegant theory.",
@@ -15447,7 +16680,38 @@
           "name": "Plunder",
           "description": "Plunder Armor from nearby enemies and increase <DT_CORROSIVE_COLOR>Corrosive Damage on your Abilities and weapons. Enemies affected by <DT_CORROSIVE_COLOR>Corrosive Status offer a greater increase.",
           "uniqueName": "/Lotus/Powersuits/Pirate/Abilities/PirateArmourAbility",
-          "imageName": "PiratePlunderArmor.png"
+          "imageName": "PiratePlunderArmor.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "(armor per enemy) 20 / 25 / 30 / 40 (armor per status) 750 (armor cap) 5% / 6% / 7.5% / 10% ( bonus damage per enemy) 5% / 6% / 7.5% / 10% ( bonus damage per enemy per status) 200% ( bonus damage cap): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 200
+              }
+            },
+            {
+              "label": "S (duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M (range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Plunder?action=raw"
         },
         {
           "name": "Tentacle Swarm",
@@ -15632,7 +16896,31 @@
           "name": "Scarab Shell",
           "description": "Activate to form Armor by draining Inaros' Health. Activate again to stop the formation early. The protective layer reduces incoming Damage and absorbs Status Effects.",
           "uniqueName": "/Lotus/Powersuits/Sandman/Abilities/SandmanArmorAbility",
-          "imageName": "SandmanSwarm.png"
+          "imageName": "SandmanSwarm.png",
+          "officialStats": [
+            {
+              "label": "(armor bonus): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 350
+              }
+            },
+            {
+              "label": "% (status protection cost) ? m (charging damage radius) ? (damage per tick) on hit 2,500 HP (total health cost) 2 HP (min. health threshold) &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "(armor bonus duration): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 4.67
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Scarab_Shell?action=raw"
         },
         {
           "name": "Scarab Swarm",
@@ -15923,25 +17211,156 @@
           "name": "Light's Judgment",
           "description": "Create a well of light that heals allies and hurts enemies. Those who enter the well will be highlighted by Judgments.",
           "uniqueName": "/Lotus/Powersuits/Choir/Abilities/ChoirPoolAbility",
-          "imageName": "ChoirAbsolution.png"
+          "imageName": "ChoirAbsolution.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "Damage per half second 5 / 6 / 7 / 8 % health restore per second: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "S well and buff timer: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "Buff time inside well: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Light's_Judgment?action=raw"
         },
         {
           "name": "Symphony Of Mercy",
           "description": "Cycle through three songs that strengthen allies. Power of The Seven increases Ability Strength. Deathbringer increases Weapon Damage. Spirit of Resilience increases Shield Effectiveness. Extend the duration of each song by killing enemies surrounded by Judgments.",
           "uniqueName": "/Lotus/Powersuits/Choir/Abilities/ChoirChorusAbility",
-          "imageName": "ChoirChorus.png"
+          "imageName": "ChoirChorus.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "% Power of The Seven bonus 40 / 60 / 80 / 100 % Deathbringer weapon damage bonus 1 / 6 / 8 / 10 % Spirit of Resilience Shields recharge per second -10% Spirit of Resilience shield recharge delay reduction: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": -10
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M (pushback range) 5m ( range) 1 s invulnerable during cast 50 m Affinity Range auras 150% Power of The Seven cap -80% Spirit of Resilience recharge delay cap 2 s Judgments extra aura duration on kill: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Symphony_of_Mercy?action=raw"
         },
         {
           "name": "Ophanim Eyes",
           "description": "Jade summons an accusatory gaze that slows nearby enemies and dissolves their Shields and Armor. When the gaze falls upon allies, they can be revived from a distance.",
           "uniqueName": "/Lotus/Powersuits/Choir/Abilities/ChoirEyesAbility",
-          "imageName": "ChoirEyesOfLight.png"
+          "imageName": "ChoirEyesOfLight.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage 4 / 6 / 8 / 10 % armor and shield strip per second: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "° cone angle 6 / 9 / 12 / 15 % slow per second 90% slow cap 0.5s damage ticks status after defense strip Ally bleedout revival at range: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 0.5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Ophanim_Eyes?action=raw"
         },
         {
           "name": "Glory On High",
           "description": "Soar with destructive power. Use alternate-fire to detonate Judgments, causing an explosion of Jade Light. Enemies inside the Light's Judgment radius empower the explosion.",
           "uniqueName": "/Lotus/Powersuits/Choir/Abilities/ChoirEruptAbility",
-          "imageName": "ChoirEruption.png"
+          "imageName": "ChoirEruption.png",
+          "officialStats": [
+            {
+              "label": "Damage 750 / 1000 / 1,250 / 1,500 Alternate Fire damage 20 / 25 / 30 / 35 % damage reduction: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 35
+              }
+            },
+            {
+              "label": "M primary fire explosion 4 m alternate fire explosion: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 4
+              }
+            },
+            {
+              "label": "% damage reduction cap 10% Judgment chance on Glory primary fire 1.5x Light's Judgment empowered range multiplier 7.2 ms (base movement speed) 100% (innate movement speed bonus).: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Glory_on_High?action=raw"
         }
       ],
       "description": "Become enraptured by the song of devastation. Through her, the Jade Light can be a force of destruction or a source of support.",
@@ -16202,25 +17621,121 @@
           "name": "Kumihimo",
           "description": "Weave the threads of destiny. Enemies who touch the threads suffer a random Elemental Status Effect.\n\nA roll of triple sixes creates threads that inflict one of every Elemental Status Effect.",
           "uniqueName": "/Lotus/Powersuits/Koumei/Abilities/KoumeiStringsAbility",
-          "imageName": "KoumeiKumihimo.png"
+          "imageName": "KoumeiKumihimo.png",
+          "officialStats": [
+            {
+              "label": "X dice roll (star bounce and thread contact damage) ? / ? / ? / ~2750 x dice roll (star bounce damage with triple sixes): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2750
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 12
+              }
+            },
+            {
+              "label": "M (maximum travel distance) 15 m (threads length) 5 / 8 / 10 / 15 (threads formed): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M (star bounce AoE damage radius) 50 m/s (star travel speed) 3 - 5 (stacks of random elemental status effect on star bounce) 2 m (threads spacing) 30 (maximum threads active limit) 1 (stack of all elemental statuses on star bounce and thread contact with triple sixes): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Kumihimo?action=raw"
         },
         {
           "name": "Omikuji",
           "description": "Koumei glimpses a favorable future and the precise steps needed to reach it. Complete the challenge to earn a Decree. Unlucky rolls add a debuff, but you can hold the ability to reject the Omikuji.\n\nA roll of triple sixes grants a Decree without a challenge.",
           "uniqueName": "/Lotus/Powersuits/Koumei/Abilities/KoumeiFortuneAbility",
-          "imageName": "KoumeiOmikuji.png"
+          "imageName": "KoumeiOmikuji.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "≤: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Omikuji?action=raw"
         },
         {
           "name": "Omamori",
           "description": "Surround yourself with Omamori Charms, each with a chance to have enemy attacks heal you instead of damage you. The number of charms is determined by Koumei's dice roll.\n\nA roll of triple sixes grants invulnerability for the duration of your Omamori Charms.",
           "uniqueName": "/Lotus/Powersuits/Koumei/Abilities/KoumeiBlockAbility",
-          "imageName": "KoumeiOmamori.png"
+          "imageName": "KoumeiOmamori.png",
+          "officialStats": [
+            {
+              "label": "X heal multiplier: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1
+              }
+            },
+            {
+              "label": "Charm duration: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Omamori?action=raw"
         },
         {
           "name": "Bunraku",
           "description": "Wield your foe’s fate threads like the strings of marionettes. Koumei’s dice determine how many Status Effects foes in front of Koumei will suffer.\n\nA roll of triple sixes causes further Status Effects over time and extends Bunraku to enemies behind Koumei.",
           "uniqueName": "/Lotus/Powersuits/Koumei/Abilities/KoumeiPuppetAbility",
-          "imageName": "KoumeiBunraku.png"
+          "imageName": "KoumeiBunraku.png",
+          "officialStats": [
+            {
+              "label": "Damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "° cone angle Number of status stacks based on dice roll Random status effects on hit 3 s cooldown 30 s status duration pause: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 30
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Bunraku?action=raw"
         }
       ],
       "description": "Test your luck with the dice-maiden. Koumei weaves fate to unleash damage and ensure her survival. To the virtuous, she is an oracle. To the wicked, a perilous game of chance.",
@@ -16247,25 +17762,177 @@
           "name": "Wrathful Advance",
           "description": "(TAP) Kullervo charges a Heavy Attack, then teleports to his target and strikes. His rage-filled focus temporarily increases his Melee Critical Chance.\n(HOLD) Teleport to any marked location.",
           "uniqueName": "/Lotus/Powersuits/PaxDuviricus/Abilities/PaxTeleportAbility",
-          "imageName": "KullervoExecute.png"
+          "imageName": "KullervoExecute.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "+: |val1| % melee final critical chance",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 200
+              }
+            },
+            {
+              "label": "S melee crit buff duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M teleport distance: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S Cooldown Invulnerable during wind up Refresh Maneuvers on teleport: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Wrathful_Advance?action=raw"
         },
         {
           "name": "Recompense",
           "description": "Kullervo surrounds himself with daggers. Each dagger that strikes an enemy restores his health, but each dagger that misses an enemy strikes Kullervo, dealing a bit of damage. When Kullervo has max Health, he receives Overguard from struck enemies.",
           "uniqueName": "/Lotus/Powersuits/PaxDuviricus/Abilities/PaxBladesAbility",
-          "imageName": "KullervoBackstab.png"
+          "imageName": "KullervoBackstab.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage per dagger hit + 250 / 275 / 300 / 350 HP or Overguard per dagger hit: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 350
+              }
+            },
+            {
+              "label": "Overguard or HP drained per missed dagger 10,000 max Overguard: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 0
+              }
+            },
+            {
+              "label": "M dagger orbit radius: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "Daggers 5 s dagger airtime 1 s invulnerability time 3 daggers max per enemy and status on hit 3 HP self damage threshold +1 melee combo per dagger hit on enemy: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Recompense?action=raw"
         },
         {
           "name": "Collective Curse",
           "description": "Kullervo sends forth a curse that binds enemies. When a cursed enemy takes damage from him, every other cursed enemy also suffers a portion of that damage.",
           "uniqueName": "/Lotus/Powersuits/PaxDuviricus/Abilities/PaxLinkAbility",
-          "imageName": "KullervoSharedFate.png"
+          "imageName": "KullervoSharedFate.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "% damage redirection: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M wave distance: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "° cone angle and on hit 100% dmg redirection cap +1 melee combo per melee attack or dagger hit via spread: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Collective_Curse?action=raw"
         },
         {
           "name": "Storm Of Ukko",
           "description": "The Void answers Kullervo's invocation with a storm of daggers that rain down upon his enemies.",
           "uniqueName": "/Lotus/Powersuits/PaxDuviricus/Abilities/PaxFieldAbility",
-          "imageName": "KullervoRisingBlades.png"
+          "imageName": "KullervoRisingBlades.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",000 / 1,500 / 2,000 / 2,500 damage per second: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M radius: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "Storm limit 2 damage ticks per second status on hit ?% chance for large per hit +1 melee combo per hit: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Storm_of_Ukko?action=raw"
         }
       ],
       "description": "Kullervo answers for his sins and the sins of others. His daggers and melee prowess deal high damage. Seize the power of treachery to slake his thirst for revenge.",
@@ -18093,25 +19760,163 @@
           "name": "Stinkbrain",
           "description": "Throw a mushroom that periodically sheds poisonous spores, inflicting <DT_VIRAL_COLOR> Viral Damage and Status Effect upon nearby enemies while also lulling them to sleep.",
           "uniqueName": "/Lotus/Powersuits/Nokko/Abilities/NokkoToxicShroomAbility",
-          "imageName": "NokkoToxic.png"
+          "imageName": "NokkoToxic.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "Damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "S Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "S pulse interval 100% Status Chance and on pulse 3 s duration 100% damage vulnerability 4 Stinkbrain cap Warframe trampoline Double Jump boost Forced pulse on bounce 1.5 s Sporespring pulse interval Duration reset from Sporespring: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1.5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Stinkbrain?action=raw"
         },
         {
           "name": "Brightbonnet",
           "description": "Release a rejuvenating mushroom that emits a radial pulse, giving Nokko and his allies' <ENERGY> Energy and applying a buff to Ability Strength that lasts for a short time.",
           "uniqueName": "/Lotus/Powersuits/Nokko/Abilities/NokkoPowerShroomAbility",
-          "imageName": "NokkoPower.png"
+          "imageName": "NokkoPower.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "EP Energy restore 15% / 20% / 25% / 30% bonus: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "S Brightbonnet duration 5 s bonus duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "M Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "Damage on sprout on sprout 6 m sprout radius 3 s pulse interval 2 Brightbonnet cap 150% / 300% Ability Strength bonus caps Warframe trampoline Double Jump boost Forced pulse on bounce 1.5 s Sporespring pulse interval Duration reset from Sporespring ?s bounce cooldown: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1.5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Brightbonnet?action=raw"
         },
         {
           "name": "Reroot",
           "description": "Revert to Sprodling form, spawning orbs that heal Nokko and grant a speed boost. While in this state, Nokko is untargetable and heals gradually.",
           "uniqueName": "/Lotus/Powersuits/Nokko/Abilities/NokkoShrinkAbility",
-          "imageName": "NokkoShrink.png"
+          "imageName": "NokkoShrink.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Health/Shield Restore per second 50 / 60 / 70 / 80 Health/Shield Restore per pickup: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 80
+              }
+            },
+            {
+              "label": "S Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M/s (base move speed) Invulnerable Invisible Intangible Status effect and hard landing immunity Weapons, other abilities, interact key disabled Triple Jump Dodge speed boost 3 Fungal Spores 10 m Fungal Spore spawn radius 100% move speed bonus 3 s move speed bonus duration Sprodling mushroom trampoline: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Reroot?action=raw"
         },
         {
           "name": "Sporespring",
           "description": "Unleash a chaotic ballistic mushroom that seeks enemies and bounces explosively off whatever it touches. Contact with any of Nokko’s mushrooms invigorates them, doubling their pulse rate.",
           "uniqueName": "/Lotus/Powersuits/Nokko/Abilities/NokkoLaunchAbility",
-          "imageName": "NokkoLaunch.png"
+          "imageName": "NokkoLaunch.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": ",750 / 2,000 / 2,250 / 2,500 damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "M explosion radius 8 m bounce distance: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "Bounces 1.5x (Bounce Damage Multiplier) 75% Initial Critical Chance 2x Critical Damage +25% Flat Critical Chance per Bounce Forced Status Effect 3 Sporespring cap &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Sporespring?action=raw"
         }
       ],
       "description": "Spring into action with Nokko! With his strong roots and an array of tricky fungi this young defender will quickly grow on you",
@@ -19029,25 +20834,163 @@
           "name": "Mercy's Kiss",
           "description": "Leap onto an enemy and pierce them with Oraxia’s spider legs, dealing <DT_POISON_COLOR>Toxin Damage. Enemies defeated by this attack have a chance to drop Health or Energy Orbs.",
           "uniqueName": "/Lotus/Powersuits/Oraxia/Abilities/OraxiaLungeAbility",
-          "imageName": "OraxiaStrikeLeap.png"
+          "imageName": "OraxiaStrikeLeap.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",000 / 2,000 / 3,000 / 4,000 Damage 200% Health Orb Drop Chance 50% Energy Orb Drop Chance: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "M Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 40
+              }
+            },
+            {
+              "label": "Invulnerable during dash ? targeting cone angle: |val1|s",
+              "modifier": null,
+              "values": {
+                "Val1": 50
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Mercy's_Kiss?action=raw"
         },
         {
           "name": "Webbed Embrace",
           "description": "Oraxia throws a creeping web to ensnare her prey. Enemies caught within the widening radius are trapped inside a cocoon that increases their Damage Vulnerability.",
           "uniqueName": "/Lotus/Powersuits/Oraxia/Abilities/OraxiaEntangleAbility",
-          "imageName": "OraxiaWebTangle.png"
+          "imageName": "OraxiaWebTangle.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage 35% / 40% / 45% / 50% Damage Vulnerability: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M Radius: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "% Status Chance ? s web expansion time ? s duration 3 max webs: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Webbed_Embrace?action=raw"
         },
         {
           "name": "Widow's Brood",
           "description": "Oraxia launches a barrage of stinging darts in front of her that applies <DT_POISON_COLOR> Toxin Status Effect. Poisoned enemies spawn Scuttlers when killed.",
           "uniqueName": "/Lotus/Powersuits/Oraxia/Abilities/OraxiaSpidersAbility",
-          "imageName": "OraxiaSpiderlingBrood.png"
+          "imageName": "OraxiaSpiderlingBrood.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage per dart: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 750
+              }
+            },
+            {
+              "label": "S Mark Duration 30 / 35 / 40 / 45 s Scuttler Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 45
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "Dart projectiles 35° cone angle 4 forced status effects on hit 50 damage (Scuttler damage) and statuses on Scuttler hits 10 max Scuttlers +6s Scuttler status duration bonus 60 m recall radius: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 60
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Widow's_Brood?action=raw"
         },
         {
           "name": "Silken Stride",
           "description": "Unfurl Oraxia's spider legs and go on the prowl. Oraxia is immune to Status Effects and has increased Maximum Health. Ranged Weapons are imbued with <DT_POISON_COLOR> Toxin Damage. Killing enemies causes them to burst with <DT_POISON_COLOR>Toxin.\n\nSilken Thread: Tap Dodge to leap to a targeted surface.",
           "uniqueName": "/Lotus/Powersuits/Oraxia/Abilities/OraxiaClimbAbility",
-          "imageName": "OraxiaWallCling.png"
+          "imageName": "OraxiaWallCling.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": -1
+              }
+            },
+            {
+              "label": "X / 1.5x / 1.75x / 2x Health Bonus 10% / 20% / 30% / 40% Weapon Damage 20% / 40% / 60% / 80% Wall Latch Weapon Damage 200 / 300 / 400 / 500 Explosion Damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "M Explosion Radius 75 m Dodge Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "Status Effect and Hard Landing immunity +: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 70
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Silken_Stride?action=raw"
         }
       ],
       "description": "Sinister grace interwoven with lethal versatility; the evolution of a perfect predator. Fear's name is Oraxia.",
@@ -19400,25 +21343,163 @@
           "name": "Chyrinka Pillar",
           "description": "Summon a Chyrinka Pillar that slows enemies. It pulses <DT_RADIATION_COLOR>Radiation Damage with a guaranteed Status Effect.",
           "uniqueName": "/Lotus/Powersuits/ConcreteFrame/Abilities/ConcretePillarAbility",
-          "imageName": "QorvexChyrinkaPillar.png"
+          "imageName": "QorvexChyrinkaPillar.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "Damage per pulse: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1000
+              }
+            },
+            {
+              "label": "S pillar duration 5 s empowered duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "M slam and pulse radius: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "On slam on direct slam: |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 0.75
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Chyrinka_Pillar?action=raw"
         },
         {
           "name": "Containment Wall",
           "description": "Contain the threat. Qorvex summons walls that slam together, damaging all enemies caught between them and inflicting <DT_RADIATION_COLOR>Radiation Status.",
           "uniqueName": "/Lotus/Powersuits/ConcreteFrame/Abilities/ConcreteWallAbility",
-          "imageName": "QorvexContainmentWall.png"
+          "imageName": "QorvexContainmentWall.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Damage per tick 2,000 / 2,500 / 3,000 / 3,500 damage on smash +25% damage vulnerability: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M walls length: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "Parallel walls 2 m placement distance 10 m walls gap 3m length x 1m width x 3m height segment dimensions Light on segment creation 1 s assembly time status per hit 0.125 s damage interval 7 damage ticks Enemy linear displacement on smash Large on smash Melee finisher prompt &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 7
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Containment_Wall?action=raw"
         },
         {
           "name": "Disometric Guard",
           "description": "Guard yourself and nearby allies against Status Effects. Each time Qorvex kills or assists in killing an enemy affected by <DT_RADIATION_COLOR>Radiation Status, the number of Status Effects Disometric Guard can prevent increases.",
           "uniqueName": "/Lotus/Powersuits/ConcreteFrame/Abilities/ConcreteAuraAbility",
-          "imageName": "QorvexDisometricGuard.png"
+          "imageName": "QorvexDisometricGuard.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "Damage on cast 2 / 3 / 4 / 5 initial status immunity stacks 5 / 7 / 8 / 10 max status immunity stacks: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M damage radius status and on cast 50 m Affinity Range Status cleanse on cast &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "Stack duration +: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Disometric_Guard?action=raw"
         },
         {
           "name": "Crucible Blast",
           "description": "Release a beam from Qorvex's Crucible Core. Each enemy struck suffers <DT_RADIATION_COLOR>Radiation Damage with a guaranteed Status Effect. Enemies affected by <DT_RADIATION_COLOR>Radiation Status explode in a chain reaction.",
           "uniqueName": "/Lotus/Powersuits/ConcreteFrame/Abilities/ConcreteLaserAbility",
-          "imageName": "QorvexCrucibleBlast.png"
+          "imageName": "QorvexCrucibleBlast.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",500 / 5,000 / 7,500 / 10,000 total damage per second 200 / 300 / 400 / 500 base damage per explosion 100 / 150 / 200 / 250 extra damage per status: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "M beam length 5 / 6 / 7 / 8 m explosion radius: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "S casting time 2 s beam duration Invulnerable and immobile while active 2 m beam cylindrical radius 10 beam ticks per second 0.10 s beam tick interval status per beam tick &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 0.1
+              }
+            },
+            {
+              "label": "Punch Through vs. bodies: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 7
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Crucible_Blast?action=raw"
         }
       ],
       "description": "Albrecht Entrati designed Qorvex to protect a Chosen Operator from the unique hazards of his lab. A Crucible Core gives Qorvex high survivability as he provides crowd control.",
@@ -20449,22 +22530,135 @@
         {
           "name": "Embrace",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "° (pull angle): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 80
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Embrace?action=raw"
         },
         {
           "name": "Consume",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",000 / 1,500 / 2,000 / 2,500 ( damage) 10 / 15 / 20 / 25 % (heal value): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 14
+              }
+            },
+            {
+              "label": "Knockdown on hit ? s (confusion duration): |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Consume?action=raw"
         },
         {
           "name": "Death's Harvest",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "% (damage vulnerability): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S (debuff duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 12
+              }
+            },
+            {
+              "label": "% (Death Well gain per enemy): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Death's_Harvest?action=raw"
         },
         {
           "name": "Reunite",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 0
+              }
+            },
+            {
+              "label": "(teleport range): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Reunite?action=raw"
         }
       ],
       "description": "Sevagoth's roving spirit, formed from concentrated Void energy.",
@@ -20490,22 +22684,149 @@
         {
           "name": "Slash Dash",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M (initial target range) 7 m (chain range) 36 m/s (initial dash velocity): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 36
+              }
+            },
+            {
+              "label": "S (non-locked on dash time) 75 m/s (locked on dash speed): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 75
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Slash_Dash?action=raw"
         },
         {
           "name": "Teleport",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 9
+              }
+            },
+            {
+              "label": "% / 150% / 175% / 200% (finisher damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 200
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 60
+              }
+            },
+            {
+              "label": "% (energy refund on finisher kill) 100 % (energy discount on Blade Storm target): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Teleport?action=raw"
         },
         {
           "name": "Absorb",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "(minimum damage) 0.025% (damage converted to weapon damage bonus): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 0.025
+              }
+            },
+            {
+              "label": "S (Weapon Damage bonus duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "M (minimum radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "M (maximum radius) 70% (speed multiplier) 400% (weapon damage bonus cap) 5000 (invulnerability absorb threshold) 1s (invulnerability duration boost) 6s (invulnerability duration cap): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 6
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Absorb?action=raw"
         },
         {
           "name": "Pull",
           "description": "",
-          "officialStats": []
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "( damage) ? m/s (pull velocity): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 300
+              }
+            },
+            {
+              "label": "M (target range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M (radial pull) 90° (angle): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 90
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Pull?action=raw"
         }
       ],
       "description": "An ally from an unknown time and place. Stalker is a powerful force within the shadows.",
@@ -20529,25 +22850,163 @@
           "name": "Axios Javelin",
           "description": "Throw an Axios Javelin. When the javelin impales an enemy against a wall, surrounding enemies are pulled into the area and suffer a burst of damage.",
           "uniqueName": "/Lotus/Powersuits/Hoplite/Abilities/HopliteImpaleAbility",
-          "imageName": "StyanaxImpale.png"
+          "imageName": "StyanaxImpale.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": ",000 / 1,250 ( damage on direct hit) 500 / 750 / 1,000 / 1,250 ( damage on explosion): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "S (Initial target pin duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 8
+              }
+            },
+            {
+              "label": "M (javelin range) 15 m (explosion range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "(javelins per throw) Knockdown on hit 1 m (midair hop) 1 (impaled enemy for implosion) 2 s (vortex lifetime): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Axios_Javelin?action=raw"
         },
         {
           "name": "Tharros Strike",
           "description": "Summon Tharros, the shield of Styanax. Swing Tharros to repel enemies and reduce their shields and armor. Styanax regenerates health for every enemy struck.",
           "uniqueName": "/Lotus/Powersuits/Hoplite/Abilities/HopliteBashAbility",
-          "imageName": "StyanaxShieldBash.png"
+          "imageName": "StyanaxShieldBash.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",000 ( damage on swing) 50 / 65 / 80 / 100 HP (health restore per enemy hit) 50 % (defense reduction): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 9
+              }
+            },
+            {
+              "label": "(number of shields) 135° (horizontal spread angle) 160° (vertical spread angle) 2.5 m (pushback radius) 5 m (pushback distance) 2 s (stun on hit) Melee finisher prompt: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Tharros_Strike?action=raw"
         },
         {
           "name": "Rally Point",
           "description": "Draw enemy attention to Styanax. His resolve uplifts him and nearby allies, regenerating the squad's energy over time. Styanax and his allies also regenerate shields for every kill assist they contribute.",
           "uniqueName": "/Lotus/Powersuits/Hoplite/Abilities/HopliteRallyAbility",
-          "imageName": "StyanaxRallyTroops.png"
+          "imageName": "StyanaxRallyTroops.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "SP (shields per kill) 3 EP/s (energy regen): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 3
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 30
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Rally_Point?action=raw"
         },
         {
           "name": "Final Stand",
           "description": "Exude might and valor. Rise into the air and throw a barrage of Axios Javelins. The javelins deal damage to nearby enemies wherever they land. Direct hits to enemies deal greater damage.",
           "uniqueName": "/Lotus/Powersuits/Hoplite/Abilities/HopliteArmyAbility",
-          "imageName": "StyanaxOneManArmy.png"
+          "imageName": "StyanaxOneManArmy.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",000 / 1,100 / 1,300 / 1,500 ( damage on direct hit per javelin) 1,000 / 1,100 / 1,300 / 1,500 ( damage on explosion per javelin): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 500
+              }
+            },
+            {
+              "label": "(number of javelins): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "M (explosion range): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "/s (javelins thrown per second) status on hit 7.5 m/s (move speed) 3 m (height): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Final_Stand?action=raw"
         }
       ],
       "description": "Styanax never wonders how many enemies he will face, only where he can find them. The hoplite deals high damage. Enemies tremble before his spear and shield.",
@@ -20574,25 +23033,156 @@
           "name": "Pyrotechnics",
           "description": "Blast targeted enemies with pillars of <DT_FIRE_COLOR>Heat Damage. \n\nBackbeat Timing: Ignite even more pillars. Increases the Duration and <DT_FIRE_COLOR>Heat Damage of Ripper's Wail when it deals damage.",
           "uniqueName": "/Lotus/Powersuits/Temple/Abilities/TempleShredAbility",
-          "imageName": "TempleShred.png"
+          "imageName": "TempleShred.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",000 Damage 3 / 3 / 4 / 5 Pillars: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "S Ripper's Wail Bonus: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "M Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "M Radius 100% Status Chance 2x Pyrotechnics Bonus: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Pyrotechnics?action=raw"
         },
         {
           "name": "Overdrive",
           "description": "Drive loudspeakers into epic distortion to create a damaging wave of <DT_FIRE_COLOR>Heat Damage while also increasing vulnerability to Critical Chance. \n\nBackbeat Timing: Doubles Critical Chance. Increases the Duration and <DT_FIRE_COLOR>Heat Damage of Ripper’s Wail when it deals damage.",
           "uniqueName": "/Lotus/Powersuits/Temple/Abilities/TempleSpeakersAbility",
-          "imageName": "TempleSpeakers.png"
+          "imageName": "TempleSpeakers.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "Damage 10% / 15% / 20% / 25% Critical Chance: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "S duration 3 / 4 / 5 / 6 s Ripper's Wail Bonus: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "M Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "° Angle 2 s deafened stun 2x Overdrive Bonus: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 2
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Overdrive?action=raw"
         },
         {
           "name": "Ripper's Wail",
           "description": "Rip on the guitar to make Temple briefly invulnerable while healing them. Ally’s weapons in <AFFINITY_SHARE>Affinity Range are lit-up with extra <DT_FIRE_COLOR>Heat Damage each time an ability is used on the Backbeat and successfully hits enemies.\n\nBackbeat Timing: Invulnerability lasts longer.",
           "uniqueName": "/Lotus/Powersuits/Temple/Abilities/TempleSoloAbility",
-          "imageName": "TempleSolo.png"
+          "imageName": "TempleSolo.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "% / 45% / 60% / 75% Damage 2% / 3% / 4% / 5% Backbeat Bonus 50% Health / Second: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S buff duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "S invulnerability time 50 m Affinity Range 60 s Max buff Duration ?%/s bonus decay 750% Damage Cap 4 s Invulnerability Bonus: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 4
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Ripper's_Wail?action=raw"
         },
         {
           "name": "Exalted Solo",
           "description": "Once a charge has been built up on the Backbeat metronome, set Lizzie aflame and torch enemies with <DT_FIRE_COLOR>Heat. While aimed, Lizzie blasts enemies with thunderous elemental sound waves, use ability controls to change the Elemental Damage type.\n\nBackbeat Timing: No Energy consumed.",
           "uniqueName": "/Lotus/Powersuits/Temple/Abilities/TempleGuitarAbility",
-          "imageName": "TempleGuitar.png"
+          "imageName": "TempleGuitar.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "X / 1.08x / 1.15x / 1.25x (damage multiplier): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1.25
+              }
+            },
+            {
+              "label": "Aim down sight sub-abilities selection ? sonic sigil Backbeat ammo cost No energy cost on Backbeat cast: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 3
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Exalted_Solo?action=raw"
         }
       ],
       "description": "Blazing with glamor and armed with an Infested guitar, Lizzie. Temple's power chords light the flames of revolution.",
@@ -21818,25 +24408,156 @@
           "name": "Shroud Of Dynar",
           "description": "(TAP) Dynar shrouds Voruna with invisibility and accelerates her speed. Invisibility ends when Voruna attacks. For a short time after invisibility ends, melee attacks have increased Critical Damage, Status Chance, Critical Chance and inflict <DT_SLASH_COLOR>Slash Status Effects. Melee kill an enemy during this time to extend the melee buff once per cast.\n\n(HOLD) Dynar guards Voruna, increasing her Parkour Velocity.",
           "uniqueName": "/Lotus/Powersuits/Werewolf/Abilities/WerewolfShroudAbility",
-          "imageName": "WerewolfShroud.png"
+          "imageName": "WerewolfShroud.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "+: |val1|x / 1.0x / 1.5x / 2.0x flat melee critical damage bonus",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 2
+              }
+            },
+            {
+              "label": "S Invisible duration + 2 / 3 / 4 / 5 s melee buff duration extension: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "S melee buff duration 1 melee kill for buff extension + 25 / 50 / 75 / 100 % Movement Speed bonus +100% flat critical chance + 25 / 50 / 75 / 100 % flat status chance status per melee hit +50% passive parkour velocity buff: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 50
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Shroud_of_Dynar?action=raw"
         },
         {
           "name": "Fangs Of Raksh",
           "description": "(TAP) Raksh's fangs tear into your enemies. 5 random Status Effects are applied at 10 Stacks each on an enemy. On target's death, spread the Status Effects to other nearby enemies.\n\n(HOLD) Raksh guards Voruna with Status Effect resistance.",
           "uniqueName": "/Lotus/Powersuits/Werewolf/Abilities/WerewolfBiteAbility",
-          "imageName": "WerewolfBite.png"
+          "imageName": "WerewolfBite.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "( damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 250
+              }
+            },
+            {
+              "label": "M (range) 4 / 5 / 6 / 7 m (spread radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 7
+              }
+            },
+            {
+              "label": "Invulnerable during dash: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 10
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Fangs_of_Raksh?action=raw"
         },
         {
           "name": "Lycath's Hunt",
           "description": "(TAP) Lycath hunts to sustain the pack. Enemies killed by melee attacks drop health orbs and enemies killed by headshots drop energy orbs. Increase the duration of Lycath’s hunt by killing enemies affected by 5 or more Status Effects.\n\n(HOLD) Lycath guards Voruna with increased Heavy Attack efficiency.",
           "uniqueName": "/Lotus/Powersuits/Werewolf/Abilities/WerewolfLeapAbility",
-          "imageName": "WerewolfLeap.png"
+          "imageName": "WerewolfLeap.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "S (duration) + 2 / 3 / 4 / 5 s (extra time per conditional kill): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "% (health orb drop chance on melee kill) 100% (energy orb drop chance on headshot kill) ≥5 (number of statuses for extra time) 60 s (duration cap) +100% (passive heavy attack efficiency): |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Lycath's_Hunt?action=raw"
         },
         {
           "name": "Ulfrun's Descent",
           "description": "(TAP) Voruna drops to all fours and prepares 5 brutal charges that lock onto enemies. Ulfrun, the most powerful wolf, leads the attack as Voruna dashes toward her target. The pack deals increased damage to targets and nearby enemies that are inflicted by Status Effects. Lethal attacks double the damage of Voruna's remaining charges.\n\n(HOLD) Ulfrun guards Voruna. If Voruna falls during this time, Ulfrun dies in her place.",
           "uniqueName": "/Lotus/Powersuits/Werewolf/Abilities/WerewolfHowlAbility",
-          "imageName": "WerewolfHowl.png"
+          "imageName": "WerewolfHowl.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": ",000 / 3,000 / 4,000 / 5,000 ( damage on target) 250 / 500 / 750 / 1,000 ( damage per second): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 0
+              }
+            },
+            {
+              "label": "S ( damage per second duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 4
+              }
+            },
+            {
+              "label": "M (range) 6 / 7 / 9 / 10 m (radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "(number of charges) &infin: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "(charge duration) +: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 0.1
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Ulfrun's_Descent?action=raw"
         }
       ],
       "description": "Four beasts, one heart. Voruna's loyal wolf pack makes for a deadly combination of strength and stealth. Beware the monstrous howl that heralds fangs of vengeance.",
@@ -23101,25 +25822,170 @@
           "name": "Coronal Ejection",
           "description": "Hurl Sirius' Jade Light infused scythe, dealing <DT_FIRE_COLOR>Heat Damage while collecting any pickups in its path.\n\n(HOLD) Swap to Orion and use Gravitic Slash.",
           "uniqueName": "/Lotus/Powersuits/SiriusOrion/Abilities/SiriusScytheAbility",
-          "imageName": "SiriusCoronalEjection.png"
+          "imageName": "SiriusCoronalEjection.png",
+          "officialStats": [
+            {
+              "label": "( damage) 100% ( Status Chance): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 5
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Coronal_Ejection?action=raw"
         },
         {
           "name": "Jade Stars",
           "description": "Sirius conjures Jade Light motes that slowly regenerate over time. Attacking enemies launches the motes, dealing <DT_FIRE_COLOR>Heat Damage and Status Effect.\n\n(HOLD) Swap to Orion and use Astral Shell.",
           "uniqueName": "/Lotus/Powersuits/SiriusOrion/Abilities/SiriusBuffAbility",
-          "imageName": "SiriusStarEater.png"
+          "imageName": "SiriusStarEater.png",
+          "officialStats": [
+            {
+              "label": "( damage) 100% ( Status Chance): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 100
+              }
+            },
+            {
+              "label": "S (duration): |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 35
+              }
+            },
+            {
+              "label": "M (explosion radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 4
+              }
+            },
+            {
+              "label": "(number of motes) 0.2 s (mote recovery per second) 50 m (max attack range)|cardonly {}: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 50
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Jade_Stars?action=raw"
         },
         {
           "name": "Light's Sanctuary",
           "description": "Sirius creates a well of light that heals and revives allies, while reducing incoming damage. The well slowly grows in size and power.\n\n(HOLD) Swap to Orion and use Event Horizon.",
           "uniqueName": "/Lotus/Powersuits/SiriusOrion/Abilities/SiriusFieldAbility",
-          "imageName": "SiriusAurora.png"
+          "imageName": "SiriusAurora.png",
+          "officialStats": [
+            {
+              "label": "strength: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "strength: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "strength: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 20
+              }
+            },
+            {
+              "label": "strength: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": "(heal rate) 15%: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "% (damage reduction): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 45
+              }
+            },
+            {
+              "label": "S: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 5
+              }
+            },
+            {
+              "label": "M (radius): |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "S (expansion time) 60 s (revive cooldown per ally) 1 (sanctuary limit) 75% (maximum damage reduction cap)|cardonly {}: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 75
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Light's_Sanctuary?action=raw"
         },
         {
           "name": "Celestial Clash",
           "description": "Sirius & Orion take to the skies in a cosmic duel. Each attack consumes a Constellation Star to inflict colossal collateral |DAMAGE_TYPE| damage. Match the star's color to the Warframes color to gain increased Critical Chance.\n\n|LEFT_ATTACK| Sirius attacks\n|RIGHT_ATTACK| Orion attacks\n\nGenerate Constellation Stars by using abilities. No more than two stars of the same color can be added in a row.",
           "uniqueName": "/Lotus/Powersuits/SiriusOrion/Abilities/SiriusOrionUltimateAbility",
-          "imageName": "SiriusOrionUltimate.png"
+          "imageName": "SiriusOrionUltimate.png",
+          "officialStats": [
+            {
+              "label": ",000 / 8,000 / 9,000 / 10,000 ( Damage): |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 0
+              }
+            },
+            {
+              "label": "M: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 26
+              }
+            },
+            {
+              "label": "% (critical chance / matched hit) +1.5x (damage bonus per matched hit) 100% (Sirius status chance) 100% (Orion status chance)|cardonly {}: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 100
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Celestial_Clash?action=raw"
         }
       ],
       "description": "Wield the power of the stars in a constant battle for supremacy. The dueling sons, Sirius & Orion, occupy the space of a single Warframe, jockeying for position to rain cosmic destruction upon foes.",
@@ -23156,25 +26022,177 @@
           "name": "Infernalis",
           "description": "Manifest an aura of flames inflicting <DT_FIRE_COLOR>Heat Damage and Status Effect on nearby enemies.\n\nTap Dodge while airborne to take flight as a flaming meteor of destruction.",
           "uniqueName": "/Lotus/Powersuits/DemonFrame/Abilities/DemonFrameFireBallAbility",
-          "imageName": "UrielInfernalis.png"
+          "imageName": "UrielInfernalis.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 25
+              }
+            },
+            {
+              "label": ",500 damage on cast 100 / 150 / 200 / 250 damage per second 100 Catenach Chain Damage per second 50% Catenach: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "S Duration 10 s Catenach Chain Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M / 1.5m / 1.75m / 2m Range 6m Catenach Chain Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "% Status Chance 16 m/s (flight speed) and immunity during flight 6m Catenach Target Range 2 Catenach Minimum Chained Enemies 5 Catenach Maximum Chained Enemies 15m Catenach Chain Range 100% Catenach Chain Damage Redirection 95% Catenach Cap: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 95
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Infernalis?action=raw"
         },
         {
           "name": "Remedium",
           "description": "Uriel heals himself and his demons. If his demons are dead, they are resurrected.",
           "uniqueName": "/Lotus/Powersuits/DemonFrame/Abilities/DemonFrameHealAbility",
-          "imageName": "UrielRemedium.png"
+          "imageName": "UrielRemedium.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 50
+              }
+            },
+            {
+              "label": "% / 40% / 45% / 50% Restore 750 Gulphagor damage per tick 300% Gulphagor File:IconHealth.gifHealth Orb Drop Chance 100% Gulphagor File:IconEnergy.gifEnergy Orb Drop Chance 200 Gulphagor Field Damage per half second: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 200
+              }
+            },
+            {
+              "label": "S Gulphagor Field Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M Gulphagor Field Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 4
+              }
+            },
+            {
+              "label": "Invulnerable and Status Effect cleanse: |val1|m",
+              "modifier": null,
+              "values": {
+                "Val1": 4
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Remedium?action=raw"
         },
         {
           "name": "Demonium",
           "description": "Uriel rips out the souls of his demons, draining their health, and sends them in search of new victims. Souls explode on contact with an enemy, rendering it vulnerable to Damage.",
           "uniqueName": "/Lotus/Powersuits/DemonFrame/Abilities/DemonFrameCloneAbility",
-          "imageName": "UrielDemonium.png"
+          "imageName": "UrielDemonium.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "Damage 35% / 40% / 45% / 50% Damage Vulnerability 30% Vythelas Rune Fire Rate 30% Vythelas Rune Bonus Damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 30
+              }
+            },
+            {
+              "label": "S Projectile Duration 10 s Vythelas Rune Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M / 4m / 5m / 6m Explosion Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 6
+              }
+            },
+            {
+              "label": "% Demon Health Drain 1 Minimum Projectile 3 Maximum Projectiles 3 Max Vythelas Runes 12m/s Projectile Speed: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 12
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Demonium?action=raw"
         },
         {
           "name": "Brimstone",
           "description": "Uriel and his demons create a growing ring of flaming brimstone. Charge the ability by utilizing demon abilities. Damage inflicted increases with each consecutive hit.",
           "uniqueName": "/Lotus/Powersuits/DemonFrame/Abilities/DemonFrameBrimstoneAbility",
-          "imageName": "UrielBrimstone.png"
+          "imageName": "UrielBrimstone.png",
+          "officialStats": [
+            {
+              "label": "Energy Cost: |val1|",
+              "modifier": "AVATAR_ABILITY_EFFICIENCY",
+              "values": {
+                "Val1": 75
+              }
+            },
+            {
+              "label": "Damage: |val1|",
+              "modifier": "AVATAR_ABILITY_STRENGTH",
+              "values": {
+                "Val1": 1500
+              }
+            },
+            {
+              "label": "S Duration: |val1|",
+              "modifier": "AVATAR_ABILITY_DURATION",
+              "values": {
+                "Val1": 10
+              }
+            },
+            {
+              "label": "M / 12m / 14m / 15m Range: |val1|",
+              "modifier": "AVATAR_ABILITY_RANGE",
+              "values": {
+                "Val1": 15
+              }
+            },
+            {
+              "label": "Invulnerable during cast +: |val1|",
+              "modifier": null,
+              "values": {
+                "Val1": 10
+              }
+            }
+          ],
+          "officialStatsSource": "https://wiki.warframe.com/w/Brimstone?action=raw"
         }
       ],
       "description": "To fight as the Heretic of Xata is to have demons at your back. Uriel incinerates foes with searing brimstone, and commands three fiendish summons to do his devil's work.",
