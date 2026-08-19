@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Enrichissement officiel des 22 Warframes en fallback
+
+- [x] Recenser les 22 Warframes et leurs capacités sans `officialStats`.
+- [x] Extraire les statistiques officielles depuis les modules Wiki Ability.
+- [x] Intégrer les données, vérifier la couverture 117/117 et publier le résultat.
+
+
 ## Rapport d’audit — Capacités dynamiques des 117 Warframes
 
 - [x] Vérifier la couverture des 4 capacités pour les 117 Warframes (100% validé, 0 échec).
