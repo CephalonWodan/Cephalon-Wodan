@@ -1903,12 +1903,14 @@ export default function SetBuilder() {
               >
                 <div>
                   <div className="flex items-center justify-between text-[9px] uppercase font-bold mb-1" style={{ color: isSubstituted ? "#c4b5fd" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-                    <span>Capacité {index + 1}</span>
+                    <span title={`Slot ${index + 1}`}>{abilityName}</span>
                     {isSubstituted && <span className="text-[8px] px-1 rounded bg-purple-900/60 text-purple-200">Helminth</span>}
                   </div>
-                  <div className="text-[10px] uppercase font-semibold text-slate-400 mb-0.5" style={{ fontFamily: "var(--font-mono)" }}>
-                    Original : <span className="text-slate-200">{abilityName}</span>
-                  </div>
+                  {isSubstituted && (
+                    <div className="text-[10px] uppercase font-semibold text-slate-400 mb-0.5" style={{ fontFamily: "var(--font-mono)" }}>
+                      Original : <span className="text-slate-200">{abilityName}</span>
+                    </div>
+                  )}
                   <div className="text-xs font-bold mb-1 truncate" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
                     {sub ? sub.abilityName : abilityName}
                   </div>

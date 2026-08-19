@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Noms des capacités natives dans le panneau Helminth
+
+- [x] Remplacer les libellés « Capacité 1–4 » par les noms réels des capacités de la Warframe sélectionnée.
+- [x] Conserver un affichage explicite de la capacité native remplacée lorsqu’une substitution Helminth est active.
+- [x] Vérifier TypeScript, le build et le rendu du Builder.
+
+
 ## Nouvelle demande — Correctif Helminth après dysfonctionnement signalé
 
 - [ ] Reproduire le problème après sélection d’une Warframe dans le Builder.
