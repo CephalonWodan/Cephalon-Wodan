@@ -1,5 +1,26 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Excalibur Umbra Prime
+
+- [ ] Inspecter la fiche actuelle d’Excalibur Umbra Prime dans le dataset.
+- [ ] Extraire les statistiques officielles, compétences, passif et image Wiki (`https://wiki.warframe.com/images/ExcaliburUmbraPrime.png?9f21a`).
+- [ ] Mettre à jour `warframe-data-full.json` et enrichir le résolveur d’assets.
+- [ ] Valider le build, les types et synchroniser avec GitHub.
+
+## Nouvelle demande — Diagnostic 404 Vercel
+
+- [ ] Vérifier l’état de l’URL Vercel après connexion.
+- [ ] Distinguer une URL d’équipe invalide d’un projet non déployé ou d’un routage incorrect.
+- [ ] Confirmer la configuration requise avant toute action de déploiement externe.
+
+## Nouvelle demande — Synchronisation GitHub et Vercel
+
+- [ ] Vérifier que la dernière version publiée correspond au dépôt GitHub.
+- [ ] Synchroniser la branche principale avec `CephalonWodan/Cephalon-Wodan`.
+- [ ] Vérifier l’espace Vercel fourni et identifier si une connexion ou une confirmation utilisateur est nécessaire.
+- [ ] Documenter le résultat et les étapes de déploiement restantes.
+
+
 ## État — Audit non destructif de tous les fichiers transmis
 
 ## Nouvelle demande — Builder Incarnon et export JSON

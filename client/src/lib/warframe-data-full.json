@@ -196,21 +196,58 @@
       "name": "Excalibur Umbra Prime",
       "isPrime": true,
       "role": "Prime",
-      "health": 100,
-      "shield": 100,
+      "health": 300,
+      "shield": 300,
       "armor": 250,
-      "energy": 150,
+      "energy": 225,
       "mastery": 0,
-      "abilities": [],
-      "description": "",
+      "abilities": [
+        {
+          "name": "Slash Dash",
+          "description": "Dash through foes as a streak of shadow, striking all in the way with the Skana.",
+          "duration": "1s",
+          "energy": 25,
+          "range": "10m",
+          "strength": "150"
+        },
+        {
+          "name": "Radial Blind",
+          "description": "Emits a brilliant flash of light, blinding all enemies in the vicinity.",
+          "duration": "15s",
+          "energy": 50,
+          "range": "25m",
+          "strength": "N/A"
+        },
+        {
+          "name": "Radial Javelin",
+          "description": "Sling a flurry of damaging javelins toward nearby enemies.",
+          "duration": "N/A",
+          "energy": 75,
+          "range": "20m",
+          "strength": "1000"
+        },
+        {
+          "name": "Exalted Blade",
+          "description": "Summon a sword of pure light and wave destructive energy arcs with each swing.",
+          "duration": "N/A",
+          "energy": 2.5,
+          "range": "N/A",
+          "strength": "250"
+        }
+      ],
+      "description": "From the shadow of the long night emerges a new Excalibur. Founder exclusive Warframe for the Chinese build.",
       "rarity": "prime",
-      "imageUrl": "https://wiki.warframe.com/images/Excalibur%20Umbra%20Prime.png",
+      "imageUrl": "https://wiki.warframe.com/images/ExcaliburUmbraPrime.png?9f21a",
       "polarities": [
         "vazarin",
         "madurai",
         "madurai"
       ],
-      "aura": "madurai"
+      "aura": "",
+      "passive": {
+        "name": "Sentience",
+        "description": "When the Operator transfers out of Excalibur Umbra Prime, he acts as an independent specter fighting with his Exalted Blade."
+      }
     },
     {
       "id": "frost-prime",
