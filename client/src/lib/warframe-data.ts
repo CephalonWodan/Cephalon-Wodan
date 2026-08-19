@@ -12,6 +12,8 @@ export type DamageType = "impact" | "puncture" | "slash" | "heat" | "cold" | "el
 export type CompanionType = "sentinel" | "beast" | "moa" | "hound" | "predasite" | "vulpaphyla";
 export type ModType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "archwing" | "necramech" | "parazon" | "kdrive" | "universal";
 export type Polarity = "madurai" | "vazarin" | "naramon" | "zenurik" | "unairu" | "penjaga" | "umbra" | "any";
+export type SlotPolarity = Polarity | "default" | "none";
+export type BuildSlotKey = "warframe" | "primary" | "secondary" | "melee" | "companion";
 export type ArcaneType = "warframe" | "primary" | "secondary" | "melee" | "operator" | "amp" | "kitgun" | "zaw" | "bow" | "shotgun";
 export type ArchonShardVariant = "standard" | "tauforged";
 
@@ -26,9 +28,18 @@ type CatalogData = {
 
 const fullData = catalog as CatalogData;
 
+export interface WarframeAbilityStat {
+  label: string;
+  modifier?: string;
+  values?: Record<string, string | number>;
+}
+
 export interface WarframeAbility {
   name: string;
   description: string;
+  uniqueName?: string;
+  imageName?: string;
+  officialStats?: WarframeAbilityStat[];
   strength?: string;
   duration?: string;
   range?: string;
@@ -331,6 +342,23 @@ export const COMPANION_PRECEPTS = [
   { id: "calculated-shot", name: "Calculated Shot (Robotic)", type: "universal", description: "Tire avec précision sur les points faibles ennemis désignés." }
 ];
 
+export interface BuildSlotPolarities {
+  warframe: SlotPolarity[];
+  primary: SlotPolarity[];
+  secondary: SlotPolarity[];
+  melee: SlotPolarity[];
+  companion: SlotPolarity[];
+}
+
+export interface HelminthSubstitution {
+  abilityIndex: number;
+  abilityId: string;
+  abilityName: string;
+  sourceWarframe: string;
+  description: string;
+  energyCost: number;
+}
+
 export interface BuildSet {
   id: string;
   name: string;
@@ -353,6 +381,8 @@ export interface BuildSet {
   secondaryMods: (Mod | null)[];
   meleeMods: (Mod | null)[];
   companionMods: (Mod | null)[];
+  slotPolarities: BuildSlotPolarities;
+  helminthSubstitution: HelminthSubstitution | null;
   warframeArcanes: (Arcane | null)[];
   primaryArcanes: (Arcane | null)[];
   secondaryArcanes: (Arcane | null)[];
@@ -458,6 +488,14 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     name,
     description: "",
     capacityBoosts: { warframe: false, primary: false, secondary: false, melee: false, companion: false },
+    slotPolarities: {
+      warframe: Array<SlotPolarity>(8).fill("default"),
+      primary: Array<SlotPolarity>(8).fill("default"),
+      secondary: Array<SlotPolarity>(8).fill("default"),
+      melee: Array<SlotPolarity>(8).fill("default"),
+      companion: Array<SlotPolarity>(8).fill("default"),
+    },
+    helminthSubstitution: null,
     warframeMods: Array(8).fill(null),
     primaryMods: Array(8).fill(null),
     secondaryMods: Array(8).fill(null),

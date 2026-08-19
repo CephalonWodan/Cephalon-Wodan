@@ -8,9 +8,10 @@ import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
   MOA_PARTS, HOUND_PARTS,
-  Warframe, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity,
+  Warframe, WarframeAbility, WarframeAbilityEntry, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
+import { HELMINTH_ABILITIES, HelminthAbility, isDamageBuffAbility, validateHelminthRestriction } from "@/lib/helminth-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
@@ -85,7 +86,38 @@ const POLARITY_GLYPHS: Record<string, string> = {
   penjaga: "◇",
   umbra: "U",
   any: "✦",
+  default: "·",
+  none: "∅",
 };
+
+const POLARITY_OPTIONS: Array<{ value: SlotPolarity; label: string; description: string }> = [
+  { value: "default", label: "Équipement", description: "Polarité native de l’équipement" },
+  { value: "none", label: "Aucune", description: "Aucune polarité sur cet emplacement" },
+  { value: "umbra", label: "Umbra U", description: "Compatible avec Umbral et Sacrificial" },
+  { value: "madurai", label: "Madurai V", description: "Polarité Madurai" },
+  { value: "vazarin", label: "Vazarin D", description: "Polarité Vazarin" },
+  { value: "naramon", label: "Naramon —", description: "Polarité Naramon" },
+  { value: "zenurik", label: "Zenurik ∩", description: "Polarité Zenurik" },
+  { value: "unairu", label: "Unairu W", description: "Polarité Unairu" },
+  { value: "penjaga", label: "Penjaga ◇", description: "Polarité Penjaga" },
+];
+
+function resolveSlotPolarity(equipment: Warframe | Weapon | Companion | undefined, override: SlotPolarity | undefined, index: number): Polarity | undefined {
+  if (override === "none") return undefined;
+  if (override && override !== "default") return override as Polarity;
+  return equipment?.polarities?.[index];
+}
+
+function formatSlotPolarity(equipment: Warframe | Weapon | Companion | undefined, override: SlotPolarity | undefined, index: number): string {
+  const polarity = resolveSlotPolarity(equipment, override, index);
+  if (override === "none") return "∅";
+  if (override === "default" || !override) return polarity ? (POLARITY_GLYPHS[polarity] || polarity) : "·";
+  return POLARITY_GLYPHS[override] || override;
+}
+
+function resetSlotPolarities(): SlotPolarity[] {
+  return Array<SlotPolarity>(8).fill("default");
+}
 
 function modBaseCost(mod: Mod, rank = mod.selectedRank ?? mod.maxRank): number {
   return Math.max(2, 2 + Math.min(10, Math.max(0, Number(rank) || 0)));
@@ -96,12 +128,42 @@ function modCost(mod: Mod, slotPolarity?: Polarity): number {
   return slotPolarity && slotPolarity !== "any" && mod.polarity === slotPolarity ? Math.ceil(base / 2) : base;
 }
 
-function capacityKeyForModType(type: ModGridProps["modType"]): keyof BuildSet["capacityBoosts"] {
+function capacityKeyForModType(type: ModGridProps["modType"]): BuildSlotKey {
   if (type === "mod-warframe") return "warframe";
   if (type === "mod-primary") return "primary";
   if (type === "mod-secondary") return "secondary";
   if (type === "mod-melee") return "melee";
   return "companion";
+}
+
+function getModsForBuildSlot(build: BuildSet, key: BuildSlotKey): (Mod | null)[] {
+  if (key === "warframe") return build.warframeMods;
+  if (key === "primary") return build.primaryMods;
+  if (key === "secondary") return build.secondaryMods;
+  if (key === "melee") return build.meleeMods;
+  return build.companionMods;
+}
+
+function getEquipmentForBuildSlot(build: BuildSet, key: BuildSlotKey): Warframe | Weapon | Companion | undefined {
+  if (key === "warframe") return build.warframe;
+  if (key === "primary") return build.primaryWeapon;
+  if (key === "secondary") return build.secondaryWeapon;
+  if (key === "melee") return build.meleeWeapon;
+  return build.companion;
+}
+
+function getUsedCapacity(build: BuildSet, key: BuildSlotKey, excludeIndex?: number): number {
+  const mods = getModsForBuildSlot(build, key);
+  const equipment = getEquipmentForBuildSlot(build, key);
+  const overrides = build.slotPolarities[key];
+  return mods.reduce((total, mod, index) => {
+    if (!mod || index === excludeIndex) return total;
+    return total + modCost(mod, resolveSlotPolarity(equipment, overrides[index], index));
+  }, 0);
+}
+
+function getCapacityLimit(build: BuildSet, key: BuildSlotKey): number {
+  return build.capacityBoosts[key] ? 60 : 30;
 }
 
 function isCompanionModCompatible(mod: Mod, companion?: Companion): boolean {
@@ -152,6 +214,38 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       selectedPerkByTier,
     };
   };
+  const normalizeSlotPolarityArray = (value: unknown): SlotPolarity[] => Array.from({ length: 8 }, (_, index) => {
+    const raw = Array.isArray(value) ? value[index] : "default";
+    return POLARITY_OPTIONS.some(option => option.value === raw) ? raw as SlotPolarity : "default";
+  });
+  const rawSlotPolarities = candidate.slotPolarities && typeof candidate.slotPolarities === "object" ? candidate.slotPolarities as unknown as Record<string, unknown> : {};
+  const slotPolarities = {
+    warframe: normalizeSlotPolarityArray(rawSlotPolarities.warframe),
+    primary: normalizeSlotPolarityArray(rawSlotPolarities.primary),
+    secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary),
+    melee: normalizeSlotPolarityArray(rawSlotPolarities.melee),
+    companion: normalizeSlotPolarityArray(rawSlotPolarities.companion),
+  };
+  const rawHelminth = candidate.helminthSubstitution && typeof candidate.helminthSubstitution === "object" ? candidate.helminthSubstitution as unknown as Record<string, unknown> : null;
+  const rawHelminthKey = rawHelminth && typeof rawHelminth.abilityId === "string"
+    ? rawHelminth.abilityId
+    : rawHelminth && typeof rawHelminth.abilityName === "string"
+      ? rawHelminth.abilityName
+      : null;
+  const resolvedHelminth = typeof rawHelminthKey === "string"
+    ? HELMINTH_ABILITIES.find(ability => ability.id === rawHelminthKey)
+      || HELMINTH_ABILITIES.find(ability => ability.name.toLowerCase() === rawHelminthKey.toLowerCase())
+    : null;
+  const normalizedWarframe = resolveCatalogWarframe(candidate.warframe ?? candidate.warframeName ?? candidate.warframeId);
+  const helminthSubstitution: HelminthSubstitution | null = rawHelminth && typeof rawHelminthKey === "string" ? {
+    abilityIndex: Math.max(0, Math.min(3, Number(rawHelminth.abilityIndex) || 0)),
+    abilityId: resolvedHelminth?.id || rawHelminthKey,
+    abilityName: String(rawHelminth.abilityName || resolvedHelminth?.name || rawHelminthKey),
+    sourceWarframe: String(rawHelminth.sourceWarframe || resolvedHelminth?.sourceWarframe || "Helminth"),
+    description: String(rawHelminth.description || resolvedHelminth?.description || ""),
+    energyCost: Number(rawHelminth.energyCost) || resolvedHelminth?.energyCost || 25,
+  } : null;
+
   const rawIncarnonSelections = candidate.incarnonSelections && typeof candidate.incarnonSelections === "object" ? candidate.incarnonSelections as unknown as Record<string, unknown> : {};
   const incarnonSelections: BuildIncarnonSelections = {
     primary: normalizeIncarnonSelection(rawIncarnonSelections.primary),
@@ -161,6 +255,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
   return {
     ...fallback,
     ...candidate,
+    warframe: normalizedWarframe || undefined,
     id: typeof candidate.id === "string" ? candidate.id : fallback.id,
     name: typeof candidate.name === "string" ? candidate.name : fallback.name,
     description: typeof candidate.description === "string" ? candidate.description : "",
@@ -168,6 +263,8 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       ...fallback.capacityBoosts,
       ...(candidate.capacityBoosts && typeof candidate.capacityBoosts === "object" ? candidate.capacityBoosts : {}),
     },
+    slotPolarities,
+    helminthSubstitution,
     warframeMods: normalizeModArray(candidate.warframeMods, 8),
     primaryMods: normalizeModArray(candidate.primaryMods, 8),
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
@@ -462,14 +559,17 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
 interface ModSlotProps {
   mod: Mod | null;
   index: number;
+  equipment?: Warframe | Weapon | Companion;
+  polarityOverride?: SlotPolarity;
   slotPolarity?: Polarity;
   cost?: number;
   onSelect: (index: number) => void;
   onClear: (index: number) => void;
   onRankChange?: (index: number, rank: number) => void;
+  onPolarityChange?: (index: number, polarity: SlotPolarity) => void;
 }
 
-function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChange }: ModSlotProps) {
+function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, onSelect, onClear, onRankChange, onPolarityChange }: ModSlotProps) {
   const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
   return (
     <div
@@ -508,8 +608,18 @@ function ModSlot({ mod, index, slotPolarity, cost, onSelect, onClear, onRankChan
           </div>
           <div className="mt-1 flex items-center gap-1.5 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
             <span style={{ color: slotPolarity && mod.polarity === slotPolarity ? "#66bb6a" : rarityColor }}>COÛT {cost ?? modBaseCost(mod)}</span>
-            {slotPolarity && <span style={{ color: "#a78bfa" }}>SLOT {POLARITY_GLYPHS[slotPolarity] || slotPolarity}</span>}
+            <span style={{ color: polarityOverride === "umbra" ? "#c4b5fd" : "#a78bfa" }}>SLOT {formatSlotPolarity(equipment, polarityOverride, index)}</span>
           </div>
+          <select
+            value={polarityOverride || "default"}
+            onClick={event => event.stopPropagation()}
+            onChange={event => { event.stopPropagation(); onPolarityChange?.(index, event.target.value as SlotPolarity); }}
+            className="mt-1 w-full rounded-sm px-1 py-0.5 text-[9px] outline-none"
+            style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${polarityOverride === "umbra" ? "#a78bfa80" : "var(--wf-border)"}`, color: polarityOverride === "umbra" ? "#c4b5fd" : "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+            aria-label={`Polarité du slot ${index + 1}`}
+          >
+            {POLARITY_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+          </select>
           <select
             value={mod.selectedRank ?? mod.maxRank}
             onClick={event => event.stopPropagation()}
@@ -543,16 +653,18 @@ interface ModGridProps {
   mods: (Mod | null)[];
   modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
   equipment?: Warframe | Weapon | Companion;
+  slotPolarityOverrides: SlotPolarity[];
   capacityBoosted: boolean;
   onToggleCapacity: () => void;
   onSelectMod: (index: number, type: SlotType) => void;
   onClearMod: (index: number, type: SlotType) => void;
   onRankChange: (index: number, rank: number, type: SlotType) => void;
+  onPolarityChange: (index: number, polarity: SlotPolarity, type: SlotType) => void;
   accentColor?: string;
 }
 
-function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, accentColor = "#4fc3f7" }: ModGridProps) {
-  const slotPolarities = equipment?.polarities || [];
+function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, onPolarityChange, accentColor = "#4fc3f7" }: ModGridProps) {
+  const slotPolarities = slotPolarityOverrides.map((override, index) => resolveSlotPolarity(equipment, override, index));
   const capacityMax = capacityBoosted ? 60 : 30;
   const usedCapacity = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, slotPolarities[index]) : 0), 0);
   const isOverCapacity = usedCapacity > capacityMax;
@@ -571,7 +683,7 @@ function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCap
         </button>
       </div>
       <div className="px-3 py-1 text-[8px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-        {equipment ? `POLARITÉS : ${(equipment.polarities || []).map(polarity => POLARITY_GLYPHS[polarity] || polarity).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
+        {equipment ? `POLARITÉS : ${slotPolarityOverrides.map((override, index) => formatSlotPolarity(equipment, override, index)).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG · AJOUTS AU-DELÀ DE LA CAPACITÉ BLOQUÉS` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
         {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
       <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
@@ -580,11 +692,14 @@ function ModGrid({ label, mods, modType, equipment, capacityBoosted, onToggleCap
             key={i}
             mod={mod}
             index={i}
+            equipment={equipment}
+            polarityOverride={slotPolarityOverrides[i] || "default"}
             slotPolarity={slotPolarities[i]}
             cost={mod ? modCost(mod, slotPolarities[i]) : undefined}
             onSelect={(idx) => onSelectMod(idx, modType)}
             onClear={(idx) => onClearMod(idx, modType)}
             onRankChange={(idx, rank) => onRankChange(idx, rank, modType)}
+            onPolarityChange={(idx, polarity) => onPolarityChange(idx, polarity, modType)}
           />
         ))}
       </div>
@@ -797,7 +912,7 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
     const rank = mod.selectedRank ?? mod.maxRank;
     const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
     const effect = (mod.effect || mod.description || "").toLowerCase();
-    const slotPolarity = wf?.polarities?.[index];
+    const slotPolarity = resolveSlotPolarity(wf, build.slotPolarities.warframe[index], index);
     const cost = modCost(mod, slotPolarity);
 
     activeMods.push({ name: mod.name, effect: mod.effect || mod.description || "", cost });
@@ -874,6 +989,157 @@ function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
     sprintSpeed: baseSprint,
     ehp,
     activeMods,
+  };
+}
+
+const FALLBACK_NATIVE_ABILITIES: Record<string, string[]> = {
+  excalibur: ["Slash Dash", "Radial Blind", "Radial Javelin", "Exalted Blade"],
+  "excalibur umbra": ["Slash Dash", "Radial Blind", "Radial Javelin", "Exalted Blade"],
+  chroma: ["Spectral Scream", "Elemental Ward", "Vex Armor", "Effigy"],
+  mirage: ["Hall of Mirrors", "Sleight of Hand", "Eclipse", "Prism"],
+  octavia: ["Mallet", "Resonator", "Metronome", "Amp"],
+  rhino: ["Rhino Charge", "Iron Skin", "Roar", "Rhino Stomp"],
+  xaku: ["Xata's Whisper", "Grasp of Lohk", "The Lost", "The Vast Untime"],
+  "cyte-09": ["Seek", "Resupply", "Evade", "Neutralize"],
+  oraxia: ["Mercy's Kiss", "Webbed Embrace", "Widow's Brood", "Silken Stride"],
+  temple: ["Pyrotechnics", "Overdrive", "Ripper's Wail", "Exalted Solo"],
+  uriel: ["Infernalis", "Remedium", "Demonium", "Brimstone"],
+};
+
+function resolveCatalogWarframe(warframe: unknown): Warframe | null {
+  if (!warframe) return null;
+  const source = typeof warframe === "string" ? { id: warframe, name: warframe } : (typeof warframe === "object" ? warframe as Record<string, unknown> : null);
+  if (!source) return null;
+  const identity = String(source.id || "").trim().toLowerCase();
+  const name = String(source.name || "").trim().toLowerCase();
+  const baseName = name.replace(/\s+(prime|umbra)$/g, "").trim();
+  return WARFRAMES.find(candidate => identity && candidate.id.toLowerCase() === identity)
+    || WARFRAMES.find(candidate => name && candidate.name.toLowerCase() === name)
+    || WARFRAMES.find(candidate => baseName && candidate.name.toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim() === baseName)
+    || null;
+}
+
+function getNativeAbilityEntries(warframe: Warframe | null | undefined): WarframeAbilityEntry[] {
+  const currentWarframe = resolveCatalogWarframe(warframe);
+  const source = warframe && typeof warframe === "object" ? warframe as Warframe & Record<string, unknown> : null;
+  const legacyNames = [source?.abilityNames, source?.powers, source?.powerNames, source?.abilityList]
+    .find(value => Array.isArray(value)) as unknown[] | undefined;
+  const legacyEntries = (legacyNames || []).filter(Boolean).slice(0, 4).map(entry => {
+    if (typeof entry === "string") return { name: entry, description: "" };
+    if (entry && typeof entry === "object" && "name" in entry) return entry as WarframeAbility;
+    return null;
+  }).filter(Boolean) as WarframeAbilityEntry[];
+  const catalogEntries = Array.isArray(currentWarframe?.abilities) ? currentWarframe.abilities.filter(Boolean).slice(0, 4) : [];
+  const existing = catalogEntries.length >= 4 ? catalogEntries : legacyEntries;
+  const normalizedName = String(currentWarframe?.name || source?.name || "").toLowerCase().replace(/\s+(prime|umbra)$/g, "").trim();
+  const exactName = String(currentWarframe?.name || source?.name || "").toLowerCase();
+  const fallback = FALLBACK_NATIVE_ABILITIES[normalizedName] || FALLBACK_NATIVE_ABILITIES[exactName] || [];
+  return Array.from({ length: 4 }, (_, index) => existing[index] || (fallback[index] ? { name: fallback[index], description: "" } : { name: "", description: "" }));
+}
+
+function getAbilityRecord(entry: WarframeAbilityEntry): WarframeAbility | null {
+  return typeof entry === "object" && entry !== null ? entry : null;
+}
+
+function computeScaledStatNumber(baseNum: number, modifier: string, label: string, modifiers?: { strength: number; duration: number; range: number; efficiency: number }): number {
+  const strengthFactor = modifiers ? modifiers.strength / 100 : 1;
+  const durationFactor = modifiers ? modifiers.duration / 100 : 1;
+  const rangeFactor = modifiers ? modifiers.range / 100 : 1;
+  const efficiencyFactor = modifiers ? modifiers.efficiency / 100 : 1;
+  const modUpper = modifier.toUpperCase();
+  const lower = label.toLowerCase();
+
+  let scaled = baseNum;
+  if (modUpper.includes("STRENGTH")) {
+    scaled = baseNum * strengthFactor;
+  } else if (modUpper.includes("DURATION")) {
+    scaled = baseNum * durationFactor;
+  } else if (modUpper.includes("RANGE")) {
+    scaled = baseNum * rangeFactor;
+  } else if (modUpper.includes("EFFICIENCY") || lower.includes("cost") || lower.includes("drain")) {
+    scaled = Math.max(5, Math.round(baseNum / Math.max(0.1, efficiencyFactor)));
+  } else if (lower.includes("damage") || lower.includes("heal") || lower.includes("armor") || lower.includes("shield") || lower.includes("strength")) {
+    scaled = baseNum * strengthFactor;
+  } else if (lower.includes("duration") || lower.includes("time")) {
+    scaled = baseNum * durationFactor;
+  } else if (lower.includes("range") || lower.includes("radius") || lower.includes("distance")) {
+    scaled = baseNum * rangeFactor;
+  }
+  return Number.isInteger(scaled) ? scaled : Number(scaled.toFixed(1));
+}
+
+function formatOfficialAbilityStat(
+  stat: NonNullable<WarframeAbility["officialStats"]>[number],
+  modifiers?: { strength: number; duration: number; range: number; efficiency: number }
+): { text: string; isImproved: boolean; isReduced: boolean } {
+  let label = stat.label;
+  const rawValues = stat.values || {};
+  const modifier = stat.modifier || "";
+  let isImproved = false;
+  let isReduced = false;
+
+  const scaledValues: Record<string, string | number> = {};
+  for (const [k, v] of Object.entries(rawValues)) {
+    const num = Number(v);
+    if (!Number.isFinite(num)) {
+      scaledValues[k] = v;
+      continue;
+    }
+    const scaled = computeScaledStatNumber(num, modifier, label, modifiers);
+    scaledValues[k] = scaled;
+    const lower = label.toLowerCase();
+    const isCostOrDrain = lower.includes("cost") || lower.includes("drain") || (modifier.toUpperCase()).includes("EFFICIENCY");
+    if (scaled > num) {
+      if (isCostOrDrain) isReduced = true; // lower cost is better/improved
+      else isImproved = true;
+    } else if (scaled < num) {
+      if (isCostOrDrain) isImproved = true; // lower cost is improved
+      else isReduced = true;
+    }
+  }
+
+  for (const [key, value] of Object.entries(scaledValues)) {
+    label = label.replace(new RegExp(`\\|${key}\\|`, "gi"), String(value));
+  }
+  return {
+    text: label.replace(/\|val\d+\|/gi, "—"),
+    isImproved,
+    isReduced,
+  };
+}
+
+function findHelminthAbility(substitution: HelminthSubstitution | null): HelminthAbility | null {
+  if (!substitution) return null;
+  return HELMINTH_ABILITIES.find(ability => ability.id === substitution.abilityId)
+    || HELMINTH_ABILITIES.find(ability => ability.name.toLowerCase() === substitution.abilityName.toLowerCase())
+    || null;
+}
+
+interface HelminthCalculatedScaling {
+  strengthPct: number;
+  durationPct: number;
+  rangePct: number;
+  efficiencyPct: number;
+  strengthFactor: number;
+  durationFactor: number;
+  rangeFactor: number;
+  energyCost: number;
+}
+
+function calculateHelminthAbilityScaling(ability: HelminthAbility, stats: WarframeStatSummary): HelminthCalculatedScaling {
+  const strengthFactor = stats.strengthPct / 100;
+  const durationFactor = stats.durationPct / 100;
+  const rangeFactor = stats.rangePct / 100;
+  const efficiencyFactor = Math.max(0.34, stats.efficiencyPct / 100);
+  return {
+    strengthPct: stats.strengthPct,
+    durationPct: stats.durationPct,
+    rangePct: stats.rangePct,
+    efficiencyPct: stats.efficiencyPct,
+    strengthFactor,
+    durationFactor,
+    rangeFactor,
+    energyCost: Math.round((ability.energyCost / efficiencyFactor) * 10) / 10,
   };
 }
 
@@ -986,15 +1252,43 @@ function calculateCompanionStats(build: BuildSet): CompanionStatSummary | null {
 }
 
 function buildSummaryMarkdown(build: BuildSet): string {
-  const capacityLine = (label: string, mods: (Mod | null)[], equipment: Warframe | Weapon | Companion | undefined, boosted: boolean) => {
-    const polarities = equipment?.polarities || [];
+  const capacityLine = (label: string, mods: (Mod | null)[], equipment: Warframe | Weapon | Companion | undefined, boosted: boolean, overrides: SlotPolarity[]) => {
+    const polarities = overrides.map((override, index) => resolveSlotPolarity(equipment, override, index));
     const used = mods.reduce((total, mod, index) => total + (mod ? modCost(mod, polarities[index]) : 0), 0);
     const max = boosted ? 60 : 30;
-    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — rang ${mod.selectedRank ?? mod.maxRank}/${mod.maxRank} — coût ${modCost(mod, polarities[index])}${polarities[index] ? ` — polarité ${POLARITY_GLYPHS[polarities[index]] || polarities[index]}` : ""}` : null).filter(Boolean).join("\n");
+    const entries = mods.map((mod, index) => mod ? `- Slot ${index + 1}: ${mod.name} — rang ${mod.selectedRank ?? mod.maxRank}/${mod.maxRank} — coût ${modCost(mod, polarities[index])} — polarité ${formatSlotPolarity(equipment, overrides[index], index)}` : null).filter(Boolean).join("\n");
     return `### ${label} — capacité ${used}/${max}${used > max ? " (DÉPASSÉE)" : ""}\n${entries || "- Aucun mod équipé"}`;
   };
   const arcanes = [...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).map(arcane => `- ${arcane?.name}: ${arcane?.description}`).join("\n") || "- Aucun Arcane équipé";
   const shards = build.archonShards.filter(Boolean).map(selected => `- ${selected?.shard.name}: ${selected?.shard.effects[selected.effectIndex] || selected?.shard.description}`).join("\n") || "- Aucun éclat équipé";
+  const activeHelminth = findHelminthAbility(build.helminthSubstitution);
+  const helminthStats = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, calculateWarframeStats(build)) : null;
+  const wfAbilitiesForExport = getNativeAbilityEntries(build.warframe);
+  const warframeStatsForExport = calculateWarframeStats(build);
+  const abilitiesBlock = wfAbilitiesForExport.map((rawAbility, index) => {
+    const record = getAbilityRecord(rawAbility);
+    const abilityName = typeof rawAbility === "string" ? rawAbility : (record?.name || `Compétence ${index + 1}`);
+    const isSub = build.helminthSubstitution?.abilityIndex === index;
+    const sub = isSub ? build.helminthSubstitution : null;
+    const statsLines = record?.officialStats?.map(stat => {
+      const res = formatOfficialAbilityStat(stat, {
+        strength: warframeStatsForExport.strengthPct,
+        duration: warframeStatsForExport.durationPct,
+        range: warframeStatsForExport.rangePct,
+        efficiency: warframeStatsForExport.efficiencyPct,
+      });
+      return `  - ${res.text}${res.isImproved ? " (▲ Amélioré)" : res.isReduced ? " (▼ Réduit)" : ""}`;
+    }).join("\n") || "";
+
+    if (sub) {
+      return `- [Slot ${index + 1}] HELMINTH : ${sub.abilityName} (${sub.sourceWarframe}) — Remplaçant ${abilityName}\n  - Coût : ${sub.energyCost} Énergie\n  - ${sub.description}`;
+    }
+    return `- [Slot ${index + 1}] ${abilityName}\n${statsLines || "  - Compétence native"}`;
+  }).join("\n");
+
+  const helminthSummary = build.helminthSubstitution && helminthStats
+    ? `- Slot ${build.helminthSubstitution.abilityIndex + 1}: ${build.helminthSubstitution.abilityName} (${build.helminthSubstitution.sourceWarframe})\n- Force : ${helminthStats.strengthPct}% · Durée : ${helminthStats.durationPct}% · Portée : ${helminthStats.rangePct}% · Coût : ${helminthStats.energyCost}`
+    : "- Aucune capacité Helminth sélectionnée";
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
   const parts = build.companionParts;
@@ -1024,16 +1318,22 @@ function buildSummaryMarkdown(build: BuildSet): string {
     "## Incarnon",
     incarnonSummary,
     "",
+    "## Capacités & Statistiques modifiées",
+    abilitiesBlock,
+    "",
+    "## Helminth",
+    helminthSummary,
+    "",
     "## Mods",
-    capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe),
+    capacityLine("Warframe", build.warframeMods, build.warframe, build.capacityBoosts.warframe, build.slotPolarities.warframe),
     "",
-    capacityLine("Arme primaire", build.primaryMods, build.primaryWeapon, build.capacityBoosts.primary),
+    capacityLine("Arme primaire", build.primaryMods, build.primaryWeapon, build.capacityBoosts.primary, build.slotPolarities.primary),
     "",
-    capacityLine("Arme secondaire", build.secondaryMods, build.secondaryWeapon, build.capacityBoosts.secondary),
+    capacityLine("Arme secondaire", build.secondaryMods, build.secondaryWeapon, build.capacityBoosts.secondary, build.slotPolarities.secondary),
     "",
-    capacityLine("Arme de mêlée", build.meleeMods, build.meleeWeapon, build.capacityBoosts.melee),
+    capacityLine("Arme de mêlée", build.meleeMods, build.meleeWeapon, build.capacityBoosts.melee, build.slotPolarities.melee),
     "",
-    capacityLine("Compagnon", build.companionMods, build.companion, build.capacityBoosts.companion),
+    capacityLine("Compagnon", build.companionMods, build.companion, build.capacityBoosts.companion, build.slotPolarities.companion),
     "",
     "## Arcanes",
     arcanes,
@@ -1057,6 +1357,8 @@ function StatsPanel({ build }: { build: BuildSet }) {
   const stats = calculateWarframeStats(build);
   const enhancements = calculateEnhancementBonuses(build);
   const companionStats = calculateCompanionStats(build);
+  const activeHelminth = findHelminthAbility(build.helminthSubstitution);
+  const helminthScaling = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, stats) : null;
   const primaryDmg = build.primaryWeapon ? build.primaryWeapon.damage * (1 + (build.primaryMods.filter(m => m?.id === "serration").length ? 1.65 : 0)) : 0;
 
   return (
@@ -1099,6 +1401,21 @@ function StatsPanel({ build }: { build: BuildSet }) {
             <span>{wf.name.toUpperCase()}</span>
             <span className="text-[10px]" style={{ fontFamily: "var(--font-mono)", color: "#66bb6a" }}>RANG 30</span>
           </div>
+
+          {build.helminthSubstitution && helminthScaling && (
+            <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(167,139,250,0.08)", border: "1px solid rgba(167,139,250,0.45)" }}>
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-[10px] uppercase font-bold tracking-wider" style={{ color: "#c4b5fd", fontFamily: "var(--font-display)" }}>HELMINTH // {build.helminthSubstitution.abilityName}</div>
+                <span className="text-[9px]" style={{ color: "#a78bfa", fontFamily: "var(--font-mono)" }}>SLOT {build.helminthSubstitution.abilityIndex + 1}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-1.5 text-[9px]" style={{ fontFamily: "var(--font-mono)" }}>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>FORCE <strong>{helminthScaling.strengthPct}%</strong></div>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>DURÉE <strong>{helminthScaling.durationPct}%</strong></div>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>PORTÉE <strong>{helminthScaling.rangePct}%</strong></div>
+                <div className="rounded-sm px-2 py-1" style={{ backgroundColor: "rgba(0,0,0,0.2)", color: "#c4b5fd" }}>COÛT <strong>{helminthScaling.energyCost}</strong></div>
+              </div>
+            </div>
+          )}
 
           {/* Survivability & Energy (Warframe In-Game HUD Style) */}
           <div className="space-y-2 rounded-sm p-2.5" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
@@ -1405,6 +1722,8 @@ export default function SetBuilder() {
   const [savedBuilds, setSavedBuilds] = useState<BuildSet[]>(initialState.savedBuilds);
   const [buildName, setBuildName] = useState(initialState.builds[0]?.name || "Mon Premier Set");
   const [activeTab, setActiveTab] = useState<"equipment" | "mods">("equipment");
+  const [helminthSearch, setHelminthSearch] = useState("");
+  const [helminthCategory, setHelminthCategory] = useState<HelminthAbility["category"] | "all">("all");
   const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -1428,16 +1747,31 @@ export default function SetBuilder() {
       return;
     }
 
+    if (type.startsWith("mod-") && modIndex !== undefined) {
+      const key = capacityKeyForModType(type as ModGridProps["modType"]);
+      const mod = selectModAtMaxRank(item as Mod);
+      const equipment = getEquipmentForBuildSlot(activeBuild, key);
+      const slotPolarity = resolveSlotPolarity(equipment, activeBuild.slotPolarities[key][modIndex], modIndex);
+      const usedWithoutSlot = getUsedCapacity(activeBuild, key, modIndex);
+      const nextCost = modCost(mod, slotPolarity);
+      const capacity = getCapacityLimit(activeBuild, key);
+      if (usedWithoutSlot + nextCost > capacity) {
+        toast.error(`Capacité insuffisante : ${usedWithoutSlot + nextCost}/${capacity}. Réduisez un rang, changez une polarité ou ajoutez +30 de capacité.`);
+        return;
+      }
+    }
+
     updateBuild(b => {
       const nb = { ...b };
-      if (type === "warframe") nb.warframe = item as Warframe;
-      else if (type === "primary") { nb.primaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; }
-      else if (type === "secondary") { nb.secondaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; }
-      else if (type === "melee") { nb.meleeWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; }
+      if (type === "warframe") { nb.warframe = item as Warframe; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
+      else if (type === "primary") { nb.primaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; nb.slotPolarities = { ...b.slotPolarities, primary: resetSlotPolarities() }; }
+      else if (type === "secondary") { nb.secondaryWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; nb.slotPolarities = { ...b.slotPolarities, secondary: resetSlotPolarities() }; }
+      else if (type === "melee") { nb.meleeWeapon = item as Weapon; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; nb.slotPolarities = { ...b.slotPolarities, melee: resetSlotPolarities() }; }
       else if (type === "companion") {
         const nextCompanion = item as Companion;
         nb.companion = nextCompanion;
         nb.companionMods = b.companionMods.map(mod => mod && isCompanionModCompatible(mod, nextCompanion) ? mod : null);
+        nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
       }
       else if (type === "arcane-warframe" && modIndex !== undefined) {
         nb.warframeArcanes = [...b.warframeArcanes];
@@ -1477,13 +1811,14 @@ export default function SetBuilder() {
   const clearSlot = (type: "warframe" | "primary" | "secondary" | "melee" | "companion") => {
     updateBuild(b => {
       const nb = { ...b };
-      if (type === "warframe") nb.warframe = undefined;
-      else if (type === "primary") { nb.primaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; }
-      else if (type === "secondary") { nb.secondaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; }
-      else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; }
+      if (type === "warframe") { nb.warframe = undefined; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
+      else if (type === "primary") { nb.primaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, primary: null }; nb.slotPolarities = { ...b.slotPolarities, primary: resetSlotPolarities() }; }
+      else if (type === "secondary") { nb.secondaryWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, secondary: null }; nb.slotPolarities = { ...b.slotPolarities, secondary: resetSlotPolarities() }; }
+      else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; nb.slotPolarities = { ...b.slotPolarities, melee: resetSlotPolarities() }; }
       else if (type === "companion") {
         nb.companion = undefined;
         nb.companionMods = Array(8).fill(null);
+        nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
       }
       return nb;
     });
@@ -1523,6 +1858,28 @@ export default function SetBuilder() {
     }));
   };
 
+  const setSlotPolarity = (key: BuildSlotKey, index: number, polarity: SlotPolarity) => {
+    updateBuild(build => {
+      const mods = getModsForBuildSlot(build, key);
+      const equipment = getEquipmentForBuildSlot(build, key);
+      const nextSlotPolarity = resolveSlotPolarity(equipment, polarity, index);
+      const usedWithoutSlot = getUsedCapacity(build, key, index);
+      const nextCost = mods[index] ? modCost(mods[index] as Mod, nextSlotPolarity) : 0;
+      const capacity = getCapacityLimit(build, key);
+      if (usedWithoutSlot + nextCost > capacity) {
+        toast.error(`Polarité refusée : ${usedWithoutSlot + nextCost}/${capacity}. La combinaison dépasserait la capacité.`);
+        return build;
+      }
+      return {
+        ...build,
+        slotPolarities: {
+          ...build.slotPolarities,
+          [key]: build.slotPolarities[key].map((current, slotIndex) => slotIndex === index ? polarity : current),
+        },
+      };
+    });
+  };
+
   const setModRank = (index: number, rank: number, type: SlotType) => {
     updateBuild(build => {
       const slots = getSlotItems(build, type);
@@ -1530,6 +1887,18 @@ export default function SetBuilder() {
       if (!current) return build;
       const maxRank = Math.max(0, Number(current.maxRank) || 0);
       const selectedRank = Math.max(0, Math.min(Math.round(rank), maxRank));
+      const key = type.startsWith("mod-") ? capacityKeyForModType(type as ModGridProps["modType"]) : null;
+      if (!key) return build;
+      const equipment = getEquipmentForBuildSlot(build, key);
+      const slotPolarity = resolveSlotPolarity(equipment, build.slotPolarities[key][index], index);
+      const nextMod = { ...current, selectedRank };
+      const usedWithoutSlot = getUsedCapacity(build, key, index);
+      const nextCost = modCost(nextMod, slotPolarity);
+      const capacity = getCapacityLimit(build, key);
+      if (usedWithoutSlot + nextCost > capacity) {
+        toast.error(`Rang refusé : ${usedWithoutSlot + nextCost}/${capacity}. Réduisez le rang ou ajoutez +30 de capacité.`);
+        return build;
+      }
       const nextSlots = [...slots] as (Mod | null)[];
       nextSlots[index] = { ...current, selectedRank };
       if (type === "mod-warframe") return { ...build, warframeMods: nextSlots };
@@ -1539,6 +1908,205 @@ export default function SetBuilder() {
       if (type === "mod-companion") return { ...build, companionMods: nextSlots };
       return build;
     });
+  };
+
+  const setHelminthAbility = (abilityIndex: number, ability: HelminthAbility | null) => {
+    updateBuild(build => {
+      if (!ability) {
+        return { ...build, helminthSubstitution: null };
+      }
+      const wfName = build.warframe?.name || "";
+      const nativeEntry = build.warframe ? getNativeAbilityEntries(build.warframe)[abilityIndex] : null;
+      const nativeAbilityName = typeof nativeEntry === "string" ? nativeEntry : (nativeEntry?.name || `Compétence ${abilityIndex + 1}`);
+      const restriction = validateHelminthRestriction(ability.id, wfName, nativeAbilityName);
+      if (!restriction.allowed) {
+        toast.error(restriction.reason || "Restriction Helminth officielle non respectée.");
+        return build;
+      }
+      return {
+        ...build,
+        helminthSubstitution: {
+          abilityIndex,
+          abilityId: ability.id,
+          abilityName: ability.name,
+          sourceWarframe: ability.sourceWarframe,
+          description: ability.description,
+          energyCost: ability.energyCost,
+        },
+      };
+    });
+  };
+
+  const renderHelminthSection = () => {
+    if (!activeBuild.warframe) return null;
+    const warframeStats = calculateWarframeStats(activeBuild);
+    const activeHelminth = findHelminthAbility(activeBuild.helminthSubstitution);
+    const activeHelminthScaling = activeHelminth ? calculateHelminthAbilityScaling(activeHelminth, warframeStats) : null;
+    const normalizedSearch = helminthSearch.trim().toLowerCase();
+    const filteredHelminthAbilities = HELMINTH_ABILITIES.filter(ability => {
+      const matchesCategory = helminthCategory === "all" || ability.category === helminthCategory;
+      const haystack = `${ability.name} ${ability.sourceWarframe} ${ability.description}`.toLowerCase();
+      return matchesCategory && (!normalizedSearch || haystack.includes(normalizedSearch));
+    });
+    const visibleHelminthAbilities = activeHelminth && !filteredHelminthAbilities.some(ability => ability.id === activeHelminth.id)
+      ? [activeHelminth, ...filteredHelminthAbilities]
+      : filteredHelminthAbilities;
+    const wfAbilities = getNativeAbilityEntries(activeBuild.warframe);
+    return (
+      <div className="wf-hud-panel hud-frame rounded-sm p-4 space-y-3" style={{ border: "1px solid var(--wf-border)" }}>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-xs uppercase font-bold tracking-widest text-cyan-400" style={{ fontFamily: "var(--font-display)" }}>
+              HELMINTH // SUBORDINATION DE CAPACITÉ
+            </div>
+            <div className="text-[10px] mt-0.5" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+              Remplacez une compétence native de {activeBuild.warframe.name} par une aptitude subsumée du Helminth
+            </div>
+          </div>
+          {activeBuild.helminthSubstitution && (
+            <button
+              onClick={() => setHelminthAbility(0, null)}
+              className="px-2 py-1 rounded-sm text-[9px] uppercase transition-colors"
+              style={{ backgroundColor: "rgba(239,83,80,0.15)", border: "1px solid #ef5350", color: "#ef5350", fontFamily: "var(--font-mono)" }}
+            >
+              Réinitialiser Helminth
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 gap-2 rounded-sm p-2" style={{ backgroundColor: "rgba(0,0,0,0.2)", border: "1px solid var(--wf-border)" }}>
+          <div className="flex flex-col gap-2 md:flex-row md:items-center">
+            <input
+              value={helminthSearch}
+              onChange={event => setHelminthSearch(event.target.value)}
+              placeholder="Rechercher une aptitude, une Warframe ou un effet…"
+              className="min-w-0 flex-1 rounded-sm px-2.5 py-1.5 text-[10px] outline-none"
+              style={{ backgroundColor: "rgba(0,0,0,0.45)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--wf-font-mono, var(--font-mono))" }}
+              aria-label="Rechercher une aptitude Helminth"
+            />
+            <div className="flex flex-wrap gap-1" role="group" aria-label="Filtrer les catégories Helminth">
+              {([
+                ["all", "Tout"],
+                ["offensive", "Dégâts"],
+                ["crowd-control", "Contrôle"],
+                ["buff", "Buff"],
+                ["utility", "Utilitaire"],
+                ["defensive", "Défensif"],
+              ] as const).map(([value, label]) => (
+                <button
+                  key={value}
+                  onClick={() => setHelminthCategory(value)}
+                  className="rounded-sm px-2 py-1 text-[9px] uppercase transition-colors"
+                  style={{ backgroundColor: helminthCategory === value ? "rgba(79,195,247,0.18)" : "rgba(255,255,255,0.03)", border: `1px solid ${helminthCategory === value ? "var(--wf-cyan)" : "var(--wf-border)"}`, color: helminthCategory === value ? "var(--wf-cyan)" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="text-[9px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+            {visibleHelminthAbilities.length} aptitude(s) affichée(s) · {HELMINTH_ABILITIES.length} disponible(s)
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
+          {wfAbilities.map((rawAbility, index) => {
+            const abilityRecord = getAbilityRecord(rawAbility);
+            const abilityName = typeof rawAbility === "string" ? rawAbility : (abilityRecord?.name || "");
+            const abilityDesc = typeof rawAbility === "string" ? "Capacité native de la Warframe." : (abilityRecord?.description || "");
+            const officialStats = abilityRecord?.officialStats || [];
+            const isSubstituted = activeBuild.helminthSubstitution?.abilityIndex === index;
+            const sub = isSubstituted ? activeBuild.helminthSubstitution : null;
+            return (
+              <div
+                key={index}
+                className="rounded-sm p-2.5 flex flex-col justify-between transition-all"
+                style={{
+                  backgroundColor: isSubstituted ? "rgba(167, 139, 250, 0.12)" : "rgba(0,0,0,0.25)",
+                  border: `1px solid ${isSubstituted ? "#a78bfa" : "var(--wf-border)"}`,
+                }}
+              >
+                <div>
+                  <div className="flex items-center justify-between text-[9px] uppercase font-bold mb-1" style={{ color: isSubstituted ? "#c4b5fd" : "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                    <span title={`Slot ${index + 1}`}>{abilityName}</span>
+                    {isSubstituted && <span className="text-[8px] px-1 rounded bg-purple-900/60 text-purple-200">Helminth</span>}
+                  </div>
+                  {isSubstituted && (
+                    <div className="text-[10px] uppercase font-semibold text-slate-400 mb-0.5" style={{ fontFamily: "var(--font-mono)" }}>
+                      Original : <span className="text-slate-200">{abilityName}</span>
+                    </div>
+                  )}
+                  <div className="text-xs font-bold mb-1 truncate" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+                    {sub ? sub.abilityName : abilityName}
+                  </div>
+                  <div className="text-[10px] line-clamp-2 leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
+                    {sub ? sub.description : abilityDesc}
+                  </div>
+                                            {!sub && officialStats.length > 0 && (
+                    <div className="mt-2 space-y-0.5" title="Statistiques officielles du Wiki Warframe (mises à l'échelle par Force, Durée, Portée, Efficacité)">
+                      {officialStats.slice(0, 4).map((stat, statIndex) => {
+                        const res = formatOfficialAbilityStat(stat, {
+                          strength: warframeStats.strengthPct,
+                          duration: warframeStats.durationPct,
+                          range: warframeStats.rangePct,
+                          efficiency: warframeStats.efficiencyPct,
+                        });
+                        const color = res.isImproved ? "#4ade80" : res.isReduced ? "#f87171" : "#7dd3fc";
+                        return (
+                          <div key={`${index}-stat-${statIndex}`} className="text-[9px] truncate flex items-center justify-between gap-1" style={{ color, fontFamily: "var(--font-mono)" }}>
+                            <span>{res.text}</span>
+                            {res.isImproved && <span className="text-[8px] px-0.5 rounded bg-emerald-900/60 text-emerald-200">▲</span>}
+                            {res.isReduced && <span className="text-[8px] px-0.5 rounded bg-rose-900/60 text-rose-200">▼</span>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                </div>
+
+                <div className="mt-3 pt-2 border-t flex flex-col gap-2" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[9px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                      {sub ? `Source: ${sub.sourceWarframe}` : "Compétence native"}
+                    </span>
+                    {sub && activeHelminthScaling && (
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[8px] uppercase text-right" style={{ color: "#c4b5fd", fontFamily: "var(--font-mono)" }}>
+                        <span>Force {activeHelminthScaling.strengthPct}%</span>
+                        <span>Durée {activeHelminthScaling.durationPct}%</span>
+                        <span>Portée {activeHelminthScaling.rangePct}%</span>
+                        <span>Énergie {activeHelminthScaling.energyCost}</span>
+                      </div>
+                    )}
+                  </div>
+                  <select
+                    value={isSubstituted && sub ? sub.abilityId : "native"}
+                    onChange={e => {
+                      const val = e.target.value;
+                      if (val === "native") {
+                        if (isSubstituted) setHelminthAbility(0, null);
+                      } else {
+                        const found = HELMINTH_ABILITIES.find(a => a.id === val);
+                        if (found) setHelminthAbility(index, found);
+                      }
+                    }}
+                    className="w-full rounded-sm px-2 py-1 text-[10px] outline-none font-bold"
+                    style={{ backgroundColor: "rgba(0,0,0,0.6)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}
+                  >
+                    <option value="native">🛠️ Remplacer cette compétence ({abilityName})</option>
+                    {visibleHelminthAbilities.map(ha => (
+                      <option key={ha.id} value={ha.id}>
+                        {ha.name} ({ha.sourceWarframe}) {isDamageBuffAbility(ha.id) ? "★ (Buff de dégâts)" : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   const saveBuild = () => {
@@ -1844,6 +2412,13 @@ export default function SetBuilder() {
             </div>
           )}
 
+          {/* Helminth Sublimation Section */}
+          {activeTab === "equipment" && activeBuild.warframe && (
+            <div className="mb-4">
+              {renderHelminthSection()}
+            </div>
+          )}
+
           {/* Arcanes and Archon Shards */}
           <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "equipment" ? "" : "max-xl:hidden"}`}>
             <ArcaneGrid label="WARFRAME" arcanes={activeBuild.warframeArcanes} arcaneType="arcane-warframe" onSelect={(idx, type) => setSelectorOpen({ type, modIndex: idx })} onClear={clearMod} accentColor="#a78bfa" />
@@ -1860,11 +2435,13 @@ export default function SetBuilder() {
               mods={activeBuild.warframeMods}
               modType="mod-warframe"
               equipment={activeBuild.warframe}
+              slotPolarityOverrides={activeBuild.slotPolarities.warframe}
               capacityBoosted={activeBuild.capacityBoosts.warframe}
               onToggleCapacity={() => toggleCapacity("warframe")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("warframe", idx, polarity)}
               accentColor="#4fc3f7"
             />
             <ModGrid
@@ -1872,11 +2449,13 @@ export default function SetBuilder() {
               mods={activeBuild.primaryMods}
               modType="mod-primary"
               equipment={activeBuild.primaryWeapon}
+              slotPolarityOverrides={activeBuild.slotPolarities.primary}
               capacityBoosted={activeBuild.capacityBoosts.primary}
               onToggleCapacity={() => toggleCapacity("primary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("primary", idx, polarity)}
               accentColor="#ff6b35"
             />
             <ModGrid
@@ -1884,11 +2463,13 @@ export default function SetBuilder() {
               mods={activeBuild.secondaryMods}
               modType="mod-secondary"
               equipment={activeBuild.secondaryWeapon}
+              slotPolarityOverrides={activeBuild.slotPolarities.secondary}
               capacityBoosted={activeBuild.capacityBoosts.secondary}
               onToggleCapacity={() => toggleCapacity("secondary")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("secondary", idx, polarity)}
               accentColor="#ffd700"
             />
             <ModGrid
@@ -1896,11 +2477,13 @@ export default function SetBuilder() {
               mods={activeBuild.meleeMods}
               modType="mod-melee"
               equipment={activeBuild.meleeWeapon}
+              slotPolarityOverrides={activeBuild.slotPolarities.melee}
               capacityBoosted={activeBuild.capacityBoosts.melee}
               onToggleCapacity={() => toggleCapacity("melee")}
               onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("melee", idx, polarity)}
               accentColor="#66bb6a"
             />
             <ModGrid
@@ -1908,6 +2491,7 @@ export default function SetBuilder() {
               mods={activeBuild.companionMods}
               modType="mod-companion"
               equipment={activeBuild.companion}
+              slotPolarityOverrides={activeBuild.slotPolarities.companion}
               capacityBoosted={activeBuild.capacityBoosts.companion}
               onToggleCapacity={() => toggleCapacity("companion")}
               onSelectMod={(idx, type) => {
@@ -1919,6 +2503,7 @@ export default function SetBuilder() {
               }}
               onClearMod={clearMod}
               onRankChange={setModRank}
+              onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
               accentColor="#a78bfa"
             />
           </div>

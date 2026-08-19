@@ -1,5 +1,108 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Indicateurs colorés et export des capacités modifiées
+
+- [x] Comparer les valeurs modifiées des statistiques de capacités aux valeurs de base (vert si supérieur/égal, rouge si inférieur selon le sens du paramètre).
+- [x] Intégrer les compétences et leurs statistiques modifiées dans le résumé Markdown exportable.
+- [x] Valider avec TypeScript, build de production et publication.
+
+
+## Nouvelle demande — Mise à l’échelle dynamique des capacités (Force, Durée, Portée, Efficacité)
+
+- [x] Structurer les lignes de statistiques des capacités selon le format d’exemple (`summary` et `rows` avec modificateurs `AVATAR_ABILITY_STRENGTH`, etc.).
+- [x] Calculer dynamiquement les valeurs affichées en fonction des facteurs de puissance de la Warframe active.
+- [x] Afficher les valeurs modifiées dans les cartes de capacités du panneau Helminth et de la Warframe.
+- [x] Valider avec des mods de Force, Durée, Portée et Efficacité, compiler et publier.
+
+
+## Nouvelle demande — Les capacités génériques restent visibles
+
+- [x] Reproduire le cas exact dans le Builder et identifier la Warframe concernée.
+- [x] Tracer la donnée réellement reçue par `wfAbilities`, y compris les builds persistés.
+- [x] Corriger l’affichage à la source et valider le cas signalé avec un build legacy injecté.
+
+
+## Nouvelle demande — Modules Wiki Ability officiels
+
+- [x] Auditer `Module:Ability/infobox` et `Module:Ability/data/stats` comme sources structurées.
+- [x] Adapter l’enrichisseur pour récupérer les noms, descriptions et statistiques réelles des capacités.
+- [x] Valider le rendu Helminth et supprimer les fallbacks génériques restants.
+
+
+## Nouvelle demande — Capacités natives non résolues dans le panneau Helminth
+
+- [ ] Auditer les structures de capacités Warframe réellement chargées par le Builder.
+- [ ] Résoudre les noms depuis les tableaux de chaînes, objets structurés et fallbacks officiels sans libellé générique.
+- [ ] Tester plusieurs Warframes, compiler et valider le rendu Helminth.
+
+
+## Nouvelle demande — Noms des capacités natives dans le panneau Helminth
+
+- [x] Remplacer les libellés « Capacité 1–4 » par les noms réels des capacités de la Warframe sélectionnée.
+- [x] Conserver un affichage explicite de la capacité native remplacée lorsqu’une substitution Helminth est active.
+- [x] Vérifier TypeScript, le build et le rendu du Builder.
+
+
+## Nouvelle demande — Correctif Helminth après dysfonctionnement signalé
+
+- [ ] Reproduire le problème après sélection d’une Warframe dans le Builder.
+- [ ] Corriger l’affichage des capacités natives, le choix du slot et la sélection de l’aptitude Helminth.
+- [ ] Vérifier le blocage des buffs de dégâts incompatibles, la persistance et l’import/export.
+- [ ] Compiler, tester visuellement et publier uniquement après validation du flux réel.
+
+## Nouvelle demande — Helminth complet (checklist officielle, compétences natives et restrictions)
+
+- [x] Enrichir `helminth-data.ts` pour couvrir l’intégralité des aptitudes subsumables officielles (plus de 40 capacités).
+- [x] Afficher clairement les quatre compétences originales de la Warframe active et permettre de cibler précisément celle à remplacer.
+- [x] Implémenter les restrictions officielles de buffs de dégâts (Eclipse, Roar, Xata’s Whisper) selon les règles du Wiki.
+- [x] Valider TypeScript, le build de production et le rendu responsive.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
+## Nouvelle demande — Helminth dynamique et sélecteur avancé
+
+- [x] Auditer les statistiques d’aptitudes et les contributions de mods de la Warframe.
+- [x] Ajouter une barre de recherche et des filtres par catégorie au sélecteur Helminth : dégâts, contrôle, buff, utilitaire et défensif.
+- [x] Calculer dynamiquement Force, Durée, Portée, Efficacité et coût énergétique des aptitudes sélectionnées à partir des mods, arcanes et éclats actifs.
+- [x] Afficher les valeurs calculées dans le Builder et le résumé Markdown ; TypeScript, build production et responsive desktop/mobile validés.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
+## Nouvelle demande — Intégration Helminth dans le Builder
+
+- [x] Auditer les capacités subsumables Helminth de référence et concevoir le module de remplacement par slot.
+- [x] Créer le fichier `helminth-data.ts` regroupant les capacités subsumées officielles (Roar, Eclipse, Nourish, Pillage, Gloom, Ensnare, Dispenser, etc.).
+- [x] Ajouter les sélections Helminth aux types de builds et à la normalisation import/export.
+- [x] Intégrer le panneau de substitution Helminth dans le cockpit du Builder, compiler et valider le build de production.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
+## Nouvelle demande — Validation stricte de capacité des mods
+
+- [x] Auditer les flux d’ajout, de rang et de polarité des mods.
+- [x] Bloquer l’ajout d’un mod si la capacité disponible est dépassée.
+- [x] Bloquer les changements de rang ou de polarité qui dépassent la capacité.
+- [x] Ajouter un retour visuel explicite, compiler et valider le build.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
+## Nouvelle demande — Polarités Umbra et mods sacrificiels
+
+- [x] Auditer les types de polarités, les slots et le calcul de capacité existants.
+- [x] Ajouter la sélection de polarité Umbra pour les slots de Warframes, armes et compagnons.
+- [x] Rendre Sacrificial Steel et Sacrificial Pressure compatibles avec la polarité Umbra via leur polarité `umbra` déjà présente dans le dataset ; le coût et la capacité se recalculent immédiatement.
+- [x] Valider TypeScript, le build de production et le rendu responsive desktop/mobile.
+- [ ] Sauvegarder le checkpoint et publier la mise à jour.
+
+## Nouvelle demande — Excalibur Umbra Prime
+
+- [ ] Inspecter la fiche actuelle d’Excalibur Umbra Prime dans le dataset.
+- [ ] Extraire les statistiques officielles, compétences, passif et image Wiki (`https://wiki.warframe.com/images/ExcaliburUmbraPrime.png?9f21a`).
+- [ ] Mettre à jour `warframe-data-full.json` et enrichir le résolveur d’assets.
+- [ ] Valider le build, les types et synchroniser avec GitHub.
+
+## Nouvelle demande — Diagnostic 404 Vercel
+
+- [ ] Vérifier l’état de l’URL Vercel après connexion.
+- [ ] Distinguer une URL d’équipe invalide d’un projet non déployé ou d’un routage incorrect.
+- [ ] Confirmer la configuration requise avant toute action de déploiement externe.
+
 ## Nouvelle demande — Synchronisation GitHub et Vercel
 
 - [ ] Vérifier que la dernière version publiée correspond au dépôt GitHub.
