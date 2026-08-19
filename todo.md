@@ -9,6 +9,12 @@
 - [x] Inclure les arbres Incarnon complets et les sélections actives dans l’export JSON enrichi ; préserver la compatibilité de l’import JSON via normalisation rétrocompatible.
 - [ ] Valider le rendu responsive du Builder et publier un checkpoint.
 
+## Nouvelle demande — Correction du catalogue Warframes
+
+- [x] Diagnostiquer pourquoi le clic sur une carte Warframe n’ouvrait aucune fiche : les cartes n’avaient aucun handler `onClick`.
+- [x] Relier chaque carte à une modale détaillée avec statistiques, polarités, passif et capacités enrichies.
+- [ ] Publier le correctif après la sauvegarde du checkpoint.
+
 ## Nouvelle demande — Catalogue Warframes
 
 - [ ] Ajouter une interaction au clic sur chaque carte de Warframe.

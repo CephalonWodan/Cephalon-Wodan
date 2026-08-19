@@ -26,6 +26,23 @@ type CatalogData = {
 
 const fullData = catalog as CatalogData;
 
+export interface WarframeAbility {
+  name: string;
+  description: string;
+  strength?: string;
+  duration?: string;
+  range?: string;
+  efficiency?: string;
+  misc?: string;
+}
+
+export type WarframeAbilityEntry = WarframeAbility | string;
+
+export interface WarframePassive {
+  attribute?: string;
+  description: string;
+}
+
 export interface Warframe {
   id: string;
   name: string;
@@ -36,8 +53,9 @@ export interface Warframe {
   armor: number;
   energy: number;
   mastery: number;
-  abilities: string[];
+  abilities: WarframeAbilityEntry[];
   description: string;
+  passive?: WarframePassive | string;
   imageUrl?: string;
   imageUrls?: string[];
   imageName?: string;

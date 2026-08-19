@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { Filter, Search, Shield } from "lucide-react";
 import Layout from "@/components/Layout";
 import AssetImage from "@/components/AssetImage";
+import WarframeDetailsModal from "@/components/WarframeDetailsModal";
 import { WARFRAMES, Warframe, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const VERSION_FILTERS = ["Toutes", "Standard", "Prime"];
@@ -20,12 +21,17 @@ const SORT_OPTIONS = [
 ] as const;
 type SortKey = (typeof SORT_OPTIONS)[number]["value"];
 
-function WarframeCard({ wf }: { wf: Warframe }) {
+function WarframeCard({ wf, onOpen }: { wf: Warframe; onOpen: (warframe: Warframe) => void }) {
   const rarityColor = getRarityColor(wf.rarity);
   return (
     <div
       className="rounded-sm overflow-hidden transition-all duration-200 cursor-pointer group"
       style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)", position: "relative" }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Consulter la fiche détaillée de ${wf.name}`}
+      onClick={() => onOpen(wf)}
+      onKeyDown={event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onOpen(wf); } }}
       onMouseEnter={e => {
         (e.currentTarget as HTMLElement).style.borderColor = rarityColor;
         (e.currentTarget as HTMLElement).style.boxShadow = `0 0 16px ${rarityColor}25`;
@@ -80,7 +86,10 @@ function WarframeCard({ wf }: { wf: Warframe }) {
 
         <div className="flex items-center justify-between">
           <span className="text-xs" style={{ color: "var(--wf-text-dim)" }}>MR: <span style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}>{wf.mastery}</span></span>
-          <Link href="/builder" className="text-xs px-2 py-1 rounded-sm transition-all wf-btn-primary" style={{ fontSize: "10px" }}>UTILISER</Link>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[9px] uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}>Cliquer pour détails</span>
+            <Link href="/builder" onClick={event => event.stopPropagation()} className="text-xs px-2 py-1 rounded-sm transition-all wf-btn-primary" style={{ fontSize: "10px" }}>UTILISER</Link>
+          </div>
         </div>
       </div>
     </div>
@@ -92,12 +101,14 @@ export default function Warframes() {
   const [versionFilter, setVersionFilter] = useState("Toutes");
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [descending, setDescending] = useState(false);
+  const [selectedWarframe, setSelectedWarframe] = useState<Warframe | null>(null);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return [...WARFRAMES]
       .filter(wf => {
-        const searchable = [wf.name, wf.role, wf.description, ...wf.abilities].join(" ").toLowerCase();
+        const abilityText = wf.abilities.map(ability => typeof ability === "string" ? ability : [ability.name, ability.description, ability.strength, ability.duration, ability.range, ability.misc].filter(Boolean).join(" ")).join(" ");
+        const searchable = [wf.name, wf.role, wf.description, abilityText].join(" ").toLowerCase();
         const matchSearch = !query || searchable.includes(query);
         const matchVersion = versionFilter === "Toutes" || wf.role === versionFilter;
         return matchSearch && matchVersion;
@@ -133,10 +144,11 @@ export default function Warframes() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {filtered.map((wf, i) => <div key={wf.id} className="animate-fade-slide-up" style={{ animationDelay: `${Math.min(i, 12) * 30}ms` }}><WarframeCard wf={wf} /></div>)}
+        {filtered.map((wf, i) => <div key={wf.id} className="animate-fade-slide-up" style={{ animationDelay: `${Math.min(i, 12) * 30}ms` }}><WarframeCard wf={wf} onOpen={setSelectedWarframe} /></div>)}
       </div>
 
       {filtered.length === 0 && <div className="text-center py-16" style={{ color: "var(--wf-text-dim)" }}><Shield size={48} className="mx-auto mb-4 opacity-30" /><p className="text-sm">Aucun Warframe trouvé</p></div>}
+      <WarframeDetailsModal warframe={selectedWarframe} onClose={() => setSelectedWarframe(null)} />
     </Layout>
   );
 }
