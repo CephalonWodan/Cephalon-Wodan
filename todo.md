@@ -1,10 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
-## Nouvelle demande — Indicateurs colorés et export des capacités modifiées
+## Rapport d’audit — Capacités dynamiques des 117 Warframes
 
-- [x] Comparer les valeurs modifiées des statistiques de capacités aux valeurs de base (vert si supérieur/égal, rouge si inférieur selon le sens du paramètre).
-- [x] Intégrer les compétences et leurs statistiques modifiées dans le résumé Markdown exportable.
-- [x] Valider avec TypeScript, build de production et publication.
+- [x] Vérifier la couverture des 4 capacités pour les 117 Warframes (100% validé, 0 échec).
+- [x] Valider le calcul en direct de la Force, Durée, Portée et Efficacité.
+- [x] Valider les indicateurs colorés (vert/rouge avec sens des coûts et effets).
+- [x] Intégrer les statistiques modifiées dans le résumé Markdown exportable.
+- [x] Synchroniser l’ensemble sur le dépôt GitHub `CephalonWodan/Cephalon-Wodan`.
 
 
 ## Nouvelle demande — Mise à l’échelle dynamique des capacités (Force, Durée, Portée, Efficacité)
