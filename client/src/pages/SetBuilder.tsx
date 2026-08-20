@@ -19,7 +19,7 @@ import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-posture";
 
 const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
 
@@ -64,6 +64,8 @@ function getSlotItems(build: BuildSet, type: SlotType): (BuildItem | null)[] {
     case "mod-secondary": return build.secondaryMods;
     case "mod-melee": return build.meleeMods;
     case "mod-companion": return build.companionMods;
+    case "mod-companion-weapon": return build.companionWeaponMods;
+    case "mod-companion-posture": return [build.companionPostureMod];
     case "arcane-warframe": return build.warframeArcanes;
     case "arcane-primary": return build.primaryArcanes;
     case "arcane-secondary": return build.secondaryArcanes;
@@ -181,6 +183,11 @@ function getCapacityLimit(build: BuildSet, key: BuildSlotKey): number {
     const isMatching = auraPolarity && build.auraMod.polarity === auraPolarity;
     limit += isMatching ? 14 : 7;
   }
+  if (key === "companion" && build.companionPostureMod) {
+    // Selon le Wiki, les postures de bêtes (ex: Assassin Posture, Persistent Posture, etc.) ou de compagnon augmentent la capacité de modding (+14 / +7)
+    const isPenjaga = build.companionPostureMod.polarity === "penjaga" || !build.companionPostureMod.polarity;
+    limit += isPenjaga ? 14 : 7;
+  }
   return limit;
 }
 
@@ -293,6 +300,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     companionMods: normalizeModArray(candidate.companionMods, 10),
     companionWeapon: WEAPONS.find(w => w.id === candidate.companionWeapon?.id || w.name.toLowerCase() === candidate.companionWeapon?.name?.toLowerCase()) || undefined,
     companionWeaponMods: normalizeModArray(candidate.companionWeaponMods, 8),
+    companionPostureMod: candidate.companionPostureMod ? selectModAtMaxRank(candidate.companionPostureMod as Mod) : null,
     warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
     primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
@@ -360,6 +368,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
         );
       }
       case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
+      case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
       case "mod-companion": {
         let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
         if (preceptFilter === "precept") list = list.filter(m => (m.effect || "").toLowerCase().includes("précepte") || (m.name || "").toLowerCase().includes("precept") || m.type === "companion");
@@ -397,6 +406,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       "mod-companion": "SÉLECTIONNER UN MOD COMPAGNON",
       "companion-weapon": "SÉLECTIONNER UNE ARME DE COMPAGNON",
       "mod-companion-weapon": "SÉLECTIONNER UN MOD D’ARME DE COMPAGNON",
+      "mod-companion-posture": "SÉLECTIONNER UN MOD DE POSTURE DE COMPAGNON",
     };
     return titles[type];
   };
@@ -784,6 +794,77 @@ function AuraExilusBar({ auraMod, exilusMod, warframe, onSelectSlot, onClearSlot
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
       {renderSingleModSlot(auraMod, "mod-aura", "AURA", auraPolarity)}
       {renderSingleModSlot(exilusMod, "mod-exilus", "EXILUS", exilusPolarity)}
+    </div>
+  );
+}
+
+interface CompanionPostureBarProps {
+  postureMod: Mod | null;
+  onSelectSlot: (type: SlotType) => void;
+  onClearSlot: (type: SlotType) => void;
+  onRankChange: (rank: number, type: SlotType) => void;
+}
+
+function CompanionPostureBar({ postureMod, onSelectSlot, onClearSlot, onRankChange }: CompanionPostureBarProps) {
+  const posturePolarity = "penjaga";
+  const postureCost = postureMod ? modCost(postureMod, posturePolarity) : 0;
+  const postureBonus = postureMod ? 14 : 0;
+
+  const rarityColor = postureMod ? getRarityColor(postureMod.rarity) : "#1e3a4a";
+  return (
+    <div className="mb-2">
+      <div
+        className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${postureMod ? "" : "wf-empty-slot"}`}
+        style={{
+          backgroundColor: postureMod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
+          border: `1px solid ${postureMod ? rarityColor : "var(--wf-border)"}`,
+          minHeight: 56,
+        }}
+        onClick={() => onSelectSlot("mod-companion-posture")}
+      >
+        {postureMod ? (
+          <div className="p-2 flex items-center gap-2">
+            <div className="w-7 h-9 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
+              <AssetImage item={postureMod} type="mod" alt={postureMod.name} className="h-full w-full object-contain" fallback={<Star size={13} style={{ color: rarityColor }} />} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+                  {postureMod.name} [POSTURE DE BÊTE]
+                </span>
+                <button
+                  onClick={e => { e.stopPropagation(); onClearSlot("mod-companion-posture"); }}
+                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                >
+                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                </button>
+              </div>
+              <div className="text-[9px] mt-0.5 truncate" style={{ color: rarityColor, fontFamily: "var(--font-display)" }}>
+                {postureMod.effect}
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-[8px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                <span>COÛT {postureCost}</span>
+                <span>POLARITÉ ◇ (Penjaga)</span>
+                <span style={{ color: "#66bb6a" }}>+CAPACITÉ +{postureBonus}</span>
+              </div>
+              <select
+                value={postureMod.selectedRank ?? postureMod.maxRank}
+                onClick={e => e.stopPropagation()}
+                onChange={e => { e.stopPropagation(); onRankChange(Number(e.target.value), "mod-companion-posture"); }}
+                className="mt-1 w-full rounded-sm px-1 py-0.5 text-[8px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,0.35)", border: `1px solid ${rarityColor}50`, color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                {Array.from({ length: postureMod.maxRank + 1 }, (_, rank) => <option key={rank} value={rank}>RANG {rank}/{postureMod.maxRank}</option>)}
+              </select>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2 h-full p-3 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+            <Plus size={14} style={{ color: "var(--wf-cyan-dim)" }} />
+            <span className="tracking-widest uppercase text-[9px]" style={{ color: "var(--wf-cyan)" }}>POSTURE DE BÊTE (OPTIONNEL — +14 CAPACITÉ, POLARITÉ ◇)</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -1939,6 +2020,8 @@ export default function SetBuilder() {
       } else if (type === "mod-companion-weapon" && modIndex !== undefined) {
         nb.companionWeaponMods = [...b.companionWeaponMods];
         nb.companionWeaponMods[modIndex] = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-companion-posture") {
+        nb.companionPostureMod = selectModAtMaxRank(item as Mod);
       }
       return nb;
     });
@@ -1982,6 +2065,7 @@ export default function SetBuilder() {
       else if (type === "mod-melee") { nb.meleeMods = [...b.meleeMods]; nb.meleeMods[index] = null; }
       else if (type === "mod-companion") { nb.companionMods = [...b.companionMods]; nb.companionMods[index] = null; }
       else if (type === "mod-companion-weapon") { nb.companionWeaponMods = [...b.companionWeaponMods]; nb.companionWeaponMods[index] = null; }
+      else if (type === "mod-companion-posture") { nb.companionPostureMod = null; }
       return nb;
     });
   };
@@ -2050,6 +2134,8 @@ export default function SetBuilder() {
       if (type === "mod-secondary") return { ...build, secondaryMods: nextSlots };
       if (type === "mod-melee") return { ...build, meleeMods: nextSlots };
       if (type === "mod-companion") return { ...build, companionMods: nextSlots };
+      if (type === "mod-companion-weapon") return { ...build, companionWeaponMods: nextSlots };
+      if (type === "mod-companion-posture") return { ...build, companionPostureMod: nextSlots[0] || null };
       return build;
     });
   };
@@ -2686,6 +2772,19 @@ export default function SetBuilder() {
               accentColor="#66bb6a"
             />
             <div className="lg:col-span-2 space-y-4">
+              {activeBuild.companion && ["beast", "kubrow", "kavat", "vulpaphyla", "predasite"].includes(activeBuild.companion.type.toLowerCase()) && (
+                <CompanionPostureBar
+                  postureMod={activeBuild.companionPostureMod}
+                  onSelectSlot={(type) => setSelectorOpen({ type })}
+                  onClearSlot={(type) => clearMod(0, type)}
+                  onRankChange={(rank, type) => {
+                    const mod = activeBuild.companionPostureMod;
+                    if (!mod) return;
+                    const nextMod = { ...mod, selectedRank: rank };
+                    updateBuild(b => ({ ...b, companionPostureMod: nextMod }));
+                  }}
+                />
+              )}
               <ModGrid
                 label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name} (10 SLOTS)` : "COMPAGNON (10 SLOTS)"}
                 mods={activeBuild.companionMods}

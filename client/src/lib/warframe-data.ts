@@ -387,6 +387,7 @@ export interface BuildSet {
   secondaryMods: (Mod | null)[];
   meleeMods: (Mod | null)[];
   companionMods: (Mod | null)[];
+  companionPostureMod: Mod | null;
   slotPolarities: BuildSlotPolarities;
   helminthSubstitution: HelminthSubstitution | null;
   warframeArcanes: (Arcane | null)[];
@@ -510,6 +511,7 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     secondaryMods: Array(8).fill(null),
     meleeMods: Array(8).fill(null),
     companionMods: Array(10).fill(null),
+    companionPostureMod: null,
     companionWeaponMods: Array(8).fill(null),
     warframeArcanes: Array(2).fill(null),
     primaryArcanes: Array(1).fill(null),
