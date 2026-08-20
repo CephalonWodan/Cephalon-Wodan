@@ -329,11 +329,12 @@ interface SelectorModalProps {
   modSlotIndex?: number;
   unavailableIds?: string[];
   companion?: Companion;
+  companionWeapon?: Weapon;
   onSelect: (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => void;
   onClose: () => void;
 }
 
-function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onSelect, onClose }: SelectorModalProps) {
+function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, companionWeapon, onSelect, onClose }: SelectorModalProps) {
   const [search, setSearch] = useState("");
 
   const [preceptFilter, setPreceptFilter] = useState<string>("all");
@@ -379,7 +380,27 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
         }
         return COMPANION_WEAPONS.filter(w => w.weaponClass === "Sentinel Weapon");
       }
-      case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
+      case "mod-companion-weapon": {
+        const weaponId = companionWeapon?.id || "";
+        const weaponClass = companionWeapon?.weaponClass || "";
+        const isClaws = weaponClass === "Beast Claws" || weaponId.includes("claws");
+        const isHound = weaponClass === "Hound Weapon" || weaponId === "akaten" || weaponId === "batoten" || weaponId === "lacerten";
+        
+        return MODS.filter(m => {
+          const compat = (m.compatName || "").toLowerCase();
+          const desc = (m.description || "").toLowerCase();
+          const name = (m.name || "").toLowerCase();
+          const type = (m.type || "").toLowerCase();
+
+          if (isClaws) {
+            return type === "melee" || type === "universal" || compat.includes("claw") || compat.includes("beast") || desc.includes("beast") || desc.includes("compagnon") || desc.includes("bête");
+          }
+          if (isHound) {
+            return type === "melee" || type === "universal" || compat.includes("hound") || compat.includes("melee");
+          }
+          return type === "primary" || type === "secondary" || type === "universal" || compat.includes("rifle") || compat.includes("shotgun") || compat.includes("pistol") || compat.includes("sentinel");
+        });
+      }
       case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
       case "mod-companion": {
         let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
@@ -2945,6 +2966,7 @@ export default function SetBuilder() {
           modSlotIndex={selectorOpen.modIndex}
           unavailableIds={getUnavailableIds(activeBuild, selectorOpen.type, selectorOpen.modIndex)}
           companion={activeBuild.companion}
+          companionWeapon={activeBuild.companionWeapon}
           onSelect={handleSelect}
           onClose={() => setSelectorOpen(null)}
         />
