@@ -19,7 +19,7 @@ import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon";
 
 const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
 
@@ -135,6 +135,7 @@ function capacityKeyForModType(type: ModGridProps["modType"]): BuildSlotKey {
   if (type === "mod-primary") return "primary";
   if (type === "mod-secondary") return "secondary";
   if (type === "mod-melee") return "melee";
+  if (type === "mod-companion-weapon") return "companionWeapon";
   return "companion";
 }
 
@@ -143,6 +144,7 @@ function getModsForBuildSlot(build: BuildSet, key: BuildSlotKey): (Mod | null)[]
   if (key === "primary") return build.primaryMods;
   if (key === "secondary") return build.secondaryMods;
   if (key === "melee") return build.meleeMods;
+  if (key === "companionWeapon") return build.companionWeaponMods;
   return build.companionMods;
 }
 
@@ -151,6 +153,7 @@ function getEquipmentForBuildSlot(build: BuildSet, key: BuildSlotKey): Warframe 
   if (key === "primary") return build.primaryWeapon;
   if (key === "secondary") return build.secondaryWeapon;
   if (key === "melee") return build.meleeWeapon;
+  if (key === "companionWeapon") return build.companionWeapon;
   return build.companion;
 }
 
@@ -240,6 +243,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary, 8),
     melee: normalizeSlotPolarityArray(rawSlotPolarities.melee, 8),
     companion: normalizeSlotPolarityArray(rawSlotPolarities.companion, 10),
+    companionWeapon: normalizeSlotPolarityArray(rawSlotPolarities.companionWeapon, 8),
   };
   const rawHelminth = candidate.helminthSubstitution && typeof candidate.helminthSubstitution === "object" ? candidate.helminthSubstitution as unknown as Record<string, unknown> : null;
   const rawHelminthKey = rawHelminth && typeof rawHelminth.abilityId === "string"
@@ -287,6 +291,8 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
     meleeMods: normalizeModArray(candidate.meleeMods, 8),
     companionMods: normalizeModArray(candidate.companionMods, 10),
+    companionWeapon: WEAPONS.find(w => w.id === candidate.companionWeapon?.id || w.name.toLowerCase() === candidate.companionWeapon?.name?.toLowerCase()) || undefined,
+    companionWeaponMods: normalizeModArray(candidate.companionWeaponMods, 8),
     warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
     primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
@@ -341,6 +347,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
+      case "companion-weapon": return WEAPONS.filter(w => w.type === "primary" || w.type === "secondary" || (w.weaponClass || "").toLowerCase().includes("sentinel") || (w.description || "").toLowerCase().includes("sentinel"));
+      case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
       case "mod-companion": {
         let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
         if (preceptFilter === "precept") list = list.filter(m => (m.effect || "").toLowerCase().includes("précepte") || (m.name || "").toLowerCase().includes("precept") || m.type === "companion");
@@ -376,6 +384,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       "mod-secondary": "SÉLECTIONNER UN MOD SECONDAIRE",
       "mod-melee": "SÉLECTIONNER UN MOD MÊLÉE",
       "mod-companion": "SÉLECTIONNER UN MOD COMPAGNON",
+      "companion-weapon": "SÉLECTIONNER UNE ARME DE COMPAGNON",
+      "mod-companion-weapon": "SÉLECTIONNER UN MOD D’ARME DE COMPAGNON",
     };
     return titles[type];
   };
@@ -672,7 +682,7 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
 interface ModGridProps {
   label: string;
   mods: (Mod | null)[];
-  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
+  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon";
   equipment?: Warframe | Weapon | Companion;
   slotPolarityOverrides: SlotPolarity[];
   capacityBoosted: boolean;
@@ -1877,6 +1887,10 @@ export default function SetBuilder() {
         nb.companionMods = b.companionMods.map(mod => mod && isCompanionModCompatible(mod, nextCompanion) ? mod : null);
         nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
       }
+      else if (type === "companion-weapon") {
+        nb.companionWeapon = item as Weapon;
+        nb.slotPolarities = { ...b.slotPolarities, companionWeapon: resetSlotPolarities() };
+      }
       else if (type === "arcane-warframe" && modIndex !== undefined) {
         nb.warframeArcanes = [...b.warframeArcanes];
         nb.warframeArcanes[modIndex] = item as Arcane;
@@ -1908,15 +1922,18 @@ export default function SetBuilder() {
       } else if (type === "mod-melee" && modIndex !== undefined) {
         nb.meleeMods = [...b.meleeMods];
         nb.meleeMods[modIndex] = selectModAtMaxRank(item as Mod);
-      } else if (type === "mod-companion" && modIndex !== undefined) {
+      }       else if (type === "mod-companion" && modIndex !== undefined) {
         nb.companionMods = [...b.companionMods];
         nb.companionMods[modIndex] = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-companion-weapon" && modIndex !== undefined) {
+        nb.companionWeaponMods = [...b.companionWeaponMods];
+        nb.companionWeaponMods[modIndex] = selectModAtMaxRank(item as Mod);
       }
       return nb;
     });
   };
 
-  const clearSlot = (type: "warframe" | "primary" | "secondary" | "melee" | "companion") => {
+  const clearSlot = (type: "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon") => {
     updateBuild(b => {
       const nb = { ...b };
       if (type === "warframe") { nb.warframe = undefined; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
@@ -1927,6 +1944,11 @@ export default function SetBuilder() {
         nb.companion = undefined;
         nb.companionMods = Array(10).fill(null);
         nb.slotPolarities = { ...b.slotPolarities, companion: Array<SlotPolarity>(10).fill("default") };
+      }
+      else if (type === "companion-weapon") {
+        nb.companionWeapon = undefined;
+        nb.companionWeaponMods = Array(8).fill(null);
+        nb.slotPolarities = { ...b.slotPolarities, companionWeapon: resetSlotPolarities() };
       }
       return nb;
     });
@@ -1948,6 +1970,7 @@ export default function SetBuilder() {
       else if (type === "mod-secondary") { nb.secondaryMods = [...b.secondaryMods]; nb.secondaryMods[index] = null; }
       else if (type === "mod-melee") { nb.meleeMods = [...b.meleeMods]; nb.meleeMods[index] = null; }
       else if (type === "mod-companion") { nb.companionMods = [...b.companionMods]; nb.companionMods[index] = null; }
+      else if (type === "mod-companion-weapon") { nb.companionWeaponMods = [...b.companionWeaponMods]; nb.companionWeaponMods[index] = null; }
       return nb;
     });
   };
@@ -2651,7 +2674,7 @@ export default function SetBuilder() {
               onPolarityChange={(idx, polarity) => setSlotPolarity("melee", idx, polarity)}
               accentColor="#66bb6a"
             />
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 space-y-4">
               <ModGrid
                 label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name} (10 SLOTS)` : "COMPAGNON (10 SLOTS)"}
                 mods={activeBuild.companionMods}
@@ -2672,6 +2695,47 @@ export default function SetBuilder() {
                 onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
                 accentColor="#a78bfa"
               />
+
+              <div className="wf-hud-panel hud-frame rounded-sm p-3" style={{ border: "1px solid rgba(167,139,250,0.3)" }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-xs font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+                    ARME DE COMPAGNON // {activeBuild.companionWeapon?.name ? activeBuild.companionWeapon.name.toUpperCase() : "AUCUNE ARME SÉLECTIONNÉE"}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {activeBuild.companionWeapon && (
+                      <button
+                        onClick={() => clearSlot("companion-weapon")}
+                        className="text-[9px] uppercase px-2 py-0.5 rounded-sm hover:bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                      >
+                        Retirer
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setSelectorOpen({ type: "companion-weapon" })}
+                      className="text-[9px] uppercase px-2.5 py-1 rounded-sm wf-btn-primary"
+                    >
+                      {activeBuild.companionWeapon ? "Changer d’arme" : "Équiper une arme"}
+                    </button>
+                  </div>
+                </div>
+
+                {activeBuild.companionWeapon && (
+                  <ModGrid
+                    label={`ARME COMPAGNON — ${activeBuild.companionWeapon.name}`}
+                    mods={activeBuild.companionWeaponMods}
+                    modType="mod-companion-weapon"
+                    equipment={activeBuild.companionWeapon}
+                    slotPolarityOverrides={activeBuild.slotPolarities.companionWeapon}
+                    capacityBoosted={activeBuild.capacityBoosts.companionWeapon}
+                    onToggleCapacity={() => toggleCapacity("companionWeapon")}
+                    onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
+                    onClearMod={clearMod}
+                    onRankChange={setModRank}
+                    onPolarityChange={(idx, polarity) => setSlotPolarity("companionWeapon", idx, polarity)}
+                    accentColor="#c4b5fd"
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>
