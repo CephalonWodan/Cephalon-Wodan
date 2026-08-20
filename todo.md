@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Pastilles d’icônes sans texte visible
+
+- [x] Retirer les noms visibles des pastilles (`Slash`, `Viral`, `Heat`, etc.).
+- [x] Conserver `alt`, `title` et une infobulle accessible pour chaque icône.
+- [x] Vérifier le rendu, compiler et publier.
+
+
 ## Nouvelle demande — Correction des icônes miniatures Wiki dans les capacités
 
 - [x] Tester les URLs Wiki réelles pour SlashSymbol.png et autres types de dégâts.

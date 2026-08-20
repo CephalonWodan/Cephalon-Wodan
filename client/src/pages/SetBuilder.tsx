@@ -1967,9 +1967,9 @@ export default function SetBuilder() {
       const info = tagToWikiIcon(part);
       if (info) {
         return (
-          <span key={index} className="inline-flex items-center gap-1 mx-0.5 align-middle bg-cyan-950/40 border border-cyan-500/30 px-1 py-0.5 rounded text-xs text-cyan-200">
-            <img src={info.icon} alt={info.label} className="w-3.5 h-3.5 object-contain" onError={(e) => { (e.target as HTMLElement).style.display = "none"; }} />
-            <span>{info.label}</span>
+          <span key={index} title={info.label} aria-label={info.label} role="img" className="inline-flex items-center justify-center mx-0.5 align-middle bg-cyan-950/40 border border-cyan-500/30 p-0.5 rounded text-xs text-cyan-200">
+            <img src={info.icon} alt={info.label} className="w-4 h-4 object-contain" onError={(e) => { (e.target as HTMLElement).style.display = "none"; }} />
+            <span className="sr-only">{info.label}</span>
           </span>
         );
       }
