@@ -358,13 +358,26 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
       case "companion-weapon": {
         const companionType = companion?.type?.toLowerCase();
-        if (companionType === "beast" || companionType === "kubrow" || companionType === "kavat" || companionType === "vulpaphyla" || companionType === "predasite") {
-          return []; // Les bêtes ont leurs propres griffes
-        }
+        const companionName = (companion?.name || "").toLowerCase();
         if (companionType === "hound") {
           return COMPANION_WEAPONS.filter(w => ["akaten", "batoten", "lacerten"].some(hn => w.name.toLowerCase().includes(hn)));
         }
-        return COMPANION_WEAPONS;
+        if (companionType === "kubrow" || companionName.includes("kubrow") || companionName.includes("charger")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "kubrow_claws");
+        }
+        if (companionType === "kavat" || companionName.includes("kavat")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "kavat_claws");
+        }
+        if (companionType === "vulpaphyla" || companionName.includes("vulpaphyla")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "vulpaphyla_claws");
+        }
+        if (companionType === "predasite" || companionName.includes("predasite")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "predasite_claws");
+        }
+        if (companionType === "beast") {
+          return COMPANION_WEAPONS.filter(w => w.weaponClass === "Beast Claws");
+        }
+        return COMPANION_WEAPONS.filter(w => w.weaponClass === "Sentinel Weapon");
       }
       case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
       case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
