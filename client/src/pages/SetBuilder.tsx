@@ -20,7 +20,7 @@ import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-posture";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-posture" | "mod-companion-weapon-posture";
 
 const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
 
@@ -67,6 +67,7 @@ function getSlotItems(build: BuildSet, type: SlotType): (BuildItem | null)[] {
     case "mod-companion": return build.companionMods;
     case "mod-companion-weapon": return build.companionWeaponMods;
     case "mod-companion-posture": return [build.companionPostureMod];
+    case "mod-companion-weapon-posture": return [build.companionWeaponPostureMod];
     case "arcane-warframe": return build.warframeArcanes;
     case "arcane-primary": return build.primaryArcanes;
     case "arcane-secondary": return build.secondaryArcanes;
@@ -138,7 +139,7 @@ function capacityKeyForModType(type: ModGridProps["modType"]): BuildSlotKey {
   if (type === "mod-primary") return "primary";
   if (type === "mod-secondary") return "secondary";
   if (type === "mod-melee") return "melee";
-  if (type === "mod-companion-weapon") return "companionWeapon";
+  if (type === "mod-companion-weapon" || type === "mod-companion-weapon-posture") return "companionWeapon";
   return "companion";
 }
 
@@ -185,8 +186,11 @@ function getCapacityLimit(build: BuildSet, key: BuildSlotKey): number {
     limit += isMatching ? 14 : 7;
   }
   if (key === "companion" && build.companionPostureMod) {
-    // Selon le Wiki, les postures de bêtes (ex: Assassin Posture, Persistent Posture, etc.) ou de compagnon augmentent la capacité de modding (+14 / +7)
     const isPenjaga = build.companionPostureMod.polarity === "penjaga" || !build.companionPostureMod.polarity;
+    limit += isPenjaga ? 14 : 7;
+  }
+  if (key === "companionWeapon" && build.companionWeaponPostureMod) {
+    const isPenjaga = build.companionWeaponPostureMod.polarity === "penjaga" || !build.companionWeaponPostureMod.polarity;
     limit += isPenjaga ? 14 : 7;
   }
   return limit;
@@ -299,9 +303,10 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
     meleeMods: normalizeModArray(candidate.meleeMods, 8),
     companionMods: normalizeModArray(candidate.companionMods, 10),
-    companionWeapon: WEAPONS.find(w => w.id === candidate.companionWeapon?.id || w.name.toLowerCase() === candidate.companionWeapon?.name?.toLowerCase()) || undefined,
+    companionWeapon: COMPANION_WEAPONS.find(w => w.id === candidate.companionWeapon?.id || w.name.toLowerCase() === candidate.companionWeapon?.name?.toLowerCase()) || undefined,
     companionWeaponMods: normalizeModArray(candidate.companionWeaponMods, 8),
     companionPostureMod: candidate.companionPostureMod ? selectModAtMaxRank(candidate.companionPostureMod as Mod) : null,
+    companionWeaponPostureMod: candidate.companionWeaponPostureMod ? selectModAtMaxRank(candidate.companionWeaponPostureMod as Mod) : null,
     warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
     primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
@@ -412,6 +417,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, com
         });
       }
       case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
+      case "mod-companion-weapon-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
       case "mod-companion": {
         let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
         if (preceptFilter === "precept") list = list.filter(m => (m.effect || "").toLowerCase().includes("précepte") || (m.name || "").toLowerCase().includes("precept") || m.type === "companion");
@@ -450,6 +456,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, com
       "companion-weapon": "SÉLECTIONNER UNE ARME DE COMPAGNON",
       "mod-companion-weapon": "SÉLECTIONNER UN MOD D’ARME DE COMPAGNON",
       "mod-companion-posture": "SÉLECTIONNER UN MOD DE POSTURE DE COMPAGNON",
+      "mod-companion-weapon-posture": "SÉLECTIONNER UN MOD DE POSTURE D'ARME DE COMPAGNON",
     };
     return titles[type];
   };
@@ -746,7 +753,7 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
 interface ModGridProps {
   label: string;
   mods: (Mod | null)[];
-  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon";
+  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-weapon-posture";
   equipment?: Warframe | Weapon | Companion;
   slotPolarityOverrides: SlotPolarity[];
   capacityBoosted: boolean;
@@ -2065,6 +2072,8 @@ export default function SetBuilder() {
         nb.companionWeaponMods[modIndex] = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-companion-posture") {
         nb.companionPostureMod = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-companion-weapon-posture") {
+        nb.companionWeaponPostureMod = selectModAtMaxRank(item as Mod);
       }
       return nb;
     });
@@ -2085,6 +2094,7 @@ export default function SetBuilder() {
       else if (type === "companion-weapon") {
         nb.companionWeapon = undefined;
         nb.companionWeaponMods = Array(8).fill(null);
+        nb.companionWeaponPostureMod = null;
         nb.slotPolarities = { ...b.slotPolarities, companionWeapon: resetSlotPolarities() };
       }
       return nb;
@@ -2109,6 +2119,7 @@ export default function SetBuilder() {
       else if (type === "mod-companion") { nb.companionMods = [...b.companionMods]; nb.companionMods[index] = null; }
       else if (type === "mod-companion-weapon") { nb.companionWeaponMods = [...b.companionWeaponMods]; nb.companionWeaponMods[index] = null; }
       else if (type === "mod-companion-posture") { nb.companionPostureMod = null; }
+      else if (type === "mod-companion-weapon-posture") { nb.companionWeaponPostureMod = null; }
       return nb;
     });
   };
@@ -2179,6 +2190,7 @@ export default function SetBuilder() {
       if (type === "mod-companion") return { ...build, companionMods: nextSlots };
       if (type === "mod-companion-weapon") return { ...build, companionWeaponMods: nextSlots };
       if (type === "mod-companion-posture") return { ...build, companionPostureMod: nextSlots[0] || null };
+      if (type === "mod-companion-weapon-posture") return { ...build, companionWeaponPostureMod: nextSlots[0] || null };
       return build;
     });
   };
@@ -2873,20 +2885,62 @@ export default function SetBuilder() {
                 </div>
 
                 {activeBuild.companionWeapon && (
-                  <ModGrid
-                    label={`ARME COMPAGNON — ${activeBuild.companionWeapon.name}`}
-                    mods={activeBuild.companionWeaponMods}
-                    modType="mod-companion-weapon"
-                    equipment={activeBuild.companionWeapon}
-                    slotPolarityOverrides={activeBuild.slotPolarities.companionWeapon}
-                    capacityBoosted={activeBuild.capacityBoosts.companionWeapon}
-                    onToggleCapacity={() => toggleCapacity("companionWeapon")}
-                    onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
-                    onClearMod={clearMod}
-                    onRankChange={setModRank}
-                    onPolarityChange={(idx, polarity) => setSlotPolarity("companionWeapon", idx, polarity)}
-                    accentColor="#c4b5fd"
-                  />
+                  <div className="space-y-2">
+                    {(activeBuild.companionWeapon.weaponClass === "Beast Claws" || activeBuild.companionWeapon.id.includes("claws")) && (
+                      <div
+                        className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${activeBuild.companionWeaponPostureMod ? "" : "wf-empty-slot"}`}
+                        style={{
+                          backgroundColor: activeBuild.companionWeaponPostureMod ? `${getRarityColor(activeBuild.companionWeaponPostureMod.rarity)}10` : "rgba(0,0,0,0.2)",
+                          border: `1px solid ${activeBuild.companionWeaponPostureMod ? getRarityColor(activeBuild.companionWeaponPostureMod.rarity) : "var(--wf-border)"}`,
+                          minHeight: 52,
+                        }}
+                        onClick={() => setSelectorOpen({ type: "mod-companion-weapon-posture" })}
+                      >
+                        {activeBuild.companionWeaponPostureMod ? (
+                          <div className="p-2 flex items-center gap-2">
+                            <div className="w-6 h-8 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${getRarityColor(activeBuild.companionWeaponPostureMod.rarity)}15`, border: `1px solid ${getRarityColor(activeBuild.companionWeaponPostureMod.rarity)}40` }}>
+                              <AssetImage item={activeBuild.companionWeaponPostureMod} type="mod" alt={activeBuild.companionWeaponPostureMod.name} className="h-full w-full object-contain" fallback={<Star size={12} style={{ color: getRarityColor(activeBuild.companionWeaponPostureMod.rarity) }} />} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+                                  {activeBuild.companionWeaponPostureMod.name} [POSTURE DE GRIFFES]
+                                </span>
+                                <button
+                                  onClick={e => { e.stopPropagation(); clearMod(0, "mod-companion-weapon-posture"); }}
+                                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                                >
+                                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                                </button>
+                              </div>
+                              <div className="text-[9px] mt-0.5 truncate" style={{ color: getRarityColor(activeBuild.companionWeaponPostureMod.rarity), fontFamily: "var(--font-display)" }}>
+                                {activeBuild.companionWeaponPostureMod.effect}
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center gap-2 h-full p-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+                            <Plus size={13} style={{ color: "var(--wf-cyan-dim)" }} />
+                            <span className="tracking-widest uppercase text-[9px]" style={{ color: "var(--wf-cyan)" }}>ÉQUIPER UNE POSTURE DE GRIFFES (PENJAGA)</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <ModGrid
+                      label={`ARME COMPAGNON — ${activeBuild.companionWeapon.name}`}
+                      mods={activeBuild.companionWeaponMods}
+                      modType="mod-companion-weapon"
+                      equipment={activeBuild.companionWeapon}
+                      slotPolarityOverrides={activeBuild.slotPolarities.companionWeapon}
+                      capacityBoosted={activeBuild.capacityBoosts.companionWeapon}
+                      onToggleCapacity={() => toggleCapacity("companionWeapon")}
+                      onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
+                      onClearMod={clearMod}
+                      onRankChange={setModRank}
+                      onPolarityChange={(idx, polarity) => setSlotPolarity("companionWeapon", idx, polarity)}
+                      accentColor="#c4b5fd"
+                    />
+                  </div>
                 )}
               </div>
             </div>
