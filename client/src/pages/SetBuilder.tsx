@@ -347,7 +347,18 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
-      case "companion-weapon": return WEAPONS.filter(w => w.type === "primary" || w.type === "secondary" || (w.weaponClass || "").toLowerCase().includes("sentinel") || (w.description || "").toLowerCase().includes("sentinel"));
+      case "companion-weapon": {
+        // Selon le Wiki : Armes robotiques (Sentinelles/MOA) et armes de mêlée de Hounds (Akaten, Batoten, Lacerten)
+        const companionType = companion?.type?.toLowerCase();
+        if (companionType === "hound") {
+          return WEAPONS.filter(w => ["akaten", "batoten", "lacerten"].includes(w.name.toLowerCase()) || w.name.toLowerCase().includes("hound"));
+        }
+        return WEAPONS.filter(w => 
+          w.type === "primary" || 
+          w.type === "secondary" || 
+          ["akaten", "batoten", "lacerten", "verglas", "cryotra", "vulcax", "helstrum", "tazicor", "deconstructor", "burst laser", "deth machine rifle", "artax", "vulklok", "multron", "sweeper"].some(name => w.name.toLowerCase().includes(name))
+        );
+      }
       case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
       case "mod-companion": {
         let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
