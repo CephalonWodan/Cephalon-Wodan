@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Correction des icônes miniatures Wiki dans les capacités
+
+- [x] Tester les URLs Wiki réelles pour SlashSymbol.png et autres types de dégâts.
+- [x] Mettre à jour les URLs du résolveur avec les fichiers Wiki valides confirmés en HTTP 200.
+- [x] Compiler, valider et publier le correctif.
+
+
 ## Nouvelle demande — Balises orphelines et icônes Wiki manquantes
 
 - [x] Auditer toutes les balises et identifier celles sans correspondance dans le résolveur.
