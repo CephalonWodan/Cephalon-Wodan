@@ -357,20 +357,23 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
       case "companion-weapon": {
         const companionType = companion?.type?.toLowerCase();
-        const companionWeaponNames = [
-          "verglas", "cryotra", "vulcax", "helstrum", "tazicor", "deconstructor",
-          "burst laser", "deth machine rifle", "artax", "vulklok", "multron", "sweeper",
-          "prime", "prismatic", "akaten", "batoten", "lacerten"
-        ];
+        if (companionType === "beast" || companionType === "kubrow" || companionType === "kavat" || companionType === "vulpaphyla" || companionType === "predasite") {
+          return []; // Les bêtes ont leurs propres griffes gérées par les mods de posture
+        }
         return WEAPONS.filter(w => {
           const name = w.name.toLowerCase();
+          const desc = (w.description || "").toLowerCase();
+          const weaponClass = (w.weaponClass || "").toLowerCase();
+          // Autoriser les armes robotiques, de sentinelles, de MOAs, de Hounds, ou toute arme adaptée aux compagnons
+          const isCompanionWeapon = [
+            "verglas", "cryotra", "vulcax", "helstrum", "tazicor", "deconstructor",
+            "burst laser", "deth machine rifle", "artax", "vulklok", "multron", "sweeper",
+            "akaten", "batoten", "lacerten", "prime", "prismatic", "laser", "rifle", "destructor"
+          ].some(kw => name.includes(kw) || desc.includes("sentinel") || desc.includes("sentinelle") || weaponClass.includes("sentinel"));
           if (companionType === "hound") {
-            return ["akaten", "batoten", "lacerten"].some(hn => name.includes(hn));
+            return ["akaten", "batoten", "lacerten"].some(hn => name.includes(hn)) || isCompanionWeapon;
           }
-          if (companionType === "beast" || companionType === "kubrow" || companionType === "kavat") {
-            return false; // Les bêtes utilisent les griffes (Claws) et non une arme externe séparée
-          }
-          return companionWeaponNames.some(cw => name.includes(cw));
+          return isCompanionWeapon || w.type === "primary" || w.type === "secondary";
         });
       }
       case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
