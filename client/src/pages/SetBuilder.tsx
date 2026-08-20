@@ -11,6 +11,7 @@ import {
   Warframe, WarframeAbility, WarframeAbilityEntry, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
+import { COMPANION_WEAPONS } from "@/lib/companion-weapons";
 import { HELMINTH_ABILITIES, HelminthAbility, isDamageBuffAbility, validateHelminthRestriction } from "@/lib/helminth-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
@@ -358,23 +359,12 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "companion-weapon": {
         const companionType = companion?.type?.toLowerCase();
         if (companionType === "beast" || companionType === "kubrow" || companionType === "kavat" || companionType === "vulpaphyla" || companionType === "predasite") {
-          return []; // Les bêtes ont leurs propres griffes gérées par les mods de posture
+          return []; // Les bêtes ont leurs propres griffes
         }
-        return WEAPONS.filter(w => {
-          const name = w.name.toLowerCase();
-          const desc = (w.description || "").toLowerCase();
-          const weaponClass = (w.weaponClass || "").toLowerCase();
-          // Autoriser les armes robotiques, de sentinelles, de MOAs, de Hounds, ou toute arme adaptée aux compagnons
-          const isCompanionWeapon = [
-            "verglas", "cryotra", "vulcax", "helstrum", "tazicor", "deconstructor",
-            "burst laser", "deth machine rifle", "artax", "vulklok", "multron", "sweeper",
-            "akaten", "batoten", "lacerten", "prime", "prismatic", "laser", "rifle", "destructor"
-          ].some(kw => name.includes(kw) || desc.includes("sentinel") || desc.includes("sentinelle") || weaponClass.includes("sentinel"));
-          if (companionType === "hound") {
-            return ["akaten", "batoten", "lacerten"].some(hn => name.includes(hn)) || isCompanionWeapon;
-          }
-          return isCompanionWeapon || w.type === "primary" || w.type === "secondary";
-        });
+        if (companionType === "hound") {
+          return COMPANION_WEAPONS.filter(w => ["akaten", "batoten", "lacerten"].some(hn => w.name.toLowerCase().includes(hn)));
+        }
+        return COMPANION_WEAPONS;
       }
       case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
       case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
