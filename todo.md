@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Balises Wiki de dégâts et d’effets (<DT_...>)
+
+- [x] Identifier toutes les balises `<DT_...>`, `<SE_...>` ou similaires dans les descriptions de capacités.
+- [x] Créer une table de correspondance vers les icônes officielles du Wiki Warframe (ex: Viral, Heat, Toxin, etc.).
+- [x] Rendre les balises sous forme de miniatures dans le Builder et les exports, puis valider.
+
+
 ## Nouvelle demande — Enrichissement officiel des 22 Warframes en fallback
 
 - [x] Recenser les 22 Warframes et leurs capacités sans `officialStats`.
