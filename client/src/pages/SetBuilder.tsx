@@ -356,16 +356,29 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
       case "companion-weapon": {
-        // Selon le Wiki : Armes robotiques (Sentinelles/MOA) et armes de mêlée de Hounds (Akaten, Batoten, Lacerten)
+        // Selon le Wiki : Armes robotiques de Sentinelles/MOA et armes de mêlée de Hounds uniquement
         const companionType = companion?.type?.toLowerCase();
-        if (companionType === "hound") {
-          return WEAPONS.filter(w => ["akaten", "batoten", "lacerten"].includes(w.name.toLowerCase()) || w.name.toLowerCase().includes("hound"));
-        }
-        return WEAPONS.filter(w => 
-          w.type === "primary" || 
-          w.type === "secondary" || 
-          ["akaten", "batoten", "lacerten", "verglas", "cryotra", "vulcax", "helstrum", "tazicor", "deconstructor", "burst laser", "deth machine rifle", "artax", "vulklok", "multron", "sweeper"].some(name => w.name.toLowerCase().includes(name))
-        );
+        const companionNames = [
+          "verglas", "cryotra", "vulcax", "helstrum", "tazicor", "deconstructor", 
+          "burst laser", "deth machine rifle", "artax", "vulklok", "multron", "sweeper",
+          "akaten", "batoten", "lacerten", "prime", "prismatic"
+        ];
+        return WEAPONS.filter(w => {
+          const name = w.name.toLowerCase();
+          const desc = (w.description || "").toLowerCase();
+          const weaponClass = (w.weaponClass || "").toLowerCase();
+          const isCompanionMatch = companionNames.some(cn => name.includes(cn)) ||
+                                   desc.includes("sentinel") ||
+                                   desc.includes("sentinelle") ||
+                                   desc.includes("companion") ||
+                                   desc.includes("compagnon") ||
+                                   weaponClass.includes("sentinel") ||
+                                   weaponClass.includes("robotic");
+          if (companionType === "hound") {
+            return ["akaten", "batoten", "lacerten"].some(hn => name.includes(hn)) || name.includes("hound");
+          }
+          return isCompanionMatch;
+        });
       }
       case "mod-companion-weapon": return MODS.filter(m => m.type === "primary" || m.type === "secondary" || m.type === "universal" || (m.compatName || "").toLowerCase().includes("rifle") || (m.compatName || "").toLowerCase().includes("shotgun"));
       case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
