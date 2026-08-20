@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Balises orphelines et icônes Wiki manquantes
+
+- [x] Auditer toutes les balises et identifier celles sans correspondance dans le résolveur.
+- [x] Rechercher les icônes officielles sur le Wiki (SlashSymbol.png, ImpactSymbol.png, PunctureSymbol.png, etc.).
+- [x] Mettre à jour le résolveur dans SetBuilder.tsx et valider.
+
+
 ## Nouvelle demande — Descriptions complètes des capacités Warframe
 
 - [x] Supprimer la troncature automatique des descriptions de capacités.
