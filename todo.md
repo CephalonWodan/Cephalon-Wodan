@@ -1,5 +1,40 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Pastilles d’icônes sans texte visible
+
+- [x] Retirer les noms visibles des pastilles (`Slash`, `Viral`, `Heat`, etc.).
+- [x] Conserver `alt`, `title` et une infobulle accessible pour chaque icône.
+- [x] Vérifier le rendu, compiler et publier.
+
+
+## Nouvelle demande — Correction des icônes miniatures Wiki dans les capacités
+
+- [x] Tester les URLs Wiki réelles pour SlashSymbol.png et autres types de dégâts.
+- [x] Mettre à jour les URLs du résolveur avec les fichiers Wiki valides confirmés en HTTP 200.
+- [x] Compiler, valider et publier le correctif.
+
+
+## Nouvelle demande — Balises orphelines et icônes Wiki manquantes
+
+- [x] Auditer toutes les balises et identifier celles sans correspondance dans le résolveur.
+- [x] Rechercher les icônes officielles sur le Wiki (SlashSymbol.png, ImpactSymbol.png, PunctureSymbol.png, etc.).
+- [x] Mettre à jour le résolveur dans SetBuilder.tsx et valider.
+
+
+## Nouvelle demande — Descriptions complètes des capacités Warframe
+
+- [x] Supprimer la troncature automatique des descriptions de capacités.
+- [x] Ajouter un affichage complet avec hauteur adaptative et défilement interne si nécessaire.
+- [x] Vérifier le rendu desktop/mobile, compiler et publier.
+
+
+## Nouvelle demande — Balises Wiki de dégâts et d’effets (<DT_...>)
+
+- [x] Identifier toutes les balises `<DT_...>`, `<SE_...>` ou similaires dans les descriptions de capacités.
+- [x] Créer une table de correspondance vers les icônes officielles du Wiki Warframe (ex: Viral, Heat, Toxin, etc.).
+- [x] Rendre les balises sous forme de miniatures dans le Builder et les exports, puis valider.
+
+
 ## Nouvelle demande — Enrichissement officiel des 22 Warframes en fallback
 
 - [x] Recenser les 22 Warframes et leurs capacités sans `officialStats`.

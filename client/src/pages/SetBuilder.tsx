@@ -1937,6 +1937,46 @@ export default function SetBuilder() {
     });
   };
 
+  const tagToWikiIcon = (tag: string) => {
+    const map: Record<string, { label: string; icon: string }> = {
+      "<DT_VIRAL_COLOR>": { label: "Viral", icon: "https://wiki.warframe.com/images/ViralSymbol.png" },
+      "<DT_HEAT_COLOR>": { label: "Heat", icon: "https://wiki.warframe.com/images/HeatSymbol.png" },
+      "<DT_FIRE_COLOR>": { label: "Heat", icon: "https://wiki.warframe.com/images/HeatSymbol.png" },
+      "<DT_FREEZE_COLOR>": { label: "Cold", icon: "https://wiki.warframe.com/images/ColdSymbol.png" },
+      "<DT_EXPLOSION_COLOR>": { label: "Blast", icon: "https://wiki.warframe.com/images/BlastSymbol.png" },
+      "<DT_RADIATION_COLOR>": { label: "Radiation", icon: "https://wiki.warframe.com/images/RadiationSymbol.png" },
+      "<DT_CORROSIVE_COLOR>": { label: "Corrosive", icon: "https://wiki.warframe.com/images/CorrosiveSymbol.png" },
+      "<DT_POISON_COLOR>": { label: "Toxin", icon: "https://wiki.warframe.com/images/ToxinSymbol.png" },
+      "<DT_ELECTRICITY_COLOR>": { label: "Electricity", icon: "https://wiki.warframe.com/images/ElectricitySymbol.png" },
+      "<DT_SLASH_COLOR>": { label: "Slash", icon: "https://wiki.warframe.com/images/SlashSymbol.png" },
+      "<DT_SENTIENT_COLOR>": { label: "Void", icon: "https://wiki.warframe.com/images/VoidSymbol.png" },
+      "<DT_RADIANT_COLOR>": { label: "Radiant", icon: "https://wiki.warframe.com/images/RadiationSymbol.png" },
+      "<DT_IMPACT_COLOR>": { label: "Impact", icon: "https://wiki.warframe.com/images/ImpactSymbol.png" },
+      "<DT_PUNCTURE_COLOR>": { label: "Puncture", icon: "https://wiki.warframe.com/images/PunctureSymbol.png" },
+      "<HEALTH>": { label: "Health", icon: "https://wiki.warframe.com/images/Health.png" },
+      "<ENERGY>": { label: "Energy", icon: "https://wiki.warframe.com/images/EnergyOrb.png" },
+      "<AFFINITY_SHARE>": { label: "Affinity", icon: "https://wiki.warframe.com/images/Affinity.png" },
+    };
+    return map[tag] || null;
+  };
+
+  const renderFormattedDescription = (text: string) => {
+    if (!text) return null;
+    const parts = text.split(/(<[A-Z_]+>)/g);
+    return parts.map((part, index) => {
+      const info = tagToWikiIcon(part);
+      if (info) {
+        return (
+          <span key={index} title={info.label} aria-label={info.label} role="img" className="inline-flex items-center justify-center mx-0.5 align-middle bg-cyan-950/40 border border-cyan-500/30 p-0.5 rounded text-xs text-cyan-200">
+            <img src={info.icon} alt={info.label} className="w-4 h-4 object-contain" onError={(e) => { (e.target as HTMLElement).style.display = "none"; }} />
+            <span className="sr-only">{info.label}</span>
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   const renderHelminthSection = () => {
     if (!activeBuild.warframe) return null;
     const warframeStats = calculateWarframeStats(activeBuild);
@@ -2039,8 +2079,8 @@ export default function SetBuilder() {
                   <div className="text-xs font-bold mb-1 truncate" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
                     {sub ? sub.abilityName : abilityName}
                   </div>
-                  <div className="text-[10px] line-clamp-2 leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
-                    {sub ? sub.description : abilityDesc}
+                  <div className="text-[10px] max-h-44 overflow-y-auto pr-1 leading-relaxed whitespace-pre-line" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
+                    {renderFormattedDescription(sub ? sub.description : abilityDesc)}
                   </div>
                                             {!sub && officialStats.length > 0 && (
                     <div className="mt-2 space-y-0.5" title="Statistiques officielles du Wiki Warframe (mises à l'échelle par Force, Durée, Portée, Efficacité)">
@@ -2054,7 +2094,7 @@ export default function SetBuilder() {
                         const color = res.isImproved ? "#4ade80" : res.isReduced ? "#f87171" : "#7dd3fc";
                         return (
                           <div key={`${index}-stat-${statIndex}`} className="text-[9px] truncate flex items-center justify-between gap-1" style={{ color, fontFamily: "var(--font-mono)" }}>
-                            <span>{res.text}</span>
+                            <span>{renderFormattedDescription(res.text)}</span>
                             {res.isImproved && <span className="text-[8px] px-0.5 rounded bg-emerald-900/60 text-emerald-200">▲</span>}
                             {res.isReduced && <span className="text-[8px] px-0.5 rounded bg-rose-900/60 text-rose-200">▼</span>}
                           </div>
