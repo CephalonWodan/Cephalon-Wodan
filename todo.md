@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Emplacements Aura/Exilus et UX inspirée d’Overframe
+
+- [x] Ajouter les emplacements dédiés Aura et Exilus avec leurs règles de capacité et polarité spécifiques.
+- [x] Réorganiser la grille de modding et les statistiques du Builder dans un esprit ergonomique inspiré d’Overframe tout en préservant l’identité Tenno Codex.
+- [x] Valider l’import/export JSON, la persistance, TypeScript et le build.
+
+
 ## Nouvelle demande — Protection de la branche main GitHub
 
 - [x] Activer les règles de protection sur `main` via l’API GitHub.

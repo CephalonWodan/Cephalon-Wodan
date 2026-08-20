@@ -377,6 +377,8 @@ export interface BuildSet {
   companion?: Companion;
   companionParts?: CompanionParts;
   warframeMods: (Mod | null)[];
+  auraMod: Mod | null;
+  exilusMod: Mod | null;
   primaryMods: (Mod | null)[];
   secondaryMods: (Mod | null)[];
   meleeMods: (Mod | null)[];
@@ -497,6 +499,8 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     },
     helminthSubstitution: null,
     warframeMods: Array(8).fill(null),
+    auraMod: null,
+    exilusMod: null,
     primaryMods: Array(8).fill(null),
     secondaryMods: Array(8).fill(null),
     meleeMods: Array(8).fill(null),

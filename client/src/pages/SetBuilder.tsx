@@ -19,7 +19,7 @@ import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
 
 const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
 
@@ -58,6 +58,8 @@ function selectModAtMaxRank(item: Mod): Mod {
 function getSlotItems(build: BuildSet, type: SlotType): (BuildItem | null)[] {
   switch (type) {
     case "mod-warframe": return build.warframeMods;
+    case "mod-aura": return [build.auraMod];
+    case "mod-exilus": return [build.exilusMod];
     case "mod-primary": return build.primaryMods;
     case "mod-secondary": return build.secondaryMods;
     case "mod-melee": return build.meleeMods;
@@ -156,14 +158,27 @@ function getUsedCapacity(build: BuildSet, key: BuildSlotKey, excludeIndex?: numb
   const mods = getModsForBuildSlot(build, key);
   const equipment = getEquipmentForBuildSlot(build, key);
   const overrides = build.slotPolarities[key];
-  return mods.reduce((total, mod, index) => {
+  let baseUsed = mods.reduce((total, mod, index) => {
     if (!mod || index === excludeIndex) return total;
     return total + modCost(mod, resolveSlotPolarity(equipment, overrides[index], index));
   }, 0);
+  if (key === "warframe" && build.exilusMod) {
+    const warframe = equipment as Warframe | undefined;
+    const exilusPolarity = warframe?.polarities?.[8];
+    baseUsed += modCost(build.exilusMod, exilusPolarity);
+  }
+  return baseUsed;
 }
 
 function getCapacityLimit(build: BuildSet, key: BuildSlotKey): number {
-  return build.capacityBoosts[key] ? 60 : 30;
+  let limit = build.capacityBoosts[key] ? 60 : 30;
+  if (key === "warframe" && build.auraMod) {
+    const warframe = build.warframe as Warframe | undefined;
+    const auraPolarity = warframe?.aura;
+    const isMatching = auraPolarity && build.auraMod.polarity === auraPolarity;
+    limit += isMatching ? 14 : 7;
+  }
+  return limit;
 }
 
 function isCompanionModCompatible(mod: Mod, companion?: Companion): boolean {
@@ -266,6 +281,8 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     slotPolarities,
     helminthSubstitution,
     warframeMods: normalizeModArray(candidate.warframeMods, 8),
+    auraMod: candidate.auraMod ? selectModAtMaxRank(candidate.auraMod as Mod) : null,
+    exilusMod: candidate.exilusMod ? selectModAtMaxRank(candidate.exilusMod as Mod) : null,
     primaryMods: normalizeModArray(candidate.primaryMods, 8),
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
     meleeMods: normalizeModArray(candidate.meleeMods, 8),
@@ -318,7 +335,9 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "arcane-secondary": return ARCANES.filter(arcane => ["secondary", "kitgun"].includes(arcane.type));
       case "arcane-melee": return ARCANES.filter(arcane => ["melee", "zaw"].includes(arcane.type));
       case "archon-shard": return ARCHON_SHARDS;
-      case "mod-warframe": return MODS.filter(m => m.type === "warframe" || m.type === "universal");
+      case "mod-warframe": return MODS.filter(m => (m.type === "warframe" || m.type === "universal") && (m.compatName || "").toUpperCase() !== "AURA");
+      case "mod-aura": return MODS.filter(m => (m.type === "warframe" || m.type === "universal" || (m.compatName || "").toUpperCase() === "AURA"));
+      case "mod-exilus": return MODS.filter(m => (m.type === "warframe" || m.type === "universal") && ((m.description || "").toLowerCase().includes("exilus") || (m.name || "").toLowerCase().includes("drift") || (m.name || "").toLowerCase().includes("sure footed") || (m.name || "").toLowerCase().includes("vigorous")));
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
@@ -351,6 +370,8 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       "arcane-melee": "SÉLECTIONNER UN ARCANE MÊLÉE",
       "archon-shard": "SÉLECTIONNER UN ÉCLAT D’ARCHONTE",
       "mod-warframe": "SÉLECTIONNER UN MOD WARFRAME",
+      "mod-aura": "SÉLECTIONNER UN MOD AURA",
+      "mod-exilus": "SÉLECTIONNER UN MOD EXILUS",
       "mod-primary": "SÉLECTIONNER UN MOD PRIMAIRE",
       "mod-secondary": "SÉLECTIONNER UN MOD SECONDAIRE",
       "mod-melee": "SÉLECTIONNER UN MOD MÊLÉE",
@@ -661,6 +682,89 @@ interface ModGridProps {
   onRankChange: (index: number, rank: number, type: SlotType) => void;
   onPolarityChange: (index: number, polarity: SlotPolarity, type: SlotType) => void;
   accentColor?: string;
+}
+
+interface AuraExilusBarProps {
+  auraMod: Mod | null;
+  exilusMod: Mod | null;
+  warframe?: Warframe;
+  onSelectSlot: (type: SlotType) => void;
+  onClearSlot: (type: SlotType) => void;
+  onRankChange: (rank: number, type: SlotType) => void;
+}
+
+function AuraExilusBar({ auraMod, exilusMod, warframe, onSelectSlot, onClearSlot, onRankChange }: AuraExilusBarProps) {
+  const auraPolarity = warframe?.aura;
+  const auraCost = auraMod ? modCost(auraMod, auraPolarity) : 0;
+  const auraBonus = auraMod ? (auraPolarity && auraMod.polarity === auraPolarity ? 14 : 7) : 0;
+
+  const exilusPolarity = warframe?.polarities?.[8];
+  const exilusCost = exilusMod ? modCost(exilusMod, exilusPolarity) : 0;
+
+  const renderSingleModSlot = (mod: Mod | null, type: SlotType, labelTitle: string, polarityName?: Polarity) => {
+    const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
+    return (
+      <div
+        className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group flex-1 ${mod ? "" : "wf-empty-slot"}`}
+        style={{
+          backgroundColor: mod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
+          border: `1px solid ${mod ? rarityColor : "var(--wf-border)"}`,
+          minHeight: 56,
+        }}
+        onClick={() => onSelectSlot(type)}
+      >
+        {mod ? (
+          <div className="p-2 flex items-center gap-2">
+            <div className="w-7 h-9 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
+              <AssetImage item={mod} type="mod" alt={mod.name} className="h-full w-full object-contain" fallback={<Star size={13} style={{ color: rarityColor }} />} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+                  {mod.name} [{labelTitle}]
+                </span>
+                <button
+                  onClick={e => { e.stopPropagation(); onClearSlot(type); }}
+                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                >
+                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                </button>
+              </div>
+              <div className="text-[9px] mt-0.5 truncate" style={{ color: rarityColor, fontFamily: "var(--font-display)" }}>
+                {mod.effect}
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-[8px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                <span>COÛT {auraCost || exilusCost}</span>
+                <span>POLARITÉ {polarityName ? POLARITY_GLYPHS[polarityName] || polarityName : "·"}</span>
+                {type === "mod-aura" && <span style={{ color: "#66bb6a" }}>+CAPACITÉ +{auraBonus}</span>}
+              </div>
+              <select
+                value={mod.selectedRank ?? mod.maxRank}
+                onClick={e => e.stopPropagation()}
+                onChange={e => { e.stopPropagation(); onRankChange(Number(e.target.value), type); }}
+                className="mt-1 w-full rounded-sm px-1 py-0.5 text-[8px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${rarityColor}50`, color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                {Array.from({ length: mod.maxRank + 1 }, (_, rank) => <option key={rank} value={rank}>RANG {rank}/{mod.maxRank}</option>)}
+              </select>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2 h-full p-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+            <Plus size={14} style={{ color: "var(--wf-cyan-dim)" }} />
+            <span className="tracking-widest uppercase text-[9px]" style={{ color: "var(--wf-cyan)" }}>{labelTitle} {polarityName ? `(${POLARITY_GLYPHS[polarityName] || polarityName})` : ""}</span>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+      {renderSingleModSlot(auraMod, "mod-aura", "AURA", auraPolarity)}
+      {renderSingleModSlot(exilusMod, "mod-exilus", "EXILUS", exilusPolarity)}
+    </div>
+  );
 }
 
 function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, onPolarityChange, accentColor = "#4fc3f7" }: ModGridProps) {
@@ -1791,6 +1895,10 @@ export default function SetBuilder() {
       } else if (type === "mod-warframe" && modIndex !== undefined) {
         nb.warframeMods = [...b.warframeMods];
         nb.warframeMods[modIndex] = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-aura") {
+        nb.auraMod = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-exilus") {
+        nb.exilusMod = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-primary" && modIndex !== undefined) {
         nb.primaryMods = [...b.primaryMods];
         nb.primaryMods[modIndex] = selectModAtMaxRank(item as Mod);
@@ -1834,6 +1942,8 @@ export default function SetBuilder() {
       else if (type === "archon-shard") { nb.archonShards = [...b.archonShards]; nb.archonShards[index] = null; }
       else
       if (type === "mod-warframe") { nb.warframeMods = [...b.warframeMods]; nb.warframeMods[index] = null; }
+      else if (type === "mod-aura") { nb.auraMod = null; }
+      else if (type === "mod-exilus") { nb.exilusMod = null; }
       else if (type === "mod-primary") { nb.primaryMods = [...b.primaryMods]; nb.primaryMods[index] = null; }
       else if (type === "mod-secondary") { nb.secondaryMods = [...b.secondaryMods]; nb.secondaryMods[index] = null; }
       else if (type === "mod-melee") { nb.meleeMods = [...b.meleeMods]; nb.meleeMods[index] = null; }
@@ -2470,20 +2580,35 @@ export default function SetBuilder() {
 
           {/* Mod grids */}
           <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "mods" ? "" : "max-xl:hidden"}`}>
-            <ModGrid
-              label="WARFRAME"
-              mods={activeBuild.warframeMods}
-              modType="mod-warframe"
-              equipment={activeBuild.warframe}
-              slotPolarityOverrides={activeBuild.slotPolarities.warframe}
-              capacityBoosted={activeBuild.capacityBoosts.warframe}
-              onToggleCapacity={() => toggleCapacity("warframe")}
-              onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
-              onClearMod={clearMod}
-              onRankChange={setModRank}
-              onPolarityChange={(idx, polarity) => setSlotPolarity("warframe", idx, polarity)}
-              accentColor="#4fc3f7"
-            />
+            <div className="space-y-2">
+              <AuraExilusBar
+                auraMod={activeBuild.auraMod}
+                exilusMod={activeBuild.exilusMod}
+                warframe={activeBuild.warframe}
+                onSelectSlot={(type) => setSelectorOpen({ type })}
+                onClearSlot={(type) => clearMod(0, type)}
+                onRankChange={(rank, type) => {
+                  const mod = type === "mod-aura" ? activeBuild.auraMod : activeBuild.exilusMod;
+                  if (!mod) return;
+                  const nextMod = { ...mod, selectedRank: rank };
+                  updateBuild(b => type === "mod-aura" ? { ...b, auraMod: nextMod } : { ...b, exilusMod: nextMod });
+                }}
+              />
+              <ModGrid
+                label="WARFRAME"
+                mods={activeBuild.warframeMods}
+                modType="mod-warframe"
+                equipment={activeBuild.warframe}
+                slotPolarityOverrides={activeBuild.slotPolarities.warframe}
+                capacityBoosted={activeBuild.capacityBoosts.warframe}
+                onToggleCapacity={() => toggleCapacity("warframe")}
+                onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
+                onClearMod={clearMod}
+                onRankChange={setModRank}
+                onPolarityChange={(idx, polarity) => setSlotPolarity("warframe", idx, polarity)}
+                accentColor="#4fc3f7"
+              />
+            </div>
             <ModGrid
               label="PRIMAIRE"
               mods={activeBuild.primaryMods}
