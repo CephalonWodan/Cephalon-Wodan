@@ -229,17 +229,17 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       selectedPerkByTier,
     };
   };
-  const normalizeSlotPolarityArray = (value: unknown): SlotPolarity[] => Array.from({ length: 8 }, (_, index) => {
+  const normalizeSlotPolarityArray = (value: unknown, length = 8): SlotPolarity[] => Array.from({ length }, (_, index) => {
     const raw = Array.isArray(value) ? value[index] : "default";
     return POLARITY_OPTIONS.some(option => option.value === raw) ? raw as SlotPolarity : "default";
   });
   const rawSlotPolarities = candidate.slotPolarities && typeof candidate.slotPolarities === "object" ? candidate.slotPolarities as unknown as Record<string, unknown> : {};
   const slotPolarities = {
-    warframe: normalizeSlotPolarityArray(rawSlotPolarities.warframe),
-    primary: normalizeSlotPolarityArray(rawSlotPolarities.primary),
-    secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary),
-    melee: normalizeSlotPolarityArray(rawSlotPolarities.melee),
-    companion: normalizeSlotPolarityArray(rawSlotPolarities.companion),
+    warframe: normalizeSlotPolarityArray(rawSlotPolarities.warframe, 8),
+    primary: normalizeSlotPolarityArray(rawSlotPolarities.primary, 8),
+    secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary, 8),
+    melee: normalizeSlotPolarityArray(rawSlotPolarities.melee, 8),
+    companion: normalizeSlotPolarityArray(rawSlotPolarities.companion, 10),
   };
   const rawHelminth = candidate.helminthSubstitution && typeof candidate.helminthSubstitution === "object" ? candidate.helminthSubstitution as unknown as Record<string, unknown> : null;
   const rawHelminthKey = rawHelminth && typeof rawHelminth.abilityId === "string"
@@ -286,7 +286,7 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     primaryMods: normalizeModArray(candidate.primaryMods, 8),
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
     meleeMods: normalizeModArray(candidate.meleeMods, 8),
-    companionMods: normalizeModArray(candidate.companionMods, 8),
+    companionMods: normalizeModArray(candidate.companionMods, 10),
     warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
     primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
@@ -790,7 +790,7 @@ function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capac
         {equipment ? `POLARITÉS : ${slotPolarityOverrides.map((override, index) => formatSlotPolarity(equipment, override, index)).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG · AJOUTS AU-DELÀ DE LA CAPACITÉ BLOQUÉS` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
         {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
-      <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
+      <div className={`p-2 grid ${mods.length === 10 ? "grid-cols-5" : "grid-cols-4"} gap-1.5`} style={{ backgroundColor: "var(--wf-bg-panel)" }}>
         {mods.map((mod, i) => (
           <ModSlot
             key={i}
@@ -1925,8 +1925,8 @@ export default function SetBuilder() {
       else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; nb.slotPolarities = { ...b.slotPolarities, melee: resetSlotPolarities() }; }
       else if (type === "companion") {
         nb.companion = undefined;
-        nb.companionMods = Array(8).fill(null);
-        nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
+        nb.companionMods = Array(10).fill(null);
+        nb.slotPolarities = { ...b.slotPolarities, companion: Array<SlotPolarity>(10).fill("default") };
       }
       return nb;
     });
@@ -2651,26 +2651,28 @@ export default function SetBuilder() {
               onPolarityChange={(idx, polarity) => setSlotPolarity("melee", idx, polarity)}
               accentColor="#66bb6a"
             />
-            <ModGrid
-              label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name}` : "COMPAGNON"}
-              mods={activeBuild.companionMods}
-              modType="mod-companion"
-              equipment={activeBuild.companion}
-              slotPolarityOverrides={activeBuild.slotPolarities.companion}
-              capacityBoosted={activeBuild.capacityBoosts.companion}
-              onToggleCapacity={() => toggleCapacity("companion")}
-              onSelectMod={(idx, type) => {
-                if (!activeBuild.companion) {
-                  toast.error("Sélectionnez d’abord un compagnon.");
-                  return;
-                }
-                setSelectorOpen({ type, modIndex: idx });
-              }}
-              onClearMod={clearMod}
-              onRankChange={setModRank}
-              onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
-              accentColor="#a78bfa"
-            />
+            <div className="lg:col-span-2">
+              <ModGrid
+                label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name} (10 SLOTS)` : "COMPAGNON (10 SLOTS)"}
+                mods={activeBuild.companionMods}
+                modType="mod-companion"
+                equipment={activeBuild.companion}
+                slotPolarityOverrides={activeBuild.slotPolarities.companion}
+                capacityBoosted={activeBuild.capacityBoosts.companion}
+                onToggleCapacity={() => toggleCapacity("companion")}
+                onSelectMod={(idx, type) => {
+                  if (!activeBuild.companion) {
+                    toast.error("Sélectionnez d’abord un compagnon.");
+                    return;
+                  }
+                  setSelectorOpen({ type, modIndex: idx });
+                }}
+                onClearMod={clearMod}
+                onRankChange={setModRank}
+                onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
+                accentColor="#a78bfa"
+              />
+            </div>
           </div>
         </div>
 

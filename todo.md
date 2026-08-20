@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Compagnons à 10 emplacements de mods
+
+- [x] Passer le nombre d’emplacements de mods compagnon de 8 à 10 dans les types et la fabrique de set.
+- [x] Mettre à jour la normalisation, les polarités et les grilles de mods compagnon.
+- [x] Valider TypeScript, build, persistance et export.
+
+
 ## Nouvelle demande — Emplacements Aura/Exilus et UX inspirée d’Overframe
 
 - [x] Ajouter les emplacements dédiés Aura et Exilus avec leurs règles de capacité et polarité spécifiques.
