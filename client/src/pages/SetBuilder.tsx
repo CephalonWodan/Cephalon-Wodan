@@ -2077,7 +2077,7 @@ export default function SetBuilder() {
                   <div className="text-xs font-bold mb-1 truncate" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
                     {sub ? sub.abilityName : abilityName}
                   </div>
-                  <div className="text-[10px] line-clamp-2 leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
+                  <div className="text-[10px] max-h-44 overflow-y-auto pr-1 leading-relaxed whitespace-pre-line" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-sans)" }}>
                     {renderFormattedDescription(sub ? sub.description : abilityDesc)}
                   </div>
                                             {!sub && officialStats.length > 0 && (

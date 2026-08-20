@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Descriptions complètes des capacités Warframe
+
+- [x] Supprimer la troncature automatique des descriptions de capacités.
+- [x] Ajouter un affichage complet avec hauteur adaptative et défilement interne si nécessaire.
+- [x] Vérifier le rendu desktop/mobile, compiler et publier.
+
+
 ## Nouvelle demande — Balises Wiki de dégâts et d’effets (<DT_...>)
 
 - [x] Identifier toutes les balises `<DT_...>`, `<SE_...>` ou similaires dans les descriptions de capacités.
