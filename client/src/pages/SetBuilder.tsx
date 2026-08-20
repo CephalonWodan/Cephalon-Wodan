@@ -385,20 +385,28 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, com
         const weaponClass = companionWeapon?.weaponClass || "";
         const isClaws = weaponClass === "Beast Claws" || weaponId.includes("claws");
         const isHound = weaponClass === "Hound Weapon" || weaponId === "akaten" || weaponId === "batoten" || weaponId === "lacerten";
-        
+
         return MODS.filter(m => {
           const compat = (m.compatName || "").toLowerCase();
-          const desc = (m.description || "").toLowerCase();
           const name = (m.name || "").toLowerCase();
+          const desc = (m.description || "").toLowerCase();
           const type = (m.type || "").toLowerCase();
 
           if (isClaws) {
-            return type === "melee" || type === "universal" || compat.includes("claw") || compat.includes("beast") || desc.includes("beast") || desc.includes("compagnon") || desc.includes("bête");
+            // Uniquement les mods compatibles avec les griffes / mêlée de bête / universels de bête
+            return compat.includes("claw") || compat.includes("beast") || compat.includes("melee") || compat.includes("universal") ||
+                   name.includes("maul") || name.includes("bite") || name.includes("swipe") || name.includes("accelerated") ||
+                   name.includes("fury") || name.includes("pressure") || name.includes("organ") || name.includes("true steel") ||
+                   name.includes("vicious") || name.includes("reach") || name.includes("fever") || name.includes("shock") || name.includes("frost") || name.includes("molten");
           }
           if (isHound) {
-            return type === "melee" || type === "universal" || compat.includes("hound") || compat.includes("melee");
+            // Uniquement les mods de mêlée pour Hounds / compagnons
+            return compat.includes("hound") || compat.includes("melee") || compat.includes("universal") ||
+                   type === "melee" || type === "universal";
           }
-          return type === "primary" || type === "secondary" || type === "universal" || compat.includes("rifle") || compat.includes("shotgun") || compat.includes("pistol") || compat.includes("sentinel");
+          // Armes robotiques (Sentinelles / MOA) : mods de fusil/pistolet/sentinelle/universel
+          return compat.includes("sentinel") || compat.includes("rifle") || compat.includes("shotgun") || compat.includes("pistol") || compat.includes("universal") ||
+                 type === "primary" || type === "secondary" || type === "universal";
         });
       }
       case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
