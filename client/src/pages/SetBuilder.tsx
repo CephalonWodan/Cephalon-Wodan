@@ -336,7 +336,7 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "arcane-melee": return ARCANES.filter(arcane => ["melee", "zaw"].includes(arcane.type));
       case "archon-shard": return ARCHON_SHARDS;
       case "mod-warframe": return MODS.filter(m => (m.type === "warframe" || m.type === "universal") && (m.compatName || "").toUpperCase() !== "AURA");
-      case "mod-aura": return MODS.filter(m => (m.type === "warframe" || m.type === "universal" || (m.compatName || "").toUpperCase() === "AURA"));
+      case "mod-aura": return MODS.filter(m => (m.compatName || "").toUpperCase() === "AURA" || (m.type || "").toLowerCase() === "aura");
       case "mod-exilus": return MODS.filter(m => (m.type === "warframe" || m.type === "universal") && ((m.description || "").toLowerCase().includes("exilus") || (m.name || "").toLowerCase().includes("drift") || (m.name || "").toLowerCase().includes("sure footed") || (m.name || "").toLowerCase().includes("vigorous")));
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");

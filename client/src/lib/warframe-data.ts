@@ -375,6 +375,7 @@ export interface BuildSet {
   secondaryWeapon?: Weapon;
   meleeWeapon?: Weapon;
   companion?: Companion;
+  companionWeapon?: Weapon;
   companionParts?: CompanionParts;
   warframeMods: (Mod | null)[];
   auraMod: Mod | null;
@@ -509,6 +510,7 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     primaryArcanes: Array(1).fill(null),
     secondaryArcanes: Array(1).fill(null),
     meleeArcanes: Array(1).fill(null),
+    companionWeapon: undefined,
     archonShards: Array(5).fill(null),
     incarnonSelections: { primary: null, secondary: null, melee: null },
     createdAt: new Date().toISOString(),

@@ -35,6 +35,8 @@ const EXPLICIT_WIKI_ASSETS: Record<string, string[]> = {
   baneofcorpus: [`${WIKI_IMAGE_BASE}BaneofCorpusMod.png`],
   baneoforokin: [`${WIKI_IMAGE_BASE}BaneofOrokinMod.png`],
   baneofinfested: [`${WIKI_IMAGE_BASE}BaneofInfestedMod.png?e443f`],
+  surefooted: [`${WIKI_IMAGE_BASE}SureFootedMod.png`],
+  primedsurefooted: [`${WIKI_IMAGE_BASE}PrimedSureFootedMod.png?508ee`],
 };
 const CATEGORY_FALLBACKS: Record<AssetType, string> = {
   warframe: `${WIKI_IMAGE_BASE}Warframe.png`,
