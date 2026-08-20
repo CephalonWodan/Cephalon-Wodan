@@ -1,5 +1,12 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Protection de la branche main GitHub
+
+- [x] Activer les règles de protection sur `main` via l’API GitHub.
+- [x] Empêcher les force-push et la suppression de branche.
+- [x] Valider et tester l’application des règles.
+
+
 ## Nouvelle demande — Pastilles d’icônes sans texte visible
 
 - [x] Retirer les noms visibles des pastilles (`Slash`, `Viral`, `Heat`, etc.).
