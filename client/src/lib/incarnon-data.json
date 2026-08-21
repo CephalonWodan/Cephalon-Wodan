@@ -2831,22 +2831,6 @@
         "perks": [
           {
             "name": "Deadly Pace",
-            "text": "Increase Damage by +40. With Sprint Speed ≥1.2: +80% Fire Rate."
-          },
-          {
-            "name": "Guardian's Might",
-            "text": "Increase Damage by +40. With Overshields: +52 Damage."
-          },
-          {
-            "name": "Deadly Pace",
-            "text": "Increase Damage by +50. With Sprint Speed ≥1.2: +80% Fire Rate."
-          },
-          {
-            "name": "Guardian's Might",
-            "text": "Increase Damage by +50. With Overshields: +40 Damage."
-          },
-          {
-            "name": "Deadly Pace",
             "text": "Increase Damage by +20. With Sprint Speed ≥1.2: +80% Fire Rate."
           },
           {
