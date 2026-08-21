@@ -1037,14 +1037,19 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   let damageMultiplier = 1 + incarnonBonus.damagePercent;
   let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
 
+  let multishotMultiplier = 1;
   mods.forEach(mod => {
     if (!mod) return;
     const effect = (mod.effect || mod.description || "").toLowerCase();
     const rank = mod.selectedRank ?? mod.maxRank;
     const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
 
-    // Corrupted & standard damage mods
-    if (effect.includes("damage") && !effect.includes("status") && !effect.includes("critical")) {
+    if (effect.includes("multishot") || effect.includes("tir multiple")) {
+      const match = effect.match(/\+(\d+(?:\.\d+)?)%/);
+      if (match) multishotMultiplier += (Number(match[1]) * rankRatio) / 100;
+    }
+
+    if (effect.includes("damage") && !effect.includes("status") && !effect.includes("critical") && !effect.includes("multishot")) {
       const match = effect.match(/\+(\d+(?:\.\d+)?)%/);
       if (match) damageMultiplier += (Number(match[1]) * rankRatio) / 100;
     }
@@ -1112,7 +1117,7 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
 
   // Melee Combo Multiplier: Each tier (x1 to x12) adds base damage multiplier (e.g. +50% per combo multiplier tier)
   const comboMultiplier = 1 + (Math.max(1, comboLevel) - 1) * 0.5 + (stanceBonus / 100);
-  const effectiveHit = Math.round(combinedHit * factionMultiplier * comboMultiplier);
+  const effectiveHit = Math.round(combinedHit * factionMultiplier * comboMultiplier * multishotMultiplier);
   const averageDamage = Math.round(effectiveHit * (1 + finalCritChance * (finalCritMult - 1)));
   const headshotDamage = Math.round(averageDamage * 2.0);
 
@@ -1549,7 +1554,11 @@ function buildSummaryMarkdown(build: BuildSet): string {
   const companionStats = calculateCompanionStats(build);
   const parts = build.companionParts;
   const partsSummary = parts && build.companion && ["moa", "hound"].includes(build.companion.type.toLowerCase()) ? `\n- Configuration modulaire : Tête [${parts.head || "—"}], Support [${parts.bracket || "—"}], Cœur [${parts.core || "—"}], Gyroscope [${parts.gyro || "—"}]` : "";
-  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
+  const compWeaponDmg = build.companionWeapon ? calculateWeaponDamage(build.companionWeapon, build.companionWeaponMods, "Tous", 1, 0, null) : null;
+  const compFireRate = build.companionWeapon?.fireRate || 1.5;
+  const compDps = compWeaponDmg ? Math.round(compWeaponDmg.averageDamage * compFireRate) : 0;
+  const companionWeaponBlock = build.companionWeapon ? `\n### Arme de compagnon : ${build.companionWeapon.name}\n- Posture : ${build.companionWeaponPostureMod?.name || "Aucune"}\n- DPS estimé : ${compDps} · Dégâts moyens : ${compWeaponDmg?.averageDamage} · Critique : ${compWeaponDmg?.critChance}% (x${compWeaponDmg?.critMultiplier}) · Statut : ${compWeaponDmg?.statusChance}%` : "\n### Arme de compagnon\n- Aucune arme de compagnon équipée";
+  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s${companionWeaponBlock}\n${capacityLine("Arme de compagnon", build.companionWeaponMods, build.companionWeapon, build.capacityBoosts.companionWeapon, build.slotPolarities.companionWeapon)}` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
   const incarnonSummary = [
     { label: "Primaire", weapon: build.primaryWeapon, selection: build.incarnonSelections.primary },
     { label: "Secondaire", weapon: build.secondaryWeapon, selection: build.incarnonSelections.secondary },
