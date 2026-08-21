@@ -59,11 +59,18 @@ function baseWeaponName(value: string): string {
 export function getIncarnonProfile(weapon?: Pick<Weapon, "name"> | null): IncarnonProfile | null {
   if (!weapon?.name) return null;
   const normalizedWeapon = normalizeName(weapon.name);
+  
+  // 1. Recherche par correspondance exacte de la variante (ex: "paris prime", "paris mk1", "paris")
+  const exactMatch = INCARNON_PROFILES.find(profile => normalizeName(profile.weapon) === normalizedWeapon);
+  if (exactMatch) return exactMatch;
+
+  // 2. Recherche si l'arme contient explicitement la variante (ex: "paris prime" matche un profil "Paris Prime")
+  const variantMatch = INCARNON_PROFILES.find(profile => normalizedWeapon.includes(normalizeName(profile.weapon)));
+  if (variantMatch) return variantMatch;
+
+  // 3. Repli sur le nom de base
   const baseName = baseWeaponName(weapon.name);
-  return INCARNON_PROFILES.find(profile => {
-    const normalizedProfile = normalizeName(profile.weapon);
-    return normalizedWeapon === normalizedProfile || baseName === normalizedProfile || normalizedWeapon.startsWith(`${normalizedProfile} `);
-  }) || null;
+  return INCARNON_PROFILES.find(profile => normalizeName(profile.weapon) === baseName) || null;
 }
 
 export function getIncarnonEvolution(profile: IncarnonProfile | null, tier: number): IncarnonEvolution | null {
