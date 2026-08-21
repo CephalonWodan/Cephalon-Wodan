@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
 import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
+import { resolveElementalDamage, getElementalDisplayLabel, ElementalDamageBreakdown } from "@/lib/elemental-damage";
 
 // ---- Slot Selector Modal ----
 type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-posture" | "mod-companion-weapon-posture";
@@ -999,7 +1000,12 @@ interface EnhancementBonusSummary {
 interface WeaponDamageBreakdown {
   baseDamage: number;
   totalDamage: number;
-  elements: Array<{ name: string; damage: number; color: string }>;
+  elements: ElementalDamageBreakdown[];
+  conversion?: {
+    sourceMod: string;
+    description: string;
+    target: ElementalDamageBreakdown;
+  };
   critChance: number;
   critMultiplier: number;
   statusChance: number;
@@ -1035,7 +1041,6 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   const incarnonBonus = getIncarnonBonus(getIncarnonProfile(weapon), incarnonSelection);
   let baseDamage = weapon.damage || 100;
   let damageMultiplier = 1 + incarnonBonus.damagePercent;
-  let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
 
   let multishotMultiplier = 1;
   mods.forEach(mod => {
@@ -1058,14 +1063,8 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
       // e.g. Transient Fortitude
       damageMultiplier += 0.25 * rankRatio;
     }
-    // Elemental mods
-    if (effect.includes("heat") || effect.includes("feu")) elementalBonuses.push({ name: "Feu", pct: 15 * (rank + 1), color: "#ff6b35" });
-    if (effect.includes("cold") || effect.includes("glace")) elementalBonuses.push({ name: "Glace", pct: 15 * (rank + 1), color: "#42a5f5" });
-    if (effect.includes("electric") || effect.includes("électricité")) elementalBonuses.push({ name: "Électricité", pct: 15 * (rank + 1), color: "#ab47bc" });
-    if (effect.includes("toxin") || effect.includes("poison")) elementalBonuses.push({ name: "Toxine", pct: 15 * (rank + 1), color: "#66bb6a" });
-    if (effect.includes("corrosive")) elementalBonuses.push({ name: "Corrosif", pct: 30 * (rank + 1), color: "#ffa726" });
-    if (effect.includes("viral")) elementalBonuses.push({ name: "Viral", pct: 30 * (rank + 1), color: "#26c6da" });
-    if (effect.includes("radiation")) elementalBonuses.push({ name: "Radiation", pct: 30 * (rank + 1), color: "#ffd700" });
+    // Elemental effects are resolved after scanning every mod so primary elements
+    // can be combined according to their placement and global conversions can win.
     // Augment mods bonus handling
     if (effect.includes("augment") || mod.name.toLowerCase().includes("augment")) {
       damageMultiplier += 0.20;
@@ -1073,17 +1072,8 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   });
 
   const totalPhysical = Math.round(baseDamage * damageMultiplier);
-  // Group elemental bonuses by name to prevent duplicate keys in React rendering
-  const elementMap: Record<string, { name: string; damage: number; color: string }> = {};
-  elementalBonuses.forEach(el => {
-    const dmg = Math.round(baseDamage * (el.pct / 100));
-    if (elementMap[el.name]) {
-      elementMap[el.name].damage += dmg;
-    } else {
-      elementMap[el.name] = { name: el.name, damage: dmg, color: el.color };
-    }
-  });
-  const elements = Object.values(elementMap);
+  const elementalResolution = resolveElementalDamage(mods, baseDamage);
+  const elements = elementalResolution.elements;
   const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
 
   const baseCritChance = (weapon.critChance ?? 0.20) + incarnonBonus.criticalChanceFlat;
@@ -1131,6 +1121,7 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
     baseDamage,
     totalDamage: effectiveHit,
     elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier * comboMultiplier) })),
+    conversion: elementalResolution.conversion,
     critChance: Math.round(finalCritChance * 100),
     critMultiplier: Number(finalCritMult.toFixed(1)),
     statusChance: Math.round(((weapon.statusChance ?? 0) + incarnonBonus.statusChanceFlat) * 100),
@@ -1138,6 +1129,42 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
     headshotDamage,
     incarnonSources: incarnonBonus.sources,
   };
+}
+
+function ElementalDamageSummary({ elements, title }: { elements: ElementalDamageBreakdown[]; title: string }) {
+  if (elements.length === 0) return null;
+
+  return (
+    <div className="mt-1.5 space-y-1">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>{title}</div>
+        <div className="text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>RÉSOLUTION ÉLÉMENTAIRE</div>
+      </div>
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        {elements.map(element => {
+          const displayKind = getElementalDisplayLabel(element.kind);
+          const composition = element.components?.join(" + ");
+          return (
+            <div key={`${element.key}-${element.kind}`} className="rounded-sm px-2 py-1.5" style={{ backgroundColor: `${element.color}15`, border: `1px solid ${element.color}55` }}>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <Sparkles size={10} style={{ color: element.color }} />
+                  <span className="truncate text-[10px] font-bold" style={{ color: element.color }}>{element.name}</span>
+                  <span className="shrink-0 rounded-sm px-1 py-0.5 text-[7px] font-bold tracking-wider" style={{ color: element.color, border: `1px solid ${element.color}55`, backgroundColor: `${element.color}12` }}>{displayKind}</span>
+                </div>
+                <span className="shrink-0 font-mono text-[10px] font-bold" style={{ color: "var(--wf-text)" }}>{element.damage}</span>
+              </div>
+              {composition && (
+                <div className="mt-0.5 truncate text-[8px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }} title={composition}>
+                  {element.kind === "conversion" ? `Tous les éléments → ${element.name}` : `${composition} → ${element.name}`}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
@@ -1765,19 +1792,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono font-bold text-orange-400">{primaryDmgData.averageDamage} / {primaryDmgData.headshotDamage}</span>
                   </div>
                 </div>
-                {primaryDmgData.elements.length > 0 && (
-                  <div className="mt-1.5 space-y-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {primaryDmgData.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={primaryDmgData.elements} title="DÉGÂTS ÉLÉMENTAIRES" />
               </div>
             );
           })()}
@@ -1806,19 +1821,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono font-bold text-orange-400">{secondaryDmgData.averageDamage} / {secondaryDmgData.headshotDamage}</span>
                   </div>
                 </div>
-                {secondaryDmgData.elements.length > 0 && (
-                  <div className="mt-1.5 space-y-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {secondaryDmgData.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={secondaryDmgData.elements} title="DÉGÂTS ÉLÉMENTAIRES" />
               </div>
             );
           })()}
@@ -1885,19 +1888,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono font-bold text-green-400">{meleeDmgData.averageDamage}</span>
                   </div>
                 </div>
-                {meleeDmgData.elements.length > 0 && (
-                  <div className="mt-1.5 space-y-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {meleeDmgData.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={meleeDmgData.elements} title="DÉGÂTS ÉLÉMENTAIRES" />
               </div>
             );
           })()}
@@ -1989,19 +1980,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono text-white">{compDmg.statusChance}% · {fireRate} t/s</span>
                   </div>
                 </div>
-                {compDmg.elements.length > 0 && (
-                  <div className="space-y-1 pt-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES COMPAGNON</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {compDmg.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={compDmg.elements} title="DÉGÂTS ÉLÉMENTAIRES COMPAGNON" />
               </div>
             );
           })()}

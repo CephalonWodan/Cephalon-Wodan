@@ -202,3 +202,18 @@
 - [x] Auditer `incarnon_long_complete_patched_v4_nulls.jsonl` (1 143 objets Incarnon pour 48 armes).
 - [x] Auditer `Warframes-CSV.zip` (11 fichiers CSV de statistiques et compétences de Warframes).
 - [x] Produire les rapports d'audit détaillés (`upload-audit-report.md` et `csv-audit-report.md`).
+
+
+## Nouvelle demande — Fusion des éléments dans le résumé des dégâts
+
+- [ ] Auditer le moteur de dégâts et les effets de mods élémentaires existants.
+- [ ] Définir les combinaisons élémentaires Warframe et leurs libellés/couleurs d’affichage.
+- [ ] Détecter les mods qui convertissent tous les types élémentaires vers un type unique et exclure ces cas de la fusion normale.
+- [ ] Implémenter la fusion élémentaire et le regroupement des dégâts dans le calculateur.
+- [ ] Afficher les éléments combinés et leur composition dans le résumé des dégâts.
+- [ ] Tester Feu + Glace, autres combinaisons, plusieurs sources du même élément et conversions.
+- [ ] Compiler, vérifier la console et enregistrer un checkpoint publiable.
+
+## Rappel de style UI
+
+- [ ] Préserver l’esthétique HUD Tenno Codex : contrastes cyan/orange, densité lisible, bordures angulaires et animations discrètes.
