@@ -1942,6 +1942,55 @@ function StatsPanel({ build }: { build: BuildSet }) {
             </div>
           )}
 
+          {build.companionWeapon && (() => {
+            const compDmg = calculateWeaponDamage(build.companionWeapon, build.companionWeaponMods, selectedFaction, 1, 0, null);
+            const fireRate = build.companionWeapon.fireRate || 1.5;
+            const estimatedDps = Math.round(compDmg.averageDamage * fireRate);
+            return (
+              <div className="mt-3 border-t pt-3 space-y-2" style={{ borderColor: "var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold uppercase" style={{ color: "#c4b5fd", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
+                    ARME DE COMPAGNON : {build.companionWeapon.name}
+                  </div>
+                  <span className="text-xs font-mono font-bold" style={{ color: "#c4b5fd" }}>
+                    {estimatedDps} DPS
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Dégâts Totaux</span>
+                    <span className="font-mono font-bold text-amber-300">{compDmg.totalDamage}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Moyen par Tir</span>
+                    <span className="font-mono font-bold text-green-400">{compDmg.averageDamage}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Critique</span>
+                    <span className="font-mono text-white">{compDmg.critChance}% (x{compDmg.critMultiplier})</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Statut & Cadence</span>
+                    <span className="font-mono text-white">{compDmg.statusChance}% · {fireRate} t/s</span>
+                  </div>
+                </div>
+                {compDmg.elements.length > 0 && (
+                  <div className="space-y-1 pt-1">
+                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES COMPAGNON</div>
+                    <div className="grid grid-cols-2 gap-1">
+                      {compDmg.elements.map(el => (
+                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
+                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
+                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
+
           <div className="mt-3 grid grid-cols-3 gap-2 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Arcanes</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{[...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).length}</div></div>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Mods comp.</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{build.companionMods.filter(Boolean).length}/{build.companionMods.length}</div></div>
