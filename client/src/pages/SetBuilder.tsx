@@ -1073,11 +1073,17 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   });
 
   const totalPhysical = Math.round(baseDamage * damageMultiplier);
-  const elements = elementalBonuses.map(el => ({
-    name: el.name,
-    damage: Math.round(baseDamage * (el.pct / 100)),
-    color: el.color,
-  }));
+  // Group elemental bonuses by name to prevent duplicate keys in React rendering
+  const elementMap: Record<string, { name: string; damage: number; color: string }> = {};
+  elementalBonuses.forEach(el => {
+    const dmg = Math.round(baseDamage * (el.pct / 100));
+    if (elementMap[el.name]) {
+      elementMap[el.name].damage += dmg;
+    } else {
+      elementMap[el.name] = { name: el.name, damage: dmg, color: el.color };
+    }
+  });
+  const elements = Object.values(elementMap);
   const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
 
   const baseCritChance = (weapon.critChance ?? 0.20) + incarnonBonus.criticalChanceFlat;
