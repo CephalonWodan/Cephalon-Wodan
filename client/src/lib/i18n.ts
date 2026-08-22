@@ -54,6 +54,24 @@ export const translations = {
     arcaneSlot: "ARCANE",
     shardSlot: "ÉCLAT D'ARCHONTE",
 
+    // Catalogues & Filters
+    allVersions: "Toutes les versions",
+    primeOnly: "Primes uniquement",
+    standardOnly: "Standards uniquement",
+    sortBy: "Trier par",
+    sortName: "Nom",
+    sortHealth: "Santé",
+    sortArmor: "Armure",
+    sortShield: "Bouclier",
+    sortMastery: "Maîtrise",
+    clickForDetails: "Cliquer pour détails",
+    useInBuilder: "UTILISER DANS LE BUILDER",
+    noWarframesFound: "Aucune Warframe trouvée",
+    noWeaponsFound: "Aucune arme trouvée",
+    noModsFound: "Aucun mod trouvé",
+    allTypes: "Tous les types",
+    allRarities: "Toutes les raretés",
+
     // Assistant & Presets
     cephalonAssistant: "ASSISTANT CEPHALON IA",
     communityPresets: "BIBLIOTHÈQUE // PRESETS COMMUNAUTAIRES",
@@ -61,6 +79,14 @@ export const translations = {
     hideLibrary: "MASQUER LES PRESETS",
     applyToActive: "CHARGER DANS L'ACTIF",
     duplicateVariant: "DUPLIQUER EN VARIANTE",
+    assistantPlaceholder: "Pose ta question au Cephalon Codex...",
+    analyzeBuild: "ANALYSER LE BUILD",
+    missionType: "Mission",
+    faction: "Faction",
+    enemyLevel: "Niveau",
+    squadMode: "Mode",
+    optimizationPriority: "Priorité",
+    applyAiRecommendations: "APPLIQUER LES MODS DE L'IA",
 
     // Worldstate
     activeFissures: "Fissures actives en temps réel",
@@ -118,6 +144,24 @@ export const translations = {
     arcaneSlot: "ARCANE",
     shardSlot: "ARCHON SHARD",
 
+    // Catalogues & Filters
+    allVersions: "All versions",
+    primeOnly: "Primes only",
+    standardOnly: "Standards only",
+    sortBy: "Sort by",
+    sortName: "Name",
+    sortHealth: "Health",
+    sortArmor: "Armor",
+    sortShield: "Shield",
+    sortMastery: "Mastery",
+    clickForDetails: "Click for details",
+    useInBuilder: "USE IN BUILDER",
+    noWarframesFound: "No Warframes found",
+    noWeaponsFound: "No weapons found",
+    noModsFound: "No mods found",
+    allTypes: "All types",
+    allRarities: "All rarities",
+
     // Assistant & Presets
     cephalonAssistant: "CEPHALON AI ASSISTANT",
     communityPresets: "LIBRARY // COMMUNITY PRESETS",
@@ -125,6 +169,14 @@ export const translations = {
     hideLibrary: "HIDE PRESETS",
     applyToActive: "LOAD TO ACTIVE",
     duplicateVariant: "DUPLICATE AS VARIANT",
+    assistantPlaceholder: "Ask the Cephalon Codex a question...",
+    analyzeBuild: "ANALYZE BUILD",
+    missionType: "Mission",
+    faction: "Faction",
+    enemyLevel: "Level",
+    squadMode: "Mode",
+    optimizationPriority: "Priority",
+    applyAiRecommendations: "APPLY AI MODS",
 
     // Worldstate
     activeFissures: "Active fissures in real time",

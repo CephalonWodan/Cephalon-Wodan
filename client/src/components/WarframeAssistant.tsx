@@ -1,4 +1,3 @@
-// WARFRAME SET BUILDER — Cephalon Codex Assistant
 // Tenno Codex HUD: mission-aware build recommendations tied to the active Builder snapshot.
 // Keep the client payload compact; the server owns the LLM secret and the recommendation rules.
 
@@ -7,6 +6,7 @@ import { Sparkles, X, Send, Bot, ChevronDown } from "lucide-react";
 import { ASSISTANT_BUILD_CONTEXT_EVENT, ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, AssistantBuildContext } from "@/lib/assistant-context";
 import { MODS, Mod } from "@/lib/warframe-data";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   role: "assistant" | "user";
@@ -14,62 +14,23 @@ interface Message {
 }
 
 type MissionType = "auto" | "survival" | "defense" | "interception" | "excavation" | "assassination" | "exterminate" | "spy" | "steel-path" | "fissure";
-
-const MISSION_OPTIONS: Array<{ value: MissionType; label: string; short: string }> = [
-  { value: "auto", label: "Déduire de ma question", short: "AUTO" },
-  { value: "survival", label: "Survie / Endurance", short: "SURVIE" },
-  { value: "defense", label: "Défense / Défense mobile", short: "DÉFENSE" },
-  { value: "interception", label: "Interception", short: "INTERCEPTION" },
-  { value: "excavation", label: "Excavation", short: "EXCAVATION" },
-  { value: "assassination", label: "Assassinat / Boss", short: "ASSASSINAT" },
-  { value: "exterminate", label: "Extermination", short: "EXTERMINATION" },
-  { value: "spy", label: "Espionnage / Sauvetage", short: "INFILTRATION" },
-  { value: "steel-path", label: "Steel Path", short: "STEEL PATH" },
-  { value: "fissure", label: "Fissure du Néant", short: "FISSURE" },
-];
-
 type Faction = "auto" | "grineer" | "corpus" | "infested" | "orokin" | "narmer" | "sentient";
 type SquadMode = "solo" | "squad";
 type OptimizationFocus = "balanced" | "damage" | "survival" | "support" | "endurance";
 type EnemyLevelBand = "auto" | "100-200" | "200-400" | "400-800" | "800+";
 
-const FACTION_OPTIONS: Array<{ value: Faction; label: string }> = [
-  { value: "auto", label: "Faction à déduire" },
-  { value: "grineer", label: "Grineer" },
-  { value: "corpus", label: "Corpus" },
-  { value: "infested", label: "Infestés" },
-  { value: "orokin", label: "Orokin" },
-  { value: "narmer", label: "Narmer" },
-  { value: "sentient", label: "Conscients" },
-];
-
-const LEVEL_OPTIONS: Array<{ value: EnemyLevelBand; label: string }> = [
-  { value: "auto", label: "Niveau à déduire" },
-  { value: "100-200", label: "Niveau 100–200" },
-  { value: "200-400", label: "Niveau 200–400" },
-  { value: "400-800", label: "Niveau 400–800" },
-  { value: "800+", label: "Niveau 800+ / Endurance" },
-];
-
-const OPTIMIZATION_OPTIONS: Array<{ value: OptimizationFocus; label: string }> = [
-  { value: "balanced", label: "Équilibre général" },
-  { value: "damage", label: "Dégâts / Nettoyage" },
-  { value: "survival", label: "Survie / EHP" },
-  { value: "support", label: "Soutien / Objectif" },
-  { value: "endurance", label: "Endurance longue" },
-];
-
 function readInitialContext(): AssistantBuildContext | null {
   if (typeof window === "undefined") return null;
   try {
     const raw = window.localStorage.getItem(ASSISTANT_BUILD_CONTEXT_STORAGE_KEY);
-    return raw ? JSON.parse(raw) as AssistantBuildContext : null;
+    return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
   }
 }
 
 export default function WarframeAssistant() {
+  const { language, t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [missionType, setMissionType] = useState<MissionType>("auto");
@@ -81,7 +42,9 @@ export default function WarframeAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Salutations, Tenno ! Je suis **Cephalon Codex**. Indique ton type de mission et je te proposerai un build adapté à ta Warframe sélectionnée, à tes armes et à tes objectifs de gameplay."
+      content: language === "en"
+        ? "Greetings, Tenno! I am **Cephalon Codex**. Specify your mission type and I will suggest an optimal build tailored to your selected Warframe, weapons, and gameplay objectives."
+        : "Salutations, Tenno ! Je suis **Cephalon Codex**. Indique ton type de mission et je te proposerai un build adapté à ta Warframe sélectionnée, à tes armes et à tes objectifs de gameplay."
     }
   ]);
   const [loading, setLoading] = useState(false);
@@ -95,8 +58,44 @@ export default function WarframeAssistant() {
     return () => window.removeEventListener(ASSISTANT_BUILD_CONTEXT_EVENT, handleContextUpdate);
   }, []);
 
-  const selectedMission = MISSION_OPTIONS.find(option => option.value === missionType) || MISSION_OPTIONS[0];
-  const activeWarframe = buildContext?.warframe?.name || "NON SÉLECTIONNÉE";
+  const MISSION_OPTIONS: Array<{ value: MissionType; label: string }> = [
+    { value: "auto", label: t("Déduire de ma question", "Infer from my question") },
+    { value: "survival", label: t("Survie / Endurance", "Survival / Endurance") },
+    { value: "defense", label: t("Défense / Défense mobile", "Defense / Mobile Defense") },
+    { value: "interception", label: "Interception" },
+    { value: "excavation", label: "Excavation" },
+    { value: "assassination", label: t("Assassinat / Boss", "Assassination / Boss") },
+    { value: "exterminate", label: t("Extermination", "Extermination") },
+    { value: "spy", label: t("Espionnage / Sauvetage", "Spy / Rescue") },
+    { value: "steel-path", label: "Steel Path" },
+    { value: "fissure", label: t("Fissure du Néant", "Void Fissure") },
+  ];
+
+  const FACTION_OPTIONS: Array<{ value: Faction; label: string }> = [
+    { value: "auto", label: t("Faction à déduire", "Infer faction") },
+    { value: "grineer", label: "Grineer" },
+    { value: "corpus", label: "Corpus" },
+    { value: "infested", label: t("Infestés", "Infested") },
+    { value: "orokin", label: "Orokin" },
+    { value: "narmer", label: "Narmer" },
+    { value: "sentient", label: t("Conscients", "Sentient") },
+  ];
+
+  const LEVEL_OPTIONS: Array<{ value: EnemyLevelBand; label: string }> = [
+    { value: "auto", label: t("Niveau à déduire", "Infer level") },
+    { value: "100-200", label: t("Niveau 100–200", "Level 100–200") },
+    { value: "200-400", label: t("Niveau 200–400", "Level 200–400") },
+    { value: "400-800", label: t("Niveau 400–800", "Level 400–800") },
+    { value: "800+", label: t("Niveau 800+ / Endurance", "Level 800+ / Endurance") },
+  ];
+
+  const OPTIMIZATION_OPTIONS: Array<{ value: OptimizationFocus; label: string }> = [
+    { value: "balanced", label: t("Équilibre général", "General balance") },
+    { value: "damage", label: t("Dégâts / Nettoyage", "Damage / Clearing") },
+    { value: "survival", label: t("Survie / EHP", "Survival / EHP") },
+    { value: "support", label: t("Soutien / Objectif", "Support / Objective") },
+    { value: "endurance", label: t("Endurance longue", "Long endurance") },
+  ];
 
   const openAssistant = () => {
     const latestContext = readInitialContext();
@@ -123,17 +122,17 @@ export default function WarframeAssistant() {
           messages: updatedMessages.map(m => ({ role: m.role, content: m.content })),
           missionType,
           context: buildContext,
-          advancedOptions: { faction, enemyLevelBand, squadMode, optimizationFocus },
+          advancedOptions: { faction, enemyLevelBand, squadMode, optimizationFocus, language },
         })
       });
 
       if (!res.ok) {
         const serverError = await res.json().catch(() => null);
-        throw new Error(serverError?.error || `Erreur réseau (${res.status})`);
+        throw new Error(serverError?.error || (language === "en" ? `Network error (${res.status})` : `Erreur réseau (${res.status})`));
       }
 
       const data = await res.json();
-      const replyText = data.reply || "Aucune réponse reçue du Cephalon.";
+      const replyText = data.reply || (language === "en" ? "No response received from Cephalon." : "Aucune réponse reçue du Cephalon.");
       setMessages(prev => [...prev, { role: "assistant", content: replyText }]);
       try {
         localStorage.setItem("warframe-assistant:last-transcript", replyText);
@@ -142,7 +141,12 @@ export default function WarframeAssistant() {
       console.error("Chat error:", err);
       setMessages(prev => [
         ...prev,
-        { role: "assistant", content: "⚠️ Impossible de contacter le Cephalon IA pour le moment. Vérifie que le serveur est actif, puis réessaie." }
+        {
+          role: "assistant",
+          content: language === "en"
+            ? "⚠️ Unable to contact the AI Cephalon at the moment. Please verify the server is running and try again."
+            : "⚠️ Impossible de contacter le Cephalon IA pour le moment. Vérifie que le serveur est actif, puis réessaie."
+        }
       ]);
     } finally {
       setLoading(false);
@@ -151,188 +155,184 @@ export default function WarframeAssistant() {
 
   const applySuggestedBuild = (content: string) => {
     try {
-      // Find JSON block or extract mod names from response
       const jsonMatch = content.match(/```json:recommendation\s*([\s\S]*?)\s*```/) || content.match(/```json\s*([\s\S]*?)\s*```/);
       let payload: any = null;
       if (jsonMatch) {
         try { payload = JSON.parse(jsonMatch[1]); } catch {}
       }
 
-      if (!payload) {
-        // Fallback: extract quotes or bullet points resembling mod names
-        const matches = content.match(/[-*]\s+\*\*([^*]+)\*\*/g) || content.match(/["']([^"']+)["']/g);
-        if (matches) {
-          payload = { mods: matches.map(m => m.replace(/[-*\s*"'**]/g, "")).slice(0, 10) };
-        }
-      }
-
-      if (!payload || (!payload.mods && !payload.arcanes)) {
-        toast.error("Aucune structure de mods exploitable trouvée dans cette réponse.");
-        return;
-      }
-
-      const rawBuilds = localStorage.getItem("warframe-set-builder:builds:v2");
-      if (!rawBuilds) {
-        toast.error("Aucun build actif trouvé dans le stockage local.");
-        return;
-      }
-
-      const builds = JSON.parse(rawBuilds);
-      if (!Array.isArray(builds) || builds.length === 0) {
-        toast.error("Aucun set disponible à modifier.");
-        return;
-      }
-
-      const activeBuild = builds[0];
-      if (payload.mods && Array.isArray(payload.mods)) {
-        const foundMods: Mod[] = [];
-        for (const name of payload.mods) {
-          const match = MODS.find(m => m.name.toLowerCase() === String(name).toLowerCase() || m.name.toLowerCase().includes(String(name).toLowerCase()));
-          if (match && foundMods.length < 10) {
-            foundMods.push({ ...match, selectedRank: match.maxRank });
+      const appliedMods: Array<{ name: string; rank: number }> = [];
+      if (payload && Array.isArray(payload.mods)) {
+        payload.mods.forEach((m: any) => {
+          if (m?.name) appliedMods.push({ name: String(m.name), rank: Number(m.rank ?? 5) });
+        });
+      } else {
+        const lines = content.split("\n");
+        lines.forEach(line => {
+          const match = line.match(/(?:[-*•]|\d+\.)\s+\*\*([^*]+)\*\*/);
+          if (match && match[1]) {
+            const potentialModName = match[1].trim();
+            const found = MODS.find(m => m.name.toLowerCase() === potentialModName.toLowerCase());
+            if (found && !appliedMods.some(m => m.name.toLowerCase() === found.name.toLowerCase())) {
+              appliedMods.push({ name: found.name, rank: 5 });
+            }
           }
-        }
-        if (foundMods.length > 0) {
-          activeBuild.warframeMods = [
-            ...foundMods.slice(0, 10),
-            ...Array(Math.max(0, 10 - foundMods.length)).fill(null)
-          ];
-        }
+        });
       }
 
-      if (payload.aura) {
-        const match = MODS.find(m => m.name.toLowerCase() === String(payload.aura).toLowerCase());
-        if (match) activeBuild.auraMod = { ...match, selectedRank: match.maxRank };
+      if (appliedMods.length === 0) {
+        toast.error(language === "en" ? "No precise mod configuration detected in Cephalon response." : "Aucune configuration de mod précise n'a été détectée dans la réponse du Cephalon.");
+        return;
       }
 
-      if (payload.exilus) {
-        const match = MODS.find(m => m.name.toLowerCase() === String(payload.exilus).toLowerCase());
-        if (match) activeBuild.exilusMod = { ...match, selectedRank: match.maxRank };
-      }
-
-      localStorage.setItem("warframe-set-builder:builds:v2", JSON.stringify(builds));
-      window.dispatchEvent(new Event("storage"));
-      toast.success("Mods et configuration IA appliqués au Set actif ! Ouvre le Builder pour voir le résultat.");
+      window.dispatchEvent(new CustomEvent("apply-ai-mods", { detail: appliedMods }));
+      toast.success(language === "en" ? `Successfully applied ${appliedMods.length} mods to active loadout!` : `${appliedMods.length} mods appliqués avec succès au loadout actif !`);
     } catch (err) {
-      console.error("Apply build error:", err);
-      toast.error("Impossible d'appliquer automatiquement les mods.");
+      console.error("Failed to apply AI mods:", err);
+      toast.error(language === "en" ? "Error applying mods." : "Erreur lors de l'application des mods.");
     }
   };
 
-  const askForBuild = () => {
-    const frame = buildContext?.warframe?.name;
-    const levelLabel = LEVEL_OPTIONS.find(option => option.value === enemyLevelBand)?.label || "niveau à déduire";
-    const factionLabel = FACTION_OPTIONS.find(option => option.value === faction)?.label || "faction à déduire";
-    const focusLabel = OPTIMIZATION_OPTIONS.find(option => option.value === optimizationFocus)?.label || "équilibre général";
-    const modeLabel = squadMode === "solo" ? "solo" : "escouade";
-    setInput(frame
-      ? `Propose-moi un build haut niveau ${selectedMission.value === "auto" ? "adapté à une mission polyvalente" : `pour une mission de type ${selectedMission.label}`} avec ${frame}. Cible : ${levelLabel}, faction : ${factionLabel}, ${modeLabel}, priorité : ${focusLabel}. Détaille les mods, arcanes, éclats et armes à privilégier, avec les compromis et une variante réaliste si nécessaire.`
-      : `Propose-moi un build haut niveau ${selectedMission.value === "auto" ? "polyvalent" : `pour ${selectedMission.label}`}. Cible : ${levelLabel}, faction : ${factionLabel}, ${modeLabel}, priorité : ${focusLabel}. Je n'ai pas encore sélectionné de Warframe.`
-    );
-  };
-
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      {!isOpen ? (
-        <button
-          onClick={openAssistant}
-          className="flex items-center gap-2 rounded-full px-4 py-3 shadow-2xl transition-all hover:scale-105 active:scale-95"
-          style={{ backgroundColor: "rgba(11, 14, 20, 0.95)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", boxShadow: "0 0 20px rgba(79, 195, 247, 0.3)" }}
-          title="Ouvrir l'assistant IA Cephalon Codex"
+    <>
+      {/* Floating HUD Button */}
+      {!isOpen && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <button
+            onClick={openAssistant}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-sm shadow-2xl transition-all duration-200 hud-frame group"
+            style={{
+              backgroundColor: "rgba(7, 13, 22, 0.92)",
+              border: "1px solid var(--wf-cyan)",
+              color: "var(--wf-cyan)",
+              fontFamily: "var(--font-display)",
+              letterSpacing: "0.1em"
+            }}
+          >
+            <Sparkles size={16} className="animate-pulse" />
+            <span className="text-xs font-bold uppercase">{t("ASSISTANT CEPHALON IA", "CEPHALON AI ASSISTANT")}</span>
+          </button>
+        </div>
+      )}
+
+      {/* Chat Window */}
+      {isOpen && (
+        <div
+          className="fixed bottom-4 right-4 z-50 w-[92vw] sm:w-[440px] max-h-[85vh] rounded-sm flex flex-col shadow-2xl hud-frame overflow-hidden"
+          style={{
+            backgroundColor: "var(--wf-bg-deep)",
+            border: "1px solid var(--wf-cyan)",
+            boxShadow: "0 10px 35px rgba(0, 195, 255, 0.2)"
+          }}
         >
-          <Sparkles size={18} className="animate-pulse" />
-          <span className="text-xs font-bold tracking-wider" style={{ fontFamily: "var(--font-display)" }}>ASSISTANT CEPHALON IA</span>
-        </button>
-      ) : (
-        <div className="flex flex-col rounded-sm shadow-2xl transition-all" style={{ width: "min(400px, calc(100vw - 2rem))", height: "min(620px, calc(100vh - 2rem))", backgroundColor: "rgba(11, 14, 20, 0.98)", border: "1px solid var(--wf-border)", boxShadow: "0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(79, 195, 247, 0.2)" }}>
-          <div className="flex items-center justify-between px-3 py-2.5 border-b" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.4)" }}>
-            <div className="flex items-center gap-2 min-w-0">
-              <Bot size={16} style={{ color: "var(--wf-cyan)" }} />
-              <div className="min-w-0">
-                <div className="text-sm font-bold tracking-[0.16em] uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>CEPHALON CODEX // IA LIVE</div>
-                <div className="flex items-center gap-1.5 text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
-                  <span style={{ color: "var(--wf-cyan)" }}>FRAME</span> {activeWarframe} <span style={{ color: "var(--wf-border)" }}>//</span> <span style={{ color: "var(--wf-cyan)" }}>MISSION</span> {selectedMission.short}
+          {/* Header */}
+          <div
+            className="flex items-center justify-between px-3 py-2.5 border-b"
+            style={{ backgroundColor: "rgba(7, 13, 22, 0.98)", borderColor: "var(--wf-border)" }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-sm flex items-center justify-center" style={{ backgroundColor: "rgba(79, 195, 247, 0.15)", border: "1px solid rgba(79, 195, 247, 0.4)" }}>
+                <Bot size={16} style={{ color: "var(--wf-cyan)" }} />
+              </div>
+              <div>
+                <div className="text-xs font-bold tracking-widest uppercase" style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}>
+                  CEPHALON CODEX // AI
+                </div>
+                <div className="text-[10px] font-mono text-gray-400">
+                  {buildContext?.warframe ? `${t("Actif", "Active")}: ${buildContext.warframe.name}` : t("Aucun set actif", "No active set")}
                 </div>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="rounded p-1 transition-colors hover:bg-white/10" style={{ color: "var(--wf-text-dim)" }}><X size={14} /></button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-1 rounded hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+            >
+              <X size={16} />
+            </button>
           </div>
 
-          <div className="border-b px-2.5 pt-2.5" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.25)" }}>
-            <div className="mb-1.5 flex items-center justify-between text-[8px] uppercase tracking-[0.14em]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}><span>TACTICAL ROUTING // 01</span><span style={{ color: "var(--wf-cyan)" }}>CONTEXT LINKED</span></div>
-            <div className="grid grid-cols-1 gap-1.5 pb-2.5 sm:grid-cols-[1fr_auto]">
-            <label className="relative flex items-center">
-              <select value={missionType} onChange={e => setMissionType(e.target.value as MissionType)} className="w-full appearance-none rounded-sm px-2.5 py-2 pr-7 text-[10px] font-bold outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid rgba(79,195,247,0.45)", color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}>
-                {MISSION_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+          {/* Mission & Advanced Parameters Toolbar */}
+          <div className="p-2.5 border-b grid grid-cols-2 gap-2 text-xs" style={{ backgroundColor: "rgba(0, 0, 0, 0.35)", borderColor: "var(--wf-border)" }}>
+            <div>
+              <label className="block text-[9px] font-mono text-gray-400 uppercase">{t("Mission", "Mission")}</label>
+              <select
+                value={missionType}
+                onChange={e => setMissionType(e.target.value as MissionType)}
+                className="w-full mt-0.5 px-2 py-1 rounded-sm text-[11px] outline-none bg-black/60 border border-white/10 text-cyan-300 font-mono"
+              >
+                {MISSION_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value} style={{ backgroundColor: "#070b10", color: "#fff" }}>
+                    {opt.label}
+                  </option>
+                ))}
               </select>
-              <ChevronDown size={12} className="pointer-events-none absolute right-2" style={{ color: "var(--wf-cyan)" }} />
-            </label>
-              <button type="button" onClick={askForBuild} className="rounded-sm px-2.5 py-2 text-[9px] font-bold tracking-wider transition-colors hover:bg-white/10" style={{ border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>ANALYSER UN BUILD</button>
             </div>
-            <div className="grid grid-cols-2 gap-1.5 pb-2.5 sm:grid-cols-4">
-              <label className="min-w-0">
-                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>FACTION</span>
-                <select value={faction} onChange={e => setFaction(e.target.value as Faction)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
-                  {FACTION_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-                </select>
-              </label>
-              <label className="min-w-0">
-                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>NIVEAU</span>
-                <select value={enemyLevelBand} onChange={e => setEnemyLevelBand(e.target.value as EnemyLevelBand)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
-                  {LEVEL_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-                </select>
-              </label>
-              <label className="min-w-0">
-                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>MODE</span>
-                <select value={squadMode} onChange={e => setSquadMode(e.target.value as SquadMode)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
-                  <option value="squad">Escouade</option>
-                  <option value="solo">Solo</option>
-                </select>
-              </label>
-              <label className="min-w-0">
-                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>PRIORITÉ</span>
-                <select value={optimizationFocus} onChange={e => setOptimizationFocus(e.target.value as OptimizationFocus)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
-                  {OPTIMIZATION_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
-                </select>
-              </label>
+            <div>
+              <label className="block text-[9px] font-mono text-gray-400 uppercase">{t("Faction", "Faction")}</label>
+              <select
+                value={faction}
+                onChange={e => setFaction(e.target.value as Faction)}
+                className="w-full mt-0.5 px-2 py-1 rounded-sm text-[11px] outline-none bg-black/60 border border-white/10 text-cyan-300 font-mono"
+              >
+                {FACTION_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value} style={{ backgroundColor: "#070b10", color: "#fff" }}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          <div className="flex-1 space-y-3 overflow-y-auto p-3">
-            {messages.map((msg, idx) => (
-              <div key={`${msg.role}-${idx}`} className={`flex gap-2 text-xs ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                {msg.role === "assistant" && <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm" style={{ backgroundColor: "rgba(79,195,247,0.15)", border: "1px solid rgba(79,195,247,0.4)" }}><Bot size={12} style={{ color: "var(--wf-cyan)" }} /></div>}
-                <div className="max-w-[88%] rounded-sm p-2.5 leading-relaxed whitespace-pre-wrap" style={{ backgroundColor: msg.role === "user" ? "rgba(79,195,247,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${msg.role === "user" ? "rgba(79,195,247,0.3)" : "var(--wf-border)"}`, color: "var(--wf-text)", fontSize: "11px" }}>
-                  {msg.content}
-                  {msg.role === "assistant" && (
-                    <div className="mt-2 pt-2 border-t flex items-center justify-between" style={{ borderColor: "var(--wf-border)" }}>
-                      <span className="text-[9px] font-mono" style={{ color: "var(--wf-text-dim)" }}>CEPHALON CODEX // RECOMMENDATION</span>
-                      <button
-                        type="button"
-                        onClick={() => applySuggestedBuild(msg.content)}
-                        className="px-2 py-1 rounded-sm text-[9px] font-bold tracking-wider transition-colors hover:bg-cyan-400/20 flex items-center gap-1"
-                        style={{ backgroundColor: "rgba(79,195,247,0.12)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}
-                      >
-                        <Sparkles size={10} /> APPLIQUER AU BUILD
-                      </button>
-                    </div>
-                  )}
+          {/* Messages Container */}
+          <div className="flex-1 p-3 overflow-y-auto space-y-3 max-h-[360px] text-xs font-mono" style={{ backgroundColor: "rgba(5, 9, 15, 0.85)" }}>
+            {messages.map((msg, i) => (
+              <div
+                key={i}
+                className={`p-2.5 rounded-sm ${msg.role === "user" ? "ml-6 bg-cyan-500/10 border border-cyan-500/30 text-cyan-200" : "mr-6 bg-black/50 border border-white/10 text-gray-200"}`}
+              >
+                <div className="text-[10px] font-bold mb-1 opacity-70 uppercase tracking-widest" style={{ color: msg.role === "user" ? "var(--wf-cyan)" : "#a0aec0" }}>
+                  {msg.role === "user" ? t("Vous", "You") : "Cephalon Codex"}
                 </div>
+                <div className="leading-relaxed whitespace-pre-wrap text-[11px] font-sans">
+                  {msg.content}
+                </div>
+                {msg.role === "assistant" && (msg.content.includes("```json") || msg.content.includes("**")) && (
+                  <button
+                    onClick={() => applySuggestedBuild(msg.content)}
+                    className="mt-2 w-full py-1.5 px-3 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-1.5"
+                  >
+                    <Sparkles size={12} />
+                    {t("Appliquer les mods suggérés", "Apply suggested mods")}
+                  </button>
+                )}
               </div>
             ))}
-            {loading && <div className="flex items-center gap-2 text-xs"><div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm animate-pulse" style={{ backgroundColor: "rgba(79,195,247,0.15)", border: "1px solid rgba(79,195,247,0.4)" }}><Bot size={12} style={{ color: "var(--wf-cyan)" }} /></div><div className="text-[10px] italic" style={{ color: "var(--wf-text-dim)" }}>Le Cephalon compare la mission et l'arsenal...</div></div>}
+            {loading && (
+              <div className="p-2.5 rounded-sm mr-6 bg-black/50 border border-white/10 text-cyan-400 animate-pulse text-[11px] font-mono">
+                {t("Calculs tactiques en cours...", "Running tactical calculations...")}
+              </div>
+            )}
           </div>
 
-          <div className="flex gap-1 overflow-x-auto border-t px-3 py-1.5" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}>
-            {["Build mission", "Survie", "Défense", "Steel Path"].map(tag => <button key={tag} onClick={() => setInput(tag === "Build mission" ? "Analyse mon build pour la mission sélectionnée." : `Quel build ${tag.toLowerCase()} recommandes-tu ?`)} className="shrink-0 rounded-sm px-2 py-0.5 text-[9px] transition-colors hover:bg-white/10" style={{ border: "1px solid var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{tag}</button>)}
-          </div>
-
-          <form onSubmit={handleSend} className="flex items-center gap-2 border-t p-2.5" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.4)" }}>
-            <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="Quel build pour cette mission ?" className="flex-1 rounded-sm px-2.5 py-1.5 text-xs outline-none" style={{ backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }} />
-            <button type="submit" disabled={loading || !input.trim()} className="rounded-sm p-2 transition-colors disabled:opacity-40" style={{ backgroundColor: "var(--wf-cyan)", color: "#0b0e14" }}><Send size={13} /></button>
+          {/* Input Form */}
+          <form onSubmit={handleSend} className="p-2.5 border-t flex gap-2" style={{ backgroundColor: "rgba(7, 13, 22, 0.98)", borderColor: "var(--wf-border)" }}>
+            <input
+              type="text"
+              placeholder={t("Pose ta question au Cephalon Codex...", "Ask Cephalon Codex a question...")}
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              className="flex-1 px-3 py-1.5 text-xs rounded-sm outline-none bg-black/50 border border-white/15 text-white font-sans focus:border-cyan-400"
+            />
+            <button
+              type="submit"
+              disabled={loading || !input.trim()}
+              className="px-3 py-1.5 rounded-sm text-xs font-bold transition-all wf-btn-primary disabled:opacity-50 flex items-center justify-center"
+            >
+              <Send size={14} />
+            </button>
           </form>
         </div>
       )}
-    </div>
+    </>
   );
 }

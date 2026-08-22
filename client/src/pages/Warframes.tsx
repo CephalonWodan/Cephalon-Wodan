@@ -1,4 +1,3 @@
-// ============================================================
 // WARFRAME SET BUILDER — Warframes catalogue
 // Style reminder: Tenno Codex HUD, dense catalogue with strong cyan hierarchy,
 // Prime orange state, canonical repository imagery and explicit sorting controls.
@@ -10,19 +9,11 @@ import Layout from "@/components/Layout";
 import AssetImage from "@/components/AssetImage";
 import WarframeDetailsModal from "@/components/WarframeDetailsModal";
 import { WARFRAMES, Warframe, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
-
-const VERSION_FILTERS = ["Toutes", "Standard", "Prime"];
-const SORT_OPTIONS = [
-  { value: "name", label: "Nom" },
-  { value: "health", label: "Vie" },
-  { value: "shield", label: "Boucliers" },
-  { value: "armor", label: "Armure" },
-  { value: "energy", label: "Énergie" },
-] as const;
-type SortKey = (typeof SORT_OPTIONS)[number]["value"];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function WarframeCard({ wf, onOpen }: { wf: Warframe; onOpen: (warframe: Warframe) => void }) {
   const rarityColor = getRarityColor(wf.rarity);
+  const { t } = useLanguage();
   return (
     <div
       className="rounded-sm overflow-hidden transition-all duration-200 cursor-pointer group"
@@ -58,38 +49,30 @@ function WarframeCard({ wf, onOpen }: { wf: Warframe; onOpen: (warframe: Warfram
         )}
         <div className="absolute top-1.5 left-1.5 w-3 h-3" style={{ borderTop: `1.5px solid ${rarityColor}`, borderLeft: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
         <div className="absolute top-1.5 right-1.5 w-3 h-3" style={{ borderTop: `1.5px solid ${rarityColor}`, borderRight: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
-        <div className="absolute bottom-1.5 left-1.5 w-3 h-3" style={{ borderBottom: `1.5px solid ${rarityColor}`, borderLeft: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
-        <div className="absolute bottom-1.5 right-1.5 w-3 h-3" style={{ borderBottom: `1.5px solid ${rarityColor}`, borderRight: `1.5px solid ${rarityColor}`, opacity: 0.8 }} />
-        {wf.isPrime && <div className="absolute top-2 right-2 z-10 px-1.5 py-0.5 rounded-sm text-xs font-bold" style={{ backgroundColor: "rgba(255,107,53,0.2)", border: "1px solid #ff6b35", color: "#ff6b35", fontFamily: "var(--font-display)", fontSize: "9px" }}>PRIME</div>}
-        <div className="absolute bottom-0 left-0 right-0 h-0.5 z-10" style={{ backgroundColor: rarityColor }} />
       </div>
-
-      <div className="p-3">
-        <div className="flex items-start justify-between mb-1">
-          <h3 className="text-sm font-bold tracking-wide truncate" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{wf.name}</h3>
-          <span className="text-xs px-1.5 py-0.5 rounded-sm ml-1 shrink-0" style={{ backgroundColor: `${rarityColor}20`, color: rarityColor, fontFamily: "var(--font-display)", fontSize: "9px", letterSpacing: "0.05em" }}>{getRarityLabel(wf.rarity).toUpperCase()}</span>
+      <div className="p-3 border-t relative" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(7,13,22,0.8)" }}>
+        <div className="flex items-center justify-between mb-1">
+          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-sm" style={{ backgroundColor: `${rarityColor}20`, color: rarityColor, border: `1px solid ${rarityColor}50` }}>
+            {getRarityLabel(wf.rarity)}
+          </span>
+          <span className="text-[10px] font-mono" style={{ color: "var(--wf-text-dim)" }}>
+            MR {wf.mastery || 0}
+          </span>
         </div>
-        <div className="flex items-center gap-2 text-xs mb-2" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
-          <span>{wf.role}</span>
-          {wf.abilities.length > 0 && <span style={{ color: "var(--wf-text-dim)" }}>{wf.abilities.length} capacités</span>}
+        <h3 className="text-sm font-bold tracking-wider uppercase truncate" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+          {wf.name}
+        </h3>
+        <div className="grid grid-cols-2 gap-1.5 mt-2 pt-2 border-t text-[11px] font-mono" style={{ borderColor: "rgba(255,255,255,0.08)", color: "var(--wf-text-dim)" }}>
+          <div>❤️ {wf.health}</div>
+          <div>🛡️ {wf.shield}</div>
+          <div>🛡️ {wf.armor}</div>
+          <div>⚡ {wf.energy}</div>
         </div>
-        <p className="text-xs mb-3 leading-relaxed line-clamp-2" style={{ color: "var(--wf-text-dim)" }}>{wf.description || "Données de codex disponibles dans le catalogue Cephalon Wodan."}</p>
-
-        <div className="grid grid-cols-4 gap-1 mb-3">
-          {[{ label: "VIE", value: wf.health }, { label: "BOU", value: wf.shield }, { label: "ARM", value: wf.armor }, { label: "ENE", value: wf.energy }].map(({ label, value }) => (
-            <div key={label} className="text-center p-1 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.3)" }}>
-              <div className="text-xs font-bold" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)", fontSize: "11px" }}>{value}</div>
-              <div className="text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)", fontSize: "8px", letterSpacing: "0.05em" }}>{label}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between">
-          <span className="text-xs" style={{ color: "var(--wf-text-dim)" }}>MR: <span style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}>{wf.mastery}</span></span>
-          <div className="flex items-center gap-1.5">
-            <span className="text-[9px] uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}>Cliquer pour détails</span>
-            <Link href="/builder" onClick={event => event.stopPropagation()} className="text-xs px-2 py-1 rounded-sm transition-all wf-btn-primary" style={{ fontSize: "10px" }}>UTILISER</Link>
-          </div>
+        <div className="mt-2.5 pt-2 border-t flex items-center justify-between" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+          <span className="text-[10px] uppercase tracking-wider" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+            {t("Détails & capacités", "Details & Abilities")}
+          </span>
+          <span className="text-xs text-cyan-400 group-hover:translate-x-1 transition-transform">→</span>
         </div>
       </div>
     </div>
@@ -97,58 +80,115 @@ function WarframeCard({ wf, onOpen }: { wf: Warframe; onOpen: (warframe: Warfram
 }
 
 export default function Warframes() {
+  const { t } = useLanguage();
   const [search, setSearch] = useState("");
   const [versionFilter, setVersionFilter] = useState("Toutes");
-  const [sortBy, setSortBy] = useState<SortKey>("name");
-  const [descending, setDescending] = useState(false);
+  const [sortBy, setSortBy] = useState<"name" | "health" | "shield" | "armor" | "energy">("name");
   const [selectedWarframe, setSelectedWarframe] = useState<Warframe | null>(null);
 
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return [...WARFRAMES]
-      .filter(wf => {
-        const abilityText = wf.abilities.map(ability => typeof ability === "string" ? ability : [ability.name, ability.description, ability.strength, ability.duration, ability.range, ability.misc].filter(Boolean).join(" ")).join(" ");
-        const searchable = [wf.name, wf.role, wf.description, abilityText].join(" ").toLowerCase();
-        const matchSearch = !query || searchable.includes(query);
-        const matchVersion = versionFilter === "Toutes" || wf.role === versionFilter;
-        return matchSearch && matchVersion;
-      })
-      .sort((a, b) => {
-        const av = sortBy === "name" ? a.name.toLowerCase() : a[sortBy];
-        const bv = sortBy === "name" ? b.name.toLowerCase() : b[sortBy];
-        const result = typeof av === "string" ? av.localeCompare(bv as string) : Number(av) - Number(bv);
-        return descending ? -result : result;
-      });
-  }, [search, versionFilter, sortBy, descending]);
+  const filteredWarframes = useMemo(() => {
+    let list = WARFRAMES.filter(wf => {
+      const matchSearch = wf.name.toLowerCase().includes(search.toLowerCase());
+      if (versionFilter === "Prime") return matchSearch && wf.isPrime;
+      if (versionFilter === "Standard") return matchSearch && !wf.isPrime;
+      return matchSearch;
+    });
+
+    return list.sort((a, b) => {
+      if (sortBy === "name") return a.name.localeCompare(b.name);
+      if (sortBy === "health") return b.health - a.health;
+      if (sortBy === "shield") return b.shield - a.shield;
+      if (sortBy === "armor") return b.armor - a.armor;
+      if (sortBy === "energy") return b.energy - a.energy;
+      return 0;
+    });
+  }, [search, versionFilter, sortBy]);
+
+  const VERSION_FILTERS = [
+    { label: t("Toutes", "All"), value: "Toutes" },
+    { label: t("Standard", "Standard"), value: "Standard" },
+    { label: t("Prime", "Prime"), value: "Prime" },
+  ];
+
+  const SORT_OPTIONS = [
+    { value: "name", label: t("Nom", "Name") },
+    { value: "health", label: t("Vie", "Health") },
+    { value: "shield", label: t("Boucliers", "Shields") },
+    { value: "armor", label: t("Armure", "Armor") },
+    { value: "energy", label: t("Énergie", "Energy") },
+  ] as const;
 
   return (
-    <Layout title="WARFRAMES">
-      <div className="flex flex-wrap items-center gap-3 mb-6 p-4 rounded-sm" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
-        <div className="relative flex items-center flex-1 min-w-48">
-          <Search size={13} className="absolute left-2.5 pointer-events-none" style={{ color: "var(--wf-text-dim)" }} />
-          <input type="text" placeholder="Rechercher un Warframe, une capacité..." value={search} onChange={e => setSearch(e.target.value)} className="w-full pl-8 pr-3 py-1.5 text-xs rounded-sm outline-none" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }} />
+    <Layout title={t("WARFRAMES // CATALOGUE", "WARFRAMES // CATALOGUE")}>
+      <div className="space-y-6">
+        {/* FILTERS & SEARCH BAR */}
+        <div className="p-4 rounded-sm flex flex-col md:flex-row gap-4 items-center justify-between hud-frame" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+          <div className="relative w-full md:w-80">
+            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder={t("Rechercher une Warframe...", "Search Warframe...")}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full pl-9 pr-3 py-2 text-xs rounded-sm outline-none"
+              style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-body)" }}
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+            <div className="flex items-center gap-1 bg-black/40 p-1 rounded-sm border" style={{ borderColor: "var(--wf-border)" }}>
+              {VERSION_FILTERS.map(f => (
+                <button
+                  key={f.value}
+                  onClick={() => setVersionFilter(f.value)}
+                  className={`px-3 py-1 text-[11px] font-bold uppercase tracking-wider rounded-sm transition-all ${versionFilter === f.value ? "bg-cyan-500/20 text-cyan-300 border border-cyan-400/50" : "text-gray-400 hover:text-white"}`}
+                  style={{ fontFamily: "var(--font-display)" }}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <Filter size={14} style={{ color: "var(--wf-cyan)" }} />
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value as any)}
+                className="px-3 py-1.5 text-xs rounded-sm outline-none bg-black/40 border cursor-pointer"
+                style={{ borderColor: "var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
+              >
+                {SORT_OPTIONS.map(opt => (
+                  <option key={opt.value} value={opt.value} style={{ backgroundColor: "#0b121a", color: "#fff" }}>
+                    {t("Trier par : ", "Sort by: ")}{opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <Filter size={12} style={{ color: "var(--wf-text-dim)" }} />
-          <select value={versionFilter} onChange={e => setVersionFilter(e.target.value)} className="text-xs py-1.5 px-2 rounded-sm outline-none" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}>
-            {VERSION_FILTERS.map(value => <option key={value} value={value}>{value === "Toutes" ? "Toutes les versions" : value}</option>)}
-          </select>
+        {/* STATS COUNT */}
+        <div className="flex items-center justify-between text-xs font-mono" style={{ color: "var(--wf-text-dim)" }}>
+          <span>{filteredWarframes.length} {t("Warframes répertoriées", "Warframes listed")}</span>
+          <span>{t("Sélectionnez une Warframe pour voir les stats et capacités", "Select a Warframe to view stats and abilities")}</span>
         </div>
 
-        <select value={sortBy} onChange={e => setSortBy(e.target.value as SortKey)} className="text-xs py-1.5 px-2 rounded-sm outline-none" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}>
-          {SORT_OPTIONS.map(option => <option key={option.value} value={option.value}>Trier : {option.label}</option>)}
-        </select>
-        <button onClick={() => setDescending(value => !value)} className="px-2.5 py-1.5 text-xs rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>{descending ? "DESC" : "ASC"}</button>
-        <span className="text-xs ml-auto" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{filtered.length} / {WARFRAMES.length} entrées</span>
-      </div>
+        {/* GRID */}
+        {filteredWarframes.length === 0 ? (
+          <div className="p-12 text-center rounded-sm hud-frame" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
+            <p className="text-sm font-mono text-gray-400">{t("Aucune Warframe ne correspond à votre recherche.", "No Warframe matches your search.")}</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filteredWarframes.map(wf => (
+              <WarframeCard key={wf.id} wf={wf} onOpen={setSelectedWarframe} />
+            ))}
+          </div>
+        )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {filtered.map((wf, i) => <div key={wf.id} className="animate-fade-slide-up" style={{ animationDelay: `${Math.min(i, 12) * 30}ms` }}><WarframeCard wf={wf} onOpen={setSelectedWarframe} /></div>)}
+        {/* DETAILS MODAL */}
+        {selectedWarframe && (
+          <WarframeDetailsModal warframe={selectedWarframe} onClose={() => setSelectedWarframe(null)} />
+        )}
       </div>
-
-      {filtered.length === 0 && <div className="text-center py-16" style={{ color: "var(--wf-text-dim)" }}><Shield size={48} className="mx-auto mb-4 opacity-30" /><p className="text-sm">Aucun Warframe trouvé</p></div>}
-      <WarframeDetailsModal warframe={selectedWarframe} onClose={() => setSelectedWarframe(null)} />
     </Layout>
   );
 }

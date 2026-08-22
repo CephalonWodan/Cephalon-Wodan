@@ -279,3 +279,12 @@
 - [ ] Connecter le sélecteur de langue existant à un état global persistant.
 - [ ] Mettre à jour l'accueil, les catalogues (Warframes, Armes, Compagnons, Mods, Arcanes, Éclats), le Set Builder, le Worldstate, l'assistant IA et les exports Markdown/JSON.
 - [ ] Valider le basculement dynamique entre le français et l'anglais, exécuter le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Extension i18n (Catalogues, Assistant Cephalon et Exports Markdown)
+
+- [ ] Enrichir `client/src/lib/i18n.ts` avec les dictionnaires pour les catalogues (Warframes, Armes, Mods), les filtres, le tri, l'assistant IA et les résumés Markdown.
+- [ ] Mettre à jour `Warframes.tsx`, `Weapons.tsx` et `Mods.tsx` pour utiliser dynamiquement la langue active.
+- [ ] Mettre à jour `WarframeAssistant.tsx` pour adapter l'interface du widget et envoyer la langue active au serveur LLM.
+- [ ] Mettre à jour le générateur de résumé Markdown dans `SetBuilder.tsx` pour produire les rapports en français ou en anglais selon le choix de l'utilisateur.
+- [ ] Valider TypeScript, exécuter le build de production et enregistrer un checkpoint.
