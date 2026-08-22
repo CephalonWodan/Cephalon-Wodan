@@ -280,3 +280,10 @@
 - [ ] Intégrer les presets dans `client/src/lib/community-presets.ts` avec les paramètres de mission et éclats associés.
 - [ ] Valider le chargement direct dans le Builder et les options de duplication.
 - [ ] Lancer les vérifications TypeScript et le build de production, puis publier le checkpoint.
+
+## Nouvelle demande — URL Vercel expose encore server/index.ts
+
+- [ ] Vérifier que la configuration Vercel et le script de build sont présents sur la branche GitHub réellement reliée à Vercel.
+- [ ] Ajouter un script build:static et cibler dist/public sans exécuter le serveur Express pour le déploiement frontend.
+- [ ] Synchroniser la correction vers le dépôt GitHub via une branche dédiée et une Pull Request si main reste protégée.
+- [ ] Vérifier l’URL Vercel après le déploiement de la branche principale.
