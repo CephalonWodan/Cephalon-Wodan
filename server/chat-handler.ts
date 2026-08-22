@@ -4,6 +4,12 @@ const WISP_DEFENSE_REFERENCE = `Référence de build fournie par l'utilisateur p
 
 const COMMUNITY_CREATORS_CONTEXT = `Références communautaires secondaires (créateurs YouTube reconnus : MHBlacky, PANDAAHH, TheKengineer, Unified Codex, Endryx_ow, Lau 5040, vu.thang205) : utilise leurs approches méthodologiques et synergies populaires (comme l'analyse statistique rigoureuse de TheKengineer, les guides pratiques de MHBlacky, ou les builds francophones approfondis de PANDAAHH et autres créateurs) pour enrichir tes explications tactiques, tout en t'appuyant en priorité sur les règles officielles du Wiki et le snapshot du Builder.`;
 
+const DANTE_VIDEO_KNOWLEDGE = `Mémoire communautaire sourcée — Dante / Noctua :
+- Source A : https://www.youtube.com/watch?v=KemZAmXAh18
+- Source B : https://www.youtube.com/watch?v=P1iQiV7lgJI
+Ces deux vidéos présentent des observations communautaires sur Dante, Noctua et Wordwarden, notamment des configurations orientées Puissance/Durée, des synergies avec Roar, Xata's Whisper, Eclipse, Galvanized Shot, Secondary Encumber, Epitaph Prime, Kuva Nukor, des primers de statuts et des éclats Topaz/Amber. Elles discutent aussi de la cadence de Wordwarden, du multishot, du statut Explosion et de rotations 2-3, 2-2 puis 3-2.
+Utilise ces sources uniquement comme contexte communautaire versionné, jamais comme vérité absolue. Avant de recommander un item, résous son nom dans le snapshot et le catalogue local. Les valeurs de dégâts, caps, triple dip, interactions d’arcanes et comportements observés peuvent dépendre de la version du jeu ; si elles ne sont pas confirmées localement ou officiellement, présente-les comme des observations attribuées à la vidéo et indique la réserve correspondante. Ne transforme pas une hypothèse de l’auteur sur le code du jeu en fait.`;
+
 const MISSION_GUIDANCE: Record<string, string> = {
   auto: "Déduis l'objectif de la demande. Si le type de mission n'est pas identifiable, demande une précision avant de proposer un build spécialisé.",
   survival: "Priorité à la survie longue durée : réduction des dégâts, endurance, contrôle de zone, économie d'énergie et dégâts soutenus.",
@@ -122,6 +128,9 @@ export async function handleChatRequest(req: Request, res: Response) {
   const referenceGuidance = /wisp/i.test(activeWarframeName) && (missionType === "defense" || /défense|defense/i.test(messages[messages.length - 1]?.content || ""))
     ? `\n\nRéférence utilisateur prioritaire pour ce cas :\n${WISP_DEFENSE_REFERENCE}`
     : "";
+  const videoKnowledgeGuidance = /dante/i.test(activeWarframeName) || /dante|noctua|wordwarden/i.test(messages[messages.length - 1]?.content || "")
+    ? `\n\n${DANTE_VIDEO_KNOWLEDGE}`
+    : "";
 
   const systemPrompt = `Tu es Cephalon Codex, l'assistant tactique virtuel de l'application WARFRAME Set Builder. Tu réponds en français, avec un ton professionnel et immersif de Cephalon, mais sans sacrifier la précision.
 
@@ -136,9 +145,9 @@ ${advancedGuidance}
 Snapshot JSON du Builder actif :
 ${buildContext}${referenceGuidance}
 
-${COMMUNITY_CREATORS_CONTEXT}
+${COMMUNITY_CREATORS_CONTEXT}${videoKnowledgeGuidance}
 
-Règles de recommandation :
+Règles de recommandation:
 1. Propose une configuration concrète : mods prioritaires par équipement, Aura/Exilus si pertinent, Arcanes, éclats, armes et capacité de compagnon.
 2. Explique le rôle de chaque choix et les compromis. Adapte les statistiques à la Warframe réellement sélectionnée ; ne remplace jamais une Warframe par un exemple arbitraire sans le signaler.
 3. Respecte les systèmes du jeu : polarités, capacité, fusion élémentaire, Incarnon cumulatif, Helminth et restrictions de buffs. Ne prétends pas avoir appliqué un mod si le snapshot ne le contient pas.
