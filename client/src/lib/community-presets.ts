@@ -1,4 +1,3 @@
-// ============================================================
 // WARFRAME SET BUILDER — Community Presets Library
 // Tenno Codex HUD reminder: community ideas are references, never endorsements.
 // Official catalog data remains authoritative for names, effects and calculations.
@@ -77,4 +76,55 @@ export const COMMUNITY_PRESETS: CommunityPreset[] = [
     modNames: ["Galvanized Chamber", "Galvanized Scope", "Galvanized Aptitude", "Vital Sense", "Hunter Munitions", "Primed Shred", "Hammer Shot", "Vile Acceleration"],
     arcaneNames: ["Primary Deadhead"],
   },
+  // Nouveaux presets inspirés de TheKengineer & MHBlacky
+  {
+    id: "preset-saryn-spores-thekengineer",
+    name: "Saryn Prime // Spores & Miasme Nuke",
+    creator: "TheKengineer",
+    category: "Warframe",
+    targetItemName: "Saryn Prime",
+    description: "Configuration de référence pour la propagation continue des Spores et le contrôle de zone par Miasme en Steel Path.",
+    missionType: "Sanctuaire / Survie",
+    difficulty: "Steel Path",
+    modNames: ["Venom Dose", "Blind Rage", "Augur Reach", "Primed Continuity", "Streamline", "Stretch", "Umbral Intensify", "Adaptation"],
+    auraName: "Corrosive Projection",
+    exilusName: "Cunning Drift",
+    arcaneNames: ["Arcane Energize", "Arcane Grace"],
+  },
+  {
+    id: "preset-glaive-prime-mhblacky",
+    name: "Glaive Prime // Heavy Attack Bleed",
+    creator: "MHBlacky",
+    category: "Arme Mêlée",
+    targetItemName: "Glaive Prime",
+    description: "Build Mêlée explosif centré sur les attaques lourdes et les dégâts de Tranchant (Slash) inarrêtables en Steel Path.",
+    missionType: "Arbitrage / Incursion",
+    difficulty: "Steel Path",
+    modNames: ["Sacrificial Steel", "Killing Blow", "Corrupt Charge", "Primed Fever Strike", "North Wind", "Pressure Point", "Smite Grineer", "Quick Return"],
+    arcaneNames: ["Melee Exposure"],
+  },
+  {
+    id: "preset-braton-incarnon-thekengineer",
+    name: "Braton Prime Incarnon // Status Shred",
+    creator: "TheKengineer",
+    category: "Arme Primaire",
+    targetItemName: "Braton Prime",
+    description: "Exploitation de la forme Incarnon du Brraton Prime pour saturer les ennemis de statuts corrosifs et viraux.",
+    missionType: "Survie / Alerte",
+    difficulty: "Steel Path",
+    modNames: ["Galvanized Chamber", "Galvanized Aptitude", "Vital Sense", "Critical Delay", "Malignant Force", "Rime Rounds", "Hunter Munitions", "Vile Acceleration"],
+    arcaneNames: ["Primary Merciless"],
+  },
+  {
+    id: "preset-felarx-mhblacky",
+    name: "Felarx // Zero-Crit Devastation",
+    creator: "MHBlacky",
+    category: "Arme Primaire",
+    targetItemName: "Felarx",
+    description: "Build de dégâts bruts sans critique (Devastating Attrition) maximisant les dégâts non-critiques sur les boss.",
+    missionType: "Assassinat / Chasse",
+    difficulty: "Steel Path",
+    modNames: ["Galvanized Hell", "Primed Point Blank", "Contagious Spread", "Toxic Barrage", "Chilling Reload", "Shotgun Savvy", "Vigilante Armaments", "Incendiary Coat"],
+    arcaneNames: ["Primary Deadhead"],
+  }
 ];

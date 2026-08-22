@@ -271,3 +271,12 @@
 - [x] Gérer l’analyse des paramètres d’URL au chargement de l’application pour restaurer instantanément le set.
 - [x] Valider la compatibilité des identifiants et tester les liens générés avec un build complet.
 - [x] Compiler, tester le build de production et publier un checkpoint.
+
+
+## Nouvelle demande — Presets communautaires TheKengineer & MHBlacky
+
+- [ ] Recenser et structurer les fiches de builds détaillées pour TheKengineer (analyses de dégâts, build DPS et survie haut niveau) et MHBlacky (builds spécialisés Warframe et armes).
+- [ ] Vérifier chaque nom de mod, Arcane, Warframe et arme contre le catalogue local.
+- [ ] Intégrer les presets dans `client/src/lib/community-presets.ts` avec les paramètres de mission et éclats associés.
+- [ ] Valider le chargement direct dans le Builder et les options de duplication.
+- [ ] Lancer les vérifications TypeScript et le build de production, puis publier le checkpoint.
