@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Sparkles, X, MessageSquare, Send, Bot, User, HelpCircle } from "lucide-react";
-import { WARFRAMES, WEAPONS, MODS, COMPANIONS } from "@/lib/warframe-data";
+import { Sparkles, X, Send, Bot } from "lucide-react";
+import { WARFRAMES, WEAPONS, COMPANIONS } from "@/lib/warframe-data";
 
 interface Message {
   role: "assistant" | "user";
@@ -13,7 +13,7 @@ export default function WarframeAssistant() {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content: "Salutations, Tenno ! Je suis **Cephalon Codex**, ton assistant tactique virtuel. Comment puis-je t'aider dans l'optimisation de ton arsenal, tes builds d'armes Incarnon, tes éclats d'archonte ou tes compagnons ?"
+      content: "Salutations, Tenno ! Je suis **Cephalon Codex**, ton assistant tactique virtuel propulsé par l'IA. Pose-moi n'importe quelle question sur les builds, les évolutions Incarnon, les compagnons, les fusions d'éléments ou le modding !"
     }
   ]);
   const [loading, setLoading] = useState(false);
@@ -24,32 +24,39 @@ export default function WarframeAssistant() {
     if (!query || loading) return;
 
     const userMsg: Message = { role: "user", content: query };
-    setMessages(prev => [...prev, userMsg]);
+    const updatedMessages = [...messages, userMsg];
+    setMessages(updatedMessages);
     setInput("");
     setLoading(true);
 
-    // Simulate smart tactical response based on dataset knowledge
-    setTimeout(() => {
-      let reply = "";
-      const lower = query.toLowerCase();
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: updatedMessages.map(m => ({ role: m.role, content: m.content }))
+        })
+      });
 
-      if (lower.includes("incarnon") || lower.includes("évolution") || lower.includes("evolution")) {
-        reply = "Les **adaptations Incarnon** offrent des bonus cumulatifs à chaque palier d'évolution. Assure-toi de choisir le perk le plus adapté à ton arme (comme le Paris Prime ou le Boltor) dans le Builder pour impacter directement tes statistiques de critique, de statut et de dégâts moyens !";
-      } else if (lower.includes("compagnon") || lower.includes("hound") || lower.includes("moa") || lower.includes("sentinelle")) {
-        reply = `Le catalogue compte ${COMPANIONS.length} compagnons avec gestion complète des 10 emplacements de mods, des postures de bêtes (+7 cap), des armes de sentinelles/MOAs et des griffes moddables. Tu peux configurer chaque pièce dans la section Compagnons !`;
-      } else if (lower.includes("mod") || lower.includes("capacité") || lower.includes("polarité") || lower.includes("umbra")) {
-        reply = "Le Builder gère la capacité de modding en temps réel avec un système de polarités (incluant les polarités **Umbra** pour Sacrificial Steel et Sacrificial Pressure). Si le coût dépasse la capacité max (60 ou 74 avec réacteur/catalyseur et Aura), l'ajout du mod est automatiquement bloqué.";
-      } else if (lower.includes("élément") || lower.includes("feu") || lower.includes("glace") || lower.includes("explosion") || lower.includes("fusion")) {
-        reply = "Le moteur de calcul combine automatiquement les éléments primaires (**Feu, Glace, Électricité, Toxine**) par paires selon l'ordre de tes mods (ex: **Feu + Glace = Explosion**). Les conversions globales de dégâts élémentaires prennent le pas sur les fusions normales.";
-      } else if (lower.includes("coda")) {
-        reply = `Il y a ${WEAPONS.filter(w => w.name.toLowerCase().includes("coda")).length} armes **Coda** disponibles dans le catalogue (5 primaires, 4 secondaires dont la Dual Coda Torxica, et 5 de mêlée). Elles intègrent des statistiques dévastatrices d'Infected/Technocyte !`;
-      } else {
-        reply = `J'ai analysé ta requête dans la base de données de ${WARFRAMES.length} Warframes et ${WEAPONS.length} armes. Pour optimiser ton set, sélectionne ton équipement dans le **Builder**, équipe tes mods selon tes polarités, ajoute tes arcanes et éclats d'archonte, puis exporte ton build complet en Markdown ou JSON !`;
+      if (!res.ok) {
+        throw new Error(`Erreur réseau (${res.status})`);
       }
 
-      setMessages(prev => [...prev, { role: "assistant", content: reply }]);
+      const data = await res.json();
+      const replyContent = data.reply || "Aucune réponse reçue du Cephalon.";
+      setMessages(prev => [...prev, { role: "assistant", content: replyContent }]);
+    } catch (err: any) {
+      console.error("Chat error:", err);
+      setMessages(prev => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "⚠️ Impossible de contacter le serveur IA pour le moment. Vérifie que le serveur backend est bien actif."
+        }
+      ]);
+    } finally {
       setLoading(false);
-    }, 600);
+    }
   };
 
   return (
@@ -64,19 +71,19 @@ export default function WarframeAssistant() {
             color: "var(--wf-cyan)",
             boxShadow: "0 0 20px rgba(79, 195, 247, 0.3)"
           }}
-          title="Ouvrir l'assistant IA Tenno Codex"
+          title="Ouvrir l'assistant IA Cephalon Codex"
         >
           <Sparkles size={18} className="animate-pulse" />
           <span className="text-xs font-bold tracking-wider" style={{ fontFamily: "var(--font-display)" }}>
-            ASSISTANT CEPHALON
+            ASSISTANT CEPHALON IA
           </span>
         </button>
       ) : (
         <div
           className="flex flex-col rounded-sm shadow-2xl transition-all"
           style={{
-            width: "360px",
-            height: "480px",
+            width: "380px",
+            height: "520px",
             backgroundColor: "rgba(11, 14, 20, 0.98)",
             border: "1px solid var(--wf-border)",
             boxShadow: "0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(79, 195, 247, 0.2)"
@@ -91,10 +98,10 @@ export default function WarframeAssistant() {
               <Bot size={16} style={{ color: "var(--wf-cyan)" }} />
               <div>
                 <div className="text-xs font-bold tracking-widest uppercase" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
-                  CEPHALON CODEX // IA
+                  CEPHALON CODEX // IA LIVE
                 </div>
                 <div className="text-[9px]" style={{ color: "var(--wf-text-dim)" }}>
-                  Assistant Tactique Arsenal
+                  {WARFRAMES.length} Warframes · {WEAPONS.length} Armes
                 </div>
               </div>
             </div>
@@ -123,7 +130,7 @@ export default function WarframeAssistant() {
                   </div>
                 )}
                 <div
-                  className="rounded-sm p-2.5 max-w-[80%] leading-relaxed"
+                  className="rounded-sm p-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap"
                   style={{
                     backgroundColor: msg.role === "user" ? "rgba(79, 195, 247, 0.15)" : "rgba(255,255,255,0.04)",
                     border: `1px solid ${msg.role === "user" ? "rgba(79, 195, 247, 0.3)" : "var(--wf-border)"}`,
@@ -144,7 +151,7 @@ export default function WarframeAssistant() {
                   <Bot size={12} style={{ color: "var(--wf-cyan)" }} />
                 </div>
                 <div className="text-[10px] italic" style={{ color: "var(--wf-text-dim)" }}>
-                  Analyse tactique en cours...
+                  Le Cephalon consulte les archives du système...
                 </div>
               </div>
             )}
@@ -152,7 +159,7 @@ export default function WarframeAssistant() {
 
           {/* Quick prompt suggestions */}
           <div className="px-3 py-1.5 flex gap-1 overflow-x-auto border-t" style={{ borderColor: "var(--wf-border)", backgroundColor: "rgba(0,0,0,0.2)" }}>
-            {["Incarnons", "Compagnons", "Éléments", "Armes Coda"].map(tag => (
+            {["Meilleur build Incarnon ?", "Comment marche la fusion ?", "Polarités Umbra", "Armes Coda"].map(tag => (
               <button
                 key={tag}
                 onClick={() => setInput(tag)}
@@ -174,7 +181,7 @@ export default function WarframeAssistant() {
               type="text"
               value={input}
               onChange={e => setInput(e.target.value)}
-              placeholder="Pose ta question sur l'arsenal..."
+              placeholder="Pose ta question au Cephalon IA..."
               className="flex-1 rounded-sm px-2.5 py-1.5 text-xs outline-none"
               style={{ backgroundColor: "rgba(0,0,0,0.5)", border: "1px solid var(--wf-border)", color: "var(--wf-text)" }}
             />
