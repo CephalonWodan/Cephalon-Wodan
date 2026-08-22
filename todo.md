@@ -304,3 +304,11 @@
 - [ ] Internationaliser les modales de détail des armes (incarnons, stats) et des compagnons (schémas de fabrication, parties de MOA/Hound).
 - [ ] Optimiser AssetImages.tsx avec un cache de chargement local et un fallback robuste pour garantir un rendu instantané en FR/EN.
 - [ ] Valider la compilation TypeScript, exécuter le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Mise à jour GitHub
+
+- [ ] Vérifier l'état git local et le dépôt distant `CephalonWodan/Cephalon-Wodan`.
+- [ ] Valider et commiter les derniers fichiers modifiés (i18n, paramètres, modales et cache image).
+- [ ] Pousser les modifications sur `main` de manière sécurisée et non destructive.
+- [ ] Confirmer le succès du push et rendre compte à l'utilisateur.
