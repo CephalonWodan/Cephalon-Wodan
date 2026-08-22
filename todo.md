@@ -262,3 +262,12 @@
 - [x] Permettre de charger un preset dans le set actif ou de le dupliquer comme variante.
 - [x] Conserver les contrôles de capacité, les rangs, les polarités et les éclats Tauforged.
 - [x] Tester chaque preset, compiler et publier un checkpoint.
+
+
+## Nouvelle demande — Partage par lien URL compressé
+
+- [x] Concevoir un sérialiseur/désérialiseur compact pour encoder le build actif et les variantes du comparateur.
+- [x] Ajouter un bouton de génération et de copie rapide de lien partageable dans le cockpit du Builder.
+- [x] Gérer l’analyse des paramètres d’URL au chargement de l’application pour restaurer instantanément le set.
+- [x] Valider la compatibilité des identifiants et tester les liens générés avec un build complet.
+- [x] Compiler, tester le build de production et publier un checkpoint.

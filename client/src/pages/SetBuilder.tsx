@@ -3,7 +3,8 @@
 // Tenno Codex dark theme — Build your complete loadout
 // ============================================================
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check, Download, Upload, FileText } from "lucide-react";
+import { Shield, Sword, Users, Star, Sparkles, Gem, ChevronDown, X, Plus, Save, Trash2, Copy, Check, Download, Upload, FileText, Share2 } from "lucide-react";
+import { encodeSharedPayload, decodeSharedPayload } from "@/lib/share-codec";
 import Layout from "@/components/Layout";
 import {
   WARFRAMES, WEAPONS, COMPANIONS, MODS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL,
@@ -2619,6 +2620,8 @@ export default function SetBuilder() {
     toast.success("Résumé du build exporté !");
   };
 
+
+
   const duplicateBuild = (source: BuildSet = activeBuild) => {
     const duplicated = normalizeBuild(JSON.parse(JSON.stringify(source)));
     if (!duplicated) return;
@@ -2665,6 +2668,27 @@ export default function SetBuilder() {
     }
     setBuilds(prev => prev.filter((_, i) => i !== index));
     setActiveBuildIndex(Math.max(0, activeBuildIndex - 1));
+  };
+
+  const copyShareableLink = () => {
+    try {
+      const payload = {
+        version: 1,
+        builds,
+        activeBuildIndex,
+      };
+      const encoded = encodeSharedPayload(payload);
+      if (!encoded) {
+        toast.error("Erreur lors de l'encodage du lien de partage.");
+        return;
+      }
+      const shareUrl = `${window.location.origin}${window.location.pathname}?share=${encoded}`;
+      navigator.clipboard.writeText(shareUrl);
+      toast.success("Lien de partage copié dans le presse-papier !");
+    } catch (error) {
+      console.error(error);
+      toast.error("Impossible de générer le lien de partage.");
+    }
   };
 
   const visibleCommunityPresets = COMMUNITY_PRESETS.filter(preset =>
@@ -2843,6 +2867,14 @@ export default function SetBuilder() {
               style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}
               placeholder="Ex. Steel Path // Survie"
             />
+            <button
+              onClick={copyShareableLink}
+              className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all shrink-0"
+              style={{ border: "1px solid #00e5ff", color: "#00e5ff", backgroundColor: "rgba(0,229,255,0.08)", fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}
+            >
+              <Share2 size={12} />
+              <span>PARTAGER (LIEN)</span>
+            </button>
             <button
               onClick={saveBuild}
               className="flex w-full sm:w-auto items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-sm transition-all wf-btn-primary shrink-0"
