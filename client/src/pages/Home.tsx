@@ -7,22 +7,24 @@ import Layout from "@/components/Layout";
 import { WARFRAMES, WEAPONS, MODS, COMPANIONS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL, PRIME_RELICS } from "@/lib/warframe-data";
 import WorldStateHUD from "@/components/WorldStateHUD";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { localizedPath } from "@/lib/seo";
 
 const WISP_HERO_IMAGE = "https://wiki.warframe.com/images/Wisp.png?e6cde";
 
 export default function Home() {
-  const { t } = useLanguage();
+  const { language, t } = useLanguage();
+  const localePath = (path: string) => localizedPath(path, language);
 
   const CATEGORY_ITEMS = [
-    { label: "WARFRAMES", href: "/warframes", Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
-    { label: t("ARMES", "WEAPONS"), href: "/weapons", Icon: Sword, count: WEAPONS.length, color: "#69d4ff" },
-    { label: "MODS", href: "/mods", Icon: Star, count: MODS.length, color: "#ffd166" },
-    { label: t("COMPAGNONS", "COMPANIONS"), href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#73d4f6" },
-    { label: "ARCANES", href: "/arcanes", Icon: Star, count: ARCANES.length, color: "#8bdcff" },
-    { label: t("ÉCLATS", "SHARDS"), href: "/archon-shards", Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffd166" },
-    { label: t("RELIQUES", "RELICS"), href: "/relics", Icon: Package, count: PRIME_RELICS.length, color: "#69d4ff" },
-    { label: t("CRÉER UN SET", "CREATE SET"), href: "/builder", Icon: Crosshair, count: null, color: "#4fc3f7" },
-    { label: t("GUIDES", "GUIDES"), href: "/guides", Icon: BookOpen, count: null, color: "#8bdcff" },
+    { label: "WARFRAMES", href: localePath("/warframes"), Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
+    { label: t("ARMES", "WEAPONS"), href: localePath("/weapons"), Icon: Sword, count: WEAPONS.length, color: "#69d4ff" },
+    { label: "MODS", href: localePath("/mods"), Icon: Star, count: MODS.length, color: "#ffd166" },
+    { label: t("COMPAGNONS", "COMPANIONS"), href: localePath("/companions"), Icon: Users, count: COMPANIONS.length, color: "#73d4f6" },
+    { label: "ARCANES", href: localePath("/arcanes"), Icon: Star, count: ARCANES.length, color: "#8bdcff" },
+    { label: t("ÉCLATS", "SHARDS"), href: localePath("/archon-shards"), Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffd166" },
+    { label: t("RELIQUES", "RELICS"), href: localePath("/relics"), Icon: Package, count: PRIME_RELICS.length, color: "#69d4ff" },
+    { label: t("CRÉER UN SET", "CREATE SET"), href: localePath("/builder"), Icon: Crosshair, count: null, color: "#4fc3f7" },
+    { label: t("GUIDES", "GUIDES"), href: localePath("/guides"), Icon: BookOpen, count: null, color: "#8bdcff" },
   ];
 
   return (
@@ -52,10 +54,10 @@ export default function Home() {
               )}
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link href="/builder" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-2">
+              <Link href={localePath("/builder")} className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-2">
                 <Crosshair size={14} /> {t("CRÉER UN SET", "CREATE SET")}
               </Link>
-              <Link href="/warframes" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all text-center" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
+              <Link href={localePath("/warframes")} className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all text-center" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
                 {t("EXPLORER", "EXPLORE")}
               </Link>
             </div>

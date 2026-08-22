@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { applySeo } from "@/lib/seo";
+import { applySeo, localizedPath, parseLocalizedPath } from "@/lib/seo";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,41 +17,45 @@ interface LayoutProps {
 }
 
 export default function Layout({ children, title }: LayoutProps) {
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
-    applySeo(location, language === "en" ? "en" : "fr");
-  }, [language, location]);
+    const urlLanguage = location.match(/^\/(fr|en)(?:\/|$)/)?.[1];
+    if (urlLanguage && urlLanguage !== language) setLanguage(urlLanguage as "fr" | "en");
+    applySeo(location, urlLanguage === "en" ? "en" : language === "en" ? "en" : "fr");
+  }, [language, location, setLanguage]);
+
+  const localePath = (path: string) => localizedPath(path, language === "en" ? "en" : "fr");
 
   const NAV_ITEMS = [
     {
       section: t("NAVIGATION", "NAVIGATION"),
       items: [
-        { label: t("Accueil", "Main Page"), href: "/", icon: Home },
-        { label: t("Créer un Set", "Set Builder"), href: "/builder", icon: Zap },
-        { label: "Worldstate", href: "/worldstate", icon: Globe },
+        { label: t("Accueil", "Main Page"), href: localePath("/"), icon: Home },
+        { label: t("Créer un Set", "Set Builder"), href: localePath("/builder"), icon: Zap },
+        { label: "Worldstate", href: localePath("/worldstate"), icon: Globe },
       ]
     },
     {
       section: t("ARSENAL", "ARSENAL"),
       items: [
-        { label: "Warframes", href: "/warframes", icon: Shield },
-        { label: t("Armes", "Weapons"), href: "/weapons", icon: Sword },
-        { label: t("Compagnons", "Companions"), href: "/companions", icon: Users },
-        { label: "Mods", href: "/mods", icon: Star },
-        { label: "Arcanes", href: "/arcanes", icon: Sparkles },
-        { label: t("Éclats d’Archonte", "Archon Shards"), href: "/archon-shards", icon: Gem },
+        { label: "Warframes", href: localePath("/warframes"), icon: Shield },
+        { label: t("Armes", "Weapons"), href: localePath("/weapons"), icon: Sword },
+        { label: t("Compagnons", "Companions"), href: localePath("/companions"), icon: Users },
+        { label: "Mods", href: localePath("/mods"), icon: Star },
+        { label: "Arcanes", href: localePath("/arcanes"), icon: Sparkles },
+        { label: t("Éclats d’Archonte", "Archon Shards"), href: localePath("/archon-shards"), icon: Gem },
       ]
     },
     {
       section: t("RESSOURCES", "RESOURCES"),
       items: [
-        { label: t("Guides", "Guides"), href: "/guides", icon: BookOpen },
-        { label: t("Ressources", "Resources"), href: "/resources", icon: Package },
-        { label: t("Paramètres", "Settings"), href: "/settings", icon: Settings },
+        { label: t("Guides", "Guides"), href: localePath("/guides"), icon: BookOpen },
+        { label: t("Ressources", "Resources"), href: localePath("/resources"), icon: Package },
+        { label: t("Paramètres", "Settings"), href: localePath("/settings"), icon: Settings },
       ]
     },
   ];
@@ -76,7 +80,7 @@ export default function Layout({ children, title }: LayoutProps) {
         </button>
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 shrink-0">
+        <Link href={localePath("/")} className="flex items-center gap-2 shrink-0">
           <img
             src="/manus-storage/warframe-logo-icon_cbe14481.png"
             alt="Logo"
@@ -104,12 +108,12 @@ export default function Layout({ children, title }: LayoutProps) {
         {/* Top nav links */}
         <nav className="hidden lg:flex items-center gap-1 text-xs">
           {[
-            { label: t("MAIN PAGE", "MAIN PAGE"), href: "/" },
-            { label: "WARFRAMES", href: "/warframes" },
-            { label: t("ARMES", "WEAPONS"), href: "/weapons" },
-            { label: "MODS", href: "/mods" },
-            { label: "ARCANES", href: "/arcanes" },
-            { label: "BUILDER", href: "/builder" },
+            { label: t("MAIN PAGE", "MAIN PAGE"), href: localePath("/") },
+            { label: "WARFRAMES", href: localePath("/warframes") },
+            { label: t("ARMES", "WEAPONS"), href: localePath("/weapons") },
+            { label: "MODS", href: localePath("/mods") },
+            { label: "ARCANES", href: localePath("/arcanes") },
+            { label: "BUILDER", href: localePath("/builder") },
           ].map((item) => {
             const isActive = location === item.href;
             return (
@@ -156,7 +160,11 @@ export default function Layout({ children, title }: LayoutProps) {
           <Globe size={13} style={{ color: "var(--wf-cyan)" }} />
           <button
             type="button"
-            onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
+            onClick={() => {
+              const nextLanguage = language === "fr" ? "en" : "fr";
+              setLanguage(nextLanguage);
+              navigate(localizedPath(parseLocalizedPath(location).route, nextLanguage));
+            }}
             className="text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-cyan-300"
             style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
             title={t("Changer de langue (FR / EN)", "Switch language (FR / EN)")}
@@ -167,7 +175,7 @@ export default function Layout({ children, title }: LayoutProps) {
 
         {/* Actions */}
         <Link
-          href="/builder"
+          href={localePath("/builder")}
           className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-sm transition-all duration-150 wf-btn-primary"
         >
           <Zap size={12} />
@@ -280,7 +288,7 @@ export default function Layout({ children, title }: LayoutProps) {
                 </h1>
                 {location !== "/" && (
                   <Link
-                    href="/"
+                    href={localePath("/")}
                     className="inline-flex items-center gap-1.5 self-start sm:self-auto px-2.5 py-1.5 rounded-sm text-[10px] uppercase tracking-wider transition-all hover:bg-cyan-400/10"
                     style={{ color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.45)", fontFamily: "var(--font-display)" }}
                     aria-label={t("Revenir à la page d’accueil", "Return to main page")}

@@ -3,6 +3,17 @@
 
 export type SeoLanguage = "fr" | "en";
 
+export function localizedPath(pathname: string, language: SeoLanguage) {
+  const normalized = pathname === "/" ? "" : pathname.startsWith("/") ? pathname : `/${pathname}`;
+  return `/${language}${normalized || "/"}`;
+}
+
+export function parseLocalizedPath(pathname: string): { language: SeoLanguage; route: string } {
+  const match = pathname.match(/^\/(fr|en)(\/.*)?$/);
+  if (!match) return { language: "fr", route: pathname || "/" };
+  return { language: match[1] as SeoLanguage, route: match[2] || "/" };
+}
+
 const SITE_URL = "https://cephalon-wodan-f3oa.vercel.app";
 
 const ROUTE_META: Record<string, { fr: { title: string; description: string; keywords: string }; en: { title: string; description: string; keywords: string } }> = {
@@ -61,11 +72,13 @@ export function getSeoMeta(pathname: string, language: SeoLanguage) {
 }
 
 export function applySeo(pathname: string, language: SeoLanguage) {
-  const meta = getSeoMeta(pathname, language)[language];
-  const canonicalPath = pathname === "/" ? "/" : pathname;
+  const parsed = parseLocalizedPath(pathname);
+  const activeLanguage = parsed.language || language;
+  const meta = getSeoMeta(parsed.route, activeLanguage)[activeLanguage];
+  const canonicalPath = localizedPath(parsed.route, activeLanguage);
   const canonical = `${SITE_URL}${canonicalPath}`;
   document.title = meta.title;
-  document.documentElement.lang = language;
+  document.documentElement.lang = activeLanguage;
   const setMeta = (selector: string, attribute: "name" | "property", value: string) => {
     let element = document.head.querySelector<HTMLMetaElement>(selector);
     if (!element) {
@@ -81,7 +94,7 @@ export function applySeo(pathname: string, language: SeoLanguage) {
   setMeta('meta[property="og:description"]', "property", meta.description);
   setMeta('meta[property="og:type"]', "property", "website");
   setMeta('meta[property="og:url"]', "property", canonical);
-  setMeta('meta[property="og:locale"]', "property", language === "fr" ? "fr_FR" : "en_US");
+  setMeta('meta[property="og:locale"]', "property", activeLanguage === "fr" ? "fr_FR" : "en_US");
   setMeta('meta[name="twitter:card"]', "name", "summary");
   setMeta('meta[name="twitter:title"]', "name", meta.title);
   setMeta('meta[name="twitter:description"]', "name", meta.description);
@@ -89,7 +102,7 @@ export function applySeo(pathname: string, language: SeoLanguage) {
   if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
   link.href = canonical;
   document.head.querySelectorAll('link[rel="alternate"]').forEach(element => element.remove());
-  for (const [hrefLang, href] of [["fr", canonical], ["en", canonical], ["x-default", `${SITE_URL}${canonicalPath}`]] as const) {
+  for (const [hrefLang, href] of [["fr", `${SITE_URL}${localizedPath(parsed.route, "fr")}`], ["en", `${SITE_URL}${localizedPath(parsed.route, "en")}`], ["x-default", `${SITE_URL}${localizedPath(parsed.route, "fr")}`]] as const) {
     const alternate = document.createElement("link");
     alternate.rel = "alternate";
     alternate.hreflang = hrefLang;

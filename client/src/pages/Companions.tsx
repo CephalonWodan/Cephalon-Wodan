@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 import { Search, Users, Shield, Cpu, Dog } from "lucide-react";
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { localizedPath } from "@/lib/seo";
 import { COMPANIONS, MOA_PARTS, HOUND_PARTS, MOA_PARTS_STATS, HOUND_PARTS_STATS, COMPANION_PRECEPTS, Companion, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 
 const TABS = [
@@ -37,6 +39,7 @@ const typeLabel = (type: string) =>
   } as Record<string, string>)[type] || type;
 
 function CompanionDetailModal({ companion, onClose }: { companion: Companion; onClose: () => void }) {
+  const { language } = useLanguage();
   const rarityColor = getRarityColor(companion.rarity);
   const isModular = ["moa", "hound"].includes(companion.type.toLowerCase());
   const companionType = companion.type.toLowerCase();
@@ -236,7 +239,7 @@ function CompanionDetailModal({ companion, onClose }: { companion: Companion; on
 
         <div className="pt-2 flex justify-end">
           <Link
-            href="/builder"
+            href={localizedPath("/builder", language)}
             className="px-4 py-2 text-xs rounded-sm transition-all wf-btn-primary font-bold text-center"
             style={{ fontFamily: "var(--font-display)", letterSpacing: "0.08em" }}
           >

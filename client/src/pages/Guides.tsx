@@ -7,6 +7,7 @@ import { ExternalLink, Filter, PlayCircle, Search, ShieldCheck, Swords } from "l
 import { Link } from "wouter";
 import Layout from "@/components/Layout";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { localizedPath } from "@/lib/seo";
 import { COMMUNITY_GUIDES, type CommunityGuide, type GuideCategory, type GuideCreator } from "@/lib/community-guides";
 
 const CREATOR_OPTIONS: Array<GuideCreator | "ALL"> = ["ALL", "PANDAAHH", "Vũ Thắng", "MHBlacky", "TheKengineer"];
@@ -30,6 +31,7 @@ function GuideCard({ guide, language }: { guide: CommunityGuide; language: "fr" 
   const color = creatorColor(guide.creator);
   const text = guide.title[language];
   const summary = guide.summary[language];
+  const builderHref = localizedPath("/builder", language);
 
   return (
     <article className="group flex min-h-[260px] flex-col rounded-sm p-4 transition-all duration-200" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }} onMouseEnter={event => { event.currentTarget.style.borderColor = color; event.currentTarget.style.transform = "translateY(-2px)"; event.currentTarget.style.boxShadow = `0 8px 24px ${color}18`; }} onMouseLeave={event => { event.currentTarget.style.borderColor = "var(--wf-border)"; event.currentTarget.style.transform = "translateY(0)"; event.currentTarget.style.boxShadow = "none"; }}>
@@ -52,7 +54,7 @@ function GuideCard({ guide, language }: { guide: CommunityGuide; language: "fr" 
       <div className="mb-4 flex items-center gap-2 border-t pt-3 text-[10px]" style={{ borderColor: "var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}><ShieldCheck size={12} style={{ color: "var(--wf-cyan)" }} /> {guide.mission[language]}</div>
       <div className="flex flex-wrap gap-2">
         <a href={guide.sourceUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider transition-colors" style={{ color, border: `1px solid ${color}70`, backgroundColor: `${color}10`, fontFamily: "var(--font-display)" }}><ExternalLink size={12} /> {guide.sourceLabel[language]}</a>
-        {guide.targetItemName && <Link href="/builder" className="inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider wf-btn-primary" style={{ fontFamily: "var(--font-display)" }}>{language === "fr" ? "Ouvrir le Builder" : "Open Builder"}</Link>}
+        {guide.targetItemName && <Link href={builderHref} className="inline-flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider wf-btn-primary" style={{ fontFamily: "var(--font-display)" }}>{language === "fr" ? "Ouvrir le Builder" : "Open Builder"}</Link>}
       </div>
     </article>
   );
@@ -60,6 +62,7 @@ function GuideCard({ guide, language }: { guide: CommunityGuide; language: "fr" 
 
 export default function Guides() {
   const { language } = useLanguage();
+  const localePath = (path: string) => localizedPath(path, language);
   const [query, setQuery] = useState("");
   const [creator, setCreator] = useState<GuideCreator | "ALL">("ALL");
   const [category, setCategory] = useState<GuideCategory | "ALL">("ALL");
