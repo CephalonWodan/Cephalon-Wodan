@@ -1,5 +1,5 @@
 // Tenno Codex — Community guide index
-// Style reminder: source-first editorial cards, amber creator signal, cyan Builder action.
+// Style reminder: source-first editorial cards, amber creator signal, cyan action button.
 // These entries summarize public source topics; they are not endorsements and do not fabricate exact mod lists.
 
 export type GuideCreator = "PANDAAHH" | "Vũ Thắng" | "MHBlacky" | "TheKengineer";
@@ -73,7 +73,7 @@ export const COMMUNITY_GUIDES: CommunityGuide[] = [
     category: "Warframe",
     targetItemName: "Wisp",
     title: { fr: "Wisp offensive — contrôle et dégâts de zone", en: "Offensive Wisp — control and area damage" },
-    summary: { fr: "Une variante offensive de Wisp centrée sur les zones et le remplacement d’une capacité ; vérifie les valeurs finales dans le Builder.", en: "An offensive Wisp variant centered on area effects and replacing an ability; verify final values in the Builder." },
+    summary: { fr: "Une variante offensive de Wisp centrée sur les zones et le remplacement d’une capacité, avec une gestion précise du rythme des pouvoirs.", en: "An offensive Wisp variant centered on area effects and replacing an ability, with careful ability pacing." },
     sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
     sourceUrl: "https://www.youtube.com/watch?v=lBY5qRzrCmY",
     mission: { fr: "Nettoyage / zone", en: "Clearing / area control" },
@@ -109,7 +109,7 @@ export const COMMUNITY_GUIDES: CommunityGuide[] = [
     category: "Arme",
     targetItemName: "Vasto Prime",
     title: { fr: "Vasto Incarnon + Dagath", en: "Vasto Incarnon + Dagath" },
-    summary: { fr: "Une synergie entre une arme Incarnon et Dagath ; sélectionne la bonne variante dans le Builder avant de comparer les évolutions.", en: "A synergy between an Incarnon weapon and Dagath; select the correct variant in the Builder before comparing evolutions." },
+    summary: { fr: "Une synergie entre une arme Incarnon et Dagath, articulée autour de la transformation de l’arme et de l’exploitation des fenêtres de dégâts.", en: "A synergy between an Incarnon weapon and Dagath, built around the weapon’s transformation and damage windows." },
     sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
     sourceUrl: "https://www.youtube.com/watch?v=BGhchbZIjn8",
     mission: { fr: "Dégâts / Incarnon", en: "Damage / Incarnon" },
@@ -120,7 +120,7 @@ export const COMMUNITY_GUIDES: CommunityGuide[] = [
     creator: "TheKengineer",
     category: "Mécanique",
     title: { fr: "Frame Guides — comprendre avant d’optimiser", en: "Frame Guides — understand before optimizing" },
-    summary: { fr: "Une collection de guides analytiques sur les rôles, les capacités et les compromis ; utile pour interpréter les chiffres du Builder.", en: "An analytical guide collection covering roles, abilities, and trade-offs; useful for interpreting Builder numbers." },
+    summary: { fr: "Une collection de guides analytiques sur les rôles, les capacités et les compromis qui permet de mieux comprendre les choix derrière chaque configuration.", en: "An analytical guide collection covering roles, abilities, and trade-offs to clarify the choices behind each configuration." },
     sourceLabel: { fr: "Ouvrir la playlist source", en: "Open source playlist" },
     sourceUrl: "https://www.youtube.com/playlist?list=PLnXNtfBmru96CQNYCLNUEjwxo25Himxag",
     mission: { fr: "Mécaniques / théorie", en: "Mechanics / theory" },
@@ -143,7 +143,7 @@ export const COMMUNITY_GUIDES: CommunityGuide[] = [
     category: "Warframe",
     targetItemName: "Sirius",
     title: { fr: "Sirius & Orion — analyse du kit et des problèmes", en: "Sirius & Orion — kit analysis and issues" },
-    summary: { fr: "Une analyse critique des nouvelles Warframes Sirius et Orion ; utilise-la comme contexte et vérifie les données locales avant toute conclusion.", en: "A critical analysis of the new Sirius and Orion Warframes; use it as context and verify local data before drawing conclusions." },
+    summary: { fr: "Une lecture critique du lancement de Sirius et Orion, qui examine leur kit, leurs promesses et les points qui méritent encore d’être clarifiés après leur arrivée.", en: "A critical look at the launch of Sirius and Orion, examining their kits, their strengths, and the points that still deserve clarification after release." },
     sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
     sourceUrl: "https://www.youtube.com/watch?v=-cXmSFP4wB0",
     mission: { fr: "Analyse / nouveautés", en: "Analysis / new releases" },
@@ -154,7 +154,7 @@ export const COMMUNITY_GUIDES: CommunityGuide[] = [
     creator: "MHBlacky",
     category: "Mécanique",
     title: { fr: "MHBlacky — guides accessibles et endgame", en: "MHBlacky — accessible guides and endgame" },
-    summary: { fr: "Point d’entrée vers les guides et contenus endgame de MHBlacky. Chaque vidéo doit rester la source de la configuration ; le Builder ne fabrique pas de liste de mods à sa place.", en: "Entry point to MHBlacky’s guides and endgame content. Each video remains the source for its configuration; the Builder does not invent a mod list on its behalf." },
+    summary: { fr: "Une sélection de guides pédagogiques et de contenus endgame de MHBlacky, pensée pour progresser des fondamentaux vers les activités les plus exigeantes du Système d’Origine.", en: "A selection of MHBlacky’s approachable guides and endgame content, designed to take players from core fundamentals to the most demanding activities in the Origin System." },
     sourceLabel: { fr: "Ouvrir la chaîne source", en: "Open source channel" },
     sourceUrl: "https://www.youtube.com/@MHBlacky_ENG/about",
     mission: { fr: "Guides / endgame", en: "Guides / endgame" },

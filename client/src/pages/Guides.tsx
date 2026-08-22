@@ -80,7 +80,7 @@ export default function Guides() {
           <div>
             <div className="mb-2 text-[10px] uppercase tracking-[0.2em]" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}>COMMUNITY ARCHIVE // SOURCES VÉRIFIÉES</div>
             <h1 className="text-xl font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>{lang === "fr" ? "Apprendre par les builds publiés" : "Learn from published builds"}</h1>
-            <p className="mt-2 max-w-3xl text-xs leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>{lang === "fr" ? "Une bibliothèque de guides et d’analyses reliés à leurs sources originales. Les fiches résument le sujet de la vidéo ; les statistiques et les valeurs finales sont recalculées par le catalogue et le Builder." : "A library of guides and analyses linked to their original sources. Cards summarize the video topic; stats and final values are recalculated by the catalog and Builder."}</p>
+            <p className="mt-2 max-w-3xl text-xs leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>{lang === "fr" ? "Une bibliothèque de guides et d’analyses reliés à leurs sources originales. Les fiches résument le sujet, le rôle et les compromis présentés dans chaque publication." : "A library of guides and analyses linked to their original sources. Cards summarize the topic, role, and trade-offs presented in each publication."}</p>
           </div>
           <div className="text-right text-[10px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{filteredGuides.length} / {COMMUNITY_GUIDES.length} {lang === "fr" ? "fiches" : "entries"}</div>
         </div>
