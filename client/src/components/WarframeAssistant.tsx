@@ -5,6 +5,8 @@
 import { useEffect, useState } from "react";
 import { Sparkles, X, Send, Bot, ChevronDown } from "lucide-react";
 import { ASSISTANT_BUILD_CONTEXT_EVENT, ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, AssistantBuildContext } from "@/lib/assistant-context";
+import { MODS, Mod } from "@/lib/warframe-data";
+import { toast } from "sonner";
 
 interface Message {
   role: "assistant" | "user";
@@ -131,7 +133,11 @@ export default function WarframeAssistant() {
       }
 
       const data = await res.json();
-      setMessages(prev => [...prev, { role: "assistant", content: data.reply || "Aucune réponse reçue du Cephalon." }]);
+      const replyText = data.reply || "Aucune réponse reçue du Cephalon.";
+      setMessages(prev => [...prev, { role: "assistant", content: replyText }]);
+      try {
+        localStorage.setItem("warframe-assistant:last-transcript", replyText);
+      } catch {}
     } catch (err: any) {
       console.error("Chat error:", err);
       setMessages(prev => [
@@ -140,6 +146,76 @@ export default function WarframeAssistant() {
       ]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const applySuggestedBuild = (content: string) => {
+    try {
+      // Find JSON block or extract mod names from response
+      const jsonMatch = content.match(/```json:recommendation\s*([\s\S]*?)\s*```/) || content.match(/```json\s*([\s\S]*?)\s*```/);
+      let payload: any = null;
+      if (jsonMatch) {
+        try { payload = JSON.parse(jsonMatch[1]); } catch {}
+      }
+
+      if (!payload) {
+        // Fallback: extract quotes or bullet points resembling mod names
+        const matches = content.match(/[-*]\s+\*\*([^*]+)\*\*/g) || content.match(/["']([^"']+)["']/g);
+        if (matches) {
+          payload = { mods: matches.map(m => m.replace(/[-*\s*"'**]/g, "")).slice(0, 10) };
+        }
+      }
+
+      if (!payload || (!payload.mods && !payload.arcanes)) {
+        toast.error("Aucune structure de mods exploitable trouvée dans cette réponse.");
+        return;
+      }
+
+      const rawBuilds = localStorage.getItem("warframe-set-builder:builds:v2");
+      if (!rawBuilds) {
+        toast.error("Aucun build actif trouvé dans le stockage local.");
+        return;
+      }
+
+      const builds = JSON.parse(rawBuilds);
+      if (!Array.isArray(builds) || builds.length === 0) {
+        toast.error("Aucun set disponible à modifier.");
+        return;
+      }
+
+      const activeBuild = builds[0];
+      if (payload.mods && Array.isArray(payload.mods)) {
+        const foundMods: Mod[] = [];
+        for (const name of payload.mods) {
+          const match = MODS.find(m => m.name.toLowerCase() === String(name).toLowerCase() || m.name.toLowerCase().includes(String(name).toLowerCase()));
+          if (match && foundMods.length < 10) {
+            foundMods.push({ ...match, selectedRank: match.maxRank });
+          }
+        }
+        if (foundMods.length > 0) {
+          activeBuild.warframeMods = [
+            ...foundMods.slice(0, 10),
+            ...Array(Math.max(0, 10 - foundMods.length)).fill(null)
+          ];
+        }
+      }
+
+      if (payload.aura) {
+        const match = MODS.find(m => m.name.toLowerCase() === String(payload.aura).toLowerCase());
+        if (match) activeBuild.auraMod = { ...match, selectedRank: match.maxRank };
+      }
+
+      if (payload.exilus) {
+        const match = MODS.find(m => m.name.toLowerCase() === String(payload.exilus).toLowerCase());
+        if (match) activeBuild.exilusMod = { ...match, selectedRank: match.maxRank };
+      }
+
+      localStorage.setItem("warframe-set-builder:builds:v2", JSON.stringify(builds));
+      window.dispatchEvent(new Event("storage"));
+      toast.success("Mods et configuration IA appliqués au Set actif ! Ouvre le Builder pour voir le résultat.");
+    } catch (err) {
+      console.error("Apply build error:", err);
+      toast.error("Impossible d'appliquer automatiquement les mods.");
     }
   };
 
@@ -226,7 +302,22 @@ export default function WarframeAssistant() {
             {messages.map((msg, idx) => (
               <div key={`${msg.role}-${idx}`} className={`flex gap-2 text-xs ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                 {msg.role === "assistant" && <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm" style={{ backgroundColor: "rgba(79,195,247,0.15)", border: "1px solid rgba(79,195,247,0.4)" }}><Bot size={12} style={{ color: "var(--wf-cyan)" }} /></div>}
-                <div className="max-w-[88%] rounded-sm p-2.5 leading-relaxed whitespace-pre-wrap" style={{ backgroundColor: msg.role === "user" ? "rgba(79,195,247,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${msg.role === "user" ? "rgba(79,195,247,0.3)" : "var(--wf-border)"}`, color: "var(--wf-text)", fontSize: "11px" }}>{msg.content}</div>
+                <div className="max-w-[88%] rounded-sm p-2.5 leading-relaxed whitespace-pre-wrap" style={{ backgroundColor: msg.role === "user" ? "rgba(79,195,247,0.15)" : "rgba(255,255,255,0.04)", border: `1px solid ${msg.role === "user" ? "rgba(79,195,247,0.3)" : "var(--wf-border)"}`, color: "var(--wf-text)", fontSize: "11px" }}>
+                  {msg.content}
+                  {msg.role === "assistant" && (
+                    <div className="mt-2 pt-2 border-t flex items-center justify-between" style={{ borderColor: "var(--wf-border)" }}>
+                      <span className="text-[9px] font-mono" style={{ color: "var(--wf-text-dim)" }}>CEPHALON CODEX // RECOMMENDATION</span>
+                      <button
+                        type="button"
+                        onClick={() => applySuggestedBuild(msg.content)}
+                        className="px-2 py-1 rounded-sm text-[9px] font-bold tracking-wider transition-colors hover:bg-cyan-400/20 flex items-center gap-1"
+                        style={{ backgroundColor: "rgba(79,195,247,0.12)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}
+                      >
+                        <Sparkles size={10} /> APPLIQUER AU BUILD
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
             {loading && <div className="flex items-center gap-2 text-xs"><div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-sm animate-pulse" style={{ backgroundColor: "rgba(79,195,247,0.15)", border: "1px solid rgba(79,195,247,0.4)" }}><Bot size={12} style={{ color: "var(--wf-cyan)" }} /></div><div className="text-[10px] italic" style={{ color: "var(--wf-text-dim)" }}>Le Cephalon compare la mission et l'arsenal...</div></div>}

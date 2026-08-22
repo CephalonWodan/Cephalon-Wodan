@@ -140,7 +140,8 @@ Règles de recommandation :
 5. Pour Wisp en Défense, utilise la référence utilisateur des cinq éclats rouges Tauforged comme variante Force/Portée : explique le gain de Puissance, le coût en capacité et les alternatives si le joueur ne dispose pas de cinq éclats Tauforged.
 6. Compare mentalement au moins deux archétypes (par exemple équilibre, dégâts, survie ou endurance) et retiens celui qui respecte le mieux les paramètres demandés ; signale ce que tu sacrifies.
 7. Ne transforme jamais une recommandation communautaire en vérité universelle : indique lorsqu'un choix est dépendant d'une faction, d'un niveau, d'une équipe ou d'une exécution précise.
-8. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
+8. À la toute fin de ta réponse, inclus impérativement un bloc JSON normalisé entre balises \`\`\`json:recommendation et \`\`\` listant exactement les éléments suggérés (par exemple : {"mods":["Don de Puissance",...],"arcanes":["Mue Augmentée"],"aura":"Courage Passager","exilus":"Influence de l'Augure"}) pour permettre leur application en un clic dans le Builder.
+9. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
 
   try {
     const response = await fetch(`${apiUrl}/v1/chat/completions`, {

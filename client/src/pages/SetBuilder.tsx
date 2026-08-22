@@ -1602,6 +1602,12 @@ function buildSummaryMarkdown(build: BuildSet): string {
     if (!tree) return `- ${entry.label} : aucun arbre Incarnon sélectionné`;
     return `- ${entry.label} — ${tree.weapon} : ${tree.active ? "forme active" : "forme inactive"}, évolution ${tree.selectedEvolution}`;
   }).join("\n");
+  let assistantTranscript = "";
+  try {
+    const raw = localStorage.getItem("warframe-assistant:last-transcript");
+    if (raw) assistantTranscript = `\n## 🤖 Transcription & Conseils du Cephalon Codex (IA)\n\n> ${raw.replace(/\n/g, "\n> ")}\n`;
+  } catch {}
+
   return [
     `# ${build.name}`,
     "",
@@ -1644,7 +1650,8 @@ function buildSummaryMarkdown(build: BuildSet): string {
     "## Bonus reconnus",
     `- PV : +${enhancements.flatHealth} · Boucliers : +${enhancements.flatShield} · Armure : +${enhancements.flatArmor} · Énergie : +${enhancements.flatEnergy}`,
     `- Force : +${enhancements.abilityStrengthPct}% · Durée : +${enhancements.abilityDurationPct}% · Parkour : +${enhancements.parkourVelocityPct}%`,
-  ].join("\n");
+    assistantTranscript,
+  ].filter(Boolean).join("\n");
 }
 
 // ---- Stats Panel ----
