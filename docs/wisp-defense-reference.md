@@ -4,7 +4,7 @@ Source fournie par l’utilisateur : capture Discord `Wisp_def.png`, ouverte le 
 
 La capture est lisible et montre une Wisp configurée pour la défense avec un fort investissement en Force, Portée et Durée, au prix d’une Efficacité réduite. Les valeurs affichées sont : Santé 370, Bouclier 370, Armure 210 → 262, Énergie 300, Vitesse de course 1,25 ; Durée 100 % → 128 %, Efficacité 100 % → 45 %, Portée 100 % → 175 %, Puissance 100 % → 323 %.
 
-Les éléments identifiables sont : Don de Puissance, Fusion des Réservoirs, Colère Aveugle, Influence de l’Augure, Allonge Archonte, Haine d’Amar, Secrets de l’Augure, Continuité Accrue, Intensité Archonte et Courage Passager. Deux Arcanes sont visibles : Mue Augmentée et Arcane Belliqueux. La capture semble montrer une capacité disponible de 78 et une consommation de 5, mais ces chiffres doivent être vérifiés dans le Builder avant d’être présentés comme des données calculées.
+Les éléments identifiables sont : Don de Puissance, Fusion des Réservoirs, Colère Aveugle, Influence de l’Augure, Allonge Archonte, Haine d’Amar, Secrets de l’Augure, Continuité Accrue, Intensité Archonte et Courage Passager. Deux Arcanes sont visibles : Mue Augmentée et Arcane Belliqueux. La référence est maintenant complétée par cinq éclats d’Archonte rouges Tauforged, chacun configuré sur +15 % de Puissance des capacités, soit +75 % additifs au total. La capture semble montrer une capacité disponible de 78 et une consommation de 5, mais ces chiffres doivent être vérifiés dans le Builder avant d’être présentés comme des données calculées.
 
 ## Règles d’utilisation
 

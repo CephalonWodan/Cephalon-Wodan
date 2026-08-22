@@ -33,6 +33,7 @@ export interface AssistantBuildContext {
   };
   arcanes: string[];
   archonShards: string[];
+  archonShardAbilityStrength: number;
 }
 
 function itemLabel(item: { name?: string; effect?: string } | null | undefined): string | null {
@@ -49,6 +50,14 @@ function compactShards(shards: (SelectedArchonShard | null)[]): string[] {
     .map(selected => selected?.shard?.name ? `${selected.shard.name}${selected.shard.effects?.[selected.effectIndex] ? ` — ${selected.shard.effects[selected.effectIndex]}` : ""}` : null)
     .filter((value): value is string => Boolean(value))
     .slice(0, 5);
+}
+
+function shardAbilityStrengthTotal(shards: (SelectedArchonShard | null)[]): number {
+  return shards.reduce((total, selected) => {
+    const effect = selected?.shard?.effects?.[selected.effectIndex] || "";
+    const match = effect.match(/(?:\+\s*)?(\d+(?:\.\d+)?)%\s*(?:Ability Strength|Puissance)/i);
+    return total + (match ? Number(match[1]) : 0);
+  }, 0);
 }
 
 export function summarizeBuildForAssistant(build: BuildSet, buildName = build.name): AssistantBuildContext {
@@ -83,5 +92,6 @@ export function summarizeBuildForAssistant(build: BuildSet, buildName = build.na
       ...build.meleeArcanes,
     ].map(arcane => itemLabel(arcane)).filter((value): value is string => Boolean(value)).slice(0, 6),
     archonShards: compactShards(build.archonShards),
+    archonShardAbilityStrength: shardAbilityStrengthTotal(build.archonShards),
   };
 }

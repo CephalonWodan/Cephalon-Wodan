@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 
-const WISP_DEFENSE_REFERENCE = `Référence de build fournie par l'utilisateur pour Wisp en Défense : Don de Puissance ; Fusion des Réservoirs ; Colère Aveugle ; Influence de l'Augure ; Allonge Archonte ; Haine d'Amar ; Secrets de l'Augure ; Continuité Accrue ; Intensité Archonte ; Courage Passager ; Arcanes Mue Augmentée et Arcane Belliqueux. La capture indique approximativement Force 323 %, Portée 175 %, Durée 128 %, Efficacité 45 %, Santé 370, Bouclier 370, Armure 210→262 et Énergie 300. Utilise cette configuration comme inspiration pour Wisp/Wisp Prime en Défense, mais vérifie toujours les noms, rangs, polarités, capacité et valeurs calculées dans le snapshot du Builder. Ne présente pas les valeurs de la capture comme des valeurs officielles si le moteur donne un autre résultat.`;
+const WISP_DEFENSE_REFERENCE = `Référence de build fournie par l'utilisateur pour Wisp en Défense : Don de Puissance ; Fusion des Réservoirs ; Colère Aveugle ; Influence de l'Augure ; Allonge Archonte ; Haine d'Amar ; Secrets de l'Augure ; Continuité Accrue ; Intensité Archonte ; Courage Passager ; Arcanes Mue Augmentée et Arcane Belliqueux. Ajout demandé : cinq éclats d’Archonte rouges Tauforged, chacun configuré sur +15 % de Puissance des capacités, soit +75 % de Puissance additive au total. La capture indique approximativement Force 323 %, Portée 175 %, Durée 128 %, Efficacité 45 %, Santé 370, Bouclier 370, Armure 210→262 et Énergie 300 ; avec les cinq éclats, la Puissance cible doit être recalculée par le moteur et non copiée mécaniquement. Utilise cette configuration comme inspiration pour Wisp/Wisp Prime en Défense, mais vérifie toujours les noms, rangs, polarités, capacité et valeurs calculées dans le snapshot du Builder. Ne présente pas les valeurs de la capture comme des valeurs officielles si le moteur donne un autre résultat.`;
 
 const MISSION_GUIDANCE: Record<string, string> = {
   auto: "Déduis l'objectif de la demande. Si le type de mission n'est pas identifiable, demande une précision avant de proposer un build spécialisé.",
@@ -95,8 +95,9 @@ Règles de recommandation :
 1. Propose une configuration concrète : mods prioritaires par équipement, Aura/Exilus si pertinent, Arcanes, éclats, armes et capacité de compagnon.
 2. Explique le rôle de chaque choix et les compromis. Adapte les statistiques à la Warframe réellement sélectionnée ; ne remplace jamais une Warframe par un exemple arbitraire sans le signaler.
 3. Respecte les systèmes du jeu : polarités, capacité, fusion élémentaire, Incarnon cumulatif, Helminth et restrictions de buffs. Ne prétends pas avoir appliqué un mod si le snapshot ne le contient pas.
-4. Distingue les faits présents dans le snapshot des recommandations. N'invente pas de statistiques précises absentes du contexte ; demande une précision si elle est nécessaire.
-5. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
+4. Distingue les faits présents dans le snapshot des recommandations. Si archonShardAbilityStrength est renseigné, indique séparément son cumul et ne le compte qu'une seule fois dans la Puissance finale. Cinq éclats rouges Tauforged configurés à +15 % correspondent à +75 % additifs, mais ne prétends pas connaître la valeur finale complète sans les autres contributions calculées.
+5. Pour Wisp en Défense, utilise la référence utilisateur des cinq éclats rouges Tauforged comme variante Force/Portée : explique le gain de Puissance, le coût en capacité et les alternatives si le joueur ne dispose pas de cinq éclats Tauforged.
+6. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
 
   try {
     const response = await fetch(`${apiUrl}/v1/chat/completions`, {

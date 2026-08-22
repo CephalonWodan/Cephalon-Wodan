@@ -233,3 +233,11 @@
 - [x] Ajouter un sélecteur de mission dans le widget Cephalon Codex.
 - [x] Afficher une recommandation structurée : mods, arcanes, éclats, armes et priorités de gameplay.
 - [x] Tester les scénarios avec et sans Warframe sélectionnée, puis compiler et publier.
+
+
+## Nouvelle demande — Cinq éclats rouges tauforgés pour Wisp Défense
+
+- [x] Vérifier la structure des éclats rouges tauforgés et le calcul de Puissance des capacités.
+- [x] Mettre à jour la référence Wisp Défense avec cinq éclats configurés à +15 % chacun.
+- [x] Faire apparaître le cumul de +75 % dans le contexte et les recommandations IA.
+- [x] Tester la configuration, compiler et publier le checkpoint.
