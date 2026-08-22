@@ -9,6 +9,7 @@ import Layout from "@/components/Layout";
 import AssetImage from "@/components/AssetImage";
 import { WEAPONS, Weapon, WeaponType, getRarityColor, getRarityLabel } from "@/lib/warframe-data";
 import { IncarnonModal } from "@/components/IncarnonModal";
+import { getIncarnonProfile } from "@/lib/incarnon-data";
 
 const WEAPON_TYPES: { label: string; value: WeaponType | "all" }[] = [
   { label: "Toutes", value: "all" },
@@ -29,7 +30,7 @@ type SortKey = (typeof SORT_OPTIONS)[number]["value"];
 function WeaponCard({ weapon, onPreview, onIncarnon }: { weapon: Weapon; onPreview: (weapon: Weapon) => void; onIncarnon: (weapon: Weapon, e: React.MouseEvent) => void }) {
   const rarityColor = getRarityColor(weapon.rarity);
   const typeLabels: Record<WeaponType, string> = { primary: "PRIMAIRE", secondary: "SECONDAIRE", melee: "MÊLÉE", archgun: "ARCHGUN", archmelee: "ARCHMÊLÉE" };
-  const hasIncarnon = weapon.isPrime || weapon.name.toLowerCase().includes("prime") || ["latron", "lex", "boltor", "torid", "miter", "dual toxocyst", "braton", "strun", "laetum", "phenmor", "felarx", "taiga", "praedos"].some(w => weapon.name.toLowerCase().includes(w));
+  const hasIncarnon = Boolean(getIncarnonProfile(weapon));
 
   return (
     <div onClick={() => onPreview(weapon)} className="rounded-sm overflow-hidden transition-all duration-200 cursor-pointer relative group" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }} onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = rarityColor; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 14px ${rarityColor}20`; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }} onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "var(--wf-border)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.transform = "translateY(0)"; }}>
@@ -76,7 +77,7 @@ export default function Weapons() {
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
     return [...WEAPONS].filter(weapon => {
-      const hasInc = weapon.isPrime || weapon.name.toLowerCase().includes("prime") || ["latron", "lex", "boltor", "torid", "miter", "dual toxocyst", "braton", "strun", "laetum", "phenmor", "felarx", "taiga", "praedos"].some(w => weapon.name.toLowerCase().includes(w));
+      const hasInc = Boolean(getIncarnonProfile(weapon));
       const searchable = [weapon.name, weapon.description, weapon.weaponClass, weapon.trigger, ...Object.keys(weapon.damageTypes || {})].join(" ").toLowerCase();
       return (!query || searchable.includes(query)) && (typeFilter === "all" || weapon.type === typeFilter) && (!primeOnly || weapon.isPrime) && (!incarnonOnly || hasInc);
     }).sort((a, b) => {
@@ -130,9 +131,11 @@ export default function Weapons() {
               <div className="p-2 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}><span className="text-[10px] block" style={{ color: "var(--wf-text-dim)" }}>STATUT</span><span className="text-sm font-bold font-mono" style={{ color: "var(--wf-cyan)" }}>{(previewWeapon.statusChance * 100).toFixed(1)}%</span></div>
             </div>
             <div className="flex justify-end gap-2">
-              <button onClick={() => { const w = previewWeapon; setPreviewWeapon(null); setIncarnonWeapon(w); }} className="px-3 py-1.5 text-xs rounded-sm flex items-center gap-1.5 bg-amber-500/20 border border-amber-500/50 text-amber-300 hover:bg-amber-500/30 transition-all">
-                <Sparkles size={12} /> Voir Évolutions Incarnon
-              </button>
+              {getIncarnonProfile(previewWeapon) && (
+                <button onClick={() => { const w = previewWeapon; setPreviewWeapon(null); setIncarnonWeapon(w); }} className="px-3 py-1.5 text-xs rounded-sm flex items-center gap-1.5 bg-amber-500/20 border border-amber-500/50 text-amber-300 hover:bg-amber-500/30 transition-all">
+                  <Sparkles size={12} /> Voir Évolutions Incarnon
+                </button>
+              )}
               <button onClick={() => setPreviewWeapon(null)} className="px-4 py-1.5 text-xs rounded-sm wf-btn-primary">Fermer</button>
             </div>
           </div>
