@@ -1,16 +1,38 @@
 import type { Request, Response } from "express";
 
+function sendJson(res: any, status: number, data: any) {
+  if (typeof res.status === "function" && typeof res.json === "function") {
+    return res.status(status).json(data);
+  }
+  res.statusCode = status;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(data));
+}
+
 export async function handleChatRequest(req: Request, res: Response) {
-  const { messages } = req.body;
-  if (!messages || !Array.isArray(messages)) {
-    return res.status(400).json({ error: "Invalid messages format" });
+  let body = req.body;
+  if (!body && (req as any).rawBody) {
+    try {
+      body = JSON.parse((req as any).rawBody);
+    } catch {
+      // ignore
+    }
+  }
+
+  let messages = body?.messages;
+  if (!messages && body?.message) {
+    messages = [{ role: "user", content: body.message }];
+  }
+
+  if (!messages || !Array.isArray(messages) || messages.length === 0) {
+    return sendJson(res, 400, { error: "Invalid messages format. Expected array of messages." });
   }
 
   const apiUrl = process.env.BUILT_IN_FORGE_API_URL;
   const apiKey = process.env.BUILT_IN_FORGE_API_KEY;
 
   if (!apiUrl || !apiKey) {
-    return res.json({
+    return sendJson(res, 200, {
       reply: "⚠️ Le service LLM n'est pas configuré dans cet environnement. Assure-toi que le projet dispose des clés d'API Forge intégrées."
     });
   }
@@ -38,17 +60,17 @@ export async function handleChatRequest(req: Request, res: Response) {
     if (!response.ok) {
       const errText = await response.text();
       console.error("LLM Proxy error:", response.status, errText);
-      return res.json({
+      return sendJson(res, 200, {
         reply: "⚠️ Erreur lors de la communication avec le Cephalon IA (Code " + response.status + "). Réessaie dans un instant."
       });
     }
 
     const data = await response.json() as any;
     const content = data.choices?.[0]?.message?.content || "Aucune réponse générée par le Cephalon.";
-    return res.json({ reply: content });
+    return sendJson(res, 200, { reply: content });
   } catch (error: any) {
     console.error("Chat API exception:", error);
-    return res.json({
+    return sendJson(res, 200, {
       reply: "⚠️ Erreur interne du serveur de chat : " + (error?.message || "Inconnue")
     });
   }
