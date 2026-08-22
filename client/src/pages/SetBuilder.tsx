@@ -20,6 +20,7 @@ import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
 import { ASSISTANT_BUILD_CONTEXT_EVENT, ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, summarizeBuildForAssistant } from "@/lib/assistant-context";
 import { resolveElementalDamage, getElementalDisplayLabel, ElementalDamageBreakdown } from "@/lib/elemental-damage";
+import { COMMUNITY_PRESETS, CommunityPreset } from "@/lib/community-presets";
 
 // ---- Slot Selector Modal ----
 type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-posture" | "mod-companion-weapon-posture";
@@ -599,7 +600,7 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
   const assetType: AssetType = label === "WARFRAME" ? "warframe" : label.includes("COMPAGNON") ? "companion" : "weapon";
   return (
     <div
-      className="wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200"
+      className={`wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200 ${item ? "" : "wf-schematic-socket"}`}
       style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${item ? rarityColor : "var(--wf-border)"}`, position: "relative" }}
     >
       {/* HUD corner decoration */}
@@ -677,7 +678,7 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
   const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
   return (
     <div
-      className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${mod ? "" : "wf-empty-slot"}`}
+      className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${mod ? "" : "wf-empty-slot wf-schematic-socket"}`}
       style={{
         backgroundColor: mod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
         border: `1px solid ${mod ? rarityColor : "var(--wf-border)"}`,
@@ -742,9 +743,10 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
           </div>
         </div>
       ) : (
-        <div className="relative flex items-center justify-center h-full min-h-16 p-3">
+          <div className="relative flex items-center justify-center gap-2 h-full min-h-16 p-3">
           <div className="wf-slot-trace" />
           <Plus size={16} style={{ color: "var(--wf-cyan-dim)" }} />
+          <span className="text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>SLOT {index + 1} // PRÊT</span>
         </div>
       )}
     </div>
@@ -2031,6 +2033,9 @@ export default function SetBuilder() {
   const [activeTab, setActiveTab] = useState<"equipment" | "mods">("equipment");
   const [helminthSearch, setHelminthSearch] = useState("");
   const [helminthCategory, setHelminthCategory] = useState<HelminthAbility["category"] | "all">("all");
+  const [communityPresetsOpen, setCommunityPresetsOpen] = useState(false);
+  const [presetCreatorFilter, setPresetCreatorFilter] = useState<CommunityPreset["creator"] | "all">("all");
+  const [presetCategoryFilter, setPresetCategoryFilter] = useState<CommunityPreset["category"] | "all">("all");
   const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -2492,6 +2497,88 @@ export default function SetBuilder() {
     );
   };
 
+  const resolvePresetMod = (name: string) => MODS.find(mod => mod.name.toLowerCase() === name.trim().toLowerCase());
+  const resolvePresetArcane = (name: string) => ARCANES.find(arcane => arcane.name.toLowerCase() === name.trim().toLowerCase());
+
+  const applyCommunityPreset = (preset: CommunityPreset, duplicate = false) => {
+    const source = normalizeBuild(JSON.parse(JSON.stringify(activeBuild)));
+    if (!source) {
+      toast.error("Impossible de préparer le set actif pour ce preset.");
+      return;
+    }
+
+    const targetWarframe = preset.category === "Warframe"
+      ? WARFRAMES.find(item => item.name.toLowerCase() === preset.targetItemName.toLowerCase())
+      : undefined;
+    const targetWeapon = preset.category !== "Warframe"
+      ? WEAPONS.find(item => item.name.toLowerCase() === preset.targetItemName.toLowerCase() && ((preset.category === "Arme Primaire" && item.type === "primary") || (preset.category === "Arme Secondaire" && item.type === "secondary") || (preset.category === "Arme Mêlée" && item.type === "melee")))
+      : undefined;
+
+    if (preset.category === "Warframe" && !targetWarframe) {
+      toast.error(`Warframe introuvable dans le catalogue : ${preset.targetItemName}`);
+      return;
+    }
+    if (preset.category !== "Warframe" && !targetWeapon) {
+      toast.error(`Arme introuvable dans le catalogue : ${preset.targetItemName}`);
+      return;
+    }
+
+    const next = normalizeBuild(JSON.parse(JSON.stringify(source)));
+    if (!next) return;
+    next.name = duplicate ? preset.name : `${preset.name} // ACTIF`;
+    next.description = `${preset.description} Preset communautaire inspiré de ${preset.creator} ; à ajuster selon les ressources, la faction et la mission.`;
+
+    const resolvedMods = preset.modNames.map(resolvePresetMod).filter(Boolean).map(mod => selectModAtMaxRank(mod as Mod));
+    const resolvedArcanes = preset.arcaneNames.map(resolvePresetArcane).filter((arcane): arcane is Arcane => Boolean(arcane));
+    const resolvedShards = (preset.archonShards || []).map(entry => {
+      const shard = ARCHON_SHARDS.find(item => item.name.toLowerCase() === entry.shardName.toLowerCase());
+      if (!shard) return null;
+      const requestedEffect = entry.effectText.toLowerCase();
+      const effectIndex = Math.max(0, shard.effects.findIndex(effect => effect.toLowerCase().includes(requestedEffect)));
+      return { shard, effectIndex } as SelectedArchonShard;
+    }).filter((shard): shard is SelectedArchonShard => Boolean(shard));
+
+    if (preset.category === "Warframe" && targetWarframe) {
+      next.warframe = targetWarframe;
+      next.warframeMods = Array(8).fill(null);
+      next.auraMod = preset.auraName ? resolvePresetMod(preset.auraName) ? selectModAtMaxRank(resolvePresetMod(preset.auraName) as Mod) : null : null;
+      next.exilusMod = preset.exilusName ? resolvePresetMod(preset.exilusName) ? selectModAtMaxRank(resolvePresetMod(preset.exilusName) as Mod) : null : null;
+      next.warframeArcanes = Array(2).fill(null);
+      resolvedMods.slice(0, 8).forEach((mod, index) => { next.warframeMods[index] = mod; });
+      resolvedArcanes.slice(0, 2).forEach((arcane, index) => { next.warframeArcanes[index] = arcane; });
+      next.archonShards = Array(5).fill(null);
+      resolvedShards.slice(0, 5).forEach((shard, index) => { next.archonShards[index] = shard; });
+      // Les presets Endgame sont calibrés sur une Warframe équipée d’un Réacteur Orokin.
+      next.capacityBoosts = { ...next.capacityBoosts, warframe: true };
+    } else if (targetWeapon) {
+      const weaponKey = preset.category === "Arme Primaire" ? "primary" : preset.category === "Arme Secondaire" ? "secondary" : "melee";
+      const modKey = `${weaponKey}Mods` as "primaryMods" | "secondaryMods" | "meleeMods";
+      const arcaneKey = `${weaponKey}Arcanes` as "primaryArcanes" | "secondaryArcanes" | "meleeArcanes";
+      next[`${weaponKey}Weapon` as "primaryWeapon" | "secondaryWeapon" | "meleeWeapon"] = targetWeapon;
+      next[modKey] = Array(8).fill(null);
+      resolvedMods.slice(0, 8).forEach((mod, index) => { next[modKey][index] = mod; });
+      next[arcaneKey] = Array(1).fill(null);
+      resolvedArcanes.slice(0, 1).forEach((arcane, index) => { next[arcaneKey][index] = arcane; });
+      next.capacityBoosts = { ...next.capacityBoosts, [weaponKey]: true };
+    }
+
+    const missingMods = preset.modNames.filter(name => !resolvePresetMod(name));
+    const missingArcanes = preset.arcaneNames.filter(name => !resolvePresetArcane(name));
+    if (missingMods.length || missingArcanes.length) {
+      toast.warning(`Preset chargé avec ${missingMods.length + missingArcanes.length} élément(s) introuvable(s) dans le catalogue.`);
+    }
+
+    next.id = Date.now().toString();
+    if (duplicate) {
+      setBuilds(prev => [...prev, next]);
+      setActiveBuildIndex(builds.length);
+    } else {
+      setBuilds(prev => prev.map((build, index) => index === activeBuildIndex ? next : build));
+    }
+    setBuildName(next.name);
+    toast.success(`${preset.name} ${duplicate ? "ajouté comme variante" : "chargé dans le set actif"}.`);
+  };
+
   const saveBuild = () => {
     const buildToSave = { ...activeBuild, name: buildName, id: Date.now().toString() };
     setSavedBuilds(prev => [...prev, buildToSave]);
@@ -2580,6 +2667,11 @@ export default function SetBuilder() {
     setActiveBuildIndex(Math.max(0, activeBuildIndex - 1));
   };
 
+  const visibleCommunityPresets = COMMUNITY_PRESETS.filter(preset =>
+    (presetCreatorFilter === "all" || preset.creator === presetCreatorFilter) &&
+    (presetCategoryFilter === "all" || preset.category === presetCategoryFilter)
+  );
+
   return (
     <Layout title="CRÉER UN SET">
       {/* Build tabs */}
@@ -2620,12 +2712,101 @@ export default function SetBuilder() {
       <div className="wf-command-console hud-frame mb-4 rounded-sm border border-cyan-400/30 p-3 sm:p-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300" style={{ fontFamily: "var(--font-mono)" }}>TACTICAL LOADOUT // CONFIGURATION COCKPIT</div>
-            <div className="mt-1 text-xs uppercase tracking-wider text-slate-300 sm:text-sm" style={{ fontFamily: "var(--font-display)" }}>Warframe · armement · compagnon · mods</div>
+            <div className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300" style={{ fontFamily: "var(--font-mono)" }}>TACTICAL LOADOUT // CONFIGURATION COCKPIT</div>
+            <div className="mt-1 text-sm font-semibold uppercase tracking-wider text-slate-200 sm:text-base" style={{ fontFamily: "var(--font-display)" }}>Warframe · armement · compagnon · mods</div>
           </div>
           <div className="flex items-center gap-2 text-[9px] font-mono uppercase text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-cyan-300" /> Calculs en direct</div>
         </div>
+        <div className="mt-3 grid grid-cols-2 gap-2 border-t pt-3 sm:grid-cols-4" style={{ borderColor: "rgba(79,195,247,0.16)" }}>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>Set actif</div><div className="mt-1 truncate text-xs font-semibold text-slate-100" style={{ fontFamily: "var(--font-display)" }}>{buildName || "Sans nom"}</div></div>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>Warframe</div><div className="mt-1 truncate text-xs font-semibold text-cyan-200" style={{ fontFamily: "var(--font-display)" }}>{activeBuild.warframe?.name || "En attente"}</div></div>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>Modules</div><div className="mt-1 text-xs font-semibold text-cyan-200" style={{ fontFamily: "var(--font-display)" }}>{[activeBuild.warframe, activeBuild.primaryWeapon, activeBuild.secondaryWeapon, activeBuild.meleeWeapon, activeBuild.companion].filter(Boolean).length}/5 actifs</div></div>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>État</div><div className="mt-1 text-xs font-semibold text-cyan-200" style={{ fontFamily: "var(--font-display)" }}>{activeBuild.warframe ? "PRÊT À FORGER" : "CONFIGURATION REQUISE"}</div></div>
+        </div>
       </div>
+
+      <section className="wf-panel wf-hud-panel hud-frame mb-4 rounded-sm p-3 sm:p-4" style={{ border: "1px solid rgba(79,195,247,0.35)", backgroundColor: "rgba(79,195,247,0.03)" }}>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em]" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+              <Star size={13} /> BIBLIOTHÈQUE // PRESETS COMMUNAUTAIRES
+            </div>
+            <p className="mt-1 max-w-2xl text-[10px] leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+              Archétypes inspirés de méthodes publiques. Les statistiques et identifiants restent contrôlés par le catalogue local ; chaque preset est modifiable après chargement.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setCommunityPresetsOpen(open => !open)}
+            className="flex shrink-0 items-center justify-center gap-2 rounded-sm px-3 py-2 text-[10px] font-bold tracking-wider transition-colors hover:bg-cyan-400/15"
+            style={{ backgroundColor: communityPresetsOpen ? "rgba(79,195,247,0.18)" : "rgba(0,0,0,0.28)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}
+          >
+            {communityPresetsOpen ? <ChevronDown size={12} /> : <Plus size={12} />}
+            {communityPresetsOpen ? "MASQUER LES PRESETS" : "OUVRIR LA BIBLIOTHÈQUE"}
+          </button>
+        </div>
+
+        {communityPresetsOpen && (
+          <div className="mt-4 space-y-3 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <select
+                value={presetCreatorFilter}
+                onChange={event => setPresetCreatorFilter(event.target.value as CommunityPreset["creator"] | "all")}
+                className="rounded-sm px-2 py-2 text-[10px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                <option value="all">TOUS LES CRÉATEURS</option>
+                <option value="TheKengineer">THEKENGINEER</option>
+                <option value="MHBlacky">MHBLACKY</option>
+                <option value="PANDAAHH">PANDAAHH</option>
+              </select>
+              <select
+                value={presetCategoryFilter}
+                onChange={event => setPresetCategoryFilter(event.target.value as CommunityPreset["category"] | "all")}
+                className="rounded-sm px-2 py-2 text-[10px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                <option value="all">TOUTES LES CATÉGORIES</option>
+                <option value="Warframe">WARFRAME</option>
+                <option value="Arme Primaire">ARME PRIMAIRE</option>
+                <option value="Arme Secondaire">ARME SECONDAIRE</option>
+                <option value="Arme Mêlée">ARME MÊLÉE</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              {visibleCommunityPresets.map(preset => (
+                <article key={preset.id} className="rounded-sm p-3" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>{preset.name}</h3>
+                      <div className="mt-1 flex flex-wrap gap-1.5 text-[9px] uppercase" style={{ fontFamily: "var(--font-mono)" }}>
+                        <span className="rounded-sm px-1.5 py-0.5" style={{ color: "var(--wf-cyan)", backgroundColor: "rgba(79,195,247,0.12)" }}>{preset.creator}</span>
+                        <span className="rounded-sm px-1.5 py-0.5" style={{ color: "#ffca28", backgroundColor: "rgba(255,202,40,0.1)" }}>{preset.difficulty}</span>
+                        <span className="rounded-sm px-1.5 py-0.5" style={{ color: "var(--wf-text-dim)", backgroundColor: "rgba(255,255,255,0.05)" }}>{preset.category}</span>
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[9px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{preset.targetItemName}</span>
+                  </div>
+                  <p className="mt-2 text-[10px] leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>{preset.description}</p>
+                  <div className="mt-2 text-[9px] uppercase" style={{ color: "#81d4fa", fontFamily: "var(--font-mono)" }}>MISSION // {preset.missionType}</div>
+                  {preset.archonShards?.length ? <div className="mt-1 text-[9px] uppercase" style={{ color: "#ef5350", fontFamily: "var(--font-mono)" }}>ÉCLATS // {preset.archonShards.length} × {preset.archonShards[0]?.shardName} // {preset.archonShards[0]?.effectText}</div> : null}
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {[...preset.modNames.slice(0, 4), ...(preset.auraName ? [`AURA: ${preset.auraName}`] : []), ...(preset.exilusName ? [`EXILUS: ${preset.exilusName}`] : [])].map((modName, index) => (
+                      <span key={`${preset.id}-mod-${index}`} className="rounded-sm px-1.5 py-0.5 text-[9px]" style={{ color: "var(--wf-text-dim)", border: "1px solid rgba(255,255,255,0.1)", fontFamily: "var(--font-mono)" }}>{modName}</span>
+                    ))}
+                  </div>
+                  <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <button type="button" onClick={() => applyCommunityPreset(preset)} className="rounded-sm px-2 py-1.5 text-[9px] font-bold tracking-wider transition-colors hover:bg-cyan-400/15" style={{ backgroundColor: "rgba(79,195,247,0.1)", border: "1px solid rgba(79,195,247,0.55)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>CHARGER DANS L’ACTIF</button>
+                    <button type="button" onClick={() => applyCommunityPreset(preset, true)} className="rounded-sm px-2 py-1.5 text-[9px] font-bold tracking-wider transition-colors hover:bg-white/10" style={{ backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>DUPLIQUER EN VARIANTE</button>
+                  </div>
+                </article>
+              ))}
+            </div>
+            {!visibleCommunityPresets.length && <div className="py-5 text-center text-[10px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>Aucun preset pour ces filtres.</div>}
+          </div>
+        )}
+      </section>
 
       {/* Main builder layout */}
       <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-4">

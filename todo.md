@@ -252,3 +252,13 @@
 - [ ] Afficher les paramètres actifs dans le widget HUD et les transmettre à l’API.
 - [ ] Valider une recommandation haut niveau avec Wisp Défense, cinq éclats rouges Tauforged et faction Grineer.
 - [ ] Compiler, capturer les routes principales et publier un checkpoint.
+
+
+## Nouvelle demande — Bibliothèque de presets communautaires
+
+- [x] Recenser les archétypes inspirés de TheKengineer, MHBlacky et PANDAAHH sans présenter ces presets comme des endorsements officiels.
+- [x] Valider tous les noms de Warframes, armes, mods et Arcanes contre le catalogue local.
+- [x] Ajouter une bibliothèque filtrable dans le Builder avec prévisualisation et mission cible.
+- [x] Permettre de charger un preset dans le set actif ou de le dupliquer comme variante.
+- [x] Conserver les contrôles de capacité, les rangs, les polarités et les éclats Tauforged.
+- [x] Tester chaque preset, compiler et publier un checkpoint.
