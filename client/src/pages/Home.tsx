@@ -10,15 +10,17 @@ import WorldStateHUD from "@/components/WorldStateHUD";
 
 const CATEGORY_ITEMS = [
   { label: "WARFRAMES", href: "/warframes", Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
-  { label: "ARMES", href: "/weapons", Icon: Sword, count: WEAPONS.length, color: "#ff6b35" },
-  { label: "MODS", href: "/mods", Icon: Star, count: MODS.length, color: "#ffd700" },
-  { label: "COMPAGNONS", href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#66bb6a" },
-  { label: "ARCANES", href: "/arcanes", Icon: Star, count: ARCANES.length, color: "#ab7cff" },
-  { label: "ÉCLATS", href: "/archon-shards", Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffca28" },
-  { label: "RELIQUES", href: "/relics", Icon: Package, count: PRIME_RELICS.length, color: "#00bcd4" },
-  { label: "CRÉER UN SET", href: "/builder", Icon: Crosshair, count: null, color: "#ff6b35" },
-  { label: "GUIDES", href: "/guides", Icon: BookOpen, count: null, color: "#ab7cff" },
+  { label: "ARMES", href: "/weapons", Icon: Sword, count: WEAPONS.length, color: "#69d4ff" },
+  { label: "MODS", href: "/mods", Icon: Star, count: MODS.length, color: "#ffd166" },
+  { label: "COMPAGNONS", href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#73d4f6" },
+  { label: "ARCANES", href: "/arcanes", Icon: Star, count: ARCANES.length, color: "#8bdcff" },
+  { label: "ÉCLATS", href: "/archon-shards", Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffd166" },
+  { label: "RELIQUES", href: "/relics", Icon: Package, count: PRIME_RELICS.length, color: "#69d4ff" },
+  { label: "CRÉER UN SET", href: "/builder", Icon: Crosshair, count: null, color: "#4fc3f7" },
+  { label: "GUIDES", href: "/guides", Icon: BookOpen, count: null, color: "#8bdcff" },
 ];
+
+const WISP_HERO_IMAGE = "https://wiki.warframe.com/images/Wisp.png?e6cde";
 
 const NEWS_ITEMS = [
   { tag: "MISE À JOUR", date: "2026-07-13", title: "Jade Shadows: Constellations est arrivé !", desc: "Découvrez Sirius & Orion, le duo de Warframes constellation, et les nouvelles récompenses Railjack.", color: "#4fc3f7" },
@@ -33,16 +35,22 @@ export default function Home() {
         {/* HERO BANNER */}
         <div className="relative rounded-sm p-4 sm:p-6 md:p-8 overflow-hidden hud-frame wf-command-console" style={{ backgroundColor: "var(--wf-bg-panel)", border: "1px solid var(--wf-border)" }}>
           <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: "url(/manus-storage/warframe-card-bg_e4519a70.jpg)", backgroundSize: "cover" }} />
+          <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] overflow-hidden md:block">
+            <div className="absolute inset-0 z-10" style={{ background: "linear-gradient(90deg, var(--wf-bg-panel) 0%, rgba(17,29,43,0.65) 34%, rgba(17,29,43,0.06) 100%)" }} />
+            <div className="absolute inset-y-0 right-4 w-[78%] opacity-80" style={{ background: "linear-gradient(180deg, transparent, rgba(79,195,247,0.12) 50%, transparent)", mixBlendMode: "screen" }} />
+            <img src={WISP_HERO_IMAGE} alt="Wisp — aperçu Warframe" className="absolute right-0 top-1/2 h-[132%] max-w-none -translate-y-1/2 object-contain opacity-70 mix-blend-screen" />
+            <div className="absolute bottom-5 right-8 z-20 border px-2 py-1 text-[9px] uppercase tracking-[0.18em]" style={{ color: "var(--wf-cyan)", borderColor: "rgba(79,195,247,0.5)", background: "rgba(7,13,22,0.68)", fontFamily: "var(--font-mono)" }}>FRAME SCHEMATIC // WISP</div>
+          </div>
           <div className="relative z-10 max-w-2xl space-y-3">
             <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-mono)" }}><Crosshair size={12} /> ARSENAL FORGE // COMMAND CONSOLE</div>
             <div className="inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wider" style={{ backgroundColor: "rgba(79,195,247,0.15)", color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.4)", fontFamily: "var(--font-mono)" }}>
               HOTFIX 43.0.8 — JADE SHADOWS: CONSTELLATIONS
             </div>
-            <h1 className="text-xl sm:text-2xl md:text-4xl font-extrabold tracking-wider" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-wider" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
               FORGE TON ARSENAL
             </h1>
             <p className="text-xs md:text-sm leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>
-              Construis et optimise tes sets complets de Warframe. Sélectionne ton Warframe, tes armes, ton compagnon et configure tes mods pour créer le build parfait.
+              Construis et optimise tes sets complets de Warframe. Sélectionne ton Warframe, tes armes, ton compagnon et configure tes mods pour créer un loadout prêt pour chaque mission.
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link href="/builder" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-2">

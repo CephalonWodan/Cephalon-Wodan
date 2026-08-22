@@ -235,8 +235,8 @@ export default function Layout({ children, title }: LayoutProps) {
                 href="https://discord.gg/warframe"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 py-1.5 px-3 text-xs rounded-sm transition-all"
-                style={{ backgroundColor: "#5865F2", color: "white", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}
+                className="flex items-center justify-center gap-2 py-1.5 px-3 text-xs rounded-sm transition-all hover:bg-cyan-400/10"
+                style={{ backgroundColor: "rgba(79,195,247,0.08)", border: "1px solid rgba(79,195,247,0.32)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}
               >
                 DISCORD
               </a>

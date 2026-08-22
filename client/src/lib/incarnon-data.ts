@@ -59,11 +59,18 @@ function baseWeaponName(value: string): string {
 export function getIncarnonProfile(weapon?: Pick<Weapon, "name"> | null): IncarnonProfile | null {
   if (!weapon?.name) return null;
   const normalizedWeapon = normalizeName(weapon.name);
+
+  // 1. Recherche par correspondance exacte de la variante (ex: "paris prime", "paris mk1", "paris")
+  const exactMatch = INCARNON_PROFILES.find(profile => normalizeName(profile.weapon) === normalizedWeapon);
+  if (exactMatch) return exactMatch;
+
+  // 2. Recherche si l'arme contient explicitement la variante (ex: "paris prime" matche un profil "Paris Prime")
+  const variantMatch = INCARNON_PROFILES.find(profile => normalizedWeapon.includes(normalizeName(profile.weapon)));
+  if (variantMatch) return variantMatch;
+
+  // 3. Repli sur le nom de base
   const baseName = baseWeaponName(weapon.name);
-  return INCARNON_PROFILES.find(profile => {
-    const normalizedProfile = normalizeName(profile.weapon);
-    return normalizedWeapon === normalizedProfile || baseName === normalizedProfile || normalizedWeapon.startsWith(`${normalizedProfile} `);
-  }) || null;
+  return INCARNON_PROFILES.find(profile => normalizeName(profile.weapon) === baseName) || null;
 }
 
 export function getIncarnonEvolution(profile: IncarnonProfile | null, tier: number): IncarnonEvolution | null {
@@ -83,49 +90,56 @@ function parseFirstNumber(pattern: RegExp, text: string): number | null {
 export function getIncarnonBonus(profile: IncarnonProfile | null, selection?: IncarnonSelection | null): IncarnonBonus {
   const empty: IncarnonBonus = { damagePercent: 0, criticalChanceFlat: 0, criticalMultiplierFlat: 0, statusChanceFlat: 0, sources: [] };
   if (!profile || !selection?.active) return empty;
-  const evolution = getIncarnonEvolution(profile, selection.selectedEvolution || 1);
-  if (!evolution) return empty;
-  const perkIndex = selection.selectedPerkByTier?.[String(evolution.tier)];
-  const perk = typeof perkIndex === "number" ? evolution.perks[perkIndex] : null;
-  if (!perk) return empty;
-
   const bonus = { ...empty };
-  const text = perk.text;
-  const damage = parseFirstNumber(/(?:increase\s+damage\s+by|damage\s*:\s*)\s*\+?(\d+(?:\.\d+)?)(?:%|\b)/i, text);
-  if (damage !== null) {
-    // Le texte officiel « Increase Damage by +150 » correspond à +150 % de la base.
-    bonus.damagePercent += damage / 100;
-    bonus.sources.push(`${perk.name} : +${damage} % dégâts`);
-  }
-  const damagePercent = parseFirstNumber(/(?:increase\s+damage\s+by|damage\s*:\s*)\s*\+?(\d+(?:\.\d+)?)\s*%/i, text);
-  if (damagePercent !== null && damage === null) {
-    bonus.damagePercent += damagePercent / 100;
-    bonus.sources.push(`${perk.name} : +${damagePercent} % dégâts`);
-  }
-  const critical = parseFirstNumber(/critical\s+chance\s+by\s*\+?(\d+(?:\.\d+)?)\s*%/i, text);
-  if (critical !== null) {
-    bonus.criticalChanceFlat += critical / 100;
-    bonus.sources.push(`${perk.name} : +${critical} % chance critique`);
-  }
-  const criticalMultiplier = parseFirstNumber(/critical\s+damage\s+multiplier\s+by\s*\+?(\d+(?:\.\d+)?)\s*x/i, text);
-  if (criticalMultiplier !== null) {
-    bonus.criticalMultiplierFlat += criticalMultiplier;
-    bonus.sources.push(`${perk.name} : +${criticalMultiplier}x multiplicateur critique`);
-  }
-  const status = parseFirstNumber(/status\s+chance\s+by\s*\+?(\d+(?:\.\d+)?)\s*%/i, text);
-  if (status !== null) {
-    bonus.statusChanceFlat += status / 100;
-    bonus.sources.push(`${perk.name} : +${status} % chance de statut`);
+
+  // Les évolutions Incarnon se cumulent : on parourt chaque palier d'évolution et on additionne le perk choisi
+  for (const evolution of profile.evolutions) {
+    const perkIndex = selection.selectedPerkByTier?.[String(evolution.tier)];
+    if (typeof perkIndex !== "number" || perkIndex < 0) continue;
+    const perk = evolution.perks[perkIndex];
+    if (!perk) continue;
+
+    const text = perk.text;
+    const damage = parseFirstNumber(/(?:increase\s+damage\s+by|damage\s*:\s*)\s*\+?(\d+(?:\.\d+)?)(?:%|\b)/i, text);
+    if (damage !== null) {
+      bonus.damagePercent += damage / 100;
+      bonus.sources.push(`Év.${evolution.tier} - ${perk.name} : +${damage} % dégâts`);
+    } else {
+      const damagePercent = parseFirstNumber(/(?:increase\s+damage\s+by|damage\s*:\s*)\s*\+?(\d+(?:\.\d+)?)\s*%/i, text);
+      if (damagePercent !== null) {
+        bonus.damagePercent += damagePercent / 100;
+        bonus.sources.push(`Év.${evolution.tier} - ${perk.name} : +${damagePercent} % dégâts`);
+      }
+    }
+    const critical = parseFirstNumber(/critical\s+chance\s+by\s*\+?(\d+(?:\.\d+)?)\s*%/i, text);
+    if (critical !== null) {
+      bonus.criticalChanceFlat += critical / 100;
+      bonus.sources.push(`Év.${evolution.tier} - ${perk.name} : +${critical} % chance critique`);
+    }
+    const criticalMultiplier = parseFirstNumber(/critical\s+damage\s+multiplier\s+by\s*\+?(\d+(?:\.\d+)?)\s*x/i, text);
+    if (criticalMultiplier !== null) {
+      bonus.criticalMultiplierFlat += criticalMultiplier;
+      bonus.sources.push(`Év.${evolution.tier} - ${perk.name} : +${criticalMultiplier}x multiplicateur critique`);
+    }
+    const status = parseFirstNumber(/status\s+chance\s+by\s*\+?(\d+(?:\.\d+)?)\s*%/i, text);
+    if (status !== null) {
+      bonus.statusChanceFlat += status / 100;
+      bonus.sources.push(`Év.${evolution.tier} - ${perk.name} : +${status} % chance de statut`);
+    }
   }
   return bonus;
 }
 
 export function createIncarnonSelection(profile: IncarnonProfile): IncarnonSelection {
+  const selectedPerkByTier: Record<string, number | null> = {};
+  for (const evolution of profile.evolutions) {
+    selectedPerkByTier[String(evolution.tier)] = evolution.perks.length > 0 ? 0 : null;
+  }
   return {
     profileWeapon: profile.weapon,
     active: false,
     selectedEvolution: 1,
-    selectedPerkByTier: { "1": profile.evolutions.find(evolution => evolution.tier === 1)?.perks.length ? 0 : null },
+    selectedPerkByTier,
   };
 }
 

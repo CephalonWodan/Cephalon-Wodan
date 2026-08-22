@@ -5,6 +5,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import { handleChatRequest } from "./server/chat-handler.js";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -203,7 +204,36 @@ function vitePluginStorageProxy(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
+function vitePluginChatApi(): Plugin {
+  return {
+    name: "vite-plugin-chat-api",
+    configureServer(server: ViteDevServer) {
+      server.middlewares.use(async (req, res, next) => {
+        if (req.url === "/api/chat" && req.method === "POST") {
+          let body = "";
+          req.on("data", chunk => {
+            body += chunk;
+          });
+          req.on("end", async () => {
+            try {
+              const parsed = JSON.parse(body || "{}");
+              (req as any).body = parsed;
+              await handleChatRequest(req as any, res as any);
+            } catch (err: any) {
+              res.statusCode = 400;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ error: err?.message || "Invalid JSON" }));
+            }
+          });
+          return;
+        }
+        next();
+      });
+    }
+  };
+}
+
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginChatApi()];
 
 export default defineConfig({
   plugins,
