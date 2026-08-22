@@ -2,12 +2,6 @@
   "framework": "vite",
   "buildCommand": "pnpm run build:static",
   "outputDirectory": "dist/public",
-  "functions": {
-    "api/chat.ts": {
-      "runtime": "nodejs22.x",
-      "maxDuration": 60
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
