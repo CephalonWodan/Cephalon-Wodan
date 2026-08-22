@@ -85,8 +85,9 @@ export async function handleChatRequest(req: Request, res: Response) {
     return sendJson(res, 400, { error: "Invalid messages format. Expected a non-empty array of user/assistant messages." });
   }
 
-  const apiUrl = process.env.BUILT_IN_FORGE_API_URL;
-  const apiKey = process.env.BUILT_IN_FORGE_API_KEY;
+  const rawApiUrl = process.env.BUILT_IN_FORGE_API_URL?.trim() || "";
+  const apiUrl = rawApiUrl.replace(/\/v1\/?$/, "").replace(/\/+$/, "");
+  const apiKey = process.env.BUILT_IN_FORGE_API_KEY?.trim() || "";
 
   if (!apiUrl || !apiKey) {
     return sendJson(res, 200, {
