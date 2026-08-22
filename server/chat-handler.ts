@@ -1,5 +1,7 @@
 import type { Request, Response } from "express";
 
+const WISP_DEFENSE_REFERENCE = `Référence de build fournie par l'utilisateur pour Wisp en Défense : Don de Puissance ; Fusion des Réservoirs ; Colère Aveugle ; Influence de l'Augure ; Allonge Archonte ; Haine d'Amar ; Secrets de l'Augure ; Continuité Accrue ; Intensité Archonte ; Courage Passager ; Arcanes Mue Augmentée et Arcane Belliqueux. La capture indique approximativement Force 323 %, Portée 175 %, Durée 128 %, Efficacité 45 %, Santé 370, Bouclier 370, Armure 210→262 et Énergie 300. Utilise cette configuration comme inspiration pour Wisp/Wisp Prime en Défense, mais vérifie toujours les noms, rangs, polarités, capacité et valeurs calculées dans le snapshot du Builder. Ne présente pas les valeurs de la capture comme des valeurs officielles si le moteur donne un autre résultat.`;
+
 const MISSION_GUIDANCE: Record<string, string> = {
   auto: "Déduis l'objectif de la demande. Si le type de mission n'est pas identifiable, demande une précision avant de proposer un build spécialisé.",
   survival: "Priorité à la survie longue durée : réduction des dégâts, endurance, contrôle de zone, économie d'énergie et dégâts soutenus.",
@@ -66,9 +68,18 @@ export async function handleChatRequest(req: Request, res: Response) {
 
   const missionType = typeof body?.missionType === "string" ? body.missionType : "auto";
   const missionGuidance = MISSION_GUIDANCE[missionType] || MISSION_GUIDANCE.auto;
-  const buildContext = body?.context && typeof body.context === "object"
-    ? JSON.stringify(body.context).slice(0, 16000)
+  const context = body?.context && typeof body.context === "object" ? body.context as Record<string, unknown> : undefined;
+  const buildContext = context
+    ? JSON.stringify(context).slice(0, 16000)
     : "Aucun snapshot de build actif n'a été transmis.";
+
+  const contextWarframe = context?.warframe && typeof context.warframe === "object"
+    ? context.warframe as { name?: unknown }
+    : undefined;
+  const activeWarframeName = typeof contextWarframe?.name === "string" ? contextWarframe.name : "";
+  const referenceGuidance = /wisp/i.test(activeWarframeName) && (missionType === "defense" || /défense|defense/i.test(messages[messages.length - 1]?.content || ""))
+    ? `\n\nRéférence utilisateur prioritaire pour ce cas :\n${WISP_DEFENSE_REFERENCE}`
+    : "";
 
   const systemPrompt = `Tu es Cephalon Codex, l'assistant tactique virtuel de l'application WARFRAME Set Builder. Tu réponds en français, avec un ton professionnel et immersif de Cephalon, mais sans sacrifier la précision.
 
@@ -78,7 +89,7 @@ Type de mission sélectionné : ${missionType}
 Consigne tactique pour ce type : ${missionGuidance}
 
 Snapshot JSON du Builder actif :
-${buildContext}
+${buildContext}${referenceGuidance}
 
 Règles de recommandation :
 1. Propose une configuration concrète : mods prioritaires par équipement, Aura/Exilus si pertinent, Arcanes, éclats, armes et capacité de compagnon.
