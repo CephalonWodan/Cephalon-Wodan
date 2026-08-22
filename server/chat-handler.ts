@@ -110,17 +110,22 @@ export async function handleChatRequest(req: Request, res: Response) {
     ? JSON.stringify(context).slice(0, 16000)
     : "Aucun snapshot de build actif n'a été transmis.";
 
-  const contextWarframe = context?.warframe && typeof context.warframe === "object"
-    ? context.warframe as { name?: unknown }
+  const rawWarframe = context?.warframe;
+  const contextWarframe = rawWarframe && typeof rawWarframe === "object"
+    ? rawWarframe as { name?: unknown }
     : undefined;
-  const activeWarframeName = typeof contextWarframe?.name === "string" ? contextWarframe.name : "";
+  const activeWarframeName = typeof rawWarframe === "string"
+    ? rawWarframe.trim()
+    : typeof contextWarframe?.name === "string"
+      ? contextWarframe.name.trim()
+      : "";
   const referenceGuidance = /wisp/i.test(activeWarframeName) && (missionType === "defense" || /défense|defense/i.test(messages[messages.length - 1]?.content || ""))
     ? `\n\nRéférence utilisateur prioritaire pour ce cas :\n${WISP_DEFENSE_REFERENCE}`
     : "";
 
   const systemPrompt = `Tu es Cephalon Codex, l'assistant tactique virtuel de l'application WARFRAME Set Builder. Tu réponds en français, avec un ton professionnel et immersif de Cephalon, mais sans sacrifier la précision.
 
-Ta mission est d'aider le joueur à construire un set adapté à une Warframe et à un objectif de mission. Ne donne pas une réponse générique si un contexte de build est disponible. Analyse en priorité la Warframe active, ses capacités, ses armes, ses mods, ses Arcanes, ses éclats d'Archonte et son compagnon. Si aucune Warframe n'est sélectionnée, indique-le clairement et propose soit un archétype conditionnel, soit demande au joueur de la sélectionner.
+Ta mission est d'aider le joueur à construire un set adapté à une Warframe et à un objectif de mission. Ne donne pas une réponse générique si un contexte de build est disponible. Analyse en priorité la Warframe active, ses capacités, ses armes, ses mods, ses Arcanes, ses éclats d'Archonte et son compagnon. Le champ 'warframe.name' du snapshot est la source de vérité : lorsqu'il est présent, reconnais cette Warframe immédiatement, ne dis jamais que son modèle est inconnu et ne demande pas au joueur de répéter son nom. Tu peux distinguer une variante Prime ou une autre variante uniquement si elle est explicitement indiquée dans le nom. Si aucune Warframe n'est sélectionnée, indique-le clairement et propose soit un archétype conditionnel, soit demande au joueur de la sélectionner.
 
 Type de mission sélectionné : ${missionType}
 Consigne tactique pour ce type : ${missionGuidance}
