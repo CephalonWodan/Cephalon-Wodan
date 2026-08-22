@@ -13,6 +13,88 @@ interface Message {
   content: string;
 }
 
+type RecommendationItem = string | { name?: string; rank?: number; effectIndex?: number; effect?: string };
+type RecommendationPayload = {
+  mods?: RecommendationItem[];
+  aura?: RecommendationItem | null;
+  exilus?: RecommendationItem | null;
+  arcanes?: RecommendationItem[];
+  archon_shards?: RecommendationItem[];
+  shards?: RecommendationItem[];
+  companion_mods?: RecommendationItem[];
+  primary_mods?: RecommendationItem[];
+  secondary_mods?: RecommendationItem[];
+  melee_mods?: RecommendationItem[];
+  companion_weapon_mods?: RecommendationItem[];
+  weapons?: RecommendationItem[];
+  companion?: RecommendationItem | null;
+  [key: string]: unknown;
+};
+
+function recommendationItemName(item: RecommendationItem | null | undefined): string {
+  if (typeof item === "string") return item.trim();
+  return typeof item?.name === "string" ? item.name.trim() : "";
+}
+
+function extractRecommendationPayload(content: string): RecommendationPayload | null {
+  const candidates = [
+    /```json:recommendation\s*([\s\S]*?)\s*```/i,
+    /```json\s*([\s\S]*?)\s*```/i,
+    /```\s*([\s\S]*?)\s*```/i,
+  ];
+  for (const pattern of candidates) {
+    const match = content.match(pattern);
+    if (!match) continue;
+    try {
+      const parsed = JSON.parse(match[1].trim());
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed as RecommendationPayload;
+    } catch {
+      // Continue with the next tolerant extraction strategy.
+    }
+  }
+
+  const firstBrace = content.indexOf("{");
+  const lastBrace = content.lastIndexOf("}");
+  if (firstBrace >= 0 && lastBrace > firstBrace) {
+    try {
+      const parsed = JSON.parse(content.slice(firstBrace, lastBrace + 1));
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) return parsed as RecommendationPayload;
+    } catch {
+      // The response can be ordinary prose containing braces; leave it untouched.
+    }
+  }
+  return null;
+}
+
+function stripRecommendationBlock(content: string): string {
+  return content
+    .replace(/```json:recommendation\s*[\s\S]*?\s*```/gi, "")
+    .replace(/```json\s*[\s\S]*?\s*```/gi, "")
+    .replace(/```\s*[\s\S]*?\s*```/gi, "")
+    .trim();
+}
+
+function readableRecommendationText(content: string): string {
+  const narrative = stripRecommendationBlock(content);
+  if (narrative && !/^\s*[\[{]/.test(narrative)) return narrative;
+  const payload = extractRecommendationPayload(content);
+  if (!payload) return content;
+  const sections: string[] = [];
+  const add = (label: string, values: RecommendationItem[] | undefined) => {
+    const names = (values || []).map(recommendationItemName).filter(Boolean);
+    if (names.length) sections.push(`${label} : ${names.join(", ")}`);
+  };
+  add("Mods", payload.mods);
+  if (recommendationItemName(payload.aura)) sections.push(`Aura : ${recommendationItemName(payload.aura)}`);
+  if (recommendationItemName(payload.exilus)) sections.push(`Exilus : ${recommendationItemName(payload.exilus)}`);
+  add("Arcanes", payload.arcanes);
+  add("Éclats d’Archonte", payload.archon_shards || payload.shards);
+  add("Mods compagnon", payload.companion_mods);
+  add("Armes", payload.weapons);
+  if (recommendationItemName(payload.companion)) sections.push(`Compagnon : ${recommendationItemName(payload.companion)}`);
+  return sections.length ? `Configuration structurée extraite du conseil :\\n${sections.join("\\n")}` : "Le Cephalon a fourni une recommandation structurée, mais aucun élément exploitable n’a été reconnu.";
+}
+
 type MissionType = "auto" | "survival" | "defense" | "interception" | "excavation" | "assassination" | "exterminate" | "spy" | "steel-path" | "fissure";
 type Faction = "auto" | "grineer" | "corpus" | "infested" | "orokin" | "narmer" | "sentient";
 type SquadMode = "solo" | "squad";
@@ -155,38 +237,37 @@ export default function WarframeAssistant() {
 
   const applySuggestedBuild = (content: string) => {
     try {
-      const jsonMatch = content.match(/```json:recommendation\s*([\s\S]*?)\s*```/) || content.match(/```json\s*([\s\S]*?)\s*```/);
-      let payload: any = null;
-      if (jsonMatch) {
-        try { payload = JSON.parse(jsonMatch[1]); } catch {}
-      }
-
+      const payload = extractRecommendationPayload(content);
       const appliedMods: Array<{ name: string; rank: number }> = [];
-      if (payload && Array.isArray(payload.mods)) {
-        payload.mods.forEach((m: any) => {
-          if (m?.name) appliedMods.push({ name: String(m.name), rank: Number(m.rank ?? 5) });
-        });
-      } else {
-        const lines = content.split("\n");
-        lines.forEach(line => {
+      const modItems = payload?.mods || [];
+      modItems.forEach(item => {
+        const name = recommendationItemName(item);
+        if (!name) return;
+        const found = MODS.find(mod => mod.name.toLowerCase() === name.toLowerCase());
+        if (found && !appliedMods.some(mod => mod.name.toLowerCase() === found.name.toLowerCase())) {
+          const rank = typeof item === "object" && Number.isFinite(item.rank) ? Number(item.rank) : 5;
+          appliedMods.push({ name: found.name, rank: Math.max(0, Math.min(rank, found.maxRank)) });
+        }
+      });
+      if (appliedMods.length === 0 && !payload) {
+        content.split("\n").forEach(line => {
           const match = line.match(/(?:[-*•]|\d+\.)\s+\*\*([^*]+)\*\*/);
-          if (match && match[1]) {
-            const potentialModName = match[1].trim();
-            const found = MODS.find(m => m.name.toLowerCase() === potentialModName.toLowerCase());
-            if (found && !appliedMods.some(m => m.name.toLowerCase() === found.name.toLowerCase())) {
-              appliedMods.push({ name: found.name, rank: 5 });
-            }
-          }
+          if (!match?.[1]) return;
+          const found = MODS.find(mod => mod.name.toLowerCase() === match[1].trim().toLowerCase());
+          if (found && !appliedMods.some(mod => mod.name.toLowerCase() === found.name.toLowerCase())) appliedMods.push({ name: found.name, rank: found.maxRank });
         });
       }
 
-      if (appliedMods.length === 0) {
+      const recommendationHasActions = Boolean(payload && (appliedMods.length || payload.aura || payload.exilus || payload.arcanes?.length || payload.archon_shards?.length || payload.shards?.length || payload.companion_mods?.length || payload.primary_mods?.length || payload.secondary_mods?.length || payload.melee_mods?.length || payload?.companion_weapon_mods?.length || payload?.weapons?.length || payload?.companion));
+      if (appliedMods.length === 0 && !recommendationHasActions) {
         toast.error(language === "en" ? "No precise mod configuration detected in Cephalon response." : "Aucune configuration de mod précise n'a été détectée dans la réponse du Cephalon.");
         return;
       }
 
-      window.dispatchEvent(new CustomEvent("apply-ai-mods", { detail: appliedMods }));
-      toast.success(language === "en" ? `Successfully applied ${appliedMods.length} mods to active loadout!` : `${appliedMods.length} mods appliqués avec succès au loadout actif !`);
+      if (payload) window.dispatchEvent(new CustomEvent("apply-ai-recommendation", { detail: payload }));
+      if (appliedMods.length) window.dispatchEvent(new CustomEvent("apply-ai-mods", { detail: appliedMods }));
+      const appliedCount = appliedMods.length + (payload?.arcanes?.length || 0) + (payload?.archon_shards?.length || payload?.shards?.length || 0);
+      toast.success(language === "en" ? `Recommendation ready: ${appliedCount || 1} item(s) detected.` : `Recommandation prête : ${appliedCount || 1} élément(s) détecté(s).`);
     } catch (err) {
       console.error("Failed to apply AI mods:", err);
       toast.error(language === "en" ? "Error applying mods." : "Erreur lors de l'application des mods.");
@@ -294,9 +375,9 @@ export default function WarframeAssistant() {
                   {msg.role === "user" ? t("Vous", "You") : "Cephalon Codex"}
                 </div>
                 <div className="leading-relaxed whitespace-pre-wrap text-[11px] font-sans">
-                  {msg.content}
+                  {msg.role === "assistant" ? readableRecommendationText(msg.content) : msg.content}
                 </div>
-                {msg.role === "assistant" && (msg.content.includes("```json") || msg.content.includes("**")) && (
+                {msg.role === "assistant" && (extractRecommendationPayload(msg.content) !== null || msg.content.includes("**")) && (
                   <button
                     onClick={() => applySuggestedBuild(msg.content)}
                     className="mt-2 w-full py-1.5 px-3 rounded-sm text-[10px] font-bold uppercase tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-1.5"

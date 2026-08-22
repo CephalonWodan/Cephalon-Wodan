@@ -2054,9 +2054,49 @@ export default function SetBuilder() {
     window.dispatchEvent(new CustomEvent(ASSISTANT_BUILD_CONTEXT_EVENT, { detail: context }));
   }, [activeBuild, buildName]);
 
-  const updateBuild = useCallback((updater: (b: BuildSet) => BuildSet) => {
+    const updateBuild = useCallback((updater: (b: BuildSet) => BuildSet) => {
     setBuilds(prev => prev.map((b, i) => i === activeBuildIndex ? updater(b) : b));
   }, [activeBuildIndex]);
+
+  useEffect(() => {
+    const applyAiMods = (event: Event) => {
+      const detail = (event as CustomEvent<Array<{ name?: string; rank?: number }>>).detail;
+      if (!Array.isArray(detail) || !activeBuild?.warframe) return;
+      const requested = detail
+        .map(entry => {
+          const name = typeof entry?.name === "string" ? entry.name.trim() : "";
+          const mod = MODS.find(candidate => candidate.name.toLowerCase() === name.toLowerCase());
+          return mod ? { mod, rank: Math.max(0, Math.min(Number(entry.rank ?? mod.maxRank), mod.maxRank)) } : null;
+        })
+        .filter((entry): entry is { mod: Mod; rank: number } => Boolean(entry));
+      if (!requested.length) return;
+
+      updateBuild(build => {
+        const nextMods = [...build.warframeMods];
+        const existing = new Set(nextMods.filter(Boolean).map(mod => itemIdentity(mod)));
+        let usedCapacity = getUsedCapacity(build, "warframe");
+        const capacity = getCapacityLimit(build, "warframe");
+        let applied = 0;
+        requested.forEach(({ mod, rank }) => {
+          const identity = itemIdentity(mod);
+          if (!identity || existing.has(identity)) return;
+          const slotIndex = nextMods.findIndex(slot => !slot);
+          if (slotIndex < 0) return;
+          const slotPolarity = resolveSlotPolarity(build.warframe, build.slotPolarities.warframe[slotIndex], slotIndex);
+          const cost = modCost({ ...mod, selectedRank: rank }, slotPolarity);
+          if (usedCapacity + cost > capacity) return;
+          nextMods[slotIndex] = { ...mod, selectedRank: rank };
+          existing.add(identity);
+          usedCapacity += cost;
+          applied += 1;
+        });
+        if (applied > 0) toast.success(`${applied} mod(s) IA ajouté(s) à la Warframe active.`);
+        return { ...build, warframeMods: nextMods };
+      });
+    };
+    window.addEventListener("apply-ai-mods", applyAiMods);
+    return () => window.removeEventListener("apply-ai-mods", applyAiMods);
+  }, [activeBuild?.warframe?.name, updateBuild]);
 
   const handleSelect = (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => {
     if (!selectorOpen) return;
