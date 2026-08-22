@@ -296,3 +296,11 @@
 - [ ] Mettre à jour `client/src/pages/Arcanes.tsx` pour internationaliser les filtres, la recherche, les arcanes listés et la modale de détail.
 - [ ] Mettre à jour `client/src/pages/ArchonShards.tsx` pour internationaliser les variantes (Tauforgées/Standards), les couleurs d'éclats et les états vides.
 - [ ] Valider TypeScript, lancer le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Modales, Paramètres et Cache d'images
+
+- [ ] Internationaliser la page Paramètres pour permettre le changement direct de langue et de thème avec persistance.
+- [ ] Internationaliser les modales de détail des armes (incarnons, stats) et des compagnons (schémas de fabrication, parties de MOA/Hound).
+- [ ] Optimiser AssetImages.tsx avec un cache de chargement local et un fallback robuste pour garantir un rendu instantané en FR/EN.
+- [ ] Valider la compilation TypeScript, exécuter le build de production et enregistrer un checkpoint.
