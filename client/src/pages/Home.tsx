@@ -1,4 +1,3 @@
-import React from "react";
 // ============================================================
 // WARFRAME SET BUILDER — HOME PAGE // TENNO CODEX HUD
 // ============================================================
@@ -7,28 +6,25 @@ import { Zap, Shield, Sword, Star, Users, ChevronRight, Clock, BookOpen, Crossha
 import Layout from "@/components/Layout";
 import { WARFRAMES, WEAPONS, MODS, COMPANIONS, ARCANES, ARCHON_SHARDS, ARCHON_SHARD_EFFECT_TOTAL, PRIME_RELICS } from "@/lib/warframe-data";
 import WorldStateHUD from "@/components/WorldStateHUD";
-
-const CATEGORY_ITEMS = [
-  { label: "WARFRAMES", href: "/warframes", Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
-  { label: "ARMES", href: "/weapons", Icon: Sword, count: WEAPONS.length, color: "#69d4ff" },
-  { label: "MODS", href: "/mods", Icon: Star, count: MODS.length, color: "#ffd166" },
-  { label: "COMPAGNONS", href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#73d4f6" },
-  { label: "ARCANES", href: "/arcanes", Icon: Star, count: ARCANES.length, color: "#8bdcff" },
-  { label: "ÉCLATS", href: "/archon-shards", Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffd166" },
-  { label: "RELIQUES", href: "/relics", Icon: Package, count: PRIME_RELICS.length, color: "#69d4ff" },
-  { label: "CRÉER UN SET", href: "/builder", Icon: Crosshair, count: null, color: "#4fc3f7" },
-  { label: "GUIDES", href: "/guides", Icon: BookOpen, count: null, color: "#8bdcff" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const WISP_HERO_IMAGE = "https://wiki.warframe.com/images/Wisp.png?e6cde";
 
-const NEWS_ITEMS = [
-  { tag: "MISE À JOUR", date: "2026-07-13", title: "Jade Shadows: Constellations est arrivé !", desc: "Découvrez Sirius & Orion, le duo de Warframes constellation, et les nouvelles récompenses Railjack.", color: "#4fc3f7" },
-  { tag: "PRIME ACCESS", date: "2026-07-01", title: "Styvax Prime rejoint le Prime Access", desc: "Ajout des armements et accessoires Prime exclusifs dans le catalogue.", color: "#ff6b35" },
-  { tag: "ÉVÉNEMENT", date: "2026-06-15", title: "TennoCon 2026 — Résumé des annonces", desc: "Toutes les nouveautés de l'année 2026 et les aperçus des prochaines quêtes intégrés.", color: "#ffd700" }
-];
-
 export default function Home() {
+  const { t } = useLanguage();
+
+  const CATEGORY_ITEMS = [
+    { label: "WARFRAMES", href: "/warframes", Icon: Shield, count: WARFRAMES.length, color: "#4fc3f7" },
+    { label: t("ARMES", "WEAPONS"), href: "/weapons", Icon: Sword, count: WEAPONS.length, color: "#69d4ff" },
+    { label: "MODS", href: "/mods", Icon: Star, count: MODS.length, color: "#ffd166" },
+    { label: t("COMPAGNONS", "COMPANIONS"), href: "/companions", Icon: Users, count: COMPANIONS.length, color: "#73d4f6" },
+    { label: "ARCANES", href: "/arcanes", Icon: Star, count: ARCANES.length, color: "#8bdcff" },
+    { label: t("ÉCLATS", "SHARDS"), href: "/archon-shards", Icon: Gem, count: ARCHON_SHARDS.length, color: "#ffd166" },
+    { label: t("RELIQUES", "RELICS"), href: "/relics", Icon: Package, count: PRIME_RELICS.length, color: "#69d4ff" },
+    { label: t("CRÉER UN SET", "CREATE SET"), href: "/builder", Icon: Crosshair, count: null, color: "#4fc3f7" },
+    { label: t("GUIDES", "GUIDES"), href: "/guides", Icon: BookOpen, count: null, color: "#8bdcff" },
+  ];
+
   return (
     <Layout>
       <div className="space-y-6">
@@ -47,17 +43,20 @@ export default function Home() {
               HOTFIX 43.0.8 — JADE SHADOWS: CONSTELLATIONS
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-wider" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
-              FORGE TON ARSENAL
+              {t("FORGE TON ARSENAL", "FORGE YOUR ARSENAL")}
             </h1>
             <p className="text-xs md:text-sm leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>
-              Construis et optimise tes sets complets de Warframe. Sélectionne ton Warframe, tes armes, ton compagnon et configure tes mods pour créer un loadout prêt pour chaque mission.
+              {t(
+                "Construis et optimise tes sets complets de Warframe. Sélectionne ton Warframe, tes armes, ton compagnon et configure tes mods pour créer un loadout prêt pour chaque mission.",
+                "Build and optimize your complete Warframe loadouts. Select your Warframe, weapons, companion, and configure mods for any mission."
+              )}
             </p>
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <Link href="/builder" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all wf-btn-primary flex items-center justify-center gap-2">
-                <Crosshair size={14} /> CRÉER UN SET
+                <Crosshair size={14} /> {t("CRÉER UN SET", "CREATE SET")}
               </Link>
               <Link href="/warframes" className="w-full sm:w-auto px-5 py-2.5 rounded-sm text-xs font-bold tracking-wider transition-all text-center" style={{ backgroundColor: "rgba(0,0,0,0.4)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>
-                EXPLORER
+                {t("EXPLORER", "EXPLORE")}
               </Link>
             </div>
           </div>
@@ -68,7 +67,7 @@ export default function Home() {
 
         {/* CATEGORIES GRID */}
         <div>
-          <div className="wf-section-label mb-3">CATÉGORIES</div>
+          <div className="wf-section-label mb-3">{t("CATÉGORIES", "CATEGORIES")}</div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
             {CATEGORY_ITEMS.map((cat, i) => {
               const IconComponent = cat.Icon;
@@ -87,62 +86,12 @@ export default function Home() {
                   </span>
                   {cat.count !== null && (
                     <span className="text-[10px] mt-0.5 font-mono" style={{ color: "var(--wf-text-dim)" }}>
-                      {cat.count} entrées
+                      {cat.count} {t("entrées", "entries")}
                     </span>
                   )}
                 </Link>
               );
             })}
-          </div>
-        </div>
-
-        {/* NEWS + STATS */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 wf-panel rounded-sm p-4 hud-frame">
-            <div className="wf-section-label mb-3">ACTUALITÉS</div>
-            <div className="space-y-2">
-              {NEWS_ITEMS.map((news, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3 p-3 rounded-sm transition-all duration-150 hover:bg-white/5"
-                  style={{ borderLeft: `2px solid ${news.color}`, backgroundColor: "rgba(0,0,0,0.25)" }}
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <span className="text-[10px] px-2 py-0.5 rounded-sm font-semibold uppercase" style={{ backgroundColor: `${news.color}20`, color: news.color, fontFamily: "var(--font-display)" }}>
-                        {news.tag}
-                      </span>
-                      <span className="text-[10px] font-mono" style={{ color: "var(--wf-text-dim)" }}>{news.date}</span>
-                    </div>
-                    <h3 className="text-xs md:text-sm font-bold truncate mb-1" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>{news.title}</h3>
-                    <p className="text-xs leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>{news.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="wf-panel rounded-sm p-4 hud-frame space-y-4">
-            <div className="wf-section-label">BASE DE DONNÉES</div>
-            <div className="space-y-2 text-xs font-mono">
-              {[
-                { label: "Warframes", value: WARFRAMES.length, icon: Shield },
-                { label: "Armes", value: WEAPONS.length, icon: Sword },
-                { label: "Mods", value: MODS.length, icon: Star },
-                { label: "Compagnons", value: COMPANIONS.length, icon: Users },
-                { label: "Arcanes", value: ARCANES.length, icon: Star },
-                { label: "Éclats d'Archonte", value: ARCHON_SHARDS.length, icon: Gem },
-                { label: "Effets d'éclats", value: ARCHON_SHARD_EFFECT_TOTAL, icon: Zap },
-                { label: "Reliques Prime", value: PRIME_RELICS.length, icon: Package },
-              ].map(({ label, value, icon: Icon }) => (
-                <div key={label} className="flex items-center justify-between p-2 rounded-sm" style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)" }}>
-                  <span className="flex items-center gap-2 text-[11px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
-                    <Icon size={14} style={{ color: "var(--wf-cyan)" }} /> {label}
-                  </span>
-                  <span className="font-bold" style={{ color: "var(--wf-cyan)" }}>{value}</span>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>

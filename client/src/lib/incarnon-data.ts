@@ -59,7 +59,7 @@ function baseWeaponName(value: string): string {
 export function getIncarnonProfile(weapon?: Pick<Weapon, "name"> | null): IncarnonProfile | null {
   if (!weapon?.name) return null;
   const normalizedWeapon = normalizeName(weapon.name);
-
+  
   // 1. Recherche par correspondance exacte de la variante (ex: "paris prime", "paris mk1", "paris")
   const exactMatch = INCARNON_PROFILES.find(profile => normalizeName(profile.weapon) === normalizedWeapon);
   if (exactMatch) return exactMatch;

@@ -271,3 +271,44 @@
 - [x] Gérer l’analyse des paramètres d’URL au chargement de l’application pour restaurer instantanément le set.
 - [x] Valider la compatibilité des identifiants et tester les liens générés avec un build complet.
 - [x] Compiler, tester le build de production et publier un checkpoint.
+
+
+## Nouvelle demande — Internationalisation complète Français / Anglais
+
+- [ ] Créer un dictionnaire de traduction centralisé `client/src/lib/i18n.ts` couvrant l'ensemble de l'interface, des boutons, des messages et des sections.
+- [ ] Connecter le sélecteur de langue existant à un état global persistant.
+- [ ] Mettre à jour l'accueil, les catalogues (Warframes, Armes, Compagnons, Mods, Arcanes, Éclats), le Set Builder, le Worldstate, l'assistant IA et les exports Markdown/JSON.
+- [ ] Valider le basculement dynamique entre le français et l'anglais, exécuter le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Extension i18n (Catalogues, Assistant Cephalon et Exports Markdown)
+
+- [ ] Enrichir `client/src/lib/i18n.ts` avec les dictionnaires pour les catalogues (Warframes, Armes, Mods), les filtres, le tri, l'assistant IA et les résumés Markdown.
+- [ ] Mettre à jour `Warframes.tsx`, `Weapons.tsx` et `Mods.tsx` pour utiliser dynamiquement la langue active.
+- [ ] Mettre à jour `WarframeAssistant.tsx` pour adapter l'interface du widget et envoyer la langue active au serveur LLM.
+- [ ] Mettre à jour le générateur de résumé Markdown dans `SetBuilder.tsx` pour produire les rapports en français ou en anglais selon le choix de l'utilisateur.
+- [ ] Valider TypeScript, exécuter le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Traduction des catalogues Arcanes et Éclats d'Archonte
+
+- [ ] Ajouter les termes spécifiques aux Arcanes et Éclats dans `client/src/lib/i18n.ts`.
+- [ ] Mettre à jour `client/src/pages/Arcanes.tsx` pour internationaliser les filtres, la recherche, les arcanes listés et la modale de détail.
+- [ ] Mettre à jour `client/src/pages/ArchonShards.tsx` pour internationaliser les variantes (Tauforgées/Standards), les couleurs d'éclats et les états vides.
+- [ ] Valider TypeScript, lancer le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Modales, Paramètres et Cache d'images
+
+- [ ] Internationaliser la page Paramètres pour permettre le changement direct de langue et de thème avec persistance.
+- [ ] Internationaliser les modales de détail des armes (incarnons, stats) et des compagnons (schémas de fabrication, parties de MOA/Hound).
+- [ ] Optimiser AssetImages.tsx avec un cache de chargement local et un fallback robuste pour garantir un rendu instantané en FR/EN.
+- [ ] Valider la compilation TypeScript, exécuter le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Mise à jour GitHub
+
+- [ ] Vérifier l'état git local et le dépôt distant `CephalonWodan/Cephalon-Wodan`.
+- [ ] Valider et commiter les derniers fichiers modifiés (i18n, paramètres, modales et cache image).
+- [ ] Pousser les modifications sur `main` de manière sécurisée et non destructive.
+- [ ] Confirmer le succès du push et rendre compte à l'utilisateur.
