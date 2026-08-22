@@ -242,3 +242,13 @@
 - [x] Mettre à jour la référence Wisp Défense avec cinq éclats configurés à +15 % chacun.
 - [x] Faire apparaître le cumul de +75 % dans le contexte et les recommandations IA.
 - [x] Tester la configuration, compiler et publier le checkpoint.
+
+
+## Nouvelle demande — Optimisation IA haut niveau et statistiques en jeu
+
+- [ ] Définir la hiérarchie entre statistiques finales observées en jeu, Wiki et dataset local.
+- [ ] Ajouter les paramètres faction, niveau ennemi, solo/escouade et priorité d’optimisation.
+- [ ] Renforcer le prompt pour comparer les archétypes dégâts, survie, soutien et endurance.
+- [ ] Afficher les paramètres actifs dans le widget HUD et les transmettre à l’API.
+- [ ] Valider une recommandation haut niveau avec Wisp Défense, cinq éclats rouges Tauforged et faction Grineer.
+- [ ] Compiler, capturer les routes principales et publier un checkpoint.

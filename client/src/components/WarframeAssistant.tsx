@@ -26,6 +26,37 @@ const MISSION_OPTIONS: Array<{ value: MissionType; label: string; short: string 
   { value: "fissure", label: "Fissure du Néant", short: "FISSURE" },
 ];
 
+type Faction = "auto" | "grineer" | "corpus" | "infested" | "orokin" | "narmer" | "sentient";
+type SquadMode = "solo" | "squad";
+type OptimizationFocus = "balanced" | "damage" | "survival" | "support" | "endurance";
+type EnemyLevelBand = "auto" | "100-200" | "200-400" | "400-800" | "800+";
+
+const FACTION_OPTIONS: Array<{ value: Faction; label: string }> = [
+  { value: "auto", label: "Faction à déduire" },
+  { value: "grineer", label: "Grineer" },
+  { value: "corpus", label: "Corpus" },
+  { value: "infested", label: "Infestés" },
+  { value: "orokin", label: "Orokin" },
+  { value: "narmer", label: "Narmer" },
+  { value: "sentient", label: "Conscients" },
+];
+
+const LEVEL_OPTIONS: Array<{ value: EnemyLevelBand; label: string }> = [
+  { value: "auto", label: "Niveau à déduire" },
+  { value: "100-200", label: "Niveau 100–200" },
+  { value: "200-400", label: "Niveau 200–400" },
+  { value: "400-800", label: "Niveau 400–800" },
+  { value: "800+", label: "Niveau 800+ / Endurance" },
+];
+
+const OPTIMIZATION_OPTIONS: Array<{ value: OptimizationFocus; label: string }> = [
+  { value: "balanced", label: "Équilibre général" },
+  { value: "damage", label: "Dégâts / Nettoyage" },
+  { value: "survival", label: "Survie / EHP" },
+  { value: "support", label: "Soutien / Objectif" },
+  { value: "endurance", label: "Endurance longue" },
+];
+
 function readInitialContext(): AssistantBuildContext | null {
   if (typeof window === "undefined") return null;
   try {
@@ -40,6 +71,10 @@ export default function WarframeAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [missionType, setMissionType] = useState<MissionType>("auto");
+  const [faction, setFaction] = useState<Faction>("auto");
+  const [enemyLevelBand, setEnemyLevelBand] = useState<EnemyLevelBand>("auto");
+  const [squadMode, setSquadMode] = useState<SquadMode>("squad");
+  const [optimizationFocus, setOptimizationFocus] = useState<OptimizationFocus>("balanced");
   const [buildContext, setBuildContext] = useState<AssistantBuildContext | null>(readInitialContext);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -86,6 +121,7 @@ export default function WarframeAssistant() {
           messages: updatedMessages.map(m => ({ role: m.role, content: m.content })),
           missionType,
           context: buildContext,
+          advancedOptions: { faction, enemyLevelBand, squadMode, optimizationFocus },
         })
       });
 
@@ -109,9 +145,13 @@ export default function WarframeAssistant() {
 
   const askForBuild = () => {
     const frame = buildContext?.warframe?.name;
+    const levelLabel = LEVEL_OPTIONS.find(option => option.value === enemyLevelBand)?.label || "niveau à déduire";
+    const factionLabel = FACTION_OPTIONS.find(option => option.value === faction)?.label || "faction à déduire";
+    const focusLabel = OPTIMIZATION_OPTIONS.find(option => option.value === optimizationFocus)?.label || "équilibre général";
+    const modeLabel = squadMode === "solo" ? "solo" : "escouade";
     setInput(frame
-      ? `Propose-moi un build ${selectedMission.value === "auto" ? "adapté à une mission polyvalente" : `pour une mission de type ${selectedMission.label}`} avec ${frame}. Détaille les mods, arcanes, éclats et armes à privilégier.`
-      : `Propose-moi un build ${selectedMission.value === "auto" ? "polyvalent" : `pour ${selectedMission.label}`}. Je n'ai pas encore sélectionné de Warframe.`
+      ? `Propose-moi un build haut niveau ${selectedMission.value === "auto" ? "adapté à une mission polyvalente" : `pour une mission de type ${selectedMission.label}`} avec ${frame}. Cible : ${levelLabel}, faction : ${factionLabel}, ${modeLabel}, priorité : ${focusLabel}. Détaille les mods, arcanes, éclats et armes à privilégier, avec les compromis et une variante réaliste si nécessaire.`
+      : `Propose-moi un build haut niveau ${selectedMission.value === "auto" ? "polyvalent" : `pour ${selectedMission.label}`}. Cible : ${levelLabel}, faction : ${factionLabel}, ${modeLabel}, priorité : ${focusLabel}. Je n'ai pas encore sélectionné de Warframe.`
     );
   };
 
@@ -152,6 +192,33 @@ export default function WarframeAssistant() {
               <ChevronDown size={12} className="pointer-events-none absolute right-2" style={{ color: "var(--wf-cyan)" }} />
             </label>
               <button type="button" onClick={askForBuild} className="rounded-sm px-2.5 py-2 text-[9px] font-bold tracking-wider transition-colors hover:bg-white/10" style={{ border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>ANALYSER UN BUILD</button>
+            </div>
+            <div className="grid grid-cols-2 gap-1.5 pb-2.5 sm:grid-cols-4">
+              <label className="min-w-0">
+                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>FACTION</span>
+                <select value={faction} onChange={e => setFaction(e.target.value as Faction)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
+                  {FACTION_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                </select>
+              </label>
+              <label className="min-w-0">
+                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>NIVEAU</span>
+                <select value={enemyLevelBand} onChange={e => setEnemyLevelBand(e.target.value as EnemyLevelBand)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
+                  {LEVEL_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                </select>
+              </label>
+              <label className="min-w-0">
+                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>MODE</span>
+                <select value={squadMode} onChange={e => setSquadMode(e.target.value as SquadMode)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
+                  <option value="squad">Escouade</option>
+                  <option value="solo">Solo</option>
+                </select>
+              </label>
+              <label className="min-w-0">
+                <span className="mb-1 block text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>PRIORITÉ</span>
+                <select value={optimizationFocus} onChange={e => setOptimizationFocus(e.target.value as OptimizationFocus)} className="w-full appearance-none rounded-sm px-2 py-1.5 text-[9px] outline-none" style={{ backgroundColor: "rgba(0,0,0,0.55)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>
+                  {OPTIMIZATION_OPTIONS.map(option => <option key={option.value} value={option.value}>{option.label}</option>)}
+                </select>
+              </label>
             </div>
           </div>
 

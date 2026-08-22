@@ -17,6 +17,32 @@ const MISSION_GUIDANCE: Record<string, string> = {
   fissure: "Priorité à la polyvalence et à la collecte de réactifs : nettoyage efficace, survie, mobilité et adaptation aux bonus de corruption du Néant.",
 };
 
+const FACTION_GUIDANCE: Record<string, string> = {
+  auto: "Déduis la faction à partir de la mission ou demande une précision ; ne suppose pas une vulnérabilité sans l'indiquer.",
+  grineer: "Vérifie l'armure et propose une réponse cohérente (par exemple Corrosif/Chaleur ou Viral/Tranchant selon l'arme et les effets réellement disponibles).",
+  corpus: "Vérifie les boucliers et la chair ; compare Toxine, Magnétique ou une autre réponse selon la cible et ne promet pas un contournement universel.",
+  infested: "Prends en compte les unités blindées et les essaims ; privilégie un élément et un contrôle adaptés au profil de la mission plutôt qu'une recette fixe.",
+  orokin: "Prends en compte les unités Orokin et leurs défenses ; justifie les éléments et le contrôle choisis avec les stats de l'arme.",
+  narmer: "Évalue les défenses Narmer et les unités mélangées ; recommande une solution polyvalente et explicite les limites des vulnérabilités.",
+  sentient: "Prends en compte l'adaptation des Conscients ; privilégie la polyvalence, les changements d'élément et les effets qui restent fiables.",
+};
+
+const LEVEL_GUIDANCE: Record<string, string> = {
+  auto: "Demande le niveau ou distingue clairement une recommandation standard d'une recommandation d'endurance.",
+  "100-200": "Cherche un build Steel Path solide sans sacrifier inutilement la qualité de vie et l'économie d'énergie.",
+  "200-400": "Priorise la mise à l'échelle, la survivabilité active, les multiplicateurs fiables et la gestion des résistances.",
+  "400-800": "Analyse le cycle de survie, le contrôle, le scaling des dégâts et les conditions de déclenchement ; refuse les promesses de DPS non calculées.",
+  "800+": "Traite la demande comme de l'endurance : explique les limites du scaling, les boucles de survie, l'usage des buffs et les compromis d'exécution.",
+};
+
+const FOCUS_GUIDANCE: Record<string, string> = {
+  balanced: "Optimise un compromis jouable entre dégâts, survie, énergie, portée et confort.",
+  damage: "Maximise le nettoyage et le scaling des dégâts, sans supprimer les mécanismes indispensables de survie.",
+  survival: "Maximise l'eHP, le shield gating ou les autres mécanismes de survie réellement disponibles pour la Warframe.",
+  support: "Maximise le contrôle, les buffs utiles à l'équipe et la protection de l'objectif, en conservant une capacité minimale de nettoyage.",
+  endurance: "Optimise la stabilité sur une longue session : énergie, munitions, contrôles, survivabilité et dégâts qui continuent à monter.",
+};
+
 function sendJson(res: any, status: number, data: any) {
   if (typeof res.status === "function" && typeof res.json === "function") {
     return res.status(status).json(data);
@@ -70,6 +96,14 @@ export async function handleChatRequest(req: Request, res: Response) {
 
   const missionType = typeof body?.missionType === "string" ? body.missionType : "auto";
   const missionGuidance = MISSION_GUIDANCE[missionType] || MISSION_GUIDANCE.auto;
+  const rawAdvancedOptions = body?.advancedOptions && typeof body.advancedOptions === "object"
+    ? body.advancedOptions as Record<string, unknown>
+    : {};
+  const faction = typeof rawAdvancedOptions.faction === "string" ? rawAdvancedOptions.faction : "auto";
+  const enemyLevelBand = typeof rawAdvancedOptions.enemyLevelBand === "string" ? rawAdvancedOptions.enemyLevelBand : "auto";
+  const squadMode = rawAdvancedOptions.squadMode === "solo" ? "solo" : "squad";
+  const optimizationFocus = typeof rawAdvancedOptions.optimizationFocus === "string" ? rawAdvancedOptions.optimizationFocus : "balanced";
+  const advancedGuidance = `Faction : ${faction}. ${FACTION_GUIDANCE[faction] || FACTION_GUIDANCE.auto}\nNiveau ennemi : ${enemyLevelBand}. ${LEVEL_GUIDANCE[enemyLevelBand] || LEVEL_GUIDANCE.auto}\nMode : ${squadMode === "solo" ? "solo" : "escouade"}. ${squadMode === "solo" ? "Ne compte pas sur un buff, un contrôle ou une source d'énergie fournie par un allié." : "Distingue ce que la Warframe apporte seule de ce qui dépend d'un allié."}\nPriorité : ${optimizationFocus}. ${FOCUS_GUIDANCE[optimizationFocus] || FOCUS_GUIDANCE.balanced}`;
   const context = body?.context && typeof body.context === "object" ? body.context as Record<string, unknown> : undefined;
   const buildContext = context
     ? JSON.stringify(context).slice(0, 16000)
@@ -90,6 +124,9 @@ Ta mission est d'aider le joueur à construire un set adapté à une Warframe et
 Type de mission sélectionné : ${missionType}
 Consigne tactique pour ce type : ${missionGuidance}
 
+Paramètres d'optimisation haut niveau :
+${advancedGuidance}
+
 Snapshot JSON du Builder actif :
 ${buildContext}${referenceGuidance}
 
@@ -101,7 +138,9 @@ Règles de recommandation :
 3. Respecte les systèmes du jeu : polarités, capacité, fusion élémentaire, Incarnon cumulatif, Helminth et restrictions de buffs. Ne prétends pas avoir appliqué un mod si le snapshot ne le contient pas.
 4. Distingue les faits présents dans le snapshot des recommandations. Si archonShardAbilityStrength est renseigné, indique séparément son cumul et ne le compte qu'une seule fois dans la Puissance finale. Cinq éclats rouges Tauforged configurés à +15 % correspondent à +75 % additifs, mais ne prétends pas connaître la valeur finale complète sans les autres contributions calculées.
 5. Pour Wisp en Défense, utilise la référence utilisateur des cinq éclats rouges Tauforged comme variante Force/Portée : explique le gain de Puissance, le coût en capacité et les alternatives si le joueur ne dispose pas de cinq éclats Tauforged.
-6. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
+6. Compare mentalement au moins deux archétypes (par exemple équilibre, dégâts, survie ou endurance) et retiens celui qui respecte le mieux les paramètres demandés ; signale ce que tu sacrifies.
+7. Ne transforme jamais une recommandation communautaire en vérité universelle : indique lorsqu'un choix est dépendant d'une faction, d'un niveau, d'une équipe ou d'une exécution précise.
+8. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
 
   try {
     const response = await fetch(`${apiUrl}/v1/chat/completions`, {
