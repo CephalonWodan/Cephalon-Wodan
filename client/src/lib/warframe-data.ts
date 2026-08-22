@@ -13,7 +13,7 @@ export type CompanionType = "sentinel" | "beast" | "moa" | "hound" | "predasite"
 export type ModType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "archwing" | "necramech" | "parazon" | "kdrive" | "universal";
 export type Polarity = "madurai" | "vazarin" | "naramon" | "zenurik" | "unairu" | "penjaga" | "umbra" | "any";
 export type SlotPolarity = Polarity | "default" | "none";
-export type BuildSlotKey = "warframe" | "primary" | "secondary" | "melee" | "companion";
+export type BuildSlotKey = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companionWeapon";
 export type ArcaneType = "warframe" | "primary" | "secondary" | "melee" | "operator" | "amp" | "kitgun" | "zaw" | "bow" | "shotgun";
 export type ArchonShardVariant = "standard" | "tauforged";
 
@@ -348,6 +348,7 @@ export interface BuildSlotPolarities {
   secondary: SlotPolarity[];
   melee: SlotPolarity[];
   companion: SlotPolarity[];
+  companionWeapon: SlotPolarity[];
 }
 
 export interface HelminthSubstitution {
@@ -369,18 +370,25 @@ export interface BuildSet {
     secondary: boolean;
     melee: boolean;
     companion: boolean;
+    companionWeapon: boolean;
   };
   warframe?: Warframe;
   primaryWeapon?: Weapon;
   secondaryWeapon?: Weapon;
   meleeWeapon?: Weapon;
-  companion?: Companion;
-  companionParts?: CompanionParts;
+    companion?: Companion;
+    companionWeapon?: Weapon;
+    companionWeaponMods: (Mod | null)[];
+    companionParts?: CompanionParts;
   warframeMods: (Mod | null)[];
+  auraMod: Mod | null;
+  exilusMod: Mod | null;
   primaryMods: (Mod | null)[];
   secondaryMods: (Mod | null)[];
   meleeMods: (Mod | null)[];
   companionMods: (Mod | null)[];
+  companionPostureMod: Mod | null;
+  companionWeaponPostureMod: Mod | null;
   slotPolarities: BuildSlotPolarities;
   helminthSubstitution: HelminthSubstitution | null;
   warframeArcanes: (Arcane | null)[];
@@ -487,24 +495,31 @@ export function createEmptyBuild(name: string = "Nouveau Set"): BuildSet {
     id: Date.now().toString(),
     name,
     description: "",
-    capacityBoosts: { warframe: false, primary: false, secondary: false, melee: false, companion: false },
+    capacityBoosts: { warframe: false, primary: false, secondary: false, melee: false, companion: false, companionWeapon: false },
     slotPolarities: {
       warframe: Array<SlotPolarity>(8).fill("default"),
       primary: Array<SlotPolarity>(8).fill("default"),
       secondary: Array<SlotPolarity>(8).fill("default"),
       melee: Array<SlotPolarity>(8).fill("default"),
-      companion: Array<SlotPolarity>(8).fill("default"),
+      companion: Array<SlotPolarity>(10).fill("default"),
+      companionWeapon: Array<SlotPolarity>(8).fill("default"),
     },
     helminthSubstitution: null,
     warframeMods: Array(8).fill(null),
+    auraMod: null,
+    exilusMod: null,
     primaryMods: Array(8).fill(null),
     secondaryMods: Array(8).fill(null),
     meleeMods: Array(8).fill(null),
-    companionMods: Array(8).fill(null),
+    companionMods: Array(10).fill(null),
+    companionPostureMod: null,
+    companionWeaponPostureMod: null,
+    companionWeaponMods: Array(8).fill(null),
     warframeArcanes: Array(2).fill(null),
     primaryArcanes: Array(1).fill(null),
     secondaryArcanes: Array(1).fill(null),
     meleeArcanes: Array(1).fill(null),
+    companionWeapon: undefined,
     archonShards: Array(5).fill(null),
     incarnonSelections: { primary: null, secondary: null, melee: null },
     createdAt: new Date().toISOString(),

@@ -18,6 +18,7 @@ import Arcanes from "@/pages/Arcanes";
 import ArchonShards from "@/pages/ArchonShards";
 import Relics from "@/pages/Relics";
 import WorldState from "@/pages/WorldState";
+import WarframeAssistant from "@/components/WarframeAssistant";
 
 function Router() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <TooltipProvider>
             <Toaster />
             <Router />
+            <WarframeAssistant />
           </TooltipProvider>
         </LanguageProvider>
       </ThemeProvider>
