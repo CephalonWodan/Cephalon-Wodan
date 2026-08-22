@@ -288,3 +288,11 @@
 - [ ] Mettre à jour `WarframeAssistant.tsx` pour adapter l'interface du widget et envoyer la langue active au serveur LLM.
 - [ ] Mettre à jour le générateur de résumé Markdown dans `SetBuilder.tsx` pour produire les rapports en français ou en anglais selon le choix de l'utilisateur.
 - [ ] Valider TypeScript, exécuter le build de production et enregistrer un checkpoint.
+
+
+## Nouvelle demande — Traduction des catalogues Arcanes et Éclats d'Archonte
+
+- [ ] Ajouter les termes spécifiques aux Arcanes et Éclats dans `client/src/lib/i18n.ts`.
+- [ ] Mettre à jour `client/src/pages/Arcanes.tsx` pour internationaliser les filtres, la recherche, les arcanes listés et la modale de détail.
+- [ ] Mettre à jour `client/src/pages/ArchonShards.tsx` pour internationaliser les variantes (Tauforgées/Standards), les couleurs d'éclats et les états vides.
+- [ ] Valider TypeScript, lancer le build de production et enregistrer un checkpoint.
