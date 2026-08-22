@@ -217,3 +217,13 @@
 ## Rappel de style UI
 
 - [ ] Préserver l’esthétique HUD Tenno Codex : contrastes cyan/orange, densité lisible, bordures angulaires et animations discrètes.
+
+
+## Nouvelle demande — Recommandations IA par mission et Warframe
+
+- [x] Lire la persistance du build actif et récupérer la Warframe sélectionnée.
+- [x] Définir les catégories d’objectifs de mission et les règles de contexte du prompt.
+- [x] Transmettre la Warframe, les armes et le type de mission à l’API IA.
+- [x] Ajouter un sélecteur de mission dans le widget Cephalon Codex.
+- [x] Afficher une recommandation structurée : mods, arcanes, éclats, armes et priorités de gameplay.
+- [x] Tester les scénarios avec et sans Warframe sélectionnée, puis compiler et publier.

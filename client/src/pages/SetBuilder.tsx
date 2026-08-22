@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
 import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
+import { ASSISTANT_BUILD_CONTEXT_EVENT, ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, summarizeBuildForAssistant } from "@/lib/assistant-context";
 import { resolveElementalDamage, getElementalDisplayLabel, ElementalDamageBreakdown } from "@/lib/elemental-damage";
 
 // ---- Slot Selector Modal ----
@@ -2032,6 +2033,13 @@ export default function SetBuilder() {
   }, [builds, savedBuilds]);
 
   const activeBuild = builds[activeBuildIndex];
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !activeBuild) return;
+    const context = summarizeBuildForAssistant(activeBuild, buildName);
+    window.localStorage.setItem(ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+    window.dispatchEvent(new CustomEvent(ASSISTANT_BUILD_CONTEXT_EVENT, { detail: context }));
+  }, [activeBuild, buildName]);
 
   const updateBuild = useCallback((updater: (b: BuildSet) => BuildSet) => {
     setBuilds(prev => prev.map((b, i) => i === activeBuildIndex ? updater(b) : b));
