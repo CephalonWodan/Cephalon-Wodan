@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 
 const WISP_DEFENSE_REFERENCE = `Référence de build fournie par l'utilisateur pour Wisp en Défense : Don de Puissance ; Fusion des Réservoirs ; Colère Aveugle ; Influence de l'Augure ; Allonge Archonte ; Haine d'Amar ; Secrets de l'Augure ; Continuité Accrue ; Intensité Archonte ; Courage Passager ; Arcanes Mue Augmentée et Arcane Belliqueux. Ajout demandé : cinq éclats d’Archonte rouges Tauforged, chacun configuré sur +15 % de Puissance des capacités, soit +75 % de Puissance additive au total. La capture indique approximativement Force 323 %, Portée 175 %, Durée 128 %, Efficacité 45 %, Santé 370, Bouclier 370, Armure 210→262 et Énergie 300 ; avec les cinq éclats, la Puissance cible doit être recalculée par le moteur et non copiée mécaniquement. Utilise cette configuration comme inspiration pour Wisp/Wisp Prime en Défense, mais vérifie toujours les noms, rangs, polarités, capacité et valeurs calculées dans le snapshot du Builder. Ne présente pas les valeurs de la capture comme des valeurs officielles si le moteur donne un autre résultat.`;
 
+const COMMUNITY_CREATORS_CONTEXT = `Références communautaires secondaires (créateurs YouTube reconnus : MHBlacky, PANDAAHH, TheKengineer, Unified Codex, Endryx_ow, Lau 5040, vu.thang205) : utilise leurs approches méthodologiques et synergies populaires (comme l'analyse statistique rigoureuse de TheKengineer, les guides pratiques de MHBlacky, ou les builds francophones approfondis de PANDAAHH et autres créateurs) pour enrichir tes explications tactiques, tout en t'appuyant en priorité sur les règles officielles du Wiki et le snapshot du Builder.`;
+
 const MISSION_GUIDANCE: Record<string, string> = {
   auto: "Déduis l'objectif de la demande. Si le type de mission n'est pas identifiable, demande une précision avant de proposer un build spécialisé.",
   survival: "Priorité à la survie longue durée : réduction des dégâts, endurance, contrôle de zone, économie d'énergie et dégâts soutenus.",
@@ -90,6 +92,8 @@ Consigne tactique pour ce type : ${missionGuidance}
 
 Snapshot JSON du Builder actif :
 ${buildContext}${referenceGuidance}
+
+${COMMUNITY_CREATORS_CONTEXT}
 
 Règles de recommandation :
 1. Propose une configuration concrète : mods prioritaires par équipement, Aura/Exilus si pertinent, Arcanes, éclats, armes et capacité de compagnon.

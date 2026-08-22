@@ -219,11 +219,12 @@
 - [ ] Préserver l’esthétique HUD Tenno Codex : contrastes cyan/orange, densité lisible, bordures angulaires et animations discrètes.
 
 
-## Référence Wisp Défense et Recommandations IA par mission
+## Référence Wisp Défense, Créateurs Communautaires et Recommandations IA
 
 - [x] Analyser la capture de build Wisp Défense (Don de Puissance, Fusion des Réservoirs, Colère Aveugle, Intensité/Allonge Archonte, etc.).
-- [x] Intégrer cette configuration de référence dans les consignes du Cephalon pour les missions de type Défense.
-- [x] Tester l’interaction avec le widget IA et valider le build de production.
+- [x] Intégrer cette configuration de référence et les 5 éclats rouges Tauforged (+75 %) dans les consignes du Cephalon pour les missions de Défense.
+- [x] Intégrer les orientations et méthodes des créateurs reconnus (MHBlacky, PANDAAHH, TheKengineer, Unified Codex, Endryx_ow, Lau 5040, vu.thang205) comme sources secondaires d'optimisation.
+- [x] Valider TypeScript, build de production et tests API réels.
 
 ## Nouvelle demande — Recommandations IA par mission et Warframe
 
