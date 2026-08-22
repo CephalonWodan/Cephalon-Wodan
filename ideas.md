@@ -82,3 +82,10 @@ Personnalité : Technique, Fiable, Immersif
 - Chaque panneau majeur inclut au moins un détail HUD (coins angulaires, scan-line, règle holographique)
 - Les couleurs de rareté sont des classifications HUD contrôlées, pas de la décoration
 - Le builder doit ressembler à un terminal de configuration d'arsenal actif
+
+
+## Style Decisions — Amendements du review HUD
+
+- Le widget Cephalon doit conserver une hiérarchie militaire terminale : un titre d’état dominant, des métadonnées plus discrètes et une ligne de télémétrie lisible.
+- Le Tenno Cyan `#4fc3f7` reste la couleur de toutes les actions principales, du sélecteur de mission, de la Warframe active et des états sélectionnés ; les couleurs orange/jaune restent réservées aux classifications et alertes.
+- Les contrôles du chatbot affichent le contexte opérationnel courant — Warframe active, mission choisie, statut IA — au moyen de pastilles et de séparateurs HUD plutôt que de panneaux décoratifs supplémentaires.

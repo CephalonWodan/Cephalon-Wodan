@@ -1,5 +1,26 @@
 # Suivi de projet — Warframe Set Builder
 
+## Nouvelle demande — Compagnons à 10 emplacements de mods
+
+- [x] Passer le nombre d’emplacements de mods compagnon de 8 à 10 dans les types et la fabrique de set.
+- [x] Mettre à jour la normalisation, les polarités et les grilles de mods compagnon.
+- [x] Valider TypeScript, build, persistance et export.
+
+
+## Nouvelle demande — Emplacements Aura/Exilus et UX inspirée d’Overframe
+
+- [x] Ajouter les emplacements dédiés Aura et Exilus avec leurs règles de capacité et polarité spécifiques.
+- [x] Réorganiser la grille de modding et les statistiques du Builder dans un esprit ergonomique inspiré d’Overframe tout en préservant l’identité Tenno Codex.
+- [x] Valider l’import/export JSON, la persistance, TypeScript et le build.
+
+
+## Nouvelle demande — Protection de la branche main GitHub
+
+- [x] Activer les règles de protection sur `main` via l’API GitHub.
+- [x] Empêcher les force-push et la suppression de branche.
+- [x] Valider et tester l’application des règles.
+
+
 ## Nouvelle demande — Pastilles d’icônes sans texte visible
 
 - [x] Retirer les noms visibles des pastilles (`Slash`, `Viral`, `Heat`, etc.).
@@ -181,3 +202,63 @@
 - [x] Auditer `incarnon_long_complete_patched_v4_nulls.jsonl` (1 143 objets Incarnon pour 48 armes).
 - [x] Auditer `Warframes-CSV.zip` (11 fichiers CSV de statistiques et compétences de Warframes).
 - [x] Produire les rapports d'audit détaillés (`upload-audit-report.md` et `csv-audit-report.md`).
+
+
+## Nouvelle demande — Fusion des éléments dans le résumé des dégâts
+
+- [ ] Auditer le moteur de dégâts et les effets de mods élémentaires existants.
+- [ ] Définir les combinaisons élémentaires Warframe et leurs libellés/couleurs d’affichage.
+- [ ] Détecter les mods qui convertissent tous les types élémentaires vers un type unique et exclure ces cas de la fusion normale.
+- [ ] Implémenter la fusion élémentaire et le regroupement des dégâts dans le calculateur.
+- [ ] Afficher les éléments combinés et leur composition dans le résumé des dégâts.
+- [ ] Tester Feu + Glace, autres combinaisons, plusieurs sources du même élément et conversions.
+- [ ] Compiler, vérifier la console et enregistrer un checkpoint publiable.
+
+## Rappel de style UI
+
+- [ ] Préserver l’esthétique HUD Tenno Codex : contrastes cyan/orange, densité lisible, bordures angulaires et animations discrètes.
+
+
+## Référence Wisp Défense, Créateurs Communautaires et Recommandations IA
+
+- [x] Analyser la capture de build Wisp Défense (Don de Puissance, Fusion des Réservoirs, Colère Aveugle, Intensité/Allonge Archonte, etc.).
+- [x] Intégrer cette configuration de référence et les 5 éclats rouges Tauforged (+75 %) dans les consignes du Cephalon pour les missions de Défense.
+- [x] Intégrer les orientations et méthodes des créateurs reconnus (MHBlacky, PANDAAHH, TheKengineer, Unified Codex, Endryx_ow, Lau 5040, vu.thang205) comme sources secondaires d'optimisation.
+- [x] Valider TypeScript, build de production et tests API réels.
+
+## Nouvelle demande — Recommandations IA par mission et Warframe
+
+- [x] Lire la persistance du build actif et récupérer la Warframe sélectionnée.
+- [x] Définir les catégories d’objectifs de mission et les règles de contexte du prompt.
+- [x] Transmettre la Warframe, les armes et le type de mission à l’API IA.
+- [x] Ajouter un sélecteur de mission dans le widget Cephalon Codex.
+- [x] Afficher une recommandation structurée : mods, arcanes, éclats, armes et priorités de gameplay.
+- [x] Tester les scénarios avec et sans Warframe sélectionnée, puis compiler et publier.
+
+
+## Nouvelle demande — Cinq éclats rouges tauforgés pour Wisp Défense
+
+- [x] Vérifier la structure des éclats rouges tauforgés et le calcul de Puissance des capacités.
+- [x] Mettre à jour la référence Wisp Défense avec cinq éclats configurés à +15 % chacun.
+- [x] Faire apparaître le cumul de +75 % dans le contexte et les recommandations IA.
+- [x] Tester la configuration, compiler et publier le checkpoint.
+
+
+## Nouvelle demande — Optimisation IA haut niveau et statistiques en jeu
+
+- [ ] Définir la hiérarchie entre statistiques finales observées en jeu, Wiki et dataset local.
+- [ ] Ajouter les paramètres faction, niveau ennemi, solo/escouade et priorité d’optimisation.
+- [ ] Renforcer le prompt pour comparer les archétypes dégâts, survie, soutien et endurance.
+- [ ] Afficher les paramètres actifs dans le widget HUD et les transmettre à l’API.
+- [ ] Valider une recommandation haut niveau avec Wisp Défense, cinq éclats rouges Tauforged et faction Grineer.
+- [ ] Compiler, capturer les routes principales et publier un checkpoint.
+
+
+## Nouvelle demande — Bibliothèque de presets communautaires
+
+- [x] Recenser les archétypes inspirés de TheKengineer, MHBlacky et PANDAAHH sans présenter ces presets comme des endorsements officiels.
+- [x] Valider tous les noms de Warframes, armes, mods et Arcanes contre le catalogue local.
+- [x] Ajouter une bibliothèque filtrable dans le Builder avec prévisualisation et mission cible.
+- [x] Permettre de charger un preset dans le set actif ou de le dupliquer comme variante.
+- [x] Conserver les contrôles de capacité, les rangs, les polarités et les éclats Tauforged.
+- [x] Tester chaque preset, compiler et publier un checkpoint.

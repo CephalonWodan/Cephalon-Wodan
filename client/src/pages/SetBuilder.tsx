@@ -11,15 +11,19 @@ import {
   Warframe, WarframeAbility, WarframeAbilityEntry, Weapon, Companion, Mod, Arcane, ArchonShard, SelectedArchonShard, BuildSet, Polarity, SlotPolarity, BuildSlotKey, HelminthSubstitution,
   getRarityColor, getRarityLabel, createEmptyBuild, BuildIncarnonSelection, BuildIncarnonSelections
 } from "@/lib/warframe-data";
+import { COMPANION_WEAPONS } from "@/lib/companion-weapons";
 import { HELMINTH_ABILITIES, HelminthAbility, isDamageBuffAbility, validateHelminthRestriction } from "@/lib/helminth-data";
 import { createIncarnonSelection, getIncarnonBonus, getIncarnonEvolution, getIncarnonExportTree, getIncarnonProfile, IncarnonProfile, IncarnonSelection, IncarnonSlot } from "@/lib/incarnon-data";
 import { toast } from "sonner";
 import AssetImage from "@/components/AssetImage";
 import IncarnonSelector from "@/components/IncarnonSelector";
 import type { AssetType } from "@/lib/asset-resolver";
+import { ASSISTANT_BUILD_CONTEXT_EVENT, ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, summarizeBuildForAssistant } from "@/lib/assistant-context";
+import { resolveElementalDamage, getElementalDisplayLabel, ElementalDamageBreakdown } from "@/lib/elemental-damage";
+import { COMMUNITY_PRESETS, CommunityPreset } from "@/lib/community-presets";
 
 // ---- Slot Selector Modal ----
-type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
+type SlotType = "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon" | "arcane-warframe" | "arcane-primary" | "arcane-secondary" | "arcane-melee" | "archon-shard" | "mod-warframe" | "mod-aura" | "mod-exilus" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-posture" | "mod-companion-weapon-posture";
 
 const BUILD_STORAGE_KEY = "warframe-set-builder:builds:v2";
 
@@ -58,10 +62,15 @@ function selectModAtMaxRank(item: Mod): Mod {
 function getSlotItems(build: BuildSet, type: SlotType): (BuildItem | null)[] {
   switch (type) {
     case "mod-warframe": return build.warframeMods;
+    case "mod-aura": return [build.auraMod];
+    case "mod-exilus": return [build.exilusMod];
     case "mod-primary": return build.primaryMods;
     case "mod-secondary": return build.secondaryMods;
     case "mod-melee": return build.meleeMods;
     case "mod-companion": return build.companionMods;
+    case "mod-companion-weapon": return build.companionWeaponMods;
+    case "mod-companion-posture": return [build.companionPostureMod];
+    case "mod-companion-weapon-posture": return [build.companionWeaponPostureMod];
     case "arcane-warframe": return build.warframeArcanes;
     case "arcane-primary": return build.primaryArcanes;
     case "arcane-secondary": return build.secondaryArcanes;
@@ -133,6 +142,7 @@ function capacityKeyForModType(type: ModGridProps["modType"]): BuildSlotKey {
   if (type === "mod-primary") return "primary";
   if (type === "mod-secondary") return "secondary";
   if (type === "mod-melee") return "melee";
+  if (type === "mod-companion-weapon" || type === "mod-companion-weapon-posture") return "companionWeapon";
   return "companion";
 }
 
@@ -141,6 +151,7 @@ function getModsForBuildSlot(build: BuildSet, key: BuildSlotKey): (Mod | null)[]
   if (key === "primary") return build.primaryMods;
   if (key === "secondary") return build.secondaryMods;
   if (key === "melee") return build.meleeMods;
+  if (key === "companionWeapon") return build.companionWeaponMods;
   return build.companionMods;
 }
 
@@ -149,6 +160,7 @@ function getEquipmentForBuildSlot(build: BuildSet, key: BuildSlotKey): Warframe 
   if (key === "primary") return build.primaryWeapon;
   if (key === "secondary") return build.secondaryWeapon;
   if (key === "melee") return build.meleeWeapon;
+  if (key === "companionWeapon") return build.companionWeapon;
   return build.companion;
 }
 
@@ -156,14 +168,35 @@ function getUsedCapacity(build: BuildSet, key: BuildSlotKey, excludeIndex?: numb
   const mods = getModsForBuildSlot(build, key);
   const equipment = getEquipmentForBuildSlot(build, key);
   const overrides = build.slotPolarities[key];
-  return mods.reduce((total, mod, index) => {
+  let baseUsed = mods.reduce((total, mod, index) => {
     if (!mod || index === excludeIndex) return total;
     return total + modCost(mod, resolveSlotPolarity(equipment, overrides[index], index));
   }, 0);
+  if (key === "warframe" && build.exilusMod) {
+    const warframe = equipment as Warframe | undefined;
+    const exilusPolarity = warframe?.polarities?.[8];
+    baseUsed += modCost(build.exilusMod, exilusPolarity);
+  }
+  return baseUsed;
 }
 
 function getCapacityLimit(build: BuildSet, key: BuildSlotKey): number {
-  return build.capacityBoosts[key] ? 60 : 30;
+  let limit = build.capacityBoosts[key] ? 60 : 30;
+  if (key === "warframe" && build.auraMod) {
+    const warframe = build.warframe as Warframe | undefined;
+    const auraPolarity = warframe?.aura;
+    const isMatching = auraPolarity && build.auraMod.polarity === auraPolarity;
+    limit += isMatching ? 14 : 7;
+  }
+  if (key === "companion" && build.companionPostureMod) {
+    const isPenjaga = build.companionPostureMod.polarity === "penjaga" || !build.companionPostureMod.polarity;
+    limit += isPenjaga ? 14 : 7;
+  }
+  if (key === "companionWeapon" && build.companionWeaponPostureMod) {
+    const isPenjaga = build.companionWeaponPostureMod.polarity === "penjaga" || !build.companionWeaponPostureMod.polarity;
+    limit += isPenjaga ? 14 : 7;
+  }
+  return limit;
 }
 
 function isCompanionModCompatible(mod: Mod, companion?: Companion): boolean {
@@ -214,17 +247,18 @@ function normalizeBuild(raw: unknown): BuildSet | null {
       selectedPerkByTier,
     };
   };
-  const normalizeSlotPolarityArray = (value: unknown): SlotPolarity[] => Array.from({ length: 8 }, (_, index) => {
+  const normalizeSlotPolarityArray = (value: unknown, length = 8): SlotPolarity[] => Array.from({ length }, (_, index) => {
     const raw = Array.isArray(value) ? value[index] : "default";
     return POLARITY_OPTIONS.some(option => option.value === raw) ? raw as SlotPolarity : "default";
   });
   const rawSlotPolarities = candidate.slotPolarities && typeof candidate.slotPolarities === "object" ? candidate.slotPolarities as unknown as Record<string, unknown> : {};
   const slotPolarities = {
-    warframe: normalizeSlotPolarityArray(rawSlotPolarities.warframe),
-    primary: normalizeSlotPolarityArray(rawSlotPolarities.primary),
-    secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary),
-    melee: normalizeSlotPolarityArray(rawSlotPolarities.melee),
-    companion: normalizeSlotPolarityArray(rawSlotPolarities.companion),
+    warframe: normalizeSlotPolarityArray(rawSlotPolarities.warframe, 8),
+    primary: normalizeSlotPolarityArray(rawSlotPolarities.primary, 8),
+    secondary: normalizeSlotPolarityArray(rawSlotPolarities.secondary, 8),
+    melee: normalizeSlotPolarityArray(rawSlotPolarities.melee, 8),
+    companion: normalizeSlotPolarityArray(rawSlotPolarities.companion, 10),
+    companionWeapon: normalizeSlotPolarityArray(rawSlotPolarities.companionWeapon, 8),
   };
   const rawHelminth = candidate.helminthSubstitution && typeof candidate.helminthSubstitution === "object" ? candidate.helminthSubstitution as unknown as Record<string, unknown> : null;
   const rawHelminthKey = rawHelminth && typeof rawHelminth.abilityId === "string"
@@ -266,10 +300,16 @@ function normalizeBuild(raw: unknown): BuildSet | null {
     slotPolarities,
     helminthSubstitution,
     warframeMods: normalizeModArray(candidate.warframeMods, 8),
+    auraMod: candidate.auraMod ? selectModAtMaxRank(candidate.auraMod as Mod) : null,
+    exilusMod: candidate.exilusMod ? selectModAtMaxRank(candidate.exilusMod as Mod) : null,
     primaryMods: normalizeModArray(candidate.primaryMods, 8),
     secondaryMods: normalizeModArray(candidate.secondaryMods, 8),
     meleeMods: normalizeModArray(candidate.meleeMods, 8),
-    companionMods: normalizeModArray(candidate.companionMods, 8),
+    companionMods: normalizeModArray(candidate.companionMods, 10),
+    companionWeapon: COMPANION_WEAPONS.find(w => w.id === candidate.companionWeapon?.id || w.name.toLowerCase() === candidate.companionWeapon?.name?.toLowerCase()) || undefined,
+    companionWeaponMods: normalizeModArray(candidate.companionWeaponMods, 8),
+    companionPostureMod: candidate.companionPostureMod ? selectModAtMaxRank(candidate.companionPostureMod as Mod) : null,
+    companionWeaponPostureMod: candidate.companionWeaponPostureMod ? selectModAtMaxRank(candidate.companionWeaponPostureMod as Mod) : null,
     warframeArcanes: normalizeUniqueArray(candidate.warframeArcanes, 2),
     primaryArcanes: normalizeUniqueArray(candidate.primaryArcanes, 1),
     secondaryArcanes: normalizeUniqueArray(candidate.secondaryArcanes, 1),
@@ -297,11 +337,12 @@ interface SelectorModalProps {
   modSlotIndex?: number;
   unavailableIds?: string[];
   companion?: Companion;
+  companionWeapon?: Weapon;
   onSelect: (item: Warframe | Weapon | Companion | Mod | Arcane | ArchonShard) => void;
   onClose: () => void;
 }
 
-function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onSelect, onClose }: SelectorModalProps) {
+function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, companionWeapon, onSelect, onClose }: SelectorModalProps) {
   const [search, setSearch] = useState("");
 
   const [preceptFilter, setPreceptFilter] = useState<string>("all");
@@ -318,10 +359,68 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       case "arcane-secondary": return ARCANES.filter(arcane => ["secondary", "kitgun"].includes(arcane.type));
       case "arcane-melee": return ARCANES.filter(arcane => ["melee", "zaw"].includes(arcane.type));
       case "archon-shard": return ARCHON_SHARDS;
-      case "mod-warframe": return MODS.filter(m => m.type === "warframe" || m.type === "universal");
+      case "mod-warframe": return MODS.filter(m => (m.type === "warframe" || m.type === "universal") && (m.compatName || "").toUpperCase() !== "AURA");
+      case "mod-aura": return MODS.filter(m => (m.compatName || "").toUpperCase() === "AURA" || (m.type || "").toLowerCase() === "aura");
+      case "mod-exilus": return MODS.filter(m => (m.type === "warframe" || m.type === "universal") && ((m.description || "").toLowerCase().includes("exilus") || (m.name || "").toLowerCase().includes("drift") || (m.name || "").toLowerCase().includes("sure footed") || (m.name || "").toLowerCase().includes("vigorous")));
       case "mod-primary": return MODS.filter(m => m.type === "primary" || m.type === "universal");
       case "mod-secondary": return MODS.filter(m => m.type === "secondary" || m.type === "universal");
       case "mod-melee": return MODS.filter(m => m.type === "melee" || m.type === "universal");
+      case "companion-weapon": {
+        const companionType = companion?.type?.toLowerCase();
+        const companionName = (companion?.name || "").toLowerCase();
+        if (companionType === "hound") {
+          return COMPANION_WEAPONS.filter(w => ["akaten", "batoten", "lacerten"].some(hn => w.name.toLowerCase().includes(hn)));
+        }
+        if (companionType === "kubrow" || companionName.includes("kubrow") || companionName.includes("charger")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "kubrow_claws");
+        }
+        if (companionType === "kavat" || companionName.includes("kavat")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "kavat_claws");
+        }
+        if (companionType === "vulpaphyla" || companionName.includes("vulpaphyla")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "vulpaphyla_claws");
+        }
+        if (companionType === "predasite" || companionName.includes("predasite")) {
+          return COMPANION_WEAPONS.filter(w => w.id === "predasite_claws");
+        }
+        if (companionType === "beast") {
+          return COMPANION_WEAPONS.filter(w => w.weaponClass === "Beast Claws");
+        }
+        return COMPANION_WEAPONS.filter(w => w.weaponClass === "Sentinel Weapon");
+      }
+      case "mod-companion-weapon": {
+        const weaponId = companionWeapon?.id || "";
+        const weaponClass = companionWeapon?.weaponClass || "";
+        const isClaws = weaponClass === "Beast Claws" || weaponId.includes("claws");
+        const isHound = weaponClass === "Hound Weapon" || weaponId === "akaten" || weaponId === "batoten" || weaponId === "lacerten";
+
+        return MODS.filter(m => {
+          const compat = (m.compatName || "").toLowerCase();
+          const name = (m.name || "").toLowerCase();
+          const desc = (m.description || "").toLowerCase();
+          const type = (m.type || "").toLowerCase();
+
+          // Exclure explicitement les mods de Warframe, d'Aura, d'Exilus et de K-Drive / Necramech
+          if (type === "warframe" || compat === "aura" || type === "necramech" || type === "kdrive" || type === "parazon") {
+            return false;
+          }
+
+          if (isClaws) {
+            // Uniquement les mods de griffes, bêtes ou mêlée spécifiques aux compagnons
+            return compat.includes("claw") || compat.includes("beast") || compat.includes("companion") || compat.includes("vulpaphyla") || compat.includes("predasite") ||
+                   name.includes("maul") || name.includes("bite") || name.includes("swipe") || name.includes("pack leader") || name.includes("hunter");
+          }
+          if (isHound) {
+            // Mods de Hound ou mêlée compatible
+            return compat.includes("hound") || compat.includes("companion") || compat.includes("melee");
+          }
+          // Armes robotiques de Sentinelles (fusils / pistolets de sentinelle)
+          return compat.includes("sentinel") || compat.includes("rifle") || compat.includes("shotgun") || compat.includes("pistol") ||
+                 desc.includes("sentinel") || desc.includes("sentinelle") || desc.includes("companion") || desc.includes("compagnon");
+        });
+      }
+      case "mod-companion-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
+      case "mod-companion-weapon-posture": return MODS.filter(m => (m.compatName || "").toLowerCase() === "claws" && m.polarity === "penjaga");
       case "mod-companion": {
         let list = MODS.filter(mod => isCompanionModCompatible(mod, companion));
         if (preceptFilter === "precept") list = list.filter(m => (m.effect || "").toLowerCase().includes("précepte") || (m.name || "").toLowerCase().includes("precept") || m.type === "companion");
@@ -351,10 +450,16 @@ function SelectorModal({ type, modSlotIndex, unavailableIds = [], companion, onS
       "arcane-melee": "SÉLECTIONNER UN ARCANE MÊLÉE",
       "archon-shard": "SÉLECTIONNER UN ÉCLAT D’ARCHONTE",
       "mod-warframe": "SÉLECTIONNER UN MOD WARFRAME",
+      "mod-aura": "SÉLECTIONNER UN MOD AURA",
+      "mod-exilus": "SÉLECTIONNER UN MOD EXILUS",
       "mod-primary": "SÉLECTIONNER UN MOD PRIMAIRE",
       "mod-secondary": "SÉLECTIONNER UN MOD SECONDAIRE",
       "mod-melee": "SÉLECTIONNER UN MOD MÊLÉE",
       "mod-companion": "SÉLECTIONNER UN MOD COMPAGNON",
+      "companion-weapon": "SÉLECTIONNER UNE ARME DE COMPAGNON",
+      "mod-companion-weapon": "SÉLECTIONNER UN MOD D’ARME DE COMPAGNON",
+      "mod-companion-posture": "SÉLECTIONNER UN MOD DE POSTURE DE COMPAGNON",
+      "mod-companion-weapon-posture": "SÉLECTIONNER UN MOD DE POSTURE D'ARME DE COMPAGNON",
     };
     return titles[type];
   };
@@ -495,7 +600,7 @@ function EquipSlot({ label, icon, item, onSelect, onClear, accentColor = "#4fc3f
   const assetType: AssetType = label === "WARFRAME" ? "warframe" : label.includes("COMPAGNON") ? "companion" : "weapon";
   return (
     <div
-      className="wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200"
+      className={`wf-hud-panel hud-frame rounded-sm overflow-hidden transition-all duration-200 ${item ? "" : "wf-schematic-socket"}`}
       style={{ backgroundColor: "var(--wf-bg-panel)", border: `1px solid ${item ? rarityColor : "var(--wf-border)"}`, position: "relative" }}
     >
       {/* HUD corner decoration */}
@@ -573,7 +678,7 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
   const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
   return (
     <div
-      className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${mod ? "" : "wf-empty-slot"}`}
+      className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${mod ? "" : "wf-empty-slot wf-schematic-socket"}`}
       style={{
         backgroundColor: mod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
         border: `1px solid ${mod ? rarityColor : "var(--wf-border)"}`,
@@ -638,9 +743,10 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
           </div>
         </div>
       ) : (
-        <div className="relative flex items-center justify-center h-full min-h-16 p-3">
+          <div className="relative flex items-center justify-center gap-2 h-full min-h-16 p-3">
           <div className="wf-slot-trace" />
           <Plus size={16} style={{ color: "var(--wf-cyan-dim)" }} />
+          <span className="text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>SLOT {index + 1} // PRÊT</span>
         </div>
       )}
     </div>
@@ -651,7 +757,7 @@ function ModSlot({ mod, index, equipment, polarityOverride, slotPolarity, cost, 
 interface ModGridProps {
   label: string;
   mods: (Mod | null)[];
-  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion";
+  modType: "mod-warframe" | "mod-primary" | "mod-secondary" | "mod-melee" | "mod-companion" | "mod-companion-weapon" | "mod-companion-weapon-posture";
   equipment?: Warframe | Weapon | Companion;
   slotPolarityOverrides: SlotPolarity[];
   capacityBoosted: boolean;
@@ -661,6 +767,160 @@ interface ModGridProps {
   onRankChange: (index: number, rank: number, type: SlotType) => void;
   onPolarityChange: (index: number, polarity: SlotPolarity, type: SlotType) => void;
   accentColor?: string;
+}
+
+interface AuraExilusBarProps {
+  auraMod: Mod | null;
+  exilusMod: Mod | null;
+  warframe?: Warframe;
+  onSelectSlot: (type: SlotType) => void;
+  onClearSlot: (type: SlotType) => void;
+  onRankChange: (rank: number, type: SlotType) => void;
+}
+
+function AuraExilusBar({ auraMod, exilusMod, warframe, onSelectSlot, onClearSlot, onRankChange }: AuraExilusBarProps) {
+  const auraPolarity = warframe?.aura;
+  const auraCost = auraMod ? modCost(auraMod, auraPolarity) : 0;
+  const auraBonus = auraMod ? (auraPolarity && auraMod.polarity === auraPolarity ? 14 : 7) : 0;
+
+  const exilusPolarity = warframe?.polarities?.[8];
+  const exilusCost = exilusMod ? modCost(exilusMod, exilusPolarity) : 0;
+
+  const renderSingleModSlot = (mod: Mod | null, type: SlotType, labelTitle: string, polarityName?: Polarity) => {
+    const rarityColor = mod ? getRarityColor(mod.rarity) : "#1e3a4a";
+    return (
+      <div
+        className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group flex-1 ${mod ? "" : "wf-empty-slot"}`}
+        style={{
+          backgroundColor: mod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
+          border: `1px solid ${mod ? rarityColor : "var(--wf-border)"}`,
+          minHeight: 56,
+        }}
+        onClick={() => onSelectSlot(type)}
+      >
+        {mod ? (
+          <div className="p-2 flex items-center gap-2">
+            <div className="w-7 h-9 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
+              <AssetImage item={mod} type="mod" alt={mod.name} className="h-full w-full object-contain" fallback={<Star size={13} style={{ color: rarityColor }} />} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+                  {mod.name} [{labelTitle}]
+                </span>
+                <button
+                  onClick={e => { e.stopPropagation(); onClearSlot(type); }}
+                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                >
+                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                </button>
+              </div>
+              <div className="text-[9px] mt-0.5 truncate" style={{ color: rarityColor, fontFamily: "var(--font-display)" }}>
+                {mod.effect}
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-[8px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                <span>COÛT {auraCost || exilusCost}</span>
+                <span>POLARITÉ {polarityName ? POLARITY_GLYPHS[polarityName] || polarityName : "·"}</span>
+                {type === "mod-aura" && <span style={{ color: "#66bb6a" }}>+CAPACITÉ +{auraBonus}</span>}
+              </div>
+              <select
+                value={mod.selectedRank ?? mod.maxRank}
+                onClick={e => e.stopPropagation()}
+                onChange={e => { e.stopPropagation(); onRankChange(Number(e.target.value), type); }}
+                className="mt-1 w-full rounded-sm px-1 py-0.5 text-[8px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,.35)", border: `1px solid ${rarityColor}50`, color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                {Array.from({ length: mod.maxRank + 1 }, (_, rank) => <option key={rank} value={rank}>RANG {rank}/{mod.maxRank}</option>)}
+              </select>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2 h-full p-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+            <Plus size={14} style={{ color: "var(--wf-cyan-dim)" }} />
+            <span className="tracking-widest uppercase text-[9px]" style={{ color: "var(--wf-cyan)" }}>{labelTitle} {polarityName ? `(${POLARITY_GLYPHS[polarityName] || polarityName})` : ""}</span>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+      {renderSingleModSlot(auraMod, "mod-aura", "AURA", auraPolarity)}
+      {renderSingleModSlot(exilusMod, "mod-exilus", "EXILUS", exilusPolarity)}
+    </div>
+  );
+}
+
+interface CompanionPostureBarProps {
+  postureMod: Mod | null;
+  onSelectSlot: (type: SlotType) => void;
+  onClearSlot: (type: SlotType) => void;
+  onRankChange: (rank: number, type: SlotType) => void;
+}
+
+function CompanionPostureBar({ postureMod, onSelectSlot, onClearSlot, onRankChange }: CompanionPostureBarProps) {
+  const posturePolarity = "penjaga";
+  const postureCost = postureMod ? modCost(postureMod, posturePolarity) : 0;
+  const postureBonus = postureMod ? 14 : 0;
+
+  const rarityColor = postureMod ? getRarityColor(postureMod.rarity) : "#1e3a4a";
+  return (
+    <div className="mb-2">
+      <div
+        className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${postureMod ? "" : "wf-empty-slot"}`}
+        style={{
+          backgroundColor: postureMod ? `${rarityColor}10` : "rgba(0,0,0,0.2)",
+          border: `1px solid ${postureMod ? rarityColor : "var(--wf-border)"}`,
+          minHeight: 56,
+        }}
+        onClick={() => onSelectSlot("mod-companion-posture")}
+      >
+        {postureMod ? (
+          <div className="p-2 flex items-center gap-2">
+            <div className="w-7 h-9 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${rarityColor}15`, border: `1px solid ${rarityColor}40` }}>
+              <AssetImage item={postureMod} type="mod" alt={postureMod.name} className="h-full w-full object-contain" fallback={<Star size={13} style={{ color: rarityColor }} />} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+                  {postureMod.name} [POSTURE DE BÊTE]
+                </span>
+                <button
+                  onClick={e => { e.stopPropagation(); onClearSlot("mod-companion-posture"); }}
+                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                >
+                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                </button>
+              </div>
+              <div className="text-[9px] mt-0.5 truncate" style={{ color: rarityColor, fontFamily: "var(--font-display)" }}>
+                {postureMod.effect}
+              </div>
+              <div className="mt-1 flex items-center gap-2 text-[8px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+                <span>COÛT {postureCost}</span>
+                <span>POLARITÉ ◇ (Penjaga)</span>
+                <span style={{ color: "#66bb6a" }}>+CAPACITÉ +{postureBonus}</span>
+              </div>
+              <select
+                value={postureMod.selectedRank ?? postureMod.maxRank}
+                onClick={e => e.stopPropagation()}
+                onChange={e => { e.stopPropagation(); onRankChange(Number(e.target.value), "mod-companion-posture"); }}
+                className="mt-1 w-full rounded-sm px-1 py-0.5 text-[8px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,0.35)", border: `1px solid ${rarityColor}50`, color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                {Array.from({ length: postureMod.maxRank + 1 }, (_, rank) => <option key={rank} value={rank}>RANG {rank}/{postureMod.maxRank}</option>)}
+              </select>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center gap-2 h-full p-3 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+            <Plus size={14} style={{ color: "var(--wf-cyan-dim)" }} />
+            <span className="tracking-widest uppercase text-[9px]" style={{ color: "var(--wf-cyan)" }}>POSTURE DE BÊTE (OPTIONNEL — +14 CAPACITÉ, POLARITÉ ◇)</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capacityBoosted, onToggleCapacity, onSelectMod, onClearMod, onRankChange, onPolarityChange, accentColor = "#4fc3f7" }: ModGridProps) {
@@ -686,7 +946,7 @@ function ModGrid({ label, mods, modType, equipment, slotPolarityOverrides, capac
         {equipment ? `POLARITÉS : ${slotPolarityOverrides.map((override, index) => formatSlotPolarity(equipment, override, index)).join(" ") || "AUCUNE"} · COÛTS SELON LE RANG · AJOUTS AU-DELÀ DE LA CAPACITÉ BLOQUÉS` : "SÉLECTIONNEZ L’ÉQUIPEMENT POUR VOIR SES POLARITÉS"}
         {isOverCapacity && <span className="ml-2" style={{ color: "#ef5350" }}>CAPACITÉ DÉPASSÉE</span>}
       </div>
-      <div className="p-2 grid grid-cols-4 gap-1.5" style={{ backgroundColor: "var(--wf-bg-panel)" }}>
+      <div className={`p-2 grid ${mods.length === 10 ? "grid-cols-5" : "grid-cols-4"} gap-1.5`} style={{ backgroundColor: "var(--wf-bg-panel)" }}>
         {mods.map((mod, i) => (
           <ModSlot
             key={i}
@@ -743,7 +1003,12 @@ interface EnhancementBonusSummary {
 interface WeaponDamageBreakdown {
   baseDamage: number;
   totalDamage: number;
-  elements: Array<{ name: string; damage: number; color: string }>;
+  elements: ElementalDamageBreakdown[];
+  conversion?: {
+    sourceMod: string;
+    description: string;
+    target: ElementalDamageBreakdown;
+  };
   critChance: number;
   critMultiplier: number;
   statusChance: number;
@@ -779,16 +1044,20 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   const incarnonBonus = getIncarnonBonus(getIncarnonProfile(weapon), incarnonSelection);
   let baseDamage = weapon.damage || 100;
   let damageMultiplier = 1 + incarnonBonus.damagePercent;
-  let elementalBonuses: Array<{ name: string; pct: number; color: string }> = [];
 
+  let multishotMultiplier = 1;
   mods.forEach(mod => {
     if (!mod) return;
     const effect = (mod.effect || mod.description || "").toLowerCase();
     const rank = mod.selectedRank ?? mod.maxRank;
     const rankRatio = mod.maxRank > 0 ? rank / mod.maxRank : 1;
 
-    // Corrupted & standard damage mods
-    if (effect.includes("damage") && !effect.includes("status") && !effect.includes("critical")) {
+    if (effect.includes("multishot") || effect.includes("tir multiple")) {
+      const match = effect.match(/\+(\d+(?:\.\d+)?)%/);
+      if (match) multishotMultiplier += (Number(match[1]) * rankRatio) / 100;
+    }
+
+    if (effect.includes("damage") && !effect.includes("status") && !effect.includes("critical") && !effect.includes("multishot")) {
       const match = effect.match(/\+(\d+(?:\.\d+)?)%/);
       if (match) damageMultiplier += (Number(match[1]) * rankRatio) / 100;
     }
@@ -797,14 +1066,8 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
       // e.g. Transient Fortitude
       damageMultiplier += 0.25 * rankRatio;
     }
-    // Elemental mods
-    if (effect.includes("heat") || effect.includes("feu")) elementalBonuses.push({ name: "Feu", pct: 15 * (rank + 1), color: "#ff6b35" });
-    if (effect.includes("cold") || effect.includes("glace")) elementalBonuses.push({ name: "Glace", pct: 15 * (rank + 1), color: "#42a5f5" });
-    if (effect.includes("electric") || effect.includes("électricité")) elementalBonuses.push({ name: "Électricité", pct: 15 * (rank + 1), color: "#ab47bc" });
-    if (effect.includes("toxin") || effect.includes("poison")) elementalBonuses.push({ name: "Toxine", pct: 15 * (rank + 1), color: "#66bb6a" });
-    if (effect.includes("corrosive")) elementalBonuses.push({ name: "Corrosif", pct: 30 * (rank + 1), color: "#ffa726" });
-    if (effect.includes("viral")) elementalBonuses.push({ name: "Viral", pct: 30 * (rank + 1), color: "#26c6da" });
-    if (effect.includes("radiation")) elementalBonuses.push({ name: "Radiation", pct: 30 * (rank + 1), color: "#ffd700" });
+    // Elemental effects are resolved after scanning every mod so primary elements
+    // can be combined according to their placement and global conversions can win.
     // Augment mods bonus handling
     if (effect.includes("augment") || mod.name.toLowerCase().includes("augment")) {
       damageMultiplier += 0.20;
@@ -812,11 +1075,8 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
   });
 
   const totalPhysical = Math.round(baseDamage * damageMultiplier);
-  const elements = elementalBonuses.map(el => ({
-    name: el.name,
-    damage: Math.round(baseDamage * (el.pct / 100)),
-    color: el.color,
-  }));
+  const elementalResolution = resolveElementalDamage(mods, baseDamage);
+  const elements = elementalResolution.elements;
   const totalElemental = elements.reduce((acc, el) => acc + el.damage, 0);
 
   const baseCritChance = (weapon.critChance ?? 0.20) + incarnonBonus.criticalChanceFlat;
@@ -856,7 +1116,7 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
 
   // Melee Combo Multiplier: Each tier (x1 to x12) adds base damage multiplier (e.g. +50% per combo multiplier tier)
   const comboMultiplier = 1 + (Math.max(1, comboLevel) - 1) * 0.5 + (stanceBonus / 100);
-  const effectiveHit = Math.round(combinedHit * factionMultiplier * comboMultiplier);
+  const effectiveHit = Math.round(combinedHit * factionMultiplier * comboMultiplier * multishotMultiplier);
   const averageDamage = Math.round(effectiveHit * (1 + finalCritChance * (finalCritMult - 1)));
   const headshotDamage = Math.round(averageDamage * 2.0);
 
@@ -864,6 +1124,7 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
     baseDamage,
     totalDamage: effectiveHit,
     elements: elements.map(el => ({ ...el, damage: Math.round(el.damage * factionMultiplier * comboMultiplier) })),
+    conversion: elementalResolution.conversion,
     critChance: Math.round(finalCritChance * 100),
     critMultiplier: Number(finalCritMult.toFixed(1)),
     statusChance: Math.round(((weapon.statusChance ?? 0) + incarnonBonus.statusChanceFlat) * 100),
@@ -871,6 +1132,42 @@ function calculateWeaponDamage(weapon?: Weapon | null, mods: (Mod | null)[] = []
     headshotDamage,
     incarnonSources: incarnonBonus.sources,
   };
+}
+
+function ElementalDamageSummary({ elements, title }: { elements: ElementalDamageBreakdown[]; title: string }) {
+  if (elements.length === 0) return null;
+
+  return (
+    <div className="mt-1.5 space-y-1">
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>{title}</div>
+        <div className="text-[8px] uppercase tracking-wider" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>RÉSOLUTION ÉLÉMENTAIRE</div>
+      </div>
+      <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+        {elements.map(element => {
+          const displayKind = getElementalDisplayLabel(element.kind);
+          const composition = element.components?.join(" + ");
+          return (
+            <div key={`${element.key}-${element.kind}`} className="rounded-sm px-2 py-1.5" style={{ backgroundColor: `${element.color}15`, border: `1px solid ${element.color}55` }}>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <Sparkles size={10} style={{ color: element.color }} />
+                  <span className="truncate text-[10px] font-bold" style={{ color: element.color }}>{element.name}</span>
+                  <span className="shrink-0 rounded-sm px-1 py-0.5 text-[7px] font-bold tracking-wider" style={{ color: element.color, border: `1px solid ${element.color}55`, backgroundColor: `${element.color}12` }}>{displayKind}</span>
+                </div>
+                <span className="shrink-0 font-mono text-[10px] font-bold" style={{ color: "var(--wf-text)" }}>{element.damage}</span>
+              </div>
+              {composition && (
+                <div className="mt-0.5 truncate text-[8px]" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }} title={composition}>
+                  {element.kind === "conversion" ? `Tous les éléments → ${element.name}` : `${composition} → ${element.name}`}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 function calculateWarframeStats(build: BuildSet): WarframeStatSummary {
@@ -1293,7 +1590,11 @@ function buildSummaryMarkdown(build: BuildSet): string {
   const companionStats = calculateCompanionStats(build);
   const parts = build.companionParts;
   const partsSummary = parts && build.companion && ["moa", "hound"].includes(build.companion.type.toLowerCase()) ? `\n- Configuration modulaire : Tête [${parts.head || "—"}], Support [${parts.bracket || "—"}], Cœur [${parts.core || "—"}], Gyroscope [${parts.gyro || "—"}]` : "";
-  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
+  const compWeaponDmg = build.companionWeapon ? calculateWeaponDamage(build.companionWeapon, build.companionWeaponMods, "Tous", 1, 0, null) : null;
+  const compFireRate = build.companionWeapon?.fireRate || 1.5;
+  const compDps = compWeaponDmg ? Math.round(compWeaponDmg.averageDamage * compFireRate) : 0;
+  const companionWeaponBlock = build.companionWeapon ? `\n### Arme de compagnon : ${build.companionWeapon.name}\n- Posture : ${build.companionWeaponPostureMod?.name || "Aucune"}\n- DPS estimé : ${compDps} · Dégâts moyens : ${compWeaponDmg?.averageDamage} · Critique : ${compWeaponDmg?.critChance}% (x${compWeaponDmg?.critMultiplier}) · Statut : ${compWeaponDmg?.statusChance}%` : "\n### Arme de compagnon\n- Aucune arme de compagnon équipée";
+  const companionBlock = companionStats ? `\n### Statistiques compagnon\n- ${build.companion?.name} (${build.companion?.type?.toUpperCase()})${partsSummary}\n- PV : ${companionStats.health} · Boucliers : ${companionStats.shield} · Armure : ${companionStats.armor}\n- Bonus : Dégâts +${companionStats.damagePct}% · Critique +${companionStats.criticalChancePct}% · Statut +${companionStats.statusChancePct}% · Dégâts de statut +${companionStats.statusDamagePct}% · Régénération +${companionStats.healthRegen}/s${companionWeaponBlock}\n${capacityLine("Arme de compagnon", build.companionWeaponMods, build.companionWeapon, build.capacityBoosts.companionWeapon, build.slotPolarities.companionWeapon)}` : "\n### Statistiques compagnon\n- Aucun compagnon sélectionné";
   const incarnonSummary = [
     { label: "Primaire", weapon: build.primaryWeapon, selection: build.incarnonSelections.primary },
     { label: "Secondaire", weapon: build.secondaryWeapon, selection: build.incarnonSelections.secondary },
@@ -1303,6 +1604,12 @@ function buildSummaryMarkdown(build: BuildSet): string {
     if (!tree) return `- ${entry.label} : aucun arbre Incarnon sélectionné`;
     return `- ${entry.label} — ${tree.weapon} : ${tree.active ? "forme active" : "forme inactive"}, évolution ${tree.selectedEvolution}`;
   }).join("\n");
+  let assistantTranscript = "";
+  try {
+    const raw = localStorage.getItem("warframe-assistant:last-transcript");
+    if (raw) assistantTranscript = `\n## 🤖 Transcription & Conseils du Cephalon Codex (IA)\n\n> ${raw.replace(/\n/g, "\n> ")}\n`;
+  } catch {}
+
   return [
     `# ${build.name}`,
     "",
@@ -1345,7 +1652,8 @@ function buildSummaryMarkdown(build: BuildSet): string {
     "## Bonus reconnus",
     `- PV : +${enhancements.flatHealth} · Boucliers : +${enhancements.flatShield} · Armure : +${enhancements.flatArmor} · Énergie : +${enhancements.flatEnergy}`,
     `- Force : +${enhancements.abilityStrengthPct}% · Durée : +${enhancements.abilityDurationPct}% · Parkour : +${enhancements.parkourVelocityPct}%`,
-  ].join("\n");
+    assistantTranscript,
+  ].filter(Boolean).join("\n");
 }
 
 // ---- Stats Panel ----
@@ -1494,19 +1802,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono font-bold text-orange-400">{primaryDmgData.averageDamage} / {primaryDmgData.headshotDamage}</span>
                   </div>
                 </div>
-                {primaryDmgData.elements.length > 0 && (
-                  <div className="mt-1.5 space-y-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {primaryDmgData.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={primaryDmgData.elements} title="DÉGÂTS ÉLÉMENTAIRES" />
               </div>
             );
           })()}
@@ -1535,19 +1831,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono font-bold text-orange-400">{secondaryDmgData.averageDamage} / {secondaryDmgData.headshotDamage}</span>
                   </div>
                 </div>
-                {secondaryDmgData.elements.length > 0 && (
-                  <div className="mt-1.5 space-y-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {secondaryDmgData.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={secondaryDmgData.elements} title="DÉGÂTS ÉLÉMENTAIRES" />
               </div>
             );
           })()}
@@ -1614,19 +1898,7 @@ function StatsPanel({ build }: { build: BuildSet }) {
                     <span className="font-mono font-bold text-green-400">{meleeDmgData.averageDamage}</span>
                   </div>
                 </div>
-                {meleeDmgData.elements.length > 0 && (
-                  <div className="mt-1.5 space-y-1">
-                    <div className="text-[9px] uppercase font-bold tracking-wider" style={{ color: "var(--wf-text-dim)" }}>DÉGÂTS ÉLÉMENTAIRES</div>
-                    <div className="grid grid-cols-2 gap-1">
-                      {meleeDmgData.elements.map(el => (
-                        <div key={el.name} className="flex justify-between rounded-sm px-2 py-1 text-[10px]" style={{ backgroundColor: `${el.color}15`, border: `1px solid ${el.color}40` }}>
-                          <span style={{ color: el.color, fontWeight: "bold" }}>{el.name}</span>
-                          <span className="font-mono" style={{ color: "var(--wf-text)" }}>{el.damage}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                <ElementalDamageSummary elements={meleeDmgData.elements} title="DÉGÂTS ÉLÉMENTAIRES" />
               </div>
             );
           })()}
@@ -1686,6 +1958,43 @@ function StatsPanel({ build }: { build: BuildSet }) {
             </div>
           )}
 
+          {build.companionWeapon && (() => {
+            const compDmg = calculateWeaponDamage(build.companionWeapon, build.companionWeaponMods, selectedFaction, 1, 0, null);
+            const fireRate = build.companionWeapon.fireRate || 1.5;
+            const estimatedDps = Math.round(compDmg.averageDamage * fireRate);
+            return (
+              <div className="mt-3 border-t pt-3 space-y-2" style={{ borderColor: "var(--wf-border)" }}>
+                <div className="flex items-center justify-between">
+                  <div className="text-xs font-semibold uppercase" style={{ color: "#c4b5fd", fontFamily: "var(--font-display)", letterSpacing: "0.05em" }}>
+                    ARME DE COMPAGNON : {build.companionWeapon.name}
+                  </div>
+                  <span className="text-xs font-mono font-bold" style={{ color: "#c4b5fd" }}>
+                    {estimatedDps} DPS
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Dégâts Totaux</span>
+                    <span className="font-mono font-bold text-amber-300">{compDmg.totalDamage}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Moyen par Tir</span>
+                    <span className="font-mono font-bold text-green-400">{compDmg.averageDamage}</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Critique</span>
+                    <span className="font-mono text-white">{compDmg.critChance}% (x{compDmg.critMultiplier})</span>
+                  </div>
+                  <div className="flex justify-between py-0.5 border-b" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+                    <span style={{ color: "var(--wf-text-dim)" }}>Statut & Cadence</span>
+                    <span className="font-mono text-white">{compDmg.statusChance}% · {fireRate} t/s</span>
+                  </div>
+                </div>
+                <ElementalDamageSummary elements={compDmg.elements} title="DÉGÂTS ÉLÉMENTAIRES COMPAGNON" />
+              </div>
+            );
+          })()}
+
           <div className="mt-3 grid grid-cols-3 gap-2 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Arcanes</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{[...build.warframeArcanes, ...build.primaryArcanes, ...build.secondaryArcanes, ...build.meleeArcanes].filter(Boolean).length}</div></div>
             <div className="rounded-sm p-2" style={{ backgroundColor: "rgba(167,139,250,.08)", border: "1px solid rgba(167,139,250,.25)" }}><div className="text-[9px] uppercase" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>Mods comp.</div><div className="text-sm font-bold" style={{ color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}>{build.companionMods.filter(Boolean).length}/{build.companionMods.length}</div></div>
@@ -1724,6 +2033,9 @@ export default function SetBuilder() {
   const [activeTab, setActiveTab] = useState<"equipment" | "mods">("equipment");
   const [helminthSearch, setHelminthSearch] = useState("");
   const [helminthCategory, setHelminthCategory] = useState<HelminthAbility["category"] | "all">("all");
+  const [communityPresetsOpen, setCommunityPresetsOpen] = useState(false);
+  const [presetCreatorFilter, setPresetCreatorFilter] = useState<CommunityPreset["creator"] | "all">("all");
+  const [presetCategoryFilter, setPresetCategoryFilter] = useState<CommunityPreset["category"] | "all">("all");
   const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -1733,6 +2045,13 @@ export default function SetBuilder() {
   }, [builds, savedBuilds]);
 
   const activeBuild = builds[activeBuildIndex];
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !activeBuild) return;
+    const context = summarizeBuildForAssistant(activeBuild, buildName);
+    window.localStorage.setItem(ASSISTANT_BUILD_CONTEXT_STORAGE_KEY, JSON.stringify(context));
+    window.dispatchEvent(new CustomEvent(ASSISTANT_BUILD_CONTEXT_EVENT, { detail: context }));
+  }, [activeBuild, buildName]);
 
   const updateBuild = useCallback((updater: (b: BuildSet) => BuildSet) => {
     setBuilds(prev => prev.map((b, i) => i === activeBuildIndex ? updater(b) : b));
@@ -1773,6 +2092,10 @@ export default function SetBuilder() {
         nb.companionMods = b.companionMods.map(mod => mod && isCompanionModCompatible(mod, nextCompanion) ? mod : null);
         nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
       }
+      else if (type === "companion-weapon") {
+        nb.companionWeapon = item as Weapon;
+        nb.slotPolarities = { ...b.slotPolarities, companionWeapon: resetSlotPolarities() };
+      }
       else if (type === "arcane-warframe" && modIndex !== undefined) {
         nb.warframeArcanes = [...b.warframeArcanes];
         nb.warframeArcanes[modIndex] = item as Arcane;
@@ -1791,6 +2114,10 @@ export default function SetBuilder() {
       } else if (type === "mod-warframe" && modIndex !== undefined) {
         nb.warframeMods = [...b.warframeMods];
         nb.warframeMods[modIndex] = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-aura") {
+        nb.auraMod = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-exilus") {
+        nb.exilusMod = selectModAtMaxRank(item as Mod);
       } else if (type === "mod-primary" && modIndex !== undefined) {
         nb.primaryMods = [...b.primaryMods];
         nb.primaryMods[modIndex] = selectModAtMaxRank(item as Mod);
@@ -1800,15 +2127,22 @@ export default function SetBuilder() {
       } else if (type === "mod-melee" && modIndex !== undefined) {
         nb.meleeMods = [...b.meleeMods];
         nb.meleeMods[modIndex] = selectModAtMaxRank(item as Mod);
-      } else if (type === "mod-companion" && modIndex !== undefined) {
+      }       else if (type === "mod-companion" && modIndex !== undefined) {
         nb.companionMods = [...b.companionMods];
         nb.companionMods[modIndex] = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-companion-weapon" && modIndex !== undefined) {
+        nb.companionWeaponMods = [...b.companionWeaponMods];
+        nb.companionWeaponMods[modIndex] = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-companion-posture") {
+        nb.companionPostureMod = selectModAtMaxRank(item as Mod);
+      } else if (type === "mod-companion-weapon-posture") {
+        nb.companionWeaponPostureMod = selectModAtMaxRank(item as Mod);
       }
       return nb;
     });
   };
 
-  const clearSlot = (type: "warframe" | "primary" | "secondary" | "melee" | "companion") => {
+  const clearSlot = (type: "warframe" | "primary" | "secondary" | "melee" | "companion" | "companion-weapon") => {
     updateBuild(b => {
       const nb = { ...b };
       if (type === "warframe") { nb.warframe = undefined; nb.slotPolarities = { ...b.slotPolarities, warframe: resetSlotPolarities() }; }
@@ -1817,8 +2151,14 @@ export default function SetBuilder() {
       else if (type === "melee") { nb.meleeWeapon = undefined; nb.incarnonSelections = { ...b.incarnonSelections, melee: null }; nb.slotPolarities = { ...b.slotPolarities, melee: resetSlotPolarities() }; }
       else if (type === "companion") {
         nb.companion = undefined;
-        nb.companionMods = Array(8).fill(null);
-        nb.slotPolarities = { ...b.slotPolarities, companion: resetSlotPolarities() };
+        nb.companionMods = Array(10).fill(null);
+        nb.slotPolarities = { ...b.slotPolarities, companion: Array<SlotPolarity>(10).fill("default") };
+      }
+      else if (type === "companion-weapon") {
+        nb.companionWeapon = undefined;
+        nb.companionWeaponMods = Array(8).fill(null);
+        nb.companionWeaponPostureMod = null;
+        nb.slotPolarities = { ...b.slotPolarities, companionWeapon: resetSlotPolarities() };
       }
       return nb;
     });
@@ -1834,10 +2174,15 @@ export default function SetBuilder() {
       else if (type === "archon-shard") { nb.archonShards = [...b.archonShards]; nb.archonShards[index] = null; }
       else
       if (type === "mod-warframe") { nb.warframeMods = [...b.warframeMods]; nb.warframeMods[index] = null; }
+      else if (type === "mod-aura") { nb.auraMod = null; }
+      else if (type === "mod-exilus") { nb.exilusMod = null; }
       else if (type === "mod-primary") { nb.primaryMods = [...b.primaryMods]; nb.primaryMods[index] = null; }
       else if (type === "mod-secondary") { nb.secondaryMods = [...b.secondaryMods]; nb.secondaryMods[index] = null; }
       else if (type === "mod-melee") { nb.meleeMods = [...b.meleeMods]; nb.meleeMods[index] = null; }
       else if (type === "mod-companion") { nb.companionMods = [...b.companionMods]; nb.companionMods[index] = null; }
+      else if (type === "mod-companion-weapon") { nb.companionWeaponMods = [...b.companionWeaponMods]; nb.companionWeaponMods[index] = null; }
+      else if (type === "mod-companion-posture") { nb.companionPostureMod = null; }
+      else if (type === "mod-companion-weapon-posture") { nb.companionWeaponPostureMod = null; }
       return nb;
     });
   };
@@ -1906,6 +2251,9 @@ export default function SetBuilder() {
       if (type === "mod-secondary") return { ...build, secondaryMods: nextSlots };
       if (type === "mod-melee") return { ...build, meleeMods: nextSlots };
       if (type === "mod-companion") return { ...build, companionMods: nextSlots };
+      if (type === "mod-companion-weapon") return { ...build, companionWeaponMods: nextSlots };
+      if (type === "mod-companion-posture") return { ...build, companionPostureMod: nextSlots[0] || null };
+      if (type === "mod-companion-weapon-posture") return { ...build, companionWeaponPostureMod: nextSlots[0] || null };
       return build;
     });
   };
@@ -2149,6 +2497,88 @@ export default function SetBuilder() {
     );
   };
 
+  const resolvePresetMod = (name: string) => MODS.find(mod => mod.name.toLowerCase() === name.trim().toLowerCase());
+  const resolvePresetArcane = (name: string) => ARCANES.find(arcane => arcane.name.toLowerCase() === name.trim().toLowerCase());
+
+  const applyCommunityPreset = (preset: CommunityPreset, duplicate = false) => {
+    const source = normalizeBuild(JSON.parse(JSON.stringify(activeBuild)));
+    if (!source) {
+      toast.error("Impossible de préparer le set actif pour ce preset.");
+      return;
+    }
+
+    const targetWarframe = preset.category === "Warframe"
+      ? WARFRAMES.find(item => item.name.toLowerCase() === preset.targetItemName.toLowerCase())
+      : undefined;
+    const targetWeapon = preset.category !== "Warframe"
+      ? WEAPONS.find(item => item.name.toLowerCase() === preset.targetItemName.toLowerCase() && ((preset.category === "Arme Primaire" && item.type === "primary") || (preset.category === "Arme Secondaire" && item.type === "secondary") || (preset.category === "Arme Mêlée" && item.type === "melee")))
+      : undefined;
+
+    if (preset.category === "Warframe" && !targetWarframe) {
+      toast.error(`Warframe introuvable dans le catalogue : ${preset.targetItemName}`);
+      return;
+    }
+    if (preset.category !== "Warframe" && !targetWeapon) {
+      toast.error(`Arme introuvable dans le catalogue : ${preset.targetItemName}`);
+      return;
+    }
+
+    const next = normalizeBuild(JSON.parse(JSON.stringify(source)));
+    if (!next) return;
+    next.name = duplicate ? preset.name : `${preset.name} // ACTIF`;
+    next.description = `${preset.description} Preset communautaire inspiré de ${preset.creator} ; à ajuster selon les ressources, la faction et la mission.`;
+
+    const resolvedMods = preset.modNames.map(resolvePresetMod).filter(Boolean).map(mod => selectModAtMaxRank(mod as Mod));
+    const resolvedArcanes = preset.arcaneNames.map(resolvePresetArcane).filter((arcane): arcane is Arcane => Boolean(arcane));
+    const resolvedShards = (preset.archonShards || []).map(entry => {
+      const shard = ARCHON_SHARDS.find(item => item.name.toLowerCase() === entry.shardName.toLowerCase());
+      if (!shard) return null;
+      const requestedEffect = entry.effectText.toLowerCase();
+      const effectIndex = Math.max(0, shard.effects.findIndex(effect => effect.toLowerCase().includes(requestedEffect)));
+      return { shard, effectIndex } as SelectedArchonShard;
+    }).filter((shard): shard is SelectedArchonShard => Boolean(shard));
+
+    if (preset.category === "Warframe" && targetWarframe) {
+      next.warframe = targetWarframe;
+      next.warframeMods = Array(8).fill(null);
+      next.auraMod = preset.auraName ? resolvePresetMod(preset.auraName) ? selectModAtMaxRank(resolvePresetMod(preset.auraName) as Mod) : null : null;
+      next.exilusMod = preset.exilusName ? resolvePresetMod(preset.exilusName) ? selectModAtMaxRank(resolvePresetMod(preset.exilusName) as Mod) : null : null;
+      next.warframeArcanes = Array(2).fill(null);
+      resolvedMods.slice(0, 8).forEach((mod, index) => { next.warframeMods[index] = mod; });
+      resolvedArcanes.slice(0, 2).forEach((arcane, index) => { next.warframeArcanes[index] = arcane; });
+      next.archonShards = Array(5).fill(null);
+      resolvedShards.slice(0, 5).forEach((shard, index) => { next.archonShards[index] = shard; });
+      // Les presets Endgame sont calibrés sur une Warframe équipée d’un Réacteur Orokin.
+      next.capacityBoosts = { ...next.capacityBoosts, warframe: true };
+    } else if (targetWeapon) {
+      const weaponKey = preset.category === "Arme Primaire" ? "primary" : preset.category === "Arme Secondaire" ? "secondary" : "melee";
+      const modKey = `${weaponKey}Mods` as "primaryMods" | "secondaryMods" | "meleeMods";
+      const arcaneKey = `${weaponKey}Arcanes` as "primaryArcanes" | "secondaryArcanes" | "meleeArcanes";
+      next[`${weaponKey}Weapon` as "primaryWeapon" | "secondaryWeapon" | "meleeWeapon"] = targetWeapon;
+      next[modKey] = Array(8).fill(null);
+      resolvedMods.slice(0, 8).forEach((mod, index) => { next[modKey][index] = mod; });
+      next[arcaneKey] = Array(1).fill(null);
+      resolvedArcanes.slice(0, 1).forEach((arcane, index) => { next[arcaneKey][index] = arcane; });
+      next.capacityBoosts = { ...next.capacityBoosts, [weaponKey]: true };
+    }
+
+    const missingMods = preset.modNames.filter(name => !resolvePresetMod(name));
+    const missingArcanes = preset.arcaneNames.filter(name => !resolvePresetArcane(name));
+    if (missingMods.length || missingArcanes.length) {
+      toast.warning(`Preset chargé avec ${missingMods.length + missingArcanes.length} élément(s) introuvable(s) dans le catalogue.`);
+    }
+
+    next.id = Date.now().toString();
+    if (duplicate) {
+      setBuilds(prev => [...prev, next]);
+      setActiveBuildIndex(builds.length);
+    } else {
+      setBuilds(prev => prev.map((build, index) => index === activeBuildIndex ? next : build));
+    }
+    setBuildName(next.name);
+    toast.success(`${preset.name} ${duplicate ? "ajouté comme variante" : "chargé dans le set actif"}.`);
+  };
+
   const saveBuild = () => {
     const buildToSave = { ...activeBuild, name: buildName, id: Date.now().toString() };
     setSavedBuilds(prev => [...prev, buildToSave]);
@@ -2237,6 +2667,11 @@ export default function SetBuilder() {
     setActiveBuildIndex(Math.max(0, activeBuildIndex - 1));
   };
 
+  const visibleCommunityPresets = COMMUNITY_PRESETS.filter(preset =>
+    (presetCreatorFilter === "all" || preset.creator === presetCreatorFilter) &&
+    (presetCategoryFilter === "all" || preset.category === presetCategoryFilter)
+  );
+
   return (
     <Layout title="CRÉER UN SET">
       {/* Build tabs */}
@@ -2277,12 +2712,101 @@ export default function SetBuilder() {
       <div className="wf-command-console hud-frame mb-4 rounded-sm border border-cyan-400/30 p-3 sm:p-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-300" style={{ fontFamily: "var(--font-mono)" }}>TACTICAL LOADOUT // CONFIGURATION COCKPIT</div>
-            <div className="mt-1 text-xs uppercase tracking-wider text-slate-300 sm:text-sm" style={{ fontFamily: "var(--font-display)" }}>Warframe · armement · compagnon · mods</div>
+            <div className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-300" style={{ fontFamily: "var(--font-mono)" }}>TACTICAL LOADOUT // CONFIGURATION COCKPIT</div>
+            <div className="mt-1 text-sm font-semibold uppercase tracking-wider text-slate-200 sm:text-base" style={{ fontFamily: "var(--font-display)" }}>Warframe · armement · compagnon · mods</div>
           </div>
           <div className="flex items-center gap-2 text-[9px] font-mono uppercase text-slate-500"><span className="h-1.5 w-1.5 rounded-full bg-cyan-300" /> Calculs en direct</div>
         </div>
+        <div className="mt-3 grid grid-cols-2 gap-2 border-t pt-3 sm:grid-cols-4" style={{ borderColor: "rgba(79,195,247,0.16)" }}>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>Set actif</div><div className="mt-1 truncate text-xs font-semibold text-slate-100" style={{ fontFamily: "var(--font-display)" }}>{buildName || "Sans nom"}</div></div>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>Warframe</div><div className="mt-1 truncate text-xs font-semibold text-cyan-200" style={{ fontFamily: "var(--font-display)" }}>{activeBuild.warframe?.name || "En attente"}</div></div>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>Modules</div><div className="mt-1 text-xs font-semibold text-cyan-200" style={{ fontFamily: "var(--font-display)" }}>{[activeBuild.warframe, activeBuild.primaryWeapon, activeBuild.secondaryWeapon, activeBuild.meleeWeapon, activeBuild.companion].filter(Boolean).length}/5 actifs</div></div>
+          <div className="wf-cockpit-readout p-2"><div className="text-[8px] uppercase text-slate-500" style={{ fontFamily: "var(--font-mono)" }}>État</div><div className="mt-1 text-xs font-semibold text-cyan-200" style={{ fontFamily: "var(--font-display)" }}>{activeBuild.warframe ? "PRÊT À FORGER" : "CONFIGURATION REQUISE"}</div></div>
+        </div>
       </div>
+
+      <section className="wf-panel wf-hud-panel hud-frame mb-4 rounded-sm p-3 sm:p-4" style={{ border: "1px solid rgba(79,195,247,0.35)", backgroundColor: "rgba(79,195,247,0.03)" }}>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em]" style={{ color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>
+              <Star size={13} /> BIBLIOTHÈQUE // PRESETS COMMUNAUTAIRES
+            </div>
+            <p className="mt-1 max-w-2xl text-[10px] leading-relaxed" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>
+              Archétypes inspirés de méthodes publiques. Les statistiques et identifiants restent contrôlés par le catalogue local ; chaque preset est modifiable après chargement.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setCommunityPresetsOpen(open => !open)}
+            className="flex shrink-0 items-center justify-center gap-2 rounded-sm px-3 py-2 text-[10px] font-bold tracking-wider transition-colors hover:bg-cyan-400/15"
+            style={{ backgroundColor: communityPresetsOpen ? "rgba(79,195,247,0.18)" : "rgba(0,0,0,0.28)", border: "1px solid var(--wf-cyan)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}
+          >
+            {communityPresetsOpen ? <ChevronDown size={12} /> : <Plus size={12} />}
+            {communityPresetsOpen ? "MASQUER LES PRESETS" : "OUVRIR LA BIBLIOTHÈQUE"}
+          </button>
+        </div>
+
+        {communityPresetsOpen && (
+          <div className="mt-4 space-y-3 border-t pt-3" style={{ borderColor: "var(--wf-border)" }}>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <select
+                value={presetCreatorFilter}
+                onChange={event => setPresetCreatorFilter(event.target.value as CommunityPreset["creator"] | "all")}
+                className="rounded-sm px-2 py-2 text-[10px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                <option value="all">TOUS LES CRÉATEURS</option>
+                <option value="TheKengineer">THEKENGINEER</option>
+                <option value="MHBlacky">MHBLACKY</option>
+                <option value="PANDAAHH">PANDAAHH</option>
+              </select>
+              <select
+                value={presetCategoryFilter}
+                onChange={event => setPresetCategoryFilter(event.target.value as CommunityPreset["category"] | "all")}
+                className="rounded-sm px-2 py-2 text-[10px] outline-none"
+                style={{ backgroundColor: "rgba(0,0,0,0.35)", border: "1px solid var(--wf-border)", color: "var(--wf-text)", fontFamily: "var(--font-mono)" }}
+              >
+                <option value="all">TOUTES LES CATÉGORIES</option>
+                <option value="Warframe">WARFRAME</option>
+                <option value="Arme Primaire">ARME PRIMAIRE</option>
+                <option value="Arme Secondaire">ARME SECONDAIRE</option>
+                <option value="Arme Mêlée">ARME MÊLÉE</option>
+              </select>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
+              {visibleCommunityPresets.map(preset => (
+                <article key={preset.id} className="rounded-sm p-3" style={{ backgroundColor: "rgba(0,0,0,0.3)", border: "1px solid var(--wf-border)" }}>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-xs font-bold uppercase tracking-wider" style={{ color: "var(--wf-text)", fontFamily: "var(--font-display)" }}>{preset.name}</h3>
+                      <div className="mt-1 flex flex-wrap gap-1.5 text-[9px] uppercase" style={{ fontFamily: "var(--font-mono)" }}>
+                        <span className="rounded-sm px-1.5 py-0.5" style={{ color: "var(--wf-cyan)", backgroundColor: "rgba(79,195,247,0.12)" }}>{preset.creator}</span>
+                        <span className="rounded-sm px-1.5 py-0.5" style={{ color: "#ffca28", backgroundColor: "rgba(255,202,40,0.1)" }}>{preset.difficulty}</span>
+                        <span className="rounded-sm px-1.5 py-0.5" style={{ color: "var(--wf-text-dim)", backgroundColor: "rgba(255,255,255,0.05)" }}>{preset.category}</span>
+                      </div>
+                    </div>
+                    <span className="shrink-0 text-[9px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>{preset.targetItemName}</span>
+                  </div>
+                  <p className="mt-2 text-[10px] leading-relaxed" style={{ color: "var(--wf-text-dim)" }}>{preset.description}</p>
+                  <div className="mt-2 text-[9px] uppercase" style={{ color: "#81d4fa", fontFamily: "var(--font-mono)" }}>MISSION // {preset.missionType}</div>
+                  {preset.archonShards?.length ? <div className="mt-1 text-[9px] uppercase" style={{ color: "#ef5350", fontFamily: "var(--font-mono)" }}>ÉCLATS // {preset.archonShards.length} × {preset.archonShards[0]?.shardName} // {preset.archonShards[0]?.effectText}</div> : null}
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {[...preset.modNames.slice(0, 4), ...(preset.auraName ? [`AURA: ${preset.auraName}`] : []), ...(preset.exilusName ? [`EXILUS: ${preset.exilusName}`] : [])].map((modName, index) => (
+                      <span key={`${preset.id}-mod-${index}`} className="rounded-sm px-1.5 py-0.5 text-[9px]" style={{ color: "var(--wf-text-dim)", border: "1px solid rgba(255,255,255,0.1)", fontFamily: "var(--font-mono)" }}>{modName}</span>
+                    ))}
+                  </div>
+                  <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <button type="button" onClick={() => applyCommunityPreset(preset)} className="rounded-sm px-2 py-1.5 text-[9px] font-bold tracking-wider transition-colors hover:bg-cyan-400/15" style={{ backgroundColor: "rgba(79,195,247,0.1)", border: "1px solid rgba(79,195,247,0.55)", color: "var(--wf-cyan)", fontFamily: "var(--font-display)" }}>CHARGER DANS L’ACTIF</button>
+                    <button type="button" onClick={() => applyCommunityPreset(preset, true)} className="rounded-sm px-2 py-1.5 text-[9px] font-bold tracking-wider transition-colors hover:bg-white/10" style={{ backgroundColor: "rgba(255,255,255,0.04)", border: "1px solid var(--wf-border)", color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>DUPLIQUER EN VARIANTE</button>
+                  </div>
+                </article>
+              ))}
+            </div>
+            {!visibleCommunityPresets.length && <div className="py-5 text-center text-[10px] uppercase" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)" }}>Aucun preset pour ces filtres.</div>}
+          </div>
+        )}
+      </section>
 
       {/* Main builder layout */}
       <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-4">
@@ -2470,20 +2994,35 @@ export default function SetBuilder() {
 
           {/* Mod grids */}
           <div className={`grid grid-cols-1 gap-4 lg:grid-cols-2 ${activeTab === "mods" ? "" : "max-xl:hidden"}`}>
-            <ModGrid
-              label="WARFRAME"
-              mods={activeBuild.warframeMods}
-              modType="mod-warframe"
-              equipment={activeBuild.warframe}
-              slotPolarityOverrides={activeBuild.slotPolarities.warframe}
-              capacityBoosted={activeBuild.capacityBoosts.warframe}
-              onToggleCapacity={() => toggleCapacity("warframe")}
-              onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
-              onClearMod={clearMod}
-              onRankChange={setModRank}
-              onPolarityChange={(idx, polarity) => setSlotPolarity("warframe", idx, polarity)}
-              accentColor="#4fc3f7"
-            />
+            <div className="space-y-2">
+              <AuraExilusBar
+                auraMod={activeBuild.auraMod}
+                exilusMod={activeBuild.exilusMod}
+                warframe={activeBuild.warframe}
+                onSelectSlot={(type) => setSelectorOpen({ type })}
+                onClearSlot={(type) => clearMod(0, type)}
+                onRankChange={(rank, type) => {
+                  const mod = type === "mod-aura" ? activeBuild.auraMod : activeBuild.exilusMod;
+                  if (!mod) return;
+                  const nextMod = { ...mod, selectedRank: rank };
+                  updateBuild(b => type === "mod-aura" ? { ...b, auraMod: nextMod } : { ...b, exilusMod: nextMod });
+                }}
+              />
+              <ModGrid
+                label="WARFRAME"
+                mods={activeBuild.warframeMods}
+                modType="mod-warframe"
+                equipment={activeBuild.warframe}
+                slotPolarityOverrides={activeBuild.slotPolarities.warframe}
+                capacityBoosted={activeBuild.capacityBoosts.warframe}
+                onToggleCapacity={() => toggleCapacity("warframe")}
+                onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
+                onClearMod={clearMod}
+                onRankChange={setModRank}
+                onPolarityChange={(idx, polarity) => setSlotPolarity("warframe", idx, polarity)}
+                accentColor="#4fc3f7"
+              />
+            </div>
             <ModGrid
               label="PRIMAIRE"
               mods={activeBuild.primaryMods}
@@ -2526,26 +3065,124 @@ export default function SetBuilder() {
               onPolarityChange={(idx, polarity) => setSlotPolarity("melee", idx, polarity)}
               accentColor="#66bb6a"
             />
-            <ModGrid
-              label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name}` : "COMPAGNON"}
-              mods={activeBuild.companionMods}
-              modType="mod-companion"
-              equipment={activeBuild.companion}
-              slotPolarityOverrides={activeBuild.slotPolarities.companion}
-              capacityBoosted={activeBuild.capacityBoosts.companion}
-              onToggleCapacity={() => toggleCapacity("companion")}
-              onSelectMod={(idx, type) => {
-                if (!activeBuild.companion) {
-                  toast.error("Sélectionnez d’abord un compagnon.");
-                  return;
-                }
-                setSelectorOpen({ type, modIndex: idx });
-              }}
-              onClearMod={clearMod}
-              onRankChange={setModRank}
-              onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
-              accentColor="#a78bfa"
-            />
+            <div className="lg:col-span-2 space-y-4">
+              {activeBuild.companion && ["beast", "kubrow", "kavat", "vulpaphyla", "predasite"].includes(activeBuild.companion.type.toLowerCase()) && (
+                <CompanionPostureBar
+                  postureMod={activeBuild.companionPostureMod}
+                  onSelectSlot={(type) => setSelectorOpen({ type })}
+                  onClearSlot={(type) => clearMod(0, type)}
+                  onRankChange={(rank, type) => {
+                    const mod = activeBuild.companionPostureMod;
+                    if (!mod) return;
+                    const nextMod = { ...mod, selectedRank: rank };
+                    updateBuild(b => ({ ...b, companionPostureMod: nextMod }));
+                  }}
+                />
+              )}
+              <ModGrid
+                label={activeBuild.companion ? `COMPAGNON — ${activeBuild.companion.name} (10 SLOTS)` : "COMPAGNON (10 SLOTS)"}
+                mods={activeBuild.companionMods}
+                modType="mod-companion"
+                equipment={activeBuild.companion}
+                slotPolarityOverrides={activeBuild.slotPolarities.companion}
+                capacityBoosted={activeBuild.capacityBoosts.companion}
+                onToggleCapacity={() => toggleCapacity("companion")}
+                onSelectMod={(idx, type) => {
+                  if (!activeBuild.companion) {
+                    toast.error("Sélectionnez d’abord un compagnon.");
+                    return;
+                  }
+                  setSelectorOpen({ type, modIndex: idx });
+                }}
+                onClearMod={clearMod}
+                onRankChange={setModRank}
+                onPolarityChange={(idx, polarity) => setSlotPolarity("companion", idx, polarity)}
+                accentColor="#a78bfa"
+              />
+
+              <div className="wf-hud-panel hud-frame rounded-sm p-3" style={{ border: "1px solid rgba(167,139,250,0.3)" }}>
+                <div className="flex items-center justify-between mb-2">
+                  <div className="text-xs font-bold uppercase tracking-wider" style={{ color: "#a78bfa", fontFamily: "var(--font-display)" }}>
+                    ARME DE COMPAGNON // {activeBuild.companionWeapon?.name ? activeBuild.companionWeapon.name.toUpperCase() : "AUCUNE ARME SÉLECTIONNÉE"}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {activeBuild.companionWeapon && (
+                      <button
+                        onClick={() => clearSlot("companion-weapon")}
+                        className="text-[9px] uppercase px-2 py-0.5 rounded-sm hover:bg-rose-500/20 text-rose-300 border border-rose-500/30"
+                      >
+                        Retirer
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setSelectorOpen({ type: "companion-weapon" })}
+                      className="text-[9px] uppercase px-2.5 py-1 rounded-sm wf-btn-primary"
+                    >
+                      {activeBuild.companionWeapon ? "Changer d’arme" : "Équiper une arme"}
+                    </button>
+                  </div>
+                </div>
+
+                {activeBuild.companionWeapon && (
+                  <div className="space-y-2">
+                    {(activeBuild.companionWeapon.weaponClass === "Beast Claws" || activeBuild.companionWeapon.id.includes("claws")) && (
+                      <div
+                        className={`relative rounded-sm overflow-hidden transition-all duration-150 cursor-pointer group ${activeBuild.companionWeaponPostureMod ? "" : "wf-empty-slot"}`}
+                        style={{
+                          backgroundColor: activeBuild.companionWeaponPostureMod ? `${getRarityColor(activeBuild.companionWeaponPostureMod.rarity)}10` : "rgba(0,0,0,0.2)",
+                          border: `1px solid ${activeBuild.companionWeaponPostureMod ? getRarityColor(activeBuild.companionWeaponPostureMod.rarity) : "var(--wf-border)"}`,
+                          minHeight: 52,
+                        }}
+                        onClick={() => setSelectorOpen({ type: "mod-companion-weapon-posture" })}
+                      >
+                        {activeBuild.companionWeaponPostureMod ? (
+                          <div className="p-2 flex items-center gap-2">
+                            <div className="w-6 h-8 shrink-0 rounded-sm overflow-hidden flex items-center justify-center" style={{ backgroundColor: `${getRarityColor(activeBuild.companionWeaponPostureMod.rarity)}15`, border: `1px solid ${getRarityColor(activeBuild.companionWeaponPostureMod.rarity)}40` }}>
+                              <AssetImage item={activeBuild.companionWeaponPostureMod} type="mod" alt={activeBuild.companionWeaponPostureMod.name} className="h-full w-full object-contain" fallback={<Star size={12} style={{ color: getRarityColor(activeBuild.companionWeaponPostureMod.rarity) }} />} />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center justify-between">
+                                <span className="text-[10px] font-bold leading-tight" style={{ fontFamily: "var(--font-display)", color: "var(--wf-text)" }}>
+                                  {activeBuild.companionWeaponPostureMod.name} [POSTURE DE GRIFFES]
+                                </span>
+                                <button
+                                  onClick={e => { e.stopPropagation(); clearMod(0, "mod-companion-weapon-posture"); }}
+                                  className="p-0.5 rounded-sm hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity ml-1 shrink-0"
+                                >
+                                  <X size={10} style={{ color: "var(--wf-text-dim)" }} />
+                                </button>
+                              </div>
+                              <div className="text-[9px] mt-0.5 truncate" style={{ color: getRarityColor(activeBuild.companionWeaponPostureMod.rarity), fontFamily: "var(--font-display)" }}>
+                                {activeBuild.companionWeaponPostureMod.effect}
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="flex items-center justify-center gap-2 h-full p-2 text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-display)" }}>
+                            <Plus size={13} style={{ color: "var(--wf-cyan-dim)" }} />
+                            <span className="tracking-widest uppercase text-[9px]" style={{ color: "var(--wf-cyan)" }}>ÉQUIPER UNE POSTURE DE GRIFFES (PENJAGA)</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <ModGrid
+                      label={`ARME COMPAGNON — ${activeBuild.companionWeapon.name}`}
+                      mods={activeBuild.companionWeaponMods}
+                      modType="mod-companion-weapon"
+                      equipment={activeBuild.companionWeapon}
+                      slotPolarityOverrides={activeBuild.slotPolarities.companionWeapon}
+                      capacityBoosted={activeBuild.capacityBoosts.companionWeapon}
+                      onToggleCapacity={() => toggleCapacity("companionWeapon")}
+                      onSelectMod={(idx, type) => setSelectorOpen({ type, modIndex: idx })}
+                      onClearMod={clearMod}
+                      onRankChange={setModRank}
+                      onPolarityChange={(idx, polarity) => setSlotPolarity("companionWeapon", idx, polarity)}
+                      accentColor="#c4b5fd"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -2632,6 +3269,7 @@ export default function SetBuilder() {
           modSlotIndex={selectorOpen.modIndex}
           unavailableIds={getUnavailableIds(activeBuild, selectorOpen.type, selectorOpen.modIndex)}
           companion={activeBuild.companion}
+          companionWeapon={activeBuild.companionWeapon}
           onSelect={handleSelect}
           onClose={() => setSelectorOpen(null)}
         />
