@@ -1,4 +1,3 @@
-// ============================================================
 // WARFRAME SET BUILDER — Layout Component
 // Tenno Codex dark theme: sidebar + header + main content
 // ============================================================
@@ -11,36 +10,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const NAV_ITEMS = [
-  {
-    section: "NAVIGATION",
-    items: [
-      { label: "Accueil", href: "/", icon: Home },
-      { label: "Créer un Set", href: "/builder", icon: Zap },
-      { label: "Worldstate", href: "/worldstate", icon: Globe },
-    ]
-  },
-  {
-    section: "ARSENAL",
-    items: [
-      { label: "Warframes", href: "/warframes", icon: Shield },
-      { label: "Armes", href: "/weapons", icon: Sword },
-      { label: "Compagnons", href: "/companions", icon: Users },
-      { label: "Mods", href: "/mods", icon: Star },
-      { label: "Arcanes", href: "/arcanes", icon: Sparkles },
-      { label: "Éclats d’Archonte", href: "/archon-shards", icon: Gem },
-    ]
-  },
-  {
-    section: "RESSOURCES",
-    items: [
-      { label: "Guides", href: "/guides", icon: BookOpen },
-      { label: "Ressources", href: "/resources", icon: Package },
-      { label: "Paramètres", href: "/settings", icon: Settings },
-    ]
-  },
-];
-
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;
@@ -51,6 +20,36 @@ export default function Layout({ children, title }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { language, setLanguage, t } = useLanguage();
+
+  const NAV_ITEMS = [
+    {
+      section: t("NAVIGATION", "NAVIGATION"),
+      items: [
+        { label: t("Accueil", "Main Page"), href: "/", icon: Home },
+        { label: t("Créer un Set", "Set Builder"), href: "/builder", icon: Zap },
+        { label: "Worldstate", href: "/worldstate", icon: Globe },
+      ]
+    },
+    {
+      section: t("ARSENAL", "ARSENAL"),
+      items: [
+        { label: "Warframes", href: "/warframes", icon: Shield },
+        { label: t("Armes", "Weapons"), href: "/weapons", icon: Sword },
+        { label: t("Compagnons", "Companions"), href: "/companions", icon: Users },
+        { label: "Mods", href: "/mods", icon: Star },
+        { label: "Arcanes", href: "/arcanes", icon: Sparkles },
+        { label: t("Éclats d’Archonte", "Archon Shards"), href: "/archon-shards", icon: Gem },
+      ]
+    },
+    {
+      section: t("RESSOURCES", "RESOURCES"),
+      items: [
+        { label: t("Guides", "Guides"), href: "/guides", icon: BookOpen },
+        { label: t("Ressources", "Resources"), href: "/resources", icon: Package },
+        { label: t("Paramètres", "Settings"), href: "/settings", icon: Settings },
+      ]
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "var(--wf-bg-deep)", color: "var(--wf-text)" }}>
@@ -99,13 +98,19 @@ export default function Layout({ children, title }: LayoutProps) {
 
         {/* Top nav links */}
         <nav className="hidden lg:flex items-center gap-1 text-xs">
-          {["MAIN PAGE", "WARFRAMES", "ARMES", "MODS", "ARCANES", "BUILDER"].map((item, i) => {
-            const hrefs = ["/", "/warframes", "/weapons", "/mods", "/arcanes", "/builder"];
-            const isActive = location === hrefs[i];
+          {[
+            { label: t("MAIN PAGE", "MAIN PAGE"), href: "/" },
+            { label: "WARFRAMES", href: "/warframes" },
+            { label: t("ARMES", "WEAPONS"), href: "/weapons" },
+            { label: "MODS", href: "/mods" },
+            { label: "ARCANES", href: "/arcanes" },
+            { label: "BUILDER", href: "/builder" },
+          ].map((item) => {
+            const isActive = location === item.href;
             return (
               <Link
-                key={item}
-                href={hrefs[i]}
+                key={item.href}
+                href={item.href}
                 className={cn(
                   "px-3 py-1.5 rounded-sm transition-all duration-150 tracking-wider uppercase",
                   isActive
@@ -114,7 +119,7 @@ export default function Layout({ children, title }: LayoutProps) {
                 )}
                 style={{ fontFamily: "var(--font-display)", fontSize: "11px" }}
               >
-                {item}
+                {item.label}
               </Link>
             );
           })}
@@ -128,7 +133,7 @@ export default function Layout({ children, title }: LayoutProps) {
           <Search size={14} className="absolute left-2.5 text-gray-500 pointer-events-none" />
           <input
             type="text"
-            placeholder="Rechercher..."
+            placeholder={t("Rechercher...", "Search...")}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             className="pl-8 pr-2 py-1 text-xs rounded-sm outline-none w-24 sm:w-52 transition-all focus:w-32 sm:focus:w-60"
@@ -149,7 +154,7 @@ export default function Layout({ children, title }: LayoutProps) {
             onClick={() => setLanguage(language === "fr" ? "en" : "fr")}
             className="text-[11px] font-bold uppercase tracking-wider transition-colors hover:text-cyan-300"
             style={{ fontFamily: "var(--font-display)", color: "var(--wf-cyan)" }}
-            title="Changer de langue (FR / EN)"
+            title={t("Changer de langue (FR / EN)", "Switch language (FR / EN)")}
           >
             {language.toUpperCase()}
           </button>
@@ -229,7 +234,7 @@ export default function Layout({ children, title }: LayoutProps) {
                 rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 py-1.5 px-3 text-xs font-semibold rounded-sm transition-all wf-btn-primary"
               >
-                JOUER GRATUITEMENT
+                {t("JOUER GRATUITEMENT", "PLAY FREE")}
               </a>
               <a
                 href="https://discord.gg/warframe"
@@ -273,22 +278,16 @@ export default function Layout({ children, title }: LayoutProps) {
                     href="/"
                     className="inline-flex items-center gap-1.5 self-start sm:self-auto px-2.5 py-1.5 rounded-sm text-[10px] uppercase tracking-wider transition-all hover:bg-cyan-400/10"
                     style={{ color: "var(--wf-cyan)", border: "1px solid rgba(79,195,247,0.45)", fontFamily: "var(--font-display)" }}
-                    aria-label="Revenir à la page d’accueil"
+                    aria-label={t("Revenir à la page d’accueil", "Return to main page")}
                   >
                     <Home size={12} />
-                    Accueil
+                    {t("Accueil", "Home")}
                   </Link>
                 )}
               </div>
-              <div className="flex items-center gap-1 mt-0.5">
-                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "var(--wf-cyan)" }} />
-                <span className="text-xs" style={{ color: "var(--wf-text-dim)", fontFamily: "var(--font-mono)", fontSize: "10px" }}>
-                  WARFRAME SET BUILDER // TENNO CODEX
-                </span>
-              </div>
             </div>
           )}
-          <div className="p-3 sm:p-4 lg:p-6">
+          <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-7xl mx-auto">
             {children}
           </div>
         </main>

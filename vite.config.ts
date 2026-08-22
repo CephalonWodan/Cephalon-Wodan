@@ -1,3 +1,4 @@
+import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
@@ -37,102 +38,146 @@ function trimLogFile(logPath: string, maxSize: number) {
     // Keep newest lines (from end) that fit within 60% of maxSize
     const targetSize = TRIM_TARGET_BYTES;
     for (let i = lines.length - 1; i >= 0; i--) {
-      const lineBytes = Buffer.byteLength(lines[i], "utf-8") + 1;
-      if (keptBytes + lineBytes > targetSize && keptLines.length > 0) {
-        break;
-      }
+      const lineBytes = Buffer.byteLength(`${lines[i]}\n`, "utf-8");
+      if (keptBytes + lineBytes > targetSize) break;
       keptLines.unshift(lines[i]);
       keptBytes += lineBytes;
     }
 
     fs.writeFileSync(logPath, keptLines.join("\n"), "utf-8");
   } catch {
-    // Non-blocking log trim error
+    /* ignore trim errors */
   }
 }
 
-function appendLog(source: LogSource, data: any) {
-  try {
-    ensureLogDir();
-    const logPath = path.join(LOG_DIR, `${source}.log`);
-    const timestamp = new Date().toISOString();
-    const entry = `[${timestamp}] ${JSON.stringify(data)}\n`;
-    fs.appendFileSync(logPath, entry, "utf-8");
-    trimLogFile(logPath, MAX_LOG_SIZE_BYTES);
-  } catch {
-    // Non-blocking log write error
-  }
+function writeToLogFile(source: LogSource, entries: unknown[]) {
+  if (entries.length === 0) return;
+
+  ensureLogDir();
+  const logPath = path.join(LOG_DIR, `${source}.log`);
+
+  // Format entries with timestamps
+  const lines = entries.map((entry) => {
+    const ts = new Date().toISOString();
+    return `[${ts}] ${JSON.stringify(entry)}`;
+  });
+
+  // Append to log file
+  fs.appendFileSync(logPath, `${lines.join("\n")}\n`, "utf-8");
+
+  // Trim if exceeds max size
+  trimLogFile(logPath, MAX_LOG_SIZE_BYTES);
 }
 
+/**
+ * Vite plugin to collect browser debug logs
+ * - POST /__manus__/logs: Browser sends logs, written directly to files
+ * - Files: browserConsole.log, networkRequests.log, sessionReplay.log
+ * - Auto-trimmed when exceeding 1MB (keeps newest entries)
+ */
 function vitePluginManusDebugCollector(): Plugin {
   return {
-    name: "vite-plugin-manus-debug-collector",
-    apply: "serve",
+    name: "manus-debug-collector",
+
+    transformIndexHtml(html) {
+      if (process.env.NODE_ENV === "production") {
+        return html;
+      }
+      return {
+        html,
+        tags: [
+          {
+            tag: "script",
+            attrs: {
+              src: "/__manus__/debug-collector.js",
+              defer: true,
+            },
+            injectTo: "head",
+          },
+        ],
+      };
+    },
+
     configureServer(server: ViteDevServer) {
-      server.middlewares.use((req, res, next) => {
-        if (req.url === "/__manus__/log" && req.method === "POST") {
-          let body = "";
-          req.on("data", chunk => {
-            body += chunk;
-          });
-          req.on("end", () => {
-            try {
-              const { source, data } = JSON.parse(body);
-              if (source && data) {
-                appendLog(source, data);
-              }
-              res.statusCode = 200;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ success: true }));
-            } catch (err: any) {
-              res.statusCode = 400;
-              res.setHeader("Content-Type", "application/json");
-              res.end(JSON.stringify({ error: err?.message || "Invalid JSON" }));
-            }
-          });
+      // POST /__manus__/logs: Browser sends logs (written directly to files)
+      server.middlewares.use("/__manus__/logs", (req, res, next) => {
+        if (req.method !== "POST") {
+          return next();
+        }
+
+        const handlePayload = (payload: any) => {
+          // Write logs directly to files
+          if (payload.consoleLogs?.length > 0) {
+            writeToLogFile("browserConsole", payload.consoleLogs);
+          }
+          if (payload.networkRequests?.length > 0) {
+            writeToLogFile("networkRequests", payload.networkRequests);
+          }
+          if (payload.sessionEvents?.length > 0) {
+            writeToLogFile("sessionReplay", payload.sessionEvents);
+          }
+
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: true }));
+        };
+
+        const reqBody = (req as { body?: unknown }).body;
+        if (reqBody && typeof reqBody === "object") {
+          try {
+            handlePayload(reqBody);
+          } catch (e) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, error: String(e) }));
+          }
           return;
         }
-        next();
+
+        let body = "";
+        req.on("data", (chunk) => {
+          body += chunk.toString();
+        });
+
+        req.on("end", () => {
+          try {
+            const payload = JSON.parse(body);
+            handlePayload(payload);
+          } catch (e) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ success: false, error: String(e) }));
+          }
+        });
       });
     },
   };
 }
 
-function jsxLocPlugin(): Plugin {
-  return {
-    name: "jsx-loc-plugin",
-    transform(code, id) {
-      if (!id.endsWith(".tsx") && !id.endsWith(".jsx")) return;
-      return code;
-    }
-  };
-}
-
 function vitePluginStorageProxy(): Plugin {
   return {
-    name: "vite-plugin-storage-proxy",
+    name: "manus-storage-proxy",
     configureServer(server: ViteDevServer) {
-      server.middlewares.use(async (req, res, next) => {
-        if (!req.url?.startsWith("/manus-storage/")) {
-          next();
+      server.middlewares.use("/manus-storage", async (req, res) => {
+        const key = req.url?.replace(/^\//, "");
+        if (!key) {
+          res.writeHead(400, { "Content-Type": "text/plain" });
+          res.end("Missing storage key");
           return;
         }
 
-        const apiKey = process.env.BUILT_IN_FORGE_API_KEY;
-        const apiUrl = process.env.BUILT_IN_FORGE_API_URL;
+        const forgeBaseUrl = (process.env.BUILT_IN_FORGE_API_URL || "").replace(/\/+$/, "");
+        const forgeKey = process.env.BUILT_IN_FORGE_API_KEY;
 
-        if (!apiKey || !apiUrl) {
+        if (!forgeBaseUrl || !forgeKey) {
           res.writeHead(500, { "Content-Type": "text/plain" });
           res.end("Storage proxy not configured");
           return;
         }
 
-        const filename = req.url.replace("/manus-storage/", "");
         try {
-          const forgeResp = await fetch(`${apiUrl}/v1/storage/signed-url?filename=${encodeURIComponent(filename)}`, {
-            headers: {
-              "Authorization": `Bearer ${apiKey}`,
-            },
+          const forgeUrl = new URL("v1/storage/presign/get", forgeBaseUrl + "/");
+          forgeUrl.searchParams.set("path", key);
+
+          const forgeResp = await fetch(forgeUrl, {
+            headers: { Authorization: `Bearer ${forgeKey}` },
           });
 
           if (!forgeResp.ok) {
@@ -204,7 +249,6 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    chunkSizeWarningLimit: 3500, // Ajusté pour le bundle Warframe
   },
   server: {
     port: 3000,

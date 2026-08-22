@@ -33,7 +33,3 @@ Le dépôt `CephalonWodan/Cephalon-Wodan` est **public**, mais son propriétaire
 La documentation Vercel indique qu’un dépôt personnel ne peut pas être importé ou connecté par un simple collaborateur, même avec des droits élevés ; le compte connecté doit être le propriétaire. Cela explique pourquoi l’espace Vercel Hobby ne liste que `ayaproject` et refuse le dépôt avec `Could not access the repository`.
 
 Solutions possibles : se connecter à Vercel avec le compte GitHub propriétaire `CephalonWodan`, ou transférer le dépôt vers le compte `wodan49` avant l’import. Le transfert de propriété est une opération sensible et ne doit pas être lancé sans confirmation explicite.
-
-## Diagnostic du 22 août 2026 — URL cephalon-wodan-f3oa.vercel.app
-
-L’URL de production renvoie HTTP 200 mais avec `Content-Type: application/javascript` et un corps de 788 octets contenant le bundle compilé de `server/index.ts`. Elle ne sert donc pas `dist/public/index.html`. Le dépôt GitHub `main` ne contient pas encore `vercel.json`. Le commit de tête de la PR #3 est `4e62334e2251c56a532abed9949f8f4bdce4fc62`, contient désormais `vercel.json` et le script `build:static`, et les deux vérifications Vercel de la PR sont passées avec succès. L’URL fournie reste toutefois sur l’ancien déploiement/branche tant que ce commit n’est pas celui de la branche de production Vercel.

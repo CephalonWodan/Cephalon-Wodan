@@ -273,17 +273,9 @@
 - [x] Compiler, tester le build de production et publier un checkpoint.
 
 
-## Nouvelle demande — Presets communautaires TheKengineer & MHBlacky
+## Nouvelle demande — Internationalisation complète Français / Anglais
 
-- [ ] Recenser et structurer les fiches de builds détaillées pour TheKengineer (analyses de dégâts, build DPS et survie haut niveau) et MHBlacky (builds spécialisés Warframe et armes).
-- [ ] Vérifier chaque nom de mod, Arcane, Warframe et arme contre le catalogue local.
-- [ ] Intégrer les presets dans `client/src/lib/community-presets.ts` avec les paramètres de mission et éclats associés.
-- [ ] Valider le chargement direct dans le Builder et les options de duplication.
-- [ ] Lancer les vérifications TypeScript et le build de production, puis publier le checkpoint.
-
-## Nouvelle demande — URL Vercel expose encore server/index.ts
-
-- [ ] Vérifier que la configuration Vercel et le script de build sont présents sur la branche GitHub réellement reliée à Vercel.
-- [ ] Ajouter un script build:static et cibler dist/public sans exécuter le serveur Express pour le déploiement frontend.
-- [ ] Synchroniser la correction vers le dépôt GitHub via une branche dédiée et une Pull Request si main reste protégée.
-- [ ] Vérifier l’URL Vercel après le déploiement de la branche principale.
+- [ ] Créer un dictionnaire de traduction centralisé `client/src/lib/i18n.ts` couvrant l'ensemble de l'interface, des boutons, des messages et des sections.
+- [ ] Connecter le sélecteur de langue existant à un état global persistant.
+- [ ] Mettre à jour l'accueil, les catalogues (Warframes, Armes, Compagnons, Mods, Arcanes, Éclats), le Set Builder, le Worldstate, l'assistant IA et les exports Markdown/JSON.
+- [ ] Valider le basculement dynamique entre le français et l'anglais, exécuter le build de production et enregistrer un checkpoint.
