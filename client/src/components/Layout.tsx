@@ -1,7 +1,7 @@
 // WARFRAME SET BUILDER — Layout Component
 // Tenno Codex dark theme: sidebar + header + main content
 // ============================================================
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 import {
   Shield, Sword, Users, BookOpen, Settings, ChevronRight,
@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { applySeo } from "@/lib/seo";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,6 +21,10 @@ export default function Layout({ children, title }: LayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const { language, setLanguage, t } = useLanguage();
+
+  useEffect(() => {
+    applySeo(location, language === "en" ? "en" : "fr");
+  }, [language, location]);
 
   const NAV_ITEMS = [
     {
