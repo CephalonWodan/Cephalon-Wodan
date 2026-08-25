@@ -5,7 +5,8 @@
   "outputDirectory": "dist/public",
   "functions": {
     "api/chat.ts": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": ["data/rag-index.json"]
     }
   },
   "rewrites": [
