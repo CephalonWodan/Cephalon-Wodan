@@ -2,7 +2,11 @@
 // Style reminder: keep evidence compact, sourced, bilingual-aware, and readable in the HUD.
 // Numeric truth remains in the Builder calculation engine; this module retrieves evidence only.
 
-import ragIndex from "../data/rag-index.json";
+import fs from "node:fs";
+import path from "node:path";
+
+const ragIndexPath = path.resolve(process.cwd(), "data/rag-index.json");
+const ragIndex = JSON.parse(fs.readFileSync(ragIndexPath, "utf8")) as { documents: unknown[] };
 
 type JsonRecord = Record<string, any>;
 type CatalogKind = "warframe" | "weapon" | "mod" | "arcane" | "companion" | "archon_shard" | "community_video" | "community_guide";
