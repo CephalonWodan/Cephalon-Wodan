@@ -1,0 +1,7318 @@
+[
+  {
+    "name": "Ash",
+    "category": "warframes"
+  },
+  {
+    "name": "Ash Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Atlas",
+    "category": "warframes"
+  },
+  {
+    "name": "Atlas Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Banshee",
+    "category": "warframes"
+  },
+  {
+    "name": "Banshee Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Baruuk",
+    "category": "warframes"
+  },
+  {
+    "name": "Baruuk Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Bonewidow",
+    "category": "warframes"
+  },
+  {
+    "name": "Caliban",
+    "category": "warframes"
+  },
+  {
+    "name": "Caliban Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Chroma",
+    "category": "warframes"
+  },
+  {
+    "name": "Chroma Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Citrine",
+    "category": "warframes"
+  },
+  {
+    "name": "Cyte-09",
+    "category": "warframes"
+  },
+  {
+    "name": "Dagath",
+    "category": "warframes"
+  },
+  {
+    "name": "Dante",
+    "category": "warframes"
+  },
+  {
+    "name": "Ember",
+    "category": "warframes"
+  },
+  {
+    "name": "Ember Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Equinox",
+    "category": "warframes"
+  },
+  {
+    "name": "Equinox Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Excalibur",
+    "category": "warframes"
+  },
+  {
+    "name": "Excalibur Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Excalibur Umbra",
+    "category": "warframes"
+  },
+  {
+    "name": "Follie",
+    "category": "warframes"
+  },
+  {
+    "name": "Frost",
+    "category": "warframes"
+  },
+  {
+    "name": "Frost Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Gara",
+    "category": "warframes"
+  },
+  {
+    "name": "Gara Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Garuda",
+    "category": "warframes"
+  },
+  {
+    "name": "Garuda Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Gauss",
+    "category": "warframes"
+  },
+  {
+    "name": "Gauss Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Grendel",
+    "category": "warframes"
+  },
+  {
+    "name": "Grendel Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Gyre",
+    "category": "warframes"
+  },
+  {
+    "name": "Gyre Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Harrow",
+    "category": "warframes"
+  },
+  {
+    "name": "Harrow Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Helminth",
+    "category": "warframes"
+  },
+  {
+    "name": "Hildryn",
+    "category": "warframes"
+  },
+  {
+    "name": "Hildryn Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Hydroid",
+    "category": "warframes"
+  },
+  {
+    "name": "Hydroid Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Inaros",
+    "category": "warframes"
+  },
+  {
+    "name": "Inaros Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Ivara",
+    "category": "warframes"
+  },
+  {
+    "name": "Ivara Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Jade",
+    "category": "warframes"
+  },
+  {
+    "name": "Khora",
+    "category": "warframes"
+  },
+  {
+    "name": "Khora Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Koumei",
+    "category": "warframes"
+  },
+  {
+    "name": "Kullervo",
+    "category": "warframes"
+  },
+  {
+    "name": "Lavos",
+    "category": "warframes"
+  },
+  {
+    "name": "Lavos Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Limbo",
+    "category": "warframes"
+  },
+  {
+    "name": "Limbo Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Loki",
+    "category": "warframes"
+  },
+  {
+    "name": "Loki Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Mag",
+    "category": "warframes"
+  },
+  {
+    "name": "Mag Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Mesa",
+    "category": "warframes"
+  },
+  {
+    "name": "Mesa Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Mirage",
+    "category": "warframes"
+  },
+  {
+    "name": "Mirage Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Nekros",
+    "category": "warframes"
+  },
+  {
+    "name": "Nekros Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Nezha",
+    "category": "warframes"
+  },
+  {
+    "name": "Nezha Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Nidus",
+    "category": "warframes"
+  },
+  {
+    "name": "Nidus Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Nokko",
+    "category": "warframes"
+  },
+  {
+    "name": "Nova",
+    "category": "warframes"
+  },
+  {
+    "name": "Nova Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Nyx",
+    "category": "warframes"
+  },
+  {
+    "name": "Nyx Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Oberon",
+    "category": "warframes"
+  },
+  {
+    "name": "Oberon Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Octavia",
+    "category": "warframes"
+  },
+  {
+    "name": "Octavia Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Oraxia",
+    "category": "warframes"
+  },
+  {
+    "name": "Orion & Sirius",
+    "category": "warframes"
+  },
+  {
+    "name": "Protea",
+    "category": "warframes"
+  },
+  {
+    "name": "Protea Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Qorvex",
+    "category": "warframes"
+  },
+  {
+    "name": "Revenant",
+    "category": "warframes"
+  },
+  {
+    "name": "Revenant Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Rhino",
+    "category": "warframes"
+  },
+  {
+    "name": "Rhino Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Saryn",
+    "category": "warframes"
+  },
+  {
+    "name": "Saryn Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Sevagoth",
+    "category": "warframes"
+  },
+  {
+    "name": "Sevagoth Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Sirius & Orion",
+    "category": "warframes"
+  },
+  {
+    "name": "Styanax",
+    "category": "warframes"
+  },
+  {
+    "name": "Styanax Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Temple",
+    "category": "warframes"
+  },
+  {
+    "name": "Titania",
+    "category": "warframes"
+  },
+  {
+    "name": "Titania Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Trinity",
+    "category": "warframes"
+  },
+  {
+    "name": "Trinity Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Uriel",
+    "category": "warframes"
+  },
+  {
+    "name": "Valkyr",
+    "category": "warframes"
+  },
+  {
+    "name": "Valkyr Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Vauban",
+    "category": "warframes"
+  },
+  {
+    "name": "Vauban Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Voidrig",
+    "category": "warframes"
+  },
+  {
+    "name": "Volt",
+    "category": "warframes"
+  },
+  {
+    "name": "Volt Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Voruna",
+    "category": "warframes"
+  },
+  {
+    "name": "Voruna Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Wisp",
+    "category": "warframes"
+  },
+  {
+    "name": "Wisp Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Wukong",
+    "category": "warframes"
+  },
+  {
+    "name": "Wukong Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Xaku",
+    "category": "warframes"
+  },
+  {
+    "name": "Xaku Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Yareli",
+    "category": "warframes"
+  },
+  {
+    "name": "Yareli Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Zephyr",
+    "category": "warframes"
+  },
+  {
+    "name": "Zephyr Prime",
+    "category": "warframes"
+  },
+  {
+    "name": "Abating Link",
+    "category": "mods"
+  },
+  {
+    "name": "Abundant Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Accelerated Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Accelerated Deflection",
+    "category": "mods"
+  },
+  {
+    "name": "Accelerated Isotope",
+    "category": "mods"
+  },
+  {
+    "name": "Accumulating Whipclaw",
+    "category": "mods"
+  },
+  {
+    "name": "Acid Shells",
+    "category": "mods"
+  },
+  {
+    "name": "Acidic Spittle",
+    "category": "mods"
+  },
+  {
+    "name": "Adaptation",
+    "category": "mods"
+  },
+  {
+    "name": "Adept Surge",
+    "category": "mods"
+  },
+  {
+    "name": "Adhesive Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Adrenaline Boost",
+    "category": "mods"
+  },
+  {
+    "name": "Aegis Gale",
+    "category": "mods"
+  },
+  {
+    "name": "Aerial Ace",
+    "category": "mods"
+  },
+  {
+    "name": "Aerial Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Aerial Prospectus",
+    "category": "mods"
+  },
+  {
+    "name": "Aero Agility",
+    "category": "mods"
+  },
+  {
+    "name": "Aero Periphery",
+    "category": "mods"
+  },
+  {
+    "name": "Aero Vantage",
+    "category": "mods"
+  },
+  {
+    "name": "Aerodynamic",
+    "category": "mods"
+  },
+  {
+    "name": "Affinity Spike",
+    "category": "mods"
+  },
+  {
+    "name": "Afterburn",
+    "category": "mods"
+  },
+  {
+    "name": "Afterburner",
+    "category": "mods"
+  },
+  {
+    "name": "Agile Aim",
+    "category": "mods"
+  },
+  {
+    "name": "Agility Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Air Martial",
+    "category": "mods"
+  },
+  {
+    "name": "Air Recon",
+    "category": "mods"
+  },
+  {
+    "name": "Air Thrusters",
+    "category": "mods"
+  },
+  {
+    "name": "Air Time",
+    "category": "mods"
+  },
+  {
+    "name": "Airburst Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Argonak Metal Auger",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Barrel Diffusion",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Daikyu Target Acquired",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Furax Body Count",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Javlok Magazine Warp",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Organ Shatter",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Ripkas True Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Serration",
+    "category": "mods"
+  },
+  {
+    "name": "Amalgam Shotgun Barrage",
+    "category": "mods"
+  },
+  {
+    "name": "Amanata Pressure",
+    "category": "mods"
+  },
+  {
+    "name": "Amar's Anguish",
+    "category": "mods"
+  },
+  {
+    "name": "Amar's Contempt",
+    "category": "mods"
+  },
+  {
+    "name": "Amar's Hatred",
+    "category": "mods"
+  },
+  {
+    "name": "Amarsetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Ambush",
+    "category": "mods"
+  },
+  {
+    "name": "Ambush Optics",
+    "category": "mods"
+  },
+  {
+    "name": "Ammo Case",
+    "category": "mods"
+  },
+  {
+    "name": "Ammo Chain",
+    "category": "mods"
+  },
+  {
+    "name": "Ammo Drum",
+    "category": "mods"
+  },
+  {
+    "name": "Ammo Stock",
+    "category": "mods"
+  },
+  {
+    "name": "Amp Spike",
+    "category": "mods"
+  },
+  {
+    "name": "Anabolic Pollination",
+    "category": "mods"
+  },
+  {
+    "name": "Anchored Glide",
+    "category": "mods"
+  },
+  {
+    "name": "Anemic Agility",
+    "category": "mods"
+  },
+  {
+    "name": "Animal Instinct",
+    "category": "mods"
+  },
+  {
+    "name": "Anti-Flak Plating",
+    "category": "mods"
+  },
+  {
+    "name": "Anti-Grav Array",
+    "category": "mods"
+  },
+  {
+    "name": "Anti-Grav Grenade",
+    "category": "mods"
+  },
+  {
+    "name": "Anti-V",
+    "category": "mods"
+  },
+  {
+    "name": "Anticipation",
+    "category": "mods"
+  },
+  {
+    "name": "Antimatter Absorb",
+    "category": "mods"
+  },
+  {
+    "name": "Antimatter Mine",
+    "category": "mods"
+  },
+  {
+    "name": "Antitoxin",
+    "category": "mods"
+  },
+  {
+    "name": "Apex Predator",
+    "category": "mods"
+  },
+  {
+    "name": "Arc Coil",
+    "category": "mods"
+  },
+  {
+    "name": "Archgun Ace",
+    "category": "mods"
+  },
+  {
+    "name": "Archgun Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Archon Continuity",
+    "category": "mods"
+  },
+  {
+    "name": "Archon Flow",
+    "category": "mods"
+  },
+  {
+    "name": "Archon Intensify",
+    "category": "mods"
+  },
+  {
+    "name": "Archon Stretch",
+    "category": "mods"
+  },
+  {
+    "name": "Archon Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Argent Scourge",
+    "category": "mods"
+  },
+  {
+    "name": "Argon Plating",
+    "category": "mods"
+  },
+  {
+    "name": "Argon Scope",
+    "category": "mods"
+  },
+  {
+    "name": "Armored Acrobatics",
+    "category": "mods"
+  },
+  {
+    "name": "Armored Agility",
+    "category": "mods"
+  },
+  {
+    "name": "Armored Evade",
+    "category": "mods"
+  },
+  {
+    "name": "Armored Recovery",
+    "category": "mods"
+  },
+  {
+    "name": "Arrow Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Artillery Cheap Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Ashensetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Assassin Posture",
+    "category": "mods"
+  },
+  {
+    "name": "Assault Mode",
+    "category": "mods"
+  },
+  {
+    "name": "Assimilate",
+    "category": "mods"
+  },
+  {
+    "name": "Astral Autopsy",
+    "category": "mods"
+  },
+  {
+    "name": "Astral Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Astral Cut",
+    "category": "mods"
+  },
+  {
+    "name": "Astral Slash",
+    "category": "mods"
+  },
+  {
+    "name": "Astral Twilight",
+    "category": "mods"
+  },
+  {
+    "name": "Atlantis Vulcan",
+    "category": "mods"
+  },
+  {
+    "name": "Atomic Fallout",
+    "category": "mods"
+  },
+  {
+    "name": "Auger Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Augmented Sonar",
+    "category": "mods"
+  },
+  {
+    "name": "Augur Accord",
+    "category": "mods"
+  },
+  {
+    "name": "Augur Message",
+    "category": "mods"
+  },
+  {
+    "name": "Augur Pact",
+    "category": "mods"
+  },
+  {
+    "name": "Augur Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Augur Secrets",
+    "category": "mods"
+  },
+  {
+    "name": "Augur Seeker",
+    "category": "mods"
+  },
+  {
+    "name": "Augursetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Auto Breach",
+    "category": "mods"
+  },
+  {
+    "name": "Auto Omni",
+    "category": "mods"
+  },
+  {
+    "name": "Automatic Trigger",
+    "category": "mods"
+  },
+  {
+    "name": "Auxiliary Power",
+    "category": "mods"
+  },
+  {
+    "name": "Avenging Truth",
+    "category": "mods"
+  },
+  {
+    "name": "Aviator",
+    "category": "mods"
+  },
+  {
+    "name": "Axios Javelineers",
+    "category": "mods"
+  },
+  {
+    "name": "Balanced Posture",
+    "category": "mods"
+  },
+  {
+    "name": "Balefire Surge",
+    "category": "mods"
+  },
+  {
+    "name": "Ballista Measure",
+    "category": "mods"
+  },
+  {
+    "name": "Ballistic Bullseye",
+    "category": "mods"
+  },
+  {
+    "name": "Bane Of Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Bane Of Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Bane Of Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Bane Of Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Bane Of The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Barrel Diffusion",
+    "category": "mods"
+  },
+  {
+    "name": "Basilisk Gaze",
+    "category": "mods"
+  },
+  {
+    "name": "Basilisk Scales",
+    "category": "mods"
+  },
+  {
+    "name": "Battering Maneuver",
+    "category": "mods"
+  },
+  {
+    "name": "Battle Forge",
+    "category": "mods"
+  },
+  {
+    "name": "Battle Stations",
+    "category": "mods"
+  },
+  {
+    "name": "Beguiling Lantern",
+    "category": "mods"
+  },
+  {
+    "name": "Bell Ringer",
+    "category": "mods"
+  },
+  {
+    "name": "Berserker Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Bhisaj-Bal",
+    "category": "mods"
+  },
+  {
+    "name": "Biotic Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Bite",
+    "category": "mods"
+  },
+  {
+    "name": "Biting Frost",
+    "category": "mods"
+  },
+  {
+    "name": "Biting Piranha",
+    "category": "mods"
+  },
+  {
+    "name": "Blackout Pulse",
+    "category": "mods"
+  },
+  {
+    "name": "Blade Of Truth",
+    "category": "mods"
+  },
+  {
+    "name": "Bladed Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Blast Shield",
+    "category": "mods"
+  },
+  {
+    "name": "Blaze",
+    "category": "mods"
+  },
+  {
+    "name": "Blazing Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Blazing Pillage",
+    "category": "mods"
+  },
+  {
+    "name": "Blazing Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Bleeding Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Bleeding Willow",
+    "category": "mods"
+  },
+  {
+    "name": "Blending Talons",
+    "category": "mods"
+  },
+  {
+    "name": "Blind Justice",
+    "category": "mods"
+  },
+  {
+    "name": "Blind Rage",
+    "category": "mods"
+  },
+  {
+    "name": "Blind Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Blinding Reave",
+    "category": "mods"
+  },
+  {
+    "name": "Blood For Ammo",
+    "category": "mods"
+  },
+  {
+    "name": "Blood For Energy",
+    "category": "mods"
+  },
+  {
+    "name": "Blood For Life",
+    "category": "mods"
+  },
+  {
+    "name": "Blood Forge",
+    "category": "mods"
+  },
+  {
+    "name": "Blood Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Bloodthirst",
+    "category": "mods"
+  },
+  {
+    "name": "Blunderbuss",
+    "category": "mods"
+  },
+  {
+    "name": "Body Count",
+    "category": "mods"
+  },
+  {
+    "name": "Bomb The Landin'",
+    "category": "mods"
+  },
+  {
+    "name": "Bonebladesetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Bore",
+    "category": "mods"
+  },
+  {
+    "name": "Boreal's Anguish",
+    "category": "mods"
+  },
+  {
+    "name": "Boreal's Contempt",
+    "category": "mods"
+  },
+  {
+    "name": "Boreal's Hatred",
+    "category": "mods"
+  },
+  {
+    "name": "Borealsetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Botanist",
+    "category": "mods"
+  },
+  {
+    "name": "Boundless Energy",
+    "category": "mods"
+  },
+  {
+    "name": "Bounty Hunter",
+    "category": "mods"
+  },
+  {
+    "name": "Brain Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Breach Loader",
+    "category": "mods"
+  },
+  {
+    "name": "Breach Quanta",
+    "category": "mods"
+  },
+  {
+    "name": "Brief Respite",
+    "category": "mods"
+  },
+  {
+    "name": "Bright Purity",
+    "category": "mods"
+  },
+  {
+    "name": "Brilliant Insight",
+    "category": "mods"
+  },
+  {
+    "name": "Broad Eye",
+    "category": "mods"
+  },
+  {
+    "name": "Brutal Tide",
+    "category": "mods"
+  },
+  {
+    "name": "Brute Conditioning",
+    "category": "mods"
+  },
+  {
+    "name": "Bullet Dance",
+    "category": "mods"
+  },
+  {
+    "name": "Burdened Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Burning Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Burning Hate",
+    "category": "mods"
+  },
+  {
+    "name": "Burning Wasp",
+    "category": "mods"
+  },
+  {
+    "name": "Bursting Mass",
+    "category": "mods"
+  },
+  {
+    "name": "Butcher's Revelry",
+    "category": "mods"
+  },
+  {
+    "name": "Buzz Kill",
+    "category": "mods"
+  },
+  {
+    "name": "Byteryte",
+    "category": "mods"
+  },
+  {
+    "name": "Calculated Redirection",
+    "category": "mods"
+  },
+  {
+    "name": "Calculated Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Calculated Spring",
+    "category": "mods"
+  },
+  {
+    "name": "Calculated Victory",
+    "category": "mods"
+  },
+  {
+    "name": "Calm & Frenzy",
+    "category": "mods"
+  },
+  {
+    "name": "Cannonade",
+    "category": "mods"
+  },
+  {
+    "name": "Capacitance",
+    "category": "mods"
+  },
+  {
+    "name": "Carnis Carapace",
+    "category": "mods"
+  },
+  {
+    "name": "Carnis Mandible",
+    "category": "mods"
+  },
+  {
+    "name": "Carnis Stinger",
+    "category": "mods"
+  },
+  {
+    "name": "Carving Mantis",
+    "category": "mods"
+  },
+  {
+    "name": "Cat's Eye",
+    "category": "mods"
+  },
+  {
+    "name": "Cataclysmic Continuum",
+    "category": "mods"
+  },
+  {
+    "name": "Cataclysmic Gate",
+    "category": "mods"
+  },
+  {
+    "name": "Catalyzer Link",
+    "category": "mods"
+  },
+  {
+    "name": "Catalyzing Shields",
+    "category": "mods"
+  },
+  {
+    "name": "Catapult",
+    "category": "mods"
+  },
+  {
+    "name": "Cathode Current",
+    "category": "mods"
+  },
+  {
+    "name": "Caustic Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Cautious Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Celestial Nightfall",
+    "category": "mods"
+  },
+  {
+    "name": "Celestial Stomp",
+    "category": "mods"
+  },
+  {
+    "name": "Chained Sling",
+    "category": "mods"
+  },
+  {
+    "name": "Champion's Blessing",
+    "category": "mods"
+  },
+  {
+    "name": "Chaos Sphere",
+    "category": "mods"
+  },
+  {
+    "name": "Charged Bullets",
+    "category": "mods"
+  },
+  {
+    "name": "Charged Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Charged Shell",
+    "category": "mods"
+  },
+  {
+    "name": "Charm",
+    "category": "mods"
+  },
+  {
+    "name": "Chilling Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Chilling Globe",
+    "category": "mods"
+  },
+  {
+    "name": "Chilling Grasp",
+    "category": "mods"
+  },
+  {
+    "name": "Chilling Reload",
+    "category": "mods"
+  },
+  {
+    "name": "Chromatic Blade",
+    "category": "mods"
+  },
+  {
+    "name": "Cleanse Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Cleanse Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Cleanse Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Cleanse Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Cleanse The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Cleaving Whirlwind",
+    "category": "mods"
+  },
+  {
+    "name": "Clip Delegation",
+    "category": "mods"
+  },
+  {
+    "name": "Coaction Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Cogron Tauron Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Coil Recharge",
+    "category": "mods"
+  },
+  {
+    "name": "Coiling Viper",
+    "category": "mods"
+  },
+  {
+    "name": "Cold Arrival",
+    "category": "mods"
+  },
+  {
+    "name": "Cold Snap",
+    "category": "mods"
+  },
+  {
+    "name": "Collision Force",
+    "category": "mods"
+  },
+  {
+    "name": "Combat Discipline",
+    "category": "mods"
+  },
+  {
+    "name": "Combat Reload",
+    "category": "mods"
+  },
+  {
+    "name": "Combo Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Combo Killer",
+    "category": "mods"
+  },
+  {
+    "name": "Combustion Beam",
+    "category": "mods"
+  },
+  {
+    "name": "Combustion Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Comet Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Comet Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Companion Weapon Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Computer Cop",
+    "category": "mods"
+  },
+  {
+    "name": "Concealed Explosives",
+    "category": "mods"
+  },
+  {
+    "name": "Concentrated Arrow",
+    "category": "mods"
+  },
+  {
+    "name": "Concussion Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Condition Overload",
+    "category": "mods"
+  },
+  {
+    "name": "Condition's Perfection",
+    "category": "mods"
+  },
+  {
+    "name": "Conductive Blade",
+    "category": "mods"
+  },
+  {
+    "name": "Conductive Sphere",
+    "category": "mods"
+  },
+  {
+    "name": "Conductor",
+    "category": "mods"
+  },
+  {
+    "name": "Conic Nozzle",
+    "category": "mods"
+  },
+  {
+    "name": "Constitution",
+    "category": "mods"
+  },
+  {
+    "name": "Contagion Cloud",
+    "category": "mods"
+  },
+  {
+    "name": "Contagious Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Contagious Spread",
+    "category": "mods"
+  },
+  {
+    "name": "Containment Breach",
+    "category": "mods"
+  },
+  {
+    "name": "Contamination Casing",
+    "category": "mods"
+  },
+  {
+    "name": "Contamination Wave",
+    "category": "mods"
+  },
+  {
+    "name": "Continuity",
+    "category": "mods"
+  },
+  {
+    "name": "Continuous Misery",
+    "category": "mods"
+  },
+  {
+    "name": "Controlled Slide",
+    "category": "mods"
+  },
+  {
+    "name": "Convulsion",
+    "category": "mods"
+  },
+  {
+    "name": "Coolant Leak",
+    "category": "mods"
+  },
+  {
+    "name": "Cordon",
+    "category": "mods"
+  },
+  {
+    "name": "Corrosive Projection",
+    "category": "mods"
+  },
+  {
+    "name": "Corrupt Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Counter Pulse",
+    "category": "mods"
+  },
+  {
+    "name": "Counterbalance",
+    "category": "mods"
+  },
+  {
+    "name": "Countermeasures",
+    "category": "mods"
+  },
+  {
+    "name": "Counterweight",
+    "category": "mods"
+  },
+  {
+    "name": "Covert Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Covert Lethality",
+    "category": "mods"
+  },
+  {
+    "name": "Crash Course",
+    "category": "mods"
+  },
+  {
+    "name": "Crash Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Crashing Havoc",
+    "category": "mods"
+  },
+  {
+    "name": "Crashing Timber",
+    "category": "mods"
+  },
+  {
+    "name": "Creeping Bullseye",
+    "category": "mods"
+  },
+  {
+    "name": "Creeping Terrify",
+    "category": "mods"
+  },
+  {
+    "name": "Crescent Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Crescent Devolution",
+    "category": "mods"
+  },
+  {
+    "name": "Crimson Dervish",
+    "category": "mods"
+  },
+  {
+    "name": "Crimson Fugue",
+    "category": "mods"
+  },
+  {
+    "name": "Crippling Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Deceleration",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Delay",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Focus",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Meltdown",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Precision",
+    "category": "mods"
+  },
+  {
+    "name": "Critical Surge",
+    "category": "mods"
+  },
+  {
+    "name": "Crossing Snakes",
+    "category": "mods"
+  },
+  {
+    "name": "Crowd Dispersion",
+    "category": "mods"
+  },
+  {
+    "name": "Cruising Speed",
+    "category": "mods"
+  },
+  {
+    "name": "Crushing Ruin",
+    "category": "mods"
+  },
+  {
+    "name": "Cryo Coating",
+    "category": "mods"
+  },
+  {
+    "name": "Cryo Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Cull The Weak",
+    "category": "mods"
+  },
+  {
+    "name": "Cunning Aspect",
+    "category": "mods"
+  },
+  {
+    "name": "Cunning Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Cutting Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Cyclone Kraken",
+    "category": "mods"
+  },
+  {
+    "name": "Da-Ren",
+    "category": "mods"
+  },
+  {
+    "name": "Damage Decoy",
+    "category": "mods"
+  },
+  {
+    "name": "Damzav-Vati",
+    "category": "mods"
+  },
+  {
+    "name": "Dark Propagation",
+    "category": "mods"
+  },
+  {
+    "name": "Dead Eye",
+    "category": "mods"
+  },
+  {
+    "name": "Deadly Efficiency",
+    "category": "mods"
+  },
+  {
+    "name": "Deadly Maneuvers",
+    "category": "mods"
+  },
+  {
+    "name": "Deadly Sequence",
+    "category": "mods"
+  },
+  {
+    "name": "Death Blossom",
+    "category": "mods"
+  },
+  {
+    "name": "Deathless Currents",
+    "category": "mods"
+  },
+  {
+    "name": "Deceptive Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Decisive Judgement",
+    "category": "mods"
+  },
+  {
+    "name": "Deep Freeze",
+    "category": "mods"
+  },
+  {
+    "name": "Defensive Fire",
+    "category": "mods"
+  },
+  {
+    "name": "Defiled Reckoning",
+    "category": "mods"
+  },
+  {
+    "name": "Defiled Snapdragon",
+    "category": "mods"
+  },
+  {
+    "name": "Deft Tempo",
+    "category": "mods"
+  },
+  {
+    "name": "Depleted Reload",
+    "category": "mods"
+  },
+  {
+    "name": "Desiccation's Curse",
+    "category": "mods"
+  },
+  {
+    "name": "Despoil",
+    "category": "mods"
+  },
+  {
+    "name": "Detect Vulnerability",
+    "category": "mods"
+  },
+  {
+    "name": "Diamond Skin",
+    "category": "mods"
+  },
+  {
+    "name": "Dig",
+    "category": "mods"
+  },
+  {
+    "name": "Directed Convergence",
+    "category": "mods"
+  },
+  {
+    "name": "Disabling Conditioning",
+    "category": "mods"
+  },
+  {
+    "name": "Disarming Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Disarming Purity",
+    "category": "mods"
+  },
+  {
+    "name": "Disarming Sling",
+    "category": "mods"
+  },
+  {
+    "name": "Discharge Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Discipline's Merit",
+    "category": "mods"
+  },
+  {
+    "name": "Disorienting Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Dispatch Overdrive",
+    "category": "mods"
+  },
+  {
+    "name": "Disruptor",
+    "category": "mods"
+  },
+  {
+    "name": "Distilled Contamination",
+    "category": "mods"
+  },
+  {
+    "name": "Diversified Denial",
+    "category": "mods"
+  },
+  {
+    "name": "Dividing Blades",
+    "category": "mods"
+  },
+  {
+    "name": "Divine Retribution",
+    "category": "mods"
+  },
+  {
+    "name": "Dizzying Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Double Tap",
+    "category": "mods"
+  },
+  {
+    "name": "Double-Barrel Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Downpour",
+    "category": "mods"
+  },
+  {
+    "name": "Draining Bite",
+    "category": "mods"
+  },
+  {
+    "name": "Draining Gloom",
+    "category": "mods"
+  },
+  {
+    "name": "Dread Ward",
+    "category": "mods"
+  },
+  {
+    "name": "Dreadful Killshot",
+    "category": "mods"
+  },
+  {
+    "name": "Dreamer's Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Dreamer's Wrath",
+    "category": "mods"
+  },
+  {
+    "name": "Drifting Contact",
+    "category": "mods"
+  },
+  {
+    "name": "Drive-Duster",
+    "category": "mods"
+  },
+  {
+    "name": "Dual Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Duality",
+    "category": "mods"
+  },
+  {
+    "name": "Duplex Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Eagle Eye",
+    "category": "mods"
+  },
+  {
+    "name": "Efficient Beams",
+    "category": "mods"
+  },
+  {
+    "name": "Efficient Transferral",
+    "category": "mods"
+  },
+  {
+    "name": "Eject Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Electrified Barrel",
+    "category": "mods"
+  },
+  {
+    "name": "Electro Pulse",
+    "category": "mods"
+  },
+  {
+    "name": "Electromagnetic Shielding",
+    "category": "mods"
+  },
+  {
+    "name": "Elemental Sandstorm",
+    "category": "mods"
+  },
+  {
+    "name": "Eleventh Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Elusive Posture",
+    "category": "mods"
+  },
+  {
+    "name": "Elusive Retribution",
+    "category": "mods"
+  },
+  {
+    "name": "Embedded Catalyzer",
+    "category": "mods"
+  },
+  {
+    "name": "Emergent Aftermath",
+    "category": "mods"
+  },
+  {
+    "name": "Emp Aura",
+    "category": "mods"
+  },
+  {
+    "name": "Empazu-Shol",
+    "category": "mods"
+  },
+  {
+    "name": "Empowered Blades",
+    "category": "mods"
+  },
+  {
+    "name": "Empowered Quiver",
+    "category": "mods"
+  },
+  {
+    "name": "Endless Lullaby",
+    "category": "mods"
+  },
+  {
+    "name": "Endoparasitic Vector",
+    "category": "mods"
+  },
+  {
+    "name": "Endurance Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Enduring Affliction",
+    "category": "mods"
+  },
+  {
+    "name": "Enduring Bastille",
+    "category": "mods"
+  },
+  {
+    "name": "Enduring Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Enduring Tides",
+    "category": "mods"
+  },
+  {
+    "name": "Enemy Radar",
+    "category": "mods"
+  },
+  {
+    "name": "Enemy Sense",
+    "category": "mods"
+  },
+  {
+    "name": "Energizing Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Amplifier",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Channel",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Conversion",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Field",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Generator",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Inversion",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Nexus",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Pulse",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Siphon",
+    "category": "mods"
+  },
+  {
+    "name": "Energy Transfer",
+    "category": "mods"
+  },
+  {
+    "name": "Enhanced Durability",
+    "category": "mods"
+  },
+  {
+    "name": "Enhanced Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Enraged",
+    "category": "mods"
+  },
+  {
+    "name": "Entropy Burst",
+    "category": "mods"
+  },
+  {
+    "name": "Entropy Detonation",
+    "category": "mods"
+  },
+  {
+    "name": "Entropy Flight",
+    "category": "mods"
+  },
+  {
+    "name": "Entropy Spike",
+    "category": "mods"
+  },
+  {
+    "name": "Enveloping Cloud",
+    "category": "mods"
+  },
+  {
+    "name": "Equilibrium",
+    "category": "mods"
+  },
+  {
+    "name": "Equilibrium Audit",
+    "category": "mods"
+  },
+  {
+    "name": "Eroding Blight",
+    "category": "mods"
+  },
+  {
+    "name": "Eroding Rapids",
+    "category": "mods"
+  },
+  {
+    "name": "Escape Velocity",
+    "category": "mods"
+  },
+  {
+    "name": "Esti Vel-Ikha",
+    "category": "mods"
+  },
+  {
+    "name": "Eternal Gaze",
+    "category": "mods"
+  },
+  {
+    "name": "Eternal War",
+    "category": "mods"
+  },
+  {
+    "name": "Evasive Denial",
+    "category": "mods"
+  },
+  {
+    "name": "Everlasting Ward",
+    "category": "mods"
+  },
+  {
+    "name": "Evir-Ti",
+    "category": "mods"
+  },
+  {
+    "name": "Executing Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Eximus Advantage",
+    "category": "mods"
+  },
+  {
+    "name": "Exothermic",
+    "category": "mods"
+  },
+  {
+    "name": "Expel Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Expel Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Expel Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Expel Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Expel The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Explosive Demise",
+    "category": "mods"
+  },
+  {
+    "name": "Explosive Legerdemain",
+    "category": "mods"
+  },
+  {
+    "name": "Exposing Harpoon",
+    "category": "mods"
+  },
+  {
+    "name": "Extend",
+    "category": "mods"
+  },
+  {
+    "name": "Extreme Velocity",
+    "category": "mods"
+  },
+  {
+    "name": "Failsafe",
+    "category": "mods"
+  },
+  {
+    "name": "Fanged Fusillade",
+    "category": "mods"
+  },
+  {
+    "name": "Far Sling",
+    "category": "mods"
+  },
+  {
+    "name": "Fass",
+    "category": "mods"
+  },
+  {
+    "name": "Fass Canticle",
+    "category": "mods"
+  },
+  {
+    "name": "Fast Deflection",
+    "category": "mods"
+  },
+  {
+    "name": "Fast Hands",
+    "category": "mods"
+  },
+  {
+    "name": "Fatal Acceleration",
+    "category": "mods"
+  },
+  {
+    "name": "Fatal Attraction",
+    "category": "mods"
+  },
+  {
+    "name": "Fateful Truth",
+    "category": "mods"
+  },
+  {
+    "name": "Fear Sense",
+    "category": "mods"
+  },
+  {
+    "name": "Feathered Arrows",
+    "category": "mods"
+  },
+  {
+    "name": "Femursetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Ferocity",
+    "category": "mods"
+  },
+  {
+    "name": "Fetch",
+    "category": "mods"
+  },
+  {
+    "name": "Fever Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Final Act",
+    "category": "mods"
+  },
+  {
+    "name": "Final Harbinger",
+    "category": "mods"
+  },
+  {
+    "name": "Final Tap",
+    "category": "mods"
+  },
+  {
+    "name": "Finishing Touch",
+    "category": "mods"
+  },
+  {
+    "name": "Fire Suppression",
+    "category": "mods"
+  },
+  {
+    "name": "Fireball Frenzy",
+    "category": "mods"
+  },
+  {
+    "name": "Fired Up",
+    "category": "mods"
+  },
+  {
+    "name": "Firestorm",
+    "category": "mods"
+  },
+  {
+    "name": "Firewalker",
+    "category": "mods"
+  },
+  {
+    "name": "Firewall",
+    "category": "mods"
+  },
+  {
+    "name": "Fizzbang Flourish",
+    "category": "mods"
+  },
+  {
+    "name": "Flailing Branch",
+    "category": "mods"
+  },
+  {
+    "name": "Flak Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Flame Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Flame Gland",
+    "category": "mods"
+  },
+  {
+    "name": "Flame Repellent",
+    "category": "mods"
+  },
+  {
+    "name": "Flechette",
+    "category": "mods"
+  },
+  {
+    "name": "Fleeting Expertise",
+    "category": "mods"
+  },
+  {
+    "name": "Flow",
+    "category": "mods"
+  },
+  {
+    "name": "Flow Burn",
+    "category": "mods"
+  },
+  {
+    "name": "Flowing Strikes",
+    "category": "mods"
+  },
+  {
+    "name": "Flux Overdrive",
+    "category": "mods"
+  },
+  {
+    "name": "Focus Energy",
+    "category": "mods"
+  },
+  {
+    "name": "Focus Radon",
+    "category": "mods"
+  },
+  {
+    "name": "Focused Acceleration",
+    "category": "mods"
+  },
+  {
+    "name": "Focused Defense",
+    "category": "mods"
+  },
+  {
+    "name": "Focused Prospectus",
+    "category": "mods"
+  },
+  {
+    "name": "Follow Through",
+    "category": "mods"
+  },
+  {
+    "name": "Fomorian Accelerant",
+    "category": "mods"
+  },
+  {
+    "name": "Form Up",
+    "category": "mods"
+  },
+  {
+    "name": "Fortifying Fire",
+    "category": "mods"
+  },
+  {
+    "name": "Fortitude",
+    "category": "mods"
+  },
+  {
+    "name": "Forward Artillery",
+    "category": "mods"
+  },
+  {
+    "name": "Four Riders",
+    "category": "mods"
+  },
+  {
+    "name": "Fracturing Crush",
+    "category": "mods"
+  },
+  {
+    "name": "Fracturing Wind",
+    "category": "mods"
+  },
+  {
+    "name": "Frail Momentum",
+    "category": "mods"
+  },
+  {
+    "name": "Freeze Force",
+    "category": "mods"
+  },
+  {
+    "name": "Frenzied Posture",
+    "category": "mods"
+  },
+  {
+    "name": "Frigid Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Frost Jaw",
+    "category": "mods"
+  },
+  {
+    "name": "Frostbite",
+    "category": "mods"
+  },
+  {
+    "name": "Full Capacity",
+    "category": "mods"
+  },
+  {
+    "name": "Full Contact",
+    "category": "mods"
+  },
+  {
+    "name": "Fulmination",
+    "category": "mods"
+  },
+  {
+    "name": "Funnel Clouds",
+    "category": "mods"
+  },
+  {
+    "name": "Furious Javelin",
+    "category": "mods"
+  },
+  {
+    "name": "Furor",
+    "category": "mods"
+  },
+  {
+    "name": "Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Fused Crucible",
+    "category": "mods"
+  },
+  {
+    "name": "Fused Reservoir",
+    "category": "mods"
+  },
+  {
+    "name": "Gaia's Tragedy",
+    "category": "mods"
+  },
+  {
+    "name": "Gale Kick",
+    "category": "mods"
+  },
+  {
+    "name": "Galeforce Dawn",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Acceleration",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Aptitude",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Crosshairs",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Diffusion",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Elementalist",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Hell",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Reflex",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Savvy",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Scope",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Galvanized Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Gastro",
+    "category": "mods"
+  },
+  {
+    "name": "Gemini Cross",
+    "category": "mods"
+  },
+  {
+    "name": "Ghost",
+    "category": "mods"
+  },
+  {
+    "name": "Gilded Truth",
+    "category": "mods"
+  },
+  {
+    "name": "Glacial Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiator Aegis",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiator Finesse",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiator Might",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiator Resolve",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiator Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiator Vice",
+    "category": "mods"
+  },
+  {
+    "name": "Gladiatorsetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Gleaming Blight",
+    "category": "mods"
+  },
+  {
+    "name": "Gleaming Talon",
+    "category": "mods"
+  },
+  {
+    "name": "Gnashing Payara",
+    "category": "mods"
+  },
+  {
+    "name": "Gorgon Frenzy",
+    "category": "mods"
+  },
+  {
+    "name": "Gourmand",
+    "category": "mods"
+  },
+  {
+    "name": "Granum's Nemesis",
+    "category": "mods"
+  },
+  {
+    "name": "Great Quake",
+    "category": "mods"
+  },
+  {
+    "name": "Greedy Pull",
+    "category": "mods"
+  },
+  {
+    "name": "Grim Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Grinloked",
+    "category": "mods"
+  },
+  {
+    "name": "Growing Power",
+    "category": "mods"
+  },
+  {
+    "name": "Guardian",
+    "category": "mods"
+  },
+  {
+    "name": "Guardian Armor",
+    "category": "mods"
+  },
+  {
+    "name": "Guardian Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Guardian Break",
+    "category": "mods"
+  },
+  {
+    "name": "Guardian Derision",
+    "category": "mods"
+  },
+  {
+    "name": "Guardian Shell",
+    "category": "mods"
+  },
+  {
+    "name": "Guided Effigy",
+    "category": "mods"
+  },
+  {
+    "name": "Guided Ordnance",
+    "category": "mods"
+  },
+  {
+    "name": "Gun Glide",
+    "category": "mods"
+  },
+  {
+    "name": "Gunslinger",
+    "category": "mods"
+  },
+  {
+    "name": "Hall Of Malevolence",
+    "category": "mods"
+  },
+  {
+    "name": "Hallowed Eruption",
+    "category": "mods"
+  },
+  {
+    "name": "Hallowed Reckoning",
+    "category": "mods"
+  },
+  {
+    "name": "Hammer Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Handspring",
+    "category": "mods"
+  },
+  {
+    "name": "Hard Engage",
+    "category": "mods"
+  },
+  {
+    "name": "Hard Reset",
+    "category": "mods"
+  },
+  {
+    "name": "Hardened Wellspring",
+    "category": "mods"
+  },
+  {
+    "name": "Harkonar Scope",
+    "category": "mods"
+  },
+  {
+    "name": "Harrowed Hook",
+    "category": "mods"
+  },
+  {
+    "name": "Harrowing Spire",
+    "category": "mods"
+  },
+  {
+    "name": "Hastened Deflection",
+    "category": "mods"
+  },
+  {
+    "name": "Hastened Steps",
+    "category": "mods"
+  },
+  {
+    "name": "Hata-Satya",
+    "category": "mods"
+  },
+  {
+    "name": "Hawk Eye",
+    "category": "mods"
+  },
+  {
+    "name": "Hawksetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Hayan-Dabor",
+    "category": "mods"
+  },
+  {
+    "name": "Healing Flame",
+    "category": "mods"
+  },
+  {
+    "name": "Healing Return",
+    "category": "mods"
+  },
+  {
+    "name": "Health Conversion",
+    "category": "mods"
+  },
+  {
+    "name": "Heartseeker",
+    "category": "mods"
+  },
+  {
+    "name": "Hearty Nourishment",
+    "category": "mods"
+  },
+  {
+    "name": "Heated Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Heavy Caliber",
+    "category": "mods"
+  },
+  {
+    "name": "Heavy Impact",
+    "category": "mods"
+  },
+  {
+    "name": "Heavy Trauma",
+    "category": "mods"
+  },
+  {
+    "name": "Heavy Warhead",
+    "category": "mods"
+  },
+  {
+    "name": "Heightened Reflexes",
+    "category": "mods"
+  },
+  {
+    "name": "Hell's Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Hellfire",
+    "category": "mods"
+  },
+  {
+    "name": "Helminth Ferocity",
+    "category": "mods"
+  },
+  {
+    "name": "Hemorrhage",
+    "category": "mods"
+  },
+  {
+    "name": "Higasa Serration",
+    "category": "mods"
+  },
+  {
+    "name": "High Noon",
+    "category": "mods"
+  },
+  {
+    "name": "High Voltage",
+    "category": "mods"
+  },
+  {
+    "name": "Hit And Run",
+    "category": "mods"
+  },
+  {
+    "name": "Hok-Kaal",
+    "category": "mods"
+  },
+  {
+    "name": "Hollow Point",
+    "category": "mods"
+  },
+  {
+    "name": "Hollowed Bullets",
+    "category": "mods"
+  },
+  {
+    "name": "Holster Amp",
+    "category": "mods"
+  },
+  {
+    "name": "Homing Fang",
+    "category": "mods"
+  },
+  {
+    "name": "Hornet Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Howl",
+    "category": "mods"
+  },
+  {
+    "name": "Hungering Blades",
+    "category": "mods"
+  },
+  {
+    "name": "Hunt",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter Adrenaline",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter Command",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter Munitions",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter Recovery",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter Synergy",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter Track",
+    "category": "mods"
+  },
+  {
+    "name": "Hunter's Bonesaw",
+    "category": "mods"
+  },
+  {
+    "name": "Huntersetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Hush",
+    "category": "mods"
+  },
+  {
+    "name": "Hushed Invisibility",
+    "category": "mods"
+  },
+  {
+    "name": "Hydraulic Barrel",
+    "category": "mods"
+  },
+  {
+    "name": "Hydraulic Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Hydraulic Crosshairs",
+    "category": "mods"
+  },
+  {
+    "name": "Hydraulic Gauge",
+    "category": "mods"
+  },
+  {
+    "name": "Hyperion Thrusters",
+    "category": "mods"
+  },
+  {
+    "name": "Hyperstrike",
+    "category": "mods"
+  },
+  {
+    "name": "Hypothermic Shell",
+    "category": "mods"
+  },
+  {
+    "name": "Hysterical Assault",
+    "category": "mods"
+  },
+  {
+    "name": "Hysterical Fixation",
+    "category": "mods"
+  },
+  {
+    "name": "Iatric Mycelium",
+    "category": "mods"
+  },
+  {
+    "name": "Ice Spring",
+    "category": "mods"
+  },
+  {
+    "name": "Ice Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Ice Wave Impedance",
+    "category": "mods"
+  },
+  {
+    "name": "Icy Avalanche",
+    "category": "mods"
+  },
+  {
+    "name": "Immolated Radiance",
+    "category": "mods"
+  },
+  {
+    "name": "Immunity Resistance",
+    "category": "mods"
+  },
+  {
+    "name": "Immuno Shield",
+    "category": "mods"
+  },
+  {
+    "name": "Impaler Munitions",
+    "category": "mods"
+  },
+  {
+    "name": "Impenetrable Offense",
+    "category": "mods"
+  },
+  {
+    "name": "Incendiary Coat",
+    "category": "mods"
+  },
+  {
+    "name": "Indomitable Matrix",
+    "category": "mods"
+  },
+  {
+    "name": "Inertia Dampeners",
+    "category": "mods"
+  },
+  {
+    "name": "Infected Clip",
+    "category": "mods"
+  },
+  {
+    "name": "Infectious Bite",
+    "category": "mods"
+  },
+  {
+    "name": "Infectious Injection",
+    "category": "mods"
+  },
+  {
+    "name": "Infested Impedance",
+    "category": "mods"
+  },
+  {
+    "name": "Infiltrate",
+    "category": "mods"
+  },
+  {
+    "name": "Inner Gaze",
+    "category": "mods"
+  },
+  {
+    "name": "Inner Might",
+    "category": "mods"
+  },
+  {
+    "name": "Insatiable",
+    "category": "mods"
+  },
+  {
+    "name": "Instant Secure",
+    "category": "mods"
+  },
+  {
+    "name": "Insulation",
+    "category": "mods"
+  },
+  {
+    "name": "Intensify",
+    "category": "mods"
+  },
+  {
+    "name": "Internal Bleeding",
+    "category": "mods"
+  },
+  {
+    "name": "Intrepid Stand",
+    "category": "mods"
+  },
+  {
+    "name": "Intruder",
+    "category": "mods"
+  },
+  {
+    "name": "Intruder Stasis",
+    "category": "mods"
+  },
+  {
+    "name": "Investigator",
+    "category": "mods"
+  },
+  {
+    "name": "Ion Burn",
+    "category": "mods"
+  },
+  {
+    "name": "Ion Infusion",
+    "category": "mods"
+  },
+  {
+    "name": "Iron Phoenix",
+    "category": "mods"
+  },
+  {
+    "name": "Iron Shrapnel",
+    "category": "mods"
+  },
+  {
+    "name": "Ironclad Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Ironclad Flight",
+    "category": "mods"
+  },
+  {
+    "name": "Ironclad Matrix",
+    "category": "mods"
+  },
+  {
+    "name": "Irradiating Disarm",
+    "category": "mods"
+  },
+  {
+    "name": "Jade's Judgment",
+    "category": "mods"
+  },
+  {
+    "name": "Jagged Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Jahu",
+    "category": "mods"
+  },
+  {
+    "name": "Jahu Canticle",
+    "category": "mods"
+  },
+  {
+    "name": "Jet Stream",
+    "category": "mods"
+  },
+  {
+    "name": "Jolt",
+    "category": "mods"
+  },
+  {
+    "name": "Jugulus Barbs",
+    "category": "mods"
+  },
+  {
+    "name": "Jugulus Carapace",
+    "category": "mods"
+  },
+  {
+    "name": "Jugulus Spines",
+    "category": "mods"
+  },
+  {
+    "name": "Juice",
+    "category": "mods"
+  },
+  {
+    "name": "Justice Blades",
+    "category": "mods"
+  },
+  {
+    "name": "Kaal-Zidi",
+    "category": "mods"
+  },
+  {
+    "name": "Kavat's Grace",
+    "category": "mods"
+  },
+  {
+    "name": "Keep-Clean",
+    "category": "mods"
+  },
+  {
+    "name": "Khra",
+    "category": "mods"
+  },
+  {
+    "name": "Khra Canticle",
+    "category": "mods"
+  },
+  {
+    "name": "Kill Switch",
+    "category": "mods"
+  },
+  {
+    "name": "Killer's Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Killing Blow",
+    "category": "mods"
+  },
+  {
+    "name": "Kinetic Collision",
+    "category": "mods"
+  },
+  {
+    "name": "Kinetic Diversion",
+    "category": "mods"
+  },
+  {
+    "name": "Kinetic Friction",
+    "category": "mods"
+  },
+  {
+    "name": "Kinetic Ricochet",
+    "category": "mods"
+  },
+  {
+    "name": "Kitgun Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Kumihimo Loading",
+    "category": "mods"
+  },
+  {
+    "name": "Larva Burst",
+    "category": "mods"
+  },
+  {
+    "name": "Laser Sight",
+    "category": "mods"
+  },
+  {
+    "name": "Lashing Coil",
+    "category": "mods"
+  },
+  {
+    "name": "Lashta-Vak",
+    "category": "mods"
+  },
+  {
+    "name": "Last Gasp",
+    "category": "mods"
+  },
+  {
+    "name": "Last Herald",
+    "category": "mods"
+  },
+  {
+    "name": "Lasting Covenant",
+    "category": "mods"
+  },
+  {
+    "name": "Lasting Purity",
+    "category": "mods"
+  },
+  {
+    "name": "Lasting Sting",
+    "category": "mods"
+  },
+  {
+    "name": "Leaded Gas",
+    "category": "mods"
+  },
+  {
+    "name": "Lethal Levitation",
+    "category": "mods"
+  },
+  {
+    "name": "Lethal Momentum",
+    "category": "mods"
+  },
+  {
+    "name": "Lethal Torrent",
+    "category": "mods"
+  },
+  {
+    "name": "Lie In Wait",
+    "category": "mods"
+  },
+  {
+    "name": "Life Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Lightning Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Lightning Rod",
+    "category": "mods"
+  },
+  {
+    "name": "Lingering Torment",
+    "category": "mods"
+  },
+  {
+    "name": "Lingering Transmutation",
+    "category": "mods"
+  },
+  {
+    "name": "Link Fiber",
+    "category": "mods"
+  },
+  {
+    "name": "Link Redirection",
+    "category": "mods"
+  },
+  {
+    "name": "Link Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Live Wire",
+    "category": "mods"
+  },
+  {
+    "name": "Loaded Capacity",
+    "category": "mods"
+  },
+  {
+    "name": "Lock And Load",
+    "category": "mods"
+  },
+  {
+    "name": "Lohk",
+    "category": "mods"
+  },
+  {
+    "name": "Lohk Canticle",
+    "category": "mods"
+  },
+  {
+    "name": "Loose Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Loose Hatch",
+    "category": "mods"
+  },
+  {
+    "name": "Loose Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Loot Detector",
+    "category": "mods"
+  },
+  {
+    "name": "Looter",
+    "category": "mods"
+  },
+  {
+    "name": "Lorak Tauron Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Lorun-Tash",
+    "category": "mods"
+  },
+  {
+    "name": "Loyal Companion",
+    "category": "mods"
+  },
+  {
+    "name": "Loyal Merulina",
+    "category": "mods"
+  },
+  {
+    "name": "Loyal Retriever",
+    "category": "mods"
+  },
+  {
+    "name": "Lucky Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Mach Crash",
+    "category": "mods"
+  },
+  {
+    "name": "Mad Stack",
+    "category": "mods"
+  },
+  {
+    "name": "Madurai Transmute Core",
+    "category": "mods"
+  },
+  {
+    "name": "Mafic Rain",
+    "category": "mods"
+  },
+  {
+    "name": "Mag Locks",
+    "category": "mods"
+  },
+  {
+    "name": "Magazine Extension",
+    "category": "mods"
+  },
+  {
+    "name": "Magazine Warp",
+    "category": "mods"
+  },
+  {
+    "name": "Maglev",
+    "category": "mods"
+  },
+  {
+    "name": "Magma Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Boost",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Capacity",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Flare",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Might",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Strafe",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetic Welt",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetized Core",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetized Cycle",
+    "category": "mods"
+  },
+  {
+    "name": "Magnetized Discharge",
+    "category": "mods"
+  },
+  {
+    "name": "Magnum Force",
+    "category": "mods"
+  },
+  {
+    "name": "Maim",
+    "category": "mods"
+  },
+  {
+    "name": "Maiming Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Malicious Code",
+    "category": "mods"
+  },
+  {
+    "name": "Malicious Raptor",
+    "category": "mods"
+  },
+  {
+    "name": "Malignant Force",
+    "category": "mods"
+  },
+  {
+    "name": "Manifold Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Mark Of The Beast",
+    "category": "mods"
+  },
+  {
+    "name": "Marked Target",
+    "category": "mods"
+  },
+  {
+    "name": "Martial Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Martyr Symbiosis",
+    "category": "mods"
+  },
+  {
+    "name": "Master Key",
+    "category": "mods"
+  },
+  {
+    "name": "Master Thief",
+    "category": "mods"
+  },
+  {
+    "name": "Master's Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Maul",
+    "category": "mods"
+  },
+  {
+    "name": "Maximum Capacity",
+    "category": "mods"
+  },
+  {
+    "name": "Measured Burst",
+    "category": "mods"
+  },
+  {
+    "name": "Mecha Empowered",
+    "category": "mods"
+  },
+  {
+    "name": "Mecha Overdrive",
+    "category": "mods"
+  },
+  {
+    "name": "Mecha Pulse",
+    "category": "mods"
+  },
+  {
+    "name": "Mecha Recharge",
+    "category": "mods"
+  },
+  {
+    "name": "Mechasetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Medi-Pet Kit",
+    "category": "mods"
+  },
+  {
+    "name": "Medi-Ray",
+    "category": "mods"
+  },
+  {
+    "name": "Melee Elementalist",
+    "category": "mods"
+  },
+  {
+    "name": "Melee Guidance",
+    "category": "mods"
+  },
+  {
+    "name": "Melee Prowess",
+    "category": "mods"
+  },
+  {
+    "name": "Melee Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Mending Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Mending Soul",
+    "category": "mods"
+  },
+  {
+    "name": "Mending Splinters",
+    "category": "mods"
+  },
+  {
+    "name": "Mending Unity",
+    "category": "mods"
+  },
+  {
+    "name": "Mentor's Legacy",
+    "category": "mods"
+  },
+  {
+    "name": "Merciless Gunfight",
+    "category": "mods"
+  },
+  {
+    "name": "Merulina Guardian",
+    "category": "mods"
+  },
+  {
+    "name": "Mesa's Waltz",
+    "category": "mods"
+  },
+  {
+    "name": "Mesmer Shield",
+    "category": "mods"
+  },
+  {
+    "name": "Metal Auger",
+    "category": "mods"
+  },
+  {
+    "name": "Metal Fiber",
+    "category": "mods"
+  },
+  {
+    "name": "Metamorphic Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Metem-Erun",
+    "category": "mods"
+  },
+  {
+    "name": "Metem-Hakh",
+    "category": "mods"
+  },
+  {
+    "name": "Meteor Crash",
+    "category": "mods"
+  },
+  {
+    "name": "Meteor Munitions",
+    "category": "mods"
+  },
+  {
+    "name": "Meteoric Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Meticulous Aim",
+    "category": "mods"
+  },
+  {
+    "name": "Mind Freak",
+    "category": "mods"
+  },
+  {
+    "name": "Mind Sprint",
+    "category": "mods"
+  },
+  {
+    "name": "Mind Step",
+    "category": "mods"
+  },
+  {
+    "name": "Mischief",
+    "category": "mods"
+  },
+  {
+    "name": "Mobilize",
+    "category": "mods"
+  },
+  {
+    "name": "Modified Munitions",
+    "category": "mods"
+  },
+  {
+    "name": "Molecular Conversion",
+    "category": "mods"
+  },
+  {
+    "name": "Molecular Fission",
+    "category": "mods"
+  },
+  {
+    "name": "Molten Impact",
+    "category": "mods"
+  },
+  {
+    "name": "Momentary Pause",
+    "category": "mods"
+  },
+  {
+    "name": "Momentous Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Morphic Transformer",
+    "category": "mods"
+  },
+  {
+    "name": "Mortal Conduct",
+    "category": "mods"
+  },
+  {
+    "name": "Motus Impact",
+    "category": "mods"
+  },
+  {
+    "name": "Motus Setup",
+    "category": "mods"
+  },
+  {
+    "name": "Motus Signal",
+    "category": "mods"
+  },
+  {
+    "name": "Mountain's Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Munitions Vortex",
+    "category": "mods"
+  },
+  {
+    "name": "Muzzle Flash",
+    "category": "mods"
+  },
+  {
+    "name": "Mystic Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Nano-Applicator",
+    "category": "mods"
+  },
+  {
+    "name": "Napalm Grenades",
+    "category": "mods"
+  },
+  {
+    "name": "Naramon Transmute Core",
+    "category": "mods"
+  },
+  {
+    "name": "Narrow Barrel",
+    "category": "mods"
+  },
+  {
+    "name": "Narrow Minded",
+    "category": "mods"
+  },
+  {
+    "name": "Natural Talent",
+    "category": "mods"
+  },
+  {
+    "name": "Nebula Bore",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Augur",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Aviator",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Blitz",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Continuity",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Deflection",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Efficiency",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Enemy Sense",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Flow",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Friction",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Hydraulics",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Intensify",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Pressure Point",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Rage",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Rebuke",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Redirection",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Refuel",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Repair",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Seismic Wave",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Slipstream",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Stamina",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Steel Fiber",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Streamline",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Stretch",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Thrusters",
+    "category": "mods"
+  },
+  {
+    "name": "Necramech Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Necrophagic Vigor",
+    "category": "mods"
+  },
+  {
+    "name": "Negate",
+    "category": "mods"
+  },
+  {
+    "name": "Negation Armor",
+    "category": "mods"
+  },
+  {
+    "name": "Netra",
+    "category": "mods"
+  },
+  {
+    "name": "Netra Invocation",
+    "category": "mods"
+  },
+  {
+    "name": "Neutralize",
+    "category": "mods"
+  },
+  {
+    "name": "Neutralizing Justice",
+    "category": "mods"
+  },
+  {
+    "name": "Neutron Star",
+    "category": "mods"
+  },
+  {
+    "name": "Nidri Tauron Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Night Stalker",
+    "category": "mods"
+  },
+  {
+    "name": "Nightwatch Napalm",
+    "category": "mods"
+  },
+  {
+    "name": "Nira's Anguish",
+    "category": "mods"
+  },
+  {
+    "name": "Nira's Contempt",
+    "category": "mods"
+  },
+  {
+    "name": "Nira's Hatred",
+    "category": "mods"
+  },
+  {
+    "name": "Nirasetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Nitro Boost",
+    "category": "mods"
+  },
+  {
+    "name": "No Current Leap",
+    "category": "mods"
+  },
+  {
+    "name": "No Quarter",
+    "category": "mods"
+  },
+  {
+    "name": "No Return",
+    "category": "mods"
+  },
+  {
+    "name": "Noble Cadence",
+    "category": "mods"
+  },
+  {
+    "name": "Noctua Swarm",
+    "category": "mods"
+  },
+  {
+    "name": "North Wind",
+    "category": "mods"
+  },
+  {
+    "name": "Null Audit",
+    "category": "mods"
+  },
+  {
+    "name": "Odomedic",
+    "category": "mods"
+  },
+  {
+    "name": "Omikuji's Fortune",
+    "category": "mods"
+  },
+  {
+    "name": "Omn-Evi",
+    "category": "mods"
+  },
+  {
+    "name": "Onslaught Matrix",
+    "category": "mods"
+  },
+  {
+    "name": "Opening Slam",
+    "category": "mods"
+  },
+  {
+    "name": "Opportunity's Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Ordnance Cheap Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Ordnance Velocity",
+    "category": "mods"
+  },
+  {
+    "name": "Ore Gaze",
+    "category": "mods"
+  },
+  {
+    "name": "Organ Shatter",
+    "category": "mods"
+  },
+  {
+    "name": "Orgone Tuning Matrix",
+    "category": "mods"
+  },
+  {
+    "name": "Oull",
+    "category": "mods"
+  },
+  {
+    "name": "Out Of Sight",
+    "category": "mods"
+  },
+  {
+    "name": "Overcharge Detectors",
+    "category": "mods"
+  },
+  {
+    "name": "Overcharged",
+    "category": "mods"
+  },
+  {
+    "name": "Overextended",
+    "category": "mods"
+  },
+  {
+    "name": "Overloader",
+    "category": "mods"
+  },
+  {
+    "name": "Overpressured Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Overview",
+    "category": "mods"
+  },
+  {
+    "name": "Overwhelming Power",
+    "category": "mods"
+  },
+  {
+    "name": "Pacifying Bolts",
+    "category": "mods"
+  },
+  {
+    "name": "Pack Leader",
+    "category": "mods"
+  },
+  {
+    "name": "Pain Points",
+    "category": "mods"
+  },
+  {
+    "name": "Pain Threshold",
+    "category": "mods"
+  },
+  {
+    "name": "Panzer Devolution",
+    "category": "mods"
+  },
+  {
+    "name": "Parallax Scope",
+    "category": "mods"
+  },
+  {
+    "name": "Paralytic Spores",
+    "category": "mods"
+  },
+  {
+    "name": "Parasitic Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Parry",
+    "category": "mods"
+  },
+  {
+    "name": "Particle Ram",
+    "category": "mods"
+  },
+  {
+    "name": "Partitioned Mallet",
+    "category": "mods"
+  },
+  {
+    "name": "Patagium",
+    "category": "mods"
+  },
+  {
+    "name": "Path Of Statues",
+    "category": "mods"
+  },
+  {
+    "name": "Pathogen Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Peaceful Provocation",
+    "category": "mods"
+  },
+  {
+    "name": "Peculiar Audience",
+    "category": "mods"
+  },
+  {
+    "name": "Peculiar Bloom",
+    "category": "mods"
+  },
+  {
+    "name": "Peculiar End",
+    "category": "mods"
+  },
+  {
+    "name": "Peculiar Growth",
+    "category": "mods"
+  },
+  {
+    "name": "Perfect Balance",
+    "category": "mods"
+  },
+  {
+    "name": "Perpetual Agony",
+    "category": "mods"
+  },
+  {
+    "name": "Persistent Posture",
+    "category": "mods"
+  },
+  {
+    "name": "Phoenix Blaze",
+    "category": "mods"
+  },
+  {
+    "name": "Phoenix Renewal",
+    "category": "mods"
+  },
+  {
+    "name": "Phoenix Spirit",
+    "category": "mods"
+  },
+  {
+    "name": "Phoenix Talons",
+    "category": "mods"
+  },
+  {
+    "name": "Photon Overcharge",
+    "category": "mods"
+  },
+  {
+    "name": "Photon Repeater",
+    "category": "mods"
+  },
+  {
+    "name": "Physique",
+    "category": "mods"
+  },
+  {
+    "name": "Piercing Caliber",
+    "category": "mods"
+  },
+  {
+    "name": "Piercing Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Piercing Hit",
+    "category": "mods"
+  },
+  {
+    "name": "Piercing Navigator",
+    "category": "mods"
+  },
+  {
+    "name": "Piercing Roar",
+    "category": "mods"
+  },
+  {
+    "name": "Piercing Step",
+    "category": "mods"
+  },
+  {
+    "name": "Pilfering Strangledome",
+    "category": "mods"
+  },
+  {
+    "name": "Pilfering Swarm",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Acuity",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Amp",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Elementalist",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Gambit",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Pestilence",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Pistol Scavenger",
+    "category": "mods"
+  },
+  {
+    "name": "Plan B",
+    "category": "mods"
+  },
+  {
+    "name": "Point Blank",
+    "category": "mods"
+  },
+  {
+    "name": "Point Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Pointed Wind",
+    "category": "mods"
+  },
+  {
+    "name": "Poise",
+    "category": "mods"
+  },
+  {
+    "name": "Poisonous Sting",
+    "category": "mods"
+  },
+  {
+    "name": "Polar Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Pool Of Life",
+    "category": "mods"
+  },
+  {
+    "name": "Pop Top",
+    "category": "mods"
+  },
+  {
+    "name": "Poppin' Vert",
+    "category": "mods"
+  },
+  {
+    "name": "Pounce",
+    "category": "mods"
+  },
+  {
+    "name": "Power Donation",
+    "category": "mods"
+  },
+  {
+    "name": "Power Drain",
+    "category": "mods"
+  },
+  {
+    "name": "Power Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Power Of Three",
+    "category": "mods"
+  },
+  {
+    "name": "Power Spike",
+    "category": "mods"
+  },
+  {
+    "name": "Power Throw",
+    "category": "mods"
+  },
+  {
+    "name": "Power Transfer",
+    "category": "mods"
+  },
+  {
+    "name": "Precision Conditioning",
+    "category": "mods"
+  },
+  {
+    "name": "Precision Intensify",
+    "category": "mods"
+  },
+  {
+    "name": "Precision Munition",
+    "category": "mods"
+  },
+  {
+    "name": "Precision Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Predator",
+    "category": "mods"
+  },
+  {
+    "name": "Preparation",
+    "category": "mods"
+  },
+  {
+    "name": "Pressure Point",
+    "category": "mods"
+  },
+  {
+    "name": "Pressurized Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Prey Of Dynar",
+    "category": "mods"
+  },
+  {
+    "name": "Primal Rage",
+    "category": "mods"
+  },
+  {
+    "name": "Primary Acuity",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Ammo Chain",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Ammo Stock",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Animal Instinct",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Bane Of Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Bane Of Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Bane Of Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Bane Of Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Bane Of The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Blunderbuss",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Charged Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Charged Shell",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Chilling Grasp",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Cleanse Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Cleanse Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Cleanse Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Cleanse Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Cleanse The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Combustion Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Continuity",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Convulsion",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Counterbalance",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Cryo Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Deadly Efficiency",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Dual Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Electrified Barrel",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Expel Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Expel Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Expel Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Expel Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Expel The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Fast Deflection",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Fast Hands",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Fever Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Firestorm",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Flow",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Fulmination",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Heated Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Heavy Trauma",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Magazine Warp",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Morphic Transformer",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Pack Leader",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Pistol Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Pistol Gambit",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Point Blank",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Polar Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Pressure Point",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Quickdraw",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Ravage",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Redirection",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Regen",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Rifle Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Rubedo-Lined Barrel",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Shotgun Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Shred",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Slip Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Smite Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Smite Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Smite Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Smite Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Smite The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Sniper Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Stabilizer",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Steady Hands",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Streamline",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Sure Footed",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Tactical Pump",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Target Cracker",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Venomous Clip",
+    "category": "mods"
+  },
+  {
+    "name": "Primed Vigor",
+    "category": "mods"
+  },
+  {
+    "name": "Primo Flair",
+    "category": "mods"
+  },
+  {
+    "name": "Prism Guard",
+    "category": "mods"
+  },
+  {
+    "name": "Prismatic Beam",
+    "category": "mods"
+  },
+  {
+    "name": "Prismatic Companion",
+    "category": "mods"
+  },
+  {
+    "name": "Prize Kill",
+    "category": "mods"
+  },
+  {
+    "name": "Proboscis",
+    "category": "mods"
+  },
+  {
+    "name": "Prolonged Paralysis",
+    "category": "mods"
+  },
+  {
+    "name": "Prosperous Retriever",
+    "category": "mods"
+  },
+  {
+    "name": "Protect",
+    "category": "mods"
+  },
+  {
+    "name": "Protective Shots",
+    "category": "mods"
+  },
+  {
+    "name": "Protective Sling",
+    "category": "mods"
+  },
+  {
+    "name": "Protector Posture",
+    "category": "mods"
+  },
+  {
+    "name": "Proton Jet",
+    "category": "mods"
+  },
+  {
+    "name": "Proton Pulse",
+    "category": "mods"
+  },
+  {
+    "name": "Proton Snap",
+    "category": "mods"
+  },
+  {
+    "name": "Prototype Shock Coils",
+    "category": "mods"
+  },
+  {
+    "name": "Provoked",
+    "category": "mods"
+  },
+  {
+    "name": "Pummel",
+    "category": "mods"
+  },
+  {
+    "name": "Purging Slash",
+    "category": "mods"
+  },
+  {
+    "name": "Purifying Flames",
+    "category": "mods"
+  },
+  {
+    "name": "Push & Pull",
+    "category": "mods"
+  },
+  {
+    "name": "Pyroclastic Flow",
+    "category": "mods"
+  },
+  {
+    "name": "Quaking Hand",
+    "category": "mods"
+  },
+  {
+    "name": "Quasar Drill",
+    "category": "mods"
+  },
+  {
+    "name": "Quick Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Quick Correct",
+    "category": "mods"
+  },
+  {
+    "name": "Quick Escape",
+    "category": "mods"
+  },
+  {
+    "name": "Quick Reload",
+    "category": "mods"
+  },
+  {
+    "name": "Quick Return",
+    "category": "mods"
+  },
+  {
+    "name": "Quick Thinking",
+    "category": "mods"
+  },
+  {
+    "name": "Quickdraw",
+    "category": "mods"
+  },
+  {
+    "name": "Quickening",
+    "category": "mods"
+  },
+  {
+    "name": "Quicklock",
+    "category": "mods"
+  },
+  {
+    "name": "Radiant Finish",
+    "category": "mods"
+  },
+  {
+    "name": "Radiated Reload",
+    "category": "mods"
+  },
+  {
+    "name": "Radon Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Rage",
+    "category": "mods"
+  },
+  {
+    "name": "Raider Matrix",
+    "category": "mods"
+  },
+  {
+    "name": "Rail Guards",
+    "category": "mods"
+  },
+  {
+    "name": "Rain Of Arrows",
+    "category": "mods"
+  },
+  {
+    "name": "Range Advantage",
+    "category": "mods"
+  },
+  {
+    "name": "Rapid Resilience",
+    "category": "mods"
+  },
+  {
+    "name": "Raptorsetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Ravage",
+    "category": "mods"
+  },
+  {
+    "name": "Razor Mortar",
+    "category": "mods"
+  },
+  {
+    "name": "Razor Munitions",
+    "category": "mods"
+  },
+  {
+    "name": "Razor Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Razorwing Blitz",
+    "category": "mods"
+  },
+  {
+    "name": "Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Reactive Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Ready Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Reaping Chakram",
+    "category": "mods"
+  },
+  {
+    "name": "Reaping Spiral",
+    "category": "mods"
+  },
+  {
+    "name": "Reawaken",
+    "category": "mods"
+  },
+  {
+    "name": "Rebound",
+    "category": "mods"
+  },
+  {
+    "name": "Recharge Barrier",
+    "category": "mods"
+  },
+  {
+    "name": "Recover",
+    "category": "mods"
+  },
+  {
+    "name": "Recrystalize",
+    "category": "mods"
+  },
+  {
+    "name": "Recuperate",
+    "category": "mods"
+  },
+  {
+    "name": "Redirection",
+    "category": "mods"
+  },
+  {
+    "name": "Reflect",
+    "category": "mods"
+  },
+  {
+    "name": "Reflection",
+    "category": "mods"
+  },
+  {
+    "name": "Reflex Coil",
+    "category": "mods"
+  },
+  {
+    "name": "Reflex Denial",
+    "category": "mods"
+  },
+  {
+    "name": "Reflex Draw",
+    "category": "mods"
+  },
+  {
+    "name": "Reflex Guard",
+    "category": "mods"
+  },
+  {
+    "name": "Regen",
+    "category": "mods"
+  },
+  {
+    "name": "Regenerative Molt",
+    "category": "mods"
+  },
+  {
+    "name": "Reinforced Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Reinforced Return",
+    "category": "mods"
+  },
+  {
+    "name": "Reinforcing Stomp",
+    "category": "mods"
+  },
+  {
+    "name": "Rejuvenating Tides",
+    "category": "mods"
+  },
+  {
+    "name": "Rejuvenation",
+    "category": "mods"
+  },
+  {
+    "name": "Relentless Assault",
+    "category": "mods"
+  },
+  {
+    "name": "Relentless Combination",
+    "category": "mods"
+  },
+  {
+    "name": "Rending Crane",
+    "category": "mods"
+  },
+  {
+    "name": "Rending Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Rending Turn",
+    "category": "mods"
+  },
+  {
+    "name": "Rending Wind",
+    "category": "mods"
+  },
+  {
+    "name": "Repair Dispensary",
+    "category": "mods"
+  },
+  {
+    "name": "Repair Kit",
+    "category": "mods"
+  },
+  {
+    "name": "Repeater Clip",
+    "category": "mods"
+  },
+  {
+    "name": "Repo Audit",
+    "category": "mods"
+  },
+  {
+    "name": "Reroot Rampage",
+    "category": "mods"
+  },
+  {
+    "name": "Resilient Focus",
+    "category": "mods"
+  },
+  {
+    "name": "Resolute Focus",
+    "category": "mods"
+  },
+  {
+    "name": "Resonance",
+    "category": "mods"
+  },
+  {
+    "name": "Resonating Quake",
+    "category": "mods"
+  },
+  {
+    "name": "Resourceful Retriever",
+    "category": "mods"
+  },
+  {
+    "name": "Restorative Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Retribution",
+    "category": "mods"
+  },
+  {
+    "name": "Retrieve",
+    "category": "mods"
+  },
+  {
+    "name": "Revealing Spores",
+    "category": "mods"
+  },
+  {
+    "name": "Revenge",
+    "category": "mods"
+  },
+  {
+    "name": "Reverse Rotorswell",
+    "category": "mods"
+  },
+  {
+    "name": "Revo Reducer",
+    "category": "mods"
+  },
+  {
+    "name": "Rhythm Guard",
+    "category": "mods"
+  },
+  {
+    "name": "Rifle Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Rifle Amp",
+    "category": "mods"
+  },
+  {
+    "name": "Rifle Aptitude",
+    "category": "mods"
+  },
+  {
+    "name": "Rifle Elementalist",
+    "category": "mods"
+  },
+  {
+    "name": "Rifle Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Rifle Scavenger",
+    "category": "mods"
+  },
+  {
+    "name": "Rift Haven",
+    "category": "mods"
+  },
+  {
+    "name": "Rift Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Rift Torrent",
+    "category": "mods"
+  },
+  {
+    "name": "Rift Waters",
+    "category": "mods"
+  },
+  {
+    "name": "Rime Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Rime Vault",
+    "category": "mods"
+  },
+  {
+    "name": "Ripload",
+    "category": "mods"
+  },
+  {
+    "name": "Ripper Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Ris",
+    "category": "mods"
+  },
+  {
+    "name": "Ris Invocation",
+    "category": "mods"
+  },
+  {
+    "name": "Rising Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Rising Skill",
+    "category": "mods"
+  },
+  {
+    "name": "Rising Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Rising Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Rolling Guard",
+    "category": "mods"
+  },
+  {
+    "name": "Rousing Plunder",
+    "category": "mods"
+  },
+  {
+    "name": "Rubble Heap",
+    "category": "mods"
+  },
+  {
+    "name": "Rubedo-Lined Barrel",
+    "category": "mods"
+  },
+  {
+    "name": "Ruinous Extension",
+    "category": "mods"
+  },
+  {
+    "name": "Rumbled",
+    "category": "mods"
+  },
+  {
+    "name": "Runtime",
+    "category": "mods"
+  },
+  {
+    "name": "Rupture",
+    "category": "mods"
+  },
+  {
+    "name": "Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Sabot Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Sacrifice",
+    "category": "mods"
+  },
+  {
+    "name": "Sacrificesetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Sacrificial Pressure",
+    "category": "mods"
+  },
+  {
+    "name": "Sacrificial Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Safeguard",
+    "category": "mods"
+  },
+  {
+    "name": "Safeguard Switch",
+    "category": "mods"
+  },
+  {
+    "name": "Sampleantiqueupgrade",
+    "category": "mods"
+  },
+  {
+    "name": "Sanctuary",
+    "category": "mods"
+  },
+  {
+    "name": "Sapping Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Savage Silence",
+    "category": "mods"
+  },
+  {
+    "name": "Savagery",
+    "category": "mods"
+  },
+  {
+    "name": "Savior Decoy",
+    "category": "mods"
+  },
+  {
+    "name": "Sawtooth Clip",
+    "category": "mods"
+  },
+  {
+    "name": "Saxum Carapace",
+    "category": "mods"
+  },
+  {
+    "name": "Saxum Spittle",
+    "category": "mods"
+  },
+  {
+    "name": "Saxum Thorax",
+    "category": "mods"
+  },
+  {
+    "name": "Scan Matter",
+    "category": "mods"
+  },
+  {
+    "name": "Scarlet Hurricane",
+    "category": "mods"
+  },
+  {
+    "name": "Scattered Justice",
+    "category": "mods"
+  },
+  {
+    "name": "Scattering Inferno",
+    "category": "mods"
+  },
+  {
+    "name": "Scavenge",
+    "category": "mods"
+  },
+  {
+    "name": "Scorch",
+    "category": "mods"
+  },
+  {
+    "name": "Scourging Warheads",
+    "category": "mods"
+  },
+  {
+    "name": "Searing Leap",
+    "category": "mods"
+  },
+  {
+    "name": "Searing Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Secondary Wind",
+    "category": "mods"
+  },
+  {
+    "name": "Section Density",
+    "category": "mods"
+  },
+  {
+    "name": "Security Override",
+    "category": "mods"
+  },
+  {
+    "name": "Seeker",
+    "category": "mods"
+  },
+  {
+    "name": "Seeker Volley",
+    "category": "mods"
+  },
+  {
+    "name": "Seeking Force",
+    "category": "mods"
+  },
+  {
+    "name": "Seeking Fury",
+    "category": "mods"
+  },
+  {
+    "name": "Seeking Shuriken",
+    "category": "mods"
+  },
+  {
+    "name": "Seismic Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Seismic Impact",
+    "category": "mods"
+  },
+  {
+    "name": "Seismic Palm",
+    "category": "mods"
+  },
+  {
+    "name": "Seismic Wave",
+    "category": "mods"
+  },
+  {
+    "name": "Self Destruct",
+    "category": "mods"
+  },
+  {
+    "name": "Semi-Pistol Cannonade",
+    "category": "mods"
+  },
+  {
+    "name": "Semi-Rifle Cannonade",
+    "category": "mods"
+  },
+  {
+    "name": "Semi-Shotgun Cannonade",
+    "category": "mods"
+  },
+  {
+    "name": "Sentient Barrage",
+    "category": "mods"
+  },
+  {
+    "name": "Sentient Incision",
+    "category": "mods"
+  },
+  {
+    "name": "Sentient Scalpel",
+    "category": "mods"
+  },
+  {
+    "name": "Sentient Surge",
+    "category": "mods"
+  },
+  {
+    "name": "Sepsis Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Sequence Burn",
+    "category": "mods"
+  },
+  {
+    "name": "Serrated Edges",
+    "category": "mods"
+  },
+  {
+    "name": "Serrated Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Serration",
+    "category": "mods"
+  },
+  {
+    "name": "Sey-Taph",
+    "category": "mods"
+  },
+  {
+    "name": "Shadow Harvest",
+    "category": "mods"
+  },
+  {
+    "name": "Shadow Haze",
+    "category": "mods"
+  },
+  {
+    "name": "Sharpened Blade",
+    "category": "mods"
+  },
+  {
+    "name": "Sharpened Bullets",
+    "category": "mods"
+  },
+  {
+    "name": "Sharpened Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Sharpshooter",
+    "category": "mods"
+  },
+  {
+    "name": "Shatter Burst",
+    "category": "mods"
+  },
+  {
+    "name": "Shattered Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Shattering Impact",
+    "category": "mods"
+  },
+  {
+    "name": "Shattering Justice",
+    "category": "mods"
+  },
+  {
+    "name": "Shattering Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Shell Compression",
+    "category": "mods"
+  },
+  {
+    "name": "Shell Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Shell Shock",
+    "category": "mods"
+  },
+  {
+    "name": "Shelter",
+    "category": "mods"
+  },
+  {
+    "name": "Shepherd",
+    "category": "mods"
+  },
+  {
+    "name": "Shield Charger",
+    "category": "mods"
+  },
+  {
+    "name": "Shield Disruption",
+    "category": "mods"
+  },
+  {
+    "name": "Shield Of Shadows",
+    "category": "mods"
+  },
+  {
+    "name": "Shield Overload",
+    "category": "mods"
+  },
+  {
+    "name": "Shimmering Blight",
+    "category": "mods"
+  },
+  {
+    "name": "Shivering Contagion",
+    "category": "mods"
+  },
+  {
+    "name": "Shock Absorbers",
+    "category": "mods"
+  },
+  {
+    "name": "Shock Collar",
+    "category": "mods"
+  },
+  {
+    "name": "Shock Trooper",
+    "category": "mods"
+  },
+  {
+    "name": "Shocking Claws",
+    "category": "mods"
+  },
+  {
+    "name": "Shocking Speed",
+    "category": "mods"
+  },
+  {
+    "name": "Shocking Touch",
+    "category": "mods"
+  },
+  {
+    "name": "Shockwave Actuators",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Amp",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Barrage",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Elementalist",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Savvy",
+    "category": "mods"
+  },
+  {
+    "name": "Shotgun Scavenger",
+    "category": "mods"
+  },
+  {
+    "name": "Shrapnel Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Shrapnel Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Shred",
+    "category": "mods"
+  },
+  {
+    "name": "Shred Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Shredder",
+    "category": "mods"
+  },
+  {
+    "name": "Signal Flare",
+    "category": "mods"
+  },
+  {
+    "name": "Sil-Tabol",
+    "category": "mods"
+  },
+  {
+    "name": "Silent Battery",
+    "category": "mods"
+  },
+  {
+    "name": "Singularity",
+    "category": "mods"
+  },
+  {
+    "name": "Sinister Reach",
+    "category": "mods"
+  },
+  {
+    "name": "Sinking Talon",
+    "category": "mods"
+  },
+  {
+    "name": "Skull Shots",
+    "category": "mods"
+  },
+  {
+    "name": "Slay Board",
+    "category": "mods"
+  },
+  {
+    "name": "Slicing Feathers",
+    "category": "mods"
+  },
+  {
+    "name": "Sling Strength",
+    "category": "mods"
+  },
+  {
+    "name": "Sling Stun",
+    "category": "mods"
+  },
+  {
+    "name": "Slip Magazine",
+    "category": "mods"
+  },
+  {
+    "name": "Sly Devolution",
+    "category": "mods"
+  },
+  {
+    "name": "Smite Corpus",
+    "category": "mods"
+  },
+  {
+    "name": "Smite Grineer",
+    "category": "mods"
+  },
+  {
+    "name": "Smite Infested",
+    "category": "mods"
+  },
+  {
+    "name": "Smite Infusion",
+    "category": "mods"
+  },
+  {
+    "name": "Smite Orokin",
+    "category": "mods"
+  },
+  {
+    "name": "Smite The Murmur",
+    "category": "mods"
+  },
+  {
+    "name": "Smoke Shadow",
+    "category": "mods"
+  },
+  {
+    "name": "Snap Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Sniper Ammo Mutation",
+    "category": "mods"
+  },
+  {
+    "name": "Sniper Scavenger",
+    "category": "mods"
+  },
+  {
+    "name": "Soaring Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Soaring Truth",
+    "category": "mods"
+  },
+  {
+    "name": "Soft Hands",
+    "category": "mods"
+  },
+  {
+    "name": "Soft Safe",
+    "category": "mods"
+  },
+  {
+    "name": "Sonic Boost",
+    "category": "mods"
+  },
+  {
+    "name": "Sonic Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Sonic Fracture",
+    "category": "mods"
+  },
+  {
+    "name": "Soul Survivor",
+    "category": "mods"
+  },
+  {
+    "name": "Sovereign Outcast",
+    "category": "mods"
+  },
+  {
+    "name": "Spare Parts",
+    "category": "mods"
+  },
+  {
+    "name": "Spectral Blades",
+    "category": "mods"
+  },
+  {
+    "name": "Spectral Pages",
+    "category": "mods"
+  },
+  {
+    "name": "Spectral Serration",
+    "category": "mods"
+  },
+  {
+    "name": "Spectral Spirit",
+    "category": "mods"
+  },
+  {
+    "name": "Spectrosiphon",
+    "category": "mods"
+  },
+  {
+    "name": "Speed Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Speed Trigger",
+    "category": "mods"
+  },
+  {
+    "name": "Spellbound Harvest",
+    "category": "mods"
+  },
+  {
+    "name": "Spidersetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Spinning Needle",
+    "category": "mods"
+  },
+  {
+    "name": "Split Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Split Flights",
+    "category": "mods"
+  },
+  {
+    "name": "Spoiled Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Spontaneous Singularity",
+    "category": "mods"
+  },
+  {
+    "name": "Spring-Loaded Blade",
+    "category": "mods"
+  },
+  {
+    "name": "Spring-Loaded Broadhead",
+    "category": "mods"
+  },
+  {
+    "name": "Spring-Loaded Chamber",
+    "category": "mods"
+  },
+  {
+    "name": "Sprint Boost",
+    "category": "mods"
+  },
+  {
+    "name": "Spry Sights",
+    "category": "mods"
+  },
+  {
+    "name": "Squad Regen",
+    "category": "mods"
+  },
+  {
+    "name": "Squad Renew",
+    "category": "mods"
+  },
+  {
+    "name": "Stabilizer",
+    "category": "mods"
+  },
+  {
+    "name": "Staggering Shield",
+    "category": "mods"
+  },
+  {
+    "name": "Stalk",
+    "category": "mods"
+  },
+  {
+    "name": "Stalking Fan",
+    "category": "mods"
+  },
+  {
+    "name": "Stand Ground",
+    "category": "mods"
+  },
+  {
+    "name": "Stand United",
+    "category": "mods"
+  },
+  {
+    "name": "Star Divide",
+    "category": "mods"
+  },
+  {
+    "name": "Stasis Field",
+    "category": "mods"
+  },
+  {
+    "name": "Static Alacrity",
+    "category": "mods"
+  },
+  {
+    "name": "Static Discharge",
+    "category": "mods"
+  },
+  {
+    "name": "Static Purge",
+    "category": "mods"
+  },
+  {
+    "name": "Steady Hands",
+    "category": "mods"
+  },
+  {
+    "name": "Stealth Drift",
+    "category": "mods"
+  },
+  {
+    "name": "Steel Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Steel Fiber",
+    "category": "mods"
+  },
+  {
+    "name": "Stinging Thorn",
+    "category": "mods"
+  },
+  {
+    "name": "Stinging Truth",
+    "category": "mods"
+  },
+  {
+    "name": "Stockpiled Blight",
+    "category": "mods"
+  },
+  {
+    "name": "Stone Skin",
+    "category": "mods"
+  },
+  {
+    "name": "Stormbringer",
+    "category": "mods"
+  },
+  {
+    "name": "Strafing Slide",
+    "category": "mods"
+  },
+  {
+    "name": "Strain Consume",
+    "category": "mods"
+  },
+  {
+    "name": "Strain Eruption",
+    "category": "mods"
+  },
+  {
+    "name": "Strain Fever",
+    "category": "mods"
+  },
+  {
+    "name": "Strain Infection",
+    "category": "mods"
+  },
+  {
+    "name": "Strainsetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Streamline",
+    "category": "mods"
+  },
+  {
+    "name": "Streamlined Form",
+    "category": "mods"
+  },
+  {
+    "name": "Stretch",
+    "category": "mods"
+  },
+  {
+    "name": "Stunning Speed",
+    "category": "mods"
+  },
+  {
+    "name": "Sudden Impact",
+    "category": "mods"
+  },
+  {
+    "name": "Sudden Justice",
+    "category": "mods"
+  },
+  {
+    "name": "Summoner's Wrath",
+    "category": "mods"
+  },
+  {
+    "name": "Sundered Bounty",
+    "category": "mods"
+  },
+  {
+    "name": "Sundering Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Sundering Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Sundering Weave",
+    "category": "mods"
+  },
+  {
+    "name": "Superior Defenses",
+    "category": "mods"
+  },
+  {
+    "name": "Suppress",
+    "category": "mods"
+  },
+  {
+    "name": "Sure Footed",
+    "category": "mods"
+  },
+  {
+    "name": "Sure Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Surging Blades",
+    "category": "mods"
+  },
+  {
+    "name": "Surging Dash",
+    "category": "mods"
+  },
+  {
+    "name": "Surging Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Surplus Diverters",
+    "category": "mods"
+  },
+  {
+    "name": "Survival Instinct",
+    "category": "mods"
+  },
+  {
+    "name": "Sweeping Serration",
+    "category": "mods"
+  },
+  {
+    "name": "Swelling Deluge",
+    "category": "mods"
+  },
+  {
+    "name": "Swift Bite",
+    "category": "mods"
+  },
+  {
+    "name": "Swift Mercy",
+    "category": "mods"
+  },
+  {
+    "name": "Swift Momentum",
+    "category": "mods"
+  },
+  {
+    "name": "Swing Line",
+    "category": "mods"
+  },
+  {
+    "name": "Swipe",
+    "category": "mods"
+  },
+  {
+    "name": "Swirling Tiger",
+    "category": "mods"
+  },
+  {
+    "name": "Swooping Falcon",
+    "category": "mods"
+  },
+  {
+    "name": "Sword Alone",
+    "category": "mods"
+  },
+  {
+    "name": "Synergized Prospectus",
+    "category": "mods"
+  },
+  {
+    "name": "Synth Charge",
+    "category": "mods"
+  },
+  {
+    "name": "Synth Deconstruct",
+    "category": "mods"
+  },
+  {
+    "name": "Synth Fiber",
+    "category": "mods"
+  },
+  {
+    "name": "Synth Reflex",
+    "category": "mods"
+  },
+  {
+    "name": "Synthsetmod",
+    "category": "mods"
+  },
+  {
+    "name": "System Reroute",
+    "category": "mods"
+  },
+  {
+    "name": "Tactical Pump",
+    "category": "mods"
+  },
+  {
+    "name": "Tactical Reload",
+    "category": "mods"
+  },
+  {
+    "name": "Tactical Retreat",
+    "category": "mods"
+  },
+  {
+    "name": "Tainted Clip",
+    "category": "mods"
+  },
+  {
+    "name": "Tainted Hydra",
+    "category": "mods"
+  },
+  {
+    "name": "Tainted Mag",
+    "category": "mods"
+  },
+  {
+    "name": "Tainted Shell",
+    "category": "mods"
+  },
+  {
+    "name": "Talsek-An",
+    "category": "mods"
+  },
+  {
+    "name": "Tandem Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Target Acquired",
+    "category": "mods"
+  },
+  {
+    "name": "Target Cracker",
+    "category": "mods"
+  },
+  {
+    "name": "Target Fixation",
+    "category": "mods"
+  },
+  {
+    "name": "Targeting Receptor",
+    "category": "mods"
+  },
+  {
+    "name": "Targeting Subsystem",
+    "category": "mods"
+  },
+  {
+    "name": "Tear Gas",
+    "category": "mods"
+  },
+  {
+    "name": "Tectonic Fracture",
+    "category": "mods"
+  },
+  {
+    "name": "Teeming Virulence",
+    "category": "mods"
+  },
+  {
+    "name": "Tek Assault",
+    "category": "mods"
+  },
+  {
+    "name": "Tek Collateral",
+    "category": "mods"
+  },
+  {
+    "name": "Tek Enhance",
+    "category": "mods"
+  },
+  {
+    "name": "Tek Gravity",
+    "category": "mods"
+  },
+  {
+    "name": "Teksetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Teleport Rush",
+    "category": "mods"
+  },
+  {
+    "name": "Tempered Benison",
+    "category": "mods"
+  },
+  {
+    "name": "Tempered Blade",
+    "category": "mods"
+  },
+  {
+    "name": "Tempered Bound",
+    "category": "mods"
+  },
+  {
+    "name": "Tempo Royale",
+    "category": "mods"
+  },
+  {
+    "name": "Temporal Artillery",
+    "category": "mods"
+  },
+  {
+    "name": "Temporal Drag",
+    "category": "mods"
+  },
+  {
+    "name": "Temporal Erosion",
+    "category": "mods"
+  },
+  {
+    "name": "Temporal Shot",
+    "category": "mods"
+  },
+  {
+    "name": "Tenacious Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Terminal Velocity",
+    "category": "mods"
+  },
+  {
+    "name": "Territorial Aggression",
+    "category": "mods"
+  },
+  {
+    "name": "Tesla Bank",
+    "category": "mods"
+  },
+  {
+    "name": "Tether",
+    "category": "mods"
+  },
+  {
+    "name": "Tether Grenades",
+    "category": "mods"
+  },
+  {
+    "name": "Thara Tauron Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Tharros Lethality",
+    "category": "mods"
+  },
+  {
+    "name": "The Relentless Lost",
+    "category": "mods"
+  },
+  {
+    "name": "Thermagnetic Shells",
+    "category": "mods"
+  },
+  {
+    "name": "Thermal Transfer",
+    "category": "mods"
+  },
+  {
+    "name": "Thermite Rounds",
+    "category": "mods"
+  },
+  {
+    "name": "Thief's Wit",
+    "category": "mods"
+  },
+  {
+    "name": "Thrall Pact",
+    "category": "mods"
+  },
+  {
+    "name": "Thrash Landing",
+    "category": "mods"
+  },
+  {
+    "name": "Threat Blocker",
+    "category": "mods"
+  },
+  {
+    "name": "Thumper",
+    "category": "mods"
+  },
+  {
+    "name": "Thunderbolt",
+    "category": "mods"
+  },
+  {
+    "name": "Thundermiter",
+    "category": "mods"
+  },
+  {
+    "name": "Tidal Impunity",
+    "category": "mods"
+  },
+  {
+    "name": "Titanic Rumbler",
+    "category": "mods"
+  },
+  {
+    "name": "Total Eclipse",
+    "category": "mods"
+  },
+  {
+    "name": "Toxic Barrage",
+    "category": "mods"
+  },
+  {
+    "name": "Toxic Blight",
+    "category": "mods"
+  },
+  {
+    "name": "Toxic Flight",
+    "category": "mods"
+  },
+  {
+    "name": "Toxic Sequence",
+    "category": "mods"
+  },
+  {
+    "name": "Toxin Resistance",
+    "category": "mods"
+  },
+  {
+    "name": "Tractor Beam",
+    "category": "mods"
+  },
+  {
+    "name": "Trail Blazer",
+    "category": "mods"
+  },
+  {
+    "name": "Trample",
+    "category": "mods"
+  },
+  {
+    "name": "Tranquil Cleave",
+    "category": "mods"
+  },
+  {
+    "name": "Transfusion",
+    "category": "mods"
+  },
+  {
+    "name": "Transient Fortitude",
+    "category": "mods"
+  },
+  {
+    "name": "Transistor Shield",
+    "category": "mods"
+  },
+  {
+    "name": "Transmute Core",
+    "category": "mods"
+  },
+  {
+    "name": "Tribunal",
+    "category": "mods"
+  },
+  {
+    "name": "Trick Mag",
+    "category": "mods"
+  },
+  {
+    "name": "Triple Tap",
+    "category": "mods"
+  },
+  {
+    "name": "Trojan Tracker",
+    "category": "mods"
+  },
+  {
+    "name": "True Punishment",
+    "category": "mods"
+  },
+  {
+    "name": "True Steel",
+    "category": "mods"
+  },
+  {
+    "name": "Truth's Flame",
+    "category": "mods"
+  },
+  {
+    "name": "Turbo Protect",
+    "category": "mods"
+  },
+  {
+    "name": "Turret Velocity",
+    "category": "mods"
+  },
+  {
+    "name": "Twirling Spire",
+    "category": "mods"
+  },
+  {
+    "name": "Twitch",
+    "category": "mods"
+  },
+  {
+    "name": "Ubri-Kaneph",
+    "category": "mods"
+  },
+  {
+    "name": "Ulashta-Shol",
+    "category": "mods"
+  },
+  {
+    "name": "Ulfrun's Endurance",
+    "category": "mods"
+  },
+  {
+    "name": "Umbral Fiber",
+    "category": "mods"
+  },
+  {
+    "name": "Umbral Intensify",
+    "category": "mods"
+  },
+  {
+    "name": "Umbral Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Umbrasetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Unairu Wisp",
+    "category": "mods"
+  },
+  {
+    "name": "Undying Will",
+    "category": "mods"
+  },
+  {
+    "name": "Unfused Artifact",
+    "category": "mods"
+  },
+  {
+    "name": "Unleashed",
+    "category": "mods"
+  },
+  {
+    "name": "Unseen Dread",
+    "category": "mods"
+  },
+  {
+    "name": "Untime Rift",
+    "category": "mods"
+  },
+  {
+    "name": "Untraceable",
+    "category": "mods"
+  },
+  {
+    "name": "Vacuum",
+    "category": "mods"
+  },
+  {
+    "name": "Valence Formation",
+    "category": "mods"
+  },
+  {
+    "name": "Vampire Leech",
+    "category": "mods"
+  },
+  {
+    "name": "Vampiric Grasp",
+    "category": "mods"
+  },
+  {
+    "name": "Vanquished Prey",
+    "category": "mods"
+  },
+  {
+    "name": "Vapor Trail",
+    "category": "mods"
+  },
+  {
+    "name": "Vaporize",
+    "category": "mods"
+  },
+  {
+    "name": "Vazarin Transmute Core",
+    "category": "mods"
+  },
+  {
+    "name": "Velox Conclusion",
+    "category": "mods"
+  },
+  {
+    "name": "Venari Bodyguard",
+    "category": "mods"
+  },
+  {
+    "name": "Venerdo Hoverdrive",
+    "category": "mods"
+  },
+  {
+    "name": "Vengeance",
+    "category": "mods"
+  },
+  {
+    "name": "Vengeful Revenant",
+    "category": "mods"
+  },
+  {
+    "name": "Venom Dose",
+    "category": "mods"
+  },
+  {
+    "name": "Venom Teeth",
+    "category": "mods"
+  },
+  {
+    "name": "Venomous Clip",
+    "category": "mods"
+  },
+  {
+    "name": "Venomous Rise",
+    "category": "mods"
+  },
+  {
+    "name": "Vermillion Storm",
+    "category": "mods"
+  },
+  {
+    "name": "Vexing Retaliation",
+    "category": "mods"
+  },
+  {
+    "name": "Vexoric Tauron Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Vicious Approach",
+    "category": "mods"
+  },
+  {
+    "name": "Vicious Bond",
+    "category": "mods"
+  },
+  {
+    "name": "Vicious Frost",
+    "category": "mods"
+  },
+  {
+    "name": "Vicious Spread",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilante Armaments",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilante Fervor",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilante Offense",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilante Pursuit",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilante Supplies",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilante Vigor",
+    "category": "mods"
+  },
+  {
+    "name": "Vigilantesetmod",
+    "category": "mods"
+  },
+  {
+    "name": "Vigor",
+    "category": "mods"
+  },
+  {
+    "name": "Vigorous Swap",
+    "category": "mods"
+  },
+  {
+    "name": "Vik-Anam",
+    "category": "mods"
+  },
+  {
+    "name": "Vikla-Safor",
+    "category": "mods"
+  },
+  {
+    "name": "Vile Acceleration",
+    "category": "mods"
+  },
+  {
+    "name": "Vile Discharge",
+    "category": "mods"
+  },
+  {
+    "name": "Vile Precision",
+    "category": "mods"
+  },
+  {
+    "name": "Viral Quills",
+    "category": "mods"
+  },
+  {
+    "name": "Viral Tempest",
+    "category": "mods"
+  },
+  {
+    "name": "Virulent Scourge",
+    "category": "mods"
+  },
+  {
+    "name": "Vital Sense",
+    "category": "mods"
+  },
+  {
+    "name": "Vital Systems Bypass",
+    "category": "mods"
+  },
+  {
+    "name": "Vitality",
+    "category": "mods"
+  },
+  {
+    "name": "Void Aegis",
+    "category": "mods"
+  },
+  {
+    "name": "Void Chrysalis",
+    "category": "mods"
+  },
+  {
+    "name": "Void Cloak",
+    "category": "mods"
+  },
+  {
+    "name": "Void Flow",
+    "category": "mods"
+  },
+  {
+    "name": "Void Fuel",
+    "category": "mods"
+  },
+  {
+    "name": "Void Hole",
+    "category": "mods"
+  },
+  {
+    "name": "Void Hunter",
+    "category": "mods"
+  },
+  {
+    "name": "Void Levitation",
+    "category": "mods"
+  },
+  {
+    "name": "Void Radiance",
+    "category": "mods"
+  },
+  {
+    "name": "Void Regen",
+    "category": "mods"
+  },
+  {
+    "name": "Void Shadow",
+    "category": "mods"
+  },
+  {
+    "name": "Void Singularity",
+    "category": "mods"
+  },
+  {
+    "name": "Void Siphon",
+    "category": "mods"
+  },
+  {
+    "name": "Void Snare",
+    "category": "mods"
+  },
+  {
+    "name": "Void Spines",
+    "category": "mods"
+  },
+  {
+    "name": "Void Stalker",
+    "category": "mods"
+  },
+  {
+    "name": "Void Static",
+    "category": "mods"
+  },
+  {
+    "name": "Void Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Volatile Parasite",
+    "category": "mods"
+  },
+  {
+    "name": "Volatile Quick Return",
+    "category": "mods"
+  },
+  {
+    "name": "Volatile Rebound",
+    "category": "mods"
+  },
+  {
+    "name": "Volatile Recompense",
+    "category": "mods"
+  },
+  {
+    "name": "Volatile Variant",
+    "category": "mods"
+  },
+  {
+    "name": "Volcanic Edge",
+    "category": "mods"
+  },
+  {
+    "name": "Voltage Sequence",
+    "category": "mods"
+  },
+  {
+    "name": "Voltaic Blast",
+    "category": "mods"
+  },
+  {
+    "name": "Voltaic Lance",
+    "category": "mods"
+  },
+  {
+    "name": "Voltaic Strike",
+    "category": "mods"
+  },
+  {
+    "name": "Vome",
+    "category": "mods"
+  },
+  {
+    "name": "Vome Invocation",
+    "category": "mods"
+  },
+  {
+    "name": "Votive Onslaught",
+    "category": "mods"
+  },
+  {
+    "name": "Vulcan Blitz",
+    "category": "mods"
+  },
+  {
+    "name": "Vulpine Mask",
+    "category": "mods"
+  },
+  {
+    "name": "Ward Recovery",
+    "category": "mods"
+  },
+  {
+    "name": "Warding Thurible",
+    "category": "mods"
+  },
+  {
+    "name": "Warhead",
+    "category": "mods"
+  },
+  {
+    "name": "Warm Coat",
+    "category": "mods"
+  },
+  {
+    "name": "Warrior's Rest",
+    "category": "mods"
+  },
+  {
+    "name": "Waveband Disruptor",
+    "category": "mods"
+  },
+  {
+    "name": "Weeping Wounds",
+    "category": "mods"
+  },
+  {
+    "name": "Wellspring",
+    "category": "mods"
+  },
+  {
+    "name": "Whiplash Mine",
+    "category": "mods"
+  },
+  {
+    "name": "Whirlwind",
+    "category": "mods"
+  },
+  {
+    "name": "Wild Frenzy",
+    "category": "mods"
+  },
+  {
+    "name": "Wildfire",
+    "category": "mods"
+  },
+  {
+    "name": "Winds Of Purity",
+    "category": "mods"
+  },
+  {
+    "name": "Wise Razor",
+    "category": "mods"
+  },
+  {
+    "name": "Worm Away",
+    "category": "mods"
+  },
+  {
+    "name": "Worm's Torment",
+    "category": "mods"
+  },
+  {
+    "name": "Worthy Comradery",
+    "category": "mods"
+  },
+  {
+    "name": "Wrath Of Ukko",
+    "category": "mods"
+  },
+  {
+    "name": "Wrecking Wall",
+    "category": "mods"
+  },
+  {
+    "name": "Xata",
+    "category": "mods"
+  },
+  {
+    "name": "Xata Invocation",
+    "category": "mods"
+  },
+  {
+    "name": "Yar Dal",
+    "category": "mods"
+  },
+  {
+    "name": "Zaw Riven Mod",
+    "category": "mods"
+  },
+  {
+    "name": "Zazvat-Kar",
+    "category": "mods"
+  },
+  {
+    "name": "Zodiac Shred",
+    "category": "mods"
+  },
+  {
+    "name": "Akimbo Slip Shot",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Acceleration",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Aegis",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Agility",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Arachne",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Avenger",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Awakening",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Barrier",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Battery",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Bellicose",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Blade Charger",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Blessing",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Bodyguard",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Camisado",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Circumvent",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Concentration",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Consequence",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Crepuscular",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Defense",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Deflection",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Detoxifier",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Double Back",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Energize",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Eruption",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Escapist",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Expertise",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Fury",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Grace",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Guardian",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Healing",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Hot Shot",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Ice",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Ice Storm",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Impetus",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Intention",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Liquid",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Momentum",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Nullifier",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Persistence",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Phantasm",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Pistoleer",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Power Ramp",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Precision",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Primary Charger",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Protection",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Pulse",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Rage",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Reaper",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Resistance",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Rise",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Sculptor",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Shield",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Steadfast",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Strike",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Survival",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Tanker",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Temperance",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Tempo",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Trickery",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Truculence",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Ultimatum",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Universal Fallout",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Velocity",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Victory",
+    "category": "arcanes"
+  },
+  {
+    "name": "Arcane Warmth",
+    "category": "arcanes"
+  },
+  {
+    "name": "Cascadia Accuracy",
+    "category": "arcanes"
+  },
+  {
+    "name": "Cascadia Empowered",
+    "category": "arcanes"
+  },
+  {
+    "name": "Cascadia Flare",
+    "category": "arcanes"
+  },
+  {
+    "name": "Cascadia Overcharge",
+    "category": "arcanes"
+  },
+  {
+    "name": "Conjunction Voltage",
+    "category": "arcanes"
+  },
+  {
+    "name": "Emergence Dissipate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Emergence Renewed",
+    "category": "arcanes"
+  },
+  {
+    "name": "Emergence Savior",
+    "category": "arcanes"
+  },
+  {
+    "name": "Eternal Eradicate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Eternal Logistics",
+    "category": "arcanes"
+  },
+  {
+    "name": "Eternal Onslaught",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Brave",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Contagion",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Epidemic",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Force",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Hunt",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Might",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Triumph",
+    "category": "arcanes"
+  },
+  {
+    "name": "Exodia Valor",
+    "category": "arcanes"
+  },
+  {
+    "name": "Fractalized Reset",
+    "category": "arcanes"
+  },
+  {
+    "name": "Longbow Sharpshot",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Accelerant",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Aggress",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Anomaly",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Cadence",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Cloud",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Destruct",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Drive",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Elevate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Firewall",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Glitch",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Husk",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Lockdown",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Melt",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Nourish",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Overload",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Repair",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Replenish",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Revert",
+    "category": "arcanes"
+  },
+  {
+    "name": "Magus Vigor",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Afflictions",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Animosity",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Assimilation",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Careen",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Crescendo",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Doughty",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Duplicate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Exposure",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Fortification",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Influence",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Retaliation",
+    "category": "arcanes"
+  },
+  {
+    "name": "Melee Vortex",
+    "category": "arcanes"
+  },
+  {
+    "name": "Molt Augmented",
+    "category": "arcanes"
+  },
+  {
+    "name": "Molt Efficiency",
+    "category": "arcanes"
+  },
+  {
+    "name": "Molt Reconstruct",
+    "category": "arcanes"
+  },
+  {
+    "name": "Molt Vigor",
+    "category": "arcanes"
+  },
+  {
+    "name": "Pax Bolt",
+    "category": "arcanes"
+  },
+  {
+    "name": "Pax Charge",
+    "category": "arcanes"
+  },
+  {
+    "name": "Pax Seeker",
+    "category": "arcanes"
+  },
+  {
+    "name": "Pax Soar",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Blight",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Bulwark",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Compression",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Crux",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Deadhead",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Debilitate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Dexterity",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Exhilarate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Frostbite",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Merciless",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Obstruct",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Overcharge",
+    "category": "arcanes"
+  },
+  {
+    "name": "Primary Plated Round",
+    "category": "arcanes"
+  },
+  {
+    "name": "Residual Boils",
+    "category": "arcanes"
+  },
+  {
+    "name": "Residual Malodor",
+    "category": "arcanes"
+  },
+  {
+    "name": "Residual Shock",
+    "category": "arcanes"
+  },
+  {
+    "name": "Residual Viremia",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Cryogenic",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Deadhead",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Dexterity",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Encumber",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Enervate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Fortifier",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Irradiate",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Kinship",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Merciless",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Outburst",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Shiver",
+    "category": "arcanes"
+  },
+  {
+    "name": "Secondary Surge",
+    "category": "arcanes"
+  },
+  {
+    "name": "Shotgun Vendetta",
+    "category": "arcanes"
+  },
+  {
+    "name": "Theorem Contagion",
+    "category": "arcanes"
+  },
+  {
+    "name": "Theorem Demulcent",
+    "category": "arcanes"
+  },
+  {
+    "name": "Theorem Infection",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Forge",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Fury",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Ghost",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Null",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Shadow",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Spike",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Strike",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Surge",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Tempo",
+    "category": "arcanes"
+  },
+  {
+    "name": "Virtuos Trojan",
+    "category": "arcanes"
+  }
+]
