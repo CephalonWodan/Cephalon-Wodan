@@ -1,0 +1,84 @@
+// Build the compact, deterministic RAG index from the normalized Warframe dataset.
+// No model call is required: indexing stays reproducible and runs in GitHub Actions.
+import fs from "node:fs";
+import path from "node:path";
+import crypto from "node:crypto";
+
+const root = process.cwd();
+const sourcePath = path.join(root, "client/src/lib/warframe-data-full.json");
+const outputPath = path.join(root, "data/rag-index.json");
+const data = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
+const enrichmentPath = path.join(root, "data/wiki-enrichment.json");
+const enrichment = fs.existsSync(enrichmentPath) ? JSON.parse(fs.readFileSync(enrichmentPath, "utf8")) : [];
+const enrichmentByName = new Map((Array.isArray(enrichment) ? enrichment : []).map(item => [normalize(item.name), item]));
+const stopWords = new Set("a au aux avec dans de des du en et la le les pour sur un une the and for from of on to with build set faire quel quelle quels quelles".split(" "));
+
+function normalize(value) {
+  return String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9+#.%'-]+/g, " ").trim();
+}
+function tokens(value) {
+  return Array.from(new Set(normalize(value).split(/\s+/).filter(token => token.length > 1 && !stopWords.has(token))));
+}
+function compact(value, depth = 0) {
+  if (value === null || value === undefined || depth > 2) return "";
+  if (["string", "number", "boolean"].includes(typeof value)) return String(value);
+  if (Array.isArray(value)) return value.slice(0, 12).map(item => compact(item, depth + 1)).filter(Boolean).join("; ");
+  if (typeof value === "object") return Object.entries(value).slice(0, 18).map(([key, item]) => `${key}: ${compact(item, depth + 1)}`).filter(line => !line.endsWith(": ")).join(" | ");
+  return "";
+}
+function text(kind, item) {
+  return [
+    `Type: ${kind}`, `Nom: ${item.name || ""}`, item.type && `Catégorie: ${item.type}`,
+    item.description && `Description: ${item.description}`, item.wikiDescription && `Description Wiki: ${item.wikiDescription}`, item.effect && `Effet: ${item.effect}`,
+    item.role && `Rôle: ${item.role}`, item.weaponClass && `Classe: ${item.weaponClass}`,
+    item.damage && `Dégâts totaux: ${item.damage}`, item.critChance && `Chance critique: ${item.critChance}`,
+    item.critMultiplier && `Multiplicateur critique: ${item.critMultiplier}`, item.statusChance && `Chance de statut: ${item.statusChance}`,
+    item.fireRate && `Cadence: ${item.fireRate}`, item.health && `Santé: ${item.health}`,
+    item.shield && `Bouclier: ${item.shield}`, item.armor && `Armure: ${item.armor}`,
+    item.energy && `Énergie: ${item.energy}`, item.polarity && `Polarité: ${item.polarity}`,
+    item.maxRank !== undefined && `Rang maximum: ${item.maxRank}`, item.compatName && `Compatibilité: ${item.compatName}`,
+    item.abilities && `Capacités: ${compact(item.abilities)}`, item.officialStats && `Statistiques officielles: ${compact(item.officialStats)}`, item.wikiStats && `Statistiques Wiki: ${compact(item.wikiStats)}`,
+    item.effects && `Effets disponibles: ${compact(item.effects)}`, item.damageTypes && `Répartition des dégâts: ${compact(item.damageTypes)}`,
+  ].filter(Boolean).join("\n");
+}
+function source(item) {
+  return item.wikiUrl ? "Warframe Wiki + dataset local" : (item.effectIds || item.sourceKey ? "Archon Shard dataset + Warframe Wiki" : "dataset local normalisé");
+}
+function docs(kind, items) {
+  return (Array.isArray(items) ? items : []).filter(item => item?.name).map(item => {
+    const name = String(item.name);
+    const wiki = enrichmentByName.get(normalize(name));
+    const enriched = { ...item, wikiDescription: wiki?.description || wiki?.extract || "", wikiStats: wiki?.stats || wiki?.statsParsed || null };
+    const body = text(kind, enriched);
+    return {
+      id: `${kind}:${item.id || normalize(name).replaceAll(" ", "-")}`,
+      kind,
+      name,
+      text: body,
+      aliases: [name, item.id, item.compatName, item.weaponClass, item.type].filter(Boolean).map(String),
+      tokens: tokens(`${name} ${enriched.description || ""} ${enriched.wikiDescription || ""} ${enriched.effect || ""} ${enriched.compatName || ""} ${enriched.type || ""} ${enriched.weaponClass || ""}`),
+      source: wiki?.source ? `${source(item)}; ${wiki.source}` : source(item),
+      sourceUrl: wiki?.wikiUrl || wiki?.url || item.wikiUrl || `https://wiki.warframe.com/w/${encodeURIComponent(name.replaceAll(" ", "_"))}`,
+      validationStatus: wiki?.validationStatus || "not_checked",
+    };
+  });
+}
+function hasCombatProfile(item) {
+  const damage = Number(item?.damage || item?.damageTypes?.total || 0);
+  const crit = Number(item?.critChance || 0);
+  const status = Number(item?.statusChance || 0);
+  const fireRate = Number(item?.fireRate || 0);
+  return damage > 0 || crit > 0 || status > 0 || fireRate > 0;
+}
+
+const groups = [
+  ["warframe", data.warframes], ["weapon", (data.weapons || []).filter(hasCombatProfile)], ["mod", data.mods],
+  ["arcane", data.arcanes], ["companion", data.companions], ["archon_shard", data.archonShards],
+];
+const documents = groups.flatMap(([kind, items]) => docs(kind, items));
+const hash = crypto.createHash("sha256").update(fs.readFileSync(sourcePath)).digest("hex");
+const output = { schemaVersion: 1, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
+fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
+console.log(`[RAG] ${documents.length} documents générés dans ${outputPath}`);
+console.log(`[RAG] sourceHash=${hash}`);

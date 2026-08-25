@@ -1,0 +1,88 @@
+name: Warframe Data Auto-Sync
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+          run_install: false
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      - name: Discover item names from WFCD
+        run: node scripts/prepare-sync-input.mjs
+
+      - name: Enrich new and changed items from Warframe Wiki
+        run: node scripts/sync-warframe-data.js
+
+      - name: Build versioned RAG index
+        run: pnpm run rag:index
+
+      - name: Validate generated report
+        run: |
+          node -e '
+            const fs = require("fs");
+            const report = JSON.parse(fs.readFileSync("data-sync-report.json", "utf8"));
+            if (report.status !== "success") process.exit(1);
+            for (const item of report.processedItems || []) {
+              if (!item.name || !["validated", "review_required", "rejected"].includes(item.validationStatus)) process.exit(1);
+            }
+            console.log(JSON.stringify({ processed: report.processedCount, stats: report.itemsWithStats, review: report.reviewRequiredCount, images: report.imagesDownloaded + report.imagesCached }, null, 2));
+          '
+
+      - name: Check for data changes
+        id: git-check
+        run: |
+          git status --short
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "changes_detected=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changes_detected=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Pull Request with updates
+        if: steps.git-check.outputs.changes_detected == 'true'
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore(data): sync Warframe items and Wiki enrichment"
+          title: "Automated Warframe data and Wiki enrichment sync"
+          body: |
+            Cette PR est générée automatiquement à partir des exports de découverte WFCD et de l'API du Wiki Warframe.
+
+            Le rapport `data-sync-report.json` indique les items trouvés, les statistiques réellement extraites, les images mises en cache et les fiches nécessitant une revue. Aucune valeur statistique par défaut n'est ajoutée.
+          branch: automated-data-sync
+          base: main
+          delete-branch: true
+          add-paths: |
+            data/data-sync-input.json
+            data/wiki-sync-state.json
+            data/wiki-enrichment.json
+            data/rag-index.json
+            data-sync-report.json
+            client/public/assets/wiki/

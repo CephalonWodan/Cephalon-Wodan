@@ -1,61 +1,27 @@
+// ============================================================
+// Cephalon Codex AI Assistant — Backend Handler with Sync Integration & Shard Optimizer
+// ============================================================
+
+import fs from "fs";
+import path from "path";
 import type { Request, Response } from "express";
-
-const WISP_DEFENSE_REFERENCE = `Référence de build fournie par l'utilisateur pour Wisp en Défense : Don de Puissance ; Fusion des Réservoirs ; Colère Aveugle ; Influence de l'Augure ; Allonge Archonte ; Haine d'Amar ; Secrets de l'Augure ; Continuité Accrue ; Intensité Archonte ; Courage Passager ; Arcanes Mue Augmentée et Arcane Belliqueux. Ajout demandé : cinq éclats d’Archonte rouges Tauforged, chacun configuré sur +15 % de Puissance des capacités, soit +75 % de Puissance additive au total. La capture indique approximativement Force 323 %, Portée 175 %, Durée 128 %, Efficacité 45 %, Santé 370, Bouclier 370, Armure 210→262 et Énergie 300 ; avec les cinq éclats, la Puissance cible doit être recalculée par le moteur et non copiée mécaniquement. Utilise cette configuration comme inspiration pour Wisp/Wisp Prime en Défense, mais vérifie toujours les noms, rangs, polarités, capacité et valeurs calculées dans le snapshot du Builder. Ne présente pas les valeurs de la capture comme des valeurs officielles si le moteur donne un autre résultat.`;
-
-const COMMUNITY_CREATORS_CONTEXT = `Références communautaires secondaires (créateurs YouTube reconnus : MHBlacky, PANDAAHH, TheKengineer, Unified Codex, Endryx_ow, Lau 5040, vu.thang205) : utilise leurs approches méthodologiques et synergies populaires (comme l'analyse statistique rigoureuse de TheKengineer, les guides pratiques de MHBlacky, ou les builds francophones approfondis de PANDAAHH et autres créateurs) pour enrichir tes explications tactiques, tout en t'appuyant en priorité sur les règles officielles du Wiki et le snapshot du Builder.`;
-
-const DANTE_VIDEO_KNOWLEDGE = `Mémoire communautaire sourcée — Dante / Noctua :
-- Source A : https://www.youtube.com/watch?v=KemZAmXAh18
-- Source B : https://www.youtube.com/watch?v=P1iQiV7lgJI
-Ces deux vidéos présentent des observations communautaires sur Dante, Noctua et Wordwarden, notamment des configurations orientées Puissance/Durée, des synergies avec Roar, Xata's Whisper, Eclipse, Galvanized Shot, Secondary Encumber, Epitaph Prime, Kuva Nukor, des primers de statuts et des éclats Topaz/Amber. Elles discutent aussi de la cadence de Wordwarden, du multishot, du statut Explosion et de rotations 2-3, 2-2 puis 3-2.
-Utilise ces sources uniquement comme contexte communautaire versionné, jamais comme vérité absolue. Avant de recommander un item, résous son nom dans le snapshot et le catalogue local. Les valeurs de dégâts, caps, triple dip, interactions d’arcanes et comportements observés peuvent dépendre de la version du jeu ; si elles ne sont pas confirmées localement ou officiellement, présente-les comme des observations attribuées à la vidéo et indique la réserve correspondante. Ne transforme pas une hypothèse de l’auteur sur le code du jeu en fait.`;
-
-const MISSION_GUIDANCE: Record<string, string> = {
-  auto: "Déduis l'objectif de la demande. Si le type de mission n'est pas identifiable, demande une précision avant de proposer un build spécialisé.",
-  survival: "Priorité à la survie longue durée : réduction des dégâts, endurance, contrôle de zone, économie d'énergie et dégâts soutenus.",
-  defense: "Priorité à la protection de l'objectif : contrôle, portée, durée, fiabilité du nettoyage et capacité à gérer plusieurs vagues.",
-  interception: "Priorité au contrôle de plusieurs points : mobilité, couverture de zone, durée des contrôles et autonomie entre les rotations.",
-  excavation: "Priorité à la protection des excavateurs : contrôle, défense de zone, économie d'énergie et capacité à tenir entre les batteries.",
-  assassination: "Priorité au combat contre une cible majeure : dégâts concentrés, survie, suppression d'armure/boucliers si pertinente et résistance aux phases du boss.",
-  exterminate: "Priorité à la vitesse de parcours : dégâts immédiats, mobilité, portée de nettoyage et faible temps de recharge.",
-  spy: "Priorité à l'infiltration et à la fiabilité : mobilité, discrétion, contrôle précis et solutions de secours plutôt que le DPS brut.",
-  "steel-path": "Priorité aux ennemis haut niveau : multiplicateurs de dégâts fiables, réduction d'armure/boucliers, survivabilité et choix de faction explicités.",
-  fissure: "Priorité à la polyvalence et à la collecte de réactifs : nettoyage efficace, survie, mobilité et adaptation aux bonus de corruption du Néant.",
-};
-
-const FACTION_GUIDANCE: Record<string, string> = {
-  auto: "Déduis la faction à partir de la mission ou demande une précision ; ne suppose pas une vulnérabilité sans l'indiquer.",
-  grineer: "Vérifie l'armure et propose une réponse cohérente (par exemple Corrosif/Chaleur ou Viral/Tranchant selon l'arme et les effets réellement disponibles).",
-  corpus: "Vérifie les boucliers et la chair ; compare Toxine, Magnétique ou une autre réponse selon la cible et ne promet pas un contournement universel.",
-  infested: "Prends en compte les unités blindées et les essaims ; privilégie un élément et un contrôle adaptés au profil de la mission plutôt qu'une recette fixe.",
-  orokin: "Prends en compte les unités Orokin et leurs défenses ; justifie les éléments et le contrôle choisis avec les stats de l'arme.",
-  narmer: "Évalue les défenses Narmer et les unités mélangées ; recommande une solution polyvalente et explicite les limites des vulnérabilités.",
-  sentient: "Prends en compte l'adaptation des Conscients ; privilégie la polyvalence, les changements d'élément et les effets qui restent fiables.",
-};
-
-const LEVEL_GUIDANCE: Record<string, string> = {
-  auto: "Demande le niveau ou distingue clairement une recommandation standard d'une recommandation d'endurance.",
-  "100-200": "Cherche un build Steel Path solide sans sacrifier inutilement la qualité de vie et l'économie d'énergie.",
-  "200-400": "Priorise la mise à l'échelle, la survivabilité active, les multiplicateurs fiables et la gestion des résistances.",
-  "400-800": "Analyse le cycle de survie, le contrôle, le scaling des dégâts et les conditions de déclenchement ; refuse les promesses de DPS non calculées.",
-  "800+": "Traite la demande comme de l'endurance : explique les limites du scaling, les boucles de survie, l'usage des buffs et les compromis d'exécution.",
-};
-
-const FOCUS_GUIDANCE: Record<string, string> = {
-  balanced: "Optimise un compromis jouable entre dégâts, survie, énergie, portée et confort.",
-  damage: "Maximise le nettoyage et le scaling des dégâts, sans supprimer les mécanismes indispensables de survie.",
-  survival: "Maximise l'eHP, le shield gating ou les autres mécanismes de survie réellement disponibles pour la Warframe.",
-  support: "Maximise le contrôle, les buffs utiles à l'équipe et la protection de l'objectif, en conservant une capacité minimale de nettoyage.",
-  endurance: "Optimise la stabilité sur une longue session : énergie, munitions, contrôles, survivabilité et dégâts qui continuent à monter.",
-};
+import { generateArchonShardRecommendations } from "./archon-shard-optimizer.js";
+import { buildRagContext, getRagDiagnostics } from "./rag-retriever.js";
 
 function sendJson(res: any, status: number, data: any) {
-  if (typeof res.status === "function" && typeof res.json === "function") {
-    return res.status(status).json(data);
+  try {
+    console.log(`[CHAT] Sending JSON status ${status}`, JSON.stringify(data).slice(0, 100));
+    if (typeof res.status === "function" && typeof res.json === "function") {
+      return res.status(status).json(data);
+    }
+    if (!res.headersSent) {
+      res.statusCode = status;
+      res.setHeader("Content-Type", "application/json");
+    }
+    res.end(JSON.stringify(data));
+  } catch (err) {
+    console.error("[CHAT] sendJson error:", err);
   }
-  res.statusCode = status;
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify(data));
 }
 
 function normalizeMessages(value: unknown): Array<{ role: "user" | "assistant"; content: string }> {
@@ -72,94 +38,90 @@ function normalizeMessages(value: unknown): Array<{ role: "user" | "assistant"; 
 }
 
 export async function handleChatRequest(req: Request, res: Response) {
-  let body = req.body;
-  if (!body && (req as any).rawBody) {
-    try {
-      body = JSON.parse((req as any).rawBody);
-    } catch {
-      // ignore malformed raw bodies; validation below returns a clear 400
-    }
-  }
-
-  let messages = normalizeMessages(body?.messages);
-  if (messages.length === 0 && typeof body?.message === "string") {
-    const content = body.message.trim().slice(0, 6000);
-    if (content.length > 0) messages = [{ role: "user" as const, content }];
-  }
-
-  if (messages.length === 0) {
-    return sendJson(res, 400, { error: "Invalid messages format. Expected a non-empty array of user/assistant messages." });
-  }
-
-  const rawApiUrl = process.env.BUILT_IN_FORGE_API_URL?.trim() || "";
-  const apiUrl = rawApiUrl.replace(/\/v1\/?$/, "").replace(/\/+$/, "");
-  const apiKey = process.env.BUILT_IN_FORGE_API_KEY?.trim() || "";
-
-  if (!apiUrl || !apiKey) {
-    return sendJson(res, 200, {
-      reply: "⚠️ Le service LLM n'est pas configuré dans cet environnement. Assure-toi que les clés Forge intégrées sont disponibles."
-    });
-  }
-
-  const missionType = typeof body?.missionType === "string" ? body.missionType : "auto";
-  const missionGuidance = MISSION_GUIDANCE[missionType] || MISSION_GUIDANCE.auto;
-  const rawAdvancedOptions = body?.advancedOptions && typeof body.advancedOptions === "object"
-    ? body.advancedOptions as Record<string, unknown>
-    : {};
-  const faction = typeof rawAdvancedOptions.faction === "string" ? rawAdvancedOptions.faction : "auto";
-  const enemyLevelBand = typeof rawAdvancedOptions.enemyLevelBand === "string" ? rawAdvancedOptions.enemyLevelBand : "auto";
-  const squadMode = rawAdvancedOptions.squadMode === "solo" ? "solo" : "squad";
-  const optimizationFocus = typeof rawAdvancedOptions.optimizationFocus === "string" ? rawAdvancedOptions.optimizationFocus : "balanced";
-  const advancedGuidance = `Faction : ${faction}. ${FACTION_GUIDANCE[faction] || FACTION_GUIDANCE.auto}\nNiveau ennemi : ${enemyLevelBand}. ${LEVEL_GUIDANCE[enemyLevelBand] || LEVEL_GUIDANCE.auto}\nMode : ${squadMode === "solo" ? "solo" : "escouade"}. ${squadMode === "solo" ? "Ne compte pas sur un buff, un contrôle ou une source d'énergie fournie par un allié." : "Distingue ce que la Warframe apporte seule de ce qui dépend d'un allié."}\nPriorité : ${optimizationFocus}. ${FOCUS_GUIDANCE[optimizationFocus] || FOCUS_GUIDANCE.balanced}`;
-  const context = body?.context && typeof body.context === "object" ? body.context as Record<string, unknown> : undefined;
-  const buildContext = context
-    ? JSON.stringify(context).slice(0, 16000)
-    : "Aucun snapshot de build actif n'a été transmis.";
-
-  const rawWarframe = context?.warframe;
-  const contextWarframe = rawWarframe && typeof rawWarframe === "object"
-    ? rawWarframe as { name?: unknown }
-    : undefined;
-  const activeWarframeName = typeof rawWarframe === "string"
-    ? rawWarframe.trim()
-    : typeof contextWarframe?.name === "string"
-      ? contextWarframe.name.trim()
-      : "";
-  const referenceGuidance = /wisp/i.test(activeWarframeName) && (missionType === "defense" || /défense|defense/i.test(messages[messages.length - 1]?.content || ""))
-    ? `\n\nRéférence utilisateur prioritaire pour ce cas :\n${WISP_DEFENSE_REFERENCE}`
-    : "";
-  const videoKnowledgeGuidance = /dante/i.test(activeWarframeName) || /dante|noctua|wordwarden/i.test(messages[messages.length - 1]?.content || "")
-    ? `\n\n${DANTE_VIDEO_KNOWLEDGE}`
-    : "";
-
-  const systemPrompt = `Tu es Cephalon Codex, l'assistant tactique virtuel de l'application WARFRAME Set Builder. Tu réponds en français, avec un ton professionnel et immersif de Cephalon, mais sans sacrifier la précision.
-
-Ta mission est d'aider le joueur à construire un set adapté à une Warframe et à un objectif de mission. Ne donne pas une réponse générique si un contexte de build est disponible. Analyse en priorité la Warframe active, ses capacités, ses armes, ses mods, ses Arcanes, ses éclats d'Archonte et son compagnon. Le champ 'warframe.name' du snapshot est la source de vérité : lorsqu'il est présent, reconnais cette Warframe immédiatement, ne dis jamais que son modèle est inconnu et ne demande pas au joueur de répéter son nom. Tu peux distinguer une variante Prime ou une autre variante uniquement si elle est explicitement indiquée dans le nom. Si aucune Warframe n'est sélectionnée, indique-le clairement et propose soit un archétype conditionnel, soit demande au joueur de la sélectionner.
-
-Type de mission sélectionné : ${missionType}
-Consigne tactique pour ce type : ${missionGuidance}
-
-Paramètres d'optimisation haut niveau :
-${advancedGuidance}
-
-Snapshot JSON du Builder actif :
-${buildContext}${referenceGuidance}
-
-${COMMUNITY_CREATORS_CONTEXT}${videoKnowledgeGuidance}
-
-Règles de recommandation:
-1. Propose une configuration concrète : mods prioritaires par équipement, Aura/Exilus si pertinent, Arcanes, éclats, armes et capacité de compagnon.
-2. Explique le rôle de chaque choix et les compromis. Adapte les statistiques à la Warframe réellement sélectionnée ; ne remplace jamais une Warframe par un exemple arbitraire sans le signaler.
-3. Respecte les systèmes du jeu : polarités, capacité, fusion élémentaire, Incarnon cumulatif, Helminth et restrictions de buffs. Ne prétends pas avoir appliqué un mod si le snapshot ne le contient pas.
-4. Distingue les faits présents dans le snapshot des recommandations. Si archonShardAbilityStrength est renseigné, indique séparément son cumul et ne le compte qu'une seule fois dans la Puissance finale. Cinq éclats rouges Tauforged configurés à +15 % correspondent à +75 % additifs, mais ne prétends pas connaître la valeur finale complète sans les autres contributions calculées.
-5. Pour Wisp en Défense, utilise la référence utilisateur des cinq éclats rouges Tauforged comme variante Force/Portée : explique le gain de Puissance, le coût en capacité et les alternatives si le joueur ne dispose pas de cinq éclats Tauforged.
-6. Compare mentalement au moins deux archétypes (par exemple équilibre, dégâts, survie ou endurance) et retiens celui qui respecte le mieux les paramètres demandés ; signale ce que tu sacrifies.
-7. Ne transforme jamais une recommandation communautaire en vérité universelle : indique lorsqu'un choix est dépendant d'une faction, d'un niveau, d'une équipe ou d'une exécution précise.
-8. À la toute fin de ta réponse, inclus impérativement un bloc JSON normalisé entre balises \`\`\`json:recommendation et \`\`\` listant exactement les éléments suggérés (par exemple : {"mods":["Don de Puissance",...],"arcanes":["Mue Augmentée"],"aura":"Courage Passager","exilus":"Influence de l'Augure"}) pour permettre leur application en un clic dans le Builder.
-9. Réponds avec des sections courtes : « Diagnostic », « Build conseillé », « Pourquoi cette configuration », puis « Alternatives ou limites » lorsque pertinent.`;
-
+  console.log("[CHAT] handleChatRequest invoked");
   try {
-    const response = await fetch(`${apiUrl}/v1/chat/completions`, {
+    let body = req.body;
+    if (!body && (req as any).rawBody) {
+      try {
+        body = JSON.parse((req as any).rawBody);
+      } catch {}
+    }
+
+    let messages = normalizeMessages(body?.messages);
+    if (messages.length === 0 && typeof body?.message === "string") {
+      const content = body.message.trim().slice(0, 6000);
+      if (content.length > 0) messages = [{ role: "user" as const, content }];
+    }
+
+    if (messages.length === 0) {
+      console.log("[CHAT] Invalid messages format, body was:", body);
+      return sendJson(res, 400, { error: "Invalid messages format." });
+    }
+
+    let rawApiUrl = process.env.BUILT_IN_FORGE_API_URL || process.env.VITE_FRONTEND_FORGE_API_URL || "https://forge.manus.ai";
+    rawApiUrl = rawApiUrl.replace(/\/v1\/?$/, "");
+    const endpoint = `${rawApiUrl}/v1/chat/completions`;
+
+    const apiKey = process.env.BUILT_IN_FORGE_API_KEY || process.env.VITE_FRONTEND_FORGE_API_KEY;
+
+    if (!apiKey) {
+      console.log("[CHAT] API key missing");
+      return sendJson(res, 200, {
+        reply: "⚠️ Le service LLM n'est pas configuré (clé API manquante)."
+      });
+    }
+
+    const lang = (typeof body?.lang === "string" ? body.lang : "fr") as "fr" | "en";
+
+    // Load sync report to inject newly synchronized items into the assistant's awareness
+    let syncInfo = "";
+    try {
+      const reportPath = path.resolve(process.cwd(), "data-sync-report.json");
+      if (fs.existsSync(reportPath)) {
+        const report = JSON.parse(fs.readFileSync(reportPath, "utf8"));
+        if (report && Array.isArray(report.processedItems)) {
+          const recentItems = report.processedItems
+            .filter((item: any) => item?.validationStatus === "validated" || item?.validationStatus === "review_required")
+            .slice(-40)
+            .map((item: any) => `${item.name} (${item.validationStatus})`)
+            .join(", ");
+          syncInfo = lang === "en"
+            ? `\n\n[Wiki synchronization report] ${report.processedCount || report.processedItems.length} records processed, ${report.itemsWithStats || 0} with structured statistics. Recent items: ${recentItems || "none"}.`
+            : `\n\n[Rapport de synchronisation Wiki] ${report.processedCount || report.processedItems.length} fiches traitées, ${report.itemsWithStats || 0} avec statistiques structurées. Items récents : ${recentItems || "aucun"}.`;
+        }
+      }
+    } catch (e) {
+      // Ignore report error
+    }
+
+    const missionType = typeof body?.missionType === "string" ? body.missionType : "auto";
+    const buildContext = body?.context || null;
+    const frameName = buildContext?.warframe?.name || "Warframe";
+    const optimizationFocus = body?.advancedOptions?.optimizationFocus || "balanced";
+
+    // Generate Archon Shard optimizer payload
+    const shardOpt = generateArchonShardRecommendations(frameName, missionType, optimizationFocus, lang);
+    const rag = buildRagContext({
+      query: messages[messages.length - 1]?.content || "",
+      language: lang,
+      missionType,
+      buildContext,
+      advancedOptions: body?.advancedOptions || null,
+    });
+    console.log("[CHAT] RAG evidence:", rag.evidence.length, getRagDiagnostics());
+    const shardsText = shardOpt.shards.map(s => `• Slot ${s.slot} : [${s.variant}] ${s.color} — ${s.effect} (${s.reason[lang]})`).join("\n");
+    
+    const shardContext = lang === "fr"
+      ? `\n\n[Optimiseur d'Éclats d'Archonte recommandés pour ${frameName} en ${missionType}] :\n${shardOpt.summary.fr}\n${shardsText}`
+      : `\n\n[Recommended Archon Shard Optimizer for ${frameName} in ${missionType}] :\n${shardOpt.summary.en}\n${shardsText}`;
+
+    const buildSnapshot = JSON.stringify({ missionType, frameName, optimizationFocus, buildContext }, null, 2).slice(0, 12000);
+    const systemPrompt = lang === "fr"
+      ? `Tu es Cephalon Codex, l'assistant tactique expert de l'application WARFRAME Set Builder. Tu aides les joueurs à optimiser leurs builds pour le Steel Path et les missions de haut niveau.\n\n${syncInfo}${shardContext}\n\n[Snapshot du Builder]\n${buildSnapshot}\n\n[Contexte RAG récupéré]\n${rag.instructions}\n\nRéponds en français avec un ton professionnel de Cephalon. Sépare clairement les faits, les calculs du Builder et les recommandations. Si les preuves sont insuffisantes, demande une précision ou indique l'incertitude.`
+      : `You are Cephalon Codex, the expert tactical assistant of WARFRAME Set Builder. You help players optimize builds for Steel Path and high-level missions.\n\n${syncInfo}${shardContext}\n\n[Builder snapshot]\n${buildSnapshot}\n\n[Retrieved RAG context]\n${rag.instructions}\n\nReply in English with a professional Cephalon tone. Clearly separate facts, Builder calculations, and recommendations. If evidence is insufficient, ask for clarification or state the uncertainty.`;
+
+    console.log("[CHAT] Fetching LLM endpoint:", endpoint);
+    const response = await fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -176,12 +138,15 @@ Règles de recommandation:
       const errText = await response.text();
       console.error("LLM Proxy error:", response.status, errText);
       return sendJson(res, 200, {
-        reply: `⚠️ Erreur lors de la communication avec le Cephalon IA (Code ${response.status}). Réessaie dans un instant.`
+        reply: lang === "fr" 
+          ? `⚠️ Erreur de communication avec le Cephalon IA (Code ${response.status}).` 
+          : `⚠️ Cephalon communication error (Code ${response.status}).`
       });
     }
 
     const data = await response.json() as any;
-    const content = data.choices?.[0]?.message?.content || "Aucune réponse générée par le Cephalon.";
+    const content = data.choices?.[0]?.message?.content || (lang === "fr" ? "Aucune réponse générée." : "No response generated.");
+    console.log("[CHAT] Success, reply length:", content.length);
     return sendJson(res, 200, { reply: content });
   } catch (error: any) {
     console.error("Chat API exception:", error);
