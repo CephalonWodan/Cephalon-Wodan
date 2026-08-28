@@ -40,10 +40,11 @@ function normalizeMessages(value: unknown): Array<{ role: "user" | "assistant"; 
 export async function handleChatRequest(req: Request, res: Response) {
   console.log("[CHAT] handleChatRequest invoked");
   try {
-    let body = req.body;
-    if (!body && (req as any).rawBody) {
+    const request = req as Request & { body?: unknown; rawBody?: string | Buffer };
+    let body = request.body;
+    if (!body && request.rawBody) {
       try {
-        body = JSON.parse((req as any).rawBody);
+        body = JSON.parse(request.rawBody.toString());
       } catch {}
     }
 
