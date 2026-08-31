@@ -24,6 +24,15 @@ function sendJson(res: any, status: number, data: any) {
   }
 }
 
+type ChatRequestBody = {
+  messages?: unknown;
+  message?: unknown;
+  lang?: unknown;
+  missionType?: unknown;
+  context?: any;
+  advancedOptions?: any;
+};
+
 function normalizeMessages(value: unknown): Array<{ role: "user" | "assistant"; content: string }> {
   if (!Array.isArray(value)) return [];
   return value
@@ -41,10 +50,10 @@ export async function handleChatRequest(req: Request, res: Response) {
   console.log("[CHAT] handleChatRequest invoked");
   try {
     const request = req as Request & { body?: unknown; rawBody?: string | Buffer };
-    let body = request.body;
+    let body: ChatRequestBody | undefined = request.body as ChatRequestBody | undefined;
     if (!body && request.rawBody) {
       try {
-        body = JSON.parse(request.rawBody.toString());
+        body = JSON.parse(request.rawBody.toString()) as ChatRequestBody;
       } catch {}
     }
 
