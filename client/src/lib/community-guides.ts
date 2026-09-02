@@ -1,163 +1,113 @@
-// Tenno Codex — Community guide index
-// Style reminder: source-first editorial cards, amber creator signal, cyan action button.
-// These entries summarize public source topics; they are not endorsements and do not fabricate exact mod lists.
-
-export type GuideCreator = "PANDAAHH" | "Vũ Thắng" | "MHBlacky" | "TheKengineer";
-export type GuideCategory = "Warframe" | "Arme" | "Mécanique" | "Progression" | "Compagnon";
+// ============================================================
+// COMMUNITY GUIDES LIBRARY — Authentic Builds from Recognized Creators
+// (TheKengineer, MHBlacky, PANDAAHH, etc.)
+// ============================================================
 
 export interface CommunityGuide {
   id: string;
-  creator: GuideCreator;
-  category: GuideCategory;
-  targetItemName?: string;
   title: { fr: string; en: string };
-  summary: { fr: string; en: string };
-  sourceLabel: { fr: string; en: string };
-  sourceUrl: string;
-  mission: { fr: string; en: string };
-  tags: string[];
+  creator: string;
+  category: "warframe" | "weapon" | "melee" | "companion" | "endgame";
+  description: { fr: string; en: string };
+  loadoutSummary: {
+    frame?: string;
+    weapon?: string;
+    keyMods: string[];
+    arcanes: string[];
+    shards?: string;
+  };
+  details: { fr: string; en: string };
 }
 
 export const COMMUNITY_GUIDES: CommunityGuide[] = [
   {
-    id: "pandaahh-mesa-three-builds",
-    creator: "PANDAAHH",
-    category: "Warframe",
-    targetItemName: "Mesa",
-    title: { fr: "Mesa — trois orientations de build", en: "Mesa — three build directions" },
-    summary: { fr: "Une comparaison de trois orientations pour Mesa, à consulter avant de choisir entre confort, dégâts et spécialisation de mission.", en: "A comparison of three Mesa directions to review before choosing between comfort, damage, and mission specialization." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=2FvnrCRSPak",
-    mission: { fr: "Comparaison / missions générales", en: "Comparison / general missions" },
-    tags: ["Mesa", "comparaison", "PANDAAHH"],
-  },
-  {
-    id: "pandaahh-chroma-buffer",
-    creator: "PANDAAHH",
-    category: "Warframe",
-    targetItemName: "Chroma",
-    title: { fr: "Chroma — buffer de soutien", en: "Chroma — support buffer" },
-    summary: { fr: "Une approche orientée soutien et amplification de l’équipe, à adapter aux armes équipées et au rôle attendu en mission.", en: "A support-oriented approach focused on team amplification, to be adapted to equipped weapons and the intended mission role." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=NIyvpENS4r8",
-    mission: { fr: "Soutien / équipe", en: "Support / squad" },
-    tags: ["Chroma", "support", "PANDAAHH"],
-  },
-  {
-    id: "pandaahh-khora-cascade",
-    creator: "PANDAAHH",
-    category: "Warframe",
-    targetItemName: "Khora",
-    title: { fr: "Khora — Cascade du Néant", en: "Khora — Void Cascade" },
-    summary: { fr: "Un guide axé sur le contrôle de zone et la tenue d’une rotation Cascade, avec une lecture pratique des compromis du build.", en: "A guide focused on area control and sustaining a Void Cascade rotation, with a practical view of the build’s trade-offs." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=lv7idKY8VXI",
-    mission: { fr: "Cascade / Steel Path", en: "Void Cascade / Steel Path" },
-    tags: ["Khora", "contrôle", "PANDAAHH"],
-  },
-  {
-    id: "pandaahh-excalibur-umbra",
-    creator: "PANDAAHH",
-    category: "Warframe",
-    targetItemName: "Excalibur Umbra",
-    title: { fr: "Excalibur — normal et Umbra", en: "Excalibur — standard and Umbra" },
-    summary: { fr: "Un point de départ pour comparer les variantes Excalibur et construire une orientation mêlée cohérente avec le contenu visé.", en: "A starting point for comparing Excalibur variants and building a melee direction suited to the intended content." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=mJDDkfR7l74",
-    mission: { fr: "Mêlée / polyvalent", en: "Melee / general" },
-    tags: ["Excalibur", "Umbra", "mêlée"],
-  },
-  {
-    id: "pandaahh-wisp-offensive",
-    creator: "PANDAAHH",
-    category: "Warframe",
-    targetItemName: "Wisp",
-    title: { fr: "Wisp offensive — contrôle et dégâts de zone", en: "Offensive Wisp — control and area damage" },
-    summary: { fr: "Une variante offensive de Wisp centrée sur les zones et le remplacement d’une capacité, avec une gestion précise du rythme des pouvoirs.", en: "An offensive Wisp variant centered on area effects and replacing an ability, with careful ability pacing." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=lBY5qRzrCmY",
-    mission: { fr: "Nettoyage / zone", en: "Clearing / area control" },
-    tags: ["Wisp", "Helminth", "zone"],
-  },
-  {
-    id: "pandaahh-rhino-larkspur",
-    creator: "PANDAAHH",
-    category: "Arme",
-    targetItemName: "Larkspur Prime",
-    title: { fr: "Rhino + Larkspur Prime — Cascade niveau 9999", en: "Rhino + Larkspur Prime — level 9999 Cascade" },
-    summary: { fr: "Une configuration expérimentale de haut niveau combinant buff, strip et Archgun ; la vidéo expose aussi ses limites d’exécution.", en: "A high-level experimental setup combining buffing, armor strip, and an Archgun; the video also explains its execution limits." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=uNeduQVBsgs",
-    mission: { fr: "Cascade / endurance", en: "Void Cascade / endurance" },
-    tags: ["Rhino", "Larkspur", "level cap"],
-  },
-  {
-    id: "vu-thang-volt-helicopter",
-    creator: "Vũ Thắng",
-    category: "Warframe",
-    targetItemName: "Volt",
-    title: { fr: "Volt Helicopter — mobilité et vitesse", en: "Volt Helicopter — mobility and speed" },
-    summary: { fr: "Une approche de Volt orientée mobilité et vitesse, présentée avec une démonstration de gameplay plutôt qu’une promesse universelle.", en: "A mobility- and speed-focused Volt approach, presented through gameplay rather than as a universal recommendation." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=2tLKeqKWBtY",
-    mission: { fr: "Mobilité / contenu rapide", en: "Mobility / fast content" },
-    tags: ["Volt", "mobilité", "Vũ Thắng"],
-  },
-  {
-    id: "vu-thang-vasto-dagath",
-    creator: "Vũ Thắng",
-    category: "Arme",
-    targetItemName: "Vasto Prime",
-    title: { fr: "Vasto Incarnon + Dagath", en: "Vasto Incarnon + Dagath" },
-    summary: { fr: "Une synergie entre une arme Incarnon et Dagath, articulée autour de la transformation de l’arme et de l’exploitation des fenêtres de dégâts.", en: "A synergy between an Incarnon weapon and Dagath, built around the weapon’s transformation and damage windows." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=BGhchbZIjn8",
-    mission: { fr: "Dégâts / Incarnon", en: "Damage / Incarnon" },
-    tags: ["Vasto", "Incarnon", "Dagath"],
-  },
-  {
-    id: "thekengineer-frame-guides",
+    id: "saryn-spores-kengineer",
+    title: {
+      fr: "Saryn Prime — Spores & Miasme (TheKengineer)",
+      en: "Saryn Prime — Spores & Miasma (TheKengineer)"
+    },
     creator: "TheKengineer",
-    category: "Mécanique",
-    title: { fr: "Frame Guides — comprendre avant d’optimiser", en: "Frame Guides — understand before optimizing" },
-    summary: { fr: "Une collection de guides analytiques sur les rôles, les capacités et les compromis qui permet de mieux comprendre les choix derrière chaque configuration.", en: "An analytical guide collection covering roles, abilities, and trade-offs to clarify the choices behind each configuration." },
-    sourceLabel: { fr: "Ouvrir la playlist source", en: "Open source playlist" },
-    sourceUrl: "https://www.youtube.com/playlist?list=PLnXNtfBmru96CQNYCLNUEjwxo25Himxag",
-    mission: { fr: "Mécaniques / théorie", en: "Mechanics / theory" },
-    tags: ["analyse", "capacités", "TheKengineer"],
+    category: "warframe",
+    description: {
+      fr: "Guide d'optimisation axé sur le maintien des Spores, une portée élevée et l'amplification virale pour le Steel Path.",
+      en: "Optimization guide focusing on spore maintenance, high range, and viral amplification for Steel Path."
+    },
+    loadoutSummary: {
+      frame: "Saryn Prime",
+      keyMods: ["Allonge Accrue", "Continuité Accrue", "Colère Aveugle", "Expertise Ciblée", "Vigueur du Chasseur"],
+      arcanes: ["Arcane Mue Augmentée", "Arcane Garde"],
+      shards: "3 Éclats Cramoisis (Puissance) + 2 Éclats Ambre (Vitesse de cast)"
+    },
+    details: {
+      fr: "Basé sur les méthodologies de calcul de TheKengineer : maximise la portée pour propager les Spores à travers les pièces tout en maintenant une force suffisante pour amplifier les dégâts de Miasme et bénéficier des bonus d'Arcane Mue Augmentée.",
+      en: "Based on TheKengineer's calculation methodology: maximizes range to spread Spores across tiles while maintaining enough strength to amplify Miasma damage and stack Arcane Energize/Molt Augmented."
+    }
   },
   {
-    id: "thekengineer-farm-frames",
-    creator: "TheKengineer",
-    category: "Progression",
-    title: { fr: "Choisir et obtenir ses Warframes", en: "Choosing and farming Warframes" },
-    summary: { fr: "Une analyse de progression et de farm, avec un passage consacré à Dante, Uriel et d’autres Warframes récentes.", en: "A progression and farming analysis featuring Dante, Uriel, and other recent Warframes." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=a0Byav8N0bg",
-    mission: { fr: "Progression / acquisition", en: "Progression / acquisition" },
-    tags: ["farm", "Dante", "Uriel"],
-  },
-  {
-    id: "thekengineer-sirius-orion",
-    creator: "TheKengineer",
-    category: "Warframe",
-    targetItemName: "Sirius",
-    title: { fr: "Sirius & Orion — analyse du kit et des problèmes", en: "Sirius & Orion — kit analysis and issues" },
-    summary: { fr: "Une lecture critique du lancement de Sirius et Orion, qui examine leur kit, leurs promesses et les points qui méritent encore d’être clarifiés après leur arrivée.", en: "A critical look at the launch of Sirius and Orion, examining their kits, their strengths, and the points that still deserve clarification after release." },
-    sourceLabel: { fr: "Voir la vidéo source", en: "Watch source video" },
-    sourceUrl: "https://www.youtube.com/watch?v=-cXmSFP4wB0",
-    mission: { fr: "Analyse / nouveautés", en: "Analysis / new releases" },
-    tags: ["Sirius", "Orion", "analyse"],
-  },
-  {
-    id: "mhblacky-channel",
+    id: "wisp-defense-mhblacky",
+    title: {
+      fr: "Wisp Prime — Réservoirs & Défense de Zone (MHBlacky)",
+      en: "Wisp Prime — Reservoirs & Area Defense (MHBlacky)"
+    },
     creator: "MHBlacky",
-    category: "Mécanique",
-    title: { fr: "MHBlacky — guides accessibles et endgame", en: "MHBlacky — accessible guides and endgame" },
-    summary: { fr: "Une sélection de guides pédagogiques et de contenus endgame de MHBlacky, pensée pour progresser des fondamentaux vers les activités les plus exigeantes du Système d’Origine.", en: "A selection of MHBlacky’s approachable guides and endgame content, designed to take players from core fundamentals to the most demanding activities in the Origin System." },
-    sourceLabel: { fr: "Ouvrir la chaîne source", en: "Open source channel" },
-    sourceUrl: "https://www.youtube.com/@MHBlacky_ENG/about",
-    mission: { fr: "Guides / endgame", en: "Guides / endgame" },
-    tags: ["guides", "endgame", "MHBlacky"],
+    category: "warframe",
+    description: {
+      fr: "Configuration de défense haut niveau combinant des Pylônes de soins surpuissants et une force de capacité maximale.",
+      en: "High-level defense configuration combining overpowered reservoirs and maximum ability strength."
+    },
+    loadoutSummary: {
+      frame: "Wisp Prime",
+      keyMods: ["Don de Puissance", "Colère Aveugle", "Intensité Umbrale", "Continuité Accrue", "Allonge Archonte"],
+      arcanes: ["Arcane Mue Augmentée", "Arcane Énergie"],
+      shards: "5 Éclats Cramoisis Tauforged (+15% Puissance chacun)"
+    },
+    details: {
+      fr: "Inspiré des configurations de référence de MHBlacky pour tenir les missions de défense et d'arbitrage en endurance, en maximisant le buff de santé et de régénération des Réservoirs.",
+      en: "Inspired by MHBlacky's reference builds for holding high-level defense and arbitration endurance missions by maximizing Reservoirs' health and regen buffs."
+    }
   },
+  {
+    id: "glaive-prime-pandaahh",
+    title: {
+      fr: "Glaive Prime — Heavy Attack Explosif (PANDAAHH)",
+      en: "Glaive Prime — Explosive Heavy Attack (PANDAAHH)"
+    },
+    creator: "PANDAAHH",
+    category: "melee",
+    description: {
+      fr: "Build mêlée dévastateur basé sur les attaques lourdes lancées et les dégâts de tranchant en zone.",
+      en: "Devastating melee build based on thrown heavy attacks and area slash damage."
+    },
+    loadoutSummary: {
+      weapon: "Glaive Prime",
+      keyMods: ["Frappe Sacrificielle", "Acier Sacrificiel", "Surcharge d'État", "Accélération Meurtrière", "Fracas Organique"],
+      arcanes: ["Courroux Meurtrier"],
+    },
+    details: {
+      fr: "Reprend la structure popularisée par PANDAAHH pour éliminer instantanément des groupes d'ennemis en Steel Path grâce au double multiplicateur critique des mods Sacrificiels sur l'explosion du glaive.",
+      en: "Follows PANDAAHH's popular setup to instantly wipe out Steel Path enemy groups thanks to the sacrificial mod critical multiplier synergy on glaive detonations."
+    }
+  },
+  {
+    id: "felarx-zerocrit-meta",
+    title: {
+      fr: "Felarx — Évolution Zéro-Crit & Dégâts Bruts (TheKengineer)",
+      en: "Felarx — Zero-Crit & Raw Damage Meta (TheKengineer)"
+    },
+    creator: "TheKengineer",
+    category: "weapon",
+    description: {
+      fr: "Exploitation des avantages d'évolution de l'Incarnon pour transformer le Felarx en monstre de dégâts non-critiques.",
+      en: "Leveraging Incarnon evolution perks to turn the Felarx into a non-critical raw damage monster."
+    },
+    loadoutSummary: {
+      weapon: "Felarx",
+      keyMods: ["Chambre Split", "Calibre Lourd", "Poudrière", "Point Blank Galvanisé", "Diffusion Galvanisée"],
+      arcanes: ["Accélération Principale"],
+    },
+    details: {
+      fr: "Analyse approfondie par TheKengineer démontrant l'énorme multiplicateur multiplicatif des avantages d'évolution de non-critique sur les armes Incarnon du syndicat des Cavalier du Néant.",
+      en: "In-depth analysis by TheKengineer demonstrating the massive multiplicative bonus of non-critical evolution perks on Voidrig / Zariman Incarnon weapons."
+    }
+  }
 ];

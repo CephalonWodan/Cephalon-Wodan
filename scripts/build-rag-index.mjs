@@ -7,10 +7,14 @@ import crypto from "node:crypto";
 const root = process.cwd();
 const sourcePath = path.join(root, "client/src/lib/warframe-data-full.json");
 const outputPath = path.join(root, "data/rag-index.json");
-const outputModulePath = path.join(root, "server/rag-index.generated.ts");
 const data = JSON.parse(fs.readFileSync(sourcePath, "utf8"));
 const enrichmentPath = path.join(root, "data/wiki-enrichment.json");
 const enrichment = fs.existsSync(enrichmentPath) ? JSON.parse(fs.readFileSync(enrichmentPath, "utf8")) : [];
+const youtubePath = path.join(root, "data/youtube-transcripts.json");
+const youtube = fs.existsSync(youtubePath) ? JSON.parse(fs.readFileSync(youtubePath, "utf8")) : { videos: [] };
+const googleGuidePath = path.join(root, "data/google-doc-defense-guide.txt");
+const googleGuideUrl = "https://docs.google.com/document/d/1rslhIJVmW5YO0TJm1MTtrryDgoeeU2L-CE3MomM6Rwk/edit?tab=t.0";
+const googleGuideText = fs.existsSync(googleGuidePath) ? fs.readFileSync(googleGuidePath, "utf8") : "";
 const enrichmentByName = new Map((Array.isArray(enrichment) ? enrichment : []).map(item => [normalize(item.name), item]));
 const stopWords = new Set("a au aux avec dans de des du en et la le les pour sur un une the and for from of on to with build set faire quel quelle quels quelles".split(" "));
 
@@ -31,7 +35,7 @@ function text(kind, item) {
   return [
     `Type: ${kind}`, `Nom: ${item.name || ""}`, item.type && `Catégorie: ${item.type}`,
     item.description && `Description: ${item.description}`, item.wikiDescription && `Description Wiki: ${item.wikiDescription}`, item.effect && `Effet: ${item.effect}`,
-    item.role && `Rôle: ${item.role}`, item.weaponClass && `Classe: ${item.weaponClass}`,
+    item.role && `Rôle: ${item.role}`, item.creator && `Créateur: ${item.creator}`, item.publishedAt && `Publié le: ${item.publishedAt}`, item.transcriptStatus && `Statut transcription: ${item.transcriptStatus}`, item.weaponClass && `Classe: ${item.weaponClass}`,
     item.damage && `Dégâts totaux: ${item.damage}`, item.critChance && `Chance critique: ${item.critChance}`,
     item.critMultiplier && `Multiplicateur critique: ${item.critMultiplier}`, item.statusChance && `Chance de statut: ${item.statusChance}`,
     item.fireRate && `Cadence: ${item.fireRate}`, item.health && `Santé: ${item.health}`,
@@ -43,6 +47,8 @@ function text(kind, item) {
   ].filter(Boolean).join("\n");
 }
 function source(item) {
+  if (item.sourceType === "community_video") return `Vidéo YouTube communautaire — ${item.creator || "créateur sourcé"}`;
+  if (item.sourceType === "community_guide") return `Guide communautaire — ${item.creator || "source fournie"}`;
   return item.wikiUrl ? "Warframe Wiki + dataset local" : (item.effectIds || item.sourceKey ? "Archon Shard dataset + Warframe Wiki" : "dataset local normalisé");
 }
 function docs(kind, items) {
@@ -60,7 +66,10 @@ function docs(kind, items) {
       tokens: tokens(`${name} ${enriched.description || ""} ${enriched.wikiDescription || ""} ${enriched.effect || ""} ${enriched.compatName || ""} ${enriched.type || ""} ${enriched.weaponClass || ""}`),
       source: wiki?.source ? `${source(item)}; ${wiki.source}` : source(item),
       sourceUrl: wiki?.wikiUrl || wiki?.url || item.wikiUrl || `https://wiki.warframe.com/w/${encodeURIComponent(name.replaceAll(" ", "_"))}`,
-      validationStatus: wiki?.validationStatus || "not_checked",
+      creator: item.creator || undefined,
+      publishedAt: item.publishedAt || undefined,
+      sourceType: item.sourceType || undefined,
+      validationStatus: item.validationStatus || wiki?.validationStatus || "not_checked",
     };
   });
 }
@@ -76,12 +85,28 @@ const groups = [
   ["warframe", data.warframes], ["weapon", (data.weapons || []).filter(hasCombatProfile)], ["mod", data.mods],
   ["arcane", data.arcanes], ["companion", data.companions], ["archon_shard", data.archonShards],
 ];
-const documents = groups.flatMap(([kind, items]) => docs(kind, items));
+const communityVideos = (Array.isArray(youtube.videos) ? youtube.videos : []).filter(video => video?.id && video?.title).map(video => ({
+  ...video,
+  name: video.title,
+  type: "community_video",
+  description: video.transcriptText || video.description || "",
+  wikiUrl: video.url,
+  sourceType: "community_video",
+}));
+const guideSections = googleGuideText.split(/\n(?=\s*(?:\d+\)|\d+\.|[A-Z]\.))/).map((section, index) => ({
+  name: `Guide de la défense optimisée — section ${index + 1}`,
+  type: "community_guide",
+  description: section.trim(),
+  creator: "Hannibalisme",
+  publishedAt: "2025-07",
+  wikiUrl: googleGuideUrl,
+  sourceType: "community_guide",
+  validationStatus: "community_reference",
+})).filter(section => section.description.length > 80);
+const documents = groups.flatMap(([kind, items]) => docs(kind, items)).concat(docs("community_video", communityVideos), docs("community_guide", guideSections));
 const hash = crypto.createHash("sha256").update(fs.readFileSync(sourcePath)).digest("hex");
 const output = { schemaVersion: 1, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
-fs.writeFileSync(outputModulePath, `// Generated by scripts/build-rag-index.mjs. Do not edit manually.\nexport default ${JSON.stringify(output)} as const;\n`);
 console.log(`[RAG] ${documents.length} documents générés dans ${outputPath}`);
-console.log(`[RAG] module Vercel généré dans ${outputModulePath}`);
 console.log(`[RAG] sourceHash=${hash}`);

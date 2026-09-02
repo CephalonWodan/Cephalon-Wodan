@@ -34,8 +34,31 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile --ignore-scripts
 
+      - name: Install YouTube metadata collector
+        run: python -m pip install --user --break-system-packages yt-dlp
+
       - name: Discover item names from WFCD
         run: node scripts/prepare-sync-input.mjs
+
+      - name: Collect recent creator videos
+        run: pnpm run youtube:collect
+
+      - name: Extract public video subtitles
+        run: pnpm run youtube:transcripts
+
+      - name: Validate YouTube manifests
+        run: |
+          node -e '
+            const fs = require("fs");
+            const manifest = JSON.parse(fs.readFileSync("data/youtube-videos.json", "utf8"));
+            const transcripts = JSON.parse(fs.readFileSync("data/youtube-transcripts.json", "utf8"));
+            const cutoff = new Date(manifest.cutoff);
+            const creators = new Set(manifest.videos.map(video => video.creator));
+            if (creators.size !== 7 || !manifest.videos.length) process.exit(1);
+            if (manifest.videos.some(video => !video.id || !video.url || new Date(video.publishedAt) < cutoff)) process.exit(1);
+            if (transcripts.videoCount !== manifest.videoCount) process.exit(1);
+            console.log(JSON.stringify({ videos: manifest.videoCount, creators: creators.size, transcripts: transcripts.transcriptCount, enumeration: manifest.enumeration }, null, 2));
+          '
 
       - name: Enrich new and changed items from Warframe Wiki
         run: node scripts/sync-warframe-data.js
@@ -83,6 +106,8 @@ jobs:
             data/data-sync-input.json
             data/wiki-sync-state.json
             data/wiki-enrichment.json
+            data/youtube-videos.json
+            data/youtube-transcripts.json
             data/rag-index.json
             data-sync-report.json
             client/public/assets/wiki/

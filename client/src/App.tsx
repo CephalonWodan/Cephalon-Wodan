@@ -2,7 +2,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
-import { Fragment } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
@@ -21,24 +20,22 @@ import Relics from "@/pages/Relics";
 import WorldState from "@/pages/WorldState";
 import WarframeAssistant from "@/components/WarframeAssistant";
 
-const LOCALIZED_LANGUAGES = ["fr", "en"] as const;
-
-const LOCALIZED_ROUTES = [
-  ["/", Home], ["/builder", SetBuilder], ["/warframes", Warframes], ["/weapons", Weapons],
-  ["/mods", Mods], ["/companions", Companions], ["/arcanes", Arcanes], ["/archon-shards", ArchonShards],
-  ["/relics", Relics], ["/worldstate", WorldState], ["/guides", Guides], ["/resources", Resources], ["/settings", Settings],
-] as const;
-
 function Router() {
   return (
     <Switch>
-      {LOCALIZED_ROUTES.map(([route, component]) => {
-        const Component = component;
-        return <Fragment key={route}>
-          {LOCALIZED_LANGUAGES.map(lang => <Route key={`${lang}${route}`} path={route === "/" ? `/${lang}` : `/${lang}${route}`} component={Component} />)}
-          <Route path={route} component={Component} />
-        </Fragment>;
-      })}
+      <Route path={"/"} component={Home} />
+      <Route path={"/builder"} component={SetBuilder} />
+      <Route path={"/warframes"} component={Warframes} />
+      <Route path={"/weapons"} component={Weapons} />
+      <Route path={"/mods"} component={Mods} />
+      <Route path={"/companions"} component={Companions} />
+      <Route path={"/arcanes"} component={Arcanes} />
+      <Route path="/archon-shards" component={ArchonShards} />
+      <Route path="/relics" component={Relics} />
+      <Route path="/worldstate" component={WorldState} />
+      <Route path={"/guides"} component={Guides} />
+      <Route path={"/resources"} component={Resources} />
+      <Route path={"/settings"} component={Settings} />
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />
     </Switch>
