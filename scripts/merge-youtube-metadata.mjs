@@ -1,0 +1,11 @@
+import fs from "node:fs";
+import path from "node:path";
+const root = process.cwd();
+const manifest = JSON.parse(fs.readFileSync(path.join(root, "data/youtube-videos.json"), "utf8"));
+const transcriptPath = path.join(root, "data/youtube-transcripts.json");
+const existing = fs.existsSync(transcriptPath) ? JSON.parse(fs.readFileSync(transcriptPath, "utf8")) : { videos: [] };
+const oldById = new Map((existing.videos || []).map(video => [video.id, video]));
+const videos = (manifest.videos || []).map(video => ({ ...oldById.get(video.id), ...video, transcriptStatus: oldById.get(video.id)?.transcriptStatus || "not_requested", transcriptText: oldById.get(video.id)?.transcriptText || "", languageFiles: oldById.get(video.id)?.languageFiles || [] }));
+const transcriptCount = videos.filter(video => video.transcriptStatus === "available").length;
+fs.writeFileSync(transcriptPath, JSON.stringify({ schemaVersion: 1, generatedAt: new Date().toISOString(), cutoff: manifest.cutoff, videoCount: videos.length, transcriptCount, videos }, null, 2));
+console.log(`[YOUTUBE] Métadonnées fusionnées pour ${videos.length} vidéos; transcriptions disponibles: ${transcriptCount}.`);

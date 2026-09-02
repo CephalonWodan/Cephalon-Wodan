@@ -3,6 +3,11 @@
   "framework": "vite",
   "buildCommand": "pnpm run build:static",
   "outputDirectory": "dist/public",
+  "functions": {
+    "api/chat.ts": {
+      "maxDuration": 60
+    }
+  },
   "rewrites": [
     { "source": "/api/chat", "destination": "/api/chat" },
     { "source": "/((?!api(?:/|$)).*)", "destination": "/index.html" }

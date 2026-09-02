@@ -11,6 +11,8 @@
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
     "rag:index": "node scripts/build-rag-index.mjs",
+    "youtube:collect": "node scripts/collect-youtube-sources.mjs",
+    "youtube:transcripts": "node scripts/fetch-youtube-transcripts.mjs",
     "test": "vitest run --config vitest.config.ts",
     "format": "prettier --write ."
   },

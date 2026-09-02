@@ -34,6 +34,18 @@ describe("Cephalon Codex RAG retrieval", () => {
     expect(evidence.some(item => item.kind === "archon_shard")).toBe(true);
   });
 
+  it("retrieves recent creator videos as community sources", () => {
+    const evidence = retrieveRagEvidence({ query: "YouTube MHBlacky guide build", language: "fr" });
+    expect(evidence.some(item => item.kind === "community_video")).toBe(true);
+    expect(evidence.filter(item => item.kind === "community_video").every(item => item.source.includes("YouTube"))).toBe(true);
+  });
+
+  it("retrieves the supplied defense guide as a community reference", () => {
+    const evidence = retrieveRagEvidence({ query: "Défense équipe maps vagues Helminth nuker buffer", language: "fr", missionType: "defense" });
+    expect(evidence.some(item => item.kind === "community_guide")).toBe(true);
+    expect(evidence.filter(item => item.kind === "community_guide").every(item => item.source.includes("Guide communautaire"))).toBe(true);
+  });
+
   it("returns bounded, source-aware prompt context", () => {
     const context = buildRagContext({ query: "Comment fonctionne Vitality ?", language: "fr" });
     expect(context.evidence.length).toBeLessThanOrEqual(8);

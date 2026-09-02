@@ -312,3 +312,199 @@
 - [ ] Valider et commiter les derniers fichiers modifiés (i18n, paramètres, modales et cache image).
 - [ ] Pousser les modifications sur `main` de manière sécurisée et non destructive.
 - [ ] Confirmer le succès du push et rendre compte à l'utilisateur.
+
+
+## Nouvelle demande — Vérification Vercel de la version bilingue
+
+- [ ] Vérifier le commit distant sur GitHub pour s'assurer que `8e89a5f` est bien en tête de `main`.
+- [ ] Inspecter la réponse de l'URL Vercel pour valider que le bundle statique est servi.
+- [ ] Confirmer le bon fonctionnement de l'interface bilingue en production.
+
+
+## Audit d'automatisation — Intégration des nouvelles Warframes
+
+- [x] Inventorier les fichiers de workflow GitHub Actions et les scripts d'extraction de données existants.
+- [x] Évaluer si le système détecte et intègre automatiquement une nouvelle Warframe de bout en bout.
+- [ ] Rédiger un rapport clair expliquant ce qui est automatisé (extraction brute) et ce qui nécessite un complément (mapping des capacités, attributs et assets visuels).
+
+
+## Nouvelle demande — Pipeline d'automatisation et de synchronisation multi-catégories
+
+- [ ] Créer un script Node.js robuste d'extraction et de normalisation quotidienne (`scripts/sync-warframe-data.js`) pour inspecter les exports officiels DE et comparer avec le dataset local.
+- [ ] Gérer l'extraction automatique des Warframes, armes, compagnons, mods, arcanes et éclats, incluant les stats, les icônes et les structures de capacités détaillées.
+- [ ] Mettre en place un workflow GitHub Actions (`.github/workflows/data-sync.yml`) pour exécuter la vérification, générer les fiches et ouvrir automatiquement une Pull Request avec un rapport de modifications.
+- [ ] Valider le script en local, enregistrer le checkpoint et publier la solution.
+
+
+## Nouvelle demande — Recherche et extraction automatique depuis le Wiki Warframe
+
+- [ ] Enrichir le script de synchronisation (`scripts/sync-warframe-data.js`) avec un module d'interrogation de l'API de recherche du Wiki Warframe (`https://wiki.warframe.com/api.php`).
+- [ ] Permettre l'extraction dynamique des images officielles, des liens wiki et des descriptions/capacités des nouveaux items détectés.
+- [ ] Générer un rapport d'enrichissement détaillé dans la Pull Request automatique.
+- [ ] Valider et enregistrer le checkpoint.
+
+
+## Nouvelle demande — Parsing Infobox, Cache d'images et Validation Multimodale
+
+- [ ] Étendre `scripts/sync-warframe-data.js` pour parser les tableaux de statistiques et infobox du Wiki Warframe.
+- [ ] Implémenter le téléchargement et la mise en cache persistante des images extraites dans un dossier d'assets géré.
+- [ ] Ajouter une étape de vérification automatisée de correspondance visuelle pour garantir la fidélité des assets récupérés.
+- [ ] Valider l'ensemble du pipeline et enregistrer le checkpoint.
+
+
+## Nouvelle demande — Assistant Cephalon connecté aux nouveaux items synchronisés
+
+- [ ] Inclure les rapports de synchronisation (`data-sync-report.json`) dans le contexte compact transmis au backend LLM (`server/chat-handler.ts`).
+- [ ] Permettre au Cephalon d'intégrer les nouveautés validées dans ses conseils tactiques et propositions de builds.
+- [ ] Valider le build et enregistrer le checkpoint final.
+
+
+## Nouvelle demande — Remplissage de la section Guides avec les créateurs communautaires
+
+- [ ] Créer un fichier de données de guides structurés (`client/src/lib/community-guides.ts`) inspirés des méthodes de MHBlacky, TheKengineer, PANDAAHH, Lau 5040, etc.
+- [ ] Remplacer la page `Guides.tsx` vide par une interface de consultation de guides riche, filtrable par catégorie et bilingue (FR/EN).
+- [ ] Valider le build et enregistrer le checkpoint.
+
+## Nouvelle demande — Optimiseur de builds avancé (Répartition d'éclats d'Archonte par le chatbot)
+- [x] Structurer les règles de répartition d'éclats d'Archonte selon la mission, la Warframe et la priorité.
+- [x] Intégrer la logique slot par slot (couleur, variante Tauforgée, effet et justification) dans l'assistant Cephalon.
+- [x] Tester le rendu et valider le build de production.
+
+
+## Nouvelle demande — Chat serverless Vercel et pipeline Wiki
+
+- [ ] Créer et tester `api/chat.ts` pour le proxy Cephalon compatible Vercel.
+- [ ] Exclure `/api/chat` de la réécriture SPA et conserver la clé LLM côté serveur.
+- [ ] Renforcer le workflow Wiki pour les nouveaux items, capacités, images et rapports de qualité.
+- [ ] Valider les appels chat, les erreurs HTTP et le pipeline de Pull Request.
+
+
+## Nouvelle demande — RAG hybride Warframe pour Cephalon Codex
+
+- [ ] Auditer les fichiers de données et le contrat actuel de `/api/chat`.
+- [ ] Définir les identifiants stables, les métadonnées de provenance et les facettes de recherche.
+- [ ] Implémenter la génération de documents RAG à partir du dataset local.
+- [ ] Implémenter la recherche hybride locale par mots-clés, catégorie, langue, mission et faction.
+- [ ] Ajouter une récupération structurée des statistiques et capacités pour le contexte du Cephalon.
+- [ ] Intégrer le contexte récupéré dans `server/chat-handler.ts` sans exposer de secret au client.
+- [ ] Ajouter une sortie structurée pour les suggestions de builds et sa validation contre le catalogue.
+- [ ] Préserver les recommandations d’éclats d’Archonte et les calculs du Builder.
+- [ ] Ajouter les tests unitaires et d’intégration du retrieval et du chatbot.
+- [ ] Ajouter la génération/indexation automatique au workflow de synchronisation.
+- [ ] Valider le build, le endpoint `/api/chat` local et la version publiée.
+- [ ] Mettre à jour le dépôt GitHub sans supprimer les modifications existantes.
+
+
+## Nouvelle demande — Vidéos YouTube récentes des créateurs sourcés
+
+- [ ] Auditer les canaux et les moyens d’accès publics aux vidéos récentes.
+- [ ] Collecter les vidéos publiées depuis le 25 août 2025 pour MHBlacky, PANDAAHH, TheKengineer, Unified Codex, Endryx_ow, Lau 5040 et vu.thang205.
+- [ ] Conserver titre, auteur, URL, date de publication, langue et identifiant de vidéo.
+- [ ] Extraire les transcriptions disponibles ou marquer les vidéos sans transcription comme non analysées.
+- [ ] Normaliser les recommandations vidéo sans les confondre avec les statistiques officielles.
+- [ ] Intégrer les connaissances vidéo sourcées dans l’index RAG bilingue.
+- [ ] Ajouter la mise à jour automatique au workflow sans télécharger inutilement les vidéos.
+- [ ] Valider que le Cephalon cite les vidéos et conserve les garde-fous du Builder.
+
+
+## Correction Vercel — runtime invalide
+
+- [ ] Vérifier `vercel.json`, `api/chat.ts` et les éventuelles déclarations `functions`.
+- [ ] Comparer la configuration locale au commit de la branche GitHub déployée.
+- [ ] Supprimer ou corriger uniquement la version de runtime invalide.
+- [ ] Valider le build statique et le typecheck localement.
+- [ ] Tester `/api/chat` et la navigation SPA après correction.
+- [ ] Pousser la correction dans la branche de déploiement et vérifier le prochain build Vercel.
+
+
+## Données supplémentaires — Google Docs
+
+- [ ] Accéder au document fourni et relever son format, ses catégories et ses éventuelles sources.
+- [ ] Vérifier les permissions et demander une copie ou un export si le document n’est pas accessible.
+- [ ] Comparer les valeurs avec Public Export, WFCD et le Wiki Warframe.
+- [ ] Marquer les données non vérifiables au lieu de les injecter automatiquement dans les calculs.
+- [ ] Intégrer les données validées dans le dataset ou les documents RAG appropriés.
+- [ ] Régénérer l’index et valider le Builder après intégration.
+
+
+## Publication Vercel — PR #6
+
+- [ ] Vérifier l’état, les contrôles et la fusion possible de la PR #6.
+- [ ] Fusionner la PR #6 dans `main` sans réinitialiser l’historique.
+- [ ] Vérifier que Vercel détecte le nouveau commit de `main`.
+- [ ] Relancer le déploiement si Vercel ne le déclenche pas automatiquement.
+- [ ] Tester la page publique et `/api/chat` après déploiement.
+
+
+## Correctif Vercel après build main
+
+- [ ] Vérifier que `main` contient encore le runtime invalide signalé par Vercel.
+- [ ] Retirer la déclaration runtime custom de `vercel.json` sur main.
+- [ ] Pousser le commit correctif directement dans main.
+- [ ] Contrôler le nouveau build Vercel et tester `/api/chat` en production.
+
+
+## Correctif confirmé par les logs Vercel
+
+- [ ] Remplacer l’import ESM direct de `data/rag-index.json` par une lecture fichier côté fonction.
+- [ ] Déclarer `includeFiles` pour embarquer l’index dans l’artefact serverless.
+- [ ] Tester le bundle depuis la racine du projet, puis pousser le commit.
+- [ ] Vérifier que `/api/chat` renvoie autre chose que `FUNCTION_INVOCATION_FAILED`.
+
+
+## Nouvelle erreur Build Log Vercel — typage Express
+
+- [ ] Corriger `server/chat-handler.ts:43` : `Request.body` est absent du type utilisé par TypeScript.
+- [ ] Utiliser un type de requête Express cohérent avec `express.json()` et l’API serverless.
+- [ ] Relancer le typecheck et le build après correction.
+- [ ] Retester `/api/chat` en production et vérifier que le 404 amont reste le seul éventuel problème.
+
+
+## Réponse support Karthe — dossier Forge
+
+- [ ] Préparer un message anglais demandant le maintien du ticket ouvert.
+- [ ] Inclure le commit `3f56edd`, le build Vercel réussi et le test `/api/chat` du 31 août 2026 à 07:17 UTC.
+- [ ] Joindre uniquement les captures et logs sans clé API, token ou cookie.
+- [ ] Vérifier que la réponse distingue le fonctionnement de Vercel du 404 Forge amont.
+
+
+## Diagnostic Forge et alternative de secours
+
+- [ ] Documenter un test Node.js local avec saisie masquée de la clé.
+- [ ] Distinguer les résultats 200, 401/403, 404 et erreurs réseau.
+- [ ] Préparer une alternative serveur qui conserve la clé hors du frontend.
+- [ ] Prévoir un mode de bascule configurable sans modifier le Builder.
+- [ ] Documenter les variables d’environnement nécessaires à l’alternative.
+
+
+## Nouveau redéploiement Vercel — commit 3f56edd
+
+- [ ] Vérifier l’intégrité du commit `3f56edd` et son statut GitHub.
+- [ ] Déclencher un déploiement propre sans modifier le contenu fonctionnel.
+- [ ] Répéter POST `/api/chat` avec « Réponds uniquement OK. ».
+- [ ] En cas de 404 Forge, relever l’heure UTC et produire des lignes de log sans secret.
+
+
+## Nouvelle demande — Configuration de BUILT_IN_FORGE_API_KEY sur Vercel
+
+- [ ] Vérifier la présence de `BUILT_IN_FORGE_API_KEY` dans l’environnement Production sans afficher sa valeur.
+- [ ] Vérifier le nom de la variable Forge utilisée par le handler et l’URL amont configurée.
+- [ ] Corriger la portée ou la valeur si nécessaire, puis redéployer.
+- [ ] Retester POST `/api/chat` avec une requête de contrôle sans exposer de secret.
+
+
+## Nouvelle demande — Adaptateur Manus API v2 pour le Cephalon
+
+- [x] Comparer le contrat actuel Forge avec `task.create`, `task.sendMessage` et `task.listMessages` de Manus API v2.
+- [x] Ajouter un fournisseur Manus configurable côté serveur sans exposer la clé.
+- [x] Préserver le RAG, la langue, le contexte Builder et les conversations multi-tours.
+- [x] Tester les chemins Forge, Manus configuré et Manus non configuré.
+- [x] Documenter les variables Vercel et publier après validation.
+
+
+## Finalisation — Manus API v2 comme fournisseur principal
+
+- [ ] Vérifier le mode de sélection du fournisseur et les variables attendues par le handler.
+- [ ] Rendre Manus v2 explicite par défaut sans supprimer le mode Forge de secours.
+- [ ] Vérifier si `BUILT_IN_FORGE_API_URL` doit rester inchangée lorsqu’on utilise Manus v2.
+- [ ] Valider, documenter et publier la configuration finale.

@@ -1,0 +1,217 @@
+﻿GUIDE DE LA DÉFENSE OPTIMISÉE
+ GUIDE DE LA DÉFENSE OPTIMISÉE
+Ce guide sert d’introduction à la mise en place de défense optimisée, il est interactif et évoluera en fonction des différentes mise à jour du jeu. Libre à chacun de réadapter les conseils données pour soit, nous sommes preneurs de tout retour constructif pour son amélioration (n’hésitez pas à contacter Hannibalisme sur discord).
+
+
+
+
+1)      Pourquoi la défense
+
+
+Ben oui pourquoi ? Le mode de jeu existe depuis un grand nombre d'années sur le jeu, alors pourquoi s’y intéresser plus maintenant qu’avant ?
+ La réponse est simple :
+-         La vitesse : La défense a été rework lors de la MAJ Techrot encore, et est passé de 5 à 3 vagues par rotation (en comptant une moyenne de 1min/vague nous avons des rotation de 3min)
+-         La rentabilité : Nous retrouvons fréquemment ces missions en reliques et il en existe un certain nombre qui sont pertinentes à faire (voir tier liste maps). On y farm un grand nombre de ressources différentes (farm croisé crédit, essences d’acier, etc..). On profite des boosters de mission longues à leur plein potentiel en 60 vagues, donc généralement en moins d’une heure. Évidemment il est conseillé de faire ces missions en route de l’acier.
+-         Le fun : c’est assez personnel mais s’organiser avec 3 comparses pour mettre en place une synergie complète est vraiment très fun et au contraire de l’arbitrage (on vous aime même si vous ne jouez que 5 frames ne vous inquiétez pas) nous avons accès à un plus grand nombre de frames.
+ 
+
+
+2)      Les maps
+
+
+Ce qu’il faut retenir c’est que l’on cherche des maps les plus petites et/ou ouverte possibles pour tuer tous les ennemies le plus vite possible, pour vous citer quelques exemples :
+
+
+ 
+Tier S
+ 
+Casta                                              (Ceres)
+Helene                                            (Saturn)
+Hydron                                            (Sedna)
+Outer Terminus*                            (Pluto)
+
+           
+ 
+
+
+
+
+Tier A
+
+
+Kala-Azar (au pouvoir borderless)     (Eris)
+Lith                                                  (Earth)
+Spear                                              (Mars)
+Stephano*                                       (Uranus)
+ 
+
+
+            Tier B
+Io                                                     (Jupiter)
+Bellenus                                          (Void)
+Gulliver                                           (Phobos)
+Nabuk                                             (Kuva Fortress)
+Paimon                                           (Europe)
+Proteus                                           (Neptune)
+Taranis                                           (Void)
+Tessera                                          (Venus)
+
+
+
+
+                                        Bon layout de Stephano                             
+ 
+
+
+
+
+
+
+
+
+
+
+ et d’Outer Terminus
+  
+
+
+
+
+
+Sur chacune de ces maps il est important de reconnaître les principaux spawns ennemis afin de finir les vagues le plus vite possible.
+Il est important également de mettre un point de ralliement où se placer pour recevoir les buffs afin de les optimiser.
+ 
+
+
+3)      Les teams et builds
+
+
+A.           Les archétypes : 
+
+
+-          Les nukers : ce sont ceux qui vont faire la majorité des kills, très généralement grâce à leurs pouvoirs et parfois en complément de certaines armes. Dans cette catégorie nous retrouvons des frames tels que Sevagoth, Equinox, Mirage, Mesa, Xaku, Nezha, Gara, Gyre, etc.
+
+
+-          Les buffers : ce sont les meilleurs amis des nukers et des alliés essentiels pour le reste de l’équipe, ils vont nous permettre d’avoir des buffs d’éléments sur nos armes, multiplier nos dégâts, donner de la puissance ou de la vitesse. Dans cette catégorie nous retrouvons des frames telles que Jade, Saryn, Volt, Dante, Harrow, Wisp, Styanax, Octavia, etc.
+
+
+-          Le flexers : personnages plus versatiles, qui va s’occuper de débuffer les ennemies ou changer leur comportement. Ici nous retrouveront des frames telles que Nova, Banshee, Frost, Mag, etc.
+
+
+
+
+La composition de l’équipe : Une équipe optimale se compose généralement de :
+-          1 ou 2 nukers
+-          1ou 2 buffers
+-          0 ou 1 flexeurs
+
+
+
+
+2. Les synergies entre les frames
+Il est également important de comprendre que pour faire une bonne défense il faut une synergie entre les frames, ceci se déroule à plusieurs niveaux : 
+* Les auras : dans cette idée de complémentarité nous retrouvons le classique 4 dons de puissance, mais également pouvoir grandissant, mecha, aura de boost de dégâts (fusil, secondaire, etc)
+* Les helminths : ici nous allons retrouver principalement des sources de boosts de dégâts, il faut absolument éviter les doublons. Celui avec le plus de puissance va généralement prendre le rugissement de rhino, mais également nourish (important pour avoir une couche de viral et améliorer la régénération d’énergie. Smite (avec le mod augment), Thermal thunder (avec mod augment), Eclipse, etc. Certains vont nécessiter des pouvoirs précis dans certains cas, comme Terror sur Equinox sur une map Grineer.
+* Adapter son build au jeu en équipe : mettre une portée suffisante pour que les alliés profite des buffs plus facilement. Retirer certains mods défensif style roulade parade (la meilleure défense c’est l’attaque)
+
+
+
+
+3. Les armes 
+On retrouvera majoritairement des armes qui ont des effets d’AOE immédiat (j’entends hors armes incarnon par headshot). Parmi ces critères on retrouve des armes comme l’Ogris Kuva, le Zarr Kuva, le Bramma Kuva, l’Envoy Principe, Akarius. Certaines armes à rayon sont également jouables mais généralement moins efficaces, Vermiscplicer, Gat, Torid, Glaxion.
+ 
+4)      Autres conseils
+A.           Les acolytes
+Pour gérer les acolytes il est important de :
+- S’équiper sur le Tenno de l’arcane confinement, lorsque l’acolyte se présente passer en tenno et faire un dash au sol à côté de lui.
+- Avoir une arme pour détruire l’acolyte (une bonne mêlée avec crescendo), latron incarnon, etc.
+https://youtube.com/shorts/sHwAZ7B9VkI?feature=shared
+
+
+/!\ ATTENTION À MALICE QUI PEUT VOUS FAIRE DÉTRUIRE LE CRYOPODS /!\
+2. Buffs reliques : 
+Optimiser les buffs reliques :
+- Retirer certains slots d’armes pour avoir plus de chance de faire proc le bonus d’ouverture de relique. Les nukers profitent souvent du portée / puissance, munition illimité sur votre arme de démobage sur tous.
+3. Gameplay : 
+
+
+ - Même si vous jouez une warframe support il est important d’essayer un maximum de tuer tous les mobs possible, ce n’est pas au nukers de faire absolument tout les kills. Car chaque mobs tuer est un de moins pour atteindre la fin de la vague et une chance de moins pour le cryopods de se faire détruire. On aime moyennement les joueurs passif qui ont leur transat sur le point de défense
+- Bien cycler ses buffs pour que toi et tes coéquipiers soient constamment aux maximums de dégâts possible, même logique que le précédent point. Apprendre à avoir un oeil sur les buffs sur les alliés en haut à droite de son écran
+- Dans les déplacements il est intéressant d’aller là où tes alliés ne sont pas et où les ennemis sont ou vont spawn, et c’est pour ça que les frames support de déplacement sont intéressantes (Volt, wisp, etc.)
+- Garder un oeil sur la mini map pour optimiser ses emplacements.
+4. Spectres
+En plus de leur avantages en terme de dégâts ils servent également à dispatcher l’aggro des mobs
+
+- Pour les spectres de warframes on retrouve également de grands classiques :
+                Nidus, pour profiter de son lien pour gagner en puissance
+                Protéa, pour profiter de son dispensaire (munition et énergie)
+                Wisp, pour profiter de la vitesse de déplacement et de la cadence de tir
+                Citrine, qui offre de la chance de statut ainsi que du priming
+Dante, pour profiter de son overguard (le PSF de wish) et le débuff que donnent les oiseaux
+
+
+Les spectres profitent grandement des auras don de puissance.
+- Les spectres hors warframes :
+                L’osprey, qui offre une régénération des boucliers du cryopods et l’augmentation de ses boucliers max, de plus ils se cumulent (attention à bien les laisser en position fixe, ils ont tendance à aller vite dans tous les sens.
+                
+Les builds :
+
+
+Les builds : 
+Les nukers : 
+
+
+Sevagoth : 
+  
+
+  
+
+Gameplay : 
+Marqué les ennemies avec votre second pouvoir puis faite votre premier pouvoir, laissé l’ombre se balader pour faire exploser les graines, puis refaite le 12 si certains sont encore en vie.
+________________
+
+
+Hildryn : 
+  
+
+(ne pas tenir compte de la portée, j’avais une dynamisation)
+  
+
+  
+
+Gameplay : 
+Passer sur votre 4ème pouvoir, faire le tir secondaire sur les spawns. Penser à caster votre 2 toute les 5 à 10sec pour récupérer du shield.
+
+
+Bonus :
+Utiliser un compagnon qui supporte votre bouclier. Raksa qui a un mod exprès ou une sentinelle avec son mod qui régène le shield de votre frame (Wyrm est utile également)
+________________
+Equinox : 
+  
+
+2 vitesses de cast pour être tranquille, à compléter avec ce que vous voulez.
+  
+
+Gameplay : 
+1. Passer sur la forme diurne (qui sera celle utilisée en permanence surtout en défense). 
+2. Lancer son troisième pouvoir pour faire monter sa puissance et celle de ses coéquipiers (caper à 80% avec le mod d’augment). A garder actif en permanence
+3. Lancer son 4ème pourvoir et le laisser s’accumuler : 
+4. Si vous vous trouvez contre des grineers utiliser l’helminth de Nekros pour retirer leur armure.
+5. Relâcher le 4ème pouvoir et profiter du spectacle.
+6. Retourner à l’étape à l’étape 3
+________________
+Gara : 
+  
+
+  
+
+  
+
+1 vitesse de cast, et équilibre à ton confort entre puissance et durée.
+
+
+Gameplay : 
+Jouer en Naramon pour conserver son combo mêlée avec dextérité principale et secondaire. Lancer ton 2ème pouvoir pour commencer à faire monter son cumul.
+Lancer ton 4ème pouvoir en le laissant s’étendre un peu
+Détruire le verre avec ton 1er pouvoir
+________________
