@@ -46,16 +46,20 @@ function fromRss(creator, body) {
 }
 function fromYtDlp(creator) {
   try {
-    const raw = execFileSync("yt-dlp", ["--flat-playlist", "--dump-single-json", "--dateafter", cutoff.toISOString().slice(0, 10).replaceAll("-", ""), creator.channelUrl], { encoding: "utf8", timeout: 180000, maxBuffer: 30 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] });
+    // Do not use --dateafter here: flat-playlist enumeration does not reliably expose
+    // upload_date for every entry, which can make a valid channel appear to contain 0 videos.
+    // We enumerate first, then apply the cutoff ourselves from upload_date when available.
+    const raw = execFileSync("yt-dlp", ["--flat-playlist", "--dump-single-json", "--playlist-end", "100", creator.channelUrl], { encoding: "utf8", timeout: 180000, maxBuffer: 30 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] });
     const playlist = JSON.parse(raw);
     const channelId = playlist.channel_id || playlist.id || creator.id;
     return (playlist.entries || []).map(entry => {
       const publishedAt = entry.upload_date ? dateOnly(`${entry.upload_date.slice(0, 4)}-${entry.upload_date.slice(4, 6)}-${entry.upload_date.slice(6, 8)}`) : null;
-      if (!entry.id || !publishedAt) return null;
+      if (!entry.id || !publishedAt || publishedAt < cutoff.toISOString()) return null;
       return { id: entry.id, creator: creator.name, channelId, channelLabel: creator.channelLabel, title: entry.title || "", publishedAt, url: `https://www.youtube.com/watch?v=${entry.id}`, language: creator.language, expertCategory: creator.category, sourceType: "community_video", transcriptStatus: "not_requested" };
     }).filter(Boolean);
   } catch (error) {
-    console.warn(`[YOUTUBE] ${creator.name}${creator.channelLabel ? ` (${creator.channelLabel})` : ""}: yt-dlp failed`);
+    const detail = error?.stderr?.toString?.().trim().split("\n").slice(-2).join(" | ") || error?.message || "unknown error";
+    console.warn(`[YOUTUBE] ${creator.name}${creator.channelLabel ? ` (${creator.channelLabel})` : ""}: yt-dlp failed: ${detail}`);
     return null;
   }
 }
@@ -73,8 +77,9 @@ async function main() {
     if (creator.rssChannelId) {
       try {
         const rss = fromRss({ ...creator, id: creator.rssChannelId }, await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${creator.rssChannelId}`));
-        collected.push(...rss);
-        channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "rss", videoCount: rss.length });
+        const recent = rss.filter(video => new Date(video.publishedAt) >= cutoff);
+        collected.push(...recent);
+        channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "rss", videoCount: recent.length });
       } catch (error) {
         console.warn(`[YOUTUBE] ${creator.name}: ${error.message}`);
         channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "failed", videoCount: 0 });
