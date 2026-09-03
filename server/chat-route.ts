@@ -15,7 +15,7 @@ function extractLastUserMessage(body: any): string {
 }
 
 export async function handleChatRoute(req: Request, res: Response) {
-  const body = req.body as any;
+  const body = (req as any).body;
   const query = extractLastUserMessage(body);
   const language = (typeof body?.lang === "string"
     ? body.lang
@@ -27,7 +27,8 @@ export async function handleChatRoute(req: Request, res: Response) {
     const directReply = tryAnswerSimpleFact(query, language);
     if (directReply) {
       console.log("[CHAT] Direct Codex answer — Gemini/Manus bypassed:", query.slice(0, 120));
-      return res.status(200).json({ reply: directReply, source: "codex" });
+      res.statusCode = 200;
+      return res.json({ reply: directReply, source: "codex" });
     }
   } catch (error) {
     console.error("[CHAT] Direct Codex router error, continuing to LLM:", error);
