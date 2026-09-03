@@ -41,7 +41,7 @@ jobs:
             pnpm-${{ runner.os }}-
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile --ignore-scripts
+        run: pnpm install --no-frozen-lockfile --ignore-scripts
 
       - name: Install YouTube metadata collector
         run: python -m pip install --user --break-system-packages yt-dlp
@@ -121,6 +121,7 @@ jobs:
           base: main
           delete-branch: true
           add-paths: |
+            pnpm-lock.yaml
             data/data-sync-input.json
             data/wiki-sync-state.json
             data/wiki-enrichment.json
