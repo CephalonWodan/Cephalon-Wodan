@@ -16,6 +16,8 @@ const youtube = fs.existsSync(youtubePath) ? JSON.parse(fs.readFileSync(youtubeP
 const googleGuidePath = path.join(root, "data/google-doc-defense-guide.txt");
 const googleGuideUrl = "https://docs.google.com/document/d/1rslhIJVmW5YO0TJm1MTtrryDgoeeU2L-CE3MomM6Rwk/edit?tab=t.0";
 const googleGuideText = fs.existsSync(googleGuidePath) ? fs.readFileSync(googleGuidePath, "utf8") : "";
+const communityPresetsPath = path.join(root, "client/src/lib/community-presets.ts");
+const communityPresetsSource = fs.existsSync(communityPresetsPath) ? fs.readFileSync(communityPresetsPath, "utf8") : "";
 const enrichmentByName = new Map((Array.isArray(enrichment) ? enrichment : []).map(item => [normalize(item.name), item]));
 const stopWords = new Set("a au aux avec dans de des du en et la le les pour sur un une the and for from of on to with build set faire quel quelle quels quelles".split(" "));
 
@@ -48,6 +50,7 @@ function text(kind, item) {
   ].filter(Boolean).join("\n");
 }
 function source(item) {
+  if (item.sourceType === "community_build") return `Build communautaire — ${item.creator || "source communautaire"}`;
   if (item.sourceType === "community_video") return `Vidéo YouTube communautaire — ${item.creator || "créateur sourcé"}`;
   if (item.sourceType === "community_guide") return `Guide communautaire — ${item.creator || "source fournie"}`;
   return item.wikiUrl ? "Warframe Wiki + dataset local" : (item.effectIds || item.sourceKey ? "Archon Shard dataset + Warframe Wiki" : "dataset local normalisé");
@@ -81,6 +84,51 @@ function hasCombatProfile(item) {
   const fireRate = Number(item?.fireRate || 0);
   return damage > 0 || crit > 0 || status > 0 || fireRate > 0;
 }
+function parseCommunityPresets(sourceText) {
+  const presets = [];
+  const blocks = sourceText.match(/\{\n\s+id: "preset-[\s\S]*?\n\s+\},?/g) || [];
+  for (const block of blocks) {
+    const get = key => block.match(new RegExp(`${key}:\\s*"([^"]+)"`))?.[1] || "";
+    const getArray = key => {
+      const match = block.match(new RegExp(`${key}:\\s*\\[([^\\]]*)\\]`));
+      return match ? [...match[1].matchAll(/"([^"]+)"/g)].map(item => item[1]) : [];
+    };
+    const id = get("id");
+    const targetItemName = get("targetItemName");
+    if (!id || !targetItemName) continue;
+    const modNames = getArray("modNames");
+    const auraName = get("auraName");
+    const exilusName = get("exilusName");
+    const arcaneNames = getArray("arcaneNames");
+    const missionType = get("missionType");
+    const difficulty = get("difficulty");
+    const creator = get("creator");
+    const description = get("description");
+    const allMods = [...(auraName ? [auraName] : []), ...(exilusName ? [exilusName] : []), ...modNames];
+    const textBody = [
+      `Type: community_build`, `Nom: ${get("name")}`, `Warframe/Arme cible: ${targetItemName}`,
+      `Créateur: ${creator}`, `Mission: ${missionType}`, `Difficulté: ${difficulty}`,
+      `Description: ${description}`, `Mods: ${allMods.join(" | ")}`,
+      `Arcanes: ${arcaneNames.join(" | ")}`,
+      `Source: preset communautaire local; à utiliser comme référence, jamais comme valeur officielle.`,
+    ].join("\n");
+    presets.push({
+      id: `community_build:${id}`,
+      kind: "community_build",
+      name: get("name") || `${targetItemName} — build communautaire`,
+      text: textBody,
+      aliases: [targetItemName, get("name"), creator, missionType, difficulty, ...allMods].filter(Boolean),
+      tokens: tokens(`${targetItemName} ${get("name")} ${creator} ${missionType} ${difficulty} ${description} ${allMods.join(" ")} ${arcaneNames.join(" ")}`),
+      source: `Build communautaire — ${creator || "source locale"}`,
+      sourceUrl: "",
+      creator: creator || undefined,
+      sourceType: "community_build",
+      validationStatus: "community_reference",
+      record: { targetItemName, modNames: allMods, arcaneNames, missionType, difficulty, creator },
+    });
+  }
+  return presets;
+}
 
 const groups = [
   ["warframe", data.warframes], ["weapon", (data.weapons || []).filter(hasCombatProfile)], ["mod", data.mods],
@@ -104,12 +152,14 @@ const guideSections = googleGuideText.split(/\n(?=\s*(?:\d+\)|\d+\.|[A-Z]\.))/).
   sourceType: "community_guide",
   validationStatus: "community_reference",
 })).filter(section => section.description.length > 80);
-const documents = groups.flatMap(([kind, items]) => docs(kind, items)).concat(docs("community_video", communityVideos), docs("community_guide", guideSections));
+const communityBuilds = parseCommunityPresets(communityPresetsSource);
+const documents = groups.flatMap(([kind, items]) => docs(kind, items)).concat(docs("community_video", communityVideos), docs("community_guide", guideSections), communityBuilds);
 const hash = crypto.createHash("sha256").update(fs.readFileSync(sourcePath)).digest("hex");
-const output = { schemaVersion: 1, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
+const output = { schemaVersion: 2, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 fs.writeFileSync(outputTsPath, `// Generated by scripts/build-rag-index.mjs. Do not edit manually.\n// This TypeScript snapshot avoids runtime JSON import assertions on Vercel.\nexport default ${JSON.stringify(output)} as const;\n`);
 console.log(`[RAG] ${documents.length} documents générés dans ${outputPath}`);
+console.log(`[RAG] Community builds indexés : ${communityBuilds.length}`);
 console.log(`[RAG] TypeScript snapshot généré dans ${outputTsPath}`);
 console.log(`[RAG] sourceHash=${hash}`);
