@@ -160,9 +160,9 @@ async function callGeminiProvider(systemPrompt: string, messages: ChatMessage[])
   const model = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
   const endpoint = "https://generativelanguage.googleapis.com/v1beta/interactions";
   const input = messages.map(message => ({
-    role: message.role === "assistant" ? "model" : "user",
-    content: [{ type: "text", text: message.content }],
-  }));
+  type: message.role === "assistant" ? "model_output" : "user_input",
+  content: [{ type: "text", text: message.content }],
+}));
 
   const response = await fetch(endpoint, {
     method: "POST",
