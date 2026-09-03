@@ -75,7 +75,9 @@ function getManusPrompt(systemPrompt: string, messages: ChatMessage[]) {
   const transcript = messages
     .map(message => `${message.role === "assistant" ? "Cephalon" : "Joueur"}: ${message.content}`)
     .join("\n");
-  return `${systemPrompt}\n\n[Conversation à poursuivre]\n${transcript}`.slice(0, 28000);
+  // Manus limits user text to approximately 5,000 tokens. Keep a conservative
+  // character budget because the prompt is multilingual and token density varies.
+  return `${systemPrompt}\n\n[Conversation à poursuivre]\n${transcript}`.slice(0, 16000);
 }
 
 async function manusJson(url: string, apiKey: string, init: RequestInit = {}) {
@@ -93,7 +95,8 @@ async function manusJson(url: string, apiKey: string, init: RequestInit = {}) {
   try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text.slice(0, 1000) }; }
   if (!response.ok || data?.ok === false) {
     const message = data?.error?.message || data?.raw || `HTTP ${response.status}`;
-    throw new Error(`Manus API ${response.status}: ${message}`);
+    const code = data?.error?.code ? ` [${data.error.code}]` : "";
+    throw new Error(`Manus API ${response.status}${code}: ${message}`);
   }
   return data;
 }
@@ -135,10 +138,14 @@ async function callManusProvider(prompt: string, lang: "fr" | "en", existingTask
   while (Date.now() < deadline) {
     const events = await manusJson(`${getManusBaseUrl()}/v2/task.listMessages?task_id=${encodeURIComponent(taskId)}&order=desc&limit=50`, apiKey, { method: "GET" });
     const list = Array.isArray(events.messages) ? events.messages as ManusMessageEvent[] : [];
+    const errorEvent = list.find(event => event.type === "error_message" || event.error_message?.content);
+    if (errorEvent?.error_message?.content) {
+      throw new Error(`Manus task error: ${errorEvent.error_message.content}`);
+    }
     const answer = list.find(event => typeof event.assistant_message?.content === "string" && event.assistant_message.content.trim());
     if (answer?.assistant_message?.content) return { content: answer.assistant_message.content.trim(), taskId };
     const status = list.find(event => event.type === "status_update")?.status_update?.agent_status;
-    if (status === "error") throw new Error(list.find(event => event.error_message)?.error_message?.content || "Manus task error");
+    if (status === "error") throw new Error("Manus task error");
     if (status === "waiting") throw new Error("Manus task is waiting for an unsupported confirmation");
     if (status === "stopped") break;
     await new Promise(resolve => setTimeout(resolve, 900));
@@ -188,7 +195,6 @@ export async function handleChatRequest(req: Request, res: Response) {
       return sendJson(res, 200, { reply: lang === "en" ? "⚠️ The LLM service is not configured (missing API key)." : "⚠️ Le service LLM n'est pas configuré (clé API manquante)." });
     }
 
-    // Load sync report to inject newly synchronized items into the assistant's awareness
     let syncInfo = "";
     try {
       const reportPath = path.resolve(process.cwd(), "data-sync-report.json");
@@ -214,7 +220,6 @@ export async function handleChatRequest(req: Request, res: Response) {
     const frameName = buildContext?.warframe?.name || "Warframe";
     const optimizationFocus = body.advancedOptions?.optimizationFocus || "balanced";
 
-    // Generate Archon Shard optimizer payload
     const shardOpt = generateArchonShardRecommendations(frameName, missionType, optimizationFocus, lang);
     const rag = buildRagContext({
       query: messages[messages.length - 1]?.content || "",
@@ -241,8 +246,9 @@ export async function handleChatRequest(req: Request, res: Response) {
         console.log("[CHAT] Manus API success, reply length:", manusResult.content.length);
         return sendJson(res, 200, { reply: manusResult.content, manusTaskId: manusResult.taskId });
       } catch (error: any) {
-        console.error("[CHAT] Manus API error:", error?.message || "unknown");
-        return sendJson(res, 200, { reply: lang === "en" ? "⚠️ Unable to contact Manus API right now." : "⚠️ Impossible de contacter l'API Manus pour le moment." });
+        const message = error?.message || "unknown";
+        console.error("[CHAT] Manus API error:", message);
+        return sendJson(res, 200, { reply: lang === "en" ? `⚠️ Manus API error: ${message}` : `⚠️ Erreur Manus : ${message}` });
       }
     }
 
