@@ -3,52 +3,18 @@
 // Numeric truth remains in the Builder calculation engine; this module retrieves evidence only.
 
 import ragIndex from "./rag-index.generated.js";
+import { COMMUNITY_BUILD_REFERENCES } from "./community-builds.js";
 
 type JsonRecord = Record<string, any>;
 type CatalogKind = "warframe" | "weapon" | "mod" | "arcane" | "companion" | "archon_shard" | "community_video" | "community_guide" | "community_build";
 
-export interface RagQueryInput {
-  query: string;
-  language: "fr" | "en";
-  missionType?: string;
-  buildContext?: JsonRecord | null;
-  advancedOptions?: JsonRecord | null;
-}
+export interface RagQueryInput { query: string; language: "fr" | "en"; missionType?: string; buildContext?: JsonRecord | null; advancedOptions?: JsonRecord | null; }
+export interface RagEvidence { id: string; kind: CatalogKind; name: string; text: string; score: number; source: string; sourceUrl?: string; validationStatus?: string; }
+interface RagDocument extends Omit<RagEvidence, "score"> { aliases: string[]; tokens: string[]; record: JsonRecord; }
 
-export interface RagEvidence {
-  id: string;
-  kind: CatalogKind;
-  name: string;
-  text: string;
-  score: number;
-  source: string;
-  sourceUrl?: string;
-  validationStatus?: string;
-}
-
-interface RagDocument extends Omit<RagEvidence, "score"> {
-  aliases: string[];
-  tokens: string[];
-  record: JsonRecord;
-}
-
-const STOP_WORDS = new Set([
-  "a", "au", "aux", "avec", "dans", "de", "des", "du", "en", "et", "la", "le", "les", "ma", "mon", "pour", "sur", "un", "une", "the", "and", "for", "from", "into", "of", "on", "to", "with", "build", "set", "faire", "donne", "donner", "quel", "quelle", "quels", "quelles",
-]);
-
-function normalize(value: unknown): string {
-  return String(value ?? "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9+#.%'-]+/g, " ")
-    .trim();
-}
-
-function tokens(value: unknown): string[] {
-  return Array.from(new Set(normalize(value).split(/\s+/).filter(token => token.length > 1 && !STOP_WORDS.has(token))));
-}
-
+const STOP_WORDS = new Set(["a","au","aux","avec","dans","de","des","du","en","et","la","le","les","ma","mon","pour","sur","un","une","the","and","for","from","into","of","on","to","with","build","set","faire","donne","donner","quel","quelle","quels","quelles"]);
+function normalize(value: unknown): string { return String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9+#.%'-]+/g, " ").trim(); }
+function tokens(value: unknown): string[] { return Array.from(new Set(normalize(value).split(/\s+/).filter(token => token.length > 1 && !STOP_WORDS.has(token)))); }
 function compact(value: unknown, depth = 0): string {
   if (value === null || value === undefined || depth > 2) return "";
   if (typeof value === "string" || typeof value === "number" || typeof value === "boolean") return String(value);
@@ -57,58 +23,38 @@ function compact(value: unknown, depth = 0): string {
   return "";
 }
 
-function recordText(kind: CatalogKind, item: JsonRecord, language: "fr" | "en"): string {
-  const fields: string[] = [
-    `Type: ${kind}`,
-    `Nom: ${item.name || ""}`,
-    item.type ? `Catégorie: ${item.type}` : "",
-    item.description ? `Description: ${item.description}` : "",
-    item.effect ? `Effet: ${item.effect}` : "",
-    item.role ? `Rôle: ${item.role}` : "",
-    item.weaponClass ? `Classe: ${item.weaponClass}` : "",
-    item.damage ? `Dégâts totaux: ${item.damage}` : "",
-    item.critChance ? `Chance critique: ${item.critChance}` : "",
-    item.critMultiplier ? `Multiplicateur critique: ${item.critMultiplier}` : "",
-    item.statusChance ? `Chance de statut: ${item.statusChance}` : "",
-    item.fireRate ? `Cadence: ${item.fireRate}` : "",
-    item.health ? `Santé: ${item.health}` : "",
-    item.shield ? `Bouclier: ${item.shield}` : "",
-    item.armor ? `Armure: ${item.armor}` : "",
-    item.energy ? `Énergie: ${item.energy}` : "",
-    item.polarity ? `Polarité: ${item.polarity}` : "",
-    item.maxRank !== undefined ? `Rang maximum: ${item.maxRank}` : "",
-    item.compatName ? `Compatibilité: ${item.compatName}` : "",
-    item.abilities ? `Capacités: ${compact(item.abilities)}` : "",
-    item.officialStats ? `Statistiques officielles: ${compact(item.officialStats)}` : "",
-    item.effects ? `Effets disponibles: ${compact(item.effects)}` : "",
-    item.effectIds ? `Identifiants d'effets: ${compact(item.effectIds)}` : "",
-    item.damageTypes ? `Répartition des dégâts: ${compact(item.damageTypes)}` : "",
-    item.targetItemName ? `Objet ciblé: ${item.targetItemName}` : "",
-    item.modNames ? `Mods recommandés: ${compact(item.modNames)}` : "",
-    item.arcaneNames ? `Arcanes recommandées: ${compact(item.arcaneNames)}` : "",
-    item.missionType ? `Mission: ${item.missionType}` : "",
-    item.difficulty ? `Difficulté: ${item.difficulty}` : "",
-    item.creator ? `Créateur: ${item.creator}` : "",
-    language === "fr" ? "Langue de référence: français" : "Reference language: English",
-  ];
-  return fields.filter(Boolean).join("\n");
-}
-
 function sourceFor(item: JsonRecord): string {
   if (item.kind === "community_build" || item.validationStatus === "community_reference") return "Build communautaire — référence, non officiel";
   if (item.wikiUrl) return "Warframe Wiki + dataset local";
   if (item.sourceKey || item.effectIds) return "Archon Shard dataset + Warframe Wiki";
   return "dataset local normalisé";
 }
+function sourceUrlFor(item: JsonRecord): string | undefined { return item.wikiUrl || (item.name ? `https://wiki.warframe.com/w/${encodeURIComponent(String(item.name).replaceAll(" ", "_"))}` : undefined); }
 
-function sourceUrlFor(item: JsonRecord): string | undefined {
-  return item.wikiUrl || (item.name ? `https://wiki.warframe.com/w/${encodeURIComponent(String(item.name).replaceAll(" ", "_"))}` : undefined);
+function makeCommunityDocument(build: typeof COMMUNITY_BUILD_REFERENCES[number]): RagDocument {
+  const record: JsonRecord = { ...build, kind: "community_build", validationStatus: "community_reference" };
+  const text = [
+    "Type: community_build",
+    `Nom: ${build.name}`,
+    `Objet ciblé: ${build.targetItemName}`,
+    `Créateur: ${build.creator}`,
+    `Description: ${build.description}`,
+    `Mission: ${build.missionType}`,
+    `Difficulté: ${build.difficulty}`,
+    `Mods recommandés: ${build.modNames.join("; ")}`,
+    build.auraName ? `Aura: ${build.auraName}` : "",
+    build.exilusName ? `Exilus: ${build.exilusName}` : "",
+    `Arcanes recommandées: ${build.arcaneNames.join("; ")}`,
+    build.archonShards?.length ? `Éclats: ${build.archonShards.map(s => `${s.shardName} — ${s.effectText}`).join("; ")}` : "",
+  ].filter(Boolean).join("\n");
+  return { id: build.id, kind: "community_build", name: build.name, text, score: 0, source: "Build communautaire — référence, non officiel", sourceUrl: undefined, validationStatus: "community_reference", aliases: [build.targetItemName, build.creator], tokens: tokens(`${build.name} ${build.targetItemName} ${build.creator} ${build.missionType} ${build.modNames.join(" ")}`), record };
 }
 
 let documentCache: RagDocument[] | null = null;
 function getDocuments(): RagDocument[] {
   if (!documentCache) {
-    documentCache = (Array.isArray((ragIndex as any)?.documents) ? (ragIndex as any).documents : []) as RagDocument[];
+    const generated = (Array.isArray((ragIndex as any)?.documents) ? (ragIndex as any).documents : []) as RagDocument[];
+    documentCache = [...generated, ...COMMUNITY_BUILD_REFERENCES.map(makeCommunityDocument)];
   }
   return documentCache;
 }
@@ -116,32 +62,11 @@ function getDocuments(): RagDocument[] {
 function inferFacets(input: RagQueryInput): string[] {
   const context = input.buildContext || {};
   const advanced = input.advancedOptions || {};
-  return [
-    input.query,
-    input.missionType,
-    advanced.faction,
-    advanced.enemyLevelBand,
-    advanced.optimizationFocus,
-    context.warframe?.name,
-    context.primaryWeapon,
-    context.secondaryWeapon,
-    context.meleeWeapon,
-    context.companion,
-    context.companionWeapon,
-    ...(context.mods?.warframe || []),
-    ...(context.mods?.primary || []),
-    ...(context.mods?.secondary || []),
-    ...(context.mods?.melee || []),
-    ...(context.mods?.companion || []),
-    ...(context.arcanes || []),
-    ...(context.archonShards || []),
-  ].filter(Boolean).map(String);
+  return [input.query,input.missionType,advanced.faction,advanced.enemyLevelBand,advanced.optimizationFocus,context.warframe?.name,context.primaryWeapon,context.secondaryWeapon,context.meleeWeapon,context.companion,context.companionWeapon,...(context.mods?.warframe || []),...(context.mods?.primary || []),...(context.mods?.secondary || []),...(context.mods?.melee || []),...(context.mods?.companion || []),...(context.arcanes || []),...(context.archonShards || [])].filter(Boolean).map(String);
 }
 
 function scoreDocument(document: RagDocument, input: RagQueryInput, queryTokens: Set<string>, facetText: string): number {
-  const normalizedQuery = normalize(input.query);
-  const normalizedName = normalize(document.name);
-  let score = 0;
+  const normalizedQuery = normalize(input.query); const normalizedName = normalize(document.name); let score = 0;
   if (normalizedQuery.includes(normalizedName) || normalizedName.includes(normalizedQuery)) score += 15;
   if (document.aliases.some(alias => facetText.includes(normalize(alias)))) score += 8;
   for (const token of Array.from(queryTokens)) if (document.tokens.includes(token)) score += 2;
@@ -154,47 +79,22 @@ function scoreDocument(document: RagDocument, input: RagQueryInput, queryTokens:
   if (document.kind === "companion" && /compagnon|companion|sentinel|sentinelle|moa|hound|kavat|kubrow/.test(normalizedQuery)) score += 4;
   if (document.kind === "community_video" && /video|youtube|guide|build|creator|créateur|conseil|recommend|mission|warframe/.test(normalizedQuery)) score += 2;
   if (document.kind === "community_guide" && /defense|défense|team|équipe|map|carte|wave|vague|helminth|nuker|buffer|warframe/.test(normalizedQuery)) score += 5;
-  if (document.kind === "community_build" && /build|configuration|setup|steel path|survie|survival|endurance|dps|compagnon|companion|incarnon|paris|dante/.test(normalizedQuery)) score += 7;
+  if (document.kind === "community_build" && /build|configuration|setup|steel path|survie|survival|endurance|dps|compagnon|companion|incarnon|paris|dante|wisp|revenant|torid|latron/.test(normalizedQuery)) score += 7;
   if (kindText && facetText.includes(kindText)) score += 1;
   return score;
 }
 
 export function retrieveRagEvidence(input: RagQueryInput, limit = 8): RagEvidence[] {
-  const facets = inferFacets(input);
-  const facetText = normalize(facets.join(" "));
-  const queryTokens = new Set(tokens(facets.join(" ")));
-  return getDocuments()
-    .map(document => ({ document, score: scoreDocument(document, input, queryTokens, facetText) }))
-    .filter(result => result.score > 0)
-    .sort((a, b) => b.score - a.score || a.document.name.localeCompare(b.document.name))
-    .slice(0, limit)
-    .map(({ document, score }) => ({
-      id: document.id,
-      kind: document.kind,
-      name: document.name,
-      text: document.text,
-      score,
-      source: document.source || sourceFor(document.record || document),
-      sourceUrl: document.sourceUrl || sourceUrlFor(document.record || document),
-      validationStatus: (document as any).validationStatus,
-    }));
+  const facets = inferFacets(input); const facetText = normalize(facets.join(" ")); const queryTokens = new Set(tokens(facets.join(" ")));
+  return getDocuments().map(document => ({ document, score: scoreDocument(document,input,queryTokens,facetText) })).filter(result => result.score > 0).sort((a,b) => b.score - a.score || a.document.name.localeCompare(b.document.name)).slice(0,limit).map(({document,score}) => ({id:document.id,kind:document.kind,name:document.name,text:document.text,score,source:document.source || sourceFor(document.record || document),sourceUrl:document.sourceUrl || sourceUrlFor(document.record || document),validationStatus:(document as any).validationStatus}));
 }
 
-function compactEvidenceText(text: string, maxChars = 1800): string {
-  if (text.length <= maxChars) return text;
-  return `${text.slice(0, maxChars).trim()}\n[… preuve abrégée pour réduire la latence …]`;
-}
+function compactEvidenceText(text: string, maxChars = 1800): string { if (text.length <= maxChars) return text; return `${text.slice(0,maxChars).trim()}\n[… preuve abrégée pour réduire la latence …]`; }
 
 export function buildRagContext(input: RagQueryInput): { evidence: RagEvidence[]; instructions: string } {
-  // Complex prompts do not need eight full documents. Keep the highest-scoring
-  // evidence and aggressively cap each document before sending it to the LLM.
-  const evidence = retrieveRagEvidence(input, 5);
-  const sourceLines = evidence
-    .map((item, index) => `[${index + 1}] ${item.name} — ${item.source}${item.validationStatus ? ` — statut: ${item.validationStatus}` : ""}${item.sourceUrl ? ` — ${item.sourceUrl}` : ""}`)
-    .join("\n");
-  const evidenceText = evidence
-    .map((item, index) => `\n[EVIDENCE ${index + 1}]\n${compactEvidenceText(item.text)}`)
-    .join("\n");
+  const evidence = retrieveRagEvidence(input,5);
+  const sourceLines = evidence.map((item,index) => `[${index+1}] ${item.name} — ${item.source}${item.validationStatus ? ` — statut: ${item.validationStatus}` : ""}${item.sourceUrl ? ` — ${item.sourceUrl}` : ""}`).join("\n");
+  const evidenceText = evidence.map((item,index) => `\n[EVIDENCE ${index+1}]\n${compactEvidenceText(item.text)}`).join("\n");
   const highLevelBuildPolicy = input.language === "fr"
     ? `\n\n[POLITIQUE BUILD HAUT NIVEAU — OBLIGATOIRE]\n- À Steel Path / niveau 200+, ne mets PAS Vitality, Adaptation ou des mods de tanking génériques par réflexe. Ils ne sont justifiés que si la Warframe, le mode de survie ou la stratégie les exploite réellement.\n- Priorise d'abord les mécanismes propres à la Warframe, le contrôle, l'invulnérabilité/Overguard, le bouclier/Shield-gating si pertinent, l'énergie, la portée/durée/force selon les capacités, puis les dégâts et la synergie des armes.\n- Un slot de mod doit avoir une justification concrète. Pas de remplissage avec des mods défensifs génériques.\n- Pour une demande de build, fournis une configuration exploitable et précise, pas seulement une liste de conseils.\n- Termine la recommandation par un bloc `json:recommendation` valide, avec au minimum `mods` (tableau de `{name,rank}`) et, si connu, `aura`, `exilus`, `arcanes`, `archonShards`, `primary`, `companion`. Le JSON doit être séparé de l'explication.\n- Les noms de mods, armes, Warframes, arcanes et compagnons doivent provenir des preuves récupérées ou du contexte Builder. Ne crée aucun nom.\n- Les builds communautaires servent de références/meta, jamais de vérité officielle.\n`
     : `\n\n[HIGH-LEVEL BUILD POLICY — MANDATORY]\n- At Steel Path / level 200+, do NOT add Vitality, Adaptation or generic tank mods by reflex. They are justified only when the Warframe, survival mode or strategy actually benefits from them.\n- Prioritize the Warframe's own mechanics, control, invulnerability/Overguard, shield-gating when relevant, energy, range/duration/strength according to abilities, then weapon damage and synergies.\n- Every mod slot needs a concrete reason. Do not fill slots with generic defensive mods.\n- For a build request, provide an actionable precise configuration, not only general advice.\n- End the recommendation with a valid `json:recommendation` block containing at least `mods` (array of `{name,rank}`) and, when known, `aura`, `exilus`, `arcanes`, `archonShards`, `primary`, `companion`. Keep the JSON separate from the explanation.\n- Mod, weapon, Warframe, arcane and companion names must come from retrieved evidence or Builder context. Never invent names.\n- Community builds are meta references, never official truth.\n`;
@@ -204,13 +104,4 @@ export function buildRagContext(input: RagQueryInput): { evidence: RagEvidence[]
   return { evidence, instructions };
 }
 
-export function getRagDiagnostics() {
-  const documents = getDocuments();
-  return {
-    documents: documents.length,
-    byKind: documents.reduce<Record<string, number>>((result, document) => {
-      result[document.kind] = (result[document.kind] || 0) + 1;
-      return result;
-    }, {}),
-  };
-}
+export function getRagDiagnostics() { const documents = getDocuments(); return { documents: documents.length, byKind: documents.reduce<Record<string,number>>((result,document) => { result[document.kind] = (result[document.kind] || 0) + 1; return result; }, {}) }; }
