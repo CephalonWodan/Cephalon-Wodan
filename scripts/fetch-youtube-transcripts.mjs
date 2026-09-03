@@ -1,4 +1,4 @@
-// Fetch public subtitles for the recent-video manifest without downloading video files.
+// Fetch public subtitles and lightweight metadata for the recent-video manifest without downloading video files.
 // Missing subtitles are explicitly retained as not_available; no transcript is invented.
 import fs from "node:fs";
 import path from "node:path";
@@ -26,6 +26,13 @@ function cleanVtt(value) {
     .replace(/\s+/g, " ")
     .trim();
 }
+function getMetadata(video) {
+  try {
+    const raw = execFileSync("yt-dlp", ["--skip-download", "--no-playlist", "--dump-single-json", video.url], { encoding: "utf8", timeout: 120000, maxBuffer: 10 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"] });
+    const data = JSON.parse(raw);
+    return { description: String(data.description || "").slice(0, 30000), chapters: Array.isArray(data.chapters) ? data.chapters.slice(0, 100).map(item => ({ start: item.start_time, end: item.end_time, title: item.title })) : [], duration: Number(data.duration || 0), uploader: data.uploader || "" };
+  } catch { return { description: "", chapters: [], duration: 0, uploader: "" }; }
+}
 function getTranscript(video) {
   const prefix = path.join(tempDir, video.id);
   try {
@@ -37,10 +44,11 @@ function getTranscript(video) {
 }
 const rows = [];
 for (const video of manifest.videos || []) {
+  const metadata = getMetadata(video);
   const transcript = getTranscript(video);
-  rows.push({ ...video, transcriptStatus: transcript.status, transcriptText: transcript.text, languageFiles: transcript.languageFiles || [] });
+  rows.push({ ...video, description: metadata.description, chapters: metadata.chapters, duration: metadata.duration, uploader: metadata.uploader, transcriptStatus: transcript.status, transcriptText: transcript.text, languageFiles: transcript.languageFiles || [] });
   console.log(`[YOUTUBE] ${video.creator} — ${video.title} — ${transcript.status}`);
 }
-fs.writeFileSync(outputPath, JSON.stringify({ schemaVersion: 1, generatedAt: new Date().toISOString(), cutoff: manifest.cutoff, videoCount: rows.length, transcriptCount: rows.filter(row => row.transcriptStatus === "available").length, videos: rows }, null, 2));
+fs.writeFileSync(outputPath, JSON.stringify({ schemaVersion: 2, generatedAt: new Date().toISOString(), cutoff: manifest.cutoff, videoCount: rows.length, transcriptCount: rows.filter(row => row.transcriptStatus === "available").length, videos: rows }, null, 2));
 fs.rmSync(tempDir, { recursive: true, force: true });
 console.log(`[YOUTUBE] ${rows.filter(row => row.transcriptStatus === "available").length}/${rows.length} transcriptions disponibles.`);
