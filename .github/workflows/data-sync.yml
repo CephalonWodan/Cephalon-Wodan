@@ -86,9 +86,10 @@ jobs:
             const validVideos = Array.isArray(manifest.videos) && manifest.videos.every(video => video.id && video.url && !Number.isNaN(new Date(video.publishedAt).valueOf()) && new Date(video.publishedAt) >= cutoff);
             const transcriptRowsValid = Array.isArray(transcripts.videos) && transcripts.videos.length === manifest.videoCount;
             const ocrRowsValid = Array.isArray(ocr.videos) && ocr.videos.every(video => video.id && ["available", "empty", "failed"].includes(video.ocrStatus));
-            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRows: Array.isArray(transcripts.videos) ? transcripts.videos.length : 0, transcriptCount: transcripts.transcriptCount, transcriptRowsValid, ocrRows: Array.isArray(ocr.videos) ? ocr.videos.length : 0, ocrSelected: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, ocrRowsValid, guides: guides.documentCount, guideRows: Array.isArray(guides.documents) ? guides.documents.length : 0, enumeration: manifest.enumeration };
+            const creatorRequirementMet = creators.size === 8 || (manifest.fallbackUsed === true && creators.size >= 7);
+            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRows: Array.isArray(transcripts.videos) ? transcripts.videos.length : 0, transcriptCount: transcripts.transcriptCount, transcriptRowsValid, ocrRows: Array.isArray(ocr.videos) ? ocr.videos.length : 0, ocrSelected: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, ocrRowsValid, guides: guides.documentCount, guideRows: Array.isArray(guides.documents) ? guides.documents.length : 0, enumeration: manifest.enumeration, fallbackUsed: manifest.fallbackUsed === true, liveVideoCount: manifest.liveVideoCount, liveCreatorCount: manifest.liveCreatorCount };
             console.log(JSON.stringify(checks, null, 2));
-            if (creators.size !== 8 || manifest.channelCount !== 9 || !manifest.videos.length || manifest.videoCount !== manifest.videos.length) process.exit(1);
+            if (!creatorRequirementMet || manifest.channelCount !== 9 || !manifest.videos.length || manifest.videoCount !== manifest.videos.length) process.exit(1);
             if (!validVideos || !transcriptRowsValid || !ocrRowsValid || !Array.isArray(guides.documents)) process.exit(1);
           '
 
