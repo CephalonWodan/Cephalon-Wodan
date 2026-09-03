@@ -33,7 +33,7 @@ interface RagDocument extends Omit<RagEvidence, "score"> {
 }
 
 const STOP_WORDS = new Set([
-  "a", "au", "aux", "avec", "dans", "de", "des", "du", "en", "et", "la", "le", "les", "ma", "mon", "pour", "sur", "un", "une", "the", "and", "for", "from", "into", "of", "on", "the", "to", "with", "build", "set", "faire", "faire", "donne", "donner", "quel", "quelle", "quels", "quelles",
+  "a", "au", "aux", "avec", "dans", "de", "des", "du", "en", "et", "la", "le", "les", "ma", "mon", "pour", "sur", "un", "une", "the", "and", "for", "from", "into", "of", "on", "to", "with", "build", "set", "faire", "donne", "donner", "quel", "quelle", "quels", "quelles",
 ]);
 
 function normalize(value: unknown): string {
@@ -106,10 +106,6 @@ function getDocuments(): RagDocument[] {
   return documentCache;
 }
 
-function includesAny(value: string, words: string[]): boolean {
-  return words.some(word => value.includes(normalize(word)));
-}
-
 function inferFacets(input: RagQueryInput): string[] {
   const context = input.buildContext || {};
   const advanced = input.advancedOptions || {};
@@ -140,7 +136,7 @@ function scoreDocument(document: RagDocument, input: RagQueryInput, queryTokens:
   const normalizedName = normalize(document.name);
   let score = 0;
   if (normalizedQuery.includes(normalizedName) || normalizedName.includes(normalizedQuery)) score += 15;
-  if (document.aliases.some(alias => normalize(facetText).includes(normalize(alias)))) score += 8;
+  if (document.aliases.some(alias => facetText.includes(normalize(alias)))) score += 8;
   for (const token of Array.from(queryTokens)) if (document.tokens.includes(token)) score += 2;
   const kindText = normalize(document.kind);
   if (document.kind === "warframe" && (input.buildContext?.warframe?.name || /warframe|frame|capacite|ability|helminth|survie|survival|energie|energy/.test(normalizedQuery))) score += 4;
@@ -176,10 +172,21 @@ export function retrieveRagEvidence(input: RagQueryInput, limit = 8): RagEvidenc
     }));
 }
 
+function compactEvidenceText(text: string, maxChars = 1800): string {
+  if (text.length <= maxChars) return text;
+  return `${text.slice(0, maxChars).trim()}\n[… preuve abrégée pour réduire la latence …]`;
+}
+
 export function buildRagContext(input: RagQueryInput): { evidence: RagEvidence[]; instructions: string } {
-  const evidence = retrieveRagEvidence(input, 8);
-  const sourceLines = evidence.map((item, index) => `[${index + 1}] ${item.name} — ${item.source}${item.validationStatus ? ` — statut: ${item.validationStatus}` : ""}${item.sourceUrl ? ` — ${item.sourceUrl}` : ""}`).join("\n");
-  const evidenceText = evidence.map((item, index) => `\n[EVIDENCE ${index + 1}]\n${item.text}`).join("\n");
+  // Complex prompts do not need eight full documents. Keep the highest-scoring
+  // evidence and aggressively cap each document before sending it to the LLM.
+  const evidence = retrieveRagEvidence(input, 5);
+  const sourceLines = evidence
+    .map((item, index) => `[${index + 1}] ${item.name} — ${item.source}${item.validationStatus ? ` — statut: ${item.validationStatus}` : ""}${item.sourceUrl ? ` — ${item.sourceUrl}` : ""}`)
+    .join("\n");
+  const evidenceText = evidence
+    .map((item, index) => `\n[EVIDENCE ${index + 1}]\n${compactEvidenceText(item.text)}`)
+    .join("\n");
   const instructions = input.language === "fr"
     ? `Utilise uniquement les éléments de preuve ci-dessous pour les faits spécifiques. Ne transforme pas une recommandation communautaire en donnée officielle. Ne fabrique jamais une statistique absente. Pour les chiffres finaux, fais confiance au snapshot calculé par le Builder. Si une donnée est absente ou marquée à revoir, dis-le explicitement. Cite les sources avec leur numéro.\n\nSources récupérées:\n${sourceLines}\n${evidenceText}`
     : `Use only the evidence below for item-specific facts. Do not present a community recommendation as an official value. Never invent a missing statistic. For final numbers, trust the Builder calculation snapshot. If data is missing or requires review, say so explicitly. Cite sources by number.\n\nRetrieved sources:\n${sourceLines}\n${evidenceText}`;
