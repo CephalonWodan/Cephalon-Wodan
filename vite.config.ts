@@ -11,6 +11,7 @@ import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 import { handleChatRoute } from "./server/chat-route.js";
 
 const PROJECT_ROOT = import.meta.dirname;
+const CLIENT_ROOT = path.resolve(PROJECT_ROOT, "client");
 const LOG_DIR = path.join(PROJECT_ROOT, ".manus-logs");
 const MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024;
 const TRIM_TARGET_BYTES = Math.floor(MAX_LOG_SIZE_BYTES * 0.6);
@@ -182,6 +183,8 @@ function vitePluginChatApi(): Plugin {
 }
 
 export default defineConfig({
+  // The Vite entry point lives in client/index.html, not at the repository root.
+  root: CLIENT_ROOT,
   plugins: [
     tailwindcss(),
     react(),
