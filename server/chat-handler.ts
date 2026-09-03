@@ -153,6 +153,50 @@ async function callManusProvider(prompt: string, lang: "fr" | "en", existingTask
   throw new Error("Manus API task timed out");
 }
 
+async function callGeminiProvider(systemPrompt: string, messages: ChatMessage[]) {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error("GEMINI_API_KEY is missing");
+
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
+  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const contents = messages.map(message => ({
+    role: message.role === "assistant" ? "model" : "user",
+    parts: [{ text: message.content }],
+  }));
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      systemInstruction: { parts: [{ text: systemPrompt }] },
+      contents,
+      generationConfig: { temperature: 0.55 },
+    }),
+    signal: AbortSignal.timeout(50000),
+  });
+
+  const text = await response.text();
+  let data: any = {};
+  try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text.slice(0, 1000) }; }
+
+  if (!response.ok) {
+    const message = data?.error?.message || data?.raw || `HTTP ${response.status}`;
+    throw new Error(`Gemini API ${response.status}: ${message}`);
+  }
+
+  const content = data?.candidates?.[0]?.content?.parts
+    ?.map((part: any) => typeof part?.text === "string" ? part.text : "")
+    .join("")
+    .trim();
+
+  if (!content) {
+    const finishReason = data?.candidates?.[0]?.finishReason;
+    throw new Error(finishReason ? `Gemini returned no text (finish reason: ${finishReason})` : "Gemini returned no text");
+  }
+
+  return { content };
+}
+
 export async function handleChatRequest(req: Request, res: Response) {
   console.log("[CHAT] handleChatRequest invoked");
   try {
@@ -181,18 +225,25 @@ export async function handleChatRequest(req: Request, res: Response) {
     const provider = String(process.env.LLM_PROVIDER || "manus").toLowerCase();
     const lang = (typeof body.lang === "string" ? body.lang : (typeof body.language === "string" ? body.language : "fr")) as "fr" | "en";
 
-    const rawApiUrl = process.env.BUILT_IN_FORGE_API_URL || process.env.VITE_FRONTEND_FORGE_API_URL || "https://forge.manus.ai";
-    const endpoint = `${rawApiUrl.replace(/\/v1\/?$/, "")}/v1/chat/completions`;
     const forgeApiKey = process.env.BUILT_IN_FORGE_API_KEY || process.env.VITE_FRONTEND_FORGE_API_KEY;
     const manusApiKey = process.env.MANUS_API_KEY;
+    const geminiApiKey = process.env.GEMINI_API_KEY;
 
     if (provider === "manus" && !manusApiKey) {
       console.log("[CHAT] Manus provider selected but MANUS_API_KEY is missing");
       return sendJson(res, 200, { reply: lang === "en" ? "⚠️ Manus API is not configured." : "⚠️ L'API Manus n'est pas configurée (clé API manquante)." });
     }
-    if (provider !== "manus" && !forgeApiKey) {
+    if (provider === "gemini" && !geminiApiKey) {
+      console.log("[CHAT] Gemini provider selected but GEMINI_API_KEY is missing");
+      return sendJson(res, 200, { reply: lang === "en" ? "⚠️ Gemini API is not configured." : "⚠️ L'API Gemini n'est pas configurée (clé API manquante)." });
+    }
+    if (provider === "forge" && !forgeApiKey) {
       console.log("[CHAT] Forge provider selected but API key is missing");
-      return sendJson(res, 200, { reply: lang === "en" ? "⚠️ The LLM service is not configured (missing API key)." : "⚠️ Le service LLM n'est pas configuré (clé API manquante)." });
+      return sendJson(res, 200, { reply: lang === "en" ? "⚠️ Forge API is not configured." : "⚠️ L'API Forge n'est pas configurée (clé API manquante)." });
+    }
+    if (provider !== "manus" && provider !== "gemini" && provider !== "forge") {
+      console.log("[CHAT] Unsupported LLM provider:", provider);
+      return sendJson(res, 200, { reply: lang === "en" ? `⚠️ Unsupported LLM provider: ${provider}` : `⚠️ Fournisseur LLM non pris en charge : ${provider}` });
     }
 
     let syncInfo = "";
@@ -252,6 +303,20 @@ export async function handleChatRequest(req: Request, res: Response) {
       }
     }
 
+    if (provider === "gemini") {
+      try {
+        const geminiResult = await callGeminiProvider(systemPrompt, messages);
+        console.log("[CHAT] Gemini API success, reply length:", geminiResult.content.length);
+        return sendJson(res, 200, { reply: geminiResult.content });
+      } catch (error: any) {
+        const message = error?.message || "unknown";
+        console.error("[CHAT] Gemini API error:", message);
+        return sendJson(res, 200, { reply: lang === "en" ? `⚠️ Gemini API error: ${message}` : `⚠️ Erreur Gemini : ${message}` });
+      }
+    }
+
+    const rawApiUrl = process.env.BUILT_IN_FORGE_API_URL || process.env.VITE_FRONTEND_FORGE_API_URL || "https://forge.manus.ai";
+    const endpoint = `${rawApiUrl.replace(/\/v1\/?$/, "")}/v1/chat/completions`;
     console.log("[CHAT] Fetching Forge endpoint:", endpoint);
     const response = await fetch(endpoint, {
       method: "POST",
