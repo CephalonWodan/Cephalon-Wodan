@@ -26,6 +26,27 @@ function sendJson(res: any, status: number, data: any) {
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
+type ChatRequestBody = {
+  messages?: unknown;
+  message?: string;
+  lang?: string;
+  language?: string;
+  missionType?: string;
+  context?: {
+    warframe?: { name?: string };
+    [key: string]: unknown;
+  } | null;
+  advancedOptions?: {
+    optimizationFocus?: string;
+    [key: string]: unknown;
+  } | null;
+  manusTaskId?: string;
+};
+
+function isChatRequestBody(value: unknown): value is ChatRequestBody {
+  return typeof value === "object" && value !== null;
+}
+
 type ManusMessageEvent = {
   type?: string;
   assistant_message?: { content?: string };
@@ -129,15 +150,18 @@ export async function handleChatRequest(req: Request, res: Response) {
   console.log("[CHAT] handleChatRequest invoked");
   try {
     const request = req as Request & { body?: unknown; rawBody?: string | Buffer };
-    let body = request.body;
-    if (!body && request.rawBody) {
+    const requestBody: unknown = request.body;
+    let body: ChatRequestBody = isChatRequestBody(requestBody) ? requestBody : {};
+
+    if (Object.keys(body).length === 0 && request.rawBody) {
       try {
-        body = JSON.parse(request.rawBody.toString());
+        const parsed: unknown = JSON.parse(request.rawBody.toString());
+        if (isChatRequestBody(parsed)) body = parsed;
       } catch {}
     }
 
-    let messages = normalizeMessages(body?.messages);
-    if (messages.length === 0 && typeof body?.message === "string") {
+    let messages = normalizeMessages(body.messages);
+    if (messages.length === 0 && typeof body.message === "string") {
       const content = body.message.trim().slice(0, 6000);
       if (content.length > 0) messages = [{ role: "user" as const, content }];
     }
@@ -148,7 +172,7 @@ export async function handleChatRequest(req: Request, res: Response) {
     }
 
     const provider = String(process.env.LLM_PROVIDER || "manus").toLowerCase();
-    const lang = (typeof body?.lang === "string" ? body.lang : (typeof body?.language === "string" ? body.language : "fr")) as "fr" | "en";
+    const lang = (typeof body.lang === "string" ? body.lang : (typeof body.language === "string" ? body.language : "fr")) as "fr" | "en";
 
     const rawApiUrl = process.env.BUILT_IN_FORGE_API_URL || process.env.VITE_FRONTEND_FORGE_API_URL || "https://forge.manus.ai";
     const endpoint = `${rawApiUrl.replace(/\/v1\/?$/, "")}/v1/chat/completions`;
@@ -185,10 +209,10 @@ export async function handleChatRequest(req: Request, res: Response) {
       // Ignore report error
     }
 
-    const missionType = typeof body?.missionType === "string" ? body.missionType : "auto";
-    const buildContext = body?.context || null;
+    const missionType = typeof body.missionType === "string" ? body.missionType : "auto";
+    const buildContext = body.context || null;
     const frameName = buildContext?.warframe?.name || "Warframe";
-    const optimizationFocus = body?.advancedOptions?.optimizationFocus || "balanced";
+    const optimizationFocus = body.advancedOptions?.optimizationFocus || "balanced";
 
     // Generate Archon Shard optimizer payload
     const shardOpt = generateArchonShardRecommendations(frameName, missionType, optimizationFocus, lang);
@@ -197,7 +221,7 @@ export async function handleChatRequest(req: Request, res: Response) {
       language: lang,
       missionType,
       buildContext,
-      advancedOptions: body?.advancedOptions || null,
+      advancedOptions: body.advancedOptions || null,
     });
     console.log("[CHAT] RAG evidence:", rag.evidence.length, getRagDiagnostics());
     const shardsText = shardOpt.shards.map(s => `• Slot ${s.slot} : [${s.variant}] ${s.color} — ${s.effect} (${s.reason[lang]})`).join("\n");
@@ -213,7 +237,7 @@ export async function handleChatRequest(req: Request, res: Response) {
 
     if (provider === "manus") {
       try {
-        const manusResult = await callManusProvider(getManusPrompt(systemPrompt, messages), lang, typeof body?.manusTaskId === "string" ? body.manusTaskId : undefined);
+        const manusResult = await callManusProvider(getManusPrompt(systemPrompt, messages), lang, typeof body.manusTaskId === "string" ? body.manusTaskId : undefined);
         console.log("[CHAT] Manus API success, reply length:", manusResult.content.length);
         return sendJson(res, 200, { reply: manusResult.content, manusTaskId: manusResult.taskId });
       } catch (error: any) {
