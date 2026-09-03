@@ -1,6 +1,7 @@
 import type { Request, Response } from "express";
 import { handleChatRequest } from "./chat-handler.js";
 import { tryAnswerSimpleFact } from "./simple-fact-router.js";
+import { retrieveRagEvidence, getRagDiagnostics } from "./rag-retriever.js";
 
 function extractLastUserMessage(body: any): string {
   if (Array.isArray(body?.messages)) {
@@ -21,7 +22,18 @@ function sendJson(res: any, status: number, data: any) {
   return res.end(JSON.stringify(data));
 }
 
+function normalizeName(value: unknown): string {
+  return String(value ?? "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9+#.%'-]+/g, " ").trim();
+}
+
 type BuildMod = { name: string; rank: number };
+
+function isKnownMod(name: string): boolean {
+  const diagnostics = getRagDiagnostics();
+  if (!diagnostics.documents) return true;
+  const evidence = retrieveRagEvidence({ query: name, language: "fr" }, 20);
+  return evidence.some(item => item.kind === "mod" && normalizeName(item.name) === normalizeName(name));
+}
 
 function extractValidatedRecommendation(reply: string, query: string): any | null {
   const match = reply.match(/```json:recommendation\s*([\s\S]*?)\s*```/i) || reply.match(/```json\s*([\s\S]*?)\s*```/i);
@@ -37,7 +49,7 @@ function extractValidatedRecommendation(reply: string, query: string): any | nul
   const mods: BuildMod[] = [];
   for (const item of raw.mods.slice(0, 8)) {
     const name = typeof item?.name === "string" ? item.name.trim() : "";
-    if (!name) continue;
+    if (!name || !isKnownMod(name)) continue;
     const normalized = name.toLowerCase();
     if (highLevel && genericDefense.has(normalized) && typeof justifications[name] !== "string") continue;
     const rankNumber = Number(item.rank);
@@ -49,7 +61,7 @@ function extractValidatedRecommendation(reply: string, query: string): any | nul
   return {
     ...raw,
     mods,
-    validationStatus: "structurally_validated",
+    validationStatus: "codex_validated",
     highLevelDefensePolicy: highLevel ? "generic_defense_requires_justification" : "normal",
   };
 }
