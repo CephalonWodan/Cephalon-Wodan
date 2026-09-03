@@ -5,17 +5,19 @@ on:
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
+env:
+  COREPACK_ENABLE_PROJECT_SPEC: "0"
+  OCR_VIDEO_LIMIT: "24"
+  OCR_INTERVAL_SECONDS: "8"
+
 permissions:
   contents: write
   pull-requests: write
 
-env:
-  COREPACK_ENABLE_PROJECT_SPEC: "0"
-
 jobs:
   sync-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,8 +45,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile --ignore-scripts
 
-      - name: Install YouTube metadata collector
-        run: python -m pip install --user --break-system-packages yt-dlp
+      - name: Install YouTube and OCR tools
+        run: |
+          python -m pip install --user --break-system-packages yt-dlp
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra tesseract-ocr-vie
 
       - name: Discover item names from WFCD
         run: node scripts/prepare-sync-input.mjs
@@ -52,8 +57,11 @@ jobs:
       - name: Collect recent expert creator videos
         run: pnpm run youtube:collect
 
-      - name: Extract public video subtitles
+      - name: Extract public video subtitles and metadata
         run: pnpm run youtube:transcripts
+
+      - name: Analyse visible video text with OCR
+        run: node scripts/ocr-youtube-videos.mjs
 
       - name: Collect expert community guides
         run: pnpm run community:guides
@@ -64,14 +72,16 @@ jobs:
             const fs = require("fs");
             const manifest = JSON.parse(fs.readFileSync("data/youtube-videos.json", "utf8"));
             const transcripts = JSON.parse(fs.readFileSync("data/youtube-transcripts.json", "utf8"));
+            const ocr = JSON.parse(fs.readFileSync("data/youtube-ocr.json", "utf8"));
             const guides = JSON.parse(fs.readFileSync("data/community-guides.json", "utf8"));
             const cutoff = new Date(manifest.cutoff);
             const creators = new Set(manifest.videos.map(video => video.creator));
-            if (creators.size !== 8 || manifest.channelCount !== 9 || !manifest.videos.length) process.exit(1);
-            if (manifest.videos.some(video => !video.id || !video.url || new Date(video.publishedAt) < cutoff)) process.exit(1);
-            if (transcripts.videoCount !== manifest.videoCount) process.exit(1);
-            if (!Array.isArray(guides.documents)) process.exit(1);
-            console.log(JSON.stringify({ videos: manifest.videoCount, creators: creators.size, channels: manifest.channelCount, transcripts: transcripts.transcriptCount, guides: guides.documentCount, enumeration: manifest.enumeration }, null, 2));
+            const validVideos = manifest.videos.every(video => video.id && video.url && !Number.isNaN(new Date(video.publishedAt).valueOf()) && new Date(video.publishedAt) >= cutoff);
+            const transcriptRowsValid = Array.isArray(transcripts.videos) && transcripts.videos.length === manifest.videoCount;
+            const ocrRowsValid = Array.isArray(ocr.videos) && ocr.videos.every(video => video.id && ["available", "empty", "failed"].includes(video.ocrStatus));
+            if (creators.size !== 8 || manifest.channelCount !== 9 || !manifest.videos.length || manifest.videoCount !== manifest.videos.length) process.exit(1);
+            if (!validVideos || !transcriptRowsValid || !ocrRowsValid || !Array.isArray(guides.documents)) process.exit(1);
+            console.log(JSON.stringify({ videos: manifest.videoCount, creators: creators.size, channels: manifest.channelCount, transcriptsAvailable: transcripts.transcriptCount, transcriptCoverage: `${transcripts.transcriptCount}/${manifest.videoCount}`, ocrVideos: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, guides: guides.documentCount, enumeration: manifest.enumeration }, null, 2));
           '
 
       - name: Enrich new and changed items from Warframe Wiki
@@ -108,7 +118,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "chore(data): sync Warframe items and expert community sources"
-          title: "Automated Warframe data, Wiki and expert community sync"
+          title: "Automated Warframe data, Wiki, video and expert community sync"
           body: |
             Cette PR est générée automatiquement à partir des exports WFCD, du Wiki Warframe et des sources communautaires expertes sélectionnées.
 
@@ -116,7 +126,7 @@ jobs:
 
             Sources guides : WFPedia et les guides/builds du site Pandaahh.
 
-            Les vidéos et guides sont indexés comme références communautaires, jamais comme statistiques officielles. Les données factuelles restent validées par le Codex/Wiki.
+            Les vidéos sont ingérées via sous-titres (créateur ou automatiques), description/chapitres et OCR d'un échantillon de frames. Les vidéos sans transcript restent exploitables via leur contenu visuel et leurs métadonnées. Les vidéos et guides restent des références communautaires, jamais des statistiques officielles.
           branch: automated-data-sync
           base: main
           delete-branch: true
@@ -127,6 +137,7 @@ jobs:
             data/wiki-enrichment.json
             data/youtube-videos.json
             data/youtube-transcripts.json
+            data/youtube-ocr.json
             data/community-guides.json
             data/rag-index.json
             server/rag-index.generated.ts
