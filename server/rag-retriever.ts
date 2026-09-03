@@ -5,7 +5,7 @@
 import ragIndex from "./rag-index.generated.js";
 
 type JsonRecord = Record<string, any>;
-type CatalogKind = "warframe" | "weapon" | "mod" | "arcane" | "companion" | "archon_shard" | "community_video" | "community_guide";
+type CatalogKind = "warframe" | "weapon" | "mod" | "arcane" | "companion" | "archon_shard" | "community_video" | "community_guide" | "community_build";
 
 export interface RagQueryInput {
   query: string;
@@ -83,12 +83,19 @@ function recordText(kind: CatalogKind, item: JsonRecord, language: "fr" | "en"):
     item.effects ? `Effets disponibles: ${compact(item.effects)}` : "",
     item.effectIds ? `Identifiants d'effets: ${compact(item.effectIds)}` : "",
     item.damageTypes ? `Répartition des dégâts: ${compact(item.damageTypes)}` : "",
+    item.targetItemName ? `Objet ciblé: ${item.targetItemName}` : "",
+    item.modNames ? `Mods recommandés: ${compact(item.modNames)}` : "",
+    item.arcaneNames ? `Arcanes recommandées: ${compact(item.arcaneNames)}` : "",
+    item.missionType ? `Mission: ${item.missionType}` : "",
+    item.difficulty ? `Difficulté: ${item.difficulty}` : "",
+    item.creator ? `Créateur: ${item.creator}` : "",
     language === "fr" ? "Langue de référence: français" : "Reference language: English",
   ];
   return fields.filter(Boolean).join("\n");
 }
 
 function sourceFor(item: JsonRecord): string {
+  if (item.kind === "community_build" || item.validationStatus === "community_reference") return "Build communautaire — référence, non officiel";
   if (item.wikiUrl) return "Warframe Wiki + dataset local";
   if (item.sourceKey || item.effectIds) return "Archon Shard dataset + Warframe Wiki";
   return "dataset local normalisé";
@@ -147,6 +154,7 @@ function scoreDocument(document: RagDocument, input: RagQueryInput, queryTokens:
   if (document.kind === "companion" && /compagnon|companion|sentinel|sentinelle|moa|hound|kavat|kubrow/.test(normalizedQuery)) score += 4;
   if (document.kind === "community_video" && /video|youtube|guide|build|creator|créateur|conseil|recommend|mission|warframe/.test(normalizedQuery)) score += 2;
   if (document.kind === "community_guide" && /defense|défense|team|équipe|map|carte|wave|vague|helminth|nuker|buffer|warframe/.test(normalizedQuery)) score += 5;
+  if (document.kind === "community_build" && /build|configuration|setup|steel path|survie|survival|endurance|dps|compagnon|companion|incarnon|paris|dante/.test(normalizedQuery)) score += 7;
   if (kindText && facetText.includes(kindText)) score += 1;
   return score;
 }
@@ -166,8 +174,8 @@ export function retrieveRagEvidence(input: RagQueryInput, limit = 8): RagEvidenc
       name: document.name,
       text: document.text,
       score,
-      source: document.source,
-      sourceUrl: document.sourceUrl,
+      source: document.source || sourceFor(document.record || document),
+      sourceUrl: document.sourceUrl || sourceUrlFor(document.record || document),
       validationStatus: (document as any).validationStatus,
     }));
 }
@@ -187,9 +195,12 @@ export function buildRagContext(input: RagQueryInput): { evidence: RagEvidence[]
   const evidenceText = evidence
     .map((item, index) => `\n[EVIDENCE ${index + 1}]\n${compactEvidenceText(item.text)}`)
     .join("\n");
+  const highLevelBuildPolicy = input.language === "fr"
+    ? `\n\n[POLITIQUE BUILD HAUT NIVEAU — OBLIGATOIRE]\n- À Steel Path / niveau 200+, ne mets PAS Vitality, Adaptation ou des mods de tanking génériques par réflexe. Ils ne sont justifiés que si la Warframe, le mode de survie ou la stratégie les exploite réellement.\n- Priorise d'abord les mécanismes propres à la Warframe, le contrôle, l'invulnérabilité/Overguard, le bouclier/Shield-gating si pertinent, l'énergie, la portée/durée/force selon les capacités, puis les dégâts et la synergie des armes.\n- Un slot de mod doit avoir une justification concrète. Pas de remplissage avec des mods défensifs génériques.\n- Pour une demande de build, fournis une configuration exploitable et précise, pas seulement une liste de conseils.\n- Termine la recommandation par un bloc `json:recommendation` valide, avec au minimum `mods` (tableau de `{name,rank}`) et, si connu, `aura`, `exilus`, `arcanes`, `archonShards`, `primary`, `companion`. Le JSON doit être séparé de l'explication.\n- Les noms de mods, armes, Warframes, arcanes et compagnons doivent provenir des preuves récupérées ou du contexte Builder. Ne crée aucun nom.\n- Les builds communautaires servent de références/meta, jamais de vérité officielle.\n`
+    : `\n\n[HIGH-LEVEL BUILD POLICY — MANDATORY]\n- At Steel Path / level 200+, do NOT add Vitality, Adaptation or generic tank mods by reflex. They are justified only when the Warframe, survival mode or strategy actually benefits from them.\n- Prioritize the Warframe's own mechanics, control, invulnerability/Overguard, shield-gating when relevant, energy, range/duration/strength according to abilities, then weapon damage and synergies.\n- Every mod slot needs a concrete reason. Do not fill slots with generic defensive mods.\n- For a build request, provide an actionable precise configuration, not only general advice.\n- End the recommendation with a valid `json:recommendation` block containing at least `mods` (array of `{name,rank}`) and, when known, `aura`, `exilus`, `arcanes`, `archonShards`, `primary`, `companion`. Keep the JSON separate from the explanation.\n- Mod, weapon, Warframe, arcane and companion names must come from retrieved evidence or Builder context. Never invent names.\n- Community builds are meta references, never official truth.\n`;
   const instructions = input.language === "fr"
-    ? `Utilise uniquement les éléments de preuve ci-dessous pour les faits spécifiques. Ne transforme pas une recommandation communautaire en donnée officielle. Ne fabrique jamais une statistique absente. Pour les chiffres finaux, fais confiance au snapshot calculé par le Builder. Si une donnée est absente ou marquée à revoir, dis-le explicitement. Cite les sources avec leur numéro.\n\nSources récupérées:\n${sourceLines}\n${evidenceText}`
-    : `Use only the evidence below for item-specific facts. Do not present a community recommendation as an official value. Never invent a missing statistic. For final numbers, trust the Builder calculation snapshot. If data is missing or requires review, say so explicitly. Cite sources by number.\n\nRetrieved sources:\n${sourceLines}\n${evidenceText}`;
+    ? `Utilise uniquement les éléments de preuve ci-dessous pour les faits spécifiques. Ne transforme pas une recommandation communautaire en donnée officielle. Ne fabrique jamais une statistique absente. Pour les chiffres finaux, fais confiance au snapshot calculé par le Builder. Si une donnée est absente ou marquée à revoir, dis-le explicitement. Cite les sources avec leur numéro.${highLevelBuildPolicy}\nSources récupérées:\n${sourceLines}\n${evidenceText}`
+    : `Use only the evidence below for item-specific facts. Do not present a community recommendation as an official value. Never invent a missing statistic. For final numbers, trust the Builder calculation snapshot. If data is missing or requires review, say so explicitly. Cite sources by number.${highLevelBuildPolicy}\nRetrieved sources:\n${sourceLines}\n${evidenceText}`;
   return { evidence, instructions };
 }
 
