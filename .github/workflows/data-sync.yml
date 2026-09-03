@@ -29,6 +29,11 @@ jobs:
         with:
           node-version: 22
 
+      - name: Setup Deno for yt-dlp YouTube extraction
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -47,7 +52,9 @@ jobs:
 
       - name: Install YouTube and OCR tools
         run: |
-          python -m pip install --user --break-system-packages yt-dlp
+          python -m pip install --user --break-system-packages --upgrade "yt-dlp[default]"
+          yt-dlp --version
+          deno --version
           sudo apt-get update
           sudo apt-get install -y ffmpeg tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra tesseract-ocr-vie
 
