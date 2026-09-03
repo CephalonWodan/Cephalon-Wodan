@@ -13,6 +13,8 @@ const enrichmentPath = path.join(root, "data/wiki-enrichment.json");
 const enrichment = fs.existsSync(enrichmentPath) ? JSON.parse(fs.readFileSync(enrichmentPath, "utf8")) : [];
 const youtubePath = path.join(root, "data/youtube-transcripts.json");
 const youtube = fs.existsSync(youtubePath) ? JSON.parse(fs.readFileSync(youtubePath, "utf8")) : { videos: [] };
+const communityGuidesPath = path.join(root, "data/community-guides.json");
+const communityGuides = fs.existsSync(communityGuidesPath) ? JSON.parse(fs.readFileSync(communityGuidesPath, "utf8")) : { documents: [] };
 const googleGuidePath = path.join(root, "data/google-doc-defense-guide.txt");
 const googleGuideUrl = "https://docs.google.com/document/d/1rslhIJVmW5YO0TJm1MTtrryDgoeeU2L-CE3MomM6Rwk/edit?tab=t.0";
 const googleGuideText = fs.existsSync(googleGuidePath) ? fs.readFileSync(googleGuidePath, "utf8") : "";
@@ -38,7 +40,7 @@ function text(kind, item) {
   return [
     `Type: ${kind}`, `Nom: ${item.name || ""}`, item.type && `Catégorie: ${item.type}`,
     item.description && `Description: ${item.description}`, item.wikiDescription && `Description Wiki: ${item.wikiDescription}`, item.effect && `Effet: ${item.effect}`,
-    item.role && `Rôle: ${item.role}`, item.creator && `Créateur: ${item.creator}`, item.publishedAt && `Publié le: ${item.publishedAt}`, item.transcriptStatus && `Statut transcription: ${item.transcriptStatus}`, item.weaponClass && `Classe: ${item.weaponClass}`,
+    item.role && `Rôle: ${item.role}`, item.creator && `Créateur: ${item.creator}`, item.expertCategory && `Catégorie d'expertise: ${item.expertCategory}`, item.publishedAt && `Publié le: ${item.publishedAt}`, item.transcriptStatus && `Statut transcription: ${item.transcriptStatus}`, item.weaponClass && `Classe: ${item.weaponClass}`,
     item.damage && `Dégâts totaux: ${item.damage}`, item.critChance && `Chance critique: ${item.critChance}`,
     item.critMultiplier && `Multiplicateur critique: ${item.critMultiplier}`, item.statusChance && `Chance de statut: ${item.statusChance}`,
     item.fireRate && `Cadence: ${item.fireRate}`, item.health && `Santé: ${item.health}`,
@@ -66,13 +68,14 @@ function docs(kind, items) {
       kind,
       name,
       text: body,
-      aliases: [name, item.id, item.compatName, item.weaponClass, item.type].filter(Boolean).map(String),
-      tokens: tokens(`${name} ${enriched.description || ""} ${enriched.wikiDescription || ""} ${enriched.effect || ""} ${enriched.compatName || ""} ${enriched.type || ""} ${enriched.weaponClass || ""}`),
+      aliases: [name, item.id, item.compatName, item.weaponClass, item.type, item.creator, item.expertCategory].filter(Boolean).map(String),
+      tokens: tokens(`${name} ${enriched.description || ""} ${enriched.wikiDescription || ""} ${enriched.effect || ""} ${enriched.compatName || ""} ${enriched.type || ""} ${enriched.weaponClass || ""} ${item.creator || ""} ${item.expertCategory || ""}`),
       source: wiki?.source ? `${source(item)}; ${wiki.source}` : source(item),
-      sourceUrl: wiki?.wikiUrl || wiki?.url || item.wikiUrl || `https://wiki.warframe.com/w/${encodeURIComponent(name.replaceAll(" ", "_"))}`,
+      sourceUrl: wiki?.wikiUrl || wiki?.url || item.wikiUrl || item.sourceUrl || `https://wiki.warframe.com/w/${encodeURIComponent(name.replaceAll(" ", "_"))}`,
       creator: item.creator || undefined,
       publishedAt: item.publishedAt || undefined,
       sourceType: item.sourceType || undefined,
+      expertCategory: item.expertCategory || undefined,
       validationStatus: item.validationStatus || wiki?.validationStatus || "not_checked",
     };
   });
@@ -142,6 +145,12 @@ const communityVideos = (Array.isArray(youtube.videos) ? youtube.videos : []).fi
   wikiUrl: video.url,
   sourceType: "community_video",
 }));
+const externalGuides = (Array.isArray(communityGuides.documents) ? communityGuides.documents : []).map(guide => ({
+  ...guide,
+  type: "community_guide",
+  sourceType: "community_guide",
+  validationStatus: guide.validationStatus || "community_reference",
+}));
 const guideSections = googleGuideText.split(/\n(?=\s*(?:\d+\)|\d+\.|[A-Z]\.))/).map((section, index) => ({
   name: `Guide de la défense optimisée — section ${index + 1}`,
   type: "community_guide",
@@ -153,13 +162,14 @@ const guideSections = googleGuideText.split(/\n(?=\s*(?:\d+\)|\d+\.|[A-Z]\.))/).
   validationStatus: "community_reference",
 })).filter(section => section.description.length > 80);
 const communityBuilds = parseCommunityPresets(communityPresetsSource);
-const documents = groups.flatMap(([kind, items]) => docs(kind, items)).concat(docs("community_video", communityVideos), docs("community_guide", guideSections), communityBuilds);
+const documents = groups.flatMap(([kind, items]) => docs(kind, items)).concat(docs("community_video", communityVideos), docs("community_guide", externalGuides), docs("community_guide", guideSections), communityBuilds);
 const hash = crypto.createHash("sha256").update(fs.readFileSync(sourcePath)).digest("hex");
-const output = { schemaVersion: 2, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
+const output = { schemaVersion: 3, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 fs.writeFileSync(outputTsPath, `// Generated by scripts/build-rag-index.mjs. Do not edit manually.\n// This TypeScript snapshot avoids runtime JSON import assertions on Vercel.\nexport default ${JSON.stringify(output)} as const;\n`);
 console.log(`[RAG] ${documents.length} documents générés dans ${outputPath}`);
 console.log(`[RAG] Community builds indexés : ${communityBuilds.length}`);
+console.log(`[RAG] Community guides indexés : ${externalGuides.length + guideSections.length}`);
 console.log(`[RAG] TypeScript snapshot généré dans ${outputTsPath}`);
 console.log(`[RAG] sourceHash=${hash}`);
