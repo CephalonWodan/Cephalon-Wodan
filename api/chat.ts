@@ -4,7 +4,7 @@
 // The API key is read only from server-side environment variables. This file is
 // intentionally outside client/ so it is never bundled into the browser.
 
-import { handleChatRequest } from "../server/chat-handler.js";
+import { handleChatRoute } from "../server/chat-route.js";
 
 type VercelRequest = {
   method?: string;
@@ -48,7 +48,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    await handleChatRequest(req as never, res as never);
+    await handleChatRoute(req as never, res as never);
   } catch (error) {
     console.error("[VERCEL_CHAT] Unhandled handler error", error);
     if (!res.headersSent) {
@@ -61,4 +61,3 @@ export const config = {
   runtime: "nodejs",
   maxDuration: 60,
 };
-
