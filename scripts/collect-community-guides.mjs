@@ -34,14 +34,13 @@ function decode(value) {
 }
 
 function stripHtml(value) {
-  return decode(
-    String(value || "")
-      .replace(/<script[\s\S]*?<\/script>/gi, " ")
-      .replace(/<style[\s\S]*?<\/style>/gi, " ")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim(),
-  );
+  const cleaned = String(value || "")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return decode(cleaned);
 }
 
 function absoluteUrl(href, base) {
@@ -55,7 +54,6 @@ function linksFrom(html, source) {
     if (!url || new URL(url).hostname !== source.host) continue;
     const pathname = new URL(url).pathname;
     if (url === source.indexUrl || pathname.includes("/changelog") || pathname.includes("/contact") || pathname.includes("/privacy")) continue;
-    if (source.id === "wfpedia" && !pathname.includes("/")) continue;
     links.push(url.split("#")[0]);
   }
   return [...new Set(links)].slice(0, 80);
