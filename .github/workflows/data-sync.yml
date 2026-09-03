@@ -61,7 +61,7 @@ jobs:
         run: pnpm run youtube:transcripts
 
       - name: Analyse visible video text with OCR
-        run: node scripts/ocr-youtube-videos.mjs
+        run: pnpm run youtube:ocr
 
       - name: Collect expert community guides
         run: pnpm run community:guides
@@ -75,13 +75,14 @@ jobs:
             const ocr = JSON.parse(fs.readFileSync("data/youtube-ocr.json", "utf8"));
             const guides = JSON.parse(fs.readFileSync("data/community-guides.json", "utf8"));
             const cutoff = new Date(manifest.cutoff);
-            const creators = new Set(manifest.videos.map(video => video.creator));
-            const validVideos = manifest.videos.every(video => video.id && video.url && !Number.isNaN(new Date(video.publishedAt).valueOf()) && new Date(video.publishedAt) >= cutoff);
+            const creators = new Set((manifest.videos || []).map(video => video.creator));
+            const validVideos = Array.isArray(manifest.videos) && manifest.videos.every(video => video.id && video.url && !Number.isNaN(new Date(video.publishedAt).valueOf()) && new Date(video.publishedAt) >= cutoff);
             const transcriptRowsValid = Array.isArray(transcripts.videos) && transcripts.videos.length === manifest.videoCount;
             const ocrRowsValid = Array.isArray(ocr.videos) && ocr.videos.every(video => video.id && ["available", "empty", "failed"].includes(video.ocrStatus));
+            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRows: Array.isArray(transcripts.videos) ? transcripts.videos.length : 0, transcriptCount: transcripts.transcriptCount, transcriptRowsValid, ocrRows: Array.isArray(ocr.videos) ? ocr.videos.length : 0, ocrSelected: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, ocrRowsValid, guides: guides.documentCount, guideRows: Array.isArray(guides.documents) ? guides.documents.length : 0, enumeration: manifest.enumeration };
+            console.log(JSON.stringify(checks, null, 2));
             if (creators.size !== 8 || manifest.channelCount !== 9 || !manifest.videos.length || manifest.videoCount !== manifest.videos.length) process.exit(1);
             if (!validVideos || !transcriptRowsValid || !ocrRowsValid || !Array.isArray(guides.documents)) process.exit(1);
-            console.log(JSON.stringify({ videos: manifest.videoCount, creators: creators.size, channels: manifest.channelCount, transcriptsAvailable: transcripts.transcriptCount, transcriptCoverage: `${transcripts.transcriptCount}/${manifest.videoCount}`, ocrVideos: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, guides: guides.documentCount, enumeration: manifest.enumeration }, null, 2));
           '
 
       - name: Enrich new and changed items from Warframe Wiki
