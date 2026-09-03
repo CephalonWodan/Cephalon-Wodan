@@ -22,15 +22,32 @@ function get(url) {
     }).on("error", reject);
   });
 }
+
 function decode(value) {
-  return String(value || "").replace(/&amp;/g, "&").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#x27;/g, "'");
+  return String(value || "")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#x27;/g, "'");
 }
+
 function stripHtml(value) {
-  return decode(String(value || "").replace(/<script[\s\S]*?<\/script>/gi, " ").replace(/<style[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  return decode(
+    String(value || "")
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim(),
+  );
 }
+
 function absoluteUrl(href, base) {
   try { return new URL(decode(href), base).href; } catch { return null; }
 }
+
 function linksFrom(html, source) {
   const links = [];
   for (const match of html.matchAll(/href=["']([^"']+)["']/gi)) {
@@ -43,15 +60,18 @@ function linksFrom(html, source) {
   }
   return [...new Set(links)].slice(0, 80);
 }
+
 function titleFrom(html, fallback) {
   const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i)?.[1];
   const title = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1];
   return stripHtml(h1 || title || fallback).replace(/\s+/g, " ").trim();
 }
+
 function extractMeta(html, name) {
   const re = new RegExp(`<meta[^>]+(?:name|property)=["']${name}["'][^>]+content=["']([^"']*)["'][^>]*>`, "i");
   return decode(html.match(re)?.[1] || "");
 }
+
 async function collectSource(source) {
   const index = await get(source.indexUrl);
   const urls = linksFrom(index, source);
@@ -78,6 +98,7 @@ async function collectSource(source) {
   }
   return rows;
 }
+
 async function main() {
   const documents = [];
   for (const source of sources) {
@@ -90,4 +111,5 @@ async function main() {
   fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
   console.log(`[GUIDES] ${unique.length} guides communautaires collectés.`);
 }
+
 main().catch(error => { console.error("[GUIDES] Échec :", error); process.exitCode = 1; });
