@@ -1,9 +1,78 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-08-25T18:38:08.581Z",
-  "cutoff": "2025-08-25T18:37:34.975Z",
-  "enumeration": "rss-latest-window",
+  "schemaVersion": 3,
+  "generatedAt": "2026-09-03T20:24:46.923Z",
+  "cutoff": "2025-09-03T20:24:34.357Z",
+  "enumeration": "fallback",
+  "fallbackUsed": true,
+  "liveVideoCount": 0,
+  "liveCreatorCount": 0,
   "creatorCount": 7,
+  "channelCount": 9,
+  "channelResults": [
+    {
+      "id": "MHBlacky",
+      "creator": "MHBlacky",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "PANDAAHH-main",
+      "creator": "PANDAAHH",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "PANDAAHH-chronicles",
+      "creator": "PANDAAHH",
+      "channelLabel": "warframe_chronicles",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "TheKengineer",
+      "creator": "TheKengineer",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "MasterElmo",
+      "creator": "Master Elmo",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "Endryx_ow",
+      "creator": "Endryx_ow",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "VuThang",
+      "creator": "Vu Thang",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "Leamxp",
+      "creator": "Leamxp",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    },
+    {
+      "id": "LeyzarGamingViews",
+      "creator": "LeyzarGamingViews",
+      "channelLabel": "main",
+      "status": "failed",
+      "videoCount": 0
+    }
+  ],
   "videoCount": 88,
   "videos": [
     {
