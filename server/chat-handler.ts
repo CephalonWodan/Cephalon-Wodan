@@ -308,10 +308,23 @@ export async function handleChatRequest(req: Request, res: Response) {
         const geminiResult = await callGeminiProvider(systemPrompt, messages);
         console.log("[CHAT] Gemini API success, reply length:", geminiResult.content.length);
         return sendJson(res, 200, { reply: geminiResult.content });
-      } catch (error: any) {
-        const message = error?.message || "unknown";
-        console.error("[CHAT] Gemini API error:", message);
-        return sendJson(res, 200, { reply: lang === "en" ? `⚠️ Gemini API error: ${message}` : `⚠️ Erreur Gemini : ${message}` });
+      } catch (geminiError: any) {
+        const geminiMessage = geminiError?.message || "unknown";
+        console.error("[CHAT] Gemini API error, falling back to Manus:", geminiMessage);
+
+        if (!manusApiKey) {
+          return sendJson(res, 200, { reply: lang === "en" ? `⚠️ Gemini API error: ${geminiMessage}` : `⚠️ Erreur Gemini : ${geminiMessage}` });
+        }
+
+        try {
+          const manusResult = await callManusProvider(getManusPrompt(systemPrompt, messages), lang, typeof body.manusTaskId === "string" ? body.manusTaskId : undefined);
+          console.log("[CHAT] Manus fallback success, reply length:", manusResult.content.length);
+          return sendJson(res, 200, { reply: manusResult.content, manusTaskId: manusResult.taskId });
+        } catch (manusError: any) {
+          const manusMessage = manusError?.message || "unknown";
+          console.error("[CHAT] Manus fallback error:", manusMessage);
+          return sendJson(res, 200, { reply: lang === "en" ? `⚠️ Gemini failed and Manus fallback also failed. Gemini: ${geminiMessage} | Manus: ${manusMessage}` : `⚠️ Gemini a échoué et le fallback Manus a également échoué. Gemini : ${geminiMessage} | Manus : ${manusMessage}` });
+        }
       }
     }
 
