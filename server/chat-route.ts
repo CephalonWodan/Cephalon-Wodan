@@ -14,6 +14,19 @@ function extractLastUserMessage(body: any): string {
   return typeof body?.message === "string" ? body.message.trim() : "";
 }
 
+function sendJson(res: any, status: number, data: any) {
+  if (typeof res.status === "function" && typeof res.json === "function") {
+    return res.status(status).json(data);
+  }
+
+  if (!res.headersSent) {
+    res.statusCode = status;
+    res.setHeader("Content-Type", "application/json");
+  }
+
+  return res.end(JSON.stringify(data));
+}
+
 export async function handleChatRoute(req: Request, res: Response) {
   const body = (req as any).body;
   const query = extractLastUserMessage(body);
@@ -27,8 +40,7 @@ export async function handleChatRoute(req: Request, res: Response) {
     const directReply = tryAnswerSimpleFact(query, language);
     if (directReply) {
       console.log("[CHAT] Direct Codex answer — Gemini/Manus bypassed:", query.slice(0, 120));
-      res.statusCode = 200;
-      return res.json({ reply: directReply, source: "codex" });
+      return sendJson(res, 200, { reply: directReply, source: "codex" });
     }
   } catch (error) {
     console.error("[CHAT] Direct Codex router error, continuing to LLM:", error);
