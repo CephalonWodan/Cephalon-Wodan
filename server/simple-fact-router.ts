@@ -3,11 +3,11 @@ import { retrieveRagEvidence } from "./rag-retriever.js";
 type Language = "fr" | "en";
 
 const FACT_PATTERNS = [
-  /\b(combien|quel(?:le|s)?|quels|quelle|what|how much|how many|stats?|statistiques?|d[ée]gats?|damage|crit(?:ique|ical)?|statut|status|cadence|fire rate|polar(?:it[ée]|ity)|sant[ée]|health|bouclier|shield|armure|armor|[ée]nergie|energy|rang|max(?:imum)? rank|co[uû]t|cost|drop|tombe|tomber|obtenir|where|o[uù])\b/i,
+  /\b(combien|quel(?:le|s)?|quels|quelle|what|how much|how many|stats?|statistiques?|degats?|damage|crit(?:ique|ical)?|statut|status|cadence|fire rate|polar(?:ite|ity)|sante|health|bouclier|shield|armure|armor|energie|energy|rang|max(?:imum)? rank|cout|cost|drop|tombe|tomber|obtenir|where|ou)\b/i,
 ];
 
 const COMPLEX_PATTERNS = [
-  /\b(build|configuration|configure|optimise|optimiser|optimisation|optimize|optimization|compare|compar(?:e|er)|pourquoi|why|remplace|remplacer|replace|conseille|conseiller|recommend|recommandation|steel path|niveau \d+|level \d+|survie|survival|d[ée]fense|defense|dps|synergie|synergy)\b/i,
+  /\b(build|configuration|configure|optimise|optimiser|optimisation|optimize|optimization|compare|comparer|compar|pourquoi|why|remplace|remplacer|replace|conseille|conseiller|recommend|recommandation|steel path|niveau \d+|level \d+|survie|survival|defense|dps|synergie|synergy)\b/i,
 ];
 
 function normalize(value: string): string {
@@ -33,7 +33,7 @@ function findEntityEvidence(query: string, language: Language) {
   return evidence
     .filter(item => {
       const name = normalize(item.name);
-      return name.length > 2 && (normalizedQuery.includes(name) || name.includes(normalizedQuery));
+      return name.length > 2 && normalizedQuery.includes(name);
     })
     .sort((a, b) => b.score - a.score)[0];
 }
@@ -47,12 +47,12 @@ function formatFactAnswer(query: string, evidence: ReturnType<typeof findEntityE
   if (!evidence) return null;
 
   const normalizedQuery = normalize(query);
-  const isDamage = /\b(d[ée]gats?|damage|hit|hits)\b/i.test(normalizedQuery);
+  const isDamage = /\b(degats?|damage|hit|hits)\b/i.test(normalizedQuery);
   const isCrit = /\b(crit|critique|critical)\b/i.test(normalizedQuery);
   const isStatus = /\b(statut|status)\b/i.test(normalizedQuery);
   const isFireRate = /\b(cadence|fire rate|tir|rate of fire)\b/i.test(normalizedQuery);
-  const isDefense = /\b(sant[ée]|health|bouclier|shield|armure|armor|[ée]nergie|energy)\b/i.test(normalizedQuery);
-  const isPolarity = /\b(polarit[ée]|polarity)\b/i.test(normalizedQuery);
+  const isDefense = /\b(sante|health|bouclier|shield|armure|armor|energie|energy)\b/i.test(normalizedQuery);
+  const isPolarity = /\b(polarite|polarity)\b/i.test(normalizedQuery);
 
   let labels: string[] = [];
   if (isDamage) labels = ["Dégâts totaux", "Répartition des dégâts"];
@@ -65,9 +65,8 @@ function formatFactAnswer(query: string, evidence: ReturnType<typeof findEntityE
   const selected = labels.length > 0 ? extractLines(evidence.text, labels) : [];
   if (selected.length === 0) return null;
 
-  const title = language === "fr" ? `**${evidence.name}**` : `**${evidence.name}**`;
   const intro = language === "fr" ? "Donnée directe du Codex :" : "Direct Codex data:";
-  return `${intro}\n\n${title}\n${selected.map(line => `- ${line}`).join("\n")}`;
+  return `${intro}\n\n**${evidence.name}**\n${selected.map(line => `- ${line}`).join("\n")}`;
 }
 
 export function tryAnswerSimpleFact(query: string, language: Language): string | null {
