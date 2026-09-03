@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import { handleChatRequest } from "./chat-handler.js";
+import { handleChatRoute } from "./chat-route.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,8 +21,9 @@ async function startServer() {
 
   app.use(express.static(staticPath));
 
-  // AI Chat API endpoint using built-in Forge LLM proxy
-  app.post("/api/chat", handleChatRequest);
+  // AI Chat API endpoint: simple factual questions are answered directly
+  // from the Codex/RAG dataset; complex requests continue to the LLM.
+  app.post("/api/chat", handleChatRoute);
 
   // Handle client-side routing - serve index.html for all routes
   app.get("*", (_req, res) => {
