@@ -9,7 +9,7 @@ type JsonRecord = Record<string, any>;
 type CatalogKind = "warframe" | "weapon" | "mod" | "arcane" | "companion" | "archon_shard" | "community_video" | "community_guide" | "community_build";
 
 export interface RagQueryInput { query: string; language: "fr" | "en"; missionType?: string; buildContext?: JsonRecord | null; advancedOptions?: JsonRecord | null; }
-export interface RagEvidence { id: string; kind: CatalogKind; name: string; text: string; score: number; source: string; sourceUrl?: string; validationStatus?: string; }
+export interface RagEvidence { id: string; kind: CatalogKind; name: string; text: string; score: number; source: string; sourceUrl?: string; validationStatus?: string; expertCategory?: string; creator?: string; }
 interface RagDocument extends Omit<RagEvidence, "score"> { aliases: string[]; tokens: string[]; record: JsonRecord; }
 
 const STOP_WORDS = new Set(["a","au","aux","avec","dans","de","des","du","en","et","la","le","les","ma","mon","pour","sur","un","une","the","and","for","from","into","of","on","to","with","build","set","faire","donne","donner","quel","quelle","quels","quelles"]);
@@ -24,12 +24,12 @@ function compact(value: unknown, depth = 0): string {
 }
 
 function sourceFor(item: JsonRecord): string {
-  if (item.kind === "community_build" || item.validationStatus === "community_reference") return "Build communautaire — référence, non officiel";
+  if (item.kind === "community_build" || item.validationStatus === "community_reference") return item.sourceType === "community_video" ? `Vidéo YouTube experte — ${item.creator || "créateur"}` : `Référence communautaire — ${item.creator || "source"}`;
   if (item.wikiUrl) return "Warframe Wiki + dataset local";
   if (item.sourceKey || item.effectIds) return "Archon Shard dataset + Warframe Wiki";
   return "dataset local normalisé";
 }
-function sourceUrlFor(item: JsonRecord): string | undefined { return item.wikiUrl || (item.name ? `https://wiki.warframe.com/w/${encodeURIComponent(String(item.name).replaceAll(" ", "_"))}` : undefined); }
+function sourceUrlFor(item: JsonRecord): string | undefined { return item.sourceUrl || item.wikiUrl || (item.name ? `https://wiki.warframe.com/w/${encodeURIComponent(String(item.name).replaceAll(" ", "_"))}` : undefined); }
 
 function makeCommunityDocument(build: typeof COMMUNITY_BUILD_REFERENCES[number]): RagDocument {
   const record: JsonRecord = { ...build, kind: "community_build", validationStatus: "community_reference" };
@@ -71,29 +71,39 @@ function scoreDocument(document: RagDocument, input: RagQueryInput, queryTokens:
   if (document.aliases.some(alias => facetText.includes(normalize(alias)))) score += 8;
   for (const token of Array.from(queryTokens)) if (document.tokens.includes(token)) score += 2;
   const kindText = normalize(document.kind);
+  const expertCategory = normalize(document.expertCategory || document.record?.expertCategory || "");
+  const isBuildQuery = /build|configuration|setup|optimise|optimiser|optimization|optimize|endgame|steel path|survie|survival|endurance|level cap|niveau max/.test(normalizedQuery);
+  const isMechanicsQuery = /mecanique|mechanic|interaction|synergie|synergy|breakpoint|scaling|calcul|formule|speedrun|vitesse|route|farm.*rapide/.test(normalizedQuery);
+  const isWeaponQuery = /arme|weapon|dps|degat|damage|crit|critique|incarnon|fusil|pistolet|melee|mêlée/.test(normalizedQuery);
   if (document.kind === "warframe" && (input.buildContext?.warframe?.name || /warframe|frame|capacite|ability|helminth|survie|survival|energie|energy/.test(normalizedQuery))) score += 4;
-  if (document.kind === "weapon" && /arme|weapon|dps|degat|damage|crit|critique|melee|mêlée/.test(normalizedQuery)) score += 3;
+  if (document.kind === "weapon" && isWeaponQuery) score += 3;
   if (document.kind === "mod" && /mod|polarite|capacite|strength|force|duree|duration|range|portee/.test(normalizedQuery)) score += 3;
   if (document.kind === "archon_shard" && /eclat|shard|tauforge|tauforged|archonte|archon/.test(normalizedQuery)) score += 5;
   if (document.kind === "arcane" && /arcane|rang|max rank|effet|effect/.test(normalizedQuery)) score += 3;
   if (document.kind === "companion" && /compagnon|companion|sentinel|sentinelle|moa|hound|kavat|kubrow/.test(normalizedQuery)) score += 4;
-  if (document.kind === "community_video" && /video|youtube|guide|build|creator|créateur|conseil|recommend|mission|warframe/.test(normalizedQuery)) score += 2;
-  if (document.kind === "community_guide" && /defense|défense|team|équipe|map|carte|wave|vague|helminth|nuker|buffer|warframe/.test(normalizedQuery)) score += 5;
-  if (document.kind === "community_build" && /build|configuration|setup|steel path|survie|survival|endurance|dps|compagnon|companion|incarnon|paris|dante|wisp|revenant|torid|latron/.test(normalizedQuery)) score += 7;
+  if (document.kind === "community_video") {
+    score += isBuildQuery ? 3 : isMechanicsQuery ? 3 : isWeaponQuery ? 2 : 1;
+    if (expertCategory === "mechanics" && isMechanicsQuery) score += 6;
+    if (expertCategory === "builds" && isBuildQuery) score += 6;
+    if (expertCategory === "weapons" && isWeaponQuery) score += 6;
+    if (expertCategory === "weapons" && isBuildQuery && isWeaponQuery) score += 3;
+  }
+  if (document.kind === "community_guide") score += /defense|défense|team|équipe|map|carte|wave|vague|helminth|nuker|buffer|warframe|guide|farm|endo|aya/.test(normalizedQuery) ? 5 : 1;
+  if (document.kind === "community_build" && isBuildQuery) score += 7;
   if (kindText && facetText.includes(kindText)) score += 1;
   return score;
 }
 
 export function retrieveRagEvidence(input: RagQueryInput, limit = 8): RagEvidence[] {
   const facets = inferFacets(input); const facetText = normalize(facets.join(" ")); const queryTokens = new Set(tokens(facets.join(" ")));
-  return getDocuments().map(document => ({ document, score: scoreDocument(document,input,queryTokens,facetText) })).filter(result => result.score > 0).sort((a,b) => b.score - a.score || a.document.name.localeCompare(b.document.name)).slice(0,limit).map(({document,score}) => ({id:document.id,kind:document.kind,name:document.name,text:document.text,score,source:document.source || sourceFor(document.record || document),sourceUrl:document.sourceUrl || sourceUrlFor(document.record || document),validationStatus:(document as any).validationStatus}));
+  return getDocuments().map(document => ({ document, score: scoreDocument(document,input,queryTokens,facetText) })).filter(result => result.score > 0).sort((a,b) => b.score - a.score || a.document.name.localeCompare(b.document.name)).slice(0,limit).map(({document,score}) => ({id:document.id,kind:document.kind,name:document.name,text:document.text,score,source:document.source || sourceFor(document.record || document),sourceUrl:document.sourceUrl || sourceUrlFor(document.record || document),validationStatus:(document as any).validationStatus,expertCategory:document.expertCategory || document.record?.expertCategory,creator:document.creator || document.record?.creator}));
 }
 
 function compactEvidenceText(text: string, maxChars = 1800): string { if (text.length <= maxChars) return text; return `${text.slice(0,maxChars).trim()}\n[… preuve abrégée pour réduire la latence …]`; }
 
 export function buildRagContext(input: RagQueryInput): { evidence: RagEvidence[]; instructions: string } {
   const evidence = retrieveRagEvidence(input,5);
-  const sourceLines = evidence.map((item,index) => `[${index+1}] ${item.name} — ${item.source}${item.validationStatus ? ` — statut: ${item.validationStatus}` : ""}${item.sourceUrl ? ` — ${item.sourceUrl}` : ""}`).join("\n");
+  const sourceLines = evidence.map((item,index) => `[${index+1}] ${item.name} — ${item.source}${item.expertCategory ? ` — expertise: ${item.expertCategory}` : ""}${item.validationStatus ? ` — statut: ${item.validationStatus}` : ""}${item.sourceUrl ? ` — ${item.sourceUrl}` : ""}`).join("\n");
   const evidenceText = evidence.map((item,index) => `\n[EVIDENCE ${index+1}]\n${compactEvidenceText(item.text)}`).join("\n");
   const highLevelBuildPolicy = input.language === "fr"
     ? `\n\n[POLITIQUE BUILD HAUT NIVEAU — OBLIGATOIRE]\n- À Steel Path / niveau 200+, ne mets PAS Vitality, Adaptation ou des mods de tanking génériques par réflexe. Ils ne sont justifiés que si la Warframe, le mode de survie ou la stratégie les exploite réellement.\n- Priorise d'abord les mécanismes propres à la Warframe, le contrôle, l'invulnérabilité/Overguard, le bouclier/Shield-gating si pertinent, l'énergie, la portée/durée/force selon les capacités, puis les dégâts et la synergie des armes.\n- Un slot de mod doit avoir une justification concrète. Pas de remplissage avec des mods défensifs génériques.\n- Pour une demande de build, fournis une configuration exploitable et précise, pas seulement une liste de conseils.\n- Termine la recommandation par un bloc `json:recommendation` valide, avec au minimum `mods` (tableau de `{name,rank}`) et, si connu, `aura`, `exilus`, `arcanes`, `archonShards`, `primary`, `companion`. Le JSON doit être séparé de l'explication.\n- Les noms de mods, armes, Warframes, arcanes et compagnons doivent provenir des preuves récupérées ou du contexte Builder. Ne crée aucun nom.\n- Les builds communautaires servent de références/meta, jamais de vérité officielle.\n`
