@@ -1,6 +1,6 @@
 // Collect recent public YouTube metadata for the expert community sources used by Cephalon Codex.
-// The collector never downloads video files. yt-dlp enumerates the whitelisted channels;
-// the previous manifest is retained as a resilience fallback when YouTube blocks extraction.
+// Discovery is RSS-first when a stable channel ID is known; yt-dlp remains a fallback.
+// The previous manifest is retained as a resilience fallback when YouTube blocks extraction.
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -10,22 +10,22 @@ const root = process.cwd();
 const outputPath = path.join(root, "data/youtube-videos.json");
 const cutoff = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
 
-// Curated expert sources. Pandaahh intentionally has two separate YouTube channels.
+// Curated expert sources. Known channel IDs avoid handle/video-tab extraction failures.
 const creators = [
-  { id: "MHBlacky", name: "MHBlacky", channelUrl: "https://www.youtube.com/@MHBlacky_ENG/videos", language: "en", category: "builds" },
-  { id: "PANDAAHH-main", name: "PANDAAHH", channelUrl: "https://www.youtube.com/@pandaahhhhh/videos", language: "fr", category: "builds", channelLabel: "main" },
-  { id: "PANDAAHH-chronicles", name: "PANDAAHH", channelUrl: "https://www.youtube.com/@pandaahh2/videos", language: "fr", category: "builds", channelLabel: "warframe_chronicles" },
-  { id: "TheKengineer", name: "TheKengineer", channelUrl: "https://www.youtube.com/@TheKengineer/videos", language: "en", category: "mechanics" },
+  { id: "MHBlacky", name: "MHBlacky", channelUrl: "https://www.youtube.com/@MHBlacky_ENG/videos", rssChannelId: "UCWT_Apn0qHyy_f_RFYYOGdQ", language: "en", category: "builds" },
+  { id: "PANDAAHH-main", name: "PANDAAHH", channelUrl: "https://www.youtube.com/@pandaahhhhh/videos", rssChannelId: "UCpkUJykYfhMR1v1tzhl3C0w", language: "fr", category: "builds", channelLabel: "main" },
+  { id: "PANDAAHH-chronicles", name: "PANDAAHH", channelUrl: "https://www.youtube.com/@pandaahh2/videos", rssChannelId: "UCpkUJykYfhMR1v1tzhl3C0w", language: "fr", category: "builds", channelLabel: "warframe_chronicles" },
+  { id: "TheKengineer", name: "TheKengineer", channelUrl: "https://www.youtube.com/@TheKengineer/videos", rssChannelId: "UCiED7CqmvQSsSHUiQ42EWbw", language: "en", category: "mechanics" },
   { id: "MasterElmo", name: "Master Elmo", channelUrl: "https://www.youtube.com/@MasterElmo/videos", language: "en", category: "mechanics" },
-  { id: "Endryx_ow", name: "Endryx_ow", channelUrl: "https://www.youtube.com/@Endryx_ow/videos", language: "en", category: "mechanics" },
-  { id: "VuThang", name: "Vu Thang", channelUrl: "https://www.youtube.com/@vu.thang205/videos", language: "vi", category: "builds" },
+  { id: "Endryx_ow", name: "Endryx_ow", channelUrl: "https://www.youtube.com/@Endryx_ow/videos", rssChannelId: "UCaoFi-n8n2932vNrVCloZuA", language: "en", category: "mechanics" },
+  { id: "VuThang", name: "Vu Thang", channelUrl: "https://www.youtube.com/@vu.thang205/videos", rssChannelId: "UCI_G2b84QSBB4yF5KlFctpQ", language: "vi", category: "builds" },
   { id: "Leamxp", name: "Leamxp", channelUrl: "https://www.youtube.com/@Leamxp/videos", language: "en", category: "builds" },
-  { id: "LeyzarGamingViews", name: "LeyzarGamingViews", channelUrl: "https://www.youtube.com/@LeyzarGamingViews/videos", language: "en", category: "weapons" },
+  { id: "LeyzarGamingViews", name: "LeyzarGamingViews", channelUrl: "https://www.youtube.com/@LeyzarGamingViews/videos", rssChannelId: "UCXeubDV2dwI-V9FO9oiDu3A", language: "en", category: "weapons" },
 ];
 
 function get(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { "User-Agent": "WarframeCodexBot/1.0" } }, response => {
+    https.get(url, { headers: { "User-Agent": "Mozilla/5.0 (compatible; CephalonCodex/1.0)" } }, response => {
       let body = "";
       response.setEncoding("utf8");
       response.on("data", chunk => { body += chunk; });
@@ -41,22 +41,15 @@ function fromRss(creator, body) {
     const value = tag => xml(entry.match(new RegExp(`<${tag}>([\\s\\S]*?)<\\/${tag}>`))?.[1]);
     const id = value("yt:videoId");
     const publishedAt = dateOnly(value("published"));
-    return id && publishedAt ? { id, creator: creator.name, channelId: creator.id, channelLabel: creator.channelLabel, title: value("title"), publishedAt, url: `https://www.youtube.com/watch?v=${id}`, language: creator.language, expertCategory: creator.category, sourceType: "community_video", transcriptStatus: "not_requested" } : null;
+    return id && publishedAt ? { id, creator: creator.name, channelId: creator.rssChannelId || creator.id, channelLabel: creator.channelLabel, title: value("title"), publishedAt, url: `https://www.youtube.com/watch?v=${id}`, language: creator.language, expertCategory: creator.category, sourceType: "community_video", transcriptStatus: "not_requested" } : null;
   }).filter(Boolean);
 }
 function fromYtDlp(creator) {
   try {
-    const args = [
-      "--flat-playlist",
-      "--dump-single-json",
-      "--playlist-end", "100",
-      "--js-runtimes", "deno",
-      "--remote-components", "ejs:npm",
-      creator.channelUrl,
-    ];
+    const args = ["--flat-playlist", "--dump-single-json", "--playlist-end", "100", "--js-runtimes", "deno", "--remote-components", "ejs:npm", creator.channelUrl];
     const raw = execFileSync("yt-dlp", args, { encoding: "utf8", timeout: 180000, maxBuffer: 30 * 1024 * 1024, stdio: ["ignore", "pipe", "pipe"] });
     const playlist = JSON.parse(raw);
-    const channelId = playlist.channel_id || playlist.id || creator.id;
+    const channelId = playlist.channel_id || playlist.id || creator.rssChannelId || creator.id;
     const entries = Array.isArray(playlist.entries) ? playlist.entries : [];
     return entries.map(entry => {
       const publishedAt = entry.upload_date ? dateOnly(`${entry.upload_date.slice(0, 4)}-${entry.upload_date.slice(4, 6)}-${entry.upload_date.slice(6, 8)}`) : null;
@@ -66,6 +59,17 @@ function fromYtDlp(creator) {
   } catch (error) {
     const detail = error?.stderr?.toString?.().trim().split("\n").slice(-3).join(" | ") || error?.message || "unknown error";
     console.warn(`[YOUTUBE] ${creator.name}${creator.channelLabel ? ` (${creator.channelLabel})` : ""}: yt-dlp failed: ${detail}`);
+    return null;
+  }
+}
+async function resolveChannelId(creator) {
+  if (creator.rssChannelId) return creator.rssChannelId;
+  try {
+    const body = await get(creator.channelUrl.replace(/\/videos\/?$/, ""));
+    const match = body.match(/"channelId":"(UC[^"]+)"/) || body.match(/channel_id=([^&"']+)/);
+    return match?.[1] || null;
+  } catch (error) {
+    console.warn(`[YOUTUBE] ${creator.name}: impossible de résoudre le channel ID: ${error.message}`);
     return null;
   }
 }
@@ -79,29 +83,29 @@ function loadPrevious() {
     return [];
   }
 }
+async function collectCreator(creator) {
+  const rssChannelId = await resolveChannelId(creator);
+  if (rssChannelId) {
+    try {
+      const rss = fromRss({ ...creator, rssChannelId }, await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${rssChannelId}`));
+      const recent = rss.filter(video => new Date(video.publishedAt) >= cutoff.toISOString());
+      if (recent.length) return { videos: recent, status: "rss" };
+    } catch (error) {
+      console.warn(`[YOUTUBE] ${creator.name}${creator.channelLabel ? ` (${creator.channelLabel})` : ""}: RSS failed: ${error.message}`);
+    }
+  }
+  const complete = fromYtDlp(creator);
+  if (complete?.length) return { videos: complete, status: "yt-dlp" };
+  return { videos: [], status: "failed" };
+}
 async function main() {
   const collected = [];
   const previous = loadPrevious();
   const channelResults = [];
   for (const creator of creators) {
-    const complete = fromYtDlp(creator);
-    if (complete?.length) {
-      collected.push(...complete);
-      channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "yt-dlp", videoCount: complete.length });
-      continue;
-    }
-    if (creator.rssChannelId) {
-      try {
-        const rss = fromRss({ ...creator, id: creator.rssChannelId }, await get(`https://www.youtube.com/feeds/videos.xml?channel_id=${creator.rssChannelId}`));
-        const recent = rss.filter(video => new Date(video.publishedAt) >= cutoff);
-        collected.push(...recent);
-        channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "rss", videoCount: recent.length });
-        continue;
-      } catch (error) {
-        console.warn(`[YOUTUBE] ${creator.name}: RSS failed: ${error.message}`);
-      }
-    }
-    channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "failed", videoCount: 0 });
+    const result = await collectCreator(creator);
+    collected.push(...result.videos);
+    channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: result.status, videoCount: result.videos.length });
   }
 
   const liveIds = new Set(collected.map(video => video.id));
@@ -110,10 +114,10 @@ async function main() {
   const liveCreatorCount = new Set(collected.map(item => item.creator)).size;
   const fallbackUsed = previous.length > 0 && previous.some(video => !liveIds.has(video.id));
   const output = {
-    schemaVersion: 2,
+    schemaVersion: 3,
     generatedAt: new Date().toISOString(),
     cutoff: cutoff.toISOString(),
-    enumeration: channelResults.every(item => item.status === "yt-dlp") ? "yt-dlp" : "mixed",
+    enumeration: channelResults.every(item => item.status === "rss") ? "rss" : channelResults.some(item => item.status === "rss" || item.status === "yt-dlp") ? "mixed" : "fallback",
     fallbackUsed,
     liveVideoCount: collected.length,
     liveCreatorCount,
