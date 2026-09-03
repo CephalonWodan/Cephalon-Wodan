@@ -109,5 +109,6 @@ jobs:
             data/youtube-videos.json
             data/youtube-transcripts.json
             data/rag-index.json
+            server/rag-index.generated.ts
             data-sync-report.json
             client/public/assets/wiki/
