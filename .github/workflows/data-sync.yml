@@ -12,7 +12,7 @@ permissions:
 jobs:
   sync-data:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -40,24 +40,29 @@ jobs:
       - name: Discover item names from WFCD
         run: node scripts/prepare-sync-input.mjs
 
-      - name: Collect recent creator videos
+      - name: Collect recent expert creator videos
         run: pnpm run youtube:collect
 
       - name: Extract public video subtitles
         run: pnpm run youtube:transcripts
 
-      - name: Validate YouTube manifests
+      - name: Collect expert community guides
+        run: pnpm run community:guides
+
+      - name: Validate YouTube and community manifests
         run: |
           node -e '
             const fs = require("fs");
             const manifest = JSON.parse(fs.readFileSync("data/youtube-videos.json", "utf8"));
             const transcripts = JSON.parse(fs.readFileSync("data/youtube-transcripts.json", "utf8"));
+            const guides = JSON.parse(fs.readFileSync("data/community-guides.json", "utf8"));
             const cutoff = new Date(manifest.cutoff);
             const creators = new Set(manifest.videos.map(video => video.creator));
-            if (creators.size !== 7 || !manifest.videos.length) process.exit(1);
+            if (creators.size !== 8 || manifest.channelCount !== 9 || !manifest.videos.length) process.exit(1);
             if (manifest.videos.some(video => !video.id || !video.url || new Date(video.publishedAt) < cutoff)) process.exit(1);
             if (transcripts.videoCount !== manifest.videoCount) process.exit(1);
-            console.log(JSON.stringify({ videos: manifest.videoCount, creators: creators.size, transcripts: transcripts.transcriptCount, enumeration: manifest.enumeration }, null, 2));
+            if (!Array.isArray(guides.documents)) process.exit(1);
+            console.log(JSON.stringify({ videos: manifest.videoCount, creators: creators.size, channels: manifest.channelCount, transcripts: transcripts.transcriptCount, guides: guides.documentCount, enumeration: manifest.enumeration }, null, 2));
           '
 
       - name: Enrich new and changed items from Warframe Wiki
@@ -93,12 +98,16 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(data): sync Warframe items and Wiki enrichment"
-          title: "Automated Warframe data and Wiki enrichment sync"
+          commit-message: "chore(data): sync Warframe items and expert community sources"
+          title: "Automated Warframe data, Wiki and expert community sync"
           body: |
-            Cette PR est générée automatiquement à partir des exports de découverte WFCD et de l'API du Wiki Warframe.
+            Cette PR est générée automatiquement à partir des exports WFCD, du Wiki Warframe et des sources communautaires expertes sélectionnées.
 
-            Le rapport `data-sync-report.json` indique les items trouvés, les statistiques réellement extraites, les images mises en cache et les fiches nécessitant une revue. Aucune valeur statistique par défaut n'est ajoutée.
+            Sources YouTube : TheKengineer, Master Elmo, Endryx_ow, Vu Thang, MH Blacky, PANDAAHH (2 chaînes), Leamxp et LeyzarGamingViews.
+
+            Sources guides : WFPedia et les guides/builds du site Pandaahh.
+
+            Les vidéos et guides sont indexés comme références communautaires, jamais comme statistiques officielles. Les données factuelles restent validées par le Codex/Wiki.
           branch: automated-data-sync
           base: main
           delete-branch: true
@@ -108,6 +117,7 @@ jobs:
             data/wiki-enrichment.json
             data/youtube-videos.json
             data/youtube-transcripts.json
+            data/community-guides.json
             data/rag-index.json
             server/rag-index.generated.ts
             data-sync-report.json
