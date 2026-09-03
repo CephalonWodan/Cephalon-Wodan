@@ -157,20 +157,24 @@ async function callGeminiProvider(systemPrompt: string, messages: ChatMessage[])
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY is missing");
 
-  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash-lite";
-  const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-  const contents = messages.map(message => ({
+  const model = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+  const endpoint = "https://generativelanguage.googleapis.com/v1beta/interactions";
+  const input = messages.map(message => ({
     role: message.role === "assistant" ? "model" : "user",
-    parts: [{ text: message.content }],
+    content: [{ type: "text", text: message.content }],
   }));
 
   const response = await fetch(endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": apiKey,
+    },
     body: JSON.stringify({
-      systemInstruction: { parts: [{ text: systemPrompt }] },
-      contents,
-      generationConfig: { temperature: 0.55 },
+      model,
+      system_instruction: systemPrompt,
+      input,
+      store: false,
     }),
     signal: AbortSignal.timeout(50000),
   });
@@ -184,14 +188,21 @@ async function callGeminiProvider(systemPrompt: string, messages: ChatMessage[])
     throw new Error(`Gemini API ${response.status}: ${message}`);
   }
 
-  const content = data?.candidates?.[0]?.content?.parts
-    ?.map((part: any) => typeof part?.text === "string" ? part.text : "")
-    .join("")
-    .trim();
+  const content = Array.isArray(data?.steps)
+    ? data.steps
+        .filter((step: any) => step?.type === "model_output")
+        .flatMap((step: any) => Array.isArray(step?.content) ? step.content : [])
+        .map((part: any) => typeof part?.text === "string" ? part.text : "")
+        .join("")
+        .trim()
+    : typeof data?.output_text === "string"
+      ? data.output_text.trim()
+      : "";
 
   if (!content) {
-    const finishReason = data?.candidates?.[0]?.finishReason;
-    throw new Error(finishReason ? `Gemini returned no text (finish reason: ${finishReason})` : "Gemini returned no text");
+    const status = data?.status;
+    const errorMessage = Array.isArray(data?.errors) ? data.errors[0]?.message : undefined;
+    throw new Error(errorMessage || (status ? `Gemini returned no text (status: ${status})` : "Gemini returned no text"));
   }
 
   return { content };
