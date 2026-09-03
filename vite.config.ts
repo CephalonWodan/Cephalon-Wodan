@@ -8,7 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { defineConfig, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
-import { handleChatRequest } from "./server/chat-handler.js";
+import { handleChatRoute } from "./server/chat-route.js";
 
 const PROJECT_ROOT = import.meta.dirname;
 const LOG_DIR = path.join(PROJECT_ROOT, ".manus-logs");
@@ -161,7 +161,7 @@ function vitePluginChatApi(): Plugin {
           (req as any).body = bodyData;
 
           try {
-            await handleChatRequest(req as any, res as any);
+            await handleChatRoute(req as any, res as any);
           } catch (err: any) {
             if (!res.headersSent) {
               res.statusCode = 500;
@@ -181,39 +181,24 @@ function vitePluginChatApi(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy(), vitePluginChatApi()];
-
 export default defineConfig({
-  plugins,
+  plugins: [
+    tailwindcss(),
+    react(),
+    jsxLocPlugin(),
+    vitePluginManusDebugCollector(),
+    vitePluginStorageProxy(),
+    vitePluginChatApi(),
+    vitePluginManusRuntime(),
+  ],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      "@": path.resolve(PROJECT_ROOT, "client"),
+      "@shared": path.resolve(PROJECT_ROOT, "shared"),
     },
   },
-  envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
+    outDir: path.resolve(PROJECT_ROOT, "dist/public"),
     emptyOutDir: true,
-  },
-  server: {
-    port: 3000,
-    strictPort: false,
-    host: true,
-    allowedHosts: [
-      ".manuspre.computer",
-      ".manus.computer",
-      ".manus-asia.computer",
-      ".manuscomputer.ai",
-      ".manusvm.computer",
-      "localhost",
-      "127.0.0.1",
-    ],
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
-    },
   },
 });
