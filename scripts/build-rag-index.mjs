@@ -13,6 +13,8 @@ const enrichmentPath = path.join(root, "data/wiki-enrichment.json");
 const enrichment = fs.existsSync(enrichmentPath) ? JSON.parse(fs.readFileSync(enrichmentPath, "utf8")) : [];
 const youtubePath = path.join(root, "data/youtube-transcripts.json");
 const youtube = fs.existsSync(youtubePath) ? JSON.parse(fs.readFileSync(youtubePath, "utf8")) : { videos: [] };
+const youtubeOcrPath = path.join(root, "data/youtube-ocr.json");
+const youtubeOcr = fs.existsSync(youtubeOcrPath) ? JSON.parse(fs.readFileSync(youtubeOcrPath, "utf8")) : { videos: [] };
 const communityGuidesPath = path.join(root, "data/community-guides.json");
 const communityGuides = fs.existsSync(communityGuidesPath) ? JSON.parse(fs.readFileSync(communityGuidesPath, "utf8")) : { documents: [] };
 const googleGuidePath = path.join(root, "data/google-doc-defense-guide.txt");
@@ -21,6 +23,7 @@ const googleGuideText = fs.existsSync(googleGuidePath) ? fs.readFileSync(googleG
 const communityPresetsPath = path.join(root, "client/src/lib/community-presets.ts");
 const communityPresetsSource = fs.existsSync(communityPresetsPath) ? fs.readFileSync(communityPresetsPath, "utf8") : "";
 const enrichmentByName = new Map((Array.isArray(enrichment) ? enrichment : []).map(item => [normalize(item.name), item]));
+const ocrById = new Map((Array.isArray(youtubeOcr.videos) ? youtubeOcr.videos : []).map(item => [String(item.id), item]));
 const stopWords = new Set("a au aux avec dans de des du en et la le les pour sur un une the and for from of on to with build set faire quel quelle quels quelles".split(" "));
 
 function normalize(value) {
@@ -40,7 +43,10 @@ function text(kind, item) {
   return [
     `Type: ${kind}`, `Nom: ${item.name || ""}`, item.type && `Catégorie: ${item.type}`,
     item.description && `Description: ${item.description}`, item.wikiDescription && `Description Wiki: ${item.wikiDescription}`, item.effect && `Effet: ${item.effect}`,
-    item.role && `Rôle: ${item.role}`, item.creator && `Créateur: ${item.creator}`, item.expertCategory && `Catégorie d'expertise: ${item.expertCategory}`, item.publishedAt && `Publié le: ${item.publishedAt}`, item.transcriptStatus && `Statut transcription: ${item.transcriptStatus}`, item.weaponClass && `Classe: ${item.weaponClass}`,
+    item.role && `Rôle: ${item.role}`, item.creator && `Créateur: ${item.creator}`, item.expertCategory && `Catégorie d'expertise: ${item.expertCategory}`, item.publishedAt && `Publié le: ${item.publishedAt}`, item.transcriptStatus && `Statut transcription: ${item.transcriptStatus}`, item.duration && `Durée vidéo: ${item.duration}s`,
+    Array.isArray(item.chapters) && item.chapters.length && `Chapitres: ${compact(item.chapters)}`,
+    item.ocrStatus && `Statut OCR: ${item.ocrStatus}`, item.ocrText && `Texte visible à l'écran (OCR): ${item.ocrText}`,
+    item.weaponClass && `Classe: ${item.weaponClass}`,
     item.damage && `Dégâts totaux: ${item.damage}`, item.critChance && `Chance critique: ${item.critChance}`,
     item.critMultiplier && `Multiplicateur critique: ${item.critMultiplier}`, item.statusChance && `Chance de statut: ${item.statusChance}`,
     item.fireRate && `Cadence: ${item.fireRate}`, item.health && `Santé: ${item.health}`,
@@ -69,7 +75,7 @@ function docs(kind, items) {
       name,
       text: body,
       aliases: [name, item.id, item.compatName, item.weaponClass, item.type, item.creator, item.expertCategory].filter(Boolean).map(String),
-      tokens: tokens(`${name} ${enriched.description || ""} ${enriched.wikiDescription || ""} ${enriched.effect || ""} ${enriched.compatName || ""} ${enriched.type || ""} ${enriched.weaponClass || ""} ${item.creator || ""} ${item.expertCategory || ""}`),
+      tokens: tokens(`${name} ${enriched.description || ""} ${enriched.wikiDescription || ""} ${enriched.effect || ""} ${enriched.compatName || ""} ${enriched.type || ""} ${enriched.weaponClass || ""} ${item.creator || ""} ${item.expertCategory || ""} ${item.transcriptText || ""} ${item.ocrText || ""}`),
       source: wiki?.source ? `${source(item)}; ${wiki.source}` : source(item),
       sourceUrl: wiki?.wikiUrl || wiki?.url || item.wikiUrl || item.sourceUrl || `https://wiki.warframe.com/w/${encodeURIComponent(name.replaceAll(" ", "_"))}`,
       creator: item.creator || undefined,
@@ -137,14 +143,19 @@ const groups = [
   ["warframe", data.warframes], ["weapon", (data.weapons || []).filter(hasCombatProfile)], ["mod", data.mods],
   ["arcane", data.arcanes], ["companion", data.companions], ["archon_shard", data.archonShards],
 ];
-const communityVideos = (Array.isArray(youtube.videos) ? youtube.videos : []).filter(video => video?.id && video?.title).map(video => ({
-  ...video,
-  name: video.title,
-  type: "community_video",
-  description: video.transcriptText || video.description || "",
-  wikiUrl: video.url,
-  sourceType: "community_video",
-}));
+const communityVideos = (Array.isArray(youtube.videos) ? youtube.videos : []).filter(video => video?.id && video?.title).map(video => {
+  const ocr = ocrById.get(String(video.id));
+  return {
+    ...video,
+    name: video.title,
+    type: "community_video",
+    description: video.description || video.transcriptText || "",
+    wikiUrl: video.url,
+    sourceType: "community_video",
+    ocrStatus: ocr?.ocrStatus || "not_processed",
+    ocrText: ocr?.ocrText || "",
+  };
+});
 const externalGuides = (Array.isArray(communityGuides.documents) ? communityGuides.documents : []).map(guide => ({
   ...guide,
   type: "community_guide",
@@ -164,12 +175,13 @@ const guideSections = googleGuideText.split(/\n(?=\s*(?:\d+\)|\d+\.|[A-Z]\.))/).
 const communityBuilds = parseCommunityPresets(communityPresetsSource);
 const documents = groups.flatMap(([kind, items]) => docs(kind, items)).concat(docs("community_video", communityVideos), docs("community_guide", externalGuides), docs("community_guide", guideSections), communityBuilds);
 const hash = crypto.createHash("sha256").update(fs.readFileSync(sourcePath)).digest("hex");
-const output = { schemaVersion: 3, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
+const output = { schemaVersion: 4, generatedAt: new Date().toISOString(), sourceHash: hash, documentCount: documents.length, documents };
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
 fs.writeFileSync(outputTsPath, `// Generated by scripts/build-rag-index.mjs. Do not edit manually.\n// This TypeScript snapshot avoids runtime JSON import assertions on Vercel.\nexport default ${JSON.stringify(output)} as const;\n`);
 console.log(`[RAG] ${documents.length} documents générés dans ${outputPath}`);
 console.log(`[RAG] Community builds indexés : ${communityBuilds.length}`);
 console.log(`[RAG] Community guides indexés : ${externalGuides.length + guideSections.length}`);
+console.log(`[RAG] Community videos indexés : ${communityVideos.length}; OCR disponibles : ${communityVideos.filter(item => item.ocrStatus === "available").length}`);
 console.log(`[RAG] TypeScript snapshot généré dans ${outputTsPath}`);
 console.log(`[RAG] sourceHash=${hash}`);
