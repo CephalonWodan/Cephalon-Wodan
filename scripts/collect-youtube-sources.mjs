@@ -1,6 +1,6 @@
 // Collect recent public YouTube metadata for the expert community sources used by Cephalon Codex.
 // The collector never downloads video files. yt-dlp enumerates the whitelisted channels;
-// RSS remains a fallback for channels with a known channel id.
+// the previous manifest is retained as a resilience fallback when YouTube blocks extraction.
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
@@ -69,8 +69,19 @@ function fromYtDlp(creator) {
     return null;
   }
 }
+function loadPrevious() {
+  try {
+    if (!fs.existsSync(outputPath)) return [];
+    const previous = JSON.parse(fs.readFileSync(outputPath, "utf8"));
+    return Array.isArray(previous.videos) ? previous.videos.filter(video => video.id && video.url && new Date(video.publishedAt) >= cutoff) : [];
+  } catch (error) {
+    console.warn(`[YOUTUBE] Impossible de charger le manifeste précédent: ${error.message}`);
+    return [];
+  }
+}
 async function main() {
   const collected = [];
+  const previous = loadPrevious();
   const channelResults = [];
   for (const creator of creators) {
     const complete = fromYtDlp(creator);
@@ -85,18 +96,35 @@ async function main() {
         const recent = rss.filter(video => new Date(video.publishedAt) >= cutoff);
         collected.push(...recent);
         channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "rss", videoCount: recent.length });
+        continue;
       } catch (error) {
-        console.warn(`[YOUTUBE] ${creator.name}: ${error.message}`);
-        channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "failed", videoCount: 0 });
+        console.warn(`[YOUTUBE] ${creator.name}: RSS failed: ${error.message}`);
       }
-    } else {
-      channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "failed", videoCount: 0 });
     }
+    channelResults.push({ id: creator.id, creator: creator.name, channelLabel: creator.channelLabel || "main", status: "failed", videoCount: 0 });
   }
-  const unique = Array.from(new Map(collected.filter(video => new Date(video.publishedAt) >= cutoff).map(video => [video.id, video])).values()).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
-  const output = { schemaVersion: 2, generatedAt: new Date().toISOString(), cutoff: cutoff.toISOString(), enumeration: channelResults.every(item => item.status === "yt-dlp") ? "yt-dlp" : "mixed", creatorCount: new Set(creators.map(item => item.name)).size, channelCount: creators.length, channelResults, videoCount: unique.length, videos: unique };
+
+  const liveIds = new Set(collected.map(video => video.id));
+  const merged = [...collected, ...previous.filter(video => !liveIds.has(video.id))];
+  const unique = Array.from(new Map(merged.filter(video => new Date(video.publishedAt) >= cutoff).map(video => [video.id, video])).values()).sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const liveCreatorCount = new Set(collected.map(item => item.creator)).size;
+  const fallbackUsed = previous.length > 0 && previous.some(video => !liveIds.has(video.id));
+  const output = {
+    schemaVersion: 2,
+    generatedAt: new Date().toISOString(),
+    cutoff: cutoff.toISOString(),
+    enumeration: channelResults.every(item => item.status === "yt-dlp") ? "yt-dlp" : "mixed",
+    fallbackUsed,
+    liveVideoCount: collected.length,
+    liveCreatorCount,
+    creatorCount: new Set(unique.map(item => item.creator)).size,
+    channelCount: creators.length,
+    channelResults,
+    videoCount: unique.length,
+    videos: unique,
+  };
   fs.mkdirSync(path.dirname(outputPath), { recursive: true });
   fs.writeFileSync(outputPath, JSON.stringify(output, null, 2));
-  console.log(`[YOUTUBE] ${unique.length} vidéos récentes collectées pour ${creators.length} chaînes et ${output.creatorCount} créateurs.`);
+  console.log(`[YOUTUBE] ${unique.length} vidéos récentes disponibles (${collected.length} nouvelles, ${previous.length} conservées) pour ${creators.length} chaînes.`);
 }
 main().catch(error => { console.error("[YOUTUBE] Échec :", error); process.exitCode = 1; });
