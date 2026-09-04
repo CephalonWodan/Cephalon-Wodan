@@ -9,6 +9,7 @@ env:
   COREPACK_ENABLE_PROJECT_SPEC: "0"
   OCR_VIDEO_LIMIT: "24"
   OCR_INTERVAL_SECONDS: "8"
+  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
 
 permissions:
   contents: write
@@ -58,6 +59,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg tesseract-ocr tesseract-ocr-eng tesseract-ocr-fra tesseract-ocr-vie
 
+      - name: Check YouTube Data API configuration
+        run: |
+          if [[ -n "$YOUTUBE_API_KEY" ]]; then
+            echo "YouTube Data API: configured"
+          else
+            echo "YouTube Data API: NOT configured — RSS/yt-dlp fallbacks will be used"
+          fi
+
       - name: Discover item names from WFCD
         run: node scripts/prepare-sync-input.mjs
 
@@ -87,7 +96,7 @@ jobs:
             const transcriptRowsValid = Array.isArray(transcripts.videos) && transcripts.videos.length === manifest.videoCount;
             const ocrRowsValid = Array.isArray(ocr.videos) && ocr.videos.every(video => video.id && ["available", "empty", "failed"].includes(video.ocrStatus));
             const creatorRequirementMet = creators.size === 8 || (manifest.fallbackUsed === true && creators.size >= 7);
-            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRows: Array.isArray(transcripts.videos) ? transcripts.videos.length : 0, transcriptCount: transcripts.transcriptCount, transcriptRowsValid, ocrRows: Array.isArray(ocr.videos) ? ocr.videos.length : 0, ocrSelected: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, ocrRowsValid, guides: guides.documentCount, guideRows: Array.isArray(guides.documents) ? guides.documents.length : 0, enumeration: manifest.enumeration, fallbackUsed: manifest.fallbackUsed === true, liveVideoCount: manifest.liveVideoCount, liveCreatorCount: manifest.liveCreatorCount };
+            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRows: Array.isArray(transcripts.videos) ? transcripts.videos.length : 0, transcriptCount: transcripts.transcriptCount, transcriptRowsValid, ocrRows: Array.isArray(ocr.videos) ? ocr.videos.length : 0, ocrSelected: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, ocrRowsValid, guides: guides.documentCount, guideRows: Array.isArray(guides.documents) ? guides.documents.length : 0, enumeration: manifest.enumeration, fallbackUsed: manifest.fallbackUsed === true, liveVideoCount: manifest.liveVideoCount, liveCreatorCount: manifest.liveCreatorCount, apiEnabled: manifest.apiEnabled === true };
             console.log(JSON.stringify(checks, null, 2));
             if (!creatorRequirementMet || manifest.channelCount !== 9 || !manifest.videos.length || manifest.videoCount !== manifest.videos.length) process.exit(1);
             if (!validVideos || !transcriptRowsValid || !ocrRowsValid || !Array.isArray(guides.documents)) process.exit(1);
