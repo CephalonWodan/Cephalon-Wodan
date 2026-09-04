@@ -46,7 +46,7 @@ function getMetadata(video) {
     return { description: String(data.description || "").slice(0, 30000), chapters: Array.isArray(data.chapters) ? data.chapters.slice(0, 100).map(item => ({ start: item.start_time, end: item.end_time, title: item.title })) : [], duration: Number(data.duration || 0), uploader: data.uploader || "" };
   } catch { return { description: "", chapters: [], duration: 0, uploader: "" }; }
 }
-function getTranscript(video) {
+async function getTranscript(video) {
   const prefix = path.join(tempDir, video.id);
   for (let attempt = 1; attempt <= RETRIES; attempt += 1) {
     try {
