@@ -49,7 +49,7 @@ type ManusMessageEvent = {
 function normalizeMessages(value: unknown): ChatMessage[] {
   if (!Array.isArray(value)) return [];
   return value
-    .filter((message): message is { role: "user" | "assistant"; content: unknown } => {
+    .filter((message): message is { role: "user" | "assistant"; content: string } => {
       if (!message || typeof message !== "object") return false;
       const candidate = message as { role?: unknown; content?: unknown };
       return (candidate.role === "user" || candidate.role === "assistant") && typeof candidate.content === "string";
