@@ -58,16 +58,6 @@ function writeToLogFile(source: LogSource, entries: unknown[]) {
   } catch {}
 }
 
-function jsxLocPlugin(): Plugin {
-  return {
-    name: "vite-plugin-jsx-loc",
-    transform(code, id) {
-      if (!id.endsWith(".tsx") && !id.endsWith(".jsx")) return;
-      return code;
-    },
-  };
-}
-
 function vitePluginManusDebugCollector(): Plugin {
   return {
     name: "manus-debug-collector",
@@ -188,7 +178,6 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
     react(),
-    jsxLocPlugin(),
     vitePluginManusDebugCollector(),
     vitePluginStorageProxy(),
     vitePluginChatApi(),
