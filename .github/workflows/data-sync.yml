@@ -67,8 +67,10 @@ jobs:
             echo "YouTube Data API: NOT configured — RSS/yt-dlp fallbacks will be used"
           fi
 
-      - name: Discover item names from WFCD
-        run: node scripts/prepare-sync-input.mjs
+      - name: Download official Warframe exports and build local cache
+        run: |
+          node scripts/fetch-official-warframe-data.mjs
+          node scripts/prepare-official-sync-input.mjs
 
       - name: Collect recent expert creator videos
         run: pnpm run youtube:collect
@@ -96,7 +98,7 @@ jobs:
             const transcriptRowsValid = Array.isArray(transcripts.videos) && transcripts.videos.length === manifest.videoCount;
             const ocrRowsValid = Array.isArray(ocr.videos) && ocr.videos.every(video => video.id && ["available", "empty", "failed"].includes(video.ocrStatus));
             const creatorRequirementMet = creators.size === 8 || (manifest.fallbackUsed === true && creators.size >= 7);
-            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRows: Array.isArray(transcripts.videos) ? transcripts.videos.length : 0, transcriptCount: transcripts.transcriptCount, transcriptRowsValid, ocrRows: Array.isArray(ocr.videos) ? ocr.videos.length : 0, ocrSelected: ocr.selectedVideoCount, ocrAvailable: ocr.ocrCount, ocrRowsValid, guides: guides.documentCount, guideRows: Array.isArray(guides.documents) ? guides.documents.length : 0, enumeration: manifest.enumeration, fallbackUsed: manifest.fallbackUsed === true, liveVideoCount: manifest.liveVideoCount, liveCreatorCount: manifest.liveCreatorCount, apiEnabled: manifest.apiEnabled === true };
+            const checks = { creators: creators.size, channels: manifest.channelCount, videos: manifest.videoCount, videoRows: Array.isArray(manifest.videos) ? manifest.videos.length : 0, validVideos, transcriptRowsValid, ocrRowsValid, guidesCount: Array.isArray(guides.documents) ? guides.documents.length : 0 };
             console.log(JSON.stringify(checks, null, 2));
             if (!creatorRequirementMet || manifest.channelCount !== 9 || !manifest.videos.length || manifest.videoCount !== manifest.videos.length) process.exit(1);
             if (!validVideos || !transcriptRowsValid || !ocrRowsValid || !Array.isArray(guides.documents)) process.exit(1);
@@ -135,16 +137,16 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore(data): sync Warframe items and expert community sources"
-          title: "Automated Warframe data, Wiki, video and expert community sync"
+          commit-message: "chore(data): sync official Warframe exports and expert community sources"
+          title: "Automated official Warframe data, Wiki, video and expert community sync"
           body: |
-            Cette PR est générée automatiquement à partir des exports WFCD, du Wiki Warframe et des sources communautaires expertes sélectionnées.
+            Cette PR est générée automatiquement à partir des exports officiels de Warframe, du Wiki Warframe et des sources communautaires expertes sélectionnées.
+
+            Les données officielles sont désormais chargées depuis les endpoints du jeu, avec cache local et snapshots de secours pour éviter les pannes liées à des changements de dépôt tiers.
 
             Sources YouTube : TheKengineer, Master Elmo, Endryx_ow, Vu Thang, MH Blacky, PANDAAHH (2 chaînes), Leamxp et LeyzarGamingViews.
 
             Sources guides : WFPedia et les guides/builds du site Pandaahh.
-
-            Les vidéos sont ingérées via sous-titres (créateur ou automatiques), description/chapitres et OCR d'un échantillon de frames. Les vidéos sans transcript restent exploitables via leur contenu visuel et leurs métadonnées. Les vidéos et guides restent des références communautaires, jamais des statistiques officielles.
           branch: automated-data-sync
           base: main
           delete-branch: true
@@ -161,3 +163,5 @@ jobs:
             server/rag-index.generated.ts
             data-sync-report.json
             client/public/assets/wiki/
+            data/raw/official/
+            data/snapshots/latest/
