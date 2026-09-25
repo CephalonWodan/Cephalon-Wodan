@@ -24,110 +24,81 @@ const sources = {
   enemies: "ExportEnemies.json",
 };
 
-const primaryBase = "https://content.warframe.com/MobileExport/Manifest/";
-const fallbackBase = "http://content.warframe.com/MobileExport/Manifest/";
+const primaryBase = process.env.WARFRAME_EXPORT_BASE_URL || "https://content.warframe.com/MobileExport/Manifest/";
+const fallbackBases = [primaryBase, "http://content.warframe.com/MobileExport/Manifest/"];
 
 function candidateUrls(filename) {
-  return [
-    new URL(filename, primaryBase).href,
-    new URL(filename, fallbackBase).href,
-  ];
+  return [...new Set(fallbackBases.map((base) => new URL(filename, base).href))];
 }
 
 async function readJsonFile(filePath) {
-  const content = await fs.readFile(filePath, "utf8");
-  return JSON.parse(content);
+  return JSON.parse(await fs.readFile(filePath, "utf8"));
 }
 
 async function fetchJson(url) {
-  const response = await fetch(url, {
-    headers: { accept: "application/json", "user-agent": "CephalonWodan-OfficalSync/1.0" },
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status} for ${url}`);
-  }
-
+  const response = await fetch(url, { headers: { accept: "application/json", "user-agent": "CephalonWodan-OfficialSync/1.0" } });
+  if (!response.ok) throw new Error(`HTTP ${response.status} for ${url}`);
   return response.json();
 }
 
-function isValidPayload(payload) {
-  if (Array.isArray(payload)) return payload.length > 0;
+function entryCount(payload) {
+  if (Array.isArray(payload)) return payload.length;
   if (payload && typeof payload === "object") {
-    if (Array.isArray(payload.data)) return payload.data.length > 0;
-    return Object.keys(payload).length > 0;
+    for (const key of ["data", "items", "records"]) if (Array.isArray(payload[key])) return payload[key].length;
+    return Object.keys(payload).length;
   }
-  return false;
+  return 0;
+}
+
+function isValidPayload(payload) {
+  return entryCount(payload) > 0;
 }
 
 async function loadFromDisk(filePath) {
-  try {
-    return await readJsonFile(filePath);
-  } catch {
-    return null;
-  }
+  try { return await readJsonFile(filePath); } catch { return null; }
 }
 
 async function resolvePayload(category, filename) {
-  let lastError = null;
-
+  let lastError;
   for (const url of candidateUrls(filename)) {
     try {
       const payload = await fetchJson(url);
-      if (!isValidPayload(payload)) {
-        throw new Error(`Payload empty for ${filename}`);
-      }
-      return payload;
+      if (!isValidPayload(payload)) throw new Error(`empty payload (${entryCount(payload)} entries)`);
+      return { payload, source: url };
     } catch (error) {
       lastError = error;
       console.warn(`[OFFICIAL] ${category}: ${url} -> ${error.message}`);
     }
   }
 
-  const localPath = path.join(rawDir, filename);
-  const local = await loadFromDisk(localPath);
-  if (local) {
-    console.warn(`[OFFICIAL] ${category}: fallback to cached official snapshot ${filename}`);
-    return local;
-  }
+  const cached = await loadFromDisk(path.join(rawDir, filename));
+  if (cached && isValidPayload(cached)) return { payload: cached, source: "raw-cache" };
+  const snapshot = await loadFromDisk(path.join(snapshotDir, filename));
+  if (snapshot && isValidPayload(snapshot)) return { payload: snapshot, source: "snapshot" };
+  throw new Error(`No valid export for ${category}: ${lastError?.message ?? "unknown error"}`);
+}
 
-  const snapshotPath = path.join(snapshotDir, filename);
-  const snapshot = await loadFromDisk(snapshotPath);
-  if (snapshot) {
-    console.warn(`[OFFICIAL] ${category}: fallback to latest snapshot ${filename}`);
-    return snapshot;
-  }
-
-  throw new Error(`Unable to fetch official Warframe export for ${category}. Last error: ${lastError?.message ?? "unknown"}`);
+async function writeJsonAtomic(filePath, value) {
+  const temporary = `${filePath}.tmp`;
+  await fs.writeFile(temporary, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  await fs.rename(temporary, filePath);
 }
 
 async function main() {
   await fs.mkdir(rawDir, { recursive: true });
   await fs.mkdir(snapshotDir, { recursive: true });
-
-  const snapshot = {
-    fetchedAt: new Date().toISOString(),
-    source: "Warframe Mobile Export official endpoints",
-    categories: {},
-  };
+  const manifest = { fetchedAt: new Date().toISOString(), source: "Warframe Mobile Export", categories: {} };
 
   for (const [category, filename] of Object.entries(sources)) {
     console.log(`[OFFICIAL] Loading ${category} from ${filename}`);
-    const payload = await resolvePayload(category, filename);
-    const targetPath = path.join(rawDir, filename);
-    await fs.writeFile(targetPath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
-    snapshot.categories[category] = {
-      filename,
-      length: Array.isArray(payload) ? payload.length : Array.isArray(payload?.data) ? payload.data.length : Object.keys(payload ?? {}).length,
-      source: "official",
-    };
+    const { payload, source } = await resolvePayload(category, filename);
+    await writeJsonAtomic(path.join(rawDir, filename), payload);
+    await writeJsonAtomic(path.join(snapshotDir, filename), payload);
+    manifest.categories[category] = { filename, entries: entryCount(payload), source };
   }
 
-  await fs.writeFile(path.join(snapshotDir, "official-snapshot.json"), `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
-  console.log(`[OFFICIAL] Snapshot saved to ${snapshotDir}`);
+  await writeJsonAtomic(path.join(snapshotDir, "official-snapshot.json"), manifest);
+  console.log(`[OFFICIAL] Snapshot saved: ${snapshotDir}`);
 }
 
-main().catch((error) => {
-  console.error("[OFFICIAL] Fatal error:", error);
-  process.exitCode = 1;
-});
+main().catch((error) => { console.error("[OFFICIAL] Fatal error:", error); process.exitCode = 1; });
