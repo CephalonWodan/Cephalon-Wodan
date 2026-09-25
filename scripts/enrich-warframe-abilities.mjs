@@ -8,17 +8,35 @@ import path from "node:path";
 
 const datasetPath = path.resolve("client/src/lib/warframe-data-full.json");
 const wfcdPath = process.env.WFCD_ALL_PATH ? path.resolve(process.env.WFCD_ALL_PATH) : null;
-const wfcdUrl = process.env.WFCD_ALL_URL || "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/json/All.json";
+const wfcdUrls = [
+  process.env.WFCD_ALL_URL,
+  "https://raw.githubusercontent.com/WFCD/warframe-items/main/data/json/All.json",
+  "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/json/All.json",
+].filter(Boolean);
 const statsPath = process.env.ABILITY_STATS_RAW_PATH ? path.resolve(process.env.ABILITY_STATS_RAW_PATH) : null;
 const statsUrl = process.env.ABILITY_STATS_RAW_URL || "https://wiki.warframe.com/w/Module:Ability/data/stats?action=raw";
 
 const readText = filePath => fs.readFileSync(filePath, "utf8");
 const readJson = filePath => JSON.parse(readText(filePath));
-const loadJson = async (filePath, url) => {
+const loadJson = async (filePath, urls) => {
   if (filePath) return readJson(filePath);
-  const response = await fetch(url, { headers: { accept: "application/json" } });
-  if (!response.ok) throw new Error(`Download failed: ${response.status} ${response.statusText} (${url})`);
-  return response.json();
+
+  const candidates = Array.isArray(urls) ? urls : [urls];
+  let lastError = null;
+
+  for (const url of candidates) {
+    try {
+      const response = await fetch(url, { headers: { accept: "application/json" } });
+      if (response.ok) return response.json();
+      lastError = new Error(`Download failed: ${response.status} ${response.statusText} (${url})`);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw new Error(
+    `Unable to download WFCD data from any configured URL: ${candidates.join(", ")}${lastError ? `\nLast error: ${lastError.message}` : ""}`,
+  );
 };
 const loadText = async (filePath, url) => {
   if (filePath) return readText(filePath);
@@ -42,7 +60,7 @@ function parseAbilityStats(luaSource) {
   let currentStat = null;
   for (const rawLine of luaSource.split(/\r?\n/)) {
     const line = rawLine.replace(/\r$/, "");
-    const entryMatch = line.match(/^\s*\["([^"\n]+)"\]\s*=\s*\{\s*$/);
+    const entryMatch = line.match(/^\s*\["([^"]+)"\]\s*=\s*\{\s*$/);
     if (entryMatch) {
       currentUniqueName = entryMatch[1];
       statsByUniqueName[currentUniqueName] = [];
@@ -108,7 +126,7 @@ const specialFallbacks = {
 const placeholderDescription = "Capacité native officielle — détails structurés à compléter.";
 
 const data = readJson(datasetPath);
-const sourceItems = (await loadJson(wfcdPath, wfcdUrl)).filter(item => item?.type === "Warframe" && Array.isArray(item.abilities) && item.abilities.length >= 4);
+const sourceItems = (await loadJson(wfcdPath, wfcdUrls)).filter(item => item?.type === "Warframe" && Array.isArray(item.abilities) && item.abilities.length >= 4);
 const statsByUniqueName = parseAbilityStats(await loadText(statsPath, statsUrl));
 const exactSource = new Map(sourceItems.map(item => [String(item.name).toLowerCase(), item]));
 const baseSource = new Map();
@@ -168,7 +186,7 @@ if (unresolved.length > 0) {
 
 fs.writeFileSync(datasetPath, `${JSON.stringify(data, null, 2)}\n`);
 console.log(JSON.stringify({
-  source: wfcdPath ? `file:${wfcdPath}` : wfcdUrl,
+  source: wfcdPath ? `file:${wfcdPath}` : wfcdUrls,
   statsSource: statsPath ? `file:${statsPath}` : statsUrl,
   warframes: data.warframes?.length || 0,
   enrichedFromWfcd,
