@@ -10,8 +10,9 @@ const datasetPath = path.resolve("client/src/lib/warframe-data-full.json");
 const wfcdPath = process.env.WFCD_ALL_PATH ? path.resolve(process.env.WFCD_ALL_PATH) : null;
 const wfcdUrls = [
   process.env.WFCD_ALL_URL,
-  "https://raw.githubusercontent.com/WFCD/warframe-items/main/data/json/All.json",
-  "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/json/All.json",
+  "https://raw.githubusercontent.com/WFCD/warframe-items/4756c843115a8eb84a1c7a9961fc1d770fb92118/data/json/Warframes.json",
+  "https://raw.githubusercontent.com/WFCD/warframe-items/main/data/json/Warframes.json",
+  "https://raw.githubusercontent.com/WFCD/warframe-items/master/data/json/Warframes.json",
 ].filter(Boolean);
 const statsPath = process.env.ABILITY_STATS_RAW_PATH ? path.resolve(process.env.ABILITY_STATS_RAW_PATH) : null;
 const statsUrl = process.env.ABILITY_STATS_RAW_URL || "https://wiki.warframe.com/w/Module:Ability/data/stats?action=raw";
