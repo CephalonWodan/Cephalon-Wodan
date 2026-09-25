@@ -16,17 +16,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
+      # pnpm doit être installé avant setup-node,
+      # car setup-node utilise pnpm pour configurer le cache.
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.4.1
           run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -50,7 +52,7 @@ jobs:
           branch: 'chore/public-export-french-sync'
           title: 'Official French Public Export Data Synchronization'
           body: |
-            Automated weekly synchronization of official French Public Export tables (`ExportWarframes_fr`, `ExportWeapons_fr`, `ExportUpgrades_fr`, etc.) plus structured native Warframe abilities from WFCD and the Wiki `Module:Ability/data/stats` table.
+            Automated weekly synchronization of official French Public Export tables (`ExportWarframes_fr`, `ExportWeapons_fr`, `ExportUpgrades_fr`, etc.) plus structured native Warframe abilities[...]
             Validated with TypeScript checks and production build.
           signoff: false
           delete-branch: true
